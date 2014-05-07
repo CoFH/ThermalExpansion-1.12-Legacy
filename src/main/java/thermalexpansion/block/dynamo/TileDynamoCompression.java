@@ -1,0 +1,260 @@
+package thermalexpansion.block.dynamo;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.core.TEProps;
+import cpw.mods.fml.common.registry.GameRegistry;
+
+public class TileDynamoCompression extends TileDynamoBase implements IFluidHandler {
+
+	public static void initialize() {
+
+		guiIds[BlockDynamo.Types.COMPRESSION.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoCompression", "dynamo", "TEBase", null, true);
+		GameRegistry.registerTileEntity(TileDynamoCompression.class, "cofh.thermalexpansion.DynamoCompression");
+	}
+
+	static Map fuels = new HashMap<Fluid, Integer>();
+	static Map coolants = new HashMap<Fluid, Integer>();
+
+	FluidTank fuelTank = new FluidTank(MAX_FLUID);
+	FluidTank coolantTank = new FluidTank(MAX_FLUID);
+
+	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+	int coolantRF;
+
+	@Override
+	public int getType() {
+
+		return BlockDynamo.Types.COMPRESSION.ordinal();
+	}
+
+	public static boolean registerFuel(Fluid fluid, int energy) {
+
+		if (fluid == null || energy <= 10000) {
+			return false;
+		}
+		fuels.put(fluid, energy / 100);
+		return true;
+	}
+
+	public static boolean registerCoolant(Fluid fluid, int cooling) {
+
+		if (fluid == null || cooling <= 10000) {
+			return false;
+		}
+		coolants.put(fluid, cooling / 100);
+		return true;
+	}
+
+	public static int getFuelEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
+	}
+
+	public static int getCoolantEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : (Integer) coolants.get(stack.getFluid());
+	}
+
+	public static boolean isValidFuel(FluidStack stack) {
+
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
+	}
+
+	public static boolean isValidCoolant(FluidStack stack) {
+
+		return stack == null ? false : coolants.containsKey(stack.getFluid());
+	}
+
+	public FluidTank getTank(int tankIndex) {
+
+		if (tankIndex == 0) {
+			return fuelTank;
+		}
+		return coolantTank;
+	}
+
+	@Override
+	protected boolean canGenerate() {
+
+		if (fuelRF > 0) {
+			return coolantRF > 0 || coolantTank.getFluidAmount() >= 10;
+		}
+		if (coolantRF > 0) {
+			return fuelTank.getFluidAmount() >= 10;
+		}
+		return fuelTank.getFluidAmount() >= 10 && coolantTank.getFluidAmount() >= 10;
+	}
+
+	@Override
+	protected void generate() {
+
+		if (fuelRF <= 0) {
+			fuelRF = getFuelEnergy(fuelTank.getFluid());
+			fuelTank.drain(10, true);
+		}
+		if (coolantRF <= 0) {
+			coolantRF = getCoolantEnergy(coolantTank.getFluid());
+			coolantTank.drain(10, true);
+		}
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(energy);
+		fuelRF -= energy;
+		coolantRF -= energy;
+	}
+
+	@Override
+	public IIcon getActiveIcon() {
+
+		return renderFluid.getFluid().getIcon(renderFluid);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public Payload getDescriptionPayload() {
+
+		Payload payload = super.getDescriptionPayload();
+
+		payload.addFluidStack(fuelTank.getFluid());
+		return payload;
+	}
+
+	@Override
+	public Payload getGuiPayload() {
+
+		Payload payload = Payload.getInfoPayload(this);
+
+		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		payload.addFluidStack(fuelTank.getFluid());
+		payload.addFluidStack(coolantTank.getFluid());
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(Payload payload) {
+
+		super.handleTilePacket(payload);
+
+		renderFluid = payload.getFluidStack();
+
+		if (renderFluid == null) {
+			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+		}
+	}
+
+	/* ITileInfoPacketHandler */
+	@Override
+	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+
+		switch (TEProps.PacketID.values()[payload.getByte()]) {
+		case GUI:
+			fuelTank.setFluid(payload.getFluidStack());
+			coolantTank.setFluid(payload.getFluidStack());
+			energyStorage.setEnergyStored(payload.getInt());
+			return;
+		default:
+		}
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		coolantRF = nbt.getInteger("Coolant");
+		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
+		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
+
+		if (!isValidFuel(fuelTank.getFluid())) {
+			fuelTank.setFluid(null);
+		}
+		if (!isValidCoolant(coolantTank.getFluid())) {
+			coolantTank.setFluid(null);
+		}
+		if (fuelTank.getFluid() != null) {
+			renderFluid = fuelTank.getFluid();
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Coolant", coolantRF);
+		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
+		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
+	}
+
+	/* IFluidHandler */
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+
+		if (resource == null || from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+			return 0;
+		}
+		if (isValidFuel(resource)) {
+			return fuelTank.fill(resource, doFill);
+		}
+		if (isValidCoolant(resource)) {
+			return coolantTank.fill(resource, doFill);
+		}
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+
+		if (resource == null || from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+			return null;
+		}
+		if (isValidFuel(resource)) {
+			return fuelTank.drain(resource.amount, doDrain);
+		}
+		if (isValidCoolant(resource)) {
+			return coolantTank.drain(resource.amount, doDrain);
+		}
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+
+		return fuelTank.drain(maxDrain, doDrain);
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+
+		return from.ordinal() != facing;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+
+		return from.ordinal() != facing;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+
+		return new FluidTankInfo[] { fuelTank.getInfo(), coolantTank.getInfo() };
+	}
+
+}

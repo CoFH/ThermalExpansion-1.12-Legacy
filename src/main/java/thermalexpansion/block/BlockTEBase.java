@@ -1,0 +1,126 @@
+package thermalexpansion.block;
+
+import net.minecraft.block.material.Material;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.util.Utils;
+import buildcraft.api.tools.IToolWrench;
+import cofh.api.block.IDismantleable;
+import cofh.block.BlockCoFHBase;
+import cofh.render.IconRegistry;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+
+public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleable {
+
+	public BlockTEBase(Material material) {
+
+		super(material);
+		setStepSound(soundTypeStone);
+		setCreativeTab(ThermalExpansion.tabBlocks);
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
+
+		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
+
+		if (Utils.isHoldingMultimeter(player, x, y, z)) {
+			return false;
+		}
+		if (player.isSneaking()) {
+			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
+				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {
+					dismantleBlock(player, world, x, y, z, false);
+				}
+				((IToolWrench) equipped).wrenchUsed(player, x, y, z);
+				return true;
+			}
+			return false;
+		}
+		TileTEBase tile = (TileTEBase) world.getTileEntity(x, y, z);
+
+		if (tile == null) {
+			return false;
+		}
+		if (Utils.isHoldingUsableWrench(player, x, y, z)) {
+			if (ServerHelper.isServerWorld(world)) {
+				tile.onWrench(player, hitSide);
+			}
+			((IToolWrench) equipped).wrenchUsed(player, x, y, z);
+			return true;
+		}
+		return tile.openGui(player);
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+
+		if (tile instanceof TileInventory) {
+			((TileInventory) tile).setInvName(ItemHelper.getNameFromItemStack(stack));
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int metadata) {
+
+		return IconRegistry.getIcon("GlassHardened");
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+
+		if (tile instanceof TileInventory && (!((TileInventory) tile).invName.isEmpty())) {
+			return ItemHelper.setItemStackTagName(null, ((TileInventory) tile).invName);
+		}
+		return null;
+	}
+
+	/* Dismantle Helper */
+	@Override
+	public ItemStack dismantleBlock(EntityPlayer player, NBTTagCompound nbt, World world, int x, int y, int z, boolean returnBlock, boolean simulate) {
+
+		int bMeta = world.getBlockMetadata(x, y, z);
+		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
+
+		if (!simulate) {
+			TileEntity tile = world.getTileEntity(x, y, z);
+			if (tile instanceof TileTEBase) {
+				((TileTEBase) tile).blockDismantled();
+			}
+			if (nbt != null) {
+				dropBlock.setTagCompound(nbt);
+			}
+			world.setBlockToAir(x, y, z);
+
+			if (dropBlock != null && !returnBlock) {
+				float f = 0.3F;
+				double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+				EntityItem item = new EntityItem(world, x + x2, y + y2, z + z2, dropBlock);
+				item.delayBeforeCanPickup = 10;
+				world.spawnEntityInWorld(item);
+
+				if (player != null) {
+					Utils.dismantleLog(player.getDisplayName(), this, bMeta, x, y, z);
+				}
+			}
+		}
+		return dropBlock;
+	}
+
+}
