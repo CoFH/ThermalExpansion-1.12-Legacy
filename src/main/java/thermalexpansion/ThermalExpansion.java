@@ -5,14 +5,15 @@ import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.device.TileWorkbench;
@@ -41,6 +42,7 @@ import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 import cofh.CoFHWorld;
 import cofh.api.world.WeightedRandomBlock;
+import cofh.block.world.BlockOre;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiHandler;
 import cofh.util.ConfigHandler;
@@ -64,8 +66,7 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-@Mod(name = TEProps.NAME, version = TEProps.VERSION, useMetadata = false, modid = "ThermalExpansion", dependencies = "required-after:Forge@["
-		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",);required-after:ForgeMultipart;before:IC2;before:Metallurgy")
+@Mod(name = TEProps.NAME, version = TEProps.VERSION, useMetadata = false, modid = "ThermalExpansion", dependencies = "required-after:Forge@[" + CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",);required-after:ForgeMultipart;before:IC2;before:Metallurgy")
 public class ThermalExpansion {
 
 	@SidedProxy(clientSide = "thermalexpansion.core.ProxyClient", serverSide = "thermalexpansion.core.Proxy")
@@ -74,7 +75,7 @@ public class ThermalExpansion {
 	@Instance("ThermalExpansion")
 	public static ThermalExpansion instance;
 	public static final ConfigHandler config = new ConfigHandler(TEProps.VERSION);
-	public static final Logger log = LogManager.getLogger(modId);
+	public static final Logger log = LogManager.getLogger(TEProps.modID);
 
 	/* INIT SEQUENCE */
 	@EventHandler
@@ -280,8 +281,7 @@ public class ThermalExpansion {
 			oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 20));
 		}
 		for (int i = 0; i < oreList.length; i++) {
-			CoFHWorld.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i],
-					TEProps.oreMaxY[i], CoFHWorld.ORE_UNIFORM, true, BlockOre.enable[i]);
+			CoFHWorld.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i], TEProps.oreMaxY[i], CoFHWorld.ORE_UNIFORM, true, BlockOre.enable[i]);
 		}
 	}
 

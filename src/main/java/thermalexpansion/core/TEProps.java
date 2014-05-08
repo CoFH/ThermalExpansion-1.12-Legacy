@@ -10,6 +10,7 @@ public class TEProps {
 	}
 
 	public static final String NAME = "Thermal Expansion";
+	public static final String modID = "ThermalExpansion";
 	public static final String VERSION = "3.0.1";
 	public static final String RELEASE_URL = "http://teamcofh.com/thermalexpansion/version/version.txt";
 
