@@ -1,15 +1,17 @@
 package thermalexpansion.block;
 
+import cofh.network.ITilePacketHandler;
+import cofh.util.BlockHelper;
+import cofh.util.ServerHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.util.Utils;
-import cofh.network.ITilePacketHandler;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
 
 public abstract class TileInventory extends TileTEBase implements IInventory, ITilePacketHandler {
 

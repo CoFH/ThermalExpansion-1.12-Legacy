@@ -1,8 +1,9 @@
 package thermalexpansion.block.strongbox;
 
-import net.minecraft.item.ItemStack;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.item.ItemStack;
 
 public class TileStrongboxCreative extends TileStrongbox {
 

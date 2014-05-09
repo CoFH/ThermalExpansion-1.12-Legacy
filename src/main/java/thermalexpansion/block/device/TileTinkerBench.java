@@ -1,14 +1,16 @@
 package thermalexpansion.block.device;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import thermalexpansion.block.TileInventory;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.core.CoFHProps;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thermalexpansion.block.TileInventory;
 
 public class TileTinkerBench extends TileInventory implements IEnergyHandler {
 

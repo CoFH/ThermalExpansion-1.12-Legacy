@@ -1,9 +1,11 @@
 package thermalexpansion.block;
 
-import net.minecraft.nbt.NBTTagCompound;
-import thermalexpansion.network.TEPacketHandler;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.network.ITilePacketHandler;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import thermalexpansion.network.TEPacketHandler;
 
 public abstract class TileRSInventory extends TileInventory implements IRedstoneControl, ITilePacketHandler {
 

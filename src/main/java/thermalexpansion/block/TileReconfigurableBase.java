@@ -1,8 +1,5 @@
 package thermalexpansion.block;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedBlockTexture;
@@ -10,6 +7,10 @@ import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 
 public abstract class TileReconfigurableBase extends TileRSBase implements IReconfigurableFacing, IReconfigurableSides, ISidedBlockTexture, ITilePacketHandler {
 

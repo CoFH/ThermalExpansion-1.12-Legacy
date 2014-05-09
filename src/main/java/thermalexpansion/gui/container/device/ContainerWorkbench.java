@@ -1,5 +1,10 @@
 package thermalexpansion.gui.container.device;
 
+import cofh.gui.slot.SlotFalseCopy;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+import cofh.util.inventory.InventoryCraftingCustom;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -7,6 +12,7 @@ import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISetSchematic;
@@ -14,10 +20,6 @@ import thermalexpansion.gui.slot.SlotCustomCraftingOutput;
 import thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
-import cofh.gui.slot.SlotFalseCopy;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.inventory.InventoryCraftingCustom;
 
 public class ContainerWorkbench extends ContainerTEBase implements ISetSchematic {
 

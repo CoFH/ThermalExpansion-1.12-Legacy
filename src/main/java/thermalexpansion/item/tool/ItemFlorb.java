@@ -1,5 +1,10 @@
 package thermalexpansion.item.tool;
 
+import cofh.item.ItemBase;
+import cofh.render.IconRegistry;
+import cofh.util.CoreUtils;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -12,13 +17,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.entity.projectile.EntityFlorb;
 import thermalexpansion.fluid.TEFluids;
-import cofh.item.ItemBase;
-import cofh.render.IconRegistry;
-import cofh.util.CoreUtils;
-import cofh.util.StringHelper;
 
 public class ItemFlorb extends ItemBase {
 

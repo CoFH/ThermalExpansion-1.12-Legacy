@@ -1,5 +1,7 @@
 package thermalexpansion.block.dynamo;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,9 +15,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler {
 

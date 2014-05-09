@@ -1,14 +1,5 @@
 package thermalexpansion.render;
 
-import javax.swing.Icon;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import thermalexpansion.block.dynamo.BlockDynamo;
-import thermalexpansion.block.dynamo.TileDynamoBase;
-import thermalexpansion.core.TEProps;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Translation;
@@ -19,12 +10,22 @@ import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+
+import thermalexpansion.block.dynamo.BlockDynamo;
+import thermalexpansion.block.dynamo.TileDynamoBase;
+import thermalexpansion.core.TEProps;
+
 public class RenderDynamo implements ISimpleBlockRenderingHandler {
 
 	public static final RenderDynamo instance = new RenderDynamo();
 
-	static Icon textureCoil;
-	static Icon[] textureBase = new Icon[BlockDynamo.Types.values().length];
+	static IIcon textureCoil;
+	static IIcon[] textureBase = new IIcon[BlockDynamo.Types.values().length];
 	static CCModel[][] modelCoil = new CCModel[2][6];
 	static CCModel[][] modelBase = new CCModel[2][6];
 	static CCModel[] modelAnimation = new CCModel[6];
@@ -104,7 +105,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		}
 	}
 
-	public void renderAnimation(int facing, boolean active, int type, Icon icon, double x, double y, double z) {
+	public void renderAnimation(int facing, boolean active, int type, IIcon icon, double x, double y, double z) {
 
 		if (active) {
 			modelAnimation[facing].render(x, y, z, RenderUtils.getIconTransformation(icon));

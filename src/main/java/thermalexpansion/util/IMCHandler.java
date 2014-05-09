@@ -1,10 +1,14 @@
 package thermalexpansion.util;
 
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
+
 import java.util.Locale;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.util.crafting.CrucibleManager;
@@ -13,8 +17,6 @@ import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TransposerManager;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
 public class IMCHandler {
 
@@ -161,10 +163,10 @@ public class IMCHandler {
 						}
 						continue;
 					}
-					ThermalExpansion.log.warning("ThermalExpansion received an invalid IMC from " + theMessage.getSender() + "! Key was " + theMessage.key);
+					ThermalExpansion.log.warn("ThermalExpansion received an invalid IMC from " + theMessage.getSender() + "! Key was " + theMessage.key);
 				}
 			} catch (Exception e) {
-				ThermalExpansion.log.warning("ThermalExpansion received an broken IMC from " + theMessage.getSender() + "!");
+				ThermalExpansion.log.warn("ThermalExpansion received an broken IMC from " + theMessage.getSender() + "!");
 				e.printStackTrace();
 			}
 		}

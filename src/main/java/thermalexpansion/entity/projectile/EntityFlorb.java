@@ -1,5 +1,10 @@
 package thermalexpansion.entity.projectile;
 
+import cofh.core.CoFHProps;
+import cofh.util.CoreUtils;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.EntityRegistry;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -14,12 +19,9 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.tool.ItemFlorb;
-import cofh.core.CoFHProps;
-import cofh.util.CoreUtils;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.EntityRegistry;
 
 public class EntityFlorb extends EntityThrowable {
 
@@ -136,7 +138,7 @@ public class EntityFlorb extends EntityThrowable {
 	}
 
 	@Override
-	protected void doBlockCollisions() {
+	protected void func_145775_I() {
 
 		int i = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
 		int j = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
@@ -149,10 +151,10 @@ public class EntityFlorb extends EntityThrowable {
 			for (int k1 = i; k1 <= l; ++k1) {
 				for (int l1 = j; l1 <= i1; ++l1) {
 					for (int i2 = k; i2 <= j1; ++i2) {
-						int j2 = this.worldObj.getBlockId(k1, l1, i2);
+						Block block = this.worldObj.getBlock(k1, l1, i2);
 
-						if (j2 > 0) {
-							Block.blocksList[j2].onEntityCollidedWithBlock(this.worldObj, k1, l1, i2, this);
+						if (block != null) {
+							block.onEntityCollidedWithBlock(this.worldObj, k1, l1, i2, this);
 						}
 					}
 				}
@@ -206,9 +208,6 @@ public class EntityFlorb extends EntityThrowable {
 			}
 			Block block = fluid.getBlock();
 
-			if (fluid.getName() == "water" || fluid.getName() == "lava") {
-				bId -= 1;
-			}
 			if (worldObj.isAirBlock(x, y, z) || worldObj.getBlock(x, y, z).getMaterial() == Material.fire || worldObj.getBlock(x, y, z) == Blocks.snow_layer) {
 				if (fluid.getName() != "water" || !worldObj.getBiomeGenForCoords(x / 16, z / 16).biomeName.toLowerCase().equals("hell")) {
 					worldObj.setBlock(x, y, z, block, 0, 3);

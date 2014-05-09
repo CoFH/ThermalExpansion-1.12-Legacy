@@ -1,5 +1,7 @@
 package thaumcraft.api;
 
+import cpw.mods.fml.common.FMLLog;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 
@@ -11,10 +13,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thaumcraft.api.aspects.IEssentiaTransport;
-import cpw.mods.fml.common.FMLLog;
 
 public class ThaumcraftApiHelper {
 

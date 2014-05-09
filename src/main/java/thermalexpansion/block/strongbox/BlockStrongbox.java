@@ -1,5 +1,11 @@
 package thermalexpansion.block.strongbox;
 
+import cofh.api.tileentity.ISecureTile;
+import cofh.core.CoFHProps;
+import cofh.util.CoreUtils;
+import cofh.util.UpgradeRecipe;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,14 +21,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.TileInventory;
-import cofh.api.tileentity.ISecureTile;
-import cofh.core.CoFHProps;
-import cofh.util.CoreUtils;
-import cofh.util.UpgradeRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class BlockStrongbox extends BlockTEBase {
 

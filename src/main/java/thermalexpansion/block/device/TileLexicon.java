@@ -1,10 +1,12 @@
 package thermalexpansion.block.device;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileLexicon extends TileReconfigurableInventory {
 

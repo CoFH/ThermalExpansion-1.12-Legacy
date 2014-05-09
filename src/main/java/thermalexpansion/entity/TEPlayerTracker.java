@@ -1,10 +1,12 @@
 package thermalexpansion.entity;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.EntityPlayer;
+
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.network.TEPacketHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TEPlayerTracker implements IPlayerTracker {
 

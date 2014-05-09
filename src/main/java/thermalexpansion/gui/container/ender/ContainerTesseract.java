@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.gui.container.ContainerTEBase;
 

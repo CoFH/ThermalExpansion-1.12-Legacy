@@ -1,10 +1,11 @@
 package thermalexpansion.block.energycell;
 
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEnergyCellCreative extends TileEnergyCell {
 

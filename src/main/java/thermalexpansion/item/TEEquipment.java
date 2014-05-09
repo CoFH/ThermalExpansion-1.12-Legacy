@@ -1,14 +1,5 @@
 package thermalexpansion.item;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.util.EnumHelper;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.item.ItemArmorAdv;
 import cofh.item.ItemAxeAdv;
 import cofh.item.ItemFishingRodAdv;
@@ -19,6 +10,17 @@ import cofh.item.ItemShovelAdv;
 import cofh.item.ItemSickleAdv;
 import cofh.item.ItemSwordAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.item.tool.ItemWrenchBattle;
 
 public class TEEquipment {
 

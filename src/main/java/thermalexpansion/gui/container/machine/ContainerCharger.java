@@ -1,15 +1,17 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotEnergy;
+import cofh.gui.slot.SlotOutput;
+import cofh.util.EnergyHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.machine.TileCharger;
 import thermalexpansion.gui.container.ContainerTEBase;
-import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
-import cofh.util.EnergyHelper;
 
 public class ContainerCharger extends ContainerTEBase {
 

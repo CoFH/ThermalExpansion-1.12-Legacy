@@ -1,15 +1,17 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotEnergy;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.machine.TileFurnace;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.util.crafting.FurnaceManager;
-import cofh.gui.slot.SlotEnergy;
 
 public class ContainerFurnace extends ContainerTEBase {
 

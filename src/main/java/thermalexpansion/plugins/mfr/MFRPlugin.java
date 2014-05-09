@@ -1,8 +1,9 @@
 package thermalexpansion.plugins.mfr;
 
-import thermalexpansion.ThermalExpansion;
 import cofh.util.MathHelper;
 import cpw.mods.fml.common.Loader;
+
+import thermalexpansion.ThermalExpansion;
 
 public class MFRPlugin {
 

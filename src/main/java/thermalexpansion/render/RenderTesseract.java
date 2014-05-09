@@ -1,5 +1,19 @@
 package thermalexpansion.render;
 
+import codechicken.lib.lighting.LightModel;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Translation;
+import cofh.block.BlockCoFHBase;
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.render.RenderUtils;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import javax.swing.Icon;
 
 import net.minecraft.block.Block;
@@ -14,19 +28,6 @@ import org.lwjgl.opengl.GL11;
 import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.core.TEProps;
-import codechicken.lib.lighting.LightModel;
-import codechicken.lib.render.CCModel;
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Translation;
-import cofh.block.BlockCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 @SideOnly(Side.CLIENT)
 public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRenderer {

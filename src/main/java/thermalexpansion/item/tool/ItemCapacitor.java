@@ -1,5 +1,11 @@
 package thermalexpansion.item.tool;
 
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.item.ItemBase;
+import cofh.util.CoreUtils;
+import cofh.util.EnergyHelper;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
@@ -11,12 +17,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
 import thermalexpansion.ThermalExpansion;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.item.ItemBase;
-import cofh.util.CoreUtils;
-import cofh.util.EnergyHelper;
-import cofh.util.StringHelper;
 
 public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 

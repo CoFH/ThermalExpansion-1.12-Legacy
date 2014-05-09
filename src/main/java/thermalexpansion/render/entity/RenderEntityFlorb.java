@@ -1,5 +1,9 @@
 package thermalexpansion.render.entity;
 
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.entity.Render;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -12,9 +16,6 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
 import thermalexpansion.entity.projectile.EntityFlorb;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderEntityFlorb extends Render {
 

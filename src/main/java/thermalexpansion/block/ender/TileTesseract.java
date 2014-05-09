@@ -1,5 +1,20 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.tileentity.ISecureTile;
+import cofh.api.transport.IEnderAttuned;
+import cofh.core.CoFHProps;
+import cofh.network.ITileInfoPacketHandler;
+import cofh.util.BlockHelper;
+import cofh.util.CoreUtils;
+import cofh.util.EnergyHelper;
+import cofh.util.FluidHelper;
+import cofh.util.RegistryEnderAttuned;
+import cofh.util.ServerHelper;
+import cofh.util.StringHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -18,25 +33,11 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.util.Utils;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.tileentity.ISecureTile;
-import cofh.api.transport.IEnderAttuned;
-import cofh.core.CoFHProps;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.util.BlockHelper;
-import cofh.util.CoreUtils;
-import cofh.util.EnergyHelper;
-import cofh.util.FluidHelper;
-import cofh.util.RegistryEnderAttuned;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
 		IEnderAttuned {
@@ -137,7 +138,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 			if (inventory[0].stackSize <= 0) {
 				inventory[0] = null;
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, TEBlocks.blockTesseract.blockID);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 			}
 		}
 	}

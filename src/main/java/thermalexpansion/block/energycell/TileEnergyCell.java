@@ -1,15 +1,5 @@
 package thermalexpansion.block.energycell;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableBase;
-import thermalexpansion.core.TEProps;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
@@ -21,6 +11,18 @@ import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TileReconfigurableBase;
+import thermalexpansion.core.TEProps;
 
 public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoPacketHandler, IEnergyHandler {
 

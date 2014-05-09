@@ -2,6 +2,7 @@ package thermalexpansion.gui.container.ender;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.ender.TileTesseractBound;
 import thermalexpansion.gui.container.ContainerTEBase;
 

@@ -5,6 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.dynamo.TileDynamoSteam;
 import thermalexpansion.gui.container.ContainerTEBase;
 

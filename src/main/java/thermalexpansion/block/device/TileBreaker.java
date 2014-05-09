@@ -1,5 +1,15 @@
 package thermalexpansion.block.device;
 
+import cofh.core.CoFHProps;
+import cofh.entity.PlayerFake;
+import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.FluidHelper;
+import cofh.util.InventoryHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
@@ -14,18 +24,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
-import cofh.core.CoFHProps;
-import cofh.entity.PlayerFake;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.InventoryHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileBreaker extends TileReconfigurableInventory implements IFluidHandler {
 

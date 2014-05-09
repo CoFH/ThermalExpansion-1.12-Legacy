@@ -1,5 +1,15 @@
 package thermalexpansion.block.lamp;
 
+import cofh.render.IconRegistry;
+import cofh.util.ColorHelper;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import geologic.fluid.GLFluids;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -17,19 +27,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.render.IconRegistry;
-import cofh.util.ColorHelper;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLamp extends BlockTEBase {
 
@@ -163,7 +166,7 @@ public class BlockLamp extends BlockTEBase {
 		if (enable) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R',
 					Items.redstone }));
-			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(TEFluids.fluidGlowstone, 1000), false, false);
+			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(GLFluids.fluidGlowstone, 1000), false, false);
 		}
 		return true;
 	}

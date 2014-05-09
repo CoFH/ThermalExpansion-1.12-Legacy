@@ -1,9 +1,10 @@
 package thermalexpansion.block.machine;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.ItemStack;
 import cofh.block.ItemBlockCoFHBase;
 import cofh.util.StringHelper;
+
+import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 
 public class ItemBlockMachine extends ItemBlockCoFHBase {
 

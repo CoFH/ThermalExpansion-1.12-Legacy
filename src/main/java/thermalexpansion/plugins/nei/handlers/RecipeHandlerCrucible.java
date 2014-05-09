@@ -1,16 +1,18 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
+
 import java.awt.Point;
 import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+
 import thermalexpansion.gui.client.machine.GuiCrucible;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.GuiRecipe;
 
 public class RecipeHandlerCrucible extends RecipeHandlerBase {
 

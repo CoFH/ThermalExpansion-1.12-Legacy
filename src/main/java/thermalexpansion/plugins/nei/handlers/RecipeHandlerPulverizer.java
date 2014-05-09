@@ -1,11 +1,13 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+
 import net.minecraft.item.ItemStack;
+
 import thermalexpansion.gui.client.machine.GuiPulverizer;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
 
 public class RecipeHandlerPulverizer extends RecipeHandlerBase {
 

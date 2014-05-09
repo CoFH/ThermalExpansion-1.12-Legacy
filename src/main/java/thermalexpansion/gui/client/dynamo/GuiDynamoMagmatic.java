@@ -1,11 +1,5 @@
 package thermalexpansion.gui.client.dynamo;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import thermalexpansion.block.dynamo.TileDynamoMagmatic;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ContainerTEBase;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementEnergyStored;
@@ -14,6 +8,14 @@ import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import thermalexpansion.block.dynamo.TileDynamoMagmatic;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class GuiDynamoMagmatic extends GuiBaseAdv {
 

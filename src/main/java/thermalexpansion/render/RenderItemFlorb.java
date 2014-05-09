@@ -1,15 +1,15 @@
 package thermalexpansion.render;
 
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.render.RenderUtils;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import org.lwjgl.opengl.GL11;
-
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
 
 public class RenderItemFlorb implements IItemRenderer {
 

@@ -1,5 +1,8 @@
 package thermalexpansion.plugins.nei;
 
+import codechicken.nei.api.API;
+import codechicken.nei.api.IConfigureNEI;
+
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerCrucible;
@@ -8,8 +11,6 @@ import thermalexpansion.plugins.nei.handlers.RecipeHandlerPulverizer;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerSawmill;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerSmelter;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerTransposer;
-import codechicken.nei.api.API;
-import codechicken.nei.api.IConfigureNEI;
 
 public class NEIThermalExpansionConfig implements IConfigureNEI {
 

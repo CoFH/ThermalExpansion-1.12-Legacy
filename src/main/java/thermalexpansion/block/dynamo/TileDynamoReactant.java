@@ -1,5 +1,8 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.util.ItemHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,10 +18,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import cofh.util.ItemHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler {
 

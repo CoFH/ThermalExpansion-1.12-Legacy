@@ -1,15 +1,17 @@
 package thermalexpansion.gui.client;
 
+import cofh.gui.GuiBaseAdv;
+import cofh.gui.element.TabInfo;
+import cofh.gui.element.TabSecurity;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerStrongbox;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabSecurity;
 
 public class GuiStrongbox extends GuiBaseAdv {
 

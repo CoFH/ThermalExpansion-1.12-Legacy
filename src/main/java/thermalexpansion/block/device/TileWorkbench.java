@@ -1,17 +1,5 @@
 package thermalexpansion.block.device;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileInventory;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.item.SchematicHelper;
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.tileentity.ISidedBlockTexture;
 import cofh.core.CoFHProps;
@@ -24,6 +12,20 @@ import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TileInventory;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.item.SchematicHelper;
 
 public class TileWorkbench extends TileInventory implements ISecureTile, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedBlockTexture {
 

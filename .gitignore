@@ -17,6 +17,13 @@ local.properties
 .classpath
 .settings/
 .loadpath
+config/
+crash-reports/
+logs/
+mods/
+resourcepacks/
+saves/
+run/
 
 # External tool builders
 .externalToolBuilders/
@@ -175,3 +182,30 @@ techne
 
 MFR-Forestry
 nbproject
+/options.txt
+/saves/New World/DIM-1/data/villages.dat
+/saves/New World/DIM-1/forcedchunks.dat
+/saves/New World/DIM1/data/villages.dat
+/saves/New World/DIM1/forcedchunks.dat
+/saves/New World/cofh/EnderFrequencies.cfg
+/saves/New World/data/Village.dat
+/saves/New World/data/villages.dat
+/saves/New World/forcedchunks.dat
+/saves/New World/level.dat
+/saves/New World/level.dat_mcr
+/saves/New World/level.dat_old
+/saves/New World/players/Player281.dat
+/saves/New World/players/Player484.dat
+/saves/New World/players/Player875.dat
+/saves/New World/region/r.-1.0.mca
+/saves/New World/region/r.-1.1.mca
+/saves/New World/region/r.-1.2.mca
+/saves/New World/region/r.-2.0.mca
+/saves/New World/region/r.-2.1.mca
+/saves/New World/region/r.0.0.mca
+/saves/New World/region/r.0.1.mca
+/saves/New World/region/r.0.2.mca
+/saves/New World/session.lock
+/saves/New World/stats/Player281.json
+/saves/New World/stats/Player484.json
+/saves/New World/stats/Player875.json

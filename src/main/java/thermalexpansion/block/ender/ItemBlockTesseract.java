@@ -1,13 +1,14 @@
 package thermalexpansion.block.ender;
 
+import cofh.block.ItemBlockCoFHBase;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import cofh.block.ItemBlockCoFHBase;
-import cofh.util.StringHelper;
 
 public class ItemBlockTesseract extends ItemBlockCoFHBase {
 

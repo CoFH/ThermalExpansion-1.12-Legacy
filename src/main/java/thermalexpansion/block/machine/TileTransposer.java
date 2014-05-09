@@ -1,5 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -10,17 +18,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.fluid.FluidTankAdv;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileTransposer extends TileMachineEnergized implements IFluidHandler {
 

@@ -1,12 +1,13 @@
 package thermalexpansion.item;
 
+import cofh.item.ItemBase;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import cofh.item.ItemBase;
-import cofh.util.StringHelper;
 
 public class ItemDiagram extends ItemBase {
 

@@ -1,11 +1,12 @@
 package thermalexpansion.block.simple;
 
+import cofh.util.StringHelper;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockColored;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
-import cofh.util.StringHelper;
 
 public class ItemBlockRockwool extends ItemBlock {
 

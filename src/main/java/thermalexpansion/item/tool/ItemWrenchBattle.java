@@ -1,5 +1,14 @@
 package thermalexpansion.item.tool;
 
+import buildcraft.api.tools.IToolWrench;
+
+import cofh.api.block.IDismantleable;
+import cofh.audio.SoundBase;
+import cofh.item.ItemSwordAdv;
+import cofh.util.BlockHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.client.FMLClientHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,13 +16,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.block.IDismantleable;
-import cofh.audio.SoundBase;
-import cofh.item.ItemSwordAdv;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
 

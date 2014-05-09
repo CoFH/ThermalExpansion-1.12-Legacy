@@ -1,13 +1,15 @@
 package thermalexpansion.gui.client.device;
 
+import cofh.gui.GuiBaseAdv;
+import cofh.gui.element.ElementEnergyStored;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
 import thermalexpansion.block.device.TileTinkerBench;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.device.ContainerTinkersBench;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.element.ElementEnergyStored;
 
 public class GuiTinkersBench extends GuiBaseAdv {
 

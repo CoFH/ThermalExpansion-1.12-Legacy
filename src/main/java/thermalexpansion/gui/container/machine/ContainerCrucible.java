@@ -1,14 +1,16 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotEnergy;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.machine.TileCrucible;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.util.crafting.CrucibleManager;
-import cofh.gui.slot.SlotEnergy;
 
 public class ContainerCrucible extends ContainerTEBase {
 

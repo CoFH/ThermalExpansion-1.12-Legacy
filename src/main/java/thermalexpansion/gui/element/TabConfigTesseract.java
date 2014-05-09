@@ -1,13 +1,14 @@
 package thermalexpansion.gui.element;
 
+import cofh.gui.GuiBase;
+import cofh.gui.element.TabBase;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
 import thermalexpansion.block.ender.TileTesseract;
-import cofh.gui.GuiBase;
-import cofh.gui.element.TabBase;
-import cofh.util.StringHelper;
 
 public class TabConfigTesseract extends TabBase {
 

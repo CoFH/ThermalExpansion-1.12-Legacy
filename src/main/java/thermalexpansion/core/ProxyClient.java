@@ -1,13 +1,20 @@
 package thermalexpansion.core;
 
-import java.util.logging.Level;
+import cofh.render.IconRegistry;
+import cofh.render.ItemRenderRegistry;
+import cofh.render.RenderItemAsBlock;
+import cofh.render.RenderItemModular;
+import cofh.util.StringHelper;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.fluids.Fluid;
-import thermalexpansion.ThermalExpansion;
+
 import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.block.lamp.BlockLamp;
@@ -26,16 +33,6 @@ import thermalexpansion.render.RenderStrongbox;
 import thermalexpansion.render.RenderTank;
 import thermalexpansion.render.RenderTesseract;
 import thermalexpansion.render.entity.RenderEntityFlorb;
-import thermalexpansion.util.TickHandlerClientConfig;
-import thermalexpansion.util.Utils;
-import cofh.render.IconRegistry;
-import cofh.render.ItemRenderRegistry;
-import cofh.render.RenderItemAsBlock;
-import cofh.render.RenderItemModular;
-import cofh.render.entity.RenderEntityBlizz;
-import cofh.util.StringHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ProxyClient extends Proxy {
 
@@ -47,9 +44,9 @@ public class ProxyClient extends Proxy {
 
 		ElementSlotOverlay.enableBorders = TEProps.enableGuiBorders;
 
-		MinecraftForgeClient.registerItemRenderer(TEItems.itemComponent.itemID, rendererComponent);
-		MinecraftForgeClient.registerItemRenderer(TEItems.diagramSchematic.itemID, rendererComponent);
-		MinecraftForgeClient.registerItemRenderer(TEFluids.itemFlorb.itemID, rendererFlorb);
+		MinecraftForgeClient.registerItemRenderer(TEItems.itemComponent, rendererComponent);
+		MinecraftForgeClient.registerItemRenderer(TEItems.itemDiagram, rendererComponent);
+		MinecraftForgeClient.registerItemRenderer(TEFluids.itemFlorb, rendererFlorb);
 
 		ItemRenderRegistry.addItemRenderer(BlockMachine.machineFrame, RenderItemAsBlock.instance);
 		ItemRenderRegistry.addItemRenderer(BlockEnergyCell.cellBasicFrame, RenderEnergyCell.instance);
@@ -63,38 +60,13 @@ public class ProxyClient extends Proxy {
 	}
 
 	@Override
-	public void registerTickHandlers() {
-
-		HUDModuleFluid.initialize();
-		HUDModuleStuffedItem.initialize();
-
-		TickRegistry.registerTickHandler(GridTickHandler.instance, Side.SERVER);
-		TickRegistry.registerTickHandler(GridTickHandler.ItemClientTickHandler.instance, Side.CLIENT);
-
-		if (ThermalExpansion.version.isMinecraftOutdated()) {
-			return;
-		}
-		if (!TEProps.enableUpdateNotice && !ThermalExpansion.version.isCriticalUpdate()) {
-			return;
-		}
-		TickHandlerVersion.registerModVersionInfo(ThermalExpansion.version);
-
-		if (!TickHandlerVersion.isInitialized()) {
-			TickRegistry.registerScheduledTickHandler(TickHandlerVersion.instance, Side.CLIENT);
-			TickHandlerVersion.initialize();
-		}
-		TickRegistry.registerTickHandler(TickHandlerClientConfig.instance, Side.CLIENT);
-
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
-		if (event.map.textureType == 0) {
+		if (event.map.getTextureType() == 0) {
 			registerFluidIcons(TEFluids.fluidSteam, event.map);
-		} else if (event.map.textureType == 1) {
+		} else if (event.map.getTextureType() == 1) {
 			IconRegistry.addIcon("machineFrame", "thermalexpansion:component/MachineFrame", event.map);
 			IconRegistry.addIcon("lampFrame", "thermalexpansion:component/LampFrame", event.map);
 
@@ -110,46 +82,20 @@ public class ProxyClient extends Proxy {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
-		setFluidIcons(TEFluids.fluidRedstone);
-		setFluidIcons(TEFluids.fluidGlowstone);
-		setFluidIcons(TEFluids.fluidEnder);
-		setFluidIcons(TEFluids.fluidPyrotheum);
-		setFluidIcons(TEFluids.fluidCryotheum);
-		setFluidIcons(TEFluids.fluidCoal);
 		setFluidIcons(TEFluids.fluidSteam);
 
 		RenderDynamo.initialize();
 		RenderEnergyCell.initialize();
 		RenderTank.initialize();
 		RenderStrongbox.initialize();
-		RenderConduit.initialize();
 		RenderTesseract.initialize();
 		RenderPlate.initialize();
 		RenderLamp.initialize();
 
 		RenderEntityFlorb.initialize();
-		RenderEntityBlizz.initialize();
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
-	public void initializeSounds(SoundLoadEvent event) {
-
-		String folder = "mob/blizz/";
-		String[] files = { "ambient", "breathe1", "breathe2", "breathe3", "spike1" };
-
-		for (String sound : files) {
-			try {
-				event.manager.addSound(Utils.getSoundName(folder + sound, true));
-				ThermalExpansion.log.fine("Loaded sound: " + sound);
-			} catch (Exception e) {
-				ThermalExpansion.log.log(Level.SEVERE, String.format("Unable to load sound: %s [[%s]]", folder + sound, e.toString()));
-			}
-		}
 	}
 
 	@Override
@@ -160,7 +106,7 @@ public class ProxyClient extends Proxy {
 		}
 	}
 
-	public static void registerFluidIcons(Fluid fluid, IconRegister ir) {
+	public static void registerFluidIcons(Fluid fluid, IIconRegister ir) {
 
 		String name = StringHelper.titleCase(fluid.getName());
 		IconRegistry.addIcon("Fluid" + name, "thermalexpansion:fluid/Fluid_" + name + "_Still", ir);

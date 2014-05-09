@@ -1,9 +1,10 @@
 package thermalexpansion.gui.element;
 
-import thermalexpansion.core.TEProps;
 import cofh.gui.GuiBase;
 import cofh.gui.element.ElementBase;
 import cofh.render.RenderHelper;
+
+import thermalexpansion.core.TEProps;
 
 public class ElementSlotOverlay extends ElementBase {
 

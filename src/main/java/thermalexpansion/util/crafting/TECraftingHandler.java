@@ -1,5 +1,12 @@
 package thermalexpansion.util.crafting;
 
+import codechicken.nei.recipe.ICraftingHandler;
+import cofh.util.ItemHelper;
+import cofh.util.StringHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
+import geologic.item.GLItems;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -7,14 +14,10 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
-import codechicken.nei.recipe.ICraftingHandler;
-import cofh.item.CoFHWorldItems;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TECraftingHandler implements ICraftingHandler {
 
@@ -94,7 +97,7 @@ public class TECraftingHandler implements ICraftingHandler {
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
 				// pyrotheumMap.put(registeredOre.get(0), ingot);
-				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, CoFHWorldItems.dustPyrotheum }));
+				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, GLItems.dustPyrotheum }));
 			}
 		}
 	}

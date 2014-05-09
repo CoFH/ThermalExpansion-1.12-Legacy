@@ -3,6 +3,7 @@ package thermalexpansion.gui.container.device;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.device.TileActivator;
 import thermalexpansion.gui.container.ContainerTEBase;
 

@@ -1,5 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cofh.network.ITileInfoPacketHandler;
+import cofh.network.ITilePacketHandler;
+import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.ServerHelper;
+import cofh.util.TimeTracker;
+import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -8,16 +16,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.ITilePacketHandler;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
-import cofh.util.TimeTracker;
-import cpw.mods.fml.relauncher.Side;
 
 public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler {
 

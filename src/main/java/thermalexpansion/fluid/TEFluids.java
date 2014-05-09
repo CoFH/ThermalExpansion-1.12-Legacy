@@ -1,5 +1,12 @@
 package thermalexpansion.fluid;
 
+import cofh.core.CoFHProps;
+import cofh.util.ConfigHandler;
+import cofh.util.ItemHelper;
+import cofh.util.fluid.DispenserEmptyBucketHandler;
+import cofh.util.fluid.DispenserFilledBucketHandler;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,6 +22,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import thermalexpansion.block.dynamo.TileDynamoCompression;
 import thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import thermalexpansion.block.dynamo.TileDynamoReactant;
@@ -23,12 +31,6 @@ import thermalexpansion.item.TEItems;
 import thermalexpansion.item.tool.ItemBucket;
 import thermalexpansion.item.tool.ItemFlorb;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.core.CoFHProps;
-import cofh.util.ConfigHandler;
-import cofh.util.ItemHelper;
-import cofh.util.fluid.DispenserEmptyBucketHandler;
-import cofh.util.fluid.DispenserFilledBucketHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TEFluids {
 

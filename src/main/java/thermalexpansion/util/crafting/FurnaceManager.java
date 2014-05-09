@@ -1,5 +1,10 @@
 package thermalexpansion.util.crafting;
 
+import cofh.util.ItemHelper;
+import cofh.util.inventory.ComparableItemStackSafe;
+
+import geologic.item.GLItems;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,10 +15,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thermalexpansion.ThermalExpansion;
-import cofh.item.CoFHWorldItems;
-import cofh.util.ItemHelper;
-import cofh.util.inventory.ComparableItemStackSafe;
 
 public class FurnaceManager {
 
@@ -66,24 +69,24 @@ public class FurnaceManager {
 
 		int energy = DEFAULT_ENERGY;
 
-		addOreDictRecipe(energy, "oreCopper", CoFHWorldItems.ingotCopper);
-		addOreDictRecipe(energy, "oreTin", CoFHWorldItems.ingotTin);
-		addOreDictRecipe(energy, "oreSilver", CoFHWorldItems.ingotSilver);
-		addOreDictRecipe(energy, "oreLead", CoFHWorldItems.ingotLead);
-		addOreDictRecipe(energy, "oreNickel", CoFHWorldItems.ingotNickel);
-		addOreDictRecipe(energy, "orePlatinum", CoFHWorldItems.ingotPlatinum);
+		addOreDictRecipe(energy, "oreCopper", GLItems.ingotCopper);
+		addOreDictRecipe(energy, "oreTin", GLItems.ingotTin);
+		addOreDictRecipe(energy, "oreSilver", GLItems.ingotSilver);
+		addOreDictRecipe(energy, "oreLead", GLItems.ingotLead);
+		addOreDictRecipe(energy, "oreNickel", GLItems.ingotNickel);
+		addOreDictRecipe(energy, "orePlatinum", GLItems.ingotPlatinum);
 
 		energy = DEFAULT_ENERGY * 10 / 16;
 
-		addOreDictRecipe(energy, "dustCopper", CoFHWorldItems.ingotCopper);
-		addOreDictRecipe(energy, "dustTin", CoFHWorldItems.ingotTin);
-		addOreDictRecipe(energy, "dustSilver", CoFHWorldItems.ingotSilver);
-		addOreDictRecipe(energy, "dustLead", CoFHWorldItems.ingotLead);
-		addOreDictRecipe(energy, "dustNickel", CoFHWorldItems.ingotNickel);
-		addOreDictRecipe(energy, "dustPlatinum", CoFHWorldItems.ingotPlatinum);
-		addOreDictRecipe(energy, "dustElectrum", CoFHWorldItems.ingotElectrum);
-		addOreDictRecipe(energy, "dustInvar", CoFHWorldItems.ingotInvar);
-		addOreDictRecipe(energy, "dustBronze", CoFHWorldItems.ingotBronze);
+		addOreDictRecipe(energy, "dustCopper", GLItems.ingotCopper);
+		addOreDictRecipe(energy, "dustTin", GLItems.ingotTin);
+		addOreDictRecipe(energy, "dustSilver", GLItems.ingotSilver);
+		addOreDictRecipe(energy, "dustLead", GLItems.ingotLead);
+		addOreDictRecipe(energy, "dustNickel", GLItems.ingotNickel);
+		addOreDictRecipe(energy, "dustPlatinum", GLItems.ingotPlatinum);
+		addOreDictRecipe(energy, "dustElectrum", GLItems.ingotElectrum);
+		addOreDictRecipe(energy, "dustInvar", GLItems.ingotInvar);
+		addOreDictRecipe(energy, "dustBronze", GLItems.ingotBronze);
 
 		Map<List<Integer>, ItemStack> metaSmeltingList = FurnaceRecipes.smelting().getMetaSmeltingList();
 		Map<Integer, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();

@@ -1,11 +1,13 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+
 import net.minecraft.item.ItemStack;
+
 import thermalexpansion.gui.client.machine.GuiSmelter;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
 
 public class RecipeHandlerSmelter extends RecipeHandlerBase {
 

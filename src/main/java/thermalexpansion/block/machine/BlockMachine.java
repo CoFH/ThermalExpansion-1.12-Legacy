@@ -1,5 +1,14 @@
 package thermalexpansion.block.machine;
 
+import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.render.IconRegistry;
+import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
+import cofh.util.StringHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -17,19 +26,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
-import cofh.api.tileentity.ISidedBlockTexture;
-import cofh.render.IconRegistry;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockMachine extends BlockTEBase {
 

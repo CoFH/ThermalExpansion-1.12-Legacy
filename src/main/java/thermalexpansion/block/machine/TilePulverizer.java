@@ -1,11 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TilePulverizer extends TileMachineEnergized {
 

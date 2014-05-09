@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+
 import thaumcraft.api.ThaumcraftApiHelper;
 
 public class AspectList implements Serializable {

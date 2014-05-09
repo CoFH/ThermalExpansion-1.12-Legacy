@@ -1,14 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import thermalexpansion.block.machine.TileAssembler;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ISetSchematic;
-import thermalexpansion.gui.container.machine.ContainerAssembler;
-import thermalexpansion.gui.element.ElementSlotOverlay;
-import thermalexpansion.gui.element.TabSchematic;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementBase;
@@ -19,6 +10,17 @@ import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import thermalexpansion.block.machine.TileAssembler;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.machine.ContainerAssembler;
+import thermalexpansion.gui.element.ElementSlotOverlay;
+import thermalexpansion.gui.element.TabSchematic;
 
 public class GuiAssembler extends GuiBaseAdv {
 

@@ -1,11 +1,14 @@
 package thermalexpansion.core;
 
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.client.event.sound.SoundLoadEvent;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.entity.projectile.EntityFlorb;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.event.sound.SoundLoadEvent;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.entity.projectile.EntityFlorb;
 
 public class Proxy {
 
@@ -18,25 +21,20 @@ public class Proxy {
 
 	}
 
-	public void registerTickHandlers() {
-
-		TickRegistry.registerTickHandler(GridTickHandler.instance, Side.SERVER);
-	}
-
 	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
 	}
 
 	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
 	}
 
 	@SideOnly(Side.CLIENT)
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void initializeSounds(SoundLoadEvent event) {
 
 	}

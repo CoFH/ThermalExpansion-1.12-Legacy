@@ -1,8 +1,12 @@
 package thermalexpansion.block;
 
+import cofh.api.core.IInitializer;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
+
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.device.ItemBlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
@@ -22,8 +26,6 @@ import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.strongbox.ItemBlockStrongbox;
 import thermalexpansion.block.tank.BlockTank;
 import thermalexpansion.block.tank.ItemBlockTank;
-import cofh.api.core.IInitializer;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TEBlocks {
 

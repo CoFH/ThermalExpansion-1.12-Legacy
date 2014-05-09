@@ -1,16 +1,18 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotEnergy;
+import cofh.gui.slot.SlotOutput;
+import cofh.util.FluidHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+
 import thermalexpansion.block.machine.TileTransposer;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
-import cofh.util.FluidHelper;
 
 public class ContainerTransposer extends ContainerTEBase {
 

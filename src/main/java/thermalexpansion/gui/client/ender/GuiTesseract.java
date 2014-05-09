@@ -1,5 +1,17 @@
 package thermalexpansion.gui.client.ender;
 
+import cofh.core.CoFHProps;
+import cofh.gui.GuiBaseAdv;
+import cofh.gui.GuiLimitedTextField;
+import cofh.gui.GuiTextList;
+import cofh.gui.element.TabInfo;
+import cofh.gui.element.TabRedstone;
+import cofh.gui.element.TabSecurity;
+import cofh.gui.element.TabTutorial;
+import cofh.util.RegistryEnderAttuned;
+
+import geologic.fluid.GLFluids;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -16,16 +28,6 @@ import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.gui.element.TabConfigTesseract;
-import cofh.core.CoFHProps;
-import cofh.fluid.CoFHWorldFluids;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.GuiLimitedTextField;
-import cofh.gui.GuiTextList;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabSecurity;
-import cofh.gui.element.TabTutorial;
-import cofh.util.RegistryEnderAttuned;
 
 public class GuiTesseract extends GuiBaseAdv {
 
@@ -172,7 +174,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		if (canDisable()) {
 			int yHighlight = taNamesList.getSelectedLineYPos();
 			if (yHighlight > -1) {
-				drawFluid(taX, yHighlight, new FluidStack(CoFHWorldFluids.fluidEnder, 1000), taNamesList.width, taNamesList.lineHeight);
+				drawFluid(taX, yHighlight, new FluidStack(GLFluids.fluidEnder, 1000), taNamesList.width, taNamesList.lineHeight);
 			}
 		}
 		taNamesList.drawText();

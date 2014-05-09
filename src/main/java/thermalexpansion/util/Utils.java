@@ -1,5 +1,15 @@
 package thermalexpansion.util;
 
+import buildcraft.api.power.IPowerReceptor;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
+import buildcraft.api.tools.IToolWrench;
+import buildcraft.api.transport.IPipeTile;
+
+import cofh.api.transport.IItemDuct;
+import cofh.util.BlockHelper;
+import cofh.util.InventoryHelper;
+import cofh.util.ItemHelper;
+
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
@@ -16,17 +26,10 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
-import buildcraft.api.tools.IToolWrench;
-import buildcraft.api.transport.IPipeTile;
-import cofh.api.transport.IItemDuct;
-import cofh.util.BlockHelper;
-import cofh.util.InventoryHelper;
-import cofh.util.ItemHelper;
 
 public class Utils {
 

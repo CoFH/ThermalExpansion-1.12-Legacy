@@ -1,5 +1,9 @@
 package thermalexpansion.item;
 
+import cofh.util.ItemHelper;
+import cofh.util.StringHelper;
+import cofh.util.inventory.InventoryCraftingFalse;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,9 +13,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.inventory.InventoryCraftingFalse;
 
 public class SchematicHelper {
 

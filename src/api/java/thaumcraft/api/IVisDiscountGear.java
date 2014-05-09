@@ -2,6 +2,7 @@ package thaumcraft.api;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.aspects.Aspect;
 
 /**

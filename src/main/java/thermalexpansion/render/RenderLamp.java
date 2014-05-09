@@ -1,5 +1,14 @@
 package thermalexpansion.render;
 
+import codechicken.lib.lighting.LightModel;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.render.RenderUtils;
+import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
 import javax.swing.Icon;
 
 import net.minecraft.block.Block;
@@ -15,14 +24,6 @@ import org.lwjgl.opengl.GL11;
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.lamp.TileLamp;
 import thermalexpansion.core.TEProps;
-import codechicken.lib.lighting.LightModel;
-import codechicken.lib.render.CCModel;
-import codechicken.lib.render.CCRenderState;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 

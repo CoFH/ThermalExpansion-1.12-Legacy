@@ -1,8 +1,10 @@
 package thermalexpansion.block;
 
-import net.minecraft.nbt.NBTTagCompound;
-import thermalexpansion.core.TEProps;
 import cofh.block.TileCoFHBase;
+
+import net.minecraft.nbt.NBTTagCompound;
+
+import thermalexpansion.core.TEProps;
 
 public abstract class TileTEBase extends TileCoFHBase {
 

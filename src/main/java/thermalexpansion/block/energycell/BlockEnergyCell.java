@@ -1,5 +1,17 @@
 package thermalexpansion.block.energycell;
 
+import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.CoreUtils;
+import cofh.util.ItemHelper;
+import cofh.util.UpgradeRecipe;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import geologic.fluid.GLFluids;
+import geologic.item.GLItems;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -20,21 +32,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.UpgradeRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockEnergyCell extends BlockTEBase {
 
@@ -251,13 +255,13 @@ public class BlockEnergyCell extends BlockTEBase {
 		if (enable[Types.BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', cellBasicFrame, 'P',
 					TEItems.powerCoilElectrum }));
-			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TEItems.ingotLead, 3));
+			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', cellBasicFrame, 'Y',
 					"ingotCopper", 'P', TEItems.powerCoilElectrum }));
-			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TEItems.ingotInvar, 3));
+			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotInvar, 3));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', cellReinforcedFrameFull, 'I', "ingotLead", 'P',
@@ -268,11 +272,11 @@ public class BlockEnergyCell extends BlockTEBase {
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "glass", 'X',
 				Blocks.redstone_block }));
-		PulverizerManager.addRecipe(4000, cellBasicFrame, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TEItems.ingotLead, 3));
+		PulverizerManager.addRecipe(4000, cellBasicFrame, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotLead, 3));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforcedFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "glassHardened",
 				'X', Items.diamond }));
-		TransposerManager.addTEFillRecipe(16000, cellReinforcedFrameEmpty, cellReinforcedFrameFull, new FluidStack(TEFluids.fluidRedstone, 4000), false);
+		TransposerManager.addTEFillRecipe(16000, cellReinforcedFrameEmpty, cellReinforcedFrameFull, new FluidStack(GLFluids.fluidRedstone, 4000), false);
 		return true;
 	}
 

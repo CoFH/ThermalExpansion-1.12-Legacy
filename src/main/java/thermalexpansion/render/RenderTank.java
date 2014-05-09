@@ -1,23 +1,5 @@
 package thermalexpansion.render;
 
-import javax.swing.Icon;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-
-import org.lwjgl.opengl.GL11;
-
-import thermalexpansion.block.TEBlocks;
-import thermalexpansion.block.tank.BlockTank;
-import thermalexpansion.block.tank.TileTank;
-import thermalexpansion.core.TEProps;
 import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -30,13 +12,33 @@ import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
+import javax.swing.Icon;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+
+import org.lwjgl.opengl.GL11;
+
+import thermalexpansion.block.TEBlocks;
+import thermalexpansion.block.tank.BlockTank;
+import thermalexpansion.block.tank.TileTank;
+import thermalexpansion.core.TEProps;
+
 public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderTank instance = new RenderTank();
 
-	static Icon[] textureTop = new Icon[BlockTank.Types.values().length * 2];
-	static Icon[] textureBottom = new Icon[BlockTank.Types.values().length * 2];
-	static Icon[] textureSides = new Icon[BlockTank.Types.values().length * 2];
+	static IIcon[] textureTop = new IIcon[BlockTank.Types.values().length * 2];
+	static IIcon[] textureBottom = new IIcon[BlockTank.Types.values().length * 2];
+	static IIcon[] textureSides = new IIcon[BlockTank.Types.values().length * 2];
 
 	static CCModel[] modelFluid = new CCModel[TileTank.RENDER_LEVELS];
 	static CCModel modelFrame = CCModel.quadModel(48);

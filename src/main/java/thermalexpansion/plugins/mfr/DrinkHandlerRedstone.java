@@ -1,10 +1,11 @@
 package thermalexpansion.plugins.mfr;
 
+import cofh.util.CoreUtils;
+
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.potion.PotionEffect;
-import cofh.util.CoreUtils;
 
 public class DrinkHandlerRedstone implements ILiquidDrinkHandler {
 

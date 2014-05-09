@@ -1,13 +1,15 @@
 package thermalexpansion.block.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import thermalexpansion.ThermalExpansion;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.util.EnergyHelper;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+import thermalexpansion.ThermalExpansion;
 
 public class TileCharger extends TileMachineEnergized {
 

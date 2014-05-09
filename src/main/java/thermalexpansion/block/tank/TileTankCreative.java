@@ -1,9 +1,10 @@
 package thermalexpansion.block.tank;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileTankCreative extends TileTank {
 

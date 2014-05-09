@@ -1,12 +1,5 @@
 package thermalexpansion.render;
 
-import javax.swing.Icon;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import thermalexpansion.core.TEProps;
 import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -17,6 +10,15 @@ import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+
+import javax.swing.Icon;
+
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
+
+import thermalexpansion.core.TEProps;
 
 public class RenderPlate implements ISimpleBlockRenderingHandler {
 

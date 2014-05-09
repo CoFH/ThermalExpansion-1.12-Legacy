@@ -1,5 +1,16 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.api.energy.EnergyStorage;
+import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyStorage;
+import cofh.api.tileentity.IEnergyInfo;
+import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.network.ITileInfoPacketHandler;
+import cofh.util.BlockHelper;
+import cofh.util.EnergyHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -11,19 +22,10 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
-import cofh.api.tileentity.IEnergyInfo;
-import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.relauncher.Side;
 
 public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
 		IEnergyInfo {

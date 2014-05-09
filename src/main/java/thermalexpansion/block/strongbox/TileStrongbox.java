@@ -1,5 +1,15 @@
 package thermalexpansion.block.strongbox;
 
+import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.api.tileentity.ISecureTile;
+import cofh.core.CoFHProps;
+import cofh.util.BlockHelper;
+import cofh.util.MathHelper;
+import cofh.util.ServerHelper;
+import cofh.util.StringHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -10,19 +20,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerStrongbox;
-import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.api.tileentity.ISecureTile;
-import cofh.core.CoFHProps;
-import cofh.util.BlockHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileStrongbox extends TileInventory implements ISecureTile, IReconfigurableFacing, ISidedInventory {
 

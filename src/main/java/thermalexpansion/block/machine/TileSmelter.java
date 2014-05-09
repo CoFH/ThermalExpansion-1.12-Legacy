@@ -1,13 +1,15 @@
 package thermalexpansion.block.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.util.crafting.SmelterManager;
-import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cofh.util.BlockHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.util.crafting.SmelterManager;
+import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 public class TileSmelter extends TileMachineEnergized {
 

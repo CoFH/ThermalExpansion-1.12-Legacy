@@ -1,5 +1,11 @@
 package thermalexpansion.block.machine;
 
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.util.FluidHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -10,15 +16,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileCrucible extends TileMachineEnergized implements IFluidHandler {
 

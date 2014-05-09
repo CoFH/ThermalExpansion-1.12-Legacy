@@ -1,5 +1,15 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.tileentity.ISecureTile;
+import cofh.core.CoFHProps;
+import cofh.render.IconRegistry;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import geologic.fluid.GLFluids;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,19 +29,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.api.tileentity.ISecureTile;
-import cofh.core.CoFHProps;
-import cofh.render.IconRegistry;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTesseract extends BlockTEBase {
 
@@ -202,7 +205,7 @@ public class BlockTesseract extends BlockTEBase {
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X',
 				Items.diamond }));
-		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(TEFluids.fluidEnder, 1000), false);
+		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(GLFluids.fluidEnder, 1000), false);
 
 		return true;
 	}

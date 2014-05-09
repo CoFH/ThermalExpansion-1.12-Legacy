@@ -1,5 +1,30 @@
 package thermalexpansion;
 
+import cofh.api.world.WeightedRandomBlock;
+import cofh.core.CoFHProps;
+import cofh.gui.GuiHandler;
+import cofh.mod.BaseMod;
+import cofh.util.ConfigHandler;
+import cofh.util.StringHelper;
+import com.google.common.eventbus.EventBus;
+import com.google.common.eventbus.Subscribe;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLModContainer;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.Mod.Instance;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
+import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.network.NetworkRegistry;
+
+import geologic.GeoLogic;
+import geologic.block.BlockOre;
+
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -40,52 +65,46 @@ import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
-import cofh.CoFHWorld;
-import cofh.api.world.WeightedRandomBlock;
-import cofh.block.world.BlockOre;
-import cofh.core.CoFHProps;
-import cofh.gui.GuiHandler;
-import cofh.util.ConfigHandler;
-import cofh.util.StringHelper;
 
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
+@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@["
+		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
+public class ThermalExpansion extends BaseMod {
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.FMLModContainer;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
+	public static final String modId = "ThermalExpansion";
+	public static final String version = TEProps.VERSION;
+	public static final String modName = TEProps.NAME;
 
-@Mod(name = TEProps.NAME, version = TEProps.VERSION, useMetadata = false, modid = "ThermalExpansion", dependencies = "required-after:Forge@[" + CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",);required-after:ForgeMultipart;before:IC2;before:Metallurgy")
-public class ThermalExpansion {
+	@Instance(modId)
+	public static ThermalExpansion instance;
 
 	@SidedProxy(clientSide = "thermalexpansion.core.ProxyClient", serverSide = "thermalexpansion.core.Proxy")
 	public static Proxy proxy;
 
-	@Instance("ThermalExpansion")
-	public static ThermalExpansion instance;
-	public static final ConfigHandler config = new ConfigHandler(TEProps.VERSION);
 	public static final Logger log = LogManager.getLogger(TEProps.modID);
 
+	public static final ConfigHandler config = new ConfigHandler(TEProps.VERSION);
+	public static final GuiHandler guiHandler = new GuiHandler();
+
+	public static final CreativeTabs tabBlocks = new CreativeTabBlocks();
+	public static final CreativeTabs tabItems = new CreativeTabItems();
+	public static final CreativeTabs tabTools = new CreativeTabTools();
+	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
+
+	public static final Material CLOTH_FIREPROOF = new Material(MapColor.clothColor);
+	public static final Material WOOD_FIREPROOF = new Material(MapColor.woodColor);
+
 	/* INIT SEQUENCE */
+	public ThermalExpansion() {
+
+		super(log);
+	}
+
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
 		GenericEventHandler.initialize();
 		TECraftingHandler.initialize();
 		TEPlayerTracker.initialize();
-
-		version.checkForNewVersion();
 
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
@@ -156,13 +175,12 @@ public class ThermalExpansion {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
-		config.initialize();
+		config.preInit();
 
 		TEItems.initialize();
 		TEBlocks.initialize();
 		TEFluids.initialize();
 		TEPlugins.initialize();
-		TEPartFactory.initialize();
 
 		if (TEProps.enableAchievements) {
 			// TEAchievements.initialize();
@@ -281,7 +299,8 @@ public class ThermalExpansion {
 			oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 20));
 		}
 		for (int i = 0; i < oreList.length; i++) {
-			CoFHWorld.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i], TEProps.oreMaxY[i], CoFHWorld.ORE_UNIFORM, true, BlockOre.enable[i]);
+			GeoLogic.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i],
+					TEProps.oreMaxY[i], GeoLogic.ORE_UNIFORM, true, BlockOre.enable[i]);
 		}
 	}
 
@@ -328,19 +347,23 @@ public class ThermalExpansion {
 		}
 	}
 
-	public static final GuiHandler guiHandler = new GuiHandler();
-	public static final VersionHandler version = new VersionHandler(TEProps.NAME, TEProps.VERSION, TEProps.RELEASE_URL, log);
+	/* BaseMod */
+	@Override
+	public String getModId() {
 
-	public static final CreativeTabs tabBlocks = new CreativeTabBlocks();
-	public static final CreativeTabs tabItems = new CreativeTabItems();
-	public static final CreativeTabs tabTools = new CreativeTabTools();
-	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
-
-	static {
-		log.setParent(FMLLog.getLogger());
+		return modId;
 	}
 
-	public static final Material CLOTH_FIREPROOF = new Material(MapColor.clothColor);
-	public static final Material WOOD_FIREPROOF = new Material(MapColor.woodColor);
+	@Override
+	public String getModName() {
+
+		return modName;
+	}
+
+	@Override
+	public String getModVersion() {
+
+		return version;
+	}
 
 }

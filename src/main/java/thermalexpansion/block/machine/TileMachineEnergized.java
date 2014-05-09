@@ -1,9 +1,5 @@
 package thermalexpansion.block.machine;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import thermalexpansion.core.TEProps;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
@@ -12,6 +8,12 @@ import cofh.api.tileentity.IEnergyInfo;
 import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
+
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thermalexpansion.core.TEProps;
 
 public abstract class TileMachineEnergized extends TileMachineBase implements IEnergyHandler, IEnergyInfo {
 

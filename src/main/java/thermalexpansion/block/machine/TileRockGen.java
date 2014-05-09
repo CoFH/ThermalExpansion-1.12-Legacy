@@ -1,5 +1,9 @@
 package thermalexpansion.block.machine;
 
+import cofh.util.MathHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -13,11 +17,9 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileRockGen extends TileMachineBase implements IFluidHandler {
 

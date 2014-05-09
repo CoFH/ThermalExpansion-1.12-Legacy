@@ -1,20 +1,5 @@
 package thermalexpansion.plugins.nei.handlers;
 
-import java.awt.Point;
-import java.awt.Rectangle;
-import java.util.ArrayList;
-
-import javax.swing.Icon;
-
-import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
-
-import org.lwjgl.opengl.GL11;
-
-import thermalexpansion.core.TEProps;
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.PositionedStack;
@@ -25,6 +10,21 @@ import codechicken.nei.recipe.TemplateRecipeHandler;
 import cofh.render.RenderHelper;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
+
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.util.ArrayList;
+
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+import org.lwjgl.opengl.GL11;
+
+import thermalexpansion.core.TEProps;
 
 public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
@@ -264,7 +264,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 		changeTexture(getGuiTexture());
 	}
 
-	public static void drawScaledTexturedModelRectFromIcon(int i, int j, Icon icon, int x, int y) {
+	public static void drawScaledTexturedModelRectFromIcon(int i, int j, IIcon icon, int x, int y) {
 
 		if (icon == null) {
 			return;
@@ -328,7 +328,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			if (!inputOreName.equals("Unknown")) {
 				inputOrePosition++;
 				inputOrePosition %= inputList.size();
-				input.item.itemID = inputList.get(inputOrePosition).itemID;
+				input.item = inputList.get(inputOrePosition);
 				if (inputList.get(inputOrePosition).getItemDamage() != OreDictionary.WILDCARD_VALUE) {
 					input.item.setItemDamage(inputList.get(inputOrePosition).getItemDamage());
 				}
@@ -340,7 +340,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			if (!secondaryInputOreName.equals("Unknown")) {
 				secondaryOrePosition++;
 				secondaryOrePosition %= secondaryList.size();
-				secondaryInput.item.itemID = secondaryList.get(secondaryOrePosition).itemID;
+				secondaryInput.item = secondaryList.get(secondaryOrePosition);
 				if (secondaryList.get(secondaryOrePosition).getItemDamage() != OreDictionary.WILDCARD_VALUE) {
 					secondaryInput.item.setItemDamage(secondaryList.get(secondaryOrePosition).getItemDamage());
 				}

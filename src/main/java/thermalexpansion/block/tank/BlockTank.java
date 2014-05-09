@@ -1,5 +1,15 @@
 package thermalexpansion.block.tank;
 
+import cofh.render.IconRegistry;
+import cofh.util.CoreUtils;
+import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
+import cofh.util.StringHelper;
+import cofh.util.UpgradeRecipe;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -17,18 +27,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
-import cofh.render.IconRegistry;
-import cofh.util.CoreUtils;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.UpgradeRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockTank extends BlockTEBase {
 

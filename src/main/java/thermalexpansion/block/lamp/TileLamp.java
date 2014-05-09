@@ -1,17 +1,19 @@
 package thermalexpansion.block.lamp;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
-import thermalexpansion.block.TileTEBase;
 import cofh.block.ITileInfo;
 import cofh.network.ITilePacketHandler;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.util.ForgeDirection;
+
+import thermalexpansion.block.TileTEBase;
 
 public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInfo {
 

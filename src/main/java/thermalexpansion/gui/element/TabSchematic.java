@@ -1,5 +1,10 @@
 package thermalexpansion.gui.element;
 
+import cofh.gui.GuiBase;
+import cofh.gui.element.TabBase;
+import cofh.render.RenderHelper;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
@@ -9,10 +14,6 @@ import org.lwjgl.opengl.GL11;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ISetSchematic;
 import thermalexpansion.network.TEPacketHandler;
-import cofh.gui.GuiBase;
-import cofh.gui.element.TabBase;
-import cofh.render.RenderHelper;
-import cofh.util.StringHelper;
 
 public class TabSchematic extends TabBase {
 

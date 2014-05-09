@@ -1,5 +1,10 @@
 package thermalexpansion.render;
 
+import codechicken.lib.render.CCRenderState;
+import cofh.render.RenderHelper;
+import cofh.render.RenderUtils;
+import cpw.mods.fml.client.registry.ClientRegistry;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,10 +21,6 @@ import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.block.strongbox.TileStrongboxCreative;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.render.model.ModelStrongbox;
-import codechicken.lib.render.CCRenderState;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
-import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemRenderer {
 

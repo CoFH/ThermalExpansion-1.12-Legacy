@@ -1,19 +1,5 @@
 package thermalexpansion.gui.container.machine;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import thermalexpansion.block.machine.TileAssembler;
-import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.gui.container.ISetSchematic;
-import thermalexpansion.item.SchematicHelper;
-import thermalexpansion.item.TEItems;
-import thermalexpansion.network.TEPacketHandler;
 import cofh.CoFHCore;
 import cofh.gui.ContainerFalse;
 import cofh.gui.slot.SlotCraftingLocked;
@@ -22,6 +8,22 @@ import cofh.gui.slot.SlotFalseCopy;
 import cofh.gui.slot.SlotOutput;
 import cofh.gui.slot.SlotSpecificItem;
 import cofh.util.ItemHelper;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+
+import thermalexpansion.block.machine.TileAssembler;
+import thermalexpansion.gui.container.ContainerTEBase;
+import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.item.SchematicHelper;
+import thermalexpansion.item.TEItems;
+import thermalexpansion.network.TEPacketHandler;
 
 public class ContainerAssembler extends ContainerTEBase implements ISetSchematic {
 

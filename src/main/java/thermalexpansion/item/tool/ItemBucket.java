@@ -1,5 +1,8 @@
 package thermalexpansion.item.tool;
 
+import cofh.item.ItemBase;
+import cofh.util.fluid.BucketHandler;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -7,9 +10,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
 import net.minecraft.world.World;
+
 import thermalexpansion.ThermalExpansion;
-import cofh.item.ItemBase;
-import cofh.util.fluid.BucketHandler;
 
 public class ItemBucket extends ItemBase {
 

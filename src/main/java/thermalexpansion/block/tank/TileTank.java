@@ -1,5 +1,15 @@
 package thermalexpansion.block.tank;
 
+import cofh.block.ITileInfo;
+import cofh.network.ITilePacketHandler;
+import cofh.util.BlockHelper;
+import cofh.util.FluidHelper;
+import cofh.util.ServerHelper;
+import cofh.util.StringHelper;
+import cofh.util.fluid.FluidTankAdv;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,16 +21,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.block.TileTEBase;
-import cofh.block.ITileInfo;
-import cofh.network.ITilePacketHandler;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cofh.util.fluid.FluidTankAdv;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHandler, ITileInfo {
 

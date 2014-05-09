@@ -1,13 +1,5 @@
 package thermalexpansion.gui.client;
 
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import thermalexpansion.block.energycell.TileEnergyCell;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.gui.element.TabConfigEnergyCell;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementButton;
@@ -16,6 +8,16 @@ import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
 import cofh.util.StringHelper;
+
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import thermalexpansion.block.energycell.TileEnergyCell;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.container.ContainerTEBase;
+import thermalexpansion.gui.element.TabConfigEnergyCell;
 
 public class GuiEnergyCell extends GuiBaseAdv {
 

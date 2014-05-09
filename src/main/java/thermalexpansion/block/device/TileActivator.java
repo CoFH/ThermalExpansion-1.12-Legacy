@@ -1,7 +1,16 @@
 package thermalexpansion.block.device;
 
-import java.util.List;
+import cofh.core.CoFHProps;
+import cofh.entity.PlayerFake;
+import cofh.network.ITileInfoPacketHandler;
+import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.CoreUtils;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
+import java.util.List;
 import javax.swing.Icon;
 
 import net.minecraft.block.Block;
@@ -13,18 +22,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
-import cofh.core.CoFHProps;
-import cofh.entity.PlayerFake;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.CoreUtils;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileActivator extends TileReconfigurableInventory implements ISidedInventory, ITileInfoPacketHandler {
 
@@ -85,9 +86,9 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 			myFakePlayer.stopUsingItem();
 		} else {
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
-			int BlockID = worldObj.getBlockId(coords[0], coords[1], coords[2]);
+			Block block = worldObj.getBlock(coords[0], coords[1], coords[2]);
 
-			if (BlockID <= 0 || (Block.blocksList[BlockID] != null && Block.blocksList[BlockID].isAirBlock(worldObj, coords[0], coords[1], coords[2]))) {
+			if (block != null && block.isAir(worldObj, coords[0], coords[1], coords[2])) {
 				doDeploy();
 			}
 		}
@@ -304,16 +305,16 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 				blockY += 1;
 			}
 		}
-		int BlockID = worldObj.getBlockId(blockX, blockY, blockZ);
+		Block block = worldObj.getBlock(blockX, blockY, blockZ);
 
-		boolean isAir = BlockID > 0 && Block.blocksList[BlockID] != null ? Block.blocksList[BlockID].isAirBlock(worldObj, blockX, blockY, blockZ) : true;
+		boolean isAir = block.isAir(worldObj, blockX, blockY, blockZ);
 
 		if (deployingStack != null && deployingStack.getItem() != null
 				&& deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, blockX, blockY, blockZ, side, f, f1, f2)) {
 			return true;
 		}
 		if (!thePlayer.isSneaking() || thePlayer.getHeldItem() == null) {
-			if (BlockID > 0 && Block.blocksList[BlockID].onBlockActivated(worldObj, blockX, blockY, blockZ, thePlayer, side, f, f1, f2)) {
+			if (block.onBlockActivated(worldObj, blockX, blockY, blockZ, thePlayer, side, f, f1, f2)) {
 				return true;
 			}
 		}

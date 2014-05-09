@@ -1,5 +1,16 @@
 package thermalexpansion.block.simple;
 
+import buildcraft.api.tools.IToolWrench;
+
+import cofh.api.block.IDismantleable;
+import cofh.api.core.IInitializer;
+import cofh.render.IconRegistry;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.event.FMLInterModComms;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
 import java.util.Random;
 
@@ -16,17 +27,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.util.Utils;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.block.IDismantleable;
-import cofh.api.core.IInitializer;
-import cofh.render.IconRegistry;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockGlass extends Block implements IDismantleable, IInitializer {
 

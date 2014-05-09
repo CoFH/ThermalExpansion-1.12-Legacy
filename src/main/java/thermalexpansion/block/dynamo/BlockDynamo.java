@@ -1,5 +1,13 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.EnergyHelper;
+import cofh.util.FluidHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
 import java.util.Random;
 
@@ -17,18 +25,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.Utils;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
-import cofh.util.FluidHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDynamo extends BlockTEBase {
 

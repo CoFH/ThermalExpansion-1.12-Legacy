@@ -1,5 +1,12 @@
 package thermalexpansion.item;
 
+import cofh.item.ItemBase;
+import cofh.util.ItemHelper;
+import cofh.util.UpgradeRecipe;
+import cpw.mods.fml.common.registry.GameRegistry;
+
+import geologic.item.GLItems;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -7,15 +14,11 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.tool.ItemCapacitor;
 import thermalexpansion.item.tool.ItemMultimeter;
 import thermalexpansion.item.tool.ItemWrench;
-import cofh.item.CoFHWorldItems;
-import cofh.item.ItemBase;
-import cofh.util.ItemHelper;
-import cofh.util.UpgradeRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TEItems {
 
@@ -91,7 +94,7 @@ public class TEItems {
 		GameRegistry.addRecipe(new UpgradeRecipe(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', Items.redstone, 'X',
 				capacitorHardened, 'Y', Items.diamond }));
 		GameRegistry.addRecipe(new UpgradeRecipe(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', Items.redstone, 'X',
-				capacitorReinforced, 'Y', CoFHWorldItems.dustPyrotheum }));
+				capacitorReinforced, 'Y', GLItems.dustPyrotheum }));
 
 		/* Diagrams */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(diagramSchematic, new Object[] { Items.paper, Items.paper, "dyeBlue" }));
@@ -134,22 +137,21 @@ public class TEItems {
 		GameRegistry.addRecipe(new ItemStack(Items.paper, 3), new Object[] { "###", '#', woodchips });
 		GameRegistry.addRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', sawdust });
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.clay_ball, 2), new Object[] { slag, slag, Blocks.dirt, Items.water_bucket }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustPyrotheum, 2), new Object[] { "dustCoal", "dustSulfur",
-				Items.redstone, Items.blaze_powder }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustCryotheum, 2), new Object[] { Items.snowball, "dustSaltpeter",
-				Items.redstone, CoFHWorldItems.dustBlizz }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustBlizz, 2), new Object[] { CoFHWorldItems.rodBlizz }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustPyrotheum, 2), new Object[] { "dustCoal", "dustSulfur", Items.redstone,
+				Items.blaze_powder }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustCryotheum, 2), new Object[] { Items.snowball, "dustSaltpeter",
+				Items.redstone, GLItems.dustBlizz }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustBlizz, 2), new Object[] { GLItems.rodBlizz }));
 
 		FurnaceRecipes.smelting().addSmelting(sawdustCompressed, sawdustCompressed.getItemDamage(), new ItemStack(Items.coal, 1, 1), 0.15F);
 
 		/* Alloy Recipes */
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustElectrum, 2), new Object[] { "dustGold", "dustSilver" }));
-		GameRegistry
-				.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustInvar, 3), new Object[] { "dustIron", "dustIron", "dustNickel" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustBronze, 4), new Object[] { "dustCopper", "dustCopper",
-				"dustCopper", "dustTin" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(CoFHWorldItems.dustEnderium, 4), new Object[] { "dustTin", "dustTin", "dustTin",
-				"dustPlatinum", CoFHWorldItems.bucketEnder }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustElectrum, 2), new Object[] { "dustGold", "dustSilver" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustInvar, 3), new Object[] { "dustIron", "dustIron", "dustNickel" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustBronze, 4), new Object[] { "dustCopper", "dustCopper", "dustCopper",
+				"dustTin" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(GLItems.dustEnderium, 4), new Object[] { "dustTin", "dustTin", "dustTin",
+				"dustPlatinum", GLItems.bucketEnder }));
 
 		TEEquipment.postInit();
 	}

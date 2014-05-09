@@ -1,7 +1,12 @@
 package thermalexpansion.gui.element;
 
-import java.util.List;
+import cofh.gui.GuiBase;
+import cofh.gui.element.TabBase;
+import cofh.render.RenderHelper;
+import cofh.util.BlockHelper;
+import cofh.util.StringHelper;
 
+import java.util.List;
 import javax.swing.Icon;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -9,11 +14,6 @@ import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.opengl.GL11;
 
 import thermalexpansion.block.energycell.TileEnergyCell;
-import cofh.gui.GuiBase;
-import cofh.gui.element.TabBase;
-import cofh.render.RenderHelper;
-import cofh.util.BlockHelper;
-import cofh.util.StringHelper;
 
 public class TabConfigEnergyCell extends TabBase {
 

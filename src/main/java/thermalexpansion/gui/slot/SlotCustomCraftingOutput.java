@@ -1,5 +1,7 @@
 package thermalexpansion.gui.slot;
 
+import cofh.util.ServerHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -11,9 +13,9 @@ import net.minecraft.item.ItemPickaxe;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.stats.AchievementList;
+
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
-import cofh.util.ServerHelper;
 
 public class SlotCustomCraftingOutput extends Slot {
 

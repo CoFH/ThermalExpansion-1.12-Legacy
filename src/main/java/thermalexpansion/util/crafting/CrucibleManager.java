@@ -1,5 +1,11 @@
 package thermalexpansion.util.crafting;
 
+import cofh.util.ItemHelper;
+import cofh.util.inventory.ComparableItemStackSafe;
+
+import geologic.fluid.GLFluids;
+import geologic.item.GLItems;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +18,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import cofh.fluid.CoFHWorldFluids;
-import cofh.item.CoFHWorldItems;
-import cofh.util.ItemHelper;
-import cofh.util.inventory.ComparableItemStackSafe;
 
 public class CrucibleManager {
 
@@ -82,14 +85,14 @@ public class CrucibleManager {
 		addTERecipe(800, new ItemStack(Items.snowball, 4), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
 		addTERecipe(800, new ItemStack(Blocks.snow), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
 		addTERecipe(1600, new ItemStack(Blocks.ice), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(CoFHWorldFluids.fluidRedstone, 100));
-		addTERecipe(8000 * 9, new ItemStack(Blocks.redstone_block), new FluidStack(CoFHWorldFluids.fluidRedstone, 100 * 9));
-		addTERecipe(20000, new ItemStack(Items.glowstone_dust), new FluidStack(CoFHWorldFluids.fluidGlowstone, 250));
-		addTERecipe(20000 * 4, new ItemStack(Blocks.glowstone), new FluidStack(CoFHWorldFluids.fluidGlowstone, 1000));
-		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(CoFHWorldFluids.fluidEnder, 250));
-		addTERecipe(8000, CoFHWorldItems.dustPyrotheum, new FluidStack(CoFHWorldFluids.fluidPyrotheum, 100));
-		addTERecipe(8000, CoFHWorldItems.dustCryotheum, new FluidStack(CoFHWorldFluids.fluidCryotheum, 100));
-		addTERecipe(8000, CoFHWorldItems.dustCoal, new FluidStack(CoFHWorldFluids.fluidCoal, 100));
+		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(GLFluids.fluidRedstone, 100));
+		addTERecipe(8000 * 9, new ItemStack(Blocks.redstone_block), new FluidStack(GLFluids.fluidRedstone, 100 * 9));
+		addTERecipe(20000, new ItemStack(Items.glowstone_dust), new FluidStack(GLFluids.fluidGlowstone, 250));
+		addTERecipe(20000 * 4, new ItemStack(Blocks.glowstone), new FluidStack(GLFluids.fluidGlowstone, 1000));
+		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(GLFluids.fluidEnder, 250));
+		addTERecipe(8000, GLItems.dustPyrotheum, new FluidStack(GLFluids.fluidPyrotheum, 100));
+		addTERecipe(8000, GLItems.dustCryotheum, new FluidStack(GLFluids.fluidCryotheum, 100));
+		addTERecipe(8000, GLItems.dustCoal, new FluidStack(GLFluids.fluidCoal, 100));
 	}
 
 	public static void loadRecipes() {

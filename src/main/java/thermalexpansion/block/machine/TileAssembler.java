@@ -1,5 +1,11 @@
 package thermalexpansion.block.machine;
 
+import cofh.util.InventoryHelper;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+import cofh.util.inventory.InventoryCraftingFalse;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.InventoryCrafting;
@@ -12,14 +18,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.SchematicHelper;
-import cofh.util.InventoryHelper;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.inventory.InventoryCraftingFalse;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileAssembler extends TileMachineEnergized implements IFluidHandler {
 

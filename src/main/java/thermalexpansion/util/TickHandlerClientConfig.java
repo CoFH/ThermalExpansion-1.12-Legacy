@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
+
 import thermalexpansion.ThermalExpansion;
 
 public class TickHandlerClientConfig implements ITickHandler {

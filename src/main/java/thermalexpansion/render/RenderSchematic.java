@@ -1,5 +1,9 @@
 package thermalexpansion.render;
 
+import cofh.CoFHCore;
+import cofh.render.RenderItemUtils;
+import cofh.util.StringHelper;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
@@ -8,9 +12,6 @@ import org.lwjgl.opengl.GL11;
 
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
-import cofh.CoFHCore;
-import cofh.render.RenderItemUtils;
-import cofh.util.StringHelper;
 
 public class RenderSchematic implements IItemRenderer {
 

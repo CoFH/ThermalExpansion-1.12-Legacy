@@ -1,8 +1,9 @@
 package thermalexpansion.block.simple;
 
+import cofh.util.StringHelper;
+
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import cofh.util.StringHelper;
 
 public class ItemBlockGlass extends ItemBlock {
 

@@ -1,17 +1,19 @@
 package thermalexpansion.gui.client.device;
 
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
-import thermalexpansion.block.device.TileBreaker;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ContainerTEBase;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
+
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
+
+import thermalexpansion.block.device.TileBreaker;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class GuiBreaker extends GuiBaseAdv {
 

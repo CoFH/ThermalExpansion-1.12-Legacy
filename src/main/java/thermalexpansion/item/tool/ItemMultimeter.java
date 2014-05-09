@@ -1,5 +1,11 @@
 package thermalexpansion.item.tool;
 
+import cofh.api.block.IBlockDebug;
+import cofh.api.block.IBlockInfo;
+import cofh.block.ITileInfo;
+import cofh.item.ItemBase;
+import cofh.util.ServerHelper;
+
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
@@ -8,12 +14,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thermalexpansion.ThermalExpansion;
-import cofh.api.block.IBlockDebug;
-import cofh.api.block.IBlockInfo;
-import cofh.block.ITileInfo;
-import cofh.item.ItemBase;
-import cofh.util.ServerHelper;
 
 public class ItemMultimeter extends ItemBase {
 

@@ -1,10 +1,12 @@
 package thermalexpansion.gui.slot;
 
+import cofh.gui.slot.SlotSpecificItem;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+
 import thermalexpansion.block.device.TileWorkbench;
-import cofh.gui.slot.SlotSpecificItem;
 
 public class SlotSpecificItemWorkbench extends SlotSpecificItem {
 

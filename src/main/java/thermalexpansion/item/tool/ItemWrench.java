@@ -1,5 +1,16 @@
 package thermalexpansion.item.tool;
 
+import buildcraft.api.tools.IToolWrench;
+
+import cofh.api.block.IDismantleable;
+import cofh.audio.SoundBase;
+import cofh.item.ItemBase;
+import cofh.util.BlockHelper;
+import cofh.util.ServerHelper;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.Multimap;
+import cpw.mods.fml.client.FMLClientHandler;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -7,18 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+
 import thermalexpansion.ThermalExpansion;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.block.IDismantleable;
-import cofh.audio.SoundBase;
-import cofh.item.ItemBase;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
-
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
-
-import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemWrench extends ItemBase implements IToolWrench {
 

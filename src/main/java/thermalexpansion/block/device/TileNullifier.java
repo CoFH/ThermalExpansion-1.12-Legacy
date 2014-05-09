@@ -1,5 +1,11 @@
 package thermalexpansion.block.device;
 
+import cofh.render.IconRegistry;
+import cofh.render.RenderHelper;
+import cofh.util.FluidHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -11,14 +17,10 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.util.FluidHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TileNullifier extends TileReconfigurableInventory implements IFluidHandler, ISidedInventory {
 

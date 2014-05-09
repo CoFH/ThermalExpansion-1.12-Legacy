@@ -1,7 +1,8 @@
 package thermalexpansion.block.simple;
 
-import net.minecraft.tileentity.TileEntity;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.tileentity.TileEntity;
 
 public class TileInvisible extends TileEntity {
 

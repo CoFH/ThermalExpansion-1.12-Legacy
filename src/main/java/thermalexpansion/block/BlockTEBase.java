@@ -1,5 +1,13 @@
 package thermalexpansion.block;
 
+import buildcraft.api.tools.IToolWrench;
+
+import cofh.api.block.IDismantleable;
+import cofh.block.BlockCoFHBase;
+import cofh.render.IconRegistry;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -10,14 +18,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.util.Utils;
-import buildcraft.api.tools.IToolWrench;
-import cofh.api.block.IDismantleable;
-import cofh.block.BlockCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
 
 public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleable {
 

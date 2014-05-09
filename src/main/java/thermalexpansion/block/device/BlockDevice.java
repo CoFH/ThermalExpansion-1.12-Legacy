@@ -1,5 +1,15 @@
 package thermalexpansion.block.device;
 
+import cofh.api.tileentity.ISecureTile;
+import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.core.CoFHProps;
+import cofh.render.IconRegistry;
+import cofh.util.StringHelper;
+import cofh.util.UpgradeRecipe;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,20 +30,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.item.TEEquipment;
 import thermalexpansion.item.TEItems;
-import cofh.api.tileentity.ISecureTile;
-import cofh.api.tileentity.ISidedBlockTexture;
-import cofh.core.CoFHProps;
-import cofh.render.IconRegistry;
-import cofh.util.StringHelper;
-import cofh.util.UpgradeRecipe;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockDevice extends BlockTEBase {
 

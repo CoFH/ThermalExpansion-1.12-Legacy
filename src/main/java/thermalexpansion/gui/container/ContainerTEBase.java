@@ -1,5 +1,9 @@
 package thermalexpansion.gui.container;
 
+import cofh.block.TileCoFHBase;
+import cofh.gui.slot.SlotFalseCopy;
+import cofh.util.ItemHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -7,9 +11,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import cofh.block.TileCoFHBase;
-import cofh.gui.slot.SlotFalseCopy;
-import cofh.util.ItemHelper;
 
 public class ContainerTEBase extends Container {
 

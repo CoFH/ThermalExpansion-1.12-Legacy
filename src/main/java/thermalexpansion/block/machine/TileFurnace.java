@@ -1,11 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileFurnace extends TileMachineEnergized {
 

@@ -1,5 +1,11 @@
 package thermalexpansion.util.crafting;
 
+import cofh.util.ItemHelper;
+import cofh.util.StringHelper;
+import cofh.util.inventory.ComparableItemStackSafe;
+
+import geologic.item.GLItems;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -12,13 +18,10 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.item.TEItems;
-import cofh.item.CoFHWorldItems;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.inventory.ComparableItemStackSafe;
 
 public class SmelterManager {
 
@@ -95,8 +98,7 @@ public class SmelterManager {
 	public static void addDefaultRecipes() {
 
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 40);
-		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2),
-				CoFHWorldItems.dustSulfur, 25);
+		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), GLItems.dustSulfur, 25);
 	}
 
 	public static void loadRecipes() {
@@ -110,22 +112,22 @@ public class SmelterManager {
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
 
-		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ingotIron, CoFHWorldItems.ingotNickel);
+		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ingotIron, GLItems.ingotNickel);
 		addDefaultOreDictionaryRecipe("oreGold", "dustGold", ingotGold, null, 10, 75, 25);
-		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", CoFHWorldItems.ingotCopper, ingotGold);
-		addDefaultOreDictionaryRecipe("oreTin", "dustTin", CoFHWorldItems.ingotTin, ingotIron);
-		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", CoFHWorldItems.ingotSilver, CoFHWorldItems.ingotLead);
-		addDefaultOreDictionaryRecipe("oreLead", "dustLead", CoFHWorldItems.ingotLead, CoFHWorldItems.ingotSilver);
-		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", CoFHWorldItems.ingotNickel, CoFHWorldItems.ingotPlatinum, 15, 75, 25);
-		addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", CoFHWorldItems.ingotPlatinum);
-		addDefaultOreDictionaryRecipe(null, "dustElectrum", CoFHWorldItems.ingotElectrum);
-		addDefaultOreDictionaryRecipe(null, "dustInvar", CoFHWorldItems.ingotInvar);
-		addDefaultOreDictionaryRecipe(null, "dustBronze", CoFHWorldItems.ingotBronze);
+		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", GLItems.ingotCopper, ingotGold);
+		addDefaultOreDictionaryRecipe("oreTin", "dustTin", GLItems.ingotTin, ingotIron);
+		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", GLItems.ingotSilver, GLItems.ingotLead);
+		addDefaultOreDictionaryRecipe("oreLead", "dustLead", GLItems.ingotLead, GLItems.ingotSilver);
+		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", GLItems.ingotNickel, GLItems.ingotPlatinum, 15, 75, 25);
+		addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", GLItems.ingotPlatinum);
+		addDefaultOreDictionaryRecipe(null, "dustElectrum", GLItems.ingotElectrum);
+		addDefaultOreDictionaryRecipe(null, "dustInvar", GLItems.ingotInvar);
+		addDefaultOreDictionaryRecipe(null, "dustBronze", GLItems.ingotBronze);
 
 		/* ALLOYS */
-		ItemStack stackElectrum = ItemHelper.cloneStack(CoFHWorldItems.ingotElectrum, 2);
-		ItemStack stackInvar = ItemHelper.cloneStack(CoFHWorldItems.ingotInvar, 3);
-		ItemStack stackBronze = ItemHelper.cloneStack(CoFHWorldItems.ingotBronze, 4);
+		ItemStack stackElectrum = ItemHelper.cloneStack(GLItems.ingotElectrum, 2);
+		ItemStack stackInvar = ItemHelper.cloneStack(GLItems.ingotInvar, 3);
+		ItemStack stackBronze = ItemHelper.cloneStack(GLItems.ingotBronze, 4);
 
 		addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
 		addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
@@ -264,7 +266,7 @@ public class SmelterManager {
 			ItemStack ore = registeredOres.get(0);
 			addRecipe(3200, ore, blockSand, ingot2, TEItems.slagRich, richSlagChance);
 			addRecipe(4000, ore, TEItems.slagRich, ingot3, TEItems.slag, slagOreChance);
-			addRecipe(4000, ore, CoFHWorldItems.dustPyrotheum, ingot2, TEItems.slagRich, Math.min(60, richSlagChance * 3));
+			addRecipe(4000, ore, GLItems.dustPyrotheum, ingot2, TEItems.slagRich, Math.min(60, richSlagChance * 3));
 
 			if (ingotSecondary != null) {
 				addRecipe(4000, ore, TEItems.crystalCinnabar, ingot3, ingotSecondary, 100);
@@ -314,10 +316,10 @@ public class SmelterManager {
 			return;
 		}
 		if (!registeredOre.isEmpty()) {
-			addRecipe(12000, ItemHelper.cloneStack(registeredOre.get(0), 1), CoFHWorldItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
+			addRecipe(12000, ItemHelper.cloneStack(registeredOre.get(0), 1), GLItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
 		}
 		if (!registeredDust.isEmpty()) {
-			addRecipe(8000, ItemHelper.cloneStack(registeredDust.get(0), 2), CoFHWorldItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
+			addRecipe(8000, ItemHelper.cloneStack(registeredDust.get(0), 2), GLItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
 		}
 	}
 

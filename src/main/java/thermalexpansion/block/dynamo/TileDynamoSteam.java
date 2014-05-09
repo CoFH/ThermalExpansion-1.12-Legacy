@@ -1,5 +1,9 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.core.CoFHProps;
+import cofh.util.ItemHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -15,12 +19,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.fluid.TEFluids;
-import cofh.core.CoFHProps;
-import cofh.util.ItemHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 

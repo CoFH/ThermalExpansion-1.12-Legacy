@@ -1,5 +1,8 @@
 package thermalexpansion.util.crafting;
 
+import cofh.util.ItemHelper;
+import cofh.util.inventory.ComparableItemStack;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,10 +15,9 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.TEItems;
-import cofh.util.ItemHelper;
-import cofh.util.inventory.ComparableItemStack;
 
 public class SawmillManager {
 

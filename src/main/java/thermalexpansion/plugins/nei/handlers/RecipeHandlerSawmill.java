@@ -1,11 +1,13 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import codechicken.nei.NEIServerUtils;
+import codechicken.nei.PositionedStack;
+
 import net.minecraft.item.ItemStack;
+
 import thermalexpansion.gui.client.machine.GuiSawmill;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
 
 public class RecipeHandlerSawmill extends RecipeHandlerBase {
 

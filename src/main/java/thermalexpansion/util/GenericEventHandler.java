@@ -1,5 +1,7 @@
 package thermalexpansion.util;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 
 public class GenericEventHandler {
@@ -11,7 +13,7 @@ public class GenericEventHandler {
 		// MinecraftForge.EVENT_BUS.register(instance);
 	}
 
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void handleOreRegisterEvent(OreRegisterEvent event) {
 
 		// String suffix = "";

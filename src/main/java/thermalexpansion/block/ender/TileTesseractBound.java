@@ -1,12 +1,14 @@
 package thermalexpansion.block.ender;
 
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileRSInventory;
 import cofh.api.tileentity.ISecureTile;
 import cofh.core.CoFHProps;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TileRSInventory;
 
 public class TileTesseractBound extends TileRSInventory implements ISecureTile, ISidedInventory {
 

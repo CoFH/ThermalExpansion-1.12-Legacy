@@ -1,5 +1,10 @@
 package thermalexpansion.block.machine;
 
+import cofh.core.CoFHProps;
+import cofh.util.FluidHelper;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import java.util.logging.Level;
 
 import net.minecraft.block.Block;
@@ -15,11 +20,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
-import cofh.core.CoFHProps;
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 

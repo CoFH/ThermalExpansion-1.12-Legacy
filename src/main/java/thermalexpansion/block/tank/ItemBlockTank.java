@@ -1,5 +1,8 @@
 package thermalexpansion.block.tank;
 
+import cofh.block.ItemBlockCoFHBase;
+import cofh.util.StringHelper;
+
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -9,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import cofh.block.ItemBlockCoFHBase;
-import cofh.util.StringHelper;
 
 public class ItemBlockTank extends ItemBlockCoFHBase implements IFluidContainerItem {
 

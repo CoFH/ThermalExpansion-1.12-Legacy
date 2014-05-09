@@ -1,6 +1,13 @@
 package thermalexpansion.plugins.tc4;
 
+import cpw.mods.fml.common.Loader;
+
+import geologic.block.BlockOre;
+import geologic.block.BlockStorage;
+import geologic.item.GLItems;
+
 import net.minecraft.item.ItemStack;
+
 import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
@@ -15,12 +22,9 @@ import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.block.simple.BlockRockwool;
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.tank.BlockTank;
+import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.item.TEEquipment;
 import thermalexpansion.item.TEItems;
-import cofh.block.world.BlockOre;
-import cofh.block.world.BlockStorage;
-import cofh.item.CoFHWorldItems;
-import cpw.mods.fml.common.Loader;
 
 public class TCPlugin {
 
@@ -35,34 +39,34 @@ public class TCPlugin {
 	public static void postInit() {
 
 		if (Loader.isModLoaded("Thaumcraft")) {
-			registerStack(CoFHWorldItems.dustCoal, new AspectList().add(Aspect.FIRE, 2).add(Aspect.ENERGY, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustObsidian, new AspectList().add(Aspect.FIRE, 2).add(Aspect.DARKNESS, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustNickel, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustPlatinum, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustElectrum, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustInvar, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
-			registerStack(CoFHWorldItems.dustEnderium, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustCoal, new AspectList().add(Aspect.FIRE, 2).add(Aspect.ENERGY, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustObsidian, new AspectList().add(Aspect.FIRE, 2).add(Aspect.DARKNESS, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustNickel, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustPlatinum, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustElectrum, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustInvar, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
+			registerStack(GLItems.dustEnderium, new AspectList().add(Aspect.METAL, 1).add(Aspect.ENTROPY, 1));
 
 			registerStack(BlockOre.oreNickel, new AspectList().add(Aspect.METAL, 2).add(Aspect.ENTROPY, 1).add(Aspect.VOID, 1));
 
-			registerStack(CoFHWorldItems.ingotNickel, new AspectList().add(Aspect.METAL, 3).add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.ingotPlatinum, new AspectList().add(Aspect.METAL, 3).add(Aspect.GREED, 1));
-			registerStack(CoFHWorldItems.ingotElectrum, new AspectList().add(Aspect.METAL, 3).add(Aspect.GREED, 1));
-			registerStack(CoFHWorldItems.ingotInvar, new AspectList().add(Aspect.METAL, 3).add(Aspect.ARMOR, 1));
-			registerStack(CoFHWorldItems.ingotEnderium, new AspectList().add(Aspect.METAL, 3).add(Aspect.ELDRITCH, 1));
+			registerStack(GLItems.ingotNickel, new AspectList().add(Aspect.METAL, 3).add(Aspect.VOID, 1));
+			registerStack(GLItems.ingotPlatinum, new AspectList().add(Aspect.METAL, 3).add(Aspect.GREED, 1));
+			registerStack(GLItems.ingotElectrum, new AspectList().add(Aspect.METAL, 3).add(Aspect.GREED, 1));
+			registerStack(GLItems.ingotInvar, new AspectList().add(Aspect.METAL, 3).add(Aspect.ARMOR, 1));
+			registerStack(GLItems.ingotEnderium, new AspectList().add(Aspect.METAL, 3).add(Aspect.ELDRITCH, 1));
 
-			registerStack(CoFHWorldItems.nuggetCopper, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetTin, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetSilver, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetLead, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetNickel, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetPlatinum, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetElectrum, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetInvar, new AspectList().add(Aspect.METAL, 1));
-			registerStack(CoFHWorldItems.nuggetEnderium, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetCopper, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetTin, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetSilver, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetLead, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetNickel, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetPlatinum, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetElectrum, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetInvar, new AspectList().add(Aspect.METAL, 1));
+			registerStack(GLItems.nuggetEnderium, new AspectList().add(Aspect.METAL, 1));
 
-			registerStack(CoFHWorldItems.florb, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1));
-			registerStack(CoFHWorldItems.florbMagmatic, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1));
+			registerStack(TEFluids.florb, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1));
+			registerStack(TEFluids.florbMagmatic, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1));
 
 			// registerStack(BlockStorage.blockCopper, new AspectList().add(Aspect.METAL, 11).add(Aspect.VOID, 5));
 			// registerStack(BlockStorage.blockTin, new AspectList().add(Aspect.METAL, 11).add(Aspect.GREED, 5));
@@ -75,55 +79,60 @@ public class TCPlugin {
 			// registerStack(BlockStorage.blockBronze, new AspectList().add(Aspect.METAL, 11).add(Aspect.CRAFT, 5));
 			registerStack(BlockStorage.blockEnderium, new AspectList().add(Aspect.METAL, 11).add(Aspect.ELDRITCH, 5));
 
-			registerStack(CoFHWorldItems.bucketRedstone,
-					new AspectList().add(Aspect.ENERGY, 10).add(Aspect.MECHANISM, 8).add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
-			registerStack(CoFHWorldItems.bucketGlowstone, new AspectList().add(Aspect.LIGHT, 10).add(Aspect.SENSES, 2).add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
-			registerStack(CoFHWorldItems.bucketEnder, new AspectList().add(Aspect.ELDRITCH, 14).add(Aspect.TRAVEL, 8).add(Aspect.MAGIC, 2).add(Aspect.FIRE, 4)
-					.add(Aspect.WATER, 2));
-			registerStack(CoFHWorldItems.bucketPyrotheum, new AspectList().add(Aspect.ENERGY, 14).add(Aspect.FIRE, 16).add(Aspect.MAGIC, 2)
-					.add(Aspect.WATER, 2));
-			registerStack(CoFHWorldItems.bucketCryotheum, new AspectList().add(Aspect.ENERGY, 14).add(Aspect.COLD, 16).add(Aspect.MAGIC, 2)
-					.add(Aspect.WATER, 2));
-			registerStack(CoFHWorldItems.bucketCoal, new AspectList().add(Aspect.FIRE, 14).add(Aspect.ENERGY, 2).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketRedstone, new AspectList().add(Aspect.ENERGY, 10).add(Aspect.MECHANISM, 8).add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketGlowstone, new AspectList().add(Aspect.LIGHT, 10).add(Aspect.SENSES, 2).add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketEnder,
+					new AspectList().add(Aspect.ELDRITCH, 14).add(Aspect.TRAVEL, 8).add(Aspect.MAGIC, 2).add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketPyrotheum, new AspectList().add(Aspect.ENERGY, 14).add(Aspect.FIRE, 16).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketCryotheum, new AspectList().add(Aspect.ENERGY, 14).add(Aspect.COLD, 16).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
+			registerStack(GLItems.bucketCoal, new AspectList().add(Aspect.FIRE, 14).add(Aspect.ENERGY, 2).add(Aspect.WATER, 2));
 
 			registerStack(
-					CoFHWorldItems.bucketRedstone,
+					GLItems.bucketRedstone,
 					new AspectList().add(Aspect.ENERGY, 5).add(Aspect.MECHANISM, 4).add(Aspect.FIRE, 2).add(Aspect.WATER, 1).add(Aspect.METAL, 8)
 							.add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.bucketGlowstone, new AspectList().add(Aspect.LIGHT, 5).add(Aspect.SENSES, 1).add(Aspect.FIRE, 2).add(Aspect.WATER, 1)
-					.add(Aspect.METAL, 8).add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.bucketEnder, new AspectList().add(Aspect.ELDRITCH, 7).add(Aspect.TRAVEL, 4).add(Aspect.MAGIC, 1).add(Aspect.FIRE, 2)
-					.add(Aspect.WATER, 1).add(Aspect.METAL, 8).add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.bucketPyrotheum, new AspectList().add(Aspect.ENERGY, 7).add(Aspect.FIRE, 8).add(Aspect.MAGIC, 1).add(Aspect.WATER, 1)
-					.add(Aspect.METAL, 8).add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.bucketCryotheum, new AspectList().add(Aspect.ENERGY, 7).add(Aspect.COLD, 8).add(Aspect.MAGIC, 1).add(Aspect.WATER, 1)
-					.add(Aspect.METAL, 8).add(Aspect.VOID, 1));
-			registerStack(CoFHWorldItems.bucketCoal,
+			registerStack(
+					GLItems.bucketGlowstone,
+					new AspectList().add(Aspect.LIGHT, 5).add(Aspect.SENSES, 1).add(Aspect.FIRE, 2).add(Aspect.WATER, 1).add(Aspect.METAL, 8)
+							.add(Aspect.VOID, 1));
+			registerStack(
+					GLItems.bucketEnder,
+					new AspectList().add(Aspect.ELDRITCH, 7).add(Aspect.TRAVEL, 4).add(Aspect.MAGIC, 1).add(Aspect.FIRE, 2).add(Aspect.WATER, 1)
+							.add(Aspect.METAL, 8).add(Aspect.VOID, 1));
+			registerStack(
+					GLItems.bucketPyrotheum,
+					new AspectList().add(Aspect.ENERGY, 7).add(Aspect.FIRE, 8).add(Aspect.MAGIC, 1).add(Aspect.WATER, 1).add(Aspect.METAL, 8)
+							.add(Aspect.VOID, 1));
+			registerStack(
+					GLItems.bucketCryotheum,
+					new AspectList().add(Aspect.ENERGY, 7).add(Aspect.COLD, 8).add(Aspect.MAGIC, 1).add(Aspect.WATER, 1).add(Aspect.METAL, 8)
+							.add(Aspect.VOID, 1));
+			registerStack(GLItems.bucketCoal,
 					new AspectList().add(Aspect.FIRE, 6).add(Aspect.ENERGY, 1).add(Aspect.WATER, 1).add(Aspect.METAL, 8).add(Aspect.VOID, 1));
 
 			registerStack(TEItems.slag, new AspectList().add(Aspect.EARTH, 2).add(Aspect.ENTROPY, 2));
 			registerStack(TEItems.slagRich, new AspectList().add(Aspect.EARTH, 2).add(Aspect.ENTROPY, 2).add(Aspect.GREED, 2));
-			registerStack(CoFHWorldItems.dustSulfur, new AspectList().add(Aspect.FIRE, 3).add(Aspect.EARTH, 1));
-			registerStack(CoFHWorldItems.dustNiter, new AspectList().add(Aspect.EARTH, 1).add(Aspect.AIR, 3));
+			registerStack(GLItems.dustSulfur, new AspectList().add(Aspect.FIRE, 3).add(Aspect.EARTH, 1));
+			registerStack(GLItems.dustNiter, new AspectList().add(Aspect.EARTH, 1).add(Aspect.AIR, 3));
 			registerStack(TEItems.crystalCinnabar, new AspectList().add(Aspect.EARTH, 2).add(Aspect.EXCHANGE, 1).add(Aspect.POISON, 1));
 			registerStack(TEItems.woodchips, new AspectList().add(Aspect.TREE, 1).add(Aspect.ENTROPY, 1));
 			registerStack(TEItems.sawdust, new AspectList().add(Aspect.TREE, 1).add(Aspect.ENTROPY, 1));
 			registerStack(TEItems.sawdustCompressed, new AspectList().add(Aspect.TREE, 3).add(Aspect.ENTROPY, 3));
-			registerStack(CoFHWorldItems.dustPyrotheum, new AspectList().add(Aspect.ENERGY, 4).add(Aspect.FIRE, 4).add(Aspect.MAGIC, 1));
-			registerStack(CoFHWorldItems.dustCryotheum, new AspectList().add(Aspect.ENERGY, 4).add(Aspect.COLD, 4).add(Aspect.MAGIC, 1));
-			registerStack(CoFHWorldItems.rodBlizz, new AspectList().add(Aspect.COLD, 4).add(Aspect.MAGIC, 2));
-			registerStack(CoFHWorldItems.dustBlizz, new AspectList().add(Aspect.COLD, 2).add(Aspect.MAGIC, 1));
+			registerStack(GLItems.dustPyrotheum, new AspectList().add(Aspect.ENERGY, 4).add(Aspect.FIRE, 4).add(Aspect.MAGIC, 1));
+			registerStack(GLItems.dustCryotheum, new AspectList().add(Aspect.ENERGY, 4).add(Aspect.COLD, 4).add(Aspect.MAGIC, 1));
+			registerStack(GLItems.rodBlizz, new AspectList().add(Aspect.COLD, 4).add(Aspect.MAGIC, 2));
+			registerStack(GLItems.dustBlizz, new AspectList().add(Aspect.COLD, 2).add(Aspect.MAGIC, 1));
 
 			registerStack(TEItems.pneumaticServo, new AspectList().add(Aspect.METAL, 4).add(Aspect.MECHANISM, 2).add(Aspect.ENERGY, 1).add(Aspect.MOTION, 4));
 			registerStack(TEItems.powerCoilGold, new AspectList().add(Aspect.METAL, 1).add(Aspect.MECHANISM, 2).add(Aspect.ENERGY, 2));
 			registerStack(TEItems.powerCoilSilver, new AspectList().add(Aspect.METAL, 1).add(Aspect.MECHANISM, 2).add(Aspect.ENERGY, 2));
 			registerStack(TEItems.powerCoilElectrum, new AspectList().add(Aspect.METAL, 1).add(Aspect.MECHANISM, 2).add(Aspect.ENERGY, 2));
 
-			registerStack(CoFHWorldItems.gearCopper, new AspectList().add(Aspect.METAL, 7).add(Aspect.EXCHANGE, 2).add(Aspect.MECHANISM, 2));
-			registerStack(CoFHWorldItems.gearTin, new AspectList().add(Aspect.METAL, 7).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 2));
-			registerStack(CoFHWorldItems.gearElectrum, new AspectList().add(Aspect.METAL, 7).add(Aspect.GREED, 2).add(Aspect.MECHANISM, 2));
-			registerStack(CoFHWorldItems.gearInvar, new AspectList().add(Aspect.METAL, 7).add(Aspect.ARMOR, 2).add(Aspect.MECHANISM, 2));
-			registerStack(CoFHWorldItems.gearBronze, new AspectList().add(Aspect.METAL, 7).add(Aspect.TOOL, 2).add(Aspect.MECHANISM, 2));
+			registerStack(GLItems.gearCopper, new AspectList().add(Aspect.METAL, 7).add(Aspect.EXCHANGE, 2).add(Aspect.MECHANISM, 2));
+			registerStack(GLItems.gearTin, new AspectList().add(Aspect.METAL, 7).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 2));
+			registerStack(GLItems.gearElectrum, new AspectList().add(Aspect.METAL, 7).add(Aspect.GREED, 2).add(Aspect.MECHANISM, 2));
+			registerStack(GLItems.gearInvar, new AspectList().add(Aspect.METAL, 7).add(Aspect.ARMOR, 2).add(Aspect.MECHANISM, 2));
+			registerStack(GLItems.gearBronze, new AspectList().add(Aspect.METAL, 7).add(Aspect.TOOL, 2).add(Aspect.MECHANISM, 2));
 
 			registerStack(BlockRockwool.rockWool, new AspectList().add(Aspect.CRAFT, 1).add(Aspect.CLOTH, 2).add(Aspect.ENTROPY, 2));
 			registerStack(BlockGlass.glassHardened, new AspectList().add(Aspect.FIRE, 1).add(Aspect.ARMOR, 1).add(Aspect.CRYSTAL, 1));

@@ -1,14 +1,16 @@
 package thermalexpansion.network;
 
+import cofh.api.tileentity.IRedstoneControl;
+import cofh.core.CoFHProps;
+import cofh.network.PacketHandler;
+
 import java.util.logging.Level;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.container.ISetSchematic;
-import cofh.api.tileentity.IRedstoneControl;
-import cofh.core.CoFHProps;
-import cofh.network.PacketHandler;
 
 public class TEPacketHandler implements IGeneralPacketHandler {
 
