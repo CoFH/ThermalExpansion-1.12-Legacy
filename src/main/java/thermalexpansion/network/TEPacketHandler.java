@@ -2,6 +2,7 @@ package thermalexpansion.network;
 
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
 import cofh.network.PacketHandler;
 
 import java.util.logging.Level;
@@ -28,7 +29,7 @@ public class TEPacketHandler implements IGeneralPacketHandler {
 	}
 
 	@Override
-	public void handlePacket(int id, Payload payload, EntityPlayer player) {
+	public void handlePacket(int id, CoFHPacket payload, EntityPlayer player) {
 
 		try {
 			int type = payload.getByte();
@@ -63,24 +64,24 @@ public class TEPacketHandler implements IGeneralPacketHandler {
 
 	public static void sendRSPowerUpdatePacketToClients(IRedstoneControl rs, World world, int x, int y, int z) {
 
-		PacketUtils.sendToPlayers(Payload.getPayload(packetID).addByte(PacketTypes.RS_POWER_UPDATE.ordinal()).addCoords(x, y, z).addBool(rs.isPowered())
-				.getPacket(), world, x, y, z, CoFHProps.NETWORK_UPDATE_RANGE);
+		PacketHandler.sendToPlayers(CoFHPacket.getCoFHPacket(packetID).addByte(PacketTypes.RS_POWER_UPDATE.ordinal()).addCoords(x, y, z).addBool(rs.isPowered())
+				, world, x, y, z, CoFHProps.NETWORK_UPDATE_RANGE);
 	}
 
 	public static void sendRSConfigUpdatePacketToServer(IRedstoneControl rs, int x, int y, int z) {
 
-		PacketUtils.sendToServer(Payload.getPayload(packetID).addByte(PacketTypes.RS_CONFIG_UPDATE.ordinal()).addCoords(x, y, z)
-				.addBool(rs.getControlDisable()).addBool(rs.getControlSetting()).getPacket());
+		PacketHandler.sendToServer(CoFHPacket.getCoFHPacket(packetID).addByte(PacketTypes.RS_CONFIG_UPDATE.ordinal()).addCoords(x, y, z)
+				.addBool(rs.getControlDisable()).addBool(rs.getControlSetting()));
 	}
 
 	public static void sendCreateSchematicPacketToServer() {
 
-		PacketDispatcher.sendPacketToServer(Payload.getPayload(packetID).addByte(PacketTypes.WRITE_SCHEM.ordinal()).getPacket());
+		PacketDispatcher.sendPacketToServer(CoFHPacket.getCoFHPacket(packetID).addByte(PacketTypes.WRITE_SCHEM.ordinal()));
 	}
 
 	public static void sendConfigSyncPacketToClient(EntityPlayer player) {
 
-		PacketUtils.sendToPlayer(ThermalExpansion.instance.getConfigSync(packetID).getPacket(), player);
+		PacketHandler.sendToPlayer(ThermalExpansion.instance.getConfigSync(packetID), player);
 	}
 
 }

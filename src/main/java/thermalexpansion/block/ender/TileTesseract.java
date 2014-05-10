@@ -4,7 +4,10 @@ import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.transport.IEnderAttuned;
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
+import cofh.network.PacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
@@ -147,24 +150,24 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			frequency = theFreq;
-			PacketUtils.sendToServer(Payload.getInfoPayload(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
-					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq).getPacket());
+			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
+					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
 		}
 	}
 
 	public void addEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketUtils.sendToServer(Payload.getInfoPayload(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName).getPacket());
+			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
 	public void removeEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketUtils.sendToServer(Payload.getInfoPayload(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName).getPacket());
+			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
@@ -616,9 +619,9 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(isActive);
 		payload.addByte(modeItem);
@@ -633,7 +636,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -651,7 +654,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (PacketInfoID.values()[payload.getByte()]) {
 		case NAME_LIST:
@@ -668,7 +671,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 			} else {
 				RegistryEnderAttuned.linkConf.get(payload.getString(), payload.getString(), "").set(payload.getString());
 			}
-			sendNamesList((EntityPlayerMP) handler.getPlayer());
+			sendNamesList((EntityPlayerMP) thePlayer);
 			RegistryEnderAttuned.linkConf.save();
 			return;
 		case TILE_INFO:
@@ -685,7 +688,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 
-			sendNamesList((EntityPlayerMP) handler.getPlayer());
+			sendNamesList((EntityPlayerMP) thePlayer);
 			return;
 		}
 	}
@@ -698,20 +701,20 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		String lookupName = access.isPublic() ? "_Public_" : owner;
 		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
 
-		Payload myPayload = Payload.getInfoPayload(this);
+		CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(this);
 		if (curList != null) {
-			myPayload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			myPayload.addInt(curList.size());
+			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			myPacket.addInt(curList.size());
 
 			for (Property curProp : curList.values()) {
-				myPayload.addString(curProp.getName());
-				myPayload.addString(curProp.getString());
+				myPacket.addString(curProp.getName());
+				myPacket.addString(curProp.getString());
 			}
 		} else {
-			myPayload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			myPayload.addInt(0);
+			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			myPacket.addInt(0);
 		}
-		thePlayer.playerNetServerHandler.sendPacketToPlayer(myPayload.getPacket());
+		thePlayer.playerNetServerHandler.sendPacketToPlayer(myPacket);
 	}
 
 	/* GUI METHODS */

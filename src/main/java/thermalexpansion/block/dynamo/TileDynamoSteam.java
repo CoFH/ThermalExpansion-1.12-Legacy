@@ -1,10 +1,13 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -174,9 +177,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addFluidStack(steamTank.getFluid());
@@ -190,7 +193,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

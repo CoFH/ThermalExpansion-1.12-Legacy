@@ -4,6 +4,7 @@ import cofh.api.world.WeightedRandomBlock;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiHandler;
 import cofh.mod.BaseMod;
+import cofh.network.CoFHPacket;
 import cofh.util.ConfigHandler;
 import cofh.util.StringHelper;
 import com.google.common.eventbus.EventBus;
@@ -248,7 +249,7 @@ public class ThermalExpansion extends BaseMod {
 		IMCHandler.instance.handleIMC(theIMC);
 	}
 
-	public void handleConfigSync(Payload payload) {
+	public void handleConfigSync(CoFHPacket payload) {
 
 		TileWorkbench.enableSecurity = payload.getBool();
 		TileStrongbox.enableSecurity = payload.getBool();
@@ -256,15 +257,15 @@ public class ThermalExpansion extends BaseMod {
 		log.info(StringHelper.localize("message.cofh.receiveConfig"));
 	}
 
-	public Payload getConfigSync(int packetID) {
+	public CoFHPacket getConfigSync(int packetID) {
 
-		Payload myPayload = Payload.getPayload(packetID);
-		myPayload.addByte(PacketTypes.CONFIG_SYNC.ordinal());
+		CoFHPacket myPacket = CoFHPacket.getCoFHPacket(packetID);
+		myPacket.addByte(PacketTypes.CONFIG_SYNC.ordinal());
 
-		myPayload.addBool(TileWorkbench.enableSecurity);
-		myPayload.addBool(TileStrongbox.enableSecurity);
+		myPacket.addBool(TileWorkbench.enableSecurity);
+		myPacket.addBool(TileStrongbox.enableSecurity);
 
-		return myPayload;
+		return myPacket;
 	}
 
 	// Called when the client is d/ced from the server.

@@ -1,11 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cofh.network.CoFHPacket;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cofh.util.inventory.InventoryCraftingFalse;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.InventoryCrafting;
@@ -250,9 +252,9 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = super.getGuiPayload();
+		CoFHPacket payload = super.getGuiCoFHPacket();
 
 		payload.addFluidStack(getTankFluid());
 
@@ -261,7 +263,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

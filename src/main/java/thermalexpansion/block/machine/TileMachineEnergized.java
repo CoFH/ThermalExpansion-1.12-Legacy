@@ -5,10 +5,12 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IEnergyInfo;
+import cofh.network.CoFHPacket;
 import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -168,9 +170,9 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = super.getGuiPayload();
+		CoFHPacket payload = super.getGuiCoFHPacket();
 
 		payload.addInt(energyStorage.getEnergyStored());
 
@@ -179,7 +181,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

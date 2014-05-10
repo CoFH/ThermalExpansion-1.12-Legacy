@@ -4,6 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.item.ItemStack;
@@ -53,7 +54,7 @@ public class TileTinkerBench extends TileInventory implements IEnergyHandler {
 	/* NETWORK METHODS */
 
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 	}
 

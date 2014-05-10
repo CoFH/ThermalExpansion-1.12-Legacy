@@ -4,6 +4,9 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.IRecipeHandler;
 import cofh.gui.GuiBase;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
+import cofh.network.PacketHandler;
 
 import java.util.List;
 
@@ -36,8 +39,8 @@ public class NEIRecipeOverlayHandler implements IOverlayHandler {
 				Slot curSlot = (Slot) curObj;
 				curSlot.putStack(null);
 			}
-			Payload myPayload = Payload.getInfoPayload(((GuiWorkbench) firstGui).myTile);
-			myPayload.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
+			CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(((GuiWorkbench) firstGui).myTile);
+			myPacket.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
 			boolean foundSlots = false;
 			List<PositionedStack> item = recipe.getIngredientStacks(recipeIndex);
 			for (PositionedStack curItem : item) {
@@ -46,16 +49,16 @@ public class NEIRecipeOverlayHandler implements IOverlayHandler {
 					if (curSlot.xDisplayPosition == curItem.relx + xOffset && curSlot.yDisplayPosition == curItem.rely + yOffset) {
 						curSlot.putStack(curItem.item.copy());
 						foundSlots = true;
-						myPayload.addByte(curSlot.getSlotIndex());
-						myPayload.addItemStack(curItem.item);
+						myPacket.addByte(curSlot.getSlotIndex());
+						myPacket.addItemStack(curItem.item);
 						break;
 					}
 				}
 			}
-			myPayload.addByte(-1);
+			myPacket.addByte(-1);
 			((GuiBase) firstGui).overlayRecipe();
 			if (foundSlots) {
-				PacketUtils.sendToServer(myPayload.getPacket());
+				PacketHandler.sendToServer(myPacket);
 			}
 		}
 	}

@@ -1,5 +1,6 @@
 package thermalexpansion.block;
 
+import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
@@ -62,16 +63,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IT
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addString(invName);
 		return payload;
 	}
 
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			invName = payload.getString();

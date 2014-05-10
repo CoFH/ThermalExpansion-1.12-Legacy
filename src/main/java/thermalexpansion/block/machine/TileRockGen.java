@@ -1,9 +1,11 @@
 package thermalexpansion.block.machine;
 
+import cofh.network.CoFHPacket;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -184,9 +186,9 @@ public class TileRockGen extends TileMachineBase implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getModePayload() {
+	public CoFHPacket getModeCoFHPacket() {
 
-		Payload payload = super.getModePayload();
+		CoFHPacket payload = super.getModeCoFHPacket();
 
 		payload.addByte(curSelection);
 
@@ -204,7 +206,7 @@ public class TileRockGen extends TileMachineBase implements IFluidHandler {
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

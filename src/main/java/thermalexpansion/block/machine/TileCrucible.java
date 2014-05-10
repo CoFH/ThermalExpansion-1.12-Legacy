@@ -1,11 +1,13 @@
 package thermalexpansion.block.machine;
 
+import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -153,18 +155,18 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = super.getGuiPayload();
+		CoFHPacket payload = super.getGuiCoFHPacket();
 
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
@@ -175,9 +177,9 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	}
 
 	@Override
-	public Payload getFluidPayload() {
+	public CoFHPacket getFluidCoFHPacket() {
 
-		Payload payload = super.getFluidPayload();
+		CoFHPacket payload = super.getFluidCoFHPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -186,7 +188,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -199,7 +201,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

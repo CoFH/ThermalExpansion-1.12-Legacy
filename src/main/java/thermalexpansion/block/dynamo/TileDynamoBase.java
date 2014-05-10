@@ -5,7 +5,10 @@ import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
+import cofh.network.PacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
@@ -244,18 +247,18 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addByte(facing);
 		payload.addBool(isActive);
 		return payload;
 	}
 
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addInt(energyStorage.getEnergyStored());
@@ -265,7 +268,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -283,7 +286,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:
@@ -304,7 +307,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketUtils.sendToPlayer(getGuiPayload().getPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}

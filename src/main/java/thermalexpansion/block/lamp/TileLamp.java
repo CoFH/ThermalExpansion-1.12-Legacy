@@ -1,6 +1,7 @@
 package thermalexpansion.block.lamp;
 
 import cofh.block.ITileInfo;
+import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
@@ -120,9 +121,9 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(modified);
 		payload.addInt(color);
@@ -135,7 +136,7 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		modified = payload.getBool();
 		color = payload.getInt();

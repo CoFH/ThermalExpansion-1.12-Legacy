@@ -2,6 +2,7 @@ package thermalexpansion.block.device;
 
 import cofh.core.CoFHProps;
 import cofh.entity.PlayerFake;
+import cofh.network.CoFHPacket;
 import cofh.network.ITileInfoPacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
@@ -358,9 +359,9 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(actsSneaking);
 		payload.addBool(leftClick);
@@ -371,7 +372,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -383,7 +384,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case MODE:

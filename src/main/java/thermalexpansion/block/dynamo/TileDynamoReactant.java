@@ -1,11 +1,14 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -150,18 +153,18 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
 
 	@Override
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addFluidStack(tank.getFluid());
@@ -174,7 +177,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -187,7 +190,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

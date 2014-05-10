@@ -1,7 +1,10 @@
 package thermalexpansion.block.machine;
 
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
@@ -75,9 +78,9 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	}
 
 	/* NETWORK METHODS */
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addBool(isActive);
@@ -87,18 +90,18 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		return payload;
 	}
 
-	public Payload getFluidPayload() {
+	public CoFHPacket getFluidCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
 
 		return payload;
 	}
 
-	public Payload getModePayload() {
+	public CoFHPacket getModeCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
 
@@ -107,19 +110,19 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	public void sendFluidPacket() {
 
-		PacketUtils.sendToAllPlayers(getFluidPayload().getPacket(), worldObj);
+		PacketHandler.sendToAllPlayers(getFluidCoFHPacket(), worldObj);
 	}
 
 	public void sendModePacket() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketUtils.sendToServer(getModePayload().getPacket());
+			PacketHandler.sendToServer(getModeCoFHPacket());
 		}
 	}
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:
@@ -152,7 +155,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketUtils.sendToPlayer(getGuiPayload().getPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}

@@ -3,7 +3,10 @@ package thermalexpansion.block.energycell;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
+import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
@@ -201,18 +204,18 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addInt(energyStorage.getEnergyStored());
 
 		return payload;
 	}
 
-	public Payload getGuiPayload() {
+	public CoFHPacket getGuiCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 
@@ -223,9 +226,9 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 		return payload;
 	}
 
-	public Payload getModePayload() {
+	public CoFHPacket getModeCoFHPacket() {
 
-		Payload payload = Payload.getInfoPayload(this);
+		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
 		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
@@ -236,7 +239,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
@@ -247,7 +250,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:
@@ -266,7 +269,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 	public void sendModePacket() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketUtils.sendToServer(getModePayload().getPacket());
+			PacketHandler.sendToServer(getModeCoFHPacket());
 		}
 	}
 
@@ -291,7 +294,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketUtils.sendToPlayer(getGuiPayload().getPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}

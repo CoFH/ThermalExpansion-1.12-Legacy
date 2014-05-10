@@ -7,6 +7,9 @@ import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
+import cofh.network.PacketHandler;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -46,16 +49,11 @@ public class GuiActivator extends GuiBaseAdv {
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n"));
 
-		settingClick = new ElementButton(this, 120, 20, "LeftClick", myTile.leftClick ? 176 : 196, 0, myTile.leftClick ? 176 : 196, 20, 20, 20, TEX_PATH)
-				.setToolTip(myTile.leftClick ? "info.thermalexpansion.activator.clickLeft" : "info.thermalexpansion.activator.clickRight");
-		settingSneak = new ElementButton(this, 144, 20, "Sneak", myTile.actsSneaking ? 176 : 196, 60, myTile.actsSneaking ? 176 : 196, 80, 20, 20, TEX_PATH)
-				.setToolTip(myTile.actsSneaking ? "info.thermalexpansion.activator.sneakOn" : "info.thermalexpansion.activator.sneakOff");
-		settingSlot = new ElementButton(this, 120, 44, "tickSlot", myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 120,
-				myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 140, 20, 20, TEX_PATH)
-				.setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.activator.slotsRR"
-						: myTile.tickSlot == 1 ? "info.thermalexpansion.activator.slotsRand" : "info.thermalexpansion.activator.slotsFirst");
-		settingAngle = new ElementButton(this, 144, 44, "Angle", myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216, 180, myTile.angle == 0 ? 176
-				: myTile.angle == 1 ? 196 : 216, 200, 20, 20, TEX_PATH).setToolTip(myTile.angle == 0 ? "info.thermalexpansion.activator.angleLow"
+		settingClick = new ElementButton(this, 120, 20, "LeftClick", myTile.leftClick ? 176 : 196, 0, myTile.leftClick ? 176 : 196, 20, 20, 20, TEX_PATH).setToolTip(myTile.leftClick ? "info.thermalexpansion.activator.clickLeft" : "info.thermalexpansion.activator.clickRight");
+		settingSneak = new ElementButton(this, 144, 20, "Sneak", myTile.actsSneaking ? 176 : 196, 60, myTile.actsSneaking ? 176 : 196, 80, 20, 20, TEX_PATH).setToolTip(myTile.actsSneaking ? "info.thermalexpansion.activator.sneakOn" : "info.thermalexpansion.activator.sneakOff");
+		settingSlot = new ElementButton(this, 120, 44, "tickSlot", myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 120, myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 140, 20, 20, TEX_PATH).setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.activator.slotsRR"
+				: myTile.tickSlot == 1 ? "info.thermalexpansion.activator.slotsRand" : "info.thermalexpansion.activator.slotsFirst");
+		settingAngle = new ElementButton(this, 144, 44, "Angle", myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216, 180, myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216, 200, 20, 20, TEX_PATH).setToolTip(myTile.angle == 0 ? "info.thermalexpansion.activator.angleLow"
 				: myTile.angle == 1 ? "info.thermalexpansion.activator.angleLevel" : "info.thermalexpansion.activator.angleHigh");
 
 		addElement(settingClick);
@@ -84,8 +82,7 @@ public class GuiActivator extends GuiBaseAdv {
 		} else if (buttonName.equalsIgnoreCase("tickSlot")) {
 			myTile.tickSlot++;
 			myTile.tickSlot %= 3;
-			settingSlot.setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.activator.slotsRR"
-					: myTile.tickSlot == 1 ? "info.thermalexpansion.activator.slotsRand" : "info.thermalexpansion.activator.slotsFirst");
+			settingSlot.setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.activator.slotsRR" : myTile.tickSlot == 1 ? "info.thermalexpansion.activator.slotsRand" : "info.thermalexpansion.activator.slotsFirst");
 			settingSlot.setSheetX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
 			settingSlot.setHoverX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
 			sendUpdatePacket();
@@ -93,8 +90,7 @@ public class GuiActivator extends GuiBaseAdv {
 		} else if (buttonName.equalsIgnoreCase("Angle")) {
 			myTile.angle++;
 			myTile.angle %= 3;
-			settingAngle.setToolTip(myTile.angle == 0 ? "info.thermalexpansion.activator.angleLow"
-					: myTile.angle == 1 ? "info.thermalexpansion.activator.angleLevel" : "info.thermalexpansion.activator.angleHigh");
+			settingAngle.setToolTip(myTile.angle == 0 ? "info.thermalexpansion.activator.angleLow" : myTile.angle == 1 ? "info.thermalexpansion.activator.angleLevel" : "info.thermalexpansion.activator.angleHigh");
 			settingAngle.setSheetX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
 			settingAngle.setHoverX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
 			sendUpdatePacket();
@@ -104,14 +100,14 @@ public class GuiActivator extends GuiBaseAdv {
 
 	public void sendUpdatePacket() {
 
-		Payload myPayload = Payload.getInfoPayload(myTile);
-		myPayload.addByte(TEProps.PacketID.MODE.ordinal());
-		myPayload.addBool(myTile.leftClick);
-		myPayload.addBool(myTile.actsSneaking);
-		myPayload.addByte(myTile.tickSlot);
-		myPayload.addByte(myTile.angle);
+		CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(myTile);
+		myPacket.addByte(TEProps.PacketID.MODE.ordinal());
+		myPacket.addBool(myTile.leftClick);
+		myPacket.addBool(myTile.actsSneaking);
+		myPacket.addByte(myTile.tickSlot);
+		myPacket.addByte(myTile.angle);
 
-		PacketUtils.sendToServer(myPayload.getPacket());
+		PacketHandler.sendToServer(myPacket);
 	}
 
 }

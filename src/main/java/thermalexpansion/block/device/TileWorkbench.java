@@ -3,8 +3,11 @@ package thermalexpansion.block.device;
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.tileentity.ISidedBlockTexture;
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
+import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
@@ -121,9 +124,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 2))) {
+							if (containerStack != null && (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 2))) {
 
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
@@ -180,9 +181,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 2))) {
+							if (containerStack != null && (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 2))) {
 
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
@@ -238,7 +237,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		for (int i = 0; i < 9; i++) {
 			inventory[getMatrixOffset() + i] = null;
 		}
-		PacketUtils.sendToServer(Payload.getInfoPayload(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()).getPacket());
+		PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
 	}
 
 	public void setCraftingGrid() {
@@ -246,14 +245,14 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		for (int i = 0; i < 9; i++) {
 			inventory[getMatrixOffset() + i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 		}
-		PacketUtils.sendToServer(Payload.getInfoPayload(this).addByte(PacketInfoID.SET_GRID.ordinal()).getPacket());
+		PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
 	}
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(selectedSchematic);
@@ -263,9 +262,9 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		access = ISecureTile.AccessMode.values()[payload.getByte()];
 		selectedSchematic = payload.getByte();
@@ -281,22 +280,22 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(Payload payload, NetHandler handler) {
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
 
 		int type = payload.getByte();
 
 		if (type == PacketInfoID.CLEAR_GRID.ordinal()) {
 			for (int i = 0; i < 9; i++) {
 				inventory[getMatrixOffset() + i] = null;
-				if (handler.getPlayer().openContainer != null) {
-					handler.getPlayer().openContainer.onCraftMatrixChanged(null);
+				if (thePlayer.openContainer != null) {
+					thePlayer.openContainer.onCraftMatrixChanged(null);
 				}
 			}
 		} else if (type == PacketInfoID.SET_GRID.ordinal()) {
 			for (int i = 0; i < 9; i++) {
 				inventory[getMatrixOffset() + i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
-				if (handler.getPlayer().openContainer != null) {
-					handler.getPlayer().openContainer.onCraftMatrixChanged(null);
+				if (thePlayer.openContainer != null) {
+					thePlayer.openContainer.onCraftMatrixChanged(null);
 				}
 			}
 		} else if (type == PacketInfoID.NEI_SUP.ordinal()) {
@@ -307,9 +306,9 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 			while ((slot = payload.getByte()) >= 0) {
 				inventory[slot + getMatrixOffset()] = payload.getItemStack();
 			}
-			Container container = handler.getPlayer().openContainer;
+			Container container = thePlayer.openContainer;
 			if (container != null) {
-				((ICrafting) handler.getPlayer()).sendContainerAndContentsToPlayer(container, container.getInventory());
+				((ICrafting) thePlayer).sendContainerAndContentsToPlayer(container, container.getInventory());
 				container.onCraftMatrixChanged(null);
 			}
 		}

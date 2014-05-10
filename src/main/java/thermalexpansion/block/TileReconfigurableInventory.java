@@ -3,6 +3,7 @@ package thermalexpansion.block;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
@@ -27,9 +28,9 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
@@ -39,7 +40,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 

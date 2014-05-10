@@ -1,6 +1,7 @@
 package thermalexpansion.block;
 
 import cofh.api.tileentity.IRedstoneControl;
+import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,9 +38,9 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(isPowered);
 		payload.addBool(rsDisable);
@@ -49,7 +50,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		isPowered = payload.getBool();
 		rsDisable = payload.getBool();

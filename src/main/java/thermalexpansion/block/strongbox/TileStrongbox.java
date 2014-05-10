@@ -3,6 +3,7 @@ package thermalexpansion.block.strongbox;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISecureTile;
 import cofh.core.CoFHProps;
+import cofh.network.CoFHPacket;
 import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
@@ -175,9 +176,9 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 
 	/* NETWORK METHODS */
 	@Override
-	public Payload getDescriptionPayload() {
+	public CoFHPacket getPacket() {
 
-		Payload payload = super.getDescriptionPayload();
+		CoFHPacket payload = super.getPacket();
 
 		payload.addByte(type);
 		payload.addByte((byte) access.ordinal());
@@ -188,7 +189,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(Payload payload) {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload);
 
