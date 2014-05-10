@@ -190,7 +190,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			renderFluid = payload.getFluidStack();

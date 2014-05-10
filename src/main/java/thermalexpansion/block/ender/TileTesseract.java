@@ -638,7 +638,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		isActive = payload.getBool();
 		modeItem = payload.getByte();

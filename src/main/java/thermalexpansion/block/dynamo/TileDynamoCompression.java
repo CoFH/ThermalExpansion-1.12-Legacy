@@ -153,7 +153,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		renderFluid = payload.getFluidStack();
 

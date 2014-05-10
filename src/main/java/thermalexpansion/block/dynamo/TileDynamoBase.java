@@ -270,7 +270,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			facing = payload.getByte();

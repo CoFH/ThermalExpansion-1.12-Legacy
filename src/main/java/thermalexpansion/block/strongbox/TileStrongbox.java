@@ -191,7 +191,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		type = payload.getByte();
 		access = ISecureTile.AccessMode.values()[payload.getByte()];

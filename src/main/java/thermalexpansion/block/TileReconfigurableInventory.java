@@ -42,7 +42,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		payload.getByteArray(sideCache);
 

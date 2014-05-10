@@ -241,7 +241,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			energyStorage.setEnergyStored(payload.getInt());

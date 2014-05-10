@@ -57,7 +57,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		isPowered = payload.getBool();
 		rsDisable = payload.getBool();

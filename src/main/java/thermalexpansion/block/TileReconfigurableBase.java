@@ -41,7 +41,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		payload.getByteArray(sideCache);
 

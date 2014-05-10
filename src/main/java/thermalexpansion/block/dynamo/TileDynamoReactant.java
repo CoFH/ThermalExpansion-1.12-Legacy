@@ -179,7 +179,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		super.handleTilePacket(payload);
+		super.handleTilePacket(payload, isServer);
 
 		renderFluid = payload.getFluidStack();
 
