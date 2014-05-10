@@ -77,8 +77,7 @@ public class SawmillManager {
 
 		if (ItemHelper.oreNameExists("woodRubber")) {
 			if (ItemHelper.oreNameExists("itemRawRubber")) {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3), OreDictionary.getOres("itemRawRubber").get(0),
-						50);
+				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3), OreDictionary.getOres("itemRawRubber").get(0), 50);
 			} else if (ItemHelper.oreNameExists("itemRubber")) {
 				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3), OreDictionary.getOres("itemRubber").get(0), 50);
 			} else {
@@ -252,8 +251,7 @@ public class SawmillManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
-					|| oreName.equals(RUBBER);
+			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(RUBBER);
 		}
 
 		public static int getOreID(ItemStack stack) {

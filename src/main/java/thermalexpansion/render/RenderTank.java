@@ -12,8 +12,6 @@ import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
@@ -57,7 +55,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
 		modelFrame.computeNormals();
 		for (int i = 24; i < 48; i++) {
-			modelFrame.verts[i].vec.add(modelFrame.normals[i].copy().multiply(inset));
+			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
 		}
 		modelFrame.computeLighting(LightModel.standardLightModel);
 	}
@@ -109,11 +107,12 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		}
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
+		// CCRenderState.startDrawing();
 		Fluid fluid = stack.getFluid();
 
 		RenderUtils.setFluidRenderColor(stack);
-		Icon fluidTex = RenderHelper.getFluidTexture(stack);
+		IIcon fluidTex = RenderHelper.getFluidTexture(stack);
 		int level = TileTank.RENDER_LEVELS - 1;
 
 		if (fluid.isGaseous(stack)) {
@@ -146,7 +145,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		} else {
 			CCRenderState.draw();
 			renderFluid(theTile.getBlockMetadata(), theTile.getTankFluid(), x, y, z);
-			CCRenderState.startDrawing(7);
+			CCRenderState.startDrawing();
 		}
 		RenderUtils.afterWorldRender(world, x, y, z);
 
@@ -154,7 +153,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int modelId) {
 
 		return true;
 	}
@@ -191,7 +190,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		}
 		RenderUtils.preRender();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		instance.renderFrame(item.getItemDamage(), 0, offset, offset, offset);
 		CCRenderState.draw();
 
@@ -204,7 +203,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_BLEND);
 
-		CCRenderState.useNormals(false);
+		CCRenderState.useNormals = false;
 	}
 
 }

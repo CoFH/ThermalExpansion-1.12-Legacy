@@ -100,7 +100,7 @@ public class GuiActivator extends GuiBaseAdv {
 
 	public void sendUpdatePacket() {
 
-		CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(myTile);
+		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(myTile);
 		myPacket.addByte(TEProps.PacketID.MODE.ordinal());
 		myPacket.addBool(myTile.leftClick);
 		myPacket.addBool(myTile.actsSneaking);

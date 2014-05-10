@@ -4,15 +4,17 @@ import cofh.util.CoreUtils;
 
 import java.util.ArrayList;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.PotionEffect;
+
+import powercrystals.minefactoryreloaded.api.ILiquidDrinkHandler;
 
 public class DrinkHandlerRedstone implements ILiquidDrinkHandler {
 
 	public static DrinkHandlerRedstone instance = new DrinkHandlerRedstone();
 
 	@Override
-	public void onDrink(EntityPlayer player) {
+	public void onDrink(EntityLivingBase player) {
 
 		ArrayList<PotionEffect> effects = new ArrayList<PotionEffect>(player.getActivePotionEffects());
 		for (PotionEffect effect : effects) {
@@ -24,7 +26,7 @@ public class DrinkHandlerRedstone implements ILiquidDrinkHandler {
 		CoreUtils.doFakeExplosion(player.worldObj, player.posX, player.posY, player.posZ, false);
 	}
 
-	boolean amplifyEffect(EntityPlayer player, PotionEffect effect) {
+	boolean amplifyEffect(EntityLivingBase player, PotionEffect effect) {
 
 		if (effect == null || effect.getIsAmbient()) {
 			return false;

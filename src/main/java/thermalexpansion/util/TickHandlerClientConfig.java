@@ -1,29 +1,26 @@
 package thermalexpansion.util;
 
-import java.util.EnumSet;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 
 import thermalexpansion.ThermalExpansion;
 
-public class TickHandlerClientConfig implements ITickHandler {
+public class TickHandlerClientConfig {
 
 	public static TickHandlerClientConfig instance = new TickHandlerClientConfig();
 
 	public boolean needsMenu = false;
 
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData) {
+	@SubscribeEvent
+	public void clientTick(ClientTickEvent theEvt) {
 
-	}
+		if (theEvt.phase == Phase.END) {
+			Minecraft mc = Minecraft.getMinecraft();
 
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData) {
-
-		Minecraft mc = Minecraft.getMinecraft();
-
-		if (type.contains(TickType.CLIENT)) {
 			if (mc.currentScreen instanceof GuiMainMenu) {
 				if (needsMenu) {
 					onMainMenu();
@@ -32,19 +29,8 @@ public class TickHandlerClientConfig implements ITickHandler {
 			} else if (mc.inGameHasFocus) {
 				needsMenu = true;
 			}
+
 		}
-	}
-
-	@Override
-	public EnumSet<TickType> ticks() {
-
-		return EnumSet.of(TickType.CLIENT);
-	}
-
-	@Override
-	public String getLabel() {
-
-		return "thermalexpansion.clientconfig";
 	}
 
 	public void onMainMenu() {

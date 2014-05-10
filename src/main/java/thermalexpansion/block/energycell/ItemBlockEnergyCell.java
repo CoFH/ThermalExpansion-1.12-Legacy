@@ -1,6 +1,7 @@
 package thermalexpansion.block.energycell;
 
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.block.ItemBlockCoFHBase;
 import cofh.util.StringHelper;
 
@@ -28,8 +29,7 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 		container.stackTagCompound.setInteger("Send", TileEnergyCell.MAX_SEND[container.getItemDamage()]);
 		container.stackTagCompound.setInteger("Receive", TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]);
 
-		container.stackTagCompound.setBoolean("Disable", false);
-		container.stackTagCompound.setBoolean("Setting", false);
+		container.stackTagCompound.setByte("rsMode", (byte) ControlMode.LOW.ordinal());
 
 		return container;
 	}
@@ -96,8 +96,7 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 		}
 		int send = stack.stackTagCompound.getInteger("Send");
 
-		boolean rsDisable = stack.stackTagCompound.getBoolean("Disable");
-		boolean rsSetting = stack.stackTagCompound.getBoolean("Setting");
+		ControlMode rsMode = ControlMode.values()[stack.stackTagCompound.getByte("rsMode")];
 
 		if (stack.getItemDamage() == BlockEnergyCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
@@ -106,18 +105,15 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 			int energy = stack.stackTagCompound.getInteger("Energy");
 			int receive = stack.stackTagCompound.getInteger("Receive");
 
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / "
-					+ StringHelper.getScaledNumber(TileEnergyCell.STORAGE[stack.getItemDamage()]) + " RF");
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / " + StringHelper.getScaledNumber(TileEnergyCell.STORAGE[stack.getItemDamage()]) + " RF");
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + send + "/" + receive + " RF/t");
 		}
-		if (rsDisable) {
+		if (rsMode.isDisabled()) {
 			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
-		} else if (!rsSetting) {
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-					+ StringHelper.localize("info.cofh.redstoneStateLow"));
+		} else if (rsMode.isLow()) {
+			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateLow"));
 		} else {
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-					+ StringHelper.localize("info.cofh.redstoneStateHigh"));
+			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateHigh"));
 		}
 	}
 
@@ -150,8 +146,7 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive,
-				Math.min(TileEnergyCell.STORAGE[container.getItemDamage()] - stored, TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]));
+		int receive = Math.min(maxReceive, Math.min(TileEnergyCell.STORAGE[container.getItemDamage()] - stored, TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]));
 
 		if (!simulate && container.getItemDamage() != BlockEnergyCell.Types.CREATIVE.ordinal()) {
 			stored += receive;

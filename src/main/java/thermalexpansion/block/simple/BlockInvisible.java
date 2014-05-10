@@ -22,7 +22,7 @@ public class BlockInvisible extends BlockContainer implements IInitializer {
 
 		super(Material.air);
 		disableStats();
-		setTextureName("glowstone");
+		setBlockTextureName("glowstone");
 		setBlockBounds(0, 0, 0, 0, 0, 0);
 	}
 

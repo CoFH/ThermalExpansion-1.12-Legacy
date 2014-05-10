@@ -66,10 +66,8 @@ public class GuiTransposer extends GuiBaseAdv {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1));
 		progressBackgroundRev = (ElementSimple) addElement(new ElementSimple(this, 112, 19).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 19).setFluid(myTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 48, 16));
-		progressOverlayRev = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(1).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_RIGHT, 48, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 48, 16));
+		progressOverlayRev = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_BUBBLE, 32, 16));
 		mode = (ElementButton) addElement(new ElementButton(this, 116, 49, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
 

@@ -30,8 +30,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 
-public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
-		IEnergyInfo {
+public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler, IEnergyInfo {
 
 	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
 
@@ -135,8 +134,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		if (adjacentHandler == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(config.maxTransfer, energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(config.maxTransfer, energyStorage.getEnergyStored()), false));
 	}
 
 	@Override
@@ -256,14 +254,14 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		return payload;
 	}
 
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(this);
 
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		payload.addInt(energyStorage.getEnergyStored());
+		myPacket.addByte(TEProps.PacketID.GUI.ordinal());
+		myPacket.addInt(energyStorage.getEnergyStored());
 
-		return payload;
+		return myPacket;
 	}
 
 	/* ITilePacketHandler */
@@ -280,7 +278,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 			payload.getBool();
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
@@ -307,7 +305,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}

@@ -12,8 +12,7 @@ import thermalexpansion.block.ender.TileTesseract;
 
 public class TabConfigTesseract extends TabBase {
 
-	public static final String[] TOOLTIPS = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
-			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
+	public static final String[] TOOLTIPS = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"), StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
 	TileTesseract myTile;
 	String myPlayer;

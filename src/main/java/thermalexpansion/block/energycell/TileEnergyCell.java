@@ -193,8 +193,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(energySend, energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false));
 	}
 
 	public IEnergyStorage getEnergyStorage() {
@@ -213,22 +212,22 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 		return payload;
 	}
 
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(this);
 
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		myPacket.addByte(TEProps.PacketID.GUI.ordinal());
 
-		payload.addInt(energySend);
-		payload.addInt(energyReceive);
-		payload.addInt(energyStorage.getEnergyStored());
+		myPacket.addInt(energySend);
+		myPacket.addInt(energyReceive);
+		myPacket.addInt(energyStorage.getEnergyStored());
 
-		return payload;
+		return myPacket;
 	}
 
 	public CoFHPacket getModeCoFHPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
 		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
@@ -294,7 +293,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}
@@ -351,7 +350,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 	}
 
 	@Override
-	public boolean canInterface(ForgeDirection from) {
+	public boolean canConnectEnergy(ForgeDirection from) {
 
 		if (from == ForgeDirection.UNKNOWN) {
 			return false;

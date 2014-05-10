@@ -164,8 +164,7 @@ public class BlockLamp extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R',
-					Items.redstone }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R', Items.redstone }));
 			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(GLFluids.fluidGlowstone, 1000), false, false);
 		}
 		return true;

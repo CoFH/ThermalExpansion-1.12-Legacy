@@ -58,7 +58,6 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 			}
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 

@@ -3,18 +3,20 @@ package thermalexpansion.plugins.mfr;
 import cofh.util.CoreUtils;
 import cofh.util.ServerHelper;
 
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+
+import powercrystals.minefactoryreloaded.api.ILiquidDrinkHandler;
 
 public class DrinkHandlerEnder implements ILiquidDrinkHandler {
 
 	public static DrinkHandlerEnder instance = new DrinkHandlerEnder();
 
 	@Override
-	public void onDrink(EntityPlayer player) {
+	public void onDrink(EntityLivingBase player) {
 
 		if (ServerHelper.isClientWorld(player.worldObj)) {
 			return;

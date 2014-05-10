@@ -1,5 +1,6 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.block.ItemBlockCoFHBase;
 import cofh.util.StringHelper;
 
@@ -72,8 +73,8 @@ public class ItemBlockTesseract extends ItemBlockCoFHBase {
 			byte modeFluid = stack.stackTagCompound.getByte("ModeFluid");
 			byte modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
 			byte access = stack.stackTagCompound.getByte("Access");
-			boolean rsDisable = stack.stackTagCompound.getBoolean("Disable");
-			boolean rsSetting = stack.stackTagCompound.getBoolean("State");
+
+			ControlMode rsMode = ControlMode.values()[stack.stackTagCompound.getByte("rsMode")];
 
 			String accessString = "";
 
@@ -99,19 +100,16 @@ public class ItemBlockTesseract extends ItemBlockCoFHBase {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + MODES[modeFluid]);
 			list.add(StringHelper.localize("info.cofh.energy") + ": " + MODES[modeEnergy]);
 
-			if (rsDisable) {
+			if (rsMode.isDisabled()) {
 				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
-			} else if (!rsSetting) {
-				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-						+ StringHelper.localize("info.cofh.redstoneStateLow"));
+			} else if (rsMode.isLow()) {
+				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateLow"));
 			} else {
-				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-						+ StringHelper.localize("info.cofh.redstoneStateHigh"));
+				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateHigh"));
 			}
 		}
 	}
 
-	public static final String[] MODES = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
-			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
+	public static final String[] MODES = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"), StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
 }

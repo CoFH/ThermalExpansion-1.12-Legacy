@@ -5,8 +5,6 @@ import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.logging.Level;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
@@ -54,7 +52,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
 			transferRate = genRate / CoFHProps.TIME_CONSTANT;
 		} else {
-			ThermalExpansion.log.info( "'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
+			ThermalExpansion.log.info("'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
 		ThermalExpansion.config.removeProperty("tweak", "WaterGen.PassiveGen");

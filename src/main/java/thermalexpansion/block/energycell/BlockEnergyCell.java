@@ -1,5 +1,6 @@
 package thermalexpansion.block.energycell;
 
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
@@ -100,8 +101,7 @@ public class BlockEnergyCell extends BlockTEBase {
 			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 
-			tile.setControlDisable(stack.stackTagCompound.getBoolean("Disable"));
-			tile.setControlSetting(stack.stackTagCompound.getBoolean("Setting"));
+			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -195,8 +195,7 @@ public class BlockEnergyCell extends BlockTEBase {
 			tag.setInteger("Send", tile.energySend);
 			tag.setInteger("Receive", tile.energyReceive);
 
-			tag.setBoolean("Disable", tile.getControlDisable());
-			tag.setBoolean("Setting", tile.getControlSetting());
+			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
 		}
 		return tag;
 	}
@@ -253,29 +252,24 @@ public class BlockEnergyCell extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', cellBasicFrame, 'P',
-					TEItems.powerCoilElectrum }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', cellBasicFrame, 'P', TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', cellBasicFrame, 'Y',
-					"ingotCopper", 'P', TEItems.powerCoilElectrum }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', cellBasicFrame, 'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotInvar, 3));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', cellReinforcedFrameFull, 'I', "ingotLead", 'P',
-					TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', cellReinforcedFrameFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "glass", 'X',
-				Blocks.redstone_block }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "glass", 'X', Blocks.redstone_block }));
 		PulverizerManager.addRecipe(4000, cellBasicFrame, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(GLItems.ingotLead, 3));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforcedFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "glassHardened",
-				'X', Items.diamond }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforcedFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "glassHardened", 'X', Items.diamond }));
 		TransposerManager.addTEFillRecipe(16000, cellReinforcedFrameEmpty, cellReinforcedFrameFull, new FluidStack(GLFluids.fluidRedstone, 4000), false);
 		return true;
 	}

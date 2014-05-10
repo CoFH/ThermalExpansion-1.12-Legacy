@@ -13,8 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-public abstract class TileReconfigurableInventory extends TileRSInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedBlockTexture,
-		ITilePacketHandler {
+public abstract class TileReconfigurableInventory extends TileRSInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedBlockTexture, ITilePacketHandler {
 
 	protected boolean isActive = false;
 	protected byte facing = 3;
@@ -59,7 +58,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 			}
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 

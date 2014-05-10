@@ -2,6 +2,7 @@ package thermalexpansion.block.tank;
 
 import cofh.block.ITileInfo;
 import cofh.network.CoFHPacket;
+import cofh.network.CoFHTilePacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
@@ -246,7 +247,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 	@Override
 	public CoFHPacket getPacket() {
 
-		CoFHPacket payload = CoFHPacket.getPacket(this);
+		CoFHPacket payload = CoFHTilePacket.newPacket(this);
 
 		payload.addByte(type);
 		payload.addByte(mode);
@@ -264,8 +265,8 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		mode = payload.getByte();
 		tank.setFluid(payload.getFluidStack());
 
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 	}
 
 	/* NBT METHODS */

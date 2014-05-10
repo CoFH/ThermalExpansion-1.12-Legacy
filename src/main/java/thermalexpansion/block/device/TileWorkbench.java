@@ -22,6 +22,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -96,7 +97,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2"));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
 	}
@@ -118,8 +119,8 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 						inventory[i + getMatrixOffset()] = ItemHelper.cloneStack(invCopy[j], 1);
 						invCopy[j].stackSize--;
 
-						if (invCopy[j].getItem().hasContainerItem()) {
-							ItemStack containerStack = invCopy[j].getItem().getContainerItemStack(invCopy[j]);
+						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
+							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
@@ -175,8 +176,8 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 						inventory[i + getMatrixOffset()] = ItemHelper.cloneStack(invCopy[j], 1);
 						invCopy[j].stackSize--;
 
-						if (invCopy[j].getItem().hasContainerItem()) {
-							ItemStack containerStack = invCopy[j].getItem().getContainerItemStack(invCopy[j]);
+						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
+							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
@@ -237,7 +238,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		for (int i = 0; i < 9; i++) {
 			inventory[getMatrixOffset() + i] = null;
 		}
-		PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
+		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
 	}
 
 	public void setCraftingGrid() {
@@ -245,7 +246,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		for (int i = 0; i < 9; i++) {
 			inventory[getMatrixOffset() + i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 		}
-		PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
+		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
 	}
 
 	/* NETWORK METHODS */

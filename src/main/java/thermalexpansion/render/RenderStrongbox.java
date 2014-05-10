@@ -67,7 +67,7 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 		TileStrongbox strongbox = (TileStrongbox) entity;
 		model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
 		render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
-		CCRenderState.useNormals(false);
+		CCRenderState.useNormals = false;
 	}
 
 	@Override

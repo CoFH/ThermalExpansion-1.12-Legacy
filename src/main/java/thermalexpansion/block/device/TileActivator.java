@@ -16,6 +16,7 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -252,8 +253,8 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 
-		int blockID = worldObj.getBlockId(coords[0], coords[1], coords[2]);
-		if (blockID != 0) {
+		Block theBlock = worldObj.getBlock(coords[0], coords[1], coords[2]);
+		if (theBlock != Blocks.air) {
 			if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock == -1) {
 				myFakePlayer.theItemInWorldManager.onBlockClicked(coords[0], coords[1], coords[2], facing ^ 1);
 			} else if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
@@ -261,7 +262,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 				myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
 
 				if (deployingStack != null) {
-					deployingStack.onBlockDestroyed(worldObj, blockID, coords[0], coords[1], coords[2], myFakePlayer);
+					deployingStack.getItem().onBlockDestroyed(deployingStack, worldObj, theBlock, coords[0], coords[1], coords[2], myFakePlayer);
 				}
 			}
 		} else {

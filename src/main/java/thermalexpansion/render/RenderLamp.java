@@ -9,12 +9,11 @@ import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -31,8 +30,8 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	static final int NUM_RENDERS = 1;
 
-	static Icon[] textureCenter = new Icon[2];
-	static Icon[] textureFrame = new Icon[NUM_RENDERS];
+	static IIcon[] textureCenter = new IIcon[2];
+	static IIcon[] textureFrame = new IIcon[NUM_RENDERS];
 	static CCModel[] modelCenter = new CCModel[NUM_RENDERS];
 	static CCModel[] modelFrame = new CCModel[NUM_RENDERS];
 
@@ -60,8 +59,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 2.0D * d1;
 
-		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals()
-				.computeLighting(LightModel.standardLightModel);
+		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals().computeLighting(LightModel.standardLightModel);
 		modelCenter[0] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2).computeNormals();
 	}
 
@@ -109,7 +107,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int modelId) {
 
 		return true;
 	}
@@ -155,17 +153,17 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		RenderHelper.setBlockTextureSheet();
 		RenderUtils.preRender();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		CCRenderState.setColour(color);
 		instance.renderCenter(metadata, modified, offset, offset, offset);
 		CCRenderState.draw();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		CCRenderState.setColour(0xFFFFFFFF);
 		instance.renderFrame(metadata, offset, offset, offset);
 		CCRenderState.draw();
 
-		CCRenderState.useNormals(false);
+		CCRenderState.useNormals = false;
 		RenderHelper.setItemTextureSheet();
 
 		GL11.glDisable(GL11.GL_BLEND);

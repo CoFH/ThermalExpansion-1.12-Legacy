@@ -162,9 +162,9 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addFluidStack(tank.getFluid());

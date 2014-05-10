@@ -56,10 +56,8 @@ public class GuiRockGen extends GuiBaseAdv {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)));
 		progressLava = (ElementFluid) addElement(new ElementFluid(this, 40, 49).setFluid(FluidHelper.LAVA).setSize(24, 16));
 		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidHelper.WATER).setSize(24, 16));
-		progressLavaOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 40, 49).setMode(1).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_RIGHT, 48, 16));
-		progressWaterOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 48, 16));
+		progressLavaOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 40, 49).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
+		progressWaterOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 48, 16));
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfiguration(this, myTile));

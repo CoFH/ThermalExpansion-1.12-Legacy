@@ -1,44 +1,29 @@
 package thermalexpansion.entity;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.network.GenericTEPacket;
 
-public class TEPlayerTracker implements IPlayerTracker {
+public class TEPlayerTracker {
 
 	public static TEPlayerTracker instance = new TEPlayerTracker();
 
 	public static void initialize() {
 
-		GameRegistry.registerPlayerTracker(instance);
+		FMLCommonHandler.instance().bus().register(instance);
 	}
 
-	@Override
-	public void onPlayerLogin(EntityPlayer player) {
+	@SubscribeEvent
+	public void onPlayerLogin(PlayerLoggedInEvent evt) {
 
 		if (TEProps.enableAchievements) {
-			player.addStat(TEAchievements.baseTE, 1);
+			evt.player.addStat(TEAchievements.baseTE, 1);
 		}
-		GenericTEPacket.sendConfigSyncPacketToClient(player);
-	}
-
-	@Override
-	public void onPlayerLogout(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void onPlayerChangedDimension(EntityPlayer player) {
-
-	}
-
-	@Override
-	public void onPlayerRespawn(EntityPlayer player) {
-
+		GenericTEPacket.sendConfigSyncPacketToClient(evt.player);
 	}
 
 }

@@ -3,6 +3,8 @@ package thermalexpansion.block;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -43,8 +45,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(isPowered);
-		payload.addBool(rsDisable);
-		payload.addBool(rsSetting);
+		payload.addByte(rsMode.ordinal());
 		return payload;
 	}
 
@@ -53,8 +54,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		isPowered = payload.getBool();
-		rsDisable = payload.getBool();
-		rsSetting = payload.getBool();
+		rsMode = ControlMode.values()[payload.getByte()];
 	}
 
 	/* NBT METHODS */
@@ -66,8 +66,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 		NBTTagCompound rsControl = nbt.getCompoundTag("RS");
 
 		isPowered = rsControl.getBoolean("Powered");
-		rsDisable = rsControl.getBoolean("Disable");
-		rsSetting = rsControl.getBoolean("Setting");
+		rsMode = ControlMode.values()[rsControl.getByte("rsMode")];
 	}
 
 	@Override
@@ -78,18 +77,21 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 		NBTTagCompound rsControl = new NBTTagCompound();
 
 		rsControl.setBoolean("Powered", isPowered);
-		rsControl.setBoolean("Disable", rsDisable);
-		rsControl.setBoolean("Setting", rsSetting);
+		rsControl.setByte("rsMode", (byte) rsMode.ordinal());
 
 		nbt.setTag("RS", rsControl);
 	}
 
 	/* IRedstoneControl */
+	// TODO: A packet needs to be sent here at some point for the GUI button clicks. Determine a good place for this.
 	@Override
 	public void setPowered(boolean isPowered) {
 
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
 	}
 
 	@Override
@@ -102,6 +104,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 	public void setControl(ControlMode control) {
 
 		rsMode = control;
+		sendUpdatePacket(Side.CLIENT);
 	}
 
 	@Override
@@ -109,60 +112,5 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 
 		return rsMode;
 	}
-	// @Override
-	// public boolean getControlDisable() {
-	//
-	// return rsDisable;
-	// }
-	//
-	// @Override
-	// public boolean getControlSetting() {
-	//
-	// return rsSetting;
-	// }
-	//
-	// @Override
-	// public boolean setControlDisable(boolean disable) {
-	//
-	// rsDisable = disable;
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean setControlSetting(boolean setting) {
-	//
-	// rsSetting = setting;
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean setRedstoneConfig(boolean disable, boolean setting) {
-	//
-	// rsDisable = disable;
-	// rsSetting = setting;
-	// TEPacketHandler.sendRSConfigUpdatePacketToServer(this, xCoord, yCoord, zCoord);
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean isPowered() {
-	//
-	// return isPowered;
-	// }
-	//
-	// @Override
-	// public void handlePowerUpdate(boolean powered) {
-	//
-	// isPowered = powered;
-	// worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-	// }
-	//
-	// @Override
-	// public void handleConfigUpdate(boolean disable, boolean setting) {
-	//
-	// rsDisable = disable;
-	// rsSetting = setting;
-	// sendUpdatePacket(Side.CLIENT);
-	// }
 
 }

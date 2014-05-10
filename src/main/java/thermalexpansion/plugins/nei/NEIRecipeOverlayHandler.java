@@ -39,7 +39,7 @@ public class NEIRecipeOverlayHandler implements IOverlayHandler {
 				Slot curSlot = (Slot) curObj;
 				curSlot.putStack(null);
 			}
-			CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(((GuiWorkbench) firstGui).myTile);
+			CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(((GuiWorkbench) firstGui).myTile);
 			myPacket.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
 			boolean foundSlots = false;
 			List<PositionedStack> item = recipe.getIngredientStacks(recipeIndex);

@@ -139,10 +139,8 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
 			list.add(StringHelper.localize("info.cofh.send") + ": " + SEND[stack.getItemDamage()] + " RF/t");
 		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(STORAGE[stack.getItemDamage()]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[stack.getItemDamage()] + "/"
-					+ RECEIVE[stack.getItemDamage()] + " RF/t");
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / " + StringHelper.getScaledNumber(STORAGE[stack.getItemDamage()]) + " RF");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[stack.getItemDamage()] + "/" + RECEIVE[stack.getItemDamage()] + " RF/t");
 		}
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor3"));

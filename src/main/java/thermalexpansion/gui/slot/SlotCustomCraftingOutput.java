@@ -36,8 +36,7 @@ public class SlotCustomCraftingOutput extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
 
-		return ServerHelper.isClientWorld(player.worldObj) ? myTile.createItemClient(false, inventory.getStackInSlot(getSlotIndex())) : myTile.createItem(
-				false, inventory.getStackInSlot(getSlotIndex()));
+		return ServerHelper.isClientWorld(player.worldObj) ? myTile.createItemClient(false, inventory.getStackInSlot(getSlotIndex())) : myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
 	}
 
 	@Override

@@ -3,6 +3,8 @@ package thermalexpansion.plugins.mfr;
 import cofh.util.MathHelper;
 import cpw.mods.fml.common.Loader;
 
+import powercrystals.minefactoryreloaded.api.FactoryRegistry;
+
 import thermalexpansion.ThermalExpansion;
 
 public class MFRPlugin {
@@ -18,8 +20,7 @@ public class MFRPlugin {
 		strawCryotheum = ThermalExpansion.config.get(category, "MFR.Cryotheum.Straw", true);
 		strawCoal = ThermalExpansion.config.get(category, "MFR.Coal.Straw", true);
 
-		strawEnderRange = ThermalExpansion.config.get(category, "MFR.Ender.Range", strawEnderRange,
-				"This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Max: 65536)");
+		strawEnderRange = ThermalExpansion.config.get(category, "MFR.Ender.Range", strawEnderRange, "This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Max: 65536)");
 		strawEnderRange = MathHelper.clampI(strawEnderRange, 8, 65536);
 	}
 

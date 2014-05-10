@@ -165,8 +165,7 @@ public class PulverizerManager {
 			addRecipe(2400, OreDictionary.getOres("oreSulfur").get(0), ItemHelper.cloneStack(GLItems.dustSulfur, 6));
 		}
 		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
-			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2),
-					OreDictionary.getOres("dustCertusQuartz").get(0), 10);
+			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2), OreDictionary.getOres("dustCertusQuartz").get(0), 10);
 			addRecipe(1600, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
 		}
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
@@ -380,8 +379,7 @@ public class PulverizerManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
-					|| oreName.startsWith(LOG);
+			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG);
 		}
 
 		public static int getOreID(ItemStack stack) {

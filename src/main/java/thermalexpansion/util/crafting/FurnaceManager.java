@@ -6,10 +6,8 @@ import cofh.util.inventory.ComparableItemStackSafe;
 import geologic.item.GLItems;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -21,7 +19,7 @@ import thermalexpansion.ThermalExpansion;
 public class FurnaceManager {
 
 	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new HashMap();
-	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Block.stone));
+	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -88,43 +86,25 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "dustInvar", GLItems.ingotInvar);
 		addOreDictRecipe(energy, "dustBronze", GLItems.ingotBronze);
 
-		Map<List<Integer>, ItemStack> metaSmeltingList = FurnaceRecipes.smelting().getMetaSmeltingList();
-		Map<Integer, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
-
-		ItemStack input;
+		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;
 
-		for (List<Integer> key : metaSmeltingList.keySet()) {
+		for (ItemStack key : smeltingList.keySet()) {
 
 			energy = DEFAULT_ENERGY;
 
-			input = new ItemStack(key.get(0), 1, key.get(1));
-			output = metaSmeltingList.get(key);
-
-			if (ItemHelper.isDust(input) && ItemHelper.isIngot(output)) {
-				addRecipe(energy * 10 / 16, input, output, false);
-			} else {
-				addRecipe(energy, input, output, false);
-			}
-		}
-		for (Integer key : smeltingList.keySet()) {
-
-			energy = DEFAULT_ENERGY;
-
-			input = new ItemStack(key, 1, 0);
-
-			if (recipeExists(input)) {
+			if (recipeExists(key)) {
 				continue;
 			}
-			if (!ItemHelper.hasOreName(input) || ComparableItemStackSafe.getOreID(input) == -1) {
-				input = new ItemStack(key, 1, OreDictionary.WILDCARD_VALUE);
+			if (!ItemHelper.hasOreName(key) || ComparableItemStackSafe.getOreID(key) == -1) {
+				key.setItemDamage(OreDictionary.WILDCARD_VALUE);
 			}
 			output = smeltingList.get(key);
 
-			if (ItemHelper.isDust(input) && ItemHelper.isIngot(output)) {
-				addRecipe(energy * 10 / 16, input, output, false);
+			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
+				addRecipe(energy * 10 / 16, key, output, false);
 			} else {
-				addRecipe(energy, input, output, false);
+				addRecipe(energy, key, output, false);
 			}
 		}
 	}

@@ -12,6 +12,7 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
@@ -91,7 +92,7 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 		mode = (byte) (++mode % 6);
 		sendUpdatePacket(Side.CLIENT);
 
-		player.addChatMessage(StringHelper.localize("message.thermalexpansion.lamp" + mode));
+		player.addChatMessage(new ChatComponentText(StringHelper.localize("message.thermalexpansion.lamp" + mode)));
 		return true;
 	}
 
@@ -157,7 +158,7 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord); // This was mark for light update
 	}
 
 	/* NBT METHODS */

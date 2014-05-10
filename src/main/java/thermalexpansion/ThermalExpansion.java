@@ -163,12 +163,15 @@ public class ThermalExpansion extends BaseMod {
 			PulverizerManager.secondaryWoolPercentages = 25;
 			log.info("'WoolColorChances' config value is out of acceptable range. Using default. Must be 0-100.");
 		}
+
+		TEPlayerTracker.initialize();
 	}
 
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
-		config.preInit();
+		// TODO: Figure out why this was removed?
+		// config.preInit();
 
 		TEItems.initialize();
 		TEBlocks.initialize();
@@ -209,7 +212,6 @@ public class ThermalExpansion extends BaseMod {
 
 		proxy.registerEntities();
 		proxy.registerRenderInformation();
-		proxy.registerTickHandlers();
 	}
 
 	@Subscribe
@@ -251,8 +253,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public CoFHPacket getConfigSync() {
 
-		CoFHPacket myPacket = CoFHPacket.getCoFHPacket(packetID);
-		myPacket.addByte(PacketTypes.CONFIG_SYNC.ordinal());
+		CoFHPacket myPacket = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
 
 		myPacket.addBool(TileWorkbench.enableSecurity);
 		myPacket.addBool(TileStrongbox.enableSecurity);

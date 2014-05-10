@@ -260,13 +260,11 @@ public class GuiTesseract extends GuiBaseAdv {
 					tbFreq.setText(String.valueOf(tempFreq));
 				}
 			}
-		} else if (tbNameX - guiLeft <= mouseX && mouseX < tbNameX - guiLeft + tbName.getWidth() && mouseY >= tbNameY - guiTop
-				&& mouseY < tbNameY - guiTop + 12) {
+		} else if (tbNameX - guiLeft <= mouseX && mouseX < tbNameX - guiLeft + tbName.getWidth() && mouseY >= tbNameY - guiTop && mouseY < tbNameY - guiTop + 12) {
 			tbName.setFocused(true);
 			tbFreq.setFocused(false);
 
-		} else if (tbFreqX - guiLeft <= mouseX && mouseX < tbFreqX - guiLeft + tbFreq.getWidth() && mouseY >= tbFreqY - guiTop
-				&& mouseY < tbFreqY - guiTop + 12) {
+		} else if (tbFreqX - guiLeft <= mouseX && mouseX < tbFreqX - guiLeft + tbFreq.getWidth() && mouseY >= tbFreqY - guiTop && mouseY < tbFreqY - guiTop + 12) {
 			tbName.setFocused(false);
 			tbFreq.setFocused(true);
 
@@ -365,8 +363,7 @@ public class GuiTesseract extends GuiBaseAdv {
 			RegistryEnderAttuned.sortClientNames();
 			for (String curName : RegistryEnderAttuned.clientFrequencyNames.values()) {
 				taNamesList.addLine(curName);
-				if (curName.equals(tbName.getText())
-						&& myTile.frequency == Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()))) {
+				if (curName.equals(tbName.getText()) && myTile.frequency == Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()))) {
 					taNamesList.selectedLine = i;
 				}
 				i++;

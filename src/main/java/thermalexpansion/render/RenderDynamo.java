@@ -117,12 +117,12 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 
 		RenderUtils.preRender();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		renderCoil(1, false, -0.5, -0.5, -0.5);
 		renderBase(1, false, metadata, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
 
-		CCRenderState.useNormals(false);
+		CCRenderState.useNormals = false;
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int modelId) {
 
 		return true;
 	}

@@ -1,5 +1,8 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import static codechicken.lib.gui.GuiDraw.drawString;
+import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 
@@ -86,8 +89,7 @@ public class RecipeHandlerPulverizer extends RecipeHandlerBase {
 
 		RecipePulverizer[] recipes = PulverizerManager.getRecipeList();
 		for (RecipePulverizer recipe : recipes) {
-			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null
-					&& NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
+			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null && NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
 				arecipes.add(new NEIRecipePulverizer(recipe));
 			}
 		}

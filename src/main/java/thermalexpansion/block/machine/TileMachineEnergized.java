@@ -148,8 +148,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[getChargeSlot()])) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(
-					((IEnergyContainerItem) inventory[getChargeSlot()].getItem()).extractEnergy(inventory[getChargeSlot()], energyRequest, false), false);
+			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[getChargeSlot()].getItem()).extractEnergy(inventory[getChargeSlot()], energyRequest, false), false);
 		}
 	}
 

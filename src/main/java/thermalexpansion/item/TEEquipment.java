@@ -30,33 +30,20 @@ public class TEEquipment {
 
 	public static void initialize() {
 
-		itemHelmetInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Helmet"), ARMOR_INVAR, 0).setRepairIngot("ingotInvar")
-				.setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarHelmet").setTextureName("thermalexpansion:armor/ArmorInvarHelmet");
-		itemPlateInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Plate"), ARMOR_INVAR, 1).setRepairIngot("ingotInvar")
-				.setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarPlate").setTextureName("thermalexpansion:armor/ArmorInvarChestplate");
-		itemLegsInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Legs"), ARMOR_INVAR, 2).setRepairIngot("ingotInvar")
-				.setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarLegs").setTextureName("thermalexpansion:armor/ArmorInvarLegs");
-		itemBootsInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Boots"), ARMOR_INVAR, 3).setRepairIngot("ingotInvar")
-				.setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarBoots").setTextureName("thermalexpansion:armor/ArmorInvarBoots");
+		itemHelmetInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Helmet"), ARMOR_INVAR, 0).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarHelmet").setTextureName("thermalexpansion:armor/ArmorInvarHelmet");
+		itemPlateInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Plate"), ARMOR_INVAR, 1).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarPlate").setTextureName("thermalexpansion:armor/ArmorInvarChestplate");
+		itemLegsInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Legs"), ARMOR_INVAR, 2).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarLegs").setTextureName("thermalexpansion:armor/ArmorInvarLegs");
+		itemBootsInvar = (ItemArmorAdv) new ItemArmorAdv(ThermalExpansion.config.getItemId("Armor.Invar.Boots"), ARMOR_INVAR, 3).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR).setUnlocalizedName(ARMOR + "invarBoots").setTextureName("thermalexpansion:armor/ArmorInvarBoots");
 
-		itemSwordInvar = new ItemSwordAdv(ThermalExpansion.config.getItemId("Tool.Invar.Sword"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarSword").setTextureName("thermalexpansion:tool/InvarSword");
-		itemShovelInvar = new ItemShovelAdv(ThermalExpansion.config.getItemId("Tool.Invar.Shovel"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarShovel").setTextureName("thermalexpansion:tool/InvarShovel");
-		itemPickaxeInvar = new ItemPickaxeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Pickaxe"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarPickaxe").setTextureName("thermalexpansion:tool/InvarPickaxe");
-		itemAxeInvar = new ItemAxeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Axe"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarAxe").setTextureName("thermalexpansion:tool/InvarAxe");
-		itemHoeInvar = new ItemHoeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Hoe"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarHoe").setTextureName("thermalexpansion:tool/InvarHoe");
-		itemShearsInvar = new ItemShearsAdv(ThermalExpansion.config.getItemId("Tool.Invar.Shears"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarShears").setTextureName("thermalexpansion:tool/InvarShears");
-		itemFishingRodInvar = new ItemFishingRodAdv(ThermalExpansion.config.getItemId("Tool.Invar.FishingRod"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarFishingRod").setTextureName("thermalexpansion:tool/InvarFishingRod");
-		itemSickleInvar = new ItemSickleAdv(ThermalExpansion.config.getItemId("Tool.Invar.Sickle"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarSickle").setTextureName("thermalexpansion:tool/InvarSickle");
-		itemBattleWrenchInvar = new ItemWrenchBattle(ThermalExpansion.config.getItemId("Tool.Invar.BattleWrench"), TOOL_INVAR).setRepairIngot("ingotInvar")
-				.setUnlocalizedName(TOOL + "invarBattleWrench").setTextureName("thermalexpansion:tool/InvarBattleWrench");
+		itemSwordInvar = new ItemSwordAdv(ThermalExpansion.config.getItemId("Tool.Invar.Sword"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSword").setTextureName("thermalexpansion:tool/InvarSword");
+		itemShovelInvar = new ItemShovelAdv(ThermalExpansion.config.getItemId("Tool.Invar.Shovel"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShovel").setTextureName("thermalexpansion:tool/InvarShovel");
+		itemPickaxeInvar = new ItemPickaxeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Pickaxe"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarPickaxe").setTextureName("thermalexpansion:tool/InvarPickaxe");
+		itemAxeInvar = new ItemAxeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Axe"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarAxe").setTextureName("thermalexpansion:tool/InvarAxe");
+		itemHoeInvar = new ItemHoeAdv(ThermalExpansion.config.getItemId("Tool.Invar.Hoe"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarHoe").setTextureName("thermalexpansion:tool/InvarHoe");
+		itemShearsInvar = new ItemShearsAdv(ThermalExpansion.config.getItemId("Tool.Invar.Shears"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShears").setTextureName("thermalexpansion:tool/InvarShears");
+		itemFishingRodInvar = new ItemFishingRodAdv(ThermalExpansion.config.getItemId("Tool.Invar.FishingRod"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarFishingRod").setTextureName("thermalexpansion:tool/InvarFishingRod");
+		itemSickleInvar = new ItemSickleAdv(ThermalExpansion.config.getItemId("Tool.Invar.Sickle"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSickle").setTextureName("thermalexpansion:tool/InvarSickle");
+		itemBattleWrenchInvar = new ItemWrenchBattle(ThermalExpansion.config.getItemId("Tool.Invar.BattleWrench"), TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarBattleWrench").setTextureName("thermalexpansion:tool/InvarBattleWrench");
 
 		loadItems();
 	}
@@ -125,15 +112,13 @@ public class TEEquipment {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarShears, new Object[] { " I", "I ", 'I', "ingotInvar" }));
 		}
 		if (enableTools[6]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarFishingRod, new Object[] { "  I", " IW", "S W", 'I', "ingotInvar", 'S', "stickWood", 'W',
-					Items.string }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarFishingRod, new Object[] { "  I", " IW", "S W", 'I', "ingotInvar", 'S', "stickWood", 'W', Items.string }));
 		}
 		if (enableTools[7]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarSickle, new Object[] { " I ", "  I", "SI ", 'I', "ingotInvar", 'S', "stickWood" }));
 		}
 		if (enableTools[8]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
-					TEItems.toolWrench }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W', TEItems.toolWrench }));
 		}
 	}
 

@@ -12,6 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -59,7 +60,7 @@ public class ItemMultimeter extends ItemBase {
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
 				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(info.get(i));
+					player.addChatMessage(new ChatComponentText(info.get(i)));
 				}
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
@@ -67,7 +68,7 @@ public class ItemMultimeter extends ItemBase {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, false);
 						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(info.get(i));
+							player.addChatMessage(new ChatComponentText(info.get(i)));
 						}
 					}
 
@@ -85,7 +86,7 @@ public class ItemMultimeter extends ItemBase {
 				}
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, true);
 				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(info.get(i));
+					player.addChatMessage(new ChatComponentText(info.get(i)));
 				}
 
 			} else {
@@ -94,7 +95,7 @@ public class ItemMultimeter extends ItemBase {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, player.isSneaking());
 						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(info.get(i));
+							player.addChatMessage(new ChatComponentText(info.get(i)));
 						}
 					}
 

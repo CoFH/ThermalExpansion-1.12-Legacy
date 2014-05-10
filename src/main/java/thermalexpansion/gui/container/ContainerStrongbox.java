@@ -1,5 +1,8 @@
 package thermalexpansion.gui.container;
 
+import invtweaks.api.container.ChestContainer;
+import invtweaks.api.container.ChestContainer.RowSizeCallback;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;

@@ -132,9 +132,7 @@ public class ContainerTEBase extends Container {
 				slot = (Slot) this.inventorySlots.get(k);
 				stackInSlot = slot.getStack();
 
-				if (stackInSlot != null && stackInSlot.getItem() == stack.getItem()
-						&& (!stack.getHasSubtypes() || ItemHelper.getItemDamage(stack) == ItemHelper.getItemDamage(stackInSlot))
-						&& ItemStack.areItemStackTagsEqual(stack, stackInSlot)) {
+				if (stackInSlot != null && stackInSlot.getItem() == stack.getItem() && (!stack.getHasSubtypes() || ItemHelper.getItemDamage(stack) == ItemHelper.getItemDamage(stackInSlot)) && ItemStack.areItemStackTagsEqual(stack, stackInSlot)) {
 					int l = stackInSlot.stackSize + stack.stackSize;
 					int slotLimit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit());
 

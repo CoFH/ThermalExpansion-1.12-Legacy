@@ -27,8 +27,7 @@ public class EntityFlorb extends EntityThrowable {
 
 	public static void initialize() {
 
-		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", CoreUtils.getEntityId(), ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1,
-				true);
+		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", CoreUtils.getEntityId(), ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1, true);
 	}
 
 	public static ItemStack blockCheck = new ItemStack(Blocks.stone);

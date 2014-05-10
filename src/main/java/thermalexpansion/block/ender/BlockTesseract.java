@@ -1,5 +1,6 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISecureTile;
 import cofh.core.CoFHProps;
 import cofh.render.IconRegistry;
@@ -91,8 +92,7 @@ public class BlockTesseract extends BlockTEBase {
 			tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");
 			tile.modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
 
-			tile.setControlDisable(stack.stackTagCompound.getBoolean("Disable"));
-			tile.setControlSetting(stack.stackTagCompound.getBoolean("Setting"));
+			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
 
 			tile.frequency = stack.stackTagCompound.getInteger("Frequency");
 			tile.isActive = tile.frequency != -1;
@@ -164,8 +164,7 @@ public class BlockTesseract extends BlockTEBase {
 			tag.setByte("ModeEnergy", tile.modeEnergy);
 
 			tag.setByte("Access", (byte) tile.getAccess().ordinal());
-			tag.setBoolean("Disable", tile.getControlDisable());
-			tag.setBoolean("State", tile.getControlSetting());
+			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
 		}
 		return tag;
 	}
@@ -200,11 +199,9 @@ public class BlockTesseract extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', tesseractFrameFull, 'I', "ingotSilver", 'B',
-					"ingotBronze" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', tesseractFrameFull, 'I', "ingotSilver", 'B', "ingotBronze" }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X',
-				Items.diamond }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X', Items.diamond }));
 		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(GLFluids.fluidEnder, 1000), false);
 
 		return true;

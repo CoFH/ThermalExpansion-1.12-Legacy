@@ -1,6 +1,5 @@
 package thermalexpansion.util.crafting;
 
-import codechicken.nei.recipe.ICraftingHandler;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -19,7 +18,8 @@ import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 
-public class TECraftingHandler implements ICraftingHandler {
+//TODO: ICraftingHandler was removed and does not catch crafting anymore. Need to find an alternative solution for this.
+public class TECraftingHandler {
 
 	public static TECraftingHandler instance = new TECraftingHandler();
 
@@ -27,23 +27,23 @@ public class TECraftingHandler implements ICraftingHandler {
 
 	public static void initialize() {
 
-		GameRegistry.registerCraftingHandler(instance);
+		// GameRegistry.registerCraftingHandler(instance);
 	}
 
-	@Override
-	public void onCrafting(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
-
-		if (stack == null) {
-			return;
-		}
-		checkAchievements(player, stack, craftMatrix);
-
-	}
-
-	@Override
-	public void onSmelting(EntityPlayer player, ItemStack stack) {
-
-	}
+	// @Override
+	// public void onCrafting(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
+	//
+	// if (stack == null) {
+	// return;
+	// }
+	// checkAchievements(player, stack, craftMatrix);
+	//
+	// }
+	//
+	// @Override
+	// public void onSmelting(EntityPlayer player, ItemStack stack) {
+	//
+	// }
 
 	private void checkAchievements(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
 

@@ -19,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -136,7 +137,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 	public void updateFakePlayer() {
 
 		if (needsWorld) {
-			myFakePlayer = new PlayerFake(worldObj);
+			myFakePlayer = new PlayerFake((WorldServer) worldObj);
 			needsWorld = false;
 		}
 	}
@@ -241,8 +242,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 	public IIcon getBlockTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType())
-					: IconRegistry.getIcon("DeviceFace_", getType());
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType()) : IconRegistry.getIcon("DeviceFace_", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
 		}

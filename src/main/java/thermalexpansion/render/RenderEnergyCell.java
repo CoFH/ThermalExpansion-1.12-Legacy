@@ -14,12 +14,11 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -34,8 +33,8 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 
 	public static final RenderEnergyCell instance = new RenderEnergyCell();
 
-	static Icon[] textureCenter = new Icon[2];
-	static Icon[] textureFrame = new Icon[BlockEnergyCell.Types.values().length * 2];
+	static IIcon[] textureCenter = new IIcon[2];
+	static IIcon[] textureFrame = new IIcon[BlockEnergyCell.Types.values().length * 2];
 	static CCModel modelCenter = CCModel.quadModel(24);
 	static CCModel modelFrame = CCModel.quadModel(48);
 
@@ -51,7 +50,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
 		modelFrame.computeNormals();
 		for (int i = 24; i < 48; i++) {
-			modelFrame.verts[i].vec.add(modelFrame.normals[i].copy().multiply(inset));
+			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
 		}
 		modelFrame.computeLighting(LightModel.standardLightModel);
 	}
@@ -101,16 +100,16 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		int chargeLevel = 9;
 
 		RenderUtils.preRender();
-		CCRenderState.startDrawing(7);
+
+		CCRenderState.startDrawing();
 		renderFrame(metadata, null, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		CCRenderState.setBrightness(165 + chargeLevel * 5);
 		renderCenter(metadata, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
-		CCRenderState.useNormals(false);
-
+		CCRenderState.useNormals = false;
 		GL11.glDisable(GL11.GL_BLEND);
 	}
 
@@ -138,7 +137,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 	}
 
 	@Override
-	public boolean shouldRender3DInInventory() {
+	public boolean shouldRender3DInInventory(int modelId) {
 
 		return true;
 	}
@@ -178,7 +177,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		RenderHelper.setBlockTextureSheet();
 		RenderUtils.preRender();
 
-		CCRenderState.startDrawing(7);
+		CCRenderState.startDrawing();
 		if (item.getItemDamage() == BlockEnergyCell.BASIC_FRAME_ID) {
 			instance.renderFrame(BlockEnergyCell.Types.BASIC.ordinal(), null, offset, offset, offset);
 			instance.renderCenter(BlockEnergyCell.Types.BASIC.ordinal(), offset, offset, offset);
@@ -189,7 +188,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 			instance.renderCenter(BlockEnergyCell.Types.REINFORCED.ordinal(), offset, offset, offset);
 		}
 		CCRenderState.draw();
-		CCRenderState.useNormals(false);
+		CCRenderState.useNormals = false;
 		RenderHelper.setItemTextureSheet();
 
 		GL11.glDisable(GL11.GL_BLEND);

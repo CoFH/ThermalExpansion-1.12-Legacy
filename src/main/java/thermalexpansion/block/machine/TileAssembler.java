@@ -78,8 +78,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	public boolean canCreate(ItemStack recipe) {
 
-		return recipe != null
-				&& (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
+		return recipe != null && (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
 	}
 
 	ItemStack[] recipeSlot = new ItemStack[9];
@@ -160,15 +159,13 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 						tempCraft.setInventorySlotContents(i, invCopy[j].copy());
 						invCopy[j].stackSize--;
 
-						if (invCopy[j].getItem().hasContainerItem()) {
-							ItemStack containerStack = invCopy[j].getItem().getContainerItemStack(invCopy[j]);
+						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
+							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 3))) {
+							if (containerStack != null && (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 3))) {
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
 									if (containerStack.stackSize <= 0) {

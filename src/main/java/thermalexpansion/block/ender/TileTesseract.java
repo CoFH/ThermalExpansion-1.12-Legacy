@@ -30,6 +30,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -42,8 +43,7 @@ import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
-		IEnderAttuned {
+public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler, IEnderAttuned {
 
 	public static void initialize() {
 
@@ -150,24 +150,21 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			frequency = theFreq;
-			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
-					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid).addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
 		}
 	}
 
 	public void addEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false).addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
 	public void removeEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.getTileInfoPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true).addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
@@ -253,13 +250,13 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		if (CoreUtils.isFakePlayer(player)) {
 			return true;
 		}
-		if (canPlayerAccess(player.username)) {
+		if (canPlayerAccess(player.getCommandSenderName())) {
 			sendNamesList((EntityPlayerMP) player);
 			player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2"));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
 	}
@@ -649,7 +646,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		owner = payload.getString();
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
+		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 	}
 
 	/* ITileInfoPacketHandler */
@@ -701,7 +698,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		String lookupName = access.isPublic() ? "_Public_" : owner;
 		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
 
-		CoFHPacket myPacket = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(this);
 		if (curList != null) {
 			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
 			myPacket.addInt(curList.size());
@@ -714,7 +711,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
 			myPacket.addInt(0);
 		}
-		thePlayer.playerNetServerHandler.sendPacketToPlayer(myPacket);
+		PacketHandler.sendTo(myPacket, thePlayer);
 	}
 
 	/* GUI METHODS */

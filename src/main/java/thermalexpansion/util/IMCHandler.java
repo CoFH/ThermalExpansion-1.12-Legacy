@@ -31,53 +31,37 @@ public class IMCHandler {
 					theNBT = theMessage.getNBTValue();
 
 					if (theMessage.key.equalsIgnoreCase("CrucibleRecipe")) {
-						CrucibleManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack
-								.loadFluidStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						CrucibleManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 
 					else if (theMessage.key.equalsIgnoreCase("FurnaceRecipe")) {
-						FurnaceManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
-								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						FurnaceManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 
 					else if (theMessage.key.equalsIgnoreCase("PulverizerRecipe")) {
 						if (theNBT.hasKey("secondaryChance")) {
-							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+									theNBT.getInteger("secondaryChance"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else if (theNBT.hasKey("secondaryOutput")) {
-							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else {
-							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
 						continue;
 					}
 
 					else if (theMessage.key.equalsIgnoreCase("SmelterRecipe")) {
 						if (theNBT.hasKey("secondaryChance")) {
-							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else if (theNBT.hasKey("secondaryOutput")) {
-							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else {
-							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+							SmelterManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
 						continue;
@@ -92,35 +76,26 @@ public class IMCHandler {
 
 					else if (theMessage.key.equalsIgnoreCase("SawmillRecipe")) {
 						if (theNBT.hasKey("secondaryChance")) {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+									theNBT.getInteger("secondaryChance"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else if (theNBT.hasKey("secondaryOutput")) {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
 						continue;
 					}
 
 					else if (theMessage.key.equalsIgnoreCase("TransposerFillRecipe")) {
-						TransposerManager.addFillRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
-								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")),
-								theNBT.getBoolean("reversible"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						TransposerManager.addFillRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getBoolean("reversible"),
+								theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 
 					else if (theMessage.key.equalsIgnoreCase("TransposerExtractRecipe")) {
-						TransposerManager.addExtractionRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-								ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")),
-								FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getInteger("chance"), theNBT.getBoolean("reversible"),
-								theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						TransposerManager.addExtractionRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getInteger("chance"),
+								theNBT.getBoolean("reversible"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 

@@ -1,5 +1,9 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import static codechicken.lib.gui.GuiDraw.drawString;
+import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+import static codechicken.lib.gui.GuiDraw.getMousePosition;
+
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
@@ -97,11 +101,9 @@ public class RecipeHandlerTransposer extends RecipeHandlerBase {
 		int yOffset = 65;
 		Point mousepos = getMousePosition();
 
-		if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop && mousepos.y < maxY1 + gui.guiTop
-				&& arecipe[0] == recipe) {
+		if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop && mousepos.y < maxY1 + gui.guiTop && arecipe[0] == recipe) {
 			currenttip.add(((NEIRecipeBase) arecipes.get(recipe)).fluid.getFluid().getLocalizedName());
-		} else if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop + yOffset
-				&& mousepos.y < maxY1 + gui.guiTop + yOffset && arecipe[1] == recipe) {
+		} else if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop + yOffset && mousepos.y < maxY1 + gui.guiTop + yOffset && arecipe[1] == recipe) {
 			currenttip.add(((NEIRecipeBase) arecipes.get(recipe)).fluid.getFluid().getLocalizedName());
 		}
 		return super.handleTooltip(gui, currenttip, recipe);

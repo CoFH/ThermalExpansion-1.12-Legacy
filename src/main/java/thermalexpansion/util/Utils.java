@@ -10,8 +10,6 @@ import cofh.util.BlockHelper;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 
-import java.util.logging.Level;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -238,7 +236,7 @@ public class Utils {
 	public static void dismantleLog(String playerName, Block block, int bMeta, double x, double y, double z) {
 
 		if (TEProps.enableDismantleLogging) {
-			ThermalExpansion.log.info( "Player " + playerName + " dismantled " + " (" + block + ":" + bMeta + ") at (" + x + "," + y + "," + z + ")");
+			ThermalExpansion.log.info("Player " + playerName + " dismantled " + " (" + block + ":" + bMeta + ") at (" + x + "," + y + "," + z + ")");
 		}
 	}
 

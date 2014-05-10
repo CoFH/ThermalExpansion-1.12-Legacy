@@ -48,8 +48,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 		CoFHPacket payload = super.getPacket();
 
 		payload.addBool(isPowered);
-		payload.addBool(rsDisable);
-		payload.addBool(rsSetting);
+		payload.addByte(rsMode.ordinal());
 		return payload;
 	}
 
@@ -60,8 +59,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 		super.handleTilePacket(payload, isServer);
 
 		isPowered = payload.getBool();
-		rsDisable = payload.getBool();
-		rsSetting = payload.getBool();
+		rsMode = ControlMode.values()[payload.getByte()];
 	}
 
 	/* NBT METHODS */
@@ -73,8 +71,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 		NBTTagCompound rsControl = nbt.getCompoundTag("RS");
 
 		isPowered = rsControl.getBoolean("Powered");
-		rsDisable = rsControl.getBoolean("Disable");
-		rsSetting = rsControl.getBoolean("Setting");
+		rsMode = ControlMode.values()[rsControl.getByte("rsMode")];
 	}
 
 	@Override
@@ -85,8 +82,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 		NBTTagCompound rsControl = new NBTTagCompound();
 
 		rsControl.setBoolean("Powered", isPowered);
-		rsControl.setBoolean("Disable", rsDisable);
-		rsControl.setBoolean("Setting", rsSetting);
+		rsControl.setByte("rsMode", (byte) rsMode.ordinal());
 
 		nbt.setTag("RS", rsControl);
 	}
@@ -161,7 +157,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	// public void handlePowerUpdate(boolean powered) {
 	//
 	// isPowered = powered;
-	// worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	// worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	// }
 	//
 	// @Override

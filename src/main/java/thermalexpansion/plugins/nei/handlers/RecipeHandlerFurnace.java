@@ -1,5 +1,8 @@
 package thermalexpansion.plugins.nei.handlers;
 
+import static codechicken.lib.gui.GuiDraw.drawString;
+import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 

@@ -80,7 +80,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	/* NETWORK METHODS */
 	public CoFHPacket getGuiCoFHPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addBool(isActive);
@@ -92,7 +92,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	public CoFHPacket getFluidCoFHPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
 
@@ -101,7 +101,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	public CoFHPacket getModeCoFHPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.getTileInfoPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
 
@@ -110,7 +110,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	public void sendFluidPacket() {
 
-		PacketHandler.sendToAllPlayers(getFluidCoFHPacket(), worldObj);
+		PacketHandler.sendToDimension(getFluidCoFHPacket(), worldObj.provider.dimensionId);
 	}
 
 	public void sendModePacket() {
@@ -155,7 +155,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendToPlayer(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}
@@ -217,8 +217,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			} else if (side == 1) {
 				return IconRegistry.getIcon("MachineTop");
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive_", getType()) : IconRegistry.getIcon(
-					"MachineFace_", getType());
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive_", getType()) : IconRegistry.getIcon("MachineFace_", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]);
 		}
