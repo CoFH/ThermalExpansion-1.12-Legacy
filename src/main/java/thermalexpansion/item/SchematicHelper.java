@@ -10,6 +10,7 @@ import java.util.Map;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -22,7 +23,7 @@ public class SchematicHelper {
 		NBTTagCompound theComp = new NBTTagCompound();
 		for (int i = 0; i < 9 && i < craftSlots.getSizeInventory(); i++) {
 			if (craftSlots.getStackInSlot(i) != null) {
-				theComp.setInteger("Slot" + i + "Id", craftSlots.getStackInSlot(i).itemID);
+				theComp.setString("Slot" + i + "Id", craftSlots.getStackInSlot(i).getUnlocalizedName());
 				theComp.setInteger("Slot" + i + "Meta", craftSlots.getStackInSlot(i).getItemDamage());
 				theComp.setString("Slot" + i + "Name", craftSlots.getStackInSlot(i).getDisplayName());
 				String OreName = ItemHelper.getOreName(craftSlots.getStackInSlot(i));
@@ -31,7 +32,7 @@ public class SchematicHelper {
 					theComp.setString("Slot" + i + "Ore", OreName);
 				}
 			} else {
-				theComp.setInteger("Slot" + i + "Id", -1);
+				theComp.setString("Slot" + i + "Id", "");
 				theComp.setInteger("Slot" + i + "Meta", -1);
 				theComp.setString("Slot" + i + "Name", "");
 			}
@@ -69,9 +70,8 @@ public class SchematicHelper {
 		if (schematic == null) {
 			return null;
 		}
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id")
-				&& schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
-			return new ItemStack(schematic.stackTagCompound.getInteger("Slot" + slot + "Id"), 1, schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
+		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id") && schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
+			return new ItemStack((Item) Item.itemRegistry.getObject(schematic.stackTagCompound.getString("Slot" + slot + "Id")), 1, schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
 		}
 		return null;
 	}
@@ -86,7 +86,7 @@ public class SchematicHelper {
 
 	public static boolean isSchematic(ItemStack stack) {
 
-		return stack == null ? false : stack.itemID == TEItems.diagramSchematic.itemID && stack.getItemDamage() == TEItems.SCHEMATIC_ID;
+		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName()) && stack.getItemDamage() == TEItems.SCHEMATIC_ID;
 	}
 
 	/**

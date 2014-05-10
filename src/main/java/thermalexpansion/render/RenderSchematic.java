@@ -24,7 +24,7 @@ public class RenderSchematic implements IItemRenderer {
 
 		if (StringHelper.isShiftKeyDown() && type == ItemRenderType.INVENTORY) {
 			currentItem = SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj);
-			if (currentItem != null && currentItem.itemID != TEItems.diagramSchematic.itemID) {
+			if (currentItem != null && !currentItem.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())) {
 				return true;
 			}
 		}
@@ -42,8 +42,7 @@ public class RenderSchematic implements IItemRenderer {
 
 		GL11.glPushMatrix();
 		net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
-		RenderItemUtils.renderItemStack(0, 0, 1, currentItem /* SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj) */,
-				Minecraft.getMinecraft());
+		RenderItemUtils.renderItemStack(0, 0, 1, currentItem /* SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj) */, Minecraft.getMinecraft());
 		GL11.glPopMatrix();
 	}
 
