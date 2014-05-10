@@ -217,7 +217,8 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			} else if (side == 1) {
 				return IconRegistry.getIcon("MachineTop");
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive_", getType()) : IconRegistry.getIcon("MachineFace_", getType());
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive_", getType()) : IconRegistry.getIcon(
+					"MachineFace_", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]);
 		}

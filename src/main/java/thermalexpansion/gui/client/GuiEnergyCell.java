@@ -158,8 +158,10 @@ public class GuiEnergyCell extends GuiBaseAdv {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxIn") + ":", getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxIn"), xSize / 2), 32, 0x404040);
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxOut") + ":", xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxOut"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxIn") + ":",
+				getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxIn"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxOut") + ":",
+				xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxOut"), xSize / 2), 32, 0x404040);
 
 		String recv = String.format("%-8s", "" + myTile.energyReceive + " RF/t");
 		String send = String.format("%-8s", "" + myTile.energySend + " RF/t");

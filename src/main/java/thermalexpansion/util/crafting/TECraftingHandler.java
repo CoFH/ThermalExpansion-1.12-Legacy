@@ -4,8 +4,6 @@ import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import geologic.item.GLItems;
-
 import java.util.ArrayList;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,6 +15,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
+import thermalfoundation.item.TFItems;
 
 //TODO: ICraftingHandler was removed and does not catch crafting anymore. Need to find an alternative solution for this.
 public class TECraftingHandler {
@@ -97,7 +96,7 @@ public class TECraftingHandler {
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
 				// pyrotheumMap.put(registeredOre.get(0), ingot);
-				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, GLItems.dustPyrotheum }));
+				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, TFItems.dustPyrotheum }));
 			}
 		}
 	}

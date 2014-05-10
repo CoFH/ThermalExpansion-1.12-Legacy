@@ -10,8 +10,6 @@ import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
 import cofh.util.RegistryEnderAttuned;
 
-import geologic.fluid.GLFluids;
-
 import java.util.LinkedList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.gui.element.TabConfigTesseract;
+import thermalfoundation.fluid.TFFluids;
 
 public class GuiTesseract extends GuiBaseAdv {
 
@@ -174,7 +173,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		if (canDisable()) {
 			int yHighlight = taNamesList.getSelectedLineYPos();
 			if (yHighlight > -1) {
-				drawFluid(taX, yHighlight, new FluidStack(GLFluids.fluidEnder, 1000), taNamesList.width, taNamesList.lineHeight);
+				drawFluid(taX, yHighlight, new FluidStack(TFFluids.fluidEnder, 1000), taNamesList.width, taNamesList.lineHeight);
 			}
 		}
 		taNamesList.drawText();
@@ -260,11 +259,13 @@ public class GuiTesseract extends GuiBaseAdv {
 					tbFreq.setText(String.valueOf(tempFreq));
 				}
 			}
-		} else if (tbNameX - guiLeft <= mouseX && mouseX < tbNameX - guiLeft + tbName.getWidth() && mouseY >= tbNameY - guiTop && mouseY < tbNameY - guiTop + 12) {
+		} else if (tbNameX - guiLeft <= mouseX && mouseX < tbNameX - guiLeft + tbName.getWidth() && mouseY >= tbNameY - guiTop
+				&& mouseY < tbNameY - guiTop + 12) {
 			tbName.setFocused(true);
 			tbFreq.setFocused(false);
 
-		} else if (tbFreqX - guiLeft <= mouseX && mouseX < tbFreqX - guiLeft + tbFreq.getWidth() && mouseY >= tbFreqY - guiTop && mouseY < tbFreqY - guiTop + 12) {
+		} else if (tbFreqX - guiLeft <= mouseX && mouseX < tbFreqX - guiLeft + tbFreq.getWidth() && mouseY >= tbFreqY - guiTop
+				&& mouseY < tbFreqY - guiTop + 12) {
 			tbName.setFocused(false);
 			tbFreq.setFocused(true);
 
@@ -363,7 +364,8 @@ public class GuiTesseract extends GuiBaseAdv {
 			RegistryEnderAttuned.sortClientNames();
 			for (String curName : RegistryEnderAttuned.clientFrequencyNames.values()) {
 				taNamesList.addLine(curName);
-				if (curName.equals(tbName.getText()) && myTile.frequency == Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()))) {
+				if (curName.equals(tbName.getText())
+						&& myTile.frequency == Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()))) {
 					taNamesList.selectedLine = i;
 				}
 				i++;

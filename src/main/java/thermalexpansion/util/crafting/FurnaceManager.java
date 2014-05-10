@@ -3,8 +3,6 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
-import geologic.item.GLItems;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +13,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
+import thermalfoundation.item.TFItems;
 
 public class FurnaceManager {
 
@@ -67,24 +66,24 @@ public class FurnaceManager {
 
 		int energy = DEFAULT_ENERGY;
 
-		addOreDictRecipe(energy, "oreCopper", GLItems.ingotCopper);
-		addOreDictRecipe(energy, "oreTin", GLItems.ingotTin);
-		addOreDictRecipe(energy, "oreSilver", GLItems.ingotSilver);
-		addOreDictRecipe(energy, "oreLead", GLItems.ingotLead);
-		addOreDictRecipe(energy, "oreNickel", GLItems.ingotNickel);
-		addOreDictRecipe(energy, "orePlatinum", GLItems.ingotPlatinum);
+		addOreDictRecipe(energy, "oreCopper", TFItems.ingotCopper);
+		addOreDictRecipe(energy, "oreTin", TFItems.ingotTin);
+		addOreDictRecipe(energy, "oreSilver", TFItems.ingotSilver);
+		addOreDictRecipe(energy, "oreLead", TFItems.ingotLead);
+		addOreDictRecipe(energy, "oreNickel", TFItems.ingotNickel);
+		addOreDictRecipe(energy, "orePlatinum", TFItems.ingotPlatinum);
 
 		energy = DEFAULT_ENERGY * 10 / 16;
 
-		addOreDictRecipe(energy, "dustCopper", GLItems.ingotCopper);
-		addOreDictRecipe(energy, "dustTin", GLItems.ingotTin);
-		addOreDictRecipe(energy, "dustSilver", GLItems.ingotSilver);
-		addOreDictRecipe(energy, "dustLead", GLItems.ingotLead);
-		addOreDictRecipe(energy, "dustNickel", GLItems.ingotNickel);
-		addOreDictRecipe(energy, "dustPlatinum", GLItems.ingotPlatinum);
-		addOreDictRecipe(energy, "dustElectrum", GLItems.ingotElectrum);
-		addOreDictRecipe(energy, "dustInvar", GLItems.ingotInvar);
-		addOreDictRecipe(energy, "dustBronze", GLItems.ingotBronze);
+		addOreDictRecipe(energy, "dustCopper", TFItems.ingotCopper);
+		addOreDictRecipe(energy, "dustTin", TFItems.ingotTin);
+		addOreDictRecipe(energy, "dustSilver", TFItems.ingotSilver);
+		addOreDictRecipe(energy, "dustLead", TFItems.ingotLead);
+		addOreDictRecipe(energy, "dustNickel", TFItems.ingotNickel);
+		addOreDictRecipe(energy, "dustPlatinum", TFItems.ingotPlatinum);
+		addOreDictRecipe(energy, "dustElectrum", TFItems.ingotElectrum);
+		addOreDictRecipe(energy, "dustInvar", TFItems.ingotInvar);
+		addOreDictRecipe(energy, "dustBronze", TFItems.ingotBronze);
 
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;

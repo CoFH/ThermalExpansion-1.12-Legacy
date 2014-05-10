@@ -15,8 +15,11 @@ import thermalexpansion.gui.container.ContainerStrongbox;
 
 public class GuiStrongbox extends GuiBaseAdv {
 
-	static final ResourceLocation[] TEXTURE = { new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxCreative.png"), new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxBasic.png"), new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxHardened.png"),
-			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxReinforced.png"), new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxResonant.png") };
+	static final ResourceLocation[] TEXTURE = { new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxCreative.png"),
+			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxBasic.png"),
+			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxHardened.png"),
+			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxReinforced.png"),
+			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxResonant.png") };
 
 	static final String INFO = "Stores things securely!\n\nCan store things that store things so you can store things while you store things.\n\nWrench while sneaking to dismantle.";
 	static final String INFO_CREATIVE = "Stores something securely!\n\nAllows you to pull out infinite amounts of the item stored inside.";

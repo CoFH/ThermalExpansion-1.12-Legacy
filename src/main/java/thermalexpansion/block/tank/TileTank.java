@@ -35,7 +35,8 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 
 	protected static final int UPDATE_FACTOR = 4;
 	public static final int RENDER_LEVELS = 128;
-	public static final int[] CAPACITY = { FluidContainerRegistry.BUCKET_VOLUME, 8 * FluidContainerRegistry.BUCKET_VOLUME, 16 * FluidContainerRegistry.BUCKET_VOLUME, 32 * FluidContainerRegistry.BUCKET_VOLUME, 64 * FluidContainerRegistry.BUCKET_VOLUME };
+	public static final int[] CAPACITY = { FluidContainerRegistry.BUCKET_VOLUME, 8 * FluidContainerRegistry.BUCKET_VOLUME,
+			16 * FluidContainerRegistry.BUCKET_VOLUME, 32 * FluidContainerRegistry.BUCKET_VOLUME, 64 * FluidContainerRegistry.BUCKET_VOLUME };
 
 	public byte type;
 	public byte mode;
@@ -206,7 +207,9 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
 			return;
 		}
-		tank.drain(adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1], new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
+		tank.drain(
+				adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1],
+						new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
 
 		if (tank.getFluidAmount() <= 0) {
 			updateRender();

@@ -20,7 +20,8 @@ public class MFRPlugin {
 		strawCryotheum = ThermalExpansion.config.get(category, "MFR.Cryotheum.Straw", true);
 		strawCoal = ThermalExpansion.config.get(category, "MFR.Coal.Straw", true);
 
-		strawEnderRange = ThermalExpansion.config.get(category, "MFR.Ender.Range", strawEnderRange, "This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Max: 65536)");
+		strawEnderRange = ThermalExpansion.config.get(category, "MFR.Ender.Range", strawEnderRange,
+				"This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Max: 65536)");
 		strawEnderRange = MathHelper.clampI(strawEnderRange, 8, 65536);
 	}
 

@@ -193,7 +193,8 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+				Math.min(energySend, energyStorage.getEnergyStored()), false));
 	}
 
 	public IEnergyStorage getEnergyStorage() {

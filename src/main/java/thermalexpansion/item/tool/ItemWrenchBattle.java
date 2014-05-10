@@ -38,7 +38,8 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
 
 		Block block = world.getBlock(x, y, z);
 
-		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable && ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
+		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
+				&& ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
 			((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
 			return true;
 		}

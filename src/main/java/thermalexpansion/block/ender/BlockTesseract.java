@@ -9,8 +9,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import geologic.fluid.GLFluids;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +34,7 @@ import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.fluid.TFFluids;
 
 public class BlockTesseract extends BlockTEBase {
 
@@ -199,10 +198,12 @@ public class BlockTesseract extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', tesseractFrameFull, 'I', "ingotSilver", 'B', "ingotBronze" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', tesseractFrameFull, 'I', "ingotSilver", 'B',
+					"ingotBronze" }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X', Items.diamond }));
-		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(GLFluids.fluidEnder, 1000), false);
+		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X',
+				Items.diamond }));
+		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 
 		return true;
 	}

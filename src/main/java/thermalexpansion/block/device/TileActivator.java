@@ -284,7 +284,8 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 			if (!simRightClick2(thePlayer, deployingStack, blockX, blockY, blockZ, side) && deployingStack != null) {
 				List entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
 
-				if (entities.size() > 0 && thePlayer.interactWith((Entity) entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
+				if (entities.size() > 0
+						&& thePlayer.interactWith((Entity) entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
 					return;
 				}
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
@@ -312,7 +313,8 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 		boolean isAir = block.isAir(worldObj, blockX, blockY, blockZ);
 
-		if (deployingStack != null && deployingStack.getItem() != null && deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, blockX, blockY, blockZ, side, f, f1, f2)) {
+		if (deployingStack != null && deployingStack.getItem() != null
+				&& deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, blockX, blockY, blockZ, side, f, f1, f2)) {
 			return true;
 		}
 		if (!thePlayer.isSneaking() || thePlayer.getHeldItem() == null) {
@@ -456,7 +458,8 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public IIcon getBlockTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType()) : IconRegistry.getIcon("DeviceFace_", getType());
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType())
+					: IconRegistry.getIcon("DeviceFace_", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
 		}

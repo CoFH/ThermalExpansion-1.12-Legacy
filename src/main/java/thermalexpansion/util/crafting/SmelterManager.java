@@ -4,8 +4,6 @@ import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
-import geologic.item.GLItems;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -22,6 +20,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.item.TEItems;
+import thermalfoundation.item.TFItems;
 
 public class SmelterManager {
 
@@ -98,7 +97,7 @@ public class SmelterManager {
 	public static void addDefaultRecipes() {
 
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 40);
-		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), GLItems.dustSulfur, 25);
+		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 	}
 
 	public static void loadRecipes() {
@@ -112,22 +111,22 @@ public class SmelterManager {
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
 
-		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ingotIron, GLItems.ingotNickel);
+		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ingotIron, TFItems.ingotNickel);
 		addDefaultOreDictionaryRecipe("oreGold", "dustGold", ingotGold, null, 10, 75, 25);
-		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", GLItems.ingotCopper, ingotGold);
-		addDefaultOreDictionaryRecipe("oreTin", "dustTin", GLItems.ingotTin, ingotIron);
-		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", GLItems.ingotSilver, GLItems.ingotLead);
-		addDefaultOreDictionaryRecipe("oreLead", "dustLead", GLItems.ingotLead, GLItems.ingotSilver);
-		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", GLItems.ingotNickel, GLItems.ingotPlatinum, 15, 75, 25);
-		addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", GLItems.ingotPlatinum);
-		addDefaultOreDictionaryRecipe(null, "dustElectrum", GLItems.ingotElectrum);
-		addDefaultOreDictionaryRecipe(null, "dustInvar", GLItems.ingotInvar);
-		addDefaultOreDictionaryRecipe(null, "dustBronze", GLItems.ingotBronze);
+		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", TFItems.ingotCopper, ingotGold);
+		addDefaultOreDictionaryRecipe("oreTin", "dustTin", TFItems.ingotTin, ingotIron);
+		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", TFItems.ingotSilver, TFItems.ingotLead);
+		addDefaultOreDictionaryRecipe("oreLead", "dustLead", TFItems.ingotLead, TFItems.ingotSilver);
+		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", TFItems.ingotNickel, TFItems.ingotPlatinum, 15, 75, 25);
+		addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", TFItems.ingotPlatinum);
+		addDefaultOreDictionaryRecipe(null, "dustElectrum", TFItems.ingotElectrum);
+		addDefaultOreDictionaryRecipe(null, "dustInvar", TFItems.ingotInvar);
+		addDefaultOreDictionaryRecipe(null, "dustBronze", TFItems.ingotBronze);
 
 		/* ALLOYS */
-		ItemStack stackElectrum = ItemHelper.cloneStack(GLItems.ingotElectrum, 2);
-		ItemStack stackInvar = ItemHelper.cloneStack(GLItems.ingotInvar, 3);
-		ItemStack stackBronze = ItemHelper.cloneStack(GLItems.ingotBronze, 4);
+		ItemStack stackElectrum = ItemHelper.cloneStack(TFItems.ingotElectrum, 2);
+		ItemStack stackInvar = ItemHelper.cloneStack(TFItems.ingotInvar, 3);
+		ItemStack stackBronze = ItemHelper.cloneStack(TFItems.ingotBronze, 4);
 
 		addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
 		addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
@@ -169,7 +168,8 @@ public class SmelterManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
+			int secondaryChance) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0) {
 			return false;
@@ -181,7 +181,8 @@ public class SmelterManager {
 		return true;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
+			int secondaryChance, boolean overwrite) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeExists(primaryInput, secondaryInput)) {
 			return false;
@@ -194,7 +195,8 @@ public class SmelterManager {
 	}
 
 	/* HELPER FUNCTIONS */
-	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance, int slagOreChance, int slagDustChance) {
+	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance,
+			int slagOreChance, int slagDustChance) {
 
 		if (ingot == null) {
 			return;
@@ -263,7 +265,7 @@ public class SmelterManager {
 			ItemStack ore = registeredOres.get(0);
 			addRecipe(3200, ore, blockSand, ingot2, TEItems.slagRich, richSlagChance);
 			addRecipe(4000, ore, TEItems.slagRich, ingot3, TEItems.slag, slagOreChance);
-			addRecipe(4000, ore, GLItems.dustPyrotheum, ingot2, TEItems.slagRich, Math.min(60, richSlagChance * 3));
+			addRecipe(4000, ore, TFItems.dustPyrotheum, ingot2, TEItems.slagRich, Math.min(60, richSlagChance * 3));
 
 			if (ingotSecondary != null) {
 				addRecipe(4000, ore, TEItems.crystalCinnabar, ingot3, ingotSecondary, 100);
@@ -282,13 +284,15 @@ public class SmelterManager {
 		}
 	}
 
-	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
+	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount,
+			ItemStack primaryOutput) {
 
 		ArrayList<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
 		ArrayList<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
 
 		if (primaryOreList.size() > 0 && secondaryOreList.size() > 0) {
-			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount), ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
+			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount),
+					ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
 		}
 	}
 
@@ -311,10 +315,10 @@ public class SmelterManager {
 			return;
 		}
 		if (!registeredOre.isEmpty()) {
-			addRecipe(12000, ItemHelper.cloneStack(registeredOre.get(0), 1), GLItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
+			addRecipe(12000, ItemHelper.cloneStack(registeredOre.get(0), 1), TFItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
 		}
 		if (!registeredDust.isEmpty()) {
-			addRecipe(8000, ItemHelper.cloneStack(registeredDust.get(0), 2), GLItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
+			addRecipe(8000, ItemHelper.cloneStack(registeredDust.get(0), 2), TFItems.dustPyrotheum, ItemHelper.cloneStack(registeredIngot.get(0), 2));
 		}
 	}
 
@@ -338,12 +342,14 @@ public class SmelterManager {
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, false);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
+			boolean overwrite) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100, overwrite);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
+			int secondaryChance) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, false);
 	}

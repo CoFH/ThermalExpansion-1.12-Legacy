@@ -59,7 +59,8 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 2.0D * d1;
 
-		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals().computeLighting(LightModel.standardLightModel);
+		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals()
+				.computeLighting(LightModel.standardLightModel);
 		modelCenter[0] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2).computeNormals();
 	}
 

@@ -3,9 +3,6 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
-import geologic.fluid.GLFluids;
-import geologic.item.GLItems;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +17,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalfoundation.fluid.TFFluids;
+import thermalfoundation.item.TFItems;
 
 public class CrucibleManager {
 
@@ -84,14 +83,14 @@ public class CrucibleManager {
 		addTERecipe(800, new ItemStack(Items.snowball, 4), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
 		addTERecipe(800, new ItemStack(Blocks.snow), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
 		addTERecipe(1600, new ItemStack(Blocks.ice), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(GLFluids.fluidRedstone, 100));
-		addTERecipe(8000 * 9, new ItemStack(Blocks.redstone_block), new FluidStack(GLFluids.fluidRedstone, 100 * 9));
-		addTERecipe(20000, new ItemStack(Items.glowstone_dust), new FluidStack(GLFluids.fluidGlowstone, 250));
-		addTERecipe(20000 * 4, new ItemStack(Blocks.glowstone), new FluidStack(GLFluids.fluidGlowstone, 1000));
-		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(GLFluids.fluidEnder, 250));
-		addTERecipe(8000, GLItems.dustPyrotheum, new FluidStack(GLFluids.fluidPyrotheum, 100));
-		addTERecipe(8000, GLItems.dustCryotheum, new FluidStack(GLFluids.fluidCryotheum, 100));
-		addTERecipe(8000, GLItems.dustCoal, new FluidStack(GLFluids.fluidCoal, 100));
+		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(TFFluids.fluidRedstone, 100));
+		addTERecipe(8000 * 9, new ItemStack(Blocks.redstone_block), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
+		addTERecipe(20000, new ItemStack(Items.glowstone_dust), new FluidStack(TFFluids.fluidGlowstone, 250));
+		addTERecipe(20000 * 4, new ItemStack(Blocks.glowstone), new FluidStack(TFFluids.fluidGlowstone, 1000));
+		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(TFFluids.fluidEnder, 250));
+		addTERecipe(8000, TFItems.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 100));
+		addTERecipe(8000, TFItems.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 100));
+		addTERecipe(8000, TFItems.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 	}
 
 	public static void loadRecipes() {

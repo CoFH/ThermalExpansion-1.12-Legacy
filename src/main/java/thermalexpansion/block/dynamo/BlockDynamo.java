@@ -87,7 +87,8 @@ public class BlockDynamo extends BlockTEBase {
 				tile.receiveEnergy(ForgeDirection.UNKNOWN, 1000, false);
 				player.getFoodStats().addStats(-1, -0.2F);
 			} else if (EnergyHelper.isPlayerHoldingEnergyContainerItem(player)) {
-				tile.receiveEnergy(ForgeDirection.UNKNOWN, EnergyHelper.extractEnergyFromHeldContainer(player, tile.receiveEnergy(ForgeDirection.UNKNOWN, 10000, true), false), false);
+				tile.receiveEnergy(ForgeDirection.UNKNOWN,
+						EnergyHelper.extractEnergyFromHeldContainer(player, tile.receiveEnergy(ForgeDirection.UNKNOWN, 10000, true), false), false);
 			}
 		}
 		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
@@ -176,16 +177,20 @@ public class BlockDynamo extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.STEAM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoSteam, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I', "ingotCopper", 'R', Items.redstone }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoSteam, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I',
+					"ingotCopper", 'R', Items.redstone }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoMagmatic, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I', "ingotInvar", 'R', Items.redstone }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoMagmatic, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I',
+					"ingotInvar", 'R', Items.redstone }));
 		}
 		if (enable[Types.COMPRESSION.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCompression, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin", 'I', "ingotTin", 'R', Items.redstone }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCompression, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin",
+					'I', "ingotTin", 'R', Items.redstone }));
 		}
 		if (enable[Types.REACTANT.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze", 'I', "ingotBronze", 'R', Items.redstone }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze",
+					'I', "ingotBronze", 'R', Items.redstone }));
 		}
 		return true;
 	}

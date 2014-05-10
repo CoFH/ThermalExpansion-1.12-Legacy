@@ -134,9 +134,11 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 		Point mousepos = GuiDraw.getMousePosition();
 		FluidStack fluid = null;
 
-		if ((mousepos.x >= minX1 + gui.guiLeft) && (mousepos.x < maxX1 + gui.guiLeft) && (mousepos.y >= minY1 + gui.guiTop) && (mousepos.y < maxY1 + gui.guiTop) && (this.arecipe[0] == recipe)) {
+		if ((mousepos.x >= minX1 + gui.guiLeft) && (mousepos.x < maxX1 + gui.guiLeft) && (mousepos.y >= minY1 + gui.guiTop)
+				&& (mousepos.y < maxY1 + gui.guiTop) && (this.arecipe[0] == recipe)) {
 			fluid = ((RecipeHandlerBase.NEIRecipeBase) this.arecipes.get(recipe)).fluid;
-		} else if ((mousepos.x >= minX1 + gui.guiLeft) && (mousepos.x < maxX1 + gui.guiLeft) && (mousepos.y >= minY1 + gui.guiTop + yOffset) && (mousepos.y < maxY1 + gui.guiTop + yOffset) && (this.arecipe[1] == recipe)) {
+		} else if ((mousepos.x >= minX1 + gui.guiLeft) && (mousepos.x < maxX1 + gui.guiLeft) && (mousepos.y >= minY1 + gui.guiTop + yOffset)
+				&& (mousepos.y < maxY1 + gui.guiTop + yOffset) && (this.arecipe[1] == recipe)) {
 			fluid = ((RecipeHandlerBase.NEIRecipeBase) this.arecipes.get(recipe)).fluid;
 		}
 

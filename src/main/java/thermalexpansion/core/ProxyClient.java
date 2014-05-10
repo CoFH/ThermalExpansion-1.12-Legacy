@@ -27,7 +27,6 @@ import thermalexpansion.render.RenderDynamo;
 import thermalexpansion.render.RenderEnergyCell;
 import thermalexpansion.render.RenderItemFlorb;
 import thermalexpansion.render.RenderLamp;
-import thermalexpansion.render.RenderPlate;
 import thermalexpansion.render.RenderSchematic;
 import thermalexpansion.render.RenderStrongbox;
 import thermalexpansion.render.RenderTank;
@@ -92,7 +91,6 @@ public class ProxyClient extends Proxy {
 		RenderTank.initialize();
 		RenderStrongbox.initialize();
 		RenderTesseract.initialize();
-		RenderPlate.initialize();
 		RenderLamp.initialize();
 
 		RenderEntityFlorb.initialize();

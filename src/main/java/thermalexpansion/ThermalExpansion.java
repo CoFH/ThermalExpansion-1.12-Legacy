@@ -23,9 +23,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
-import geologic.GeoLogic;
-import geologic.block.BlockOre;
-
 import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -65,8 +62,11 @@ import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.ThermalFoundation;
+import thermalfoundation.block.BlockOre;
 
-@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@[" + CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
+@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@["
+		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -293,7 +293,8 @@ public class ThermalExpansion extends BaseMod {
 			oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 20));
 		}
 		for (int i = 0; i < oreList.length; i++) {
-			GeoLogic.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i], TEProps.oreMaxY[i], GeoLogic.ORE_UNIFORM, true, BlockOre.enable[i]);
+			ThermalFoundation.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i],
+					TEProps.oreMaxY[i], ThermalFoundation.ORE_UNIFORM, true, BlockOre.enable[i]);
 		}
 	}
 
@@ -301,42 +302,6 @@ public class ThermalExpansion extends BaseMod {
 
 		if (preInit) {
 
-			String category = "tweak";
-			String newCategory = "tweak.crafting";
-
-			config.renameProperty(category, "Pulverizer.Sandstone", newCategory, "Pulverizer.Sandstone", true);
-			config.renameProperty(category, "Pulverizer.Netherrack", newCategory, "Pulverizer.Netherrack", true);
-			config.renameProperty(category, "Pulverizer.Cloth", newCategory, "Pulverizer.Cloth", true);
-			config.renameProperty(category, "Pulverizer.Reed", newCategory, "Pulverizer.Reed", true);
-			config.renameProperty(category, "Pulverizer.Bone", newCategory, "Pulverizer.Bone", true);
-			config.renameProperty(category, "Pulverizer.BlazeRod", newCategory, "Pulverizer.BlazeRod", true);
-			config.renameProperty(category, "Pulverizer.Cinnabar.Chance", newCategory, "Pulverizer.Cinnabar.Chance", true);
-
-			config.renameProperty(category, "Smelter.Bronze.Quantity", newCategory, "Smelter.Bronze.Quantity", true);
-
-			config.renameProperty(category, "RockGen.Cobblestone.Lava", newCategory, "RockGen.Cobblestone.Lava", true);
-			config.renameProperty(category, "RockGen.Stone.Lava", newCategory, "RockGen.Stone.Lava", true);
-			config.renameProperty(category, "RockGen.Obsidian.Lava", newCategory, "RockGen.Obsidian.Lava", true);
-
-			config.renameProperty(category, "RockGen.Cobblestone.Water", newCategory, "RockGen.Cobblestone.Water", true);
-			config.renameProperty(category, "RockGen.Stone.Water", newCategory, "RockGen.Stone.Water", true);
-			config.renameProperty(category, "RockGen.Obsidian.Water", newCategory, "RockGen.Obsidian.Water", true);
-
-			config.renameProperty(category, "RockGen.Cobblestone.Time", newCategory, "RockGen.Cobblestone.Time", true);
-			config.renameProperty(category, "RockGen.Stone.Time", newCategory, "RockGen.Stone.Time", true);
-			config.renameProperty(category, "RockGen.Obsidian.Time", newCategory, "RockGen.Obsidian.Time", true);
-
-			config.removeProperty(category, "Pulverizer.IngotsToDust");
-			config.removeProperty(newCategory, "Pulverizer.IngotsToDust");
-			config.removeProperty(newCategory, "Smelter.Bronze.Quantity");
-
-			category = "tweak.recipe";
-
-			config.renameProperty(category, "MachineFrame.UseSteel", category, "MachineFrame.RequireSteel", true);
-
-			category = "general";
-
-			config.removeProperty(category, "EnableStuffedItemHudModule");
 		}
 	}
 

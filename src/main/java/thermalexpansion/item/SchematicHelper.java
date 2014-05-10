@@ -69,7 +69,8 @@ public class SchematicHelper {
 		if (schematic == null) {
 			return null;
 		}
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id") && schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
+		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id")
+				&& schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
 			return new ItemStack(schematic.stackTagCompound.getInteger("Slot" + slot + "Id"), 1, schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
 		}
 		return null;

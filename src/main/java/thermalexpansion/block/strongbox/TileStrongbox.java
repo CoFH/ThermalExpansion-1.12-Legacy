@@ -110,7 +110,8 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 		if (numUsingPlayers != 0 && (worldObj.getTotalWorldTime() + xCoord + yCoord + zCoord) % 200 == 0) {
 			numUsingPlayers = 0;
 			float dist = 5.0F;
-			List nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getAABBPool().getAABB(xCoord - dist, yCoord - dist, zCoord - dist, xCoord + 1 + dist, yCoord + 1 + dist, zCoord + 1 + dist));
+			List nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+					AxisAlignedBB.getAABBPool().getAABB(xCoord - dist, yCoord - dist, zCoord - dist, xCoord + 1 + dist, yCoord + 1 + dist, zCoord + 1 + dist));
 			Iterator anIt = nearbyEntities.iterator();
 
 			while (anIt.hasNext()) {
@@ -169,7 +170,8 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
 	}

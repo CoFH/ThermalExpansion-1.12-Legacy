@@ -43,7 +43,8 @@ import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler, IEnderAttuned {
+public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
+		IEnderAttuned {
 
 	public static void initialize() {
 
@@ -150,21 +151,24 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			frequency = theFreq;
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid).addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
+					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
 		}
 	}
 
 	public void addEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false).addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
 	public void removeEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true).addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
@@ -256,7 +260,8 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
 	}

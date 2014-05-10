@@ -86,9 +86,11 @@ public class RecipeHandlerCrucible extends RecipeHandlerBase {
 		int yOffset = 65;
 		Point mousepos = getMousePosition();
 
-		if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop && mousepos.y < maxY1 + gui.guiTop && arecipe[0] == recipe) {
+		if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop && mousepos.y < maxY1 + gui.guiTop
+				&& arecipe[0] == recipe) {
 			currenttip.add(((NEIRecipeBase) arecipes.get(recipe)).fluid.getFluid().getLocalizedName());
-		} else if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop + yOffset && mousepos.y < maxY1 + gui.guiTop + yOffset && arecipe[1] == recipe) {
+		} else if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop + yOffset
+				&& mousepos.y < maxY1 + gui.guiTop + yOffset && arecipe[1] == recipe) {
 			currenttip.add(((NEIRecipeBase) arecipes.get(recipe)).fluid.getFluid().getLocalizedName());
 		}
 		return super.handleTooltip(gui, currenttip, recipe);

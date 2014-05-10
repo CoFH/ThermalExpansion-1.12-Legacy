@@ -89,7 +89,8 @@ public class RecipeHandlerSawmill extends RecipeHandlerBase {
 
 		RecipeSawmill[] recipes = SawmillManager.getRecipeList();
 		for (RecipeSawmill recipe : recipes) {
-			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null && NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
+			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null
+					&& NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
 				arecipes.add(new NEIRecipeSawmill(recipe));
 			}
 		}

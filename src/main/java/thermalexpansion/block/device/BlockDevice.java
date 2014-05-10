@@ -275,17 +275,22 @@ public class BlockDevice extends BlockTEBase {
 			pickaxe = TEEquipment.toolInvarPickaxe;
 		}
 		if (enable[Types.WORKBENCH.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P', BlockStrongbox.strongboxBasic, 'X', Items.paper }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] { "YXY", "ICI", "YPY", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P', Blocks.chest, 'X', Items.paper, 'Y', "ingotTin" }));
+			GameRegistry.addRecipe(new UpgradeRecipe(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
+					BlockStrongbox.strongboxBasic, 'X', Items.paper }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] { "YXY", "ICI", "YPY", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
+					Blocks.chest, 'X', Items.paper, 'Y', "ingotTin" }));
 		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(activator, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P', TEItems.pneumaticServo, 'X', Blocks.chest }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(activator, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
+					TEItems.pneumaticServo, 'X', Blocks.chest }));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(breaker, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P', TEItems.pneumaticServo, 'X', pickaxe }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(breaker, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
+					TEItems.pneumaticServo, 'X', pickaxe }));
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P', TEItems.pneumaticServo, 'X', "ingotInvar" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
+					TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
 		return true;
 	}

@@ -30,7 +30,8 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 
-public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler, IEnergyInfo {
+public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
+		IEnergyInfo {
 
 	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
 
@@ -134,7 +135,8 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		if (adjacentHandler == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(config.maxTransfer, energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+				Math.min(config.maxTransfer, energyStorage.getEnergyStored()), false));
 	}
 
 	@Override

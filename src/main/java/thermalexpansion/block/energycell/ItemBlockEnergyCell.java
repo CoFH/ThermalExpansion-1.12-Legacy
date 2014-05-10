@@ -105,15 +105,18 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 			int energy = stack.stackTagCompound.getInteger("Energy");
 			int receive = stack.stackTagCompound.getInteger("Receive");
 
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / " + StringHelper.getScaledNumber(TileEnergyCell.STORAGE[stack.getItemDamage()]) + " RF");
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / "
+					+ StringHelper.getScaledNumber(TileEnergyCell.STORAGE[stack.getItemDamage()]) + " RF");
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + send + "/" + receive + " RF/t");
 		}
 		if (rsMode.isDisabled()) {
 			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
 		} else if (rsMode.isLow()) {
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateLow"));
+			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
+					+ StringHelper.localize("info.cofh.redstoneStateLow"));
 		} else {
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", " + StringHelper.localize("info.cofh.redstoneStateHigh"));
+			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
+					+ StringHelper.localize("info.cofh.redstoneStateHigh"));
 		}
 	}
 
@@ -146,7 +149,8 @@ public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyCon
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(TileEnergyCell.STORAGE[container.getItemDamage()] - stored, TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]));
+		int receive = Math.min(maxReceive,
+				Math.min(TileEnergyCell.STORAGE[container.getItemDamage()] - stored, TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]));
 
 		if (!simulate && container.getItemDamage() != BlockEnergyCell.Types.CREATIVE.ordinal()) {
 			stored += receive;

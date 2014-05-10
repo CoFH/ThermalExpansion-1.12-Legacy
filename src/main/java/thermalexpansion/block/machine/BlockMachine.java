@@ -255,56 +255,73 @@ public class BlockMachine extends BlockTEBase {
 		}
 		if (ItemHelper.oreNameExists("ingotSteel")) {
 			if (machineFrameRequireSteel) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "glass", 'X', "ingotGold" }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame,
+						new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "glass", 'X', "ingotGold" }));
 			} else if (machineFrameAllowSteel) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "glass", 'X', "ingotGold" }));
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "glass", 'X', "ingotGold" }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame,
+						new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "glass", 'X', "ingotGold" }));
+				GameRegistry
+						.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "glass", 'X', "ingotGold" }));
 			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "glass", 'X', "ingotGold" }));
+				GameRegistry
+						.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "glass", 'X', "ingotGold" }));
 			}
 		} else {
 			GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "glass", 'X', "ingotGold" }));
 		}
 		if (enable[Types.FURNACE.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Items.redstone, 'Y', Blocks.brick_block }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Items.redstone, 'Y', Blocks.brick_block }));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
 			if (expensiveRecipe[Types.PULVERIZER.ordinal()]) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint, 'D', Items.diamond }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+						TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint, 'D', Items.diamond }));
 			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+						TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
 			}
 		}
 		if (enable[Types.SAWMILL.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(sawmill, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(sawmill, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
 		}
 		if (enable[Types.SMELTER.ordinal()]) {
 			if (expensiveRecipe[Types.SMELTER.ordinal()]) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar", 'D', Items.diamond }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+						TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar", 'D', Items.diamond }));
 			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
+				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+						TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
 			}
 		}
 		if (enable[Types.CRUCIBLE.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(crucible, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', BlockEnergyCell.cellBasicFrame, 'Y', Blocks.nether_brick }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(crucible, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', BlockEnergyCell.cellBasicFrame, 'Y', Blocks.nether_brick }));
 		}
 		if (enable[Types.TRANSPOSER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "glass" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "glass" }));
 		}
 		if (enable[Types.ICE_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(iceGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(iceGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
 		}
 		if (enable[Types.ROCK_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(rockGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "glass" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(rockGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "glass" }));
 		}
 		if (enable[Types.WATER_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(waterGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "glass" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(waterGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+					TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "glass" }));
 		}
 		if (enable[Types.ASSEMBLER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(assembler, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(assembler, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
 		}
 		if (enable[Types.CHARGER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P', TEItems.powerCoilGold, 'X', BlockEnergyCell.cellBasicFrame, 'Y', TEItems.powerCoilSilver }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', BlockEnergyCell.cellBasicFrame, 'Y', TEItems.powerCoilSilver }));
 		}
 		return true;
 	}
@@ -313,7 +330,8 @@ public class BlockMachine extends BlockTEBase {
 		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, ICE_GEN, ROCK_GEN, WATER_GEN, ASSEMBLER, CHARGER
 	}
 
-	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "iceGen", "rockGen", "waterGen", "assembler", "charger" };
+	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "iceGen", "rockGen", "waterGen",
+			"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {

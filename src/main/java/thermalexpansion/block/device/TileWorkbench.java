@@ -97,7 +97,8 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! " + StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
 	}
@@ -125,7 +126,9 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null && (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 2))) {
+							if (containerStack != null
+									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+											invCopy, containerStack, 2))) {
 
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
@@ -182,7 +185,9 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null && (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 2))) {
+							if (containerStack != null
+									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+											invCopy, containerStack, 2))) {
 
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;

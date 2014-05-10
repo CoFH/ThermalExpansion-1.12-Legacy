@@ -90,7 +90,8 @@ public class RecipeHandlerSmelter extends RecipeHandlerBase {
 
 		RecipeSmelter[] recipes = SmelterManager.getRecipeList();
 		for (RecipeSmelter recipe : recipes) {
-			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null && NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
+			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryOutput(), result) || recipe.getSecondaryOutput() != null
+					&& NEIServerUtils.areStacksSameType(recipe.getSecondaryOutput(), result)) {
 				arecipes.add(new NEIRecipeSmelter(recipe));
 			}
 		}
@@ -112,7 +113,8 @@ public class RecipeHandlerSmelter extends RecipeHandlerBase {
 
 		RecipeSmelter[] recipes = SmelterManager.getRecipeList();
 		for (RecipeSmelter recipe : recipes) {
-			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryInput(), ingredient) || NEIServerUtils.areStacksSameType(recipe.getSecondaryInput(), ingredient)) {
+			if (NEIServerUtils.areStacksSameType(recipe.getPrimaryInput(), ingredient)
+					|| NEIServerUtils.areStacksSameType(recipe.getSecondaryInput(), ingredient)) {
 				arecipes.add(new NEIRecipeSmelter(recipe));
 			}
 		}

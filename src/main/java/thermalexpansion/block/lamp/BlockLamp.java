@@ -8,8 +8,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import geologic.fluid.GLFluids;
-
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -33,6 +31,7 @@ import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.fluid.TFFluids;
 
 public class BlockLamp extends BlockTEBase {
 
@@ -164,8 +163,9 @@ public class BlockLamp extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R', Items.redstone }));
-			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(GLFluids.fluidGlowstone, 1000), false, false);
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R',
+					Items.redstone }));
+			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(TFFluids.fluidGlowstone, 1000), false, false);
 		}
 		return true;
 	}

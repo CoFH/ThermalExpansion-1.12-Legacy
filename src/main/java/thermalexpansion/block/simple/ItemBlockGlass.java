@@ -2,14 +2,15 @@ package thermalexpansion.block.simple;
 
 import cofh.util.StringHelper;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
 public class ItemBlockGlass extends ItemBlock {
 
-	public ItemBlockGlass(int id) {
+	public ItemBlockGlass(Block block) {
 
-		super(id);
+		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
 	}

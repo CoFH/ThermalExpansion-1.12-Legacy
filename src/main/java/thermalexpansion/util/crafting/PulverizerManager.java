@@ -5,8 +5,6 @@ import cofh.util.MathHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStack;
 
-import geologic.item.GLItems;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +16,7 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.TEItems;
+import thermalfoundation.item.TFItems;
 
 public class PulverizerManager {
 
@@ -69,13 +68,13 @@ public class PulverizerManager {
 		addRecipe(800, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 2));
 
 		if (recipeSandstone) {
-			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), GLItems.dustNiter, 15);
+			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 15);
 		}
-		addRecipe(2400, new ItemStack(Items.coal, 1, 0), GLItems.dustCoal, GLItems.dustSulfur, 10);
-		addRecipe(4000, new ItemStack(Blocks.obsidian), ItemHelper.cloneStack(GLItems.dustObsidian, 4));
+		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 10);
+		addRecipe(4000, new ItemStack(Blocks.obsidian), ItemHelper.cloneStack(TFItems.dustObsidian, 4));
 
 		if (recipeNetherrack) {
-			addTERecipe(3200, new ItemStack(Blocks.netherrack), new ItemStack(Blocks.gravel), GLItems.dustSulfur, 10);
+			addTERecipe(3200, new ItemStack(Blocks.netherrack), new ItemStack(Blocks.gravel), TFItems.dustSulfur, 10);
 		}
 		addRecipe(2400, new ItemStack(Blocks.coal_ore), new ItemStack(Items.coal, 2, 0));
 		addRecipe(2400, new ItemStack(Blocks.diamond_ore), new ItemStack(Items.diamond, 2, 0));
@@ -83,7 +82,7 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 8, 4));
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TEItems.crystalCinnabar, chanceCinnabar);
-		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), GLItems.dustSulfur, 10);
+		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 10);
 
 		for (int i = 0; i < 3; i++) {
 			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
@@ -115,10 +114,10 @@ public class PulverizerManager {
 			addTERecipe(1600, new ItemStack(Items.bone), new ItemStack(Items.dye, 6, 15));
 		}
 		if (recipeBlazeRod) {
-			addTERecipe(1600, new ItemStack(Items.blaze_rod), new ItemStack(Items.blaze_powder, 4), GLItems.dustSulfur, 50);
+			addTERecipe(1600, new ItemStack(Items.blaze_rod), new ItemStack(Items.blaze_powder, 4), TFItems.dustSulfur, 50);
 		}
 		if (recipeBlizzRod) {
-			addTERecipe(1600, GLItems.rodBlizz, ItemHelper.cloneStack(GLItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
+			addTERecipe(1600, TFItems.rodBlizz, ItemHelper.cloneStack(TFItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
 		}
 	}
 
@@ -128,28 +127,28 @@ public class PulverizerManager {
 
 		int energy = 4000;
 
-		addOreNameToDustRecipe(energy, "oreIron", GLItems.dustIron, GLItems.dustNickel, 10);
-		addOreNameToDustRecipe(energy, "oreGold", GLItems.dustGold, null, 0);
-		addOreNameToDustRecipe(energy, "oreCopper", GLItems.dustCopper, GLItems.dustGold, 10);
-		addOreNameToDustRecipe(energy, "oreTin", GLItems.dustTin, GLItems.dustIron, 10);
-		addOreNameToDustRecipe(energy, "oreSilver", GLItems.dustSilver, GLItems.dustLead, 10);
-		addOreNameToDustRecipe(energy, "oreLead", GLItems.dustLead, GLItems.dustSilver, 10);
-		addOreNameToDustRecipe(energy, "oreNickel", GLItems.dustNickel, GLItems.dustPlatinum, 10);
-		addOreNameToDustRecipe(energy, "orePlatinum", GLItems.dustPlatinum, null, 0);
+		addOreNameToDustRecipe(energy, "oreIron", TFItems.dustIron, TFItems.dustNickel, 10);
+		addOreNameToDustRecipe(energy, "oreGold", TFItems.dustGold, null, 0);
+		addOreNameToDustRecipe(energy, "oreCopper", TFItems.dustCopper, TFItems.dustGold, 10);
+		addOreNameToDustRecipe(energy, "oreTin", TFItems.dustTin, TFItems.dustIron, 10);
+		addOreNameToDustRecipe(energy, "oreSilver", TFItems.dustSilver, TFItems.dustLead, 10);
+		addOreNameToDustRecipe(energy, "oreLead", TFItems.dustLead, TFItems.dustSilver, 10);
+		addOreNameToDustRecipe(energy, "oreNickel", TFItems.dustNickel, TFItems.dustPlatinum, 10);
+		addOreNameToDustRecipe(energy, "orePlatinum", TFItems.dustPlatinum, null, 0);
 
 		energy = 2400;
 
-		addIngotNameToDustRecipe(energy, "ingotIron", GLItems.dustIron);
-		addIngotNameToDustRecipe(energy, "ingotGold", GLItems.dustGold);
-		addIngotNameToDustRecipe(energy, "ingotCopper", GLItems.dustCopper);
-		addIngotNameToDustRecipe(energy, "ingotTin", GLItems.dustTin);
-		addIngotNameToDustRecipe(energy, "ingotSilver", GLItems.dustSilver);
-		addIngotNameToDustRecipe(energy, "ingotLead", GLItems.dustLead);
-		addIngotNameToDustRecipe(energy, "ingotNickel", GLItems.dustNickel);
-		addIngotNameToDustRecipe(energy, "ingotPlatinum", GLItems.dustPlatinum);
-		addIngotNameToDustRecipe(energy, "ingotElectrum", GLItems.dustElectrum);
-		addIngotNameToDustRecipe(energy, "ingotInvar", GLItems.dustInvar);
-		addIngotNameToDustRecipe(energy, "ingotBronze", GLItems.dustBronze);
+		addIngotNameToDustRecipe(energy, "ingotIron", TFItems.dustIron);
+		addIngotNameToDustRecipe(energy, "ingotGold", TFItems.dustGold);
+		addIngotNameToDustRecipe(energy, "ingotCopper", TFItems.dustCopper);
+		addIngotNameToDustRecipe(energy, "ingotTin", TFItems.dustTin);
+		addIngotNameToDustRecipe(energy, "ingotSilver", TFItems.dustSilver);
+		addIngotNameToDustRecipe(energy, "ingotLead", TFItems.dustLead);
+		addIngotNameToDustRecipe(energy, "ingotNickel", TFItems.dustNickel);
+		addIngotNameToDustRecipe(energy, "ingotPlatinum", TFItems.dustPlatinum);
+		addIngotNameToDustRecipe(energy, "ingotElectrum", TFItems.dustElectrum);
+		addIngotNameToDustRecipe(energy, "ingotInvar", TFItems.dustInvar);
+		addIngotNameToDustRecipe(energy, "ingotBronze", TFItems.dustBronze);
 
 		/* CROSSMOD SUPPORT */
 		if (ItemHelper.oreNameExists("dustCharcoal")) {
@@ -159,13 +158,14 @@ public class PulverizerManager {
 			addRecipe(1600, new ItemStack(Items.ender_pearl), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl").get(0), 1));
 		}
 		if (ItemHelper.oreNameExists("oreSaltpeter")) {
-			addRecipe(2400, OreDictionary.getOres("oreSaltpeter").get(0), ItemHelper.cloneStack(GLItems.dustNiter, 4));
+			addRecipe(2400, OreDictionary.getOres("oreSaltpeter").get(0), ItemHelper.cloneStack(TFItems.dustNiter, 4));
 		}
 		if (ItemHelper.oreNameExists("oreSulfur")) {
-			addRecipe(2400, OreDictionary.getOres("oreSulfur").get(0), ItemHelper.cloneStack(GLItems.dustSulfur, 6));
+			addRecipe(2400, OreDictionary.getOres("oreSulfur").get(0), ItemHelper.cloneStack(TFItems.dustSulfur, 6));
 		}
 		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
-			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2), OreDictionary.getOres("dustCertusQuartz").get(0), 10);
+			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2),
+					OreDictionary.getOres("dustCertusQuartz").get(0), 10);
 			addRecipe(1600, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
 		}
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
@@ -379,7 +379,8 @@ public class PulverizerManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG);
+			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
+					|| oreName.startsWith(LOG);
 		}
 
 		public static int getOreID(ItemStack stack) {
