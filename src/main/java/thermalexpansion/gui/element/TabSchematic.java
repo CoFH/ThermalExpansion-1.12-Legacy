@@ -13,7 +13,7 @@ import org.lwjgl.opengl.GL11;
 
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ISetSchematic;
-import thermalexpansion.network.TEPacketHandler;
+import thermalexpansion.network.GenericTEPacket;
 
 public class TabSchematic extends TabBase {
 
@@ -138,7 +138,7 @@ public class TabSchematic extends TabBase {
 	private boolean writeSchematic() {
 
 		if (myTile.canWriteSchematic()) {
-			TEPacketHandler.sendCreateSchematicPacketToServer();
+			GenericTEPacket.sendCreateSchematicPacketToServer();
 			return true;
 		}
 		return false;

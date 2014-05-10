@@ -23,7 +23,7 @@ import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISetSchematic;
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.network.TEPacketHandler;
+import thermalexpansion.network.GenericTEPacket;
 
 public class ContainerAssembler extends ContainerTEBase implements ISetSchematic {
 
@@ -115,7 +115,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISetSchematic
 
 			if (stack != null) {
 				if (SchematicHelper.isSchematic(stack)) {
-					TEPacketHandler.sendCreateSchematicPacketToServer();
+					GenericTEPacket.sendCreateSchematicPacketToServer();
 				}
 			}
 		}

@@ -54,7 +54,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
 			transferRate = genRate / CoFHProps.TIME_CONSTANT;
 		} else {
-			ThermalExpansion.log.log(Level.INFO, "'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
+			ThermalExpansion.log.info( "'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
 		ThermalExpansion.config.removeProperty("tweak", "WaterGen.PassiveGen");

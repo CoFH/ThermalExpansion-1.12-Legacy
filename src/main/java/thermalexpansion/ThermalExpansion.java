@@ -30,7 +30,6 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -54,8 +53,8 @@ import thermalexpansion.gui.CreativeTabFlorbs;
 import thermalexpansion.gui.CreativeTabItems;
 import thermalexpansion.gui.CreativeTabTools;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.network.TEPacketHandler;
-import thermalexpansion.network.TEPacketHandler.PacketTypes;
+import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.network.GenericTEPacket.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
 import thermalexpansion.util.GenericEventHandler;
 import thermalexpansion.util.IMCHandler;
@@ -67,8 +66,7 @@ import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 
-@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@["
-		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
+@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@[" + CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -140,8 +138,6 @@ public class ThermalExpansion extends BaseMod {
 		category = "tweak";
 		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
 
-		comment = "Setting this to anything but 0 (min 10) will result in items being lost for players! Everytime the conduits tick if there is a stuffed conduit it will be limited to x items. All items past x will be erased! Please use with caution.";
-		GridTickHandler.maxItemsInDucts = config.get(category, "MaxItemsInStuffedDucts", GridTickHandler.maxItemsInDucts, comment);
 		comment = "Set this to 0 to disable getting dye from wools. Acceptable Ranges: 0-100. This is the percentage chance that you will get a dye as a secondary output on the pulverizer.";
 		PulverizerManager.secondaryWoolPercentages = config.get(category, "WoolColorChances", PulverizerManager.secondaryWoolPercentages, comment);
 
@@ -161,15 +157,11 @@ public class ThermalExpansion extends BaseMod {
 		if (tweakLavaRF >= 10000 && tweakLavaRF < TEProps.LAVA_MAX_RF) {
 			TEProps.lavaRF = tweakLavaRF;
 		} else {
-			log.log(Level.INFO, "'LavaRFValue' config value is out of acceptable range. Using default.");
-		}
-		if (GridTickHandler.maxItemsInDucts < 10 && GridTickHandler.maxItemsInDucts != 0) {
-			GridTickHandler.maxItemsInDucts = 0;
-			log.log(Level.INFO, "'MaxItemsInStuffedDucts' config value is out of acceptable range. Using default. Must be 0 or greater then 10.");
+			log.info("'LavaRFValue' config value is out of acceptable range. Using default.");
 		}
 		if (PulverizerManager.secondaryWoolPercentages < 0 || PulverizerManager.secondaryWoolPercentages > 100) {
 			PulverizerManager.secondaryWoolPercentages = 25;
-			log.log(Level.INFO, "'WoolColorChances' config value is out of acceptable range. Using default. Must be 0-100.");
+			log.info("'WoolColorChances' config value is out of acceptable range. Using default. Must be 0-100.");
 		}
 	}
 
@@ -191,8 +183,8 @@ public class ThermalExpansion extends BaseMod {
 		loadWorldGeneration();
 
 		/* Register Handlers */
-		NetworkRegistry.instance().registerGuiHandler(instance, guiHandler);
-		TEPacketHandler.initialize();
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
+		GenericTEPacket.initialize();
 		MinecraftForge.EVENT_BUS.register(proxy);
 
 		try {
@@ -234,7 +226,7 @@ public class ThermalExpansion extends BaseMod {
 		cleanConfig(false);
 		config.cleanUp(false, true);
 
-		log.log(Level.INFO, "Load Complete.");
+		log.info("Load Complete.");
 	}
 
 	@EventHandler
@@ -257,7 +249,7 @@ public class ThermalExpansion extends BaseMod {
 		log.info(StringHelper.localize("message.cofh.receiveConfig"));
 	}
 
-	public CoFHPacket getConfigSync(int packetID) {
+	public CoFHPacket getConfigSync() {
 
 		CoFHPacket myPacket = CoFHPacket.getCoFHPacket(packetID);
 		myPacket.addByte(PacketTypes.CONFIG_SYNC.ordinal());
@@ -300,8 +292,7 @@ public class ThermalExpansion extends BaseMod {
 			oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 20));
 		}
 		for (int i = 0; i < oreList.length; i++) {
-			GeoLogic.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i],
-					TEProps.oreMaxY[i], GeoLogic.ORE_UNIFORM, true, BlockOre.enable[i]);
+			GeoLogic.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i], TEProps.oreMaxY[i], GeoLogic.ORE_UNIFORM, true, BlockOre.enable[i]);
 		}
 	}
 

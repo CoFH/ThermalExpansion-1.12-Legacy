@@ -12,7 +12,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import java.util.List;
-import javax.swing.Icon;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -21,6 +20,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
@@ -195,7 +196,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public void updateFakePlayer(int tickSlot) {
 
 		if (needsWorld) {
-			myFakePlayer = new PlayerFake(worldObj);
+			myFakePlayer = new PlayerFake((WorldServer) worldObj);
 			needsWorld = false;
 		}
 		myFakePlayer.inventory.mainInventory = new ItemStack[36];
@@ -451,7 +452,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	/* ISidedBlockTexture */
 	@Override
-	public Icon getBlockTexture(int side, int pass) {
+	public IIcon getBlockTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType()) : IconRegistry.getIcon("DeviceFace_", getType());

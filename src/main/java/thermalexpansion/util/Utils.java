@@ -238,7 +238,7 @@ public class Utils {
 	public static void dismantleLog(String playerName, Block block, int bMeta, double x, double y, double z) {
 
 		if (TEProps.enableDismantleLogging) {
-			ThermalExpansion.log.log(Level.INFO, "Player " + playerName + " dismantled " + " (" + block + ":" + bMeta + ") at (" + x + "," + y + "," + z + ")");
+			ThermalExpansion.log.info( "Player " + playerName + " dismantled " + " (" + block + ":" + bMeta + ") at (" + x + "," + y + "," + z + ")");
 		}
 	}
 

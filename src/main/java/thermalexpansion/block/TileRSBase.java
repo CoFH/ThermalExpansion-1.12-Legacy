@@ -6,7 +6,7 @@ import cofh.network.ITilePacketHandler;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.network.TEPacketHandler;
+import thermalexpansion.network.GenericTEPacket;
 
 public abstract class TileRSBase extends TileTEBase implements IRedstoneControl, ITilePacketHandler {
 
@@ -32,7 +32,7 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 		isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			TEPacketHandler.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			GenericTEPacket.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
 		}
 	}
 

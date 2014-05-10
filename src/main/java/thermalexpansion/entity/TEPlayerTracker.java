@@ -6,7 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.network.TEPacketHandler;
+import thermalexpansion.network.GenericTEPacket;
 
 public class TEPlayerTracker implements IPlayerTracker {
 
@@ -23,7 +23,7 @@ public class TEPlayerTracker implements IPlayerTracker {
 		if (TEProps.enableAchievements) {
 			player.addStat(TEAchievements.baseTE, 1);
 		}
-		TEPacketHandler.sendConfigSyncPacketToClient(player);
+		GenericTEPacket.sendConfigSyncPacketToClient(player);
 	}
 
 	@Override
