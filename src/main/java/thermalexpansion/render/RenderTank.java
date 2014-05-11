@@ -14,19 +14,16 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.tank.BlockTank;
 import thermalexpansion.block.tank.TileTank;
 import thermalexpansion.core.TEProps;
@@ -44,9 +41,9 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	static {
 		TEProps.renderIdTank = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(instance);
+		// RenderingRegistry.registerBlockHandler(instance);
 
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
+		// MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
 
 		generateFluidModels();
 
@@ -89,15 +86,15 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 
 		modelFrame.render(0, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]));
-		modelFrame.render(24, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));
-		modelFrame.render(4, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata]));
-		modelFrame.render(28, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));
+		modelFrame.render(24, 28, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));
+		modelFrame.render(4, 8, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata]));
+		modelFrame.render(28, 32, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));
 
 		for (int i = 8; i < 24; i += 4) {
-			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
+			modelFrame.render(i, i + 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
 		}
 		for (int i = 32; i < 48; i += 4) {
-			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
+			modelFrame.render(i, i + 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
 		}
 	}
 

@@ -78,8 +78,8 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 		for (int i = 0; i < 6; i++) {
-			modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
-			modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
+			modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
+			modelFrame.render(i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
 		}
 		if (tile != null) {
 			for (int i = 0; i < 6; i++) {

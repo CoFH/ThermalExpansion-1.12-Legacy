@@ -23,11 +23,6 @@ public class TEItems {
 
 	public static void preInit() {
 
-		TEEquipment.preInit();
-	}
-
-	public static void initialize() {
-
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("meter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
@@ -35,11 +30,10 @@ public class TEItems {
 		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component");
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material");
 
-		loadItems();
-		TEEquipment.initialize();
+		TEEquipment.preInit();
 	}
 
-	private static void loadItems() {
+	public static void initialize() {
 
 		/* Tools */
 		toolWrench = itemWrench.addItem(0, "wrench");
@@ -75,6 +69,8 @@ public class TEItems {
 		powerCoilElectrum = itemMaterial.addItem(195, "powerCoilElectrum");
 
 		OreDictionary.registerOre("crystalCinnabar", crystalCinnabar);
+
+		TEEquipment.initialize();
 	}
 
 	public static void postInit() {

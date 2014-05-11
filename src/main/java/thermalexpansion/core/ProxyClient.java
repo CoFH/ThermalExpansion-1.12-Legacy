@@ -4,16 +4,13 @@ import cofh.render.IconRegistry;
 import cofh.render.ItemRenderRegistry;
 import cofh.render.RenderItemAsBlock;
 import cofh.render.RenderItemModular;
-import cofh.util.StringHelper;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fluids.Fluid;
 
 import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.energycell.BlockEnergyCell;
@@ -63,9 +60,7 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
-		if (event.map.getTextureType() == 0) {
-			// registerFluidIcons(TEFluids.fluidSteam, event.map);
-		} else if (event.map.getTextureType() == 1) {
+		if (event.map.getTextureType() == 1) {
 			IconRegistry.addIcon("machineFrame", "thermalexpansion:component/MachineFrame", event.map);
 			IconRegistry.addIcon("lampFrame", "thermalexpansion:component/LampFrame", event.map);
 
@@ -84,8 +79,6 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
-		// setFluidIcons(TEFluids.fluidSteam);
-
 		RenderDynamo.initialize();
 		RenderEnergyCell.initialize();
 		RenderTank.initialize();
@@ -102,19 +95,6 @@ public class ProxyClient extends Proxy {
 		if (Minecraft.getMinecraft().currentScreen instanceof GuiTesseract) {
 			((GuiTesseract) Minecraft.getMinecraft().currentScreen).updateNames();
 		}
-	}
-
-	public static void registerFluidIcons(Fluid fluid, IIconRegister ir) {
-
-		String name = StringHelper.titleCase(fluid.getName());
-		IconRegistry.addIcon("Fluid" + name, "thermalexpansion:fluid/Fluid_" + name + "_Still", ir);
-		IconRegistry.addIcon("Fluid" + name + 1, "thermalexpansion:fluid/Fluid_" + name + "_Flow", ir);
-	}
-
-	public static void setFluidIcons(Fluid fluid) {
-
-		String name = StringHelper.titleCase(fluid.getName());
-		fluid.setIcons(IconRegistry.getIcon("Fluid" + name), IconRegistry.getIcon("Fluid" + name, 1));
 	}
 
 }

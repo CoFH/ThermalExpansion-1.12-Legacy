@@ -49,12 +49,7 @@ public class TEFluids {
 
 	public static void initialize() {
 
-		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("thermalexpansion.florb");
-
-		loadItems();
-	}
-
-	private static void loadItems() {
+		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
 
 		florb = itemFlorb.addItem(0, "florb");
 		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic");

@@ -26,10 +26,6 @@ public class TEEquipment {
 
 	public static void preInit() {
 
-	}
-
-	public static void initialize() {
-
 		itemHelmetInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 0).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
 				.setUnlocalizedName(ARMOR + "invarHelmet").setTextureName("thermalexpansion:armor/ArmorInvarHelmet");
 		itemPlateInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 1).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
@@ -57,11 +53,9 @@ public class TEEquipment {
 				.setTextureName("thermalexpansion:tool/InvarSickle");
 		itemBattleWrenchInvar = new ItemWrenchBattle(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarBattleWrench")
 				.setTextureName("thermalexpansion:tool/InvarBattleWrench");
-
-		loadItems();
 	}
 
-	private static void loadItems() {
+	public static void initialize() {
 
 		/* Armor */
 		armorInvarHelmet = new ItemStack(itemHelmetInvar);
