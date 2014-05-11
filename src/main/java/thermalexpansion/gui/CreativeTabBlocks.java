@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import thermalexpansion.block.energycell.BlockEnergyCell;
+import thermalexpansion.block.machine.BlockMachine;
 
 public class CreativeTabBlocks extends CreativeTabs {
 
@@ -20,7 +20,7 @@ public class CreativeTabBlocks extends CreativeTabs {
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
 
-		return BlockEnergyCell.cellReinforcedFrameFull;
+		return BlockMachine.furnace;// BlockEnergyCell.cellReinforcedFrameFull;
 	}
 
 	@Override

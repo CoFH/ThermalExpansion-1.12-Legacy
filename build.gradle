@@ -38,7 +38,8 @@ repositories {
 }
 
 dependencies {
-    compile "mcp.mobius.waila:Waila:1.5.2a"
+    //compile "mcp.mobius.waila:Waila:1.5.2a:dev"
+    compile "codechicken:NotEnoughItems:1.7.2-1.0.1:dev"
 }
 
 processResources

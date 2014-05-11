@@ -78,15 +78,15 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 		for (int i = 0; i < 6; i++) {
-			modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata]), null);
-			modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]), null);
+			modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
+			modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
 		}
 		if (tile != null) {
 			for (int i = 0; i < 6; i++) {
-				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(i, 2)), null);
+				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(i, 2)));
 			}
 			int facing = tile.getFacing();
-			modelFrame.render(facing * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(facing, 3)), null);
+			modelFrame.render(facing * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(facing, 3)));
 		}
 	}
 
@@ -131,7 +131,6 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 			CCRenderState.setBrightness(165 + chargeLevel * 5);
 			renderCenter(theTile.type, x, y, z);
 		}
-		RenderUtils.afterWorldRender(world, x, y, z);
 
 		return true;
 	}

@@ -70,8 +70,10 @@ public class SchematicHelper {
 		if (schematic == null) {
 			return null;
 		}
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id") && schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
-			return new ItemStack((Item) Item.itemRegistry.getObject(schematic.stackTagCompound.getString("Slot" + slot + "Id")), 1, schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
+		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id")
+				&& schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
+			return new ItemStack((Item) Item.itemRegistry.getObject(schematic.stackTagCompound.getString("Slot" + slot + "Id")), 1,
+					schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
 		}
 		return null;
 	}
@@ -86,7 +88,8 @@ public class SchematicHelper {
 
 	public static boolean isSchematic(ItemStack stack) {
 
-		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName()) && stack.getItemDamage() == TEItems.SCHEMATIC_ID;
+		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
+				&& stack.getItemDamage() == TEItems.SCHEMATIC_ID;
 	}
 
 	/**

@@ -11,6 +11,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -39,7 +40,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		TEProps.renderIdLamp = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
 
-		MinecraftForgeClient.registerItemRenderer(TEBlocks.blockLamp.blockID, instance);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockLamp), instance);
 
 		generateModels();
 	}
@@ -101,8 +102,6 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 		CCRenderState.setColour(0xFFFFFFFF);
 		renderFrame(bMeta, x, y, z);
-
-		RenderUtils.afterWorldRender(world, x, y, z);
 
 		return true;
 	}

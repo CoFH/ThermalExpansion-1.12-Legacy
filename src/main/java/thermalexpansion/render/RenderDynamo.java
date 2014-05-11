@@ -138,7 +138,6 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		renderCoil(theTile.getFacing(), theTile.isActive(), x, y, z);
 		renderAnimation(theTile.getFacing(), theTile.isActive(), theTile.getType(), theTile.getActiveIcon(), x, y, z);
 		renderBase(theTile.getFacing(), theTile.isActive(), theTile.getType(), x, y, z);
-		RenderUtils.afterWorldRender(world, x, y, z);
 
 		return true;
 	}

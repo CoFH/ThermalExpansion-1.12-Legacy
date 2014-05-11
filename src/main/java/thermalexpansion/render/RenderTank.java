@@ -14,6 +14,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -45,7 +46,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		TEProps.renderIdTank = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
 
-		MinecraftForgeClient.registerItemRenderer(TEBlocks.blockTank.blockID, instance);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
 
 		generateFluidModels();
 
@@ -87,16 +88,16 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 
-		modelFrame.render(0, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]), null);
-		modelFrame.render(24, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]), null);
-		modelFrame.render(4, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata]), null);
-		modelFrame.render(28, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata]), null);
+		modelFrame.render(0, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]));
+		modelFrame.render(24, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));
+		modelFrame.render(4, 4, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata]));
+		modelFrame.render(28, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));
 
 		for (int i = 8; i < 24; i += 4) {
-			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]), null);
+			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
 		}
 		for (int i = 32; i < 48; i += 4) {
-			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]), null);
+			modelFrame.render(i, 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
 		}
 	}
 
@@ -108,7 +109,6 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		CCRenderState.startDrawing();
-		// CCRenderState.startDrawing();
 		Fluid fluid = stack.getFluid();
 
 		RenderUtils.setFluidRenderColor(stack);
@@ -147,7 +147,6 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 			renderFluid(theTile.getBlockMetadata(), theTile.getTankFluid(), x, y, z);
 			CCRenderState.startDrawing();
 		}
-		RenderUtils.afterWorldRender(world, x, y, z);
 
 		return true;
 	}

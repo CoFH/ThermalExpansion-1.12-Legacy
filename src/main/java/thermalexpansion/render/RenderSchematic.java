@@ -42,7 +42,8 @@ public class RenderSchematic implements IItemRenderer {
 
 		GL11.glPushMatrix();
 		net.minecraft.client.renderer.RenderHelper.enableGUIStandardItemLighting();
-		RenderItemUtils.renderItemStack(0, 0, 1, currentItem /* SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj) */, Minecraft.getMinecraft());
+		RenderItemUtils.renderItemStack(0, 0, 1, currentItem /* SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj) */,
+				Minecraft.getMinecraft());
 		GL11.glPopMatrix();
 	}
 

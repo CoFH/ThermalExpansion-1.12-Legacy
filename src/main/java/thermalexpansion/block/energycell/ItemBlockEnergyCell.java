@@ -2,7 +2,6 @@ package thermalexpansion.block.energycell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.block.ItemBlockCoFHBase;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -10,10 +9,11 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemBlockEnergyCell extends ItemBlockCoFHBase implements IEnergyContainerItem {
+public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerItem {
 
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 

@@ -1,6 +1,5 @@
 package thermalexpansion.block.device;
 
-import cofh.block.ItemBlockCoFHBase;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
@@ -8,9 +7,10 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockDevice extends ItemBlockCoFHBase {
+public class ItemBlockDevice extends ItemBlock {
 
 	public ItemBlockDevice(Block block) {
 

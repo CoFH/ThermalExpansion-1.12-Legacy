@@ -11,6 +11,7 @@ import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.device.ItemBlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.dynamo.ItemBlockDynamo;
+import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.ender.ItemBlockTesseract;
 import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.block.energycell.ItemBlockEnergyCell;
@@ -44,7 +45,7 @@ public class TEBlocks {
 		blockTank = addBlock(new BlockTank());
 		blockStrongbox = addBlock(new BlockStrongbox());
 
-		// blockTesseract = addBlock(new BlockTesseract(ThermalExpansion.config.getBlockId("Tesseract")));
+		blockTesseract = addBlock(new BlockTesseract());
 		// blockPlate = addBlock(new BlockPlate(ThermalExpansion.config.getBlockId("Plate")));
 		blockLamp = addBlock(new BlockLamp());
 		blockGlass = addBlock(new BlockGlass());

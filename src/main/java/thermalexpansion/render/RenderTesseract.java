@@ -79,11 +79,11 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 		for (int i = 0; i < 6; i++) {
 			if (tile != null && tile.isActive && tile.redstoneControlOrDisable()) {
-				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[2]), null);
-				modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[3]), null);
+				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[2]));
+				modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[3]));
 			} else {
-				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[0]), null);
-				modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[1]), null);
+				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(textureFrame[0]));
+				modelFrame.render(i * 4 + 24, 4, trans, RenderUtils.getIconTransformation(textureFrame[1]));
 			}
 		}
 	}
@@ -120,7 +120,6 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 		} else {
 			renderCenter(0, theTile, x, y, z);
 		}
-		RenderUtils.afterWorldRender(world, x, y, z);
 
 		return true;
 	}

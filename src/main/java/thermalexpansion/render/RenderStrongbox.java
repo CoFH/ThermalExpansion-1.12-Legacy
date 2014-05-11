@@ -6,6 +6,7 @@ import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -33,7 +34,7 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
 		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
 
-		MinecraftForgeClient.registerItemRenderer(TEBlocks.blockStrongbox.blockID, instance);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
 	}
 
 	public static void initialize() {

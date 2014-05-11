@@ -1,15 +1,15 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.block.ItemBlockCoFHBase;
 import cofh.util.StringHelper;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockDynamo extends ItemBlockCoFHBase {
+public class ItemBlockDynamo extends ItemBlock {
 
 	public ItemBlockDynamo(Block block) {
 

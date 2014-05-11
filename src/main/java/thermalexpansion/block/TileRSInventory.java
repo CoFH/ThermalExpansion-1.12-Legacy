@@ -13,7 +13,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
-	protected ControlMode rsMode;
+	protected ControlMode rsMode = ControlMode.LOW;
 
 	public boolean redstoneControlOrDisable() {
 

@@ -29,7 +29,7 @@ public class TEItems {
 	public static void initialize() {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
-		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool");
+		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("meter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
 		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component");

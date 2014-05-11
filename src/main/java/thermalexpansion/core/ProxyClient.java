@@ -64,7 +64,7 @@ public class ProxyClient extends Proxy {
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
 		if (event.map.getTextureType() == 0) {
-			registerFluidIcons(TEFluids.fluidSteam, event.map);
+			// registerFluidIcons(TEFluids.fluidSteam, event.map);
 		} else if (event.map.getTextureType() == 1) {
 			IconRegistry.addIcon("machineFrame", "thermalexpansion:component/MachineFrame", event.map);
 			IconRegistry.addIcon("lampFrame", "thermalexpansion:component/LampFrame", event.map);
@@ -84,7 +84,7 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
-		setFluidIcons(TEFluids.fluidSteam);
+		// setFluidIcons(TEFluids.fluidSteam);
 
 		RenderDynamo.initialize();
 		RenderEnergyCell.initialize();

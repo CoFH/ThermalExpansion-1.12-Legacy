@@ -1,6 +1,5 @@
 package thermalexpansion.block.strongbox;
 
-import cofh.block.ItemBlockCoFHBase;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
@@ -11,10 +10,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemBlockStrongbox extends ItemBlockCoFHBase {
+public class ItemBlockStrongbox extends ItemBlock {
 
 	public ItemBlockStrongbox(Block block) {
 
