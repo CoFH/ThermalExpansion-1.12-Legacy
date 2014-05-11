@@ -1,7 +1,6 @@
-CoFH Don't Be a Jerk "License"
+CoFH "Don't Be a Jerk" License
 ====================================
-
-### Okay, so here's the deal.
+#### Okay, so here's the deal.
 
 You'll notice that this repository does not have a license! By default, that means "All Rights Reserved."
 
@@ -11,19 +10,19 @@ Art and sound assets are released under the Creative Commons Attribution-ShareAl
 
 ©2012-2014 Cult of the Full Hub / Team CoFH / CoFH
 
-### Homepage
+#### Homepage
 
 [TeamCoFH Home Page](http://teamcofh.com/)
 
 [IRC #ThermalExpansion on esper.net](http://webchat.esper.net/?nick=ThermalWiki....&channels=ThermalExpansion)
 
-### Notice
+#### Notice
 
 Contribution to this repository means that you are granting us rights over the code that you choose to contribute. If you do not agree with that, do not contribute.
 
 So, why is this here? Well, the rights are reserved, but what that really means is that we choose what to do with the rights. So here you go.
 
-### You Can
+#### You CAN
 -Fork and modify the code.
 
 -Submit Pull Requests to this repository.
@@ -32,17 +31,17 @@ So, why is this here? Well, the rights are reserved, but what that really means 
 
 -Write your own code that uses this code as a dependency. (addon mods!)
 
-### You CANNOT
+#### You CANNOT
 -Redistribute this in its entirety as source or compiled code.
 
 -Create or distribute code which contains 50% or more Functionally Equivalent Statements* from this repository.
 
-###You MUST
+#### You MUST
 -Maintain a visible repository of your code which is inspired by, derived from, or copied from this code. Basically, if you use it, pay it forward. You keep rights to your OWN code, but you still must make your source visible.
 
 -Not be a jerk**. Seriously, if you're a jerk, you can't use this code. That's part of the agreement.
 
-### Notes, License & Copyright
+#### Notes, License & Copyright
 
 *A Functionally Equivalent Statement is a code fragment which, regardless of whitespace and object names, achieves the same result. Basically you can't copy the code, rename the variables, add whitespace and say it's different. It's not.
 
