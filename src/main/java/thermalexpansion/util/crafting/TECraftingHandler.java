@@ -63,10 +63,10 @@ public class TECraftingHandler {
 			player.addStat(TEAchievements.crucible, 1);
 		} else if (stack.isItemEqual(BlockMachine.transposer)) {
 			player.addStat(TEAchievements.transposer, 1);
-		} else if (stack.isItemEqual(BlockMachine.iceGen)) {
-			player.addStat(TEAchievements.iceGen, 1);
-		} else if (stack.isItemEqual(BlockMachine.rockGen)) {
-			player.addStat(TEAchievements.rockGen, 1);
+		} else if (stack.isItemEqual(BlockMachine.precipitator)) {
+			player.addStat(TEAchievements.precipitator, 1);
+		} else if (stack.isItemEqual(BlockMachine.extruder)) {
+			player.addStat(TEAchievements.extruder, 1);
 		} else if (stack.isItemEqual(BlockMachine.waterGen)) {
 			player.addStat(TEAchievements.waterGen, 1);
 		} else if (stack.isItemEqual(BlockMachine.assembler)) {

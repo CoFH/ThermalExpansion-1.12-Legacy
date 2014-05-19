@@ -42,7 +42,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 		energyData[TYPE].setEnergyParams(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Assembler", "machine", true);
-		GameRegistry.registerTileEntity(TileAssembler.class, "cofh.thermalexpansion.Assembler");
+		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
 	}
 
 	public static final int PROCESS_ENERGY = 2;

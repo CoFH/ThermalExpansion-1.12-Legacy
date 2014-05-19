@@ -3,9 +3,10 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStack;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -21,7 +22,7 @@ import thermalexpansion.item.TEItems;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new HashMap();
+	private static TMap<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap();
 	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 

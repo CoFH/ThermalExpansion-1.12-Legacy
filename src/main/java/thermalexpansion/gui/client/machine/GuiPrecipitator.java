@@ -18,17 +18,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.machine.TileIceGen;
+import thermalexpansion.block.machine.TilePrecipitator;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.machine.ContainerIceGen;
+import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiIceGen extends GuiBaseAdv {
+public class GuiPrecipitator extends GuiBaseAdv {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "IceGen.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
 	static final String INFO = "Uses Redstone Flux to freeze water.\n\nThe selected item is what you'll get, if there is enough water in the tank.\n\nHave a snowball fight.";
 
-	TileIceGen myTile;
+	TilePrecipitator myTile;
 
 	ElementBase slotInput;
 	ElementBase slotOutput;
@@ -36,10 +36,10 @@ public class GuiIceGen extends GuiBaseAdv {
 	ElementDualScaled progressOverlay;
 	ElementDualScaled speed;
 
-	public GuiIceGen(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiPrecipitator(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerIceGen(inventory, theTile), TEXTURE);
-		myTile = (TileIceGen) theTile;
+		super(new ContainerPrecipitator(inventory, theTile), TEXTURE);
+		myTile = (TilePrecipitator) theTile;
 		name = myTile.getInventoryName();
 	}
 

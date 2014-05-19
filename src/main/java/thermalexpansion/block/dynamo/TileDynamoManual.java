@@ -8,7 +8,7 @@ public class TileDynamoManual extends TileDynamoBase {
 
 	public static void initialize() {
 
-		// GameRegistry.registerTileEntity(TileDynamoManual.class, "cofh.thermalexpansion.DynamoManual");
+		// GameRegistry.registerTileEntity(TileDynamoManual.class, "thermalexpansion.DynamoManual");
 	}
 
 	@Override

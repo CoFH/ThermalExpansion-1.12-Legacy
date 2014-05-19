@@ -70,8 +70,8 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 
 		NBTTagCompound rsControl = nbt.getCompoundTag("RS");
 
-		isPowered = rsControl.getBoolean("Powered");
-		rsMode = ControlMode.values()[rsControl.getByte("rsMode")];
+		isPowered = rsControl.getBoolean("Power");
+		rsMode = ControlMode.values()[rsControl.getByte("Mode")];
 	}
 
 	@Override
@@ -81,8 +81,8 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 
 		NBTTagCompound rsControl = new NBTTagCompound();
 
-		rsControl.setBoolean("Powered", isPowered);
-		rsControl.setByte("rsMode", (byte) rsMode.ordinal());
+		rsControl.setBoolean("Power", isPowered);
+		rsControl.setByte("Mode", (byte) rsMode.ordinal());
 
 		nbt.setTag("RS", rsControl);
 	}

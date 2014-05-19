@@ -21,7 +21,7 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileLamp.class, "cofh.thermalexpansion.Lamp");
+		GameRegistry.registerTileEntity(TileLamp.class, "thermalexpansion.Lamp");
 	}
 
 	// 0 = OFF DEFAULT, 1 = ON DEFAULT, 2 = OFF SCALED, 3 = ON SCALED, 4 = OFF, 5 = ON

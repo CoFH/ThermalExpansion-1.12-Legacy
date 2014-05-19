@@ -34,7 +34,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileActivator.class, "cofh.thermalexpansion.Activator");
+		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
 		guiId = ThermalExpansion.proxy.registerGui("Activator", "device", true);
 	}
 

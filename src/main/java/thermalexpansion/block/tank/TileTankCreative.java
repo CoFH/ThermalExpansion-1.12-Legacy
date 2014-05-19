@@ -10,7 +10,7 @@ public class TileTankCreative extends TileTank {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTankCreative.class, "cofh.thermalexpansion.TankCreative");
+		GameRegistry.registerTileEntity(TileTankCreative.class, "thermalexpansion.TankCreative");
 	}
 
 	public TileTankCreative() {

@@ -34,7 +34,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileBreaker.class, "cofh.thermalexpansion.Breaker");
+		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
 		guiId = ThermalExpansion.proxy.registerGui("Breaker", "device", "TEBase", null, true);
 	}
 

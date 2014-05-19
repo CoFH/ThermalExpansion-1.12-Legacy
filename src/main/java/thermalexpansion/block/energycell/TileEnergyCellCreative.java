@@ -11,7 +11,7 @@ public class TileEnergyCellCreative extends TileEnergyCell {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileEnergyCellCreative.class, "cofh.thermalexpansion.EnergyCellCreative");
+		GameRegistry.registerTileEntity(TileEnergyCellCreative.class, "thermalexpansion.EnergyCellCreative");
 	}
 
 	public static final byte[] DEFAULT_SIDES = { 1, 1, 1, 1, 1, 1 };

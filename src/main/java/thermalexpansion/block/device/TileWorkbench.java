@@ -35,7 +35,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileWorkbench.class, "cofh.thermalexpansion.Workbench");
+		GameRegistry.registerTileEntity(TileWorkbench.class, "thermalexpansion.Workbench");
 		guiId = ThermalExpansion.proxy.registerGui("Workbench", "device", true);
 		configure();
 	}

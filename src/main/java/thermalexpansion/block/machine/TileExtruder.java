@@ -23,9 +23,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 
-public class TileRockGen extends TileMachineBase implements IFluidHandler {
+public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.ROCK_GEN.ordinal();
+	public static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
 
 	public static void initialize() {
 
@@ -35,17 +35,17 @@ public class TileRockGen extends TileMachineBase implements IFluidHandler {
 
 		String category = "tweak.crafting";
 
-		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Cobblestone.Lava", processLava[0]), 0, MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Stone.Lava", processLava[1]), 0, MAX_FLUID_SMALL);
-		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Obsidian.Lava", processLava[2]), 0, MAX_FLUID_SMALL);
+		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0, MAX_FLUID_SMALL);
+		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0, MAX_FLUID_SMALL);
+		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0, MAX_FLUID_SMALL);
 
-		processWater[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Cobblestone.Water", processWater[0]), 0, MAX_FLUID_SMALL);
-		processWater[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Stone.Water", processWater[1]), 0, MAX_FLUID_SMALL);
-		processWater[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Obsidian.Water", processWater[2]), 0, MAX_FLUID_SMALL);
+		processWater[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0]), 0, MAX_FLUID_SMALL);
+		processWater[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[1]), 0, MAX_FLUID_SMALL);
+		processWater[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[2]), 0, MAX_FLUID_SMALL);
 
-		processTime[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Cobblestone.Time", processTime[0]), 4, 72000);
-		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Stone.Time", processTime[1]), 4, 72000);
-		processTime[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "RockGen.Obsidian.Time", processTime[2]), 4, 72000);
+		processTime[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Time", processTime[0]), 4, 72000);
+		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[1]), 4, 72000);
+		processTime[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[2]), 4, 72000);
 
 		sideData[TYPE] = new SideConfig();
 		sideData[TYPE].numGroup = 3;
@@ -54,8 +54,8 @@ public class TileRockGen extends TileMachineBase implements IFluidHandler {
 		sideData[TYPE].allowExtraction = new boolean[] { false, false, true };
 		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("RockGen", "machine", true);
-		GameRegistry.registerTileEntity(TileRockGen.class, "cofh.thermalexpansion.RockGen");
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Extruder", "machine", true);
+		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
 	}
 
 	public static int[] processLava = { 0, 0, 1000 };
@@ -72,7 +72,7 @@ public class TileRockGen extends TileMachineBase implements IFluidHandler {
 
 	int outputTracker;
 
-	public TileRockGen() {
+	public TileExtruder() {
 
 		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
 		inventory = new ItemStack[4];

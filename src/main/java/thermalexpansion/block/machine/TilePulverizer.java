@@ -26,7 +26,7 @@ public class TilePulverizer extends TileMachineEnergized {
 		energyData[TYPE].setEnergyParams(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Pulverizer", "machine", true);
-		GameRegistry.registerTileEntity(TilePulverizer.class, "cofh.thermalexpansion.Pulverizer");
+		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
 	}
 
 	int outputTrackerPrimary;

@@ -12,7 +12,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileLexicon.class, "cofh.thermalexpansion.lexicon");
+		GameRegistry.registerTileEntity(TileLexicon.class, "thermalexpansion.lexicon");
 		guiId = ThermalExpansion.proxy.registerGui("Lexicon", "device", true);
 	}
 

@@ -4,12 +4,13 @@ import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
@@ -28,8 +29,8 @@ public class SmelterManager {
 	public static ItemStack ingotIron = new ItemStack(Items.iron_ingot);
 	public static ItemStack ingotGold = new ItemStack(Items.gold_ingot);
 
-	private static Map<List, RecipeSmelter> recipeMap = new HashMap();
-	private static Set<ComparableItemStackSafe> validationSet = new HashSet();
+	private static TMap<List, RecipeSmelter> recipeMap = new THashMap();
+	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;

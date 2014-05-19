@@ -35,7 +35,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 		sideData[TYPE].sideTex = new int[] { 0, 4 };
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("WaterGen", "machine", "TEBase", null, true);
-		GameRegistry.registerTileEntity(TileWaterGen.class, "cofh.thermalexpansion.WaterGen");
+		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion.WaterGen");
 	}
 
 	public static int genRate = 25 * CoFHProps.TIME_CONSTANT;

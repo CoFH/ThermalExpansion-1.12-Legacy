@@ -3,9 +3,10 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -22,7 +23,7 @@ import thermalfoundation.item.TFItems;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new HashMap();
+	private static TMap<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
@@ -32,10 +33,7 @@ public class CrucibleManager {
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
 
-		if (input == null) {
-			return null;
-		}
-		return recipeMap.get(query.set(input));
+		return input == null ? null : recipeMap.get(query.set(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {

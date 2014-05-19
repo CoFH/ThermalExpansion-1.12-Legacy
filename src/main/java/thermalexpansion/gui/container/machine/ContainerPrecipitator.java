@@ -1,5 +1,6 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotEnergy;
 import cofh.gui.slot.SlotLocked;
 import cofh.gui.slot.SlotOutput;
 
@@ -9,22 +10,23 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import thermalexpansion.block.machine.TileRockGen;
+import thermalexpansion.block.machine.TilePrecipitator;
 import thermalexpansion.gui.container.ContainerTEBase;
 
-public class ContainerRockGen extends ContainerTEBase {
+public class ContainerPrecipitator extends ContainerTEBase {
 
-	TileRockGen myTile;
+	TilePrecipitator myTile;
 
-	public ContainerRockGen(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerPrecipitator(InventoryPlayer inventory, TileEntity entity) {
 
 		super(entity);
 
-		myTile = (TileRockGen) entity;
+		myTile = (TilePrecipitator) entity;
 		addSlotToContainer(new SlotOutput(myTile, 0, 80, 49));
-		addSlotToContainer(new SlotLocked(myTile, 1, 50, 19));
-		addSlotToContainer(new SlotLocked(myTile, 2, 80, 19));
-		addSlotToContainer(new SlotLocked(myTile, 3, 110, 19));
+		addSlotToContainer(new SlotEnergy(myTile, 1, 8, 53));
+		addSlotToContainer(new SlotLocked(myTile, 2, 50, 19));
+		addSlotToContainer(new SlotLocked(myTile, 3, 80, 19));
+		addSlotToContainer(new SlotLocked(myTile, 4, 110, 19));
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {

@@ -159,11 +159,9 @@ public class TCPlugin {
 					.add(Aspect.FIRE, 4).add(Aspect.WATER, 2));
 			registerStack(BlockMachine.transposer, new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2)
 					.add(Aspect.WATER, 4).add(Aspect.MOTION, 2));
-			registerStack(
-					BlockMachine.iceGen,
-					new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.COLD, 4)
-							.add(Aspect.WATER, 2));
-			registerStack(BlockMachine.rockGen, new AspectList().add(Aspect.METAL, 10).add(Aspect.CRYSTAL, 4).add(Aspect.MECHANISM, 6).add(Aspect.MOTION, 2)
+			registerStack(BlockMachine.precipitator, new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6)
+					.add(Aspect.ENERGY, 2).add(Aspect.COLD, 4).add(Aspect.WATER, 2));
+			registerStack(BlockMachine.extruder, new AspectList().add(Aspect.METAL, 10).add(Aspect.CRYSTAL, 4).add(Aspect.MECHANISM, 6).add(Aspect.MOTION, 2)
 					.add(Aspect.ENTROPY, 4).add(Aspect.WATER, 1).add(Aspect.FIRE, 1));
 			registerStack(BlockMachine.waterGen, new AspectList().add(Aspect.METAL, 10).add(Aspect.CRYSTAL, 4).add(Aspect.MECHANISM, 6).add(Aspect.MOTION, 2)
 					.add(Aspect.WATER, 4).add(Aspect.CRAFT, 1).add(Aspect.VOID, 1));

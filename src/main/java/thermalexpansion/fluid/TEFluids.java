@@ -7,11 +7,12 @@ import cofh.util.fluid.DispenserEmptyBucketHandler;
 import cofh.util.fluid.DispenserFilledBucketHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.block.BlockDispenser;
@@ -197,7 +198,7 @@ public class TEFluids {
 	public static boolean enableFlorbs = true;
 	public static final int MAGMATIC_FLORB_TEMPERATURE = 1000;
 
-	public static final Map<String, Integer> fluidFlowrate = new HashMap<String, Integer>();
+	public static final TMap<String, Integer> fluidFlowrate = new THashMap<String, Integer>();
 
 	public static ConfigHandler configFlorbs = new ConfigHandler(TEProps.VERSION);
 	public static ConfigHandler configFuels = new ConfigHandler(TEProps.VERSION);

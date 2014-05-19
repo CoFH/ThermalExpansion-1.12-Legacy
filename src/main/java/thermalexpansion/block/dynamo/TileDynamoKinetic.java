@@ -15,7 +15,7 @@ public class TileDynamoKinetic extends TileDynamoBase implements IPowerReceptor 
 	public static void initialize() {
 
 		// guiIds[BlockDynamo.Types.KINETIC.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoKinetic", "dynamo", "TEBase", null, true);
-		// GameRegistry.registerTileEntity(TileDynamoKinetic.class, "cofh.thermalexpansion.DynamoKinetic");
+		// GameRegistry.registerTileEntity(TileDynamoKinetic.class, "thermalexpansion.DynamoKinetic");
 	}
 
 	protected PowerHandler powerHandler;

@@ -5,8 +5,8 @@ import cofh.network.CoFHTileInfoPacket;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.HashMap;
-import java.util.Map;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
@@ -30,7 +30,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	public static void initialize() {
 
 		guiIds[BlockDynamo.Types.REACTANT.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoReactant", "dynamo", true);
-		GameRegistry.registerTileEntity(TileDynamoReactant.class, "cofh.thermalexpansion.DynamoReactant");
+		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
 	static int sugarRF = 16000;
@@ -45,7 +45,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	static ItemStack ghastTear = new ItemStack(Items.ghast_tear, 1, 0);
 	static ItemStack netherStar = new ItemStack(Items.nether_star, 1, 0);
 
-	static Map fuels = new HashMap<Fluid, Integer>();
+	static TMap fuels = new THashMap<Fluid, Integer>();
 
 	FluidTank tank = new FluidTank(MAX_FLUID);
 

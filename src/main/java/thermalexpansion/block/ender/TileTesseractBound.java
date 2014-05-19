@@ -20,7 +20,7 @@ public class TileTesseractBound extends TileRSInventory implements ISecureTile, 
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTesseract.class, "cofh.thermalexpansion.Tesseract");
+		GameRegistry.registerTileEntity(TileTesseract.class, "thermalexpansion.Tesseract");
 		guiId = ThermalExpansion.proxy.registerGui("Tesseract", null, true);
 	}
 

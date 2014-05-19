@@ -3,7 +3,9 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
-import java.util.HashMap;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.Map;
 
 import net.minecraft.init.Blocks;
@@ -17,7 +19,7 @@ import thermalfoundation.item.TFItems;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new HashMap();
+	private static TMap<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;

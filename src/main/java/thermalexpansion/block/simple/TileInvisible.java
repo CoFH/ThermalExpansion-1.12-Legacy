@@ -8,7 +8,7 @@ public class TileInvisible extends TileEntity {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileInvisible.class, "cofh.thermalexpansion.Invisible");
+		GameRegistry.registerTileEntity(TileInvisible.class, "thermalexpansion.Invisible");
 	}
 
 	protected int light;

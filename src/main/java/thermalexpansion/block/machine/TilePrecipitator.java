@@ -2,35 +2,29 @@ package thermalexpansion.block.machine;
 
 import cofh.network.CoFHPacket;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.crafting.PrecipitatorManager;
+import thermalexpansion.util.crafting.PrecipitatorManager.RecipePrecipitator;
 
-public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
+public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.ICE_GEN.ordinal();
+	public static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
 	public static void initialize() {
-
-		processItems[0] = new ItemStack(Items.snowball, 4, 0);
-		processItems[1] = new ItemStack(Blocks.snow);
-		processItems[2] = new ItemStack(Blocks.ice);
 
 		sideData[TYPE] = new SideConfig();
 		sideData[TYPE].numGroup = 3;
@@ -42,32 +36,25 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 		energyData[TYPE] = new EnergyConfig();
 		energyData[TYPE].setEnergyParams(20);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("IceGen", "machine", true);
-		GameRegistry.registerTileEntity(TileIceGen.class, "cofh.thermalexpansion.IceGen");
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
+		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
 	}
 
-	static int[] processWater = { 500, 500, 1000 };
-	static int[] processEnergy = { 800, 800, 1600 };
-
-	static ItemStack[] processItems = new ItemStack[3];
-
-	FluidTank tank = new FluidTank(MAX_FLUID_SMALL);
+	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
+	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID_SMALL);
 
 	byte curSelection;
 	byte prevSelection;
 
 	int outputTracker;
 
-	public TileIceGen() {
+	public TilePrecipitator() {
 
 		super();
 
 		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
 		inventory = new ItemStack[1 + 1 + 3];
 
-		inventory[2] = processItems[0];
-		inventory[3] = processItems[1];
-		inventory[4] = processItems[2];
 	}
 
 	@Override
@@ -85,16 +72,22 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 	@Override
 	public boolean canStart() {
 
-		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || tank.getFluidAmount() < processWater[curSelection]) {
+		if (tank.getFluidAmount() <= 0) {
+			return false;
+		}
+		RecipePrecipitator recipe = PrecipitatorManager.getRecipe(tank.getFluid());
+
+		if (recipe == null || tank.getFluidAmount() < recipe.getInputs()[curSelection].amount
+				|| energyStorage.getEnergyStored() < recipe.getEnergy()[curSelection]) {
 			return false;
 		}
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(processItems[curSelection])) {
+		if (!inventory[0].isItemEqual(recipe.getOutputs()[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
+		return inventory[0].stackSize + recipe.getOutputs()[curSelection].stackSize <= recipe.getOutputs()[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -106,20 +99,29 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 	@Override
 	protected void processStart() {
 
-		processMax = processEnergy[curSelection];
+		int prevID = renderFluid.fluidID;
+
+		processMax = PrecipitatorManager.getRecipe(tank.getFluid()).getEnergy()[curSelection];
 		processRem = processMax;
+		renderFluid.amount = 0;
 		prevSelection = curSelection;
+
+		if (prevID != renderFluid.fluidID) {
+			sendFluidPacket();
+		}
 	}
 
 	@Override
 	protected void processFinish() {
 
+		RecipePrecipitator recipe = PrecipitatorManager.getRecipe(tank.getFluid());
+
 		if (inventory[0] == null) {
-			inventory[0] = processItems[prevSelection].copy();
+			inventory[0] = recipe.getOutputs()[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			inventory[0].stackSize += recipe.getOutputs()[prevSelection].stackSize;
 		}
-		tank.getFluid().amount -= processWater[prevSelection];
+		tank.getFluid().amount -= recipe.getInputs()[prevSelection].amount;
 		prevSelection = curSelection;
 	}
 
@@ -144,6 +146,41 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addFluidStack(renderFluid);
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiCoFHPacket() {
+
+		CoFHPacket payload = super.getGuiCoFHPacket();
+
+		payload.addByte(curSelection);
+		payload.addByte(prevSelection);
+
+		if (tank.getFluid() == null) {
+			payload.addFluidStack(renderFluid);
+		} else {
+			payload.addFluidStack(tank.getFluid());
+		}
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getFluidCoFHPacket() {
+
+		CoFHPacket payload = super.getFluidCoFHPacket();
+
+		payload.addFluidStack(renderFluid);
+
+		return payload;
+	}
+
+	@Override
 	public CoFHPacket getModeCoFHPacket() {
 
 		CoFHPacket payload = super.getModeCoFHPacket();
@@ -162,6 +199,19 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 		}
 	}
 
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			renderFluid = payload.getFluidStack();
+		} else {
+			payload.getFluidStack();
+		}
+	}
+
 	/* ITileInfoPacketHandler */
 	@Override
 	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
@@ -172,6 +222,13 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 			processMax = payload.getInt();
 			processRem = payload.getInt();
 			energyStorage.setEnergyStored(payload.getInt());
+			curSelection = payload.getByte();
+			prevSelection = payload.getByte();
+			tank.setFluid(payload.getFluidStack());
+			return;
+		case FLUID:
+			renderFluid = payload.getFluidStack();
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			return;
 		case MODE:
 			curSelection = payload.getByte();
@@ -186,17 +243,7 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 	}
 
 	/* GUI METHODS */
-	public int getCurSelection() {
-
-		return curSelection;
-	}
-
-	public int getPrevSelection() {
-
-		return prevSelection;
-	}
-
-	public FluidTank getTank() {
+	public FluidTankAdv getTank() {
 
 		return tank;
 	}
@@ -206,33 +253,14 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 		return tank.getFluid();
 	}
 
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
+	public int getCurSelection() {
 
-		switch (i) {
-		case 0:
-			curSelection = (byte) j;
-		case 1:
-			prevSelection = (byte) j;
-			return;
-		case 2:
-			if (tank.getFluid() == null) {
-				tank.setFluid(new FluidStack(FluidRegistry.WATER, j));
-			} else {
-				tank.getFluid().amount = j;
-			}
-			return;
-		}
+		return curSelection;
 	}
 
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
+	public int getPrevSelection() {
 
-		super.sendGuiNetworkData(container, iCrafting);
-
-		iCrafting.sendProgressBarUpdate(container, 0, curSelection);
-		iCrafting.sendProgressBarUpdate(container, 1, prevSelection);
-		iCrafting.sendProgressBarUpdate(container, 2, tank.getFluidAmount());
+		return prevSelection;
 	}
 
 	/* NBT METHODS */
@@ -246,9 +274,9 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 		curSelection = nbt.getByte("Sel");
 		tank.readFromNBT(nbt);
 
-		inventory[2] = processItems[0];
-		inventory[3] = processItems[1];
-		inventory[4] = processItems[2];
+		if (tank.getFluid() != null) {
+			renderFluid = tank.getFluid();
+		}
 	}
 
 	@Override
@@ -274,9 +302,6 @@ public class TileIceGen extends TileMachineEnergized implements IFluidHandler {
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
 		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
-			return 0;
-		}
-		if (resource.getFluid() != FluidRegistry.WATER) {
 			return 0;
 		}
 		return tank.fill(resource, doFill);

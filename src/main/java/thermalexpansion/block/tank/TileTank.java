@@ -30,7 +30,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTank.class, "cofh.thermalexpansion.Tank");
+		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion.Tank");
 	}
 
 	protected static final int UPDATE_FACTOR = 4;

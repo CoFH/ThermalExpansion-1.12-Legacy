@@ -17,7 +17,7 @@ public class TileTinkerBench extends TileInventory implements IEnergyHandler {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTinkerBench.class, "cofh.thermalexpansion.Workbench");
+		GameRegistry.registerTileEntity(TileTinkerBench.class, "thermalexpansion.Workbench");
 	}
 
 	EnergyStorage energyStorage;

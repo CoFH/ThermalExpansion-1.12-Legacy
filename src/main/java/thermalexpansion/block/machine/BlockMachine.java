@@ -62,10 +62,10 @@ public class BlockMachine extends BlockTEBase {
 			return new TileCrucible();
 		case TRANSPOSER:
 			return new TileTransposer();
-		case ICE_GEN:
-			return new TileIceGen();
-		case ROCK_GEN:
-			return new TileRockGen();
+		case PRECIPITATOR:
+			return new TilePrecipitator();
+		case EXTRUDER:
+			return new TileExtruder();
 		case WATER_GEN:
 			return new TileWaterGen();
 		case ASSEMBLER:
@@ -92,7 +92,7 @@ public class BlockMachine extends BlockTEBase {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof TileRockGen || tile instanceof TileIceGen) {
+		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
 			if (FluidHelper.fillHandlerWithContainer(world, (IFluidHandler) tile, player)) {
 				return true;
 			}
@@ -201,8 +201,8 @@ public class BlockMachine extends BlockTEBase {
 		TileSmelter.initialize();
 		TileCrucible.initialize();
 		TileTransposer.initialize();
-		TileIceGen.initialize();
-		TileRockGen.initialize();
+		TilePrecipitator.initialize();
+		TileExtruder.initialize();
 		TileWaterGen.initialize();
 		TileAssembler.initialize();
 		TileCharger.initialize();
@@ -213,8 +213,8 @@ public class BlockMachine extends BlockTEBase {
 		smelter = new ItemStack(this, 1, Types.SMELTER.ordinal());
 		crucible = new ItemStack(this, 1, Types.CRUCIBLE.ordinal());
 		transposer = new ItemStack(this, 1, Types.TRANSPOSER.ordinal());
-		iceGen = new ItemStack(this, 1, Types.ICE_GEN.ordinal());
-		rockGen = new ItemStack(this, 1, Types.ROCK_GEN.ordinal());
+		precipitator = new ItemStack(this, 1, Types.PRECIPITATOR.ordinal());
+		extruder = new ItemStack(this, 1, Types.EXTRUDER.ordinal());
 		waterGen = new ItemStack(this, 1, Types.WATER_GEN.ordinal());
 		assembler = new ItemStack(this, 1, Types.ASSEMBLER.ordinal());
 		charger = new ItemStack(this, 1, Types.CHARGER.ordinal());
@@ -225,8 +225,8 @@ public class BlockMachine extends BlockTEBase {
 		GameRegistry.registerCustomItemStack("smelter", smelter);
 		GameRegistry.registerCustomItemStack("crucible", crucible);
 		GameRegistry.registerCustomItemStack("transposer", transposer);
-		GameRegistry.registerCustomItemStack("iceGen", iceGen);
-		GameRegistry.registerCustomItemStack("rockGen", rockGen);
+		GameRegistry.registerCustomItemStack("precipitator", precipitator);
+		GameRegistry.registerCustomItemStack("extruder", extruder);
 		GameRegistry.registerCustomItemStack("waterGen", waterGen);
 		GameRegistry.registerCustomItemStack("assembler", assembler);
 		GameRegistry.registerCustomItemStack("charger", charger);
@@ -303,12 +303,12 @@ public class BlockMachine extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "glass" }));
 		}
-		if (enable[Types.ICE_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(iceGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		if (enable[Types.PRECIPITATOR.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(precipitator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
 		}
-		if (enable[Types.ROCK_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(rockGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+		if (enable[Types.EXTRUDER.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(extruder, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
 					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "glass" }));
 		}
 		if (enable[Types.WATER_GEN.ordinal()]) {
@@ -327,10 +327,10 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static enum Types {
-		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, ICE_GEN, ROCK_GEN, WATER_GEN, ASSEMBLER, CHARGER
+		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, WATER_GEN, ASSEMBLER, CHARGER
 	}
 
-	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "iceGen", "rockGen", "waterGen",
+	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "waterGen",
 			"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
@@ -342,8 +342,8 @@ public class BlockMachine extends BlockTEBase {
 		enable[Types.SMELTER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Smelter", true);
 		enable[Types.CRUCIBLE.ordinal()] = ThermalExpansion.config.get(category, "Machine.Crucible", true);
 		enable[Types.TRANSPOSER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Transposer", true);
-		enable[Types.ICE_GEN.ordinal()] = ThermalExpansion.config.get(category, "Machine.IceGen", true);
-		enable[Types.ROCK_GEN.ordinal()] = ThermalExpansion.config.get(category, "Machine.RockGen", true);
+		enable[Types.PRECIPITATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Precipitator", true);
+		enable[Types.EXTRUDER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Extruder", true);
 		enable[Types.WATER_GEN.ordinal()] = ThermalExpansion.config.get(category, "Machine.WaterGen", true);
 		enable[Types.ASSEMBLER.ordinal()] = ThermalExpansion.config.get(category, "Machine.AutoCrafter", true);
 		enable[Types.CHARGER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Charger", true);
@@ -355,8 +355,8 @@ public class BlockMachine extends BlockTEBase {
 	public static ItemStack smelter;
 	public static ItemStack crucible;
 	public static ItemStack transposer;
-	public static ItemStack iceGen;
-	public static ItemStack rockGen;
+	public static ItemStack precipitator;
+	public static ItemStack extruder;
 	public static ItemStack waterGen;
 	public static ItemStack assembler;
 	public static ItemStack charger;

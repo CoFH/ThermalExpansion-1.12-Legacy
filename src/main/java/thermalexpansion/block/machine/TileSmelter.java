@@ -28,7 +28,7 @@ public class TileSmelter extends TileMachineEnergized {
 		energyData[TYPE].setEnergyParams(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Smelter", "machine", true);
-		GameRegistry.registerTileEntity(TileSmelter.class, "cofh.thermalexpansion.Smelter");
+		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}
 
 	int outputTrackerPrimary;

@@ -4,7 +4,9 @@ import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.InventoryCraftingFalse;
 
-import java.util.HashMap;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.List;
 import java.util.Map;
 
@@ -105,7 +107,7 @@ public class SchematicHelper {
 			return;
 		}
 		boolean hasOre = false;
-		Map<String, Integer> aMap = new HashMap<String, Integer>();
+		TMap<String, Integer> aMap = new THashMap<String, Integer>();
 		String curName;
 		for (int i = 0; i < 9; i++) {
 			if (schematic.stackTagCompound.hasKey("Slot" + i + "Name") && !schematic.stackTagCompound.getString("Slot" + i + "Name").equalsIgnoreCase("")) {

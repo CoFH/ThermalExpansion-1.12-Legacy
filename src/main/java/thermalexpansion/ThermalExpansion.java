@@ -53,7 +53,9 @@ import thermalexpansion.plugins.TEPlugins;
 import thermalexpansion.util.GenericEventHandler;
 import thermalexpansion.util.IMCHandler;
 import thermalexpansion.util.crafting.CrucibleManager;
+import thermalexpansion.util.crafting.ExtruderManager;
 import thermalexpansion.util.crafting.FurnaceManager;
+import thermalexpansion.util.crafting.PrecipitatorManager;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
@@ -74,7 +76,7 @@ public class ThermalExpansion extends BaseMod {
 	@SidedProxy(clientSide = "thermalexpansion.core.ProxyClient", serverSide = "thermalexpansion.core.Proxy")
 	public static Proxy proxy;
 
-	public static final Logger log = LogManager.getLogger(TEProps.modID);
+	public static final Logger log = LogManager.getLogger(modId);
 
 	public static final ConfigHandler config = new ConfigHandler(TEProps.VERSION);
 	public static final GuiHandler guiHandler = new GuiHandler();
@@ -117,7 +119,7 @@ public class ThermalExpansion extends BaseMod {
 
 		String category = "general";
 		String version = config.get(category, "Version", TEProps.VERSION);
-		String comment = "";
+		String comment = null;
 
 		TEProps.enableUpdateNotice = config.get(category, "EnableUpdateNotifications", TEProps.enableUpdateNotice);
 		TEProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", TEProps.enableDismantleLogging);
@@ -125,10 +127,6 @@ public class ThermalExpansion extends BaseMod {
 		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
 		optionColorBlind = config.get(category, "ColorBlindTextures", false);
 		optionDrawBorders = config.get(category, "DrawGUISlotBorders", true);
-
-		category = "gui.hud";
-		TEProps.enableFluidModule = config.get(category, "EnableFluidModule", TEProps.enableFluidModule);
-		TEProps.enableStuffedItemModule = config.get(category, "EnableStuffedItemModule", TEProps.enableStuffedItemModule);
 
 		category = "tweak";
 		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
@@ -219,6 +217,8 @@ public class ThermalExpansion extends BaseMod {
 		SmelterManager.loadRecipes();
 		CrucibleManager.loadRecipes();
 		TransposerManager.loadRecipes();
+		PrecipitatorManager.loadRecipes();
+		ExtruderManager.loadRecipes();
 
 		cleanConfig(false);
 		config.cleanUp(false, true);

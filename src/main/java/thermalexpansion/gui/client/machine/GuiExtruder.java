@@ -16,17 +16,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.machine.TileRockGen;
+import thermalexpansion.block.machine.TileExtruder;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.machine.ContainerRockGen;
+import thermalexpansion.gui.container.machine.ContainerExtruder;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiRockGen extends GuiBaseAdv {
+public class GuiExtruder extends GuiBaseAdv {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "RockGen.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
 	static final String INFO = "Mixes water and lava to make different types of igneous rock.\n\nThe selected item is what you'll get, if there is enough water and lava in the tanks.\n\nMC physics is fun!";
 
-	TileRockGen myTile;
+	TileExtruder myTile;
 
 	ElementBase slotInputLava;
 	ElementBase slotInputWater;
@@ -36,10 +36,10 @@ public class GuiRockGen extends GuiBaseAdv {
 	ElementDualScaled progressLavaOverlay;
 	ElementDualScaled progressWaterOverlay;
 
-	public GuiRockGen(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiExtruder(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerRockGen(inventory, theTile), TEXTURE);
-		myTile = (TileRockGen) theTile;
+		super(new ContainerExtruder(inventory, theTile), TEXTURE);
+		myTile = (TileExtruder) theTile;
 		name = myTile.getInventoryName();
 	}
 

@@ -26,7 +26,7 @@ public class TileSawmill extends TileMachineEnergized {
 		energyData[TYPE].setEnergyParams(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Sawmill", "machine", true);
-		GameRegistry.registerTileEntity(TileSawmill.class, "cofh.thermalexpansion.Sawmill");
+		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
 	}
 
 	int outputTrackerPrimary;

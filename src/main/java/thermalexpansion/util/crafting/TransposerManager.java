@@ -4,11 +4,12 @@ import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStack;
 import cofh.util.inventory.ComparableItemStackSafe;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
+
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
@@ -26,9 +27,9 @@ import thermalfoundation.item.TFItems;
 
 public class TransposerManager {
 
-	private static Map<List, RecipeTransposer> recipeMapFill = new HashMap();
-	private static Map<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new HashMap();
-	private static Set<ComparableItemStackSafe> validationSet = new HashSet();
+	private static TMap<List, RecipeTransposer> recipeMapFill = new THashMap();
+	private static TMap<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new THashMap();
+	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
 	private static ComparableItemStack query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 

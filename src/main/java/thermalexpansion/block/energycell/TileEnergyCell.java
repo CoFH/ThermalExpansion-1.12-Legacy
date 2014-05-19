@@ -31,7 +31,7 @@ public class TileEnergyCell extends TileReconfigurableBase implements ITileInfoP
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileEnergyCell.class, "cofh.thermalexpansion.EnergyCell");
+		GameRegistry.registerTileEntity(TileEnergyCell.class, "thermalexpansion.EnergyCell");
 		guiId = ThermalExpansion.proxy.registerGui("EnergyCell", null, "TEBase", null, true);
 	}
 

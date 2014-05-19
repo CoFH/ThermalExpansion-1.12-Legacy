@@ -5,9 +5,10 @@ import cofh.util.MathHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStack;
 
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
+
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -20,7 +21,7 @@ import thermalfoundation.item.TFItems;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new HashMap();
+	private static TMap<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap();
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static int secondaryWoolPercentages = 5;

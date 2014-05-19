@@ -4,8 +4,8 @@ import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.HashMap;
-import java.util.Map;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,11 +27,11 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public static void initialize() {
 
 		guiIds[BlockDynamo.Types.COMPRESSION.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoCompression", "dynamo", "TEBase", null, true);
-		GameRegistry.registerTileEntity(TileDynamoCompression.class, "cofh.thermalexpansion.DynamoCompression");
+		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
 
-	static Map fuels = new HashMap<Fluid, Integer>();
-	static Map coolants = new HashMap<Fluid, Integer>();
+	static TMap fuels = new THashMap<Fluid, Integer>();
+	static TMap coolants = new THashMap<Fluid, Integer>();
 
 	FluidTank fuelTank = new FluidTank(MAX_FLUID);
 	FluidTank coolantTank = new FluidTank(MAX_FLUID);

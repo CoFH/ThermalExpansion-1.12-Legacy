@@ -43,7 +43,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 		energyData[TYPE].setEnergyParams(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Transposer", "machine", true);
-		GameRegistry.registerTileEntity(TileTransposer.class, "cofh.thermalexpansion.Transposer");
+		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}
 
 	public boolean reverseFlag;
@@ -534,6 +534,17 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 		}
 	}
 
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Tracker1", outputTracker);
+		nbt.setInteger("Tracker2", outputTrackerFluid);
+		nbt.setBoolean("Rev", reverse);
+		tank.writeToNBT(nbt);
+	}
+
 	/* IInventory */
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
@@ -605,17 +616,6 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]) : isActive ? IconRegistry
 					.getIcon("MachineActive_", getType()) : IconRegistry.getIcon("MachineFace_", getType());
 		}
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		nbt.setInteger("Tracker1", outputTracker);
-		nbt.setInteger("Tracker2", outputTrackerFluid);
-		nbt.setBoolean("Rev", reverse);
-		tank.writeToNBT(nbt);
 	}
 
 	/* IFluidHandler */

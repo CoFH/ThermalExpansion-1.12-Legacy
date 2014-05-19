@@ -4,8 +4,8 @@ import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.HashMap;
-import java.util.Map;
+import gnu.trove.map.TMap;
+import gnu.trove.map.hash.THashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -27,10 +27,10 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public static void initialize() {
 
 		guiIds[BlockDynamo.Types.MAGMATIC.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoMagmatic", "dynamo", "TEBase", null, true);
-		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "cofh.thermalexpansion.DynamoMagmatic");
+		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
-	static Map fuels = new HashMap<Fluid, Integer>();
+	static TMap fuels = new THashMap<Fluid, Integer>();
 
 	FluidTank tank = new FluidTank(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);

@@ -28,7 +28,7 @@ public class TileCharger extends TileMachineEnergized {
 		energyData[TYPE].setEnergyParams(1, 10000, 400000);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Charger", "machine", true);
-		GameRegistry.registerTileEntity(TileCharger.class, "cofh.thermalexpansion.Charger");
+		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}
 
 	int outputTracker;

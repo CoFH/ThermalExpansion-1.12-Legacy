@@ -32,7 +32,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	public static void initialize() {
 
 		guiIds[BlockDynamo.Types.STEAM.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoSteam", "dynamo", true);
-		GameRegistry.registerTileEntity(TileDynamoSteam.class, "cofh.thermalexpansion.DynamoSteam");
+		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
 	}
 
 	static final int STEAM_MIN = 2000;

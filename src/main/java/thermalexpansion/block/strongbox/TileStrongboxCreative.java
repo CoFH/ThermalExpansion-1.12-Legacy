@@ -9,7 +9,7 @@ public class TileStrongboxCreative extends TileStrongbox {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileStrongboxCreative.class, "cofh.thermalexpansion.StrongboxCreative");
+		GameRegistry.registerTileEntity(TileStrongboxCreative.class, "thermalexpansion.StrongboxCreative");
 	}
 
 	public TileStrongboxCreative() {

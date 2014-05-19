@@ -32,7 +32,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileStrongbox.class, "cofh.thermalexpansion.Strongbox");
+		GameRegistry.registerTileEntity(TileStrongbox.class, "thermalexpansion.Strongbox");
 		guiId = ThermalExpansion.proxy.registerGui("Strongbox", null, true);
 		configure();
 	}

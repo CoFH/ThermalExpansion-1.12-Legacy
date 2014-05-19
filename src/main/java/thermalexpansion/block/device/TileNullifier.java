@@ -26,7 +26,7 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileNullifier.class, "cofh.thermalexpansion.Nullifier");
+		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
 		guiId = ThermalExpansion.proxy.registerGui("Nullifier", "device", true);
 	}
 
