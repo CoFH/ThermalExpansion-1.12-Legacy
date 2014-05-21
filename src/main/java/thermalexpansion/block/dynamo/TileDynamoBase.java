@@ -280,7 +280,6 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 			payload.getBool();
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 

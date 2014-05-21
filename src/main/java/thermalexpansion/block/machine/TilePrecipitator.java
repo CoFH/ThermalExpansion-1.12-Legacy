@@ -6,6 +6,8 @@ import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,14 +19,16 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.util.crafting.PrecipitatorManager;
-import thermalexpansion.util.crafting.PrecipitatorManager.RecipePrecipitator;
 
 public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler {
 
 	public static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
 	public static void initialize() {
+
+		processItems[0] = new ItemStack(Items.snowball, 4, 0);
+		processItems[1] = new ItemStack(Blocks.snow);
+		processItems[2] = new ItemStack(Blocks.ice);
 
 		sideData[TYPE] = new SideConfig();
 		sideData[TYPE].numGroup = 3;
@@ -39,6 +43,11 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
 	}
+
+	static int[] processWater = { 500, 500, 1000 };
+	static int[] processEnergy = { 800, 800, 1600 };
+
+	static ItemStack[] processItems = new ItemStack[3];
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID_SMALL);
@@ -55,6 +64,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
 		inventory = new ItemStack[1 + 1 + 3];
 
+		inventory[2] = processItems[0];
+		inventory[3] = processItems[1];
+		inventory[4] = processItems[2];
 	}
 
 	@Override
@@ -72,22 +84,16 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	@Override
 	public boolean canStart() {
 
-		if (tank.getFluidAmount() <= 0) {
-			return false;
-		}
-		RecipePrecipitator recipe = PrecipitatorManager.getRecipe(tank.getFluid());
-
-		if (recipe == null || tank.getFluidAmount() < recipe.getInputs()[curSelection].amount
-				|| energyStorage.getEnergyStored() < recipe.getEnergy()[curSelection]) {
+		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || tank.getFluidAmount() < processWater[curSelection]) {
 			return false;
 		}
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(recipe.getOutputs()[curSelection])) {
+		if (!inventory[0].isItemEqual(processItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + recipe.getOutputs()[curSelection].stackSize <= recipe.getOutputs()[prevSelection].getMaxStackSize();
+		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -99,29 +105,20 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	@Override
 	protected void processStart() {
 
-		int prevID = renderFluid.fluidID;
-
-		processMax = PrecipitatorManager.getRecipe(tank.getFluid()).getEnergy()[curSelection];
+		processMax = processEnergy[curSelection];
 		processRem = processMax;
-		renderFluid.amount = 0;
 		prevSelection = curSelection;
-
-		if (prevID != renderFluid.fluidID) {
-			sendFluidPacket();
-		}
 	}
 
 	@Override
 	protected void processFinish() {
 
-		RecipePrecipitator recipe = PrecipitatorManager.getRecipe(tank.getFluid());
-
 		if (inventory[0] == null) {
-			inventory[0] = recipe.getOutputs()[prevSelection].copy();
+			inventory[0] = processItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += recipe.getOutputs()[prevSelection].stackSize;
+			inventory[0].stackSize += processItems[prevSelection].stackSize;
 		}
-		tank.getFluid().amount -= recipe.getInputs()[prevSelection].amount;
+		tank.getFluid().amount -= processWater[prevSelection];
 		prevSelection = curSelection;
 	}
 
@@ -192,11 +189,13 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 
 	public void setMode(int i) {
 
+		byte lastSelection = curSelection;
 		curSelection = (byte) i;
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			sendModePacket();
 		}
+		curSelection = lastSelection;
 	}
 
 	/* ITilePacketHandler */
@@ -277,6 +276,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid();
 		}
+		inventory[2] = processItems[0];
+		inventory[3] = processItems[1];
+		inventory[4] = processItems[2];
 	}
 
 	@Override
@@ -302,6 +304,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
 		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
+			return 0;
+		}
+		if (resource.getFluid() != FluidRegistry.WATER) {
 			return 0;
 		}
 		return tank.fill(resource, doFill);

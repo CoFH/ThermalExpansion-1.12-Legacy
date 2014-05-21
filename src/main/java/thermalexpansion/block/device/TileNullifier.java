@@ -128,10 +128,10 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 
 		if (pass == 0) {
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry
-					.getIcon("DeviceFace_", getType());
+					.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry
-					.getIcon("DeviceActive_", getType()) : IconRegistry.getIcon("DeviceFace_", getType());
+					.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}

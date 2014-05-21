@@ -59,7 +59,6 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 			}
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 

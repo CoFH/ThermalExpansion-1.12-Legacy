@@ -63,7 +63,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		for (int i = 0; i < textureSides.length; i++) {
 			textureTop[i] = IconRegistry.getIcon("TankTop", i);
 			textureBottom[i] = IconRegistry.getIcon("TankBottom", i);
-			textureSides[i] = IconRegistry.getIcon("Tank", i);
+			textureSides[i] = IconRegistry.getIcon("TankSide", i);
 		}
 	}
 

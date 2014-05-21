@@ -269,7 +269,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		tank.setFluid(payload.getFluidStack());
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 	}
 
 	/* NBT METHODS */

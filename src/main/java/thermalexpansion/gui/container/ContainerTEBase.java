@@ -50,19 +50,22 @@ public class ContainerTEBase extends Container {
 	public void detectAndSendChanges() {
 
 		super.detectAndSendChanges();
-		if (baseTile != null) {
-			for (int i = 0; i < crafters.size(); ++i) {
-				baseTile.sendGuiNetworkData(this, (ICrafting) crafters.get(i));
-			}
+
+		if (baseTile == null) {
+			return;
+		}
+		for (int i = 0; i < crafters.size(); ++i) {
+			baseTile.sendGuiNetworkData(this, (ICrafting) crafters.get(i));
 		}
 	}
 
 	@Override
 	public void updateProgressBar(int i, int j) {
 
-		if (baseTile != null) {
-			baseTile.receiveGuiNetworkData(i, j);
+		if (baseTile == null) {
+			return;
 		}
+		baseTile.receiveGuiNetworkData(i, j);
 	}
 
 	@Override

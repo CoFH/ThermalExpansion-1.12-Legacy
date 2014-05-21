@@ -133,15 +133,14 @@ public class BlockTank extends BlockTEBase {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-
 			IconRegistry.addIcon("TankBottom" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Bottom_Blue", ir);
 			IconRegistry.addIcon("TankBottom" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Bottom_Orange", ir);
 
 			IconRegistry.addIcon("TankTop" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Top_Blue", ir);
 			IconRegistry.addIcon("TankTop" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Top_Orange", ir);
 
-			IconRegistry.addIcon("Tank" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Blue", ir);
-			IconRegistry.addIcon("Tank" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Orange", ir);
+			IconRegistry.addIcon("TankSide" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Blue", ir);
+			IconRegistry.addIcon("TankSide" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Orange", ir);
 		}
 	}
 

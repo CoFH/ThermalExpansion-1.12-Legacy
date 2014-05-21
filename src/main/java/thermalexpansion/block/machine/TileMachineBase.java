@@ -86,7 +86,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		payload.addBool(isActive);
 		payload.addInt(processMax);
 		payload.addInt(processRem);
-
 		return payload;
 	}
 
@@ -95,7 +94,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
-
 		return payload;
 	}
 
@@ -104,7 +102,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
-
 		return payload;
 	}
 
@@ -217,8 +214,8 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			} else if (side == 1) {
 				return IconRegistry.getIcon("MachineTop");
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive_", getType()) : IconRegistry.getIcon(
-					"MachineFace_", getType());
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon(
+					"MachineFace", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]);
 		}

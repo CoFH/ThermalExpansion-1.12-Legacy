@@ -149,7 +149,7 @@ public class BlockDevice extends BlockTEBase {
 			}
 			return IconRegistry.getIcon("WorkbenchSide");
 		}
-		return side != 3 ? IconRegistry.getIcon("DeviceSide") : IconRegistry.getIcon("DeviceFace_" + metadata);
+		return side != 3 ? IconRegistry.getIcon("DeviceSide") : IconRegistry.getIcon("DeviceFace" + metadata);
 	}
 
 	@Override
@@ -201,8 +201,8 @@ public class BlockDevice extends BlockTEBase {
 
 		// Face Textures
 		for (int i = 2; i < Types.values().length; i++) {
-			IconRegistry.addIcon("DeviceFace_" + i, "thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]), ir);
-			IconRegistry.addIcon("DeviceActive_" + i, "thermalexpansion:device/Device_Active_" + StringHelper.titleCase(NAMES[i]), ir);
+			IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]), ir);
+			IconRegistry.addIcon("DeviceActive" + i, "thermalexpansion:device/Device_Active_" + StringHelper.titleCase(NAMES[i]), ir);
 		}
 	}
 

@@ -12,7 +12,6 @@ import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
-import cofh.util.FluidHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -26,7 +25,7 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiPrecipitator extends GuiBaseAdv {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
-	static final String INFO = "Uses Redstone Flux to freeze water.\n\nThe selected item is what you'll get, if there is enough water in the tank.\n\nHave a snowball fight.";
+	static final String INFO = "Uses Redstone Flux to freeze various fluids!\n\nThe selected item is what you'll get, if there is enough fluid in the tank.\n\nHave a snowball fight.";
 
 	TilePrecipitator myTile;
 
@@ -53,7 +52,7 @@ public class GuiPrecipitator extends GuiBaseAdv {
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()));
-		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidHelper.WATER).setSize(24, 16));
+		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(myTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
 				.setTexture(TEX_DROP_LEFT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_SNOWFLAKE, 32, 16));

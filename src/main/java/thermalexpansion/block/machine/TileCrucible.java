@@ -266,10 +266,10 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 				return IconRegistry.getIcon("MachineTop");
 			}
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon(
-					"MachineFace_", getType());
+					"MachineFace", getType());
 		} else {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]) : isActive ? IconRegistry
-					.getIcon("MachineActive_", getType()) : IconRegistry.getIcon("MachineFace_", getType());
+					.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
 		}
 	}
 

@@ -651,7 +651,6 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		owner = payload.getString();
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		// worldObj.updateAllLightTypes(xCoord, yCoord, zCoord);
 	}
 
 	/* ITileInfoPacketHandler */

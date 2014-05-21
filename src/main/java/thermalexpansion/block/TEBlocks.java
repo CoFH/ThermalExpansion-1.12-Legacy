@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 
+import thermalexpansion.block.cache.BlockCache;
+import thermalexpansion.block.cache.ItemBlockCache;
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.device.ItemBlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
@@ -44,7 +46,7 @@ public class TEBlocks {
 		blockEnergyCell = addBlock(new BlockEnergyCell());
 		blockTank = addBlock(new BlockTank());
 		blockStrongbox = addBlock(new BlockStrongbox());
-
+		blockCache = addBlock(new BlockCache());
 		blockTesseract = addBlock(new BlockTesseract());
 		// blockPlate = addBlock(new BlockPlate(ThermalExpansion.config.getBlockId("Plate")));
 		blockLamp = addBlock(new BlockLamp());
@@ -58,6 +60,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockEnergyCell, ItemBlockEnergyCell.class, "EnergyCell");
 		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
+		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
 		GameRegistry.registerBlock(blockTesseract, ItemBlockTesseract.class, "Tesseract");
 		// GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
 		GameRegistry.registerBlock(blockLamp, ItemBlockLamp.class, "Lamp");
@@ -90,6 +93,7 @@ public class TEBlocks {
 	public static Block blockEnergyCell;
 	public static Block blockTank;
 	public static Block blockStrongbox;
+	public static Block blockCache;
 	public static Block blockTesseract;
 	public static Block blockLamp;
 	public static Block blockStorage;

@@ -140,14 +140,6 @@ public class TEItems {
 
 		FurnaceRecipes.smelting().func_151394_a(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
 
-		/* Alloy Recipes */
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustElectrum, 2), new Object[] { "dustGold", "dustSilver" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustInvar, 3), new Object[] { "dustIron", "dustIron", "dustNickel" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustBronze, 4), new Object[] { "dustCopper", "dustCopper", "dustCopper",
-				"dustTin" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustEnderium, 4), new Object[] { "dustTin", "dustTin", "dustTin",
-				"dustPlatinum", TFItems.bucketEnder }));
-
 		TEEquipment.postInit();
 	}
 

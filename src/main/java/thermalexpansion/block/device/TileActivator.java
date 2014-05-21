@@ -55,6 +55,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public TileActivator() {
 
 		inventory = new ItemStack[9];
+
 	}
 
 	@Override
@@ -458,8 +459,8 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public IIcon getBlockTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive_", getType())
-					: IconRegistry.getIcon("DeviceFace_", getType());
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
+					: IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
 		}

@@ -128,7 +128,7 @@ public class BlockMachine extends BlockTEBase {
 		if (side == 1) {
 			return IconRegistry.getIcon("MachineTop");
 		}
-		return side != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace_" + metadata);
+		return side != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace" + metadata);
 	}
 
 	@Override
@@ -167,8 +167,8 @@ public class BlockMachine extends BlockTEBase {
 
 		// Face Textures
 		for (int i = 0; i < Types.values().length; i++) {
-			IconRegistry.addIcon("MachineFace_" + i, "thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]), ir);
-			IconRegistry.addIcon("MachineActive_" + i, "thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]), ir);
+			IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]), ir);
+			IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]), ir);
 		}
 
 		// Config Textures
