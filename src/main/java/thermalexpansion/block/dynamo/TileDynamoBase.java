@@ -258,12 +258,12 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
-		myPacket.addByte(TEProps.PacketID.GUI.ordinal());
-		myPacket.addInt(energyStorage.getEnergyStored());
+		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		payload.addInt(energyStorage.getEnergyStored());
 
-		return myPacket;
+		return payload;
 	}
 
 	/* ITilePacketHandler */

@@ -19,7 +19,6 @@ import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 import java.io.File;
@@ -35,13 +34,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import thermalexpansion.block.TEBlocks;
+import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.device.TileWorkbench;
-import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.core.Proxy;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.entity.TEPlayerTracker;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.gui.CreativeTabBlocks;
 import thermalexpansion.gui.CreativeTabFlorbs;
 import thermalexpansion.gui.CreativeTabItems;
@@ -114,7 +112,6 @@ public class ThermalExpansion extends BaseMod {
 
 		TEItems.preInit();
 		TEBlocks.preInit();
-		TEFluids.preInit();
 		TEPlugins.preInit();
 
 		String category = "general";
@@ -142,7 +139,7 @@ public class ThermalExpansion extends BaseMod {
 		if (optionColorBlind) {
 			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
-			BlockEnergyCell.textureSelection = BlockEnergyCell.TEXTURE_CB;
+			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
 		TEProps.enableGuiBorders = optionDrawBorders;
 
@@ -163,12 +160,8 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
-		// TODO: Figure out why this was removed?
-		// config.preInit();
-
 		TEItems.initialize();
 		TEBlocks.initialize();
-		TEFluids.initialize();
 		TEPlugins.initialize();
 
 		if (TEProps.enableAchievements) {
@@ -200,7 +193,6 @@ public class ThermalExpansion extends BaseMod {
 
 		TEItems.postInit();
 		TEBlocks.postInit();
-		TEFluids.postInit();
 		TEPlugins.postInit();
 
 		proxy.registerEntities();
@@ -227,12 +219,6 @@ public class ThermalExpansion extends BaseMod {
 	}
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event) {
-
-		TEFluids.registerDispenserHandlers();
-	}
-
-	@EventHandler
 	public void handleIMC(IMCEvent theIMC) {
 
 		IMCHandler.instance.handleIMC(theIMC);
@@ -248,12 +234,12 @@ public class ThermalExpansion extends BaseMod {
 
 	public CoFHPacket getConfigSync() {
 
-		CoFHPacket myPacket = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
+		CoFHPacket payload = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
 
-		myPacket.addBool(TileWorkbench.enableSecurity);
-		myPacket.addBool(TileStrongbox.enableSecurity);
+		payload.addBool(TileWorkbench.enableSecurity);
+		payload.addBool(TileStrongbox.enableSecurity);
 
-		return myPacket;
+		return payload;
 	}
 
 	// Called when the client is d/ced from the server.

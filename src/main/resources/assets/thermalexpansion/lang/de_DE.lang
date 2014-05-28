@@ -63,14 +63,6 @@ death.attack.blizz=%1$s fand einen frostigen Tod!
 
 entity.Blizz.name=Blizz
 
-fluid.redstone=Destabilisiertes Redstone
-fluid.glowstone=Energetisiertes Glowstone
-fluid.ender=Resonantes Ender
-fluid.pyrotheum=Flammentes Pyrotheum
-fluid.cryotheum=Gelenes Kryotheum
-fluid.coal=Verflüssigte Kohle
-fluid.steam=Dampf
-
 info.thermalexpansion.schematic=Schema
 
 info.thermalexpansion.modeItem=Item-Modus
@@ -333,19 +325,11 @@ tile.thermalexpansion.dynamo.magmatic.name=Magmatischer Dynamo
 tile.thermalexpansion.dynamo.compression.name=Kompressionsdynamo
 tile.thermalexpansion.dynamo.reactant.name=Reaktantendynamo
 
-tile.thermalexpansion.energycell.creative.name=Kreative Energiezelle
-tile.thermalexpansion.energycell.basic.name=Leadstone-Energiezelle
-tile.thermalexpansion.energycell.hardened.name=Gehärtete Energiezelle
-tile.thermalexpansion.energycell.reinforced.name=Redstone-Energiezelle
-tile.thermalexpansion.energycell.resonant.name=Resonante Energiezelle
-
-tile.thermalexpansion.fluid.redstone.name=Destabilisieres Redstone
-tile.thermalexpansion.fluid.glowstone.name=Energetisiertes Glowstone
-tile.thermalexpansion.fluid.ender.name=Resonantes Ender
-tile.thermalexpansion.fluid.pyrotheum.name=Flammendes Pyrotheum
-tile.thermalexpansion.fluid.cryotheum.name=Gelenes Kryotheum
-tile.thermalexpansion.fluid.coal.name=Verflüssigte Kohle
-tile.thermalexpansion.fluid.steam.name=Dampf
+tile.thermalexpansion.cell.creative.name=Kreative Energiezelle
+tile.thermalexpansion.cell.basic.name=Leadstone-Energiezelle
+tile.thermalexpansion.cell.hardened.name=Gehärtete Energiezelle
+tile.thermalexpansion.cell.reinforced.name=Redstone-Energiezelle
+tile.thermalexpansion.cell.resonant.name=Resonante Energiezelle
 
 tile.thermalexpansion.glass.name=Gehärtetes Glas
 
@@ -415,8 +399,3 @@ tile.thermalexpansion.tank.reinforced.name=Verstärkter Tragbarer Tank
 tile.thermalexpansion.tank.resonant.name=Resonanter Tragbarer Tank
 
 tile.thermalexpansion.tesseract.name=Tesserakt
-
-fluid.tile.water=Wasser
-fluid.tile.lava=Lava
-fluid.fuel=Treibstoff
-fluid.oil=Öl

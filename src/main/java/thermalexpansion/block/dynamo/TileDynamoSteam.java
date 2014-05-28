@@ -25,7 +25,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.fluid.TEFluids;
+import thermalexpansion.util.FuelHandler;
+import thermalfoundation.fluid.TFFluids;
 
 public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
@@ -49,9 +50,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	static {
 		String category = "fuels.steam";
-		coalRF = TEFluids.configFuels.get(category, "coal", coalRF);
-		charcoalRF = TEFluids.configFuels.get(category, "charcoal", charcoalRF);
-		woodRF = TEFluids.configFuels.get(category, "wood", woodRF);
+		coalRF = FuelHandler.configFuels.get(category, "coal", coalRF);
+		charcoalRF = FuelHandler.configFuels.get(category, "charcoal", charcoalRF);
+		woodRF = FuelHandler.configFuels.get(category, "wood", woodRF);
 		blockCoalRF = coalRF * 10;
 		otherRF = woodRF / 3;
 	}
@@ -159,7 +160,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public IIcon getActiveIcon() {
 
-		return TEFluids.fluidSteam.getIcon();
+		return TFFluids.fluidSteam.getIcon();
 	}
 
 	@Override

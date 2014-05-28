@@ -216,12 +216,12 @@ public class BlockTank extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(tankBasic, new Object[] { " G ", "GXG", " G ", 'G', "glass", 'X', "ingotCopper" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(tankBasic, new Object[] { " G ", "GXG", " G ", 'G', "blockGlass", 'X', "ingotCopper" }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', tankBasic }));
-			GameRegistry
-					.addRecipe(new ShapedOreRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'X', "ingotCopper", 'G', "glass" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'X', "ingotCopper", 'G',
+					"blockGlass" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "glassHardened", 'X', tankHardened }));

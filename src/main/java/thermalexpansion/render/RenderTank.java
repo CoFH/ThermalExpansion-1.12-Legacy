@@ -14,16 +14,19 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
+import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.tank.BlockTank;
 import thermalexpansion.block.tank.TileTank;
 import thermalexpansion.core.TEProps;
@@ -41,9 +44,9 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	static {
 		TEProps.renderIdTank = RenderingRegistry.getNextAvailableRenderId();
-		// RenderingRegistry.registerBlockHandler(instance);
+		RenderingRegistry.registerBlockHandler(instance);
 
-		// MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
 
 		generateFluidModels();
 
@@ -103,9 +106,6 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		if (stack == null || stack.amount <= 0) {
 			return;
 		}
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		CCRenderState.startDrawing();
 		Fluid fluid = stack.getFluid();
 
 		RenderUtils.setFluidRenderColor(stack);
@@ -113,12 +113,11 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		int level = TileTank.RENDER_LEVELS - 1;
 
 		if (fluid.isGaseous(stack)) {
-			CCRenderState.setColour(RenderUtils.getFluidRenderColor(stack) << 8 | 32 + 192 * stack.amount / TileTank.CAPACITY[metadata]);
+			CCRenderState.alphaOverride = 32 + 192 * stack.amount / TileTank.CAPACITY[metadata];
 		} else {
 			level = Math.min(TileTank.RENDER_LEVELS - 1, stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]);
 		}
 		modelFluid[level].render(x, y, z, RenderUtils.getIconTransformation(fluidTex));
-		CCRenderState.draw();
 	}
 
 	/* ISimpleBlockRenderingHandler */
@@ -136,15 +135,15 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		}
 		TileTank theTile = (TileTank) tile;
 
-		RenderUtils.beforeWorldRender(world, x, y, z);
+		RenderUtils.preWorldRender(world, x, y, z);
 		if (BlockCoFHBase.renderPass == 0) {
 			renderFrame(theTile.type, theTile.mode, x, y, z);
 		} else {
-			CCRenderState.draw();
+			if (theTile.getTankFluid() == null) {
+				return false;
+			}
 			renderFluid(theTile.getBlockMetadata(), theTile.getTankFluid(), x, y, z);
-			CCRenderState.startDrawing();
 		}
-
 		return true;
 	}
 
@@ -176,6 +175,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
+		GL11.glPushMatrix();
 		double offset = -0.5;
 		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
 			offset = 0;
@@ -184,22 +184,18 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		if (item.stackTagCompound != null) {
 			fluid = FluidStack.loadFluidStackFromNBT(item.stackTagCompound.getCompoundTag("Fluid"));
 		}
-		RenderUtils.preRender();
+		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
 		instance.renderFrame(item.getItemDamage(), 0, offset, offset, offset);
 		CCRenderState.draw();
 
-		GL11.glDisable(GL11.GL_LIGHTING);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
+		CCRenderState.startDrawing();
 		instance.renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
+		CCRenderState.draw();
 
-		GL11.glEnable(GL11.GL_LIGHTING);
-		GL11.glDisable(GL11.GL_BLEND);
-
-		CCRenderState.useNormals = false;
+		RenderUtils.postItemRender();
+		GL11.glPopMatrix();
 	}
 
 }

@@ -10,7 +10,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.PulverizerManager;
@@ -128,8 +127,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (TEFluids.registerMagmaticFuel(fluidName, energy)) {
-							TEFluids.configFuels.get("fuels.magmatic", fluidName, energy);
+						if (FuelHandler.registerMagmaticFuel(fluidName, energy)) {
+							FuelHandler.configFuels.get("fuels.magmatic", fluidName, energy);
 						}
 						continue;
 					}
@@ -138,8 +137,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (TEFluids.registerCompressionFuel(fluidName, energy)) {
-							TEFluids.configFuels.get("fuels.compression", fluidName, energy);
+						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
+							FuelHandler.configFuels.get("fuels.compression", fluidName, energy);
 						}
 						continue;
 					}
@@ -148,8 +147,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (TEFluids.registerCompressionFuel(fluidName, energy)) {
-							TEFluids.configFuels.get("fuels.reactant", fluidName, energy);
+						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
+							FuelHandler.configFuels.get("fuels.reactant", fluidName, energy);
 						}
 						continue;
 					}
@@ -158,8 +157,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (TEFluids.registerCoolant(fluidName, energy)) {
-							TEFluids.configFuels.get("coolants", fluidName, energy);
+						if (FuelHandler.registerCoolant(fluidName, energy)) {
+							FuelHandler.configFuels.get("coolants", fluidName, energy);
 						}
 						continue;
 					}

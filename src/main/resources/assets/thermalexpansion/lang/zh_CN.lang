@@ -53,24 +53,6 @@ achievement.thermalexpansion.fluidCryotheum.desc=这依然比岩浆糟. 你这�
 achievement.thermalexpansion.fluidCoal=液化就是救赎!
 achievement.thermalexpansion.fluidCoal.desc=这*可能*对环境不好!
 
-death.attack.pyrotheum=%1$s误以为炽焱是普通的水!
-death.attack.pyrotheum.player=%1$s逃离%2$s的魔爪时被烧死了!
-death.attack.cryotheum=%1$s冻死了!
-death.attack.cryotheum.player=%1$s逃离%2$s的魔爪时被冻死了!
-death.attack.mana=%1$s被原始的魔力撕得四分五裂!
-death.attack.mana.player==%1$s刚刚逃离%2$s的魔爪又一头栽进另一场危机中.
-death.attack.blizz==%1$s邂逅了冰冷的命运!
-
-entity.Blizz.name=暴雪
-
-fluid.redstone=不稳定熔融红石
-fluid.glowstone=充能液态荧石
-fluid.ender=谐振熔融末影珍珠
-fluid.pyrotheum=烈焰之炽焱
-fluid.cryotheum=极寒之凛冰
-fluid.coal=液态煤炭
-fluid.steam=蒸汽
-
 info.thermalexpansion.schematic=图纸
 
 info.thermalexpansion.modeItem=物品模式
@@ -333,19 +315,11 @@ tile.thermalexpansion.dynamo.magmatic.name=热力能源炉
 tile.thermalexpansion.dynamo.compression.name=压缩能源炉
 tile.thermalexpansion.dynamo.reactant.name=反应能源炉
 
-tile.thermalexpansion.energycell.creative.name=创造能量单元
-tile.thermalexpansion.energycell.basic.name=能量单元
-tile.thermalexpansion.energycell.hardened.name=硬化能量单元
-tile.thermalexpansion.energycell.reinforced.name=强化红石能量单元
-tile.thermalexpansion.energycell.resonant.name=谐振能量单元
-
-tile.thermalexpansion.fluid.redstone.name=熔融红石
-tile.thermalexpansion.fluid.glowstone.name=充能液态荧石
-tile.thermalexpansion.fluid.ender.name=谐振熔融末影珍珠
-tile.thermalexpansion.fluid.pyrotheum.name=烈焰之炽焱
-tile.thermalexpansion.fluid.cryotheum.name=极寒之凛冰
-tile.thermalexpansion.fluid.coal.name=液态煤炭
-tile.thermalexpansion.fluid.steam.name=蒸汽
+tile.thermalexpansion.cell.creative.name=创造能量单元
+tile.thermalexpansion.cell.basic.name=能量单元
+tile.thermalexpansion.cell.hardened.name=硬化能量单元
+tile.thermalexpansion.cell.reinforced.name=强化红石能量单元
+tile.thermalexpansion.cell.resonant.name=谐振能量单元
 
 tile.thermalexpansion.glass.name=强化玻璃
 
@@ -415,8 +389,3 @@ tile.thermalexpansion.tank.reinforced.name=强化便携储罐
 tile.thermalexpansion.tank.resonant.name=谐振便携储罐
 
 tile.thermalexpansion.tesseract.name=超立方体
-
-fluid.tile.water=水
-fluid.tile.lava=岩浆
-fluid.fuel=燃油
-fluid.oil=原油

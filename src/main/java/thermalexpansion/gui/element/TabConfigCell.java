@@ -13,18 +13,18 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.opengl.GL11;
 
-import thermalexpansion.block.energycell.TileEnergyCell;
+import thermalexpansion.block.cell.TileCell;
 
-public class TabConfigEnergyCell extends TabBase {
+public class TabConfigCell extends TabBase {
 
 	public static String TUTORIAL_CONFIG = "The Configuration tab determines how energy is transferred to and from this device.";
 
-	TileEnergyCell myTile;
+	TileCell myTile;
 	int headerColor = 0xe1c92f;
 	int subheaderColor = 0xaaafb8;
 	int textColor = 0x000000;
 
-	public TabConfigEnergyCell(GuiBase gui, TileEnergyCell theTile) {
+	public TabConfigCell(GuiBase gui, TileCell theTile) {
 
 		super(gui);
 

@@ -6,6 +6,7 @@ import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -16,6 +17,7 @@ import net.minecraft.util.IIcon;
 
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 
 public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedBlockTexture, IDeepStorageUnit {
@@ -25,8 +27,16 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		GameRegistry.registerTileEntity(TileCache.class, "thermalexpansion.Cache");
 	}
 
-	public static final int[] SIZE = { Integer.MAX_VALUE, 10000, 40000, 160000, 640000 };
+	public static int[] SIZE = { Integer.MAX_VALUE, 10000, 40000, 160000, 640000 };
 	public static final int[] SLOTS = { 0, 1 };
+
+	static {
+		String category = "block.tweak";
+		SIZE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Resonant.Capacity", SIZE[4]), SIZE[4] / 8, SIZE[4] * 1000);
+		SIZE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Reinforced.Capacity", SIZE[3]), SIZE[3] / 8, SIZE[4]);
+		SIZE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Hardened.Capacity", SIZE[2]), SIZE[2] / 8, SIZE[3]);
+		SIZE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Basic.Capacity", SIZE[1]), SIZE[1] / 8, SIZE[2]);
+	}
 
 	public byte type;
 	public byte facing = 3;
@@ -91,9 +101,13 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		type = nbt.getByte("Type");
 		facing = nbt.getByte("Facing");
 		locked = nbt.getBoolean("Lock");
-		storedStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Item"));
-		maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
 
+		if (nbt.hasKey("Item")) {
+			storedStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Item"));
+			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+		} else {
+			maxCacheStackSize = SIZE[type] - 64 * 2;
+		}
 		super.readFromNBT(nbt);
 	}
 
@@ -105,7 +119,10 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		nbt.setByte("Type", type);
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Lock", locked);
-		nbt.setTag("Item", storedStack.writeToNBT(new NBTTagCompound()));
+
+		if (storedStack != null) {
+			nbt.setTag("Item", storedStack.writeToNBT(new NBTTagCompound()));
+		}
 	}
 
 	/* IReconfigurableFacing */

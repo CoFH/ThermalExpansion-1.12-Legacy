@@ -702,20 +702,20 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		String lookupName = access.isPublic() ? "_Public_" : owner;
 		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
 
-		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(this);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 		if (curList != null) {
-			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			myPacket.addInt(curList.size());
+			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			payload.addInt(curList.size());
 
 			for (Property curProp : curList.values()) {
-				myPacket.addString(curProp.getName());
-				myPacket.addString(curProp.getString());
+				payload.addString(curProp.getName());
+				payload.addString(curProp.getString());
 			}
 		} else {
-			myPacket.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			myPacket.addInt(0);
+			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			payload.addInt(0);
 		}
-		PacketHandler.sendTo(myPacket, thePlayer);
+		PacketHandler.sendTo(payload, thePlayer);
 	}
 
 	/* GUI METHODS */

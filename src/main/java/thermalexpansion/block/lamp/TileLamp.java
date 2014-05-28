@@ -1,6 +1,6 @@
 package thermalexpansion.block.lamp;
 
-import cofh.block.ITileInfo;
+import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.ServerHelper;

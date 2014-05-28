@@ -67,7 +67,7 @@ public class TEProps {
 
 	/* Render Ids */
 	public static int renderIdDynamo = -1;
-	public static int renderIdEnergyCell = -1;
+	public static int renderIdCell = -1;
 	public static int renderIdTank = -1;
 	public static int renderIdTesseract = -1;
 	public static int renderIdPlate = -1;

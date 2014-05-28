@@ -1,9 +1,9 @@
 package thermalexpansion.plugins.nei;
 
-import codechicken.lib.vec.Rectangle4i;
 import codechicken.nei.api.INEIGuiAdapter;
 import cofh.gui.GuiBase;
 import cofh.gui.element.TabBase;
+import cofh.vec.Rectangle4i;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 

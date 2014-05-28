@@ -1,11 +1,12 @@
 package thermalexpansion.block.tank;
 
-import cofh.block.ITileInfo;
+import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTilePacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
+import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cofh.util.fluid.FluidTankAdv;
@@ -24,6 +25,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileTEBase;
 
 public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHandler, ITileInfo {
@@ -35,8 +37,15 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 
 	protected static final int UPDATE_FACTOR = 4;
 	public static final int RENDER_LEVELS = 128;
-	public static final int[] CAPACITY = { FluidContainerRegistry.BUCKET_VOLUME, 8 * FluidContainerRegistry.BUCKET_VOLUME,
-			16 * FluidContainerRegistry.BUCKET_VOLUME, 32 * FluidContainerRegistry.BUCKET_VOLUME, 64 * FluidContainerRegistry.BUCKET_VOLUME };
+	public static int[] CAPACITY = { 1000, 8000, 32000, 128000, 512000 };
+
+	static {
+		String category = "block.tweak";
+		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Resonant.Capacity", CAPACITY[4]), CAPACITY[4] / 8, CAPACITY[4] * 1000);
+		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Reinforced.Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Hardened.Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Basic.Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
+	}
 
 	public byte type;
 	public byte mode;

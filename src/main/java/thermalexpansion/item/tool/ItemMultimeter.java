@@ -2,7 +2,7 @@ package thermalexpansion.item.tool;
 
 import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
-import cofh.block.ITileInfo;
+import cofh.api.tileentity.ITileInfo;
 import cofh.item.ItemBase;
 import cofh.util.ServerHelper;
 
@@ -88,7 +88,6 @@ public class ItemMultimeter extends ItemBase {
 				for (int i = 0; i < info.size(); i++) {
 					player.addChatMessage(new ChatComponentText(info.get(i)));
 				}
-
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
 				if (theTile instanceof ITileInfo) {

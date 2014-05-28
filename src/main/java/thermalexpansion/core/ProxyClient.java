@@ -12,16 +12,16 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
+import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.ender.BlockTesseract;
-import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.element.ElementSlotOverlay;
+import thermalexpansion.item.TEFlorbs;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.render.RenderCell;
 import thermalexpansion.render.RenderDynamo;
-import thermalexpansion.render.RenderEnergyCell;
 import thermalexpansion.render.RenderItemFlorb;
 import thermalexpansion.render.RenderLamp;
 import thermalexpansion.render.RenderSchematic;
@@ -42,12 +42,12 @@ public class ProxyClient extends Proxy {
 
 		MinecraftForgeClient.registerItemRenderer(TEItems.itemComponent, rendererComponent);
 		MinecraftForgeClient.registerItemRenderer(TEItems.itemDiagram, rendererComponent);
-		MinecraftForgeClient.registerItemRenderer(TEFluids.itemFlorb, rendererFlorb);
+		MinecraftForgeClient.registerItemRenderer(TEFlorbs.itemFlorb, rendererFlorb);
 
 		ItemRenderRegistry.addItemRenderer(BlockMachine.machineFrame, RenderItemAsBlock.instance);
-		ItemRenderRegistry.addItemRenderer(BlockEnergyCell.cellBasicFrame, RenderEnergyCell.instance);
-		ItemRenderRegistry.addItemRenderer(BlockEnergyCell.cellReinforcedFrameEmpty, RenderEnergyCell.instance);
-		ItemRenderRegistry.addItemRenderer(BlockEnergyCell.cellReinforcedFrameFull, RenderEnergyCell.instance);
+		ItemRenderRegistry.addItemRenderer(BlockCell.cellBasicFrame, RenderCell.instance);
+		ItemRenderRegistry.addItemRenderer(BlockCell.cellReinforcedFrameEmpty, RenderCell.instance);
+		ItemRenderRegistry.addItemRenderer(BlockCell.cellReinforcedFrameFull, RenderCell.instance);
 		ItemRenderRegistry.addItemRenderer(BlockTesseract.tesseractFrameEmpty, RenderTesseract.instance);
 		ItemRenderRegistry.addItemRenderer(BlockTesseract.tesseractFrameFull, RenderTesseract.instance);
 		ItemRenderRegistry.addItemRenderer(BlockLamp.lampFrame, RenderItemAsBlock.instance);
@@ -80,7 +80,7 @@ public class ProxyClient extends Proxy {
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
 		RenderDynamo.initialize();
-		RenderEnergyCell.initialize();
+		RenderCell.initialize();
 		RenderTank.initialize();
 		RenderStrongbox.initialize();
 		RenderTesseract.initialize();

@@ -8,18 +8,18 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.ender.BlockTesseract;
-import thermalexpansion.block.energycell.BlockEnergyCell;
 import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.block.simple.BlockRockwool;
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.tank.BlockTank;
-import thermalexpansion.fluid.TEFluids;
 import thermalexpansion.item.TEEquipment;
+import thermalexpansion.item.TEFlorbs;
 import thermalexpansion.item.TEItems;
 import thermalfoundation.block.BlockOre;
 import thermalfoundation.block.BlockStorage;
@@ -64,8 +64,8 @@ public class TCPlugin {
 			registerStack(TFItems.nuggetInvar, new AspectList().add(Aspect.METAL, 1));
 			registerStack(TFItems.nuggetEnderium, new AspectList().add(Aspect.METAL, 1));
 
-			registerStack(TEFluids.florb, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1));
-			registerStack(TEFluids.florbMagmatic, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1));
+			registerStack(TEFlorbs.florb, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1));
+			registerStack(TEFlorbs.florbMagmatic, new AspectList().add(Aspect.VOID, 1).add(Aspect.SLIME, 2).add(Aspect.EARTH, 1).add(Aspect.FIRE, 1));
 
 			// registerStack(BlockStorage.blockCopper, new AspectList().add(Aspect.METAL, 11).add(Aspect.VOID, 5));
 			// registerStack(BlockStorage.blockTin, new AspectList().add(Aspect.METAL, 11).add(Aspect.GREED, 5));
@@ -189,25 +189,29 @@ public class TCPlugin {
 			registerStack(BlockDynamo.dynamoReactant, new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 6)
 					.add(Aspect.MOTION, 4).add(Aspect.FIRE, 2).add(Aspect.WATER, 2));
 
-			registerStack(BlockEnergyCell.cellBasicFrame,
-					new AspectList().add(Aspect.METAL, 6).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 5).add(Aspect.MECHANISM, 3));
-			registerStack(BlockEnergyCell.cellReinforcedFrameEmpty,
+			registerStack(BlockCell.cellBasicFrame, new AspectList().add(Aspect.METAL, 6).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 5)
+					.add(Aspect.MECHANISM, 3));
+			registerStack(BlockCell.cellReinforcedFrameEmpty,
 					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6));
 			registerStack(
-					BlockEnergyCell.cellReinforcedFrameFull,
+					BlockCell.cellReinforcedFrameFull,
 					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 20)
 							.add(Aspect.MECHANISM, 16).add(Aspect.WATER, 2));
 
-			registerStack(BlockEnergyCell.cellBasic, new AspectList().add(Aspect.METAL, 10).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 7)
-					.add(Aspect.MECHANISM, 5).add(Aspect.EXCHANGE, 3));
 			registerStack(
-					BlockEnergyCell.cellHardened,
-					new AspectList().add(Aspect.METAL, 16).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 10).add(Aspect.MECHANISM, 5)
-							.add(Aspect.EXCHANGE, 3).add(Aspect.ARMOR, 2));
-			registerStack(BlockEnergyCell.cellReinforced, new AspectList().add(Aspect.METAL, 10).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2)
-					.add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 25).add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2));
-			registerStack(BlockEnergyCell.cellResonant, new AspectList().add(Aspect.METAL, 16).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6)
-					.add(Aspect.ENERGY, 25).add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2).add(Aspect.ELDRITCH, 2));
+					BlockCell.cellBasic,
+					new AspectList().add(Aspect.METAL, 10).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 7).add(Aspect.MECHANISM, 5)
+							.add(Aspect.EXCHANGE, 3));
+			registerStack(BlockCell.cellHardened, new AspectList().add(Aspect.METAL, 16).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 10)
+					.add(Aspect.MECHANISM, 5).add(Aspect.EXCHANGE, 3).add(Aspect.ARMOR, 2));
+			registerStack(
+					BlockCell.cellReinforced,
+					new AspectList().add(Aspect.METAL, 10).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 25)
+							.add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2));
+			registerStack(
+					BlockCell.cellResonant,
+					new AspectList().add(Aspect.METAL, 16).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 25)
+							.add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2).add(Aspect.ELDRITCH, 2));
 
 			registerStack(BlockTank.tankBasic, new AspectList().add(Aspect.VOID, 4).add(Aspect.CRYSTAL, 4).add(Aspect.METAL, 2));
 			registerStack(BlockTank.tankHardened, new AspectList().add(Aspect.VOID, 8).add(Aspect.CRYSTAL, 4).add(Aspect.METAL, 8).add(Aspect.ARMOR, 2));

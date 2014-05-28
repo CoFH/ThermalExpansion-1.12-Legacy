@@ -16,7 +16,7 @@ import net.minecraft.tileentity.TileEntity;
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISetSchematic;
-import thermalexpansion.gui.slot.SlotCustomCraftingOutput;
+import thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
@@ -27,7 +27,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISetSchematic
 	public InventoryPlayer playerInv;
 	public InventoryCraftingCustom craftMatrix;
 	public IInventory craftResult = new InventoryCraftResult();
-	public SlotCustomCraftingOutput myOutput;
+	public SlotCraftingOutputWorkbench myOutput;
 
 	int INV_TILE_START = 13;
 
@@ -38,7 +38,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISetSchematic
 		myTile = (TileWorkbench) entity;
 		playerInv = inventory;
 		craftMatrix = new InventoryCraftingCustom(this, 3, 3, myTile, myTile.getMatrixOffset());
-		myOutput = new SlotCustomCraftingOutput(inventory.player, craftResult, 0, 143, 37, myTile, this);
+		myOutput = new SlotCraftingOutputWorkbench(inventory.player, craftResult, 0, 143, 37, myTile, this);
 		addSlotToContainer(myOutput);
 		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 18, 17, 17, TEItems.diagramSchematic).setSlotStackLimit(1));
 		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 19, 17, 37, TEItems.diagramSchematic).setSlotStackLimit(1));

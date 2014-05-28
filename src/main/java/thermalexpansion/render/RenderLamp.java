@@ -95,7 +95,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		TileLamp theTile = (TileLamp) tile;
 		int bMeta = world.getBlockMetadata(x, y, z);
 
-		RenderUtils.beforeWorldRender(world, x, y, z);
+		RenderUtils.preWorldRender(world, x, y, z);
 
 		CCRenderState.setColour(theTile.getColorMultiplier());
 		renderCenter(bMeta, theTile.modified, x, y, z);
@@ -134,6 +134,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
+		GL11.glPushMatrix();
 		double offset = -0.5;
 		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
 			offset = 0;
@@ -147,26 +148,22 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 			color = item.getTagCompound().getInteger("color");
 			color = (color << 8) + 0xFF;
 		}
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
+		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
-		RenderUtils.preRender();
 
-		CCRenderState.startDrawing();
 		CCRenderState.setColour(color);
+		CCRenderState.startDrawing();
 		instance.renderCenter(metadata, modified, offset, offset, offset);
 		CCRenderState.draw();
 
-		CCRenderState.startDrawing();
 		CCRenderState.setColour(0xFFFFFFFF);
+		CCRenderState.startDrawing();
 		instance.renderFrame(metadata, offset, offset, offset);
 		CCRenderState.draw();
 
-		CCRenderState.useNormals = false;
 		RenderHelper.setItemTextureSheet();
-
-		GL11.glDisable(GL11.GL_BLEND);
+		RenderUtils.postItemRender();
+		GL11.glPopMatrix();
 	}
 
 }

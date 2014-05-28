@@ -1,4 +1,4 @@
-package thermalexpansion.block.energycell;
+package thermalexpansion.block.cell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
@@ -13,28 +13,28 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerItem {
+public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 
 		container.setTagCompound(new NBTTagCompound());
-		if (container.getItemDamage() == BlockEnergyCell.Types.CREATIVE.ordinal()) {
-			container.stackTagCompound.setByteArray("SideCache", TileEnergyCellCreative.DEFAULT_SIDES);
+		if (container.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
+			container.stackTagCompound.setByteArray("SideCache", TileCellCreative.DEFAULT_SIDES);
 		} else {
-			container.stackTagCompound.setByteArray("SideCache", TileEnergyCell.DEFAULT_SIDES);
+			container.stackTagCompound.setByteArray("SideCache", TileCell.DEFAULT_SIDES);
 		}
 		container.stackTagCompound.setByte("Facing", (byte) 3);
 
 		container.stackTagCompound.setInteger("Energy", energy);
-		container.stackTagCompound.setInteger("Send", TileEnergyCell.MAX_SEND[container.getItemDamage()]);
-		container.stackTagCompound.setInteger("Receive", TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]);
+		container.stackTagCompound.setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
+		container.stackTagCompound.setInteger("Receive", TileCell.MAX_RECEIVE[container.getItemDamage()]);
 
 		container.stackTagCompound.setByte("rsMode", (byte) ControlMode.LOW.ordinal());
 
 		return container;
 	}
 
-	public ItemBlockEnergyCell(Block block) {
+	public ItemBlockCell(Block block) {
 
 		super(block);
 		setHasSubtypes(true);
@@ -52,7 +52,7 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.energycell." + BlockEnergyCell.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.cell." + BlockCell.NAMES[stack.getItemDamage()] + ".name";
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockEnergyCell.Types.values()[stack.getItemDamage()]) {
+		switch (BlockCell.Types.values()[stack.getItemDamage()]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		case RESONANT:
@@ -98,7 +98,7 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 
 		ControlMode rsMode = ControlMode.values()[stack.stackTagCompound.getByte("rsMode")];
 
-		if (stack.getItemDamage() == BlockEnergyCell.Types.CREATIVE.ordinal()) {
+		if (stack.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
 			list.add(StringHelper.localize("info.cofh.send") + ": " + send);
 		} else {
@@ -106,7 +106,7 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 			int receive = stack.stackTagCompound.getInteger("Receive");
 
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / "
-					+ StringHelper.getScaledNumber(TileEnergyCell.STORAGE[stack.getItemDamage()]) + " RF");
+					+ StringHelper.getScaledNumber(TileCell.STORAGE[stack.getItemDamage()]) + " RF");
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + send + "/" + receive + " RF/t");
 		}
 		if (rsMode.isDisabled()) {
@@ -124,21 +124,21 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return 1 + TileEnergyCell.STORAGE[stack.getItemDamage()];
+			return 1 + TileCell.STORAGE[stack.getItemDamage()];
 		}
-		return 1 + TileEnergyCell.STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
+		return 1 + TileCell.STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return 1 + TileEnergyCell.STORAGE[stack.getItemDamage()];
+		return 1 + TileCell.STORAGE[stack.getItemDamage()];
 	}
 
 	@Override
 	public boolean isDamaged(ItemStack stack) {
 
-		return stack.getItemDamage() != BlockEnergyCell.Types.CREATIVE.ordinal();
+		return stack.getItemDamage() != BlockCell.Types.CREATIVE.ordinal();
 	}
 
 	/* IEnergyContainerItem */
@@ -149,10 +149,9 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive,
-				Math.min(TileEnergyCell.STORAGE[container.getItemDamage()] - stored, TileEnergyCell.MAX_RECEIVE[container.getItemDamage()]));
+		int receive = Math.min(maxReceive, Math.min(TileCell.STORAGE[container.getItemDamage()] - stored, TileCell.MAX_RECEIVE[container.getItemDamage()]));
 
-		if (!simulate && container.getItemDamage() != BlockEnergyCell.Types.CREATIVE.ordinal()) {
+		if (!simulate && container.getItemDamage() != BlockCell.Types.CREATIVE.ordinal()) {
 			stored += receive;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -166,9 +165,9 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int extract = Math.min(maxExtract, Math.min(stored, TileEnergyCell.MAX_SEND[container.getItemDamage()]));
+		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[container.getItemDamage()]));
 
-		if (!simulate && container.getItemDamage() != BlockEnergyCell.Types.CREATIVE.ordinal()) {
+		if (!simulate && container.getItemDamage() != BlockCell.Types.CREATIVE.ordinal()) {
 			stored -= extract;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -187,7 +186,7 @@ public class ItemBlockEnergyCell extends ItemBlock implements IEnergyContainerIt
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileEnergyCell.STORAGE[container.getItemDamage()];
+		return TileCell.STORAGE[container.getItemDamage()];
 	}
 
 }

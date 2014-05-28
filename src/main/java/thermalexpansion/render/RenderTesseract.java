@@ -92,17 +92,14 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		RenderUtils.preItemRender();
 
-		RenderUtils.preRender();
 		CCRenderState.startDrawing();
 		renderFrame(metadata, null, -0.5, -0.5, -0.5);
 		renderCenter(metadata, null, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
-		CCRenderState.useNormals = false;
 
-		GL11.glDisable(GL11.GL_BLEND);
+		RenderUtils.postItemRender();
 	}
 
 	@Override
@@ -114,13 +111,12 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 		}
 		TileTesseract theTile = (TileTesseract) tile;
 
-		RenderUtils.beforeWorldRender(world, x, y, z);
+		RenderUtils.preWorldRender(world, x, y, z);
 		if (BlockCoFHBase.renderPass == 0) {
 			renderFrame(0, theTile, x, y, z);
 		} else {
 			renderCenter(0, theTile, x, y, z);
 		}
-
 		return true;
 	}
 
@@ -159,11 +155,8 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 		} else if (type == ItemRenderType.ENTITY) {
 			GL11.glScaled(0.5, 0.5, 0.5);
 		}
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
+		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
-		RenderUtils.preRender();
 
 		CCRenderState.startDrawing();
 		instance.renderFrame(0, null, offset, offset, offset);
@@ -172,10 +165,9 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 			instance.renderCenter(0, null, offset, offset, offset);
 		}
 		CCRenderState.draw();
-		CCRenderState.useNormals = false;
-		RenderHelper.setItemTextureSheet();
 
-		GL11.glDisable(GL11.GL_BLEND);
+		RenderHelper.setItemTextureSheet();
+		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}
 

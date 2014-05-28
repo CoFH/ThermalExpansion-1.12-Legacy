@@ -118,7 +118,7 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		} else {
 			inventory[0].stackSize += processItems[prevSelection].stackSize;
 		}
-		tank.getFluid().amount -= processWater[prevSelection];
+		tank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
 	}
 

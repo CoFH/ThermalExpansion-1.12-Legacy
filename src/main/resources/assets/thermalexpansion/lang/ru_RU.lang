@@ -63,14 +63,6 @@ death.attack.blizz=%1$s met a frigid fate!
 
 entity.Blizz.name=Blizz
 
-fluid.redstone=Дестабилизированный красный камень
-fluid.glowstone=Заряженный светящийся камень
-fluid.ender=Резонирующий эндериум
-fluid.pyrotheum=Пылающий пиротеум
-fluid.cryotheum=Ледяной криотеум
-fluid.coal=Разжиженный уголь
-fluid.steam=Пар
-
 info.thermalexpansion.schematic=Схема
 
 info.thermalexpansion.modeItem=Режим предметов
@@ -333,19 +325,11 @@ tile.thermalexpansion.dynamo.magmatic.name=Магмовый генератор
 tile.thermalexpansion.dynamo.compression.name=Компрессионный генератор
 tile.thermalexpansion.dynamo.reactant.name=Реагентный генератор
 
-tile.thermalexpansion.energycell.creative.name=Творческая энергетическая ячейка
-tile.thermalexpansion.energycell.basic.name=Свинцовая энергетическая ячейка
-tile.thermalexpansion.energycell.hardened.name=Усиленная энергетическая ячейка
-tile.thermalexpansion.energycell.reinforced.name=Красная энергетическая ячейка
-tile.thermalexpansion.energycell.resonant.name=Резонирующая энергетическая ячейка
-
-tile.thermalexpansion.fluid.redstone.name=Дестабилизированный красный камень
-tile.thermalexpansion.fluid.glowstone.name=Заряженный светящийся камень
-tile.thermalexpansion.fluid.ender.name=Резонирующий эндериум
-tile.thermalexpansion.fluid.pyrotheum.name=Пылающий пиротеум
-tile.thermalexpansion.fluid.cryotheum.name=Ледяной криотеум
-tile.thermalexpansion.fluid.coal.name=Разжиженный уголь
-tile.thermalexpansion.fluid.steam.name=Пар
+tile.thermalexpansion.cell.creative.name=Творческая энергетическая ячейка
+tile.thermalexpansion.cell.basic.name=Свинцовая энергетическая ячейка
+tile.thermalexpansion.cell.hardened.name=Усиленная энергетическая ячейка
+tile.thermalexpansion.cell.reinforced.name=Красная энергетическая ячейка
+tile.thermalexpansion.cell.resonant.name=Резонирующая энергетическая ячейка
 
 tile.thermalexpansion.glass.name=Закалённое стекло
 

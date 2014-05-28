@@ -26,8 +26,9 @@ public class TEAchievements {
 
 	public static Achievement glass;
 
-	public static Achievement resonantEnergyCell;
+	public static Achievement resonantCell;
 	public static Achievement resonantTank;
+	public static Achievement resonantCache;
 	public static Achievement resonantStrongbox;
 
 	public static Achievement fluidRedstone;

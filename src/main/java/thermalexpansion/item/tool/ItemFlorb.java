@@ -20,7 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.entity.projectile.EntityFlorb;
-import thermalexpansion.fluid.TEFluids;
+import thermalexpansion.item.TEFlorbs;
 
 public class ItemFlorb extends ItemBase {
 
@@ -46,8 +46,8 @@ public class ItemFlorb extends ItemBase {
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
 
-		for (int i = 0; i < TEFluids.florbList.size(); i++) {
-			list.add(TEFluids.florbList.get(i));
+		for (int i = 0; i < TEFlorbs.florbList.size(); i++) {
+			list.add(TEFlorbs.florbList.get(i));
 		}
 	}
 
@@ -140,10 +140,10 @@ public class ItemFlorb extends ItemBase {
 	public static void dropFlorb(Fluid fluid, World worldObj, int x, int y, int z) {
 
 		if (fluid != null) {
-			if (fluid.getTemperature() < TEFluids.MAGMATIC_FLORB_TEMPERATURE) {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFluids.itemFlorb, 1, 0), fluid), worldObj, x, y, z);
+			if (fluid.getTemperature() < TEFlorbs.MAGMATIC_FLORB_TEMPERATURE) {
+				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 0), fluid), worldObj, x, y, z);
 			} else {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFluids.itemFlorb, 1, 1), fluid), worldObj, x, y, z);
+				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 1), fluid), worldObj, x, y, z);
 			}
 		}
 	}

@@ -17,7 +17,7 @@ import net.minecraft.stats.AchievementList;
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 
-public class SlotCustomCraftingOutput extends Slot {
+public class SlotCraftingOutputWorkbench extends Slot {
 
 	EntityPlayer myPlayer;
 	TileWorkbench myTile;
@@ -25,7 +25,7 @@ public class SlotCustomCraftingOutput extends Slot {
 
 	int amountCrafted;
 
-	public SlotCustomCraftingOutput(EntityPlayer myPlayer, IInventory inventory, int slotIndex, int x, int y, TileWorkbench myTile, ContainerWorkbench myBoss) {
+	public SlotCraftingOutputWorkbench(EntityPlayer myPlayer, IInventory inventory, int slotIndex, int x, int y, TileWorkbench myTile, ContainerWorkbench myBoss) {
 
 		super(inventory, slotIndex, x, y);
 		this.myPlayer = myPlayer;

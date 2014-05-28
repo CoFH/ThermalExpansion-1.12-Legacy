@@ -9,14 +9,14 @@ import net.minecraft.block.Block;
 
 import thermalexpansion.block.cache.BlockCache;
 import thermalexpansion.block.cache.ItemBlockCache;
+import thermalexpansion.block.cell.BlockCell;
+import thermalexpansion.block.cell.ItemBlockCell;
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.device.ItemBlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.dynamo.ItemBlockDynamo;
 import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.ender.ItemBlockTesseract;
-import thermalexpansion.block.energycell.BlockEnergyCell;
-import thermalexpansion.block.energycell.ItemBlockEnergyCell;
 import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.lamp.ItemBlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
@@ -43,7 +43,7 @@ public class TEBlocks {
 		blockMachine = addBlock(new BlockMachine());
 		blockDevice = addBlock(new BlockDevice());
 		blockDynamo = addBlock(new BlockDynamo());
-		blockEnergyCell = addBlock(new BlockEnergyCell());
+		blockCell = addBlock(new BlockCell());
 		blockTank = addBlock(new BlockTank());
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
@@ -57,7 +57,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
 		GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
 		GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");
-		GameRegistry.registerBlock(blockEnergyCell, ItemBlockEnergyCell.class, "EnergyCell");
+		GameRegistry.registerBlock(blockCell, ItemBlockCell.class, "Cell");
 		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
@@ -90,7 +90,7 @@ public class TEBlocks {
 	public static Block blockMachine;
 	public static Block blockDevice;
 	public static Block blockDynamo;
-	public static Block blockEnergyCell;
+	public static Block blockCell;
 	public static Block blockTank;
 	public static Block blockStrongbox;
 	public static Block blockCache;

@@ -3,12 +3,11 @@ package thermalexpansion.block.machine;
 import cofh.network.CoFHPacket;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -16,7 +15,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -64,8 +62,11 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	static ItemStack[] processItems = new ItemStack[3];
 
-	FluidTank lavaTank = new FluidTank(MAX_FLUID_SMALL);
-	FluidTank waterTank = new FluidTank(MAX_FLUID_SMALL);
+	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
+
+	FluidTankAdv hotTank = new FluidTankAdv(MAX_FLUID_SMALL);
+	FluidTankAdv coldTank = new FluidTankAdv(MAX_FLUID_SMALL);
 
 	byte curSelection;
 	byte prevSelection;
@@ -90,7 +91,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	public boolean canStart() {
 
-		if (lavaTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME || waterTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
+		if (hotTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME || coldTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -104,10 +105,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	public boolean canFinish() {
 
-		if (processRem > 0) {
-			return false;
-		}
-		return true;
+		return processRem <= 0;
 	}
 
 	protected void processStart() {
@@ -124,8 +122,8 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		} else {
 			inventory[0].stackSize += processItems[prevSelection].stackSize;
 		}
-		lavaTank.drain(processLava[prevSelection], true);
-		waterTank.drain(processWater[prevSelection], true);
+		hotTank.drain(processLava[prevSelection], true);
+		coldTank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
 	}
 
@@ -186,6 +184,48 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addFluidStack(hotRenderFluid);
+		payload.addFluidStack(coldRenderFluid);
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiCoFHPacket() {
+
+		CoFHPacket payload = super.getGuiCoFHPacket();
+
+		payload.addByte(curSelection);
+		payload.addByte(prevSelection);
+
+		if (hotTank.getFluid() == null) {
+			payload.addFluidStack(hotRenderFluid);
+		} else {
+			payload.addFluidStack(hotTank.getFluid());
+		}
+		if (coldTank.getFluid() == null) {
+			payload.addFluidStack(coldRenderFluid);
+		} else {
+			payload.addFluidStack(coldTank.getFluid());
+		}
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getFluidCoFHPacket() {
+
+		CoFHPacket payload = super.getFluidCoFHPacket();
+
+		payload.addFluidStack(hotRenderFluid);
+		payload.addFluidStack(coldRenderFluid);
+
+		return payload;
+	}
+
+	@Override
 	public CoFHPacket getModeCoFHPacket() {
 
 		CoFHPacket payload = super.getModeCoFHPacket();
@@ -197,11 +237,13 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	public void setMode(int i) {
 
+		byte lastSelection = curSelection;
 		curSelection = (byte) i;
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			sendModePacket();
 		}
+		curSelection = lastSelection;
 	}
 
 	/* ITileInfoPacketHandler */
@@ -213,6 +255,15 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 			isActive = payload.getBool();
 			processMax = payload.getInt();
 			processRem = payload.getInt();
+			curSelection = payload.getByte();
+			prevSelection = payload.getByte();
+			hotTank.setFluid(payload.getFluidStack());
+			coldTank.setFluid(payload.getFluidStack());
+			return;
+		case FLUID:
+			hotRenderFluid = payload.getFluidStack();
+			coldRenderFluid = payload.getFluidStack();
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			return;
 		case MODE:
 			curSelection = payload.getByte();
@@ -237,57 +288,20 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		return prevSelection;
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	public FluidTankAdv getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
-			return lavaTank;
+			return hotTank;
 		}
-		return waterTank;
+		return coldTank;
 	}
 
 	public FluidStack getTankFluid(int tankIndex) {
 
 		if (tankIndex == 0) {
-			return lavaTank.getFluid();
+			return hotTank.getFluid();
 		}
-		return waterTank.getFluid();
-	}
-
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		switch (i) {
-		case 0:
-			curSelection = (byte) j;
-		case 1:
-			prevSelection = (byte) j;
-			return;
-		case 2:
-			if (lavaTank.getFluid() == null) {
-				lavaTank.setFluid(new FluidStack(FluidRegistry.LAVA, j));
-			} else {
-				lavaTank.getFluid().amount = j;
-			}
-			return;
-		case 3:
-			if (waterTank.getFluid() == null) {
-				waterTank.setFluid(new FluidStack(FluidRegistry.WATER, j));
-			} else {
-				waterTank.getFluid().amount = j;
-			}
-			return;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		super.sendGuiNetworkData(container, iCrafting);
-
-		iCrafting.sendProgressBarUpdate(container, 0, curSelection);
-		iCrafting.sendProgressBarUpdate(container, 1, prevSelection);
-		iCrafting.sendProgressBarUpdate(container, 2, lavaTank.getFluidAmount());
-		iCrafting.sendProgressBarUpdate(container, 3, waterTank.getFluidAmount());
+		return coldTank.getFluid();
 	}
 
 	/* NBT METHODS */
@@ -300,8 +314,8 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		prevSelection = nbt.getByte("Prev");
 		curSelection = nbt.getByte("Sel");
 
-		lavaTank.readFromNBT(nbt.getCompoundTag("LavaTank"));
-		waterTank.readFromNBT(nbt.getCompoundTag("WaterTank"));
+		hotTank.readFromNBT(nbt.getCompoundTag("HotTank"));
+		coldTank.readFromNBT(nbt.getCompoundTag("ColdTank"));
 	}
 
 	@Override
@@ -313,9 +327,8 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
 
-		nbt.setTag("LavaTank", lavaTank.writeToNBT(new NBTTagCompound()));
-		nbt.setTag("WaterTank", waterTank.writeToNBT(new NBTTagCompound()));
-
+		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
+		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
 	}
 
 	/* IInventory */
@@ -333,9 +346,9 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 			return 0;
 		}
 		if (resource.getFluid() == FluidRegistry.LAVA) {
-			return lavaTank.fill(resource, doFill);
+			return hotTank.fill(resource, doFill);
 		} else if (resource.getFluid() == FluidRegistry.WATER) {
-			return waterTank.fill(resource, doFill);
+			return coldTank.fill(resource, doFill);
 		}
 		return 0;
 	}
@@ -367,7 +380,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
-		return new FluidTankInfo[] { lavaTank.getInfo(), waterTank.getInfo() };
+		return new FluidTankInfo[] { hotTank.getInfo(), coldTank.getInfo() };
 	}
 
 }

@@ -1,77 +1,30 @@
-package thermalexpansion.fluid;
+package thermalexpansion.util;
 
 import cofh.core.CoFHProps;
 import cofh.util.ConfigHandler;
-import cofh.util.ItemHelper;
-import cofh.util.fluid.DispenserEmptyBucketHandler;
-import cofh.util.fluid.DispenserFilledBucketHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Set;
 
-import net.minecraft.block.BlockDispenser;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.block.dynamo.TileDynamoCompression;
 import thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import thermalexpansion.block.dynamo.TileDynamoReactant;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.TEItems;
-import thermalexpansion.item.tool.ItemBucket;
-import thermalexpansion.item.tool.ItemFlorb;
-import thermalexpansion.util.crafting.TransposerManager;
 
-public class TEFluids {
+public class FuelHandler {
 
-	public static void preInit() {
+	public static ConfigHandler configFuels = new ConfigHandler(TEProps.VERSION);
 
-		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Florbs.cfg")));
+	static {
 		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Fuels.cfg")));
-
-		String category = "tweak";
-		String comment = null;
-
-		category = "item.feature";
-		comment = "This allows you to disable Florbs entirely. It also means that you actively dislike fun things.";
-		enableFlorbs = configFlorbs.get(category, "Florb.Enable", true, comment);
 	}
 
-	public static void initialize() {
+	private FuelHandler() {
 
-		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
-
-		florb = itemFlorb.addItem(0, "florb");
-		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic");
-	}
-
-	public static void postInit() {
-
-		parseFlorbs();
-		parseFuels();
-
-		fluidFlowrate.put("steam", 360);
-
-		configFlorbs.cleanUp(true, false);
-		configFuels.cleanUp(true, false);
-	}
-
-	/* HELPER FUNCTIONS */
-	public static void registerDispenserHandlers() {
-
-		BlockDispenser.dispenseBehaviorRegistry.putObject(itemBucket, new DispenserFilledBucketHandler());
-		BlockDispenser.dispenseBehaviorRegistry.putObject(Items.bucket, new DispenserEmptyBucketHandler());
 	}
 
 	public static boolean registerMagmaticFuel(String name, int energy) {
@@ -104,31 +57,6 @@ public class TEFluids {
 			return false;
 		}
 		return TileDynamoCompression.registerCoolant(FluidRegistry.getFluid(name), cooling);
-	}
-
-	public static void parseFlorbs() {
-
-		ItemStack florbStack = ItemHelper.cloneStack(florb, 4);
-		ItemStack florbMagmaticStack = ItemHelper.cloneStack(florbMagmatic, 4);
-
-		if (!enableFlorbs) {
-			return;
-		}
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball", Items.blaze_powder }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, Items.magma_cream }));
-
-		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-			if (fluid.canBePlacedInWorld() && configFlorbs.get("whitelist", fluid.getName(), true)) {
-				if (fluid.getTemperature() < MAGMATIC_FLORB_TEMPERATURE) {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 0), fluid));
-					TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
-				} else {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 1), fluid));
-					TransposerManager.addFillRecipe(1600, florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
-				}
-			}
-		}
 	}
 
 	public static void parseFuels() {
@@ -184,23 +112,7 @@ public class TEFluids {
 		for (String s : catKeys) {
 			registerCoolant(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, 400000));
 		}
+		configFuels.cleanUp(true, false);
 	}
-
-	public static Fluid fluidSteam;
-
-	public static ItemBucket itemBucket;
-	public static ItemFlorb itemFlorb;
-
-	public static ItemStack florb;
-	public static ItemStack florbMagmatic;
-	public static ArrayList<ItemStack> florbList = new ArrayList();
-
-	public static boolean enableFlorbs = true;
-	public static final int MAGMATIC_FLORB_TEMPERATURE = 1000;
-
-	public static final TMap<String, Integer> fluidFlowrate = new THashMap<String, Integer>();
-
-	public static ConfigHandler configFlorbs = new ConfigHandler(TEProps.VERSION);
-	public static ConfigHandler configFuels = new ConfigHandler(TEProps.VERSION);
 
 }

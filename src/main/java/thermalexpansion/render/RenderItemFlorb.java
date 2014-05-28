@@ -29,6 +29,7 @@ public class RenderItemFlorb implements IItemRenderer {
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
 
 		GL11.glPushMatrix();
+		RenderUtils.preItemRender();
 		if (type.equals(ItemRenderType.ENTITY)) {
 			GL11.glRotated(180, 0, 0, 1);
 			GL11.glRotated(90, 0, 1, 0);
@@ -46,7 +47,7 @@ public class RenderItemFlorb implements IItemRenderer {
 
 			if (fluid != null) {
 				RenderHelper.setItemTextureSheet();
-				RenderUtils.renderMask(IconRegistry.getIcon("FlorbMask"), fluid.getIcon(), type);
+				RenderUtils.renderMask(IconRegistry.getIcon("FlorbMask"), fluid.getIcon(), null, type);
 			}
 		}
 		RenderHelper.setItemTextureSheet();
@@ -64,6 +65,7 @@ public class RenderItemFlorb implements IItemRenderer {
 				RenderHelper.renderIcon(IconRegistry.getIcon("Florb"), 0);
 			}
 		}
+		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}
 

@@ -107,14 +107,14 @@ public class GuiActivator extends GuiBaseAdv {
 
 	public void sendUpdatePacket() {
 
-		CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(myTile);
-		myPacket.addByte(TEProps.PacketID.MODE.ordinal());
-		myPacket.addBool(myTile.leftClick);
-		myPacket.addBool(myTile.actsSneaking);
-		myPacket.addByte(myTile.tickSlot);
-		myPacket.addByte(myTile.angle);
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(myTile);
+		payload.addByte(TEProps.PacketID.MODE.ordinal());
+		payload.addBool(myTile.leftClick);
+		payload.addBool(myTile.actsSneaking);
+		payload.addByte(myTile.tickSlot);
+		payload.addByte(myTile.angle);
 
-		PacketHandler.sendToServer(myPacket);
+		PacketHandler.sendToServer(payload);
 	}
 
 }

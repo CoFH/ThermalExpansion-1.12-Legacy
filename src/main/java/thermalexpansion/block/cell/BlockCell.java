@@ -1,4 +1,4 @@
-package thermalexpansion.block.energycell;
+package thermalexpansion.block.cell;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.render.IconRegistry;
@@ -40,14 +40,14 @@ import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.fluid.TFFluids;
 import thermalfoundation.item.TFItems;
 
-public class BlockEnergyCell extends BlockTEBase {
+public class BlockCell extends BlockTEBase {
 
-	public BlockEnergyCell() {
+	public BlockCell() {
 
 		super(Material.iron);
 		setHardness(20.0F);
 		setResistance(120.0F);
-		setBlockName("thermalexpansion.energycell");
+		setBlockName("thermalexpansion.cell");
 	}
 
 	@Override
@@ -57,9 +57,9 @@ public class BlockEnergyCell extends BlockTEBase {
 			return null;
 		}
 		if (metadata == Types.CREATIVE.ordinal()) {
-			return new TileEnergyCellCreative(metadata);
+			return new TileCellCreative(metadata);
 		}
-		return new TileEnergyCell(metadata);
+		return new TileCell(metadata);
 	}
 
 	@Override
@@ -68,9 +68,9 @@ public class BlockEnergyCell extends BlockTEBase {
 		for (int i = 0; i < Types.values().length; i++) {
 			if (enable[i]) {
 				if (i != Types.CREATIVE.ordinal()) {
-					list.add(ItemBlockEnergyCell.setDefaultTag(new ItemStack(item, 1, i), 0));
+					list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), 0));
 				}
-				list.add(ItemBlockEnergyCell.setDefaultTag(new ItemStack(item, 1, i), TileEnergyCell.STORAGE[i]));
+				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), TileCell.STORAGE[i]));
 			}
 		}
 	}
@@ -79,7 +79,7 @@ public class BlockEnergyCell extends BlockTEBase {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.stackTagCompound != null) {
-			TileEnergyCell tile = (TileEnergyCell) world.getTileEntity(x, y, z);
+			TileCell tile = (TileCell) world.getTileEntity(x, y, z);
 
 			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 			tile.energySend = stack.stackTagCompound.getInteger("Send");
@@ -91,7 +91,7 @@ public class BlockEnergyCell extends BlockTEBase {
 			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
 
 			if (sideCache.length <= 0) {
-				sideCache = TileEnergyCell.DEFAULT_SIDES.clone();
+				sideCache = TileCell.DEFAULT_SIDES.clone();
 			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
@@ -126,7 +126,7 @@ public class BlockEnergyCell extends BlockTEBase {
 	@Override
 	public int getRenderType() {
 
-		return TEProps.renderIdEnergyCell;
+		return TEProps.renderIdCell;
 	}
 
 	@Override
@@ -153,35 +153,35 @@ public class BlockEnergyCell extends BlockTEBase {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		for (int i = 0; i < 9; i++) {
-			IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:energycell/Cell_Meter_" + i, ir);
+			IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:cell/Cell_Meter_" + i, ir);
 		}
-		IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:energycell/Cell_Meter_Creative", ir);
-		IconRegistry.addIcon("Cell" + 0, "thermalexpansion:energycell/Cell_Creative", ir);
-		IconRegistry.addIcon("Cell" + 1, "thermalexpansion:energycell/Cell_Creative_Inner", ir);
-		IconRegistry.addIcon("Cell" + 2, "thermalexpansion:energycell/Cell_Basic", ir);
-		IconRegistry.addIcon("Cell" + 3, "thermalexpansion:energycell/Cell_Basic_Inner", ir);
-		IconRegistry.addIcon("Cell" + 4, "thermalexpansion:energycell/Cell_Hardened", ir);
-		IconRegistry.addIcon("Cell" + 5, "thermalexpansion:energycell/Cell_Hardened_Inner", ir);
-		IconRegistry.addIcon("Cell" + 6, "thermalexpansion:energycell/Cell_Reinforced", ir);
-		IconRegistry.addIcon("Cell" + 7, "thermalexpansion:energycell/Cell_Reinforced_Inner", ir);
-		IconRegistry.addIcon("Cell" + 8, "thermalexpansion:energycell/Cell_Resonant", ir);
-		IconRegistry.addIcon("Cell" + 9, "thermalexpansion:energycell/Cell_Resonant_Inner", ir);
+		IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:cell/Cell_Meter_Creative", ir);
+		IconRegistry.addIcon("Cell" + 0, "thermalexpansion:cell/Cell_Creative", ir);
+		IconRegistry.addIcon("Cell" + 1, "thermalexpansion:cell/Cell_Creative_Inner", ir);
+		IconRegistry.addIcon("Cell" + 2, "thermalexpansion:cell/Cell_Basic", ir);
+		IconRegistry.addIcon("Cell" + 3, "thermalexpansion:cell/Cell_Basic_Inner", ir);
+		IconRegistry.addIcon("Cell" + 4, "thermalexpansion:cell/Cell_Hardened", ir);
+		IconRegistry.addIcon("Cell" + 5, "thermalexpansion:cell/Cell_Hardened_Inner", ir);
+		IconRegistry.addIcon("Cell" + 6, "thermalexpansion:cell/Cell_Reinforced", ir);
+		IconRegistry.addIcon("Cell" + 7, "thermalexpansion:cell/Cell_Reinforced_Inner", ir);
+		IconRegistry.addIcon("Cell" + 8, "thermalexpansion:cell/Cell_Resonant", ir);
+		IconRegistry.addIcon("Cell" + 9, "thermalexpansion:cell/Cell_Resonant_Inner", ir);
 
 		IconRegistry.addIcon(TEXTURE_DEFAULT + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEXTURE_DEFAULT + 1, "thermalexpansion:energycell/Cell_Config_Orange", ir);
-		IconRegistry.addIcon(TEXTURE_DEFAULT + 2, "thermalexpansion:energycell/Cell_Config_Blue", ir);
+		IconRegistry.addIcon(TEXTURE_DEFAULT + 1, "thermalexpansion:cell/Cell_Config_Orange", ir);
+		IconRegistry.addIcon(TEXTURE_DEFAULT + 2, "thermalexpansion:cell/Cell_Config_Blue", ir);
 
 		IconRegistry.addIcon(TEXTURE_CB + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEXTURE_CB + 1, "thermalexpansion:energycell/Cell_Config_Orange_CB", ir);
-		IconRegistry.addIcon(TEXTURE_CB + 2, "thermalexpansion:energycell/Cell_Config_Blue_CB", ir);
+		IconRegistry.addIcon(TEXTURE_CB + 1, "thermalexpansion:cell/Cell_Config_Orange_CB", ir);
+		IconRegistry.addIcon(TEXTURE_CB + 2, "thermalexpansion:cell/Cell_Config_Blue_CB", ir);
 
-		IconRegistry.addIcon("StorageRedstone", "thermalexpansion:energycell/Cell_Center_Solid", ir);
+		IconRegistry.addIcon("StorageRedstone", "thermalexpansion:cell/Cell_Center_Solid", ir);
 	}
 
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
-		TileEnergyCell tile = (TileEnergyCell) world.getTileEntity(x, y, z);
+		TileCell tile = (TileCell) world.getTileEntity(x, y, z);
 		NBTTagCompound tag = null;
 
 		if (tile != null) {
@@ -223,8 +223,8 @@ public class BlockEnergyCell extends BlockTEBase {
 		cellReinforcedFrameEmpty = TEItems.itemComponent.addItem(REINFORCED_FRAME_EMPTY_ID, "cellReinforcedFrameEmpty", 1);
 		cellReinforcedFrameFull = TEItems.itemComponent.addItem(REINFORCED_FRAME_FULL_ID, "cellReinforcedFrameFull", 1);
 
-		TileEnergyCell.initialize();
-		TileEnergyCellCreative.initialize();
+		TileCell.initialize();
+		TileCellCreative.initialize();
 
 		cellCreative = new ItemStack(this, 1, Types.CREATIVE.ordinal());
 		cellBasic = new ItemStack(this, 1, Types.BASIC.ordinal());
@@ -232,11 +232,11 @@ public class BlockEnergyCell extends BlockTEBase {
 		cellReinforced = new ItemStack(this, 1, Types.REINFORCED.ordinal());
 		cellResonant = new ItemStack(this, 1, Types.RESONANT.ordinal());
 
-		ItemBlockEnergyCell.setDefaultTag(cellCreative, 0);
-		ItemBlockEnergyCell.setDefaultTag(cellBasic, 0);
-		ItemBlockEnergyCell.setDefaultTag(cellHardened, 0);
-		ItemBlockEnergyCell.setDefaultTag(cellReinforced, 0);
-		ItemBlockEnergyCell.setDefaultTag(cellResonant, 0);
+		ItemBlockCell.setDefaultTag(cellCreative, 0);
+		ItemBlockCell.setDefaultTag(cellBasic, 0);
+		ItemBlockCell.setDefaultTag(cellHardened, 0);
+		ItemBlockCell.setDefaultTag(cellReinforced, 0);
+		ItemBlockCell.setDefaultTag(cellResonant, 0);
 
 		GameRegistry.registerCustomItemStack("cellCreative", cellCreative);
 		GameRegistry.registerCustomItemStack("cellBasic", cellBasic);
@@ -268,7 +268,7 @@ public class BlockEnergyCell extends BlockTEBase {
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new UpgradeRecipe(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "glass", 'X',
+		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
 				Blocks.redstone_block }));
 		PulverizerManager.addRecipe(4000, cellBasicFrame, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 
@@ -296,8 +296,8 @@ public class BlockEnergyCell extends BlockTEBase {
 		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Cell.Resonant", true);
 	}
 
-	public static final String TEXTURE_DEFAULT = "EnergyCellConfig_";
-	public static final String TEXTURE_CB = "EnergyCellConfig_CB_";
+	public static final String TEXTURE_DEFAULT = "CellConfig_";
+	public static final String TEXTURE_CB = "CellConfig_CB_";
 
 	public static String textureSelection = TEXTURE_DEFAULT;
 

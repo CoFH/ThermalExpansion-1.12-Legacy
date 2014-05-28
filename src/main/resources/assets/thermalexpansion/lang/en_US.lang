@@ -63,14 +63,6 @@ death.attack.blizz=%1$s met a frigid fate!
 
 entity.Blizz.name=Blizz
 
-fluid.redstone=Destabilized Redstone
-fluid.glowstone=Energized Glowstone
-fluid.ender=Resonant Ender
-fluid.pyrotheum=Blazing Pyrotheum
-fluid.cryotheum=Gelid Cryotheum
-fluid.coal=Liquifacted Coal
-fluid.steam=Steam
-
 info.thermalexpansion.schematic=Schematic
 
 info.thermalexpansion.modeItem=Item Mode
@@ -312,6 +304,12 @@ message.thermalexpansion.lamp3=Mode: Scaled (Inverse)
 message.thermalexpansion.lamp4=Mode: Always Off
 message.thermalexpansion.lamp5=Mode: Always On
 
+tile.thermalexpansion.cache.creative.name=Creative Cache
+tile.thermalexpansion.cache.basic.name=Basic Cache
+tile.thermalexpansion.cache.hardened.name=Hardened Cache
+tile.thermalexpansion.cache.reinforced.name=Reinforced Cache
+tile.thermalexpansion.cache.resonant.name=Resonant Cache
+
 tile.thermalexpansion.conduit.energyBasic.name=Leadstone Energy Conduit
 tile.thermalexpansion.conduit.energyHardened.name=Hardened Energy Conduit
 tile.thermalexpansion.conduit.energyReinforced.name=Redstone Energy Conduit
@@ -334,19 +332,11 @@ tile.thermalexpansion.dynamo.magmatic.name=Magmatic Dynamo
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.reactant.name=Reactant Dynamo
 
-tile.thermalexpansion.energycell.creative.name=Creative Energy Cell
-tile.thermalexpansion.energycell.basic.name=Leadstone Energy Cell
-tile.thermalexpansion.energycell.hardened.name=Hardened Energy Cell
-tile.thermalexpansion.energycell.reinforced.name=Redstone Energy Cell
-tile.thermalexpansion.energycell.resonant.name=Resonant Energy Cell
-
-tile.thermalexpansion.fluid.redstone.name=Destabilized Redstone
-tile.thermalexpansion.fluid.glowstone.name=Energized Glowstone
-tile.thermalexpansion.fluid.ender.name=Resonant Ender
-tile.thermalexpansion.fluid.pyrotheum.name=Blazing Pyrotheum
-tile.thermalexpansion.fluid.cryotheum.name=Gelid Cryotheum
-tile.thermalexpansion.fluid.coal.name=Liquifacted Coal
-tile.thermalexpansion.fluid.steam.name=Steam
+tile.thermalexpansion.cell.creative.name=Creative Energy Cell
+tile.thermalexpansion.cell.basic.name=Leadstone Energy Cell
+tile.thermalexpansion.cell.hardened.name=Hardened Energy Cell
+tile.thermalexpansion.cell.reinforced.name=Redstone Energy Cell
+tile.thermalexpansion.cell.resonant.name=Resonant Energy Cell
 
 tile.thermalexpansion.glass.name=Hardened Glass
 
@@ -416,21 +406,3 @@ tile.thermalexpansion.tank.reinforced.name=Reinforced Portable Tank
 tile.thermalexpansion.tank.resonant.name=Resonant Portable Tank
 
 tile.thermalexpansion.tesseract.name=Tesseract
-
-#Fixes for bad localizations
-fluid.tile.water=Water
-fluid.tile.lava=Lava
-fluid.fuel=Fuel
-fluid.oil=Oil
-fluid.ic2.blockfluidCf=Construction Foam
-fluid.ic2.blockFluidcoolant=Coolant
-fluid.ic2.blockfluidUuMatter=UU Matter
-fluid.mfr.liquid.biofuel.still=Biofuel
-fluid.mfr.liquid.chocolatemilk.still=Chocolate Milk
-fluid.mfr.liquid.meat.still=Meat
-fluid.mfr.liquid.milk.still=Milk
-fluid.mfr.liquid.mobessence.still=Mob Essence
-fluid.mfr.liquid.mushroomsoup.still=Mushroom Soup
-fluid.mfr.liquid.pinkslime.still=Pink Slime
-fluid.mfr.liquid.sewage.still=Sewage
-fluid.mfr.liquid.sludge.still=Sludge

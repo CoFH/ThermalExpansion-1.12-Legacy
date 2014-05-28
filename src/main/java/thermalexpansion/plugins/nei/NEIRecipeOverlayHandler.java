@@ -39,26 +39,28 @@ public class NEIRecipeOverlayHandler implements IOverlayHandler {
 				Slot curSlot = (Slot) curObj;
 				curSlot.putStack(null);
 			}
-			CoFHPacket myPacket = CoFHTileInfoPacket.newPacket(((GuiWorkbench) firstGui).myTile);
-			myPacket.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
+			CoFHPacket payload = CoFHTileInfoPacket.newPacket(((GuiWorkbench) firstGui).myTile);
+			payload.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
 			boolean foundSlots = false;
 			List<PositionedStack> item = recipe.getIngredientStacks(recipeIndex);
 			for (PositionedStack curItem : item) {
 				for (Object curObj : firstGui.inventorySlots.inventorySlots) {
 					Slot curSlot = (Slot) curObj;
+
 					if (curSlot.xDisplayPosition == curItem.relx + xOffset && curSlot.yDisplayPosition == curItem.rely + yOffset) {
 						curSlot.putStack(curItem.item.copy());
 						foundSlots = true;
-						myPacket.addByte(curSlot.getSlotIndex());
-						myPacket.addItemStack(curItem.item);
+						payload.addByte(curSlot.getSlotIndex());
+						payload.addItemStack(curItem.item);
 						break;
 					}
 				}
 			}
-			myPacket.addByte(-1);
+			payload.addByte(-1);
 			((GuiBase) firstGui).overlayRecipe();
+
 			if (foundSlots) {
-				PacketHandler.sendToServer(myPacket);
+				PacketHandler.sendToServer(payload);
 			}
 		}
 	}

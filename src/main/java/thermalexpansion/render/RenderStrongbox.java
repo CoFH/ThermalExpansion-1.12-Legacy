@@ -64,13 +64,17 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 	@Override
 	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
 
-		RenderUtils.preRender();
+		CCRenderState.reset();
+		CCRenderState.pullLightmap();
+		CCRenderState.useNormals = true;
+
 		TileStrongbox strongbox = (TileStrongbox) entity;
 		model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
 		render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
 		CCRenderState.useNormals = false;
 	}
 
+	/* IItemRenderer */
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 

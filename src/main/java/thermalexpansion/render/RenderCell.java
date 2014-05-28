@@ -24,22 +24,22 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import thermalexpansion.block.energycell.BlockEnergyCell;
-import thermalexpansion.block.energycell.TileEnergyCell;
+import thermalexpansion.block.cell.BlockCell;
+import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.core.TEProps;
 
 @SideOnly(Side.CLIENT)
-public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class RenderCell implements ISimpleBlockRenderingHandler, IItemRenderer {
 
-	public static final RenderEnergyCell instance = new RenderEnergyCell();
+	public static final RenderCell instance = new RenderCell();
 
 	static IIcon[] textureCenter = new IIcon[2];
-	static IIcon[] textureFrame = new IIcon[BlockEnergyCell.Types.values().length * 2];
+	static IIcon[] textureFrame = new IIcon[BlockCell.Types.values().length * 2];
 	static CCModel modelCenter = CCModel.quadModel(24);
 	static CCModel modelFrame = CCModel.quadModel(48);
 
 	static {
-		TEProps.renderIdEnergyCell = RenderingRegistry.getNextAvailableRenderId();
+		TEProps.renderIdCell = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
 
 		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
@@ -74,7 +74,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		}
 	}
 
-	public void renderFrame(int metadata, TileEnergyCell tile, double x, double y, double z) {
+	public void renderFrame(int metadata, TileCell tile, double x, double y, double z) {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 		for (int i = 0; i < 6; i++) {
@@ -83,10 +83,10 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		}
 		if (tile != null) {
 			for (int i = 0; i < 6; i++) {
-				modelFrame.render(i * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(i, 2)));
+				modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(i, 2)));
 			}
 			int facing = tile.getFacing();
-			modelFrame.render(facing * 4, 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(facing, 3)));
+			modelFrame.render(facing * 4, facing * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(facing, 3)));
 		}
 	}
 
@@ -94,12 +94,9 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
 		int chargeLevel = 9;
 
-		RenderUtils.preRender();
+		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
 		renderFrame(metadata, null, -0.5, -0.5, -0.5);
@@ -109,29 +106,28 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		CCRenderState.setBrightness(165 + chargeLevel * 5);
 		renderCenter(metadata, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
-		CCRenderState.useNormals = false;
-		GL11.glDisable(GL11.GL_BLEND);
+
+		RenderUtils.postItemRender();
 	}
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (!(tile instanceof TileEnergyCell)) {
+		if (!(tile instanceof TileCell)) {
 			return false;
 		}
-		TileEnergyCell theTile = (TileEnergyCell) tile;
+		TileCell theTile = (TileCell) tile;
 
 		int chargeLevel = Math.min(15, theTile.getScaledEnergyStored(16));
 
-		RenderUtils.beforeWorldRender(world, x, y, z);
+		RenderUtils.preWorldRender(world, x, y, z);
 		if (BlockCoFHBase.renderPass == 0) {
 			renderFrame(theTile.type, theTile, x, y, z);
 		} else {
 			CCRenderState.setBrightness(165 + chargeLevel * 5);
 			renderCenter(theTile.type, x, y, z);
 		}
-
 		return true;
 	}
 
@@ -144,7 +140,7 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 	@Override
 	public int getRenderId() {
 
-		return TEProps.renderIdEnergyCell;
+		return TEProps.renderIdCell;
 	}
 
 	/* IItemRenderer */
@@ -170,27 +166,23 @@ public class RenderEnergyCell implements ISimpleBlockRenderingHandler, IItemRend
 		} else if (type == ItemRenderType.ENTITY) {
 			GL11.glScaled(0.5, 0.5, 0.5);
 		}
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
+		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
-		RenderUtils.preRender();
 
 		CCRenderState.startDrawing();
-		if (item.getItemDamage() == BlockEnergyCell.BASIC_FRAME_ID) {
-			instance.renderFrame(BlockEnergyCell.Types.BASIC.ordinal(), null, offset, offset, offset);
-			instance.renderCenter(BlockEnergyCell.Types.BASIC.ordinal(), offset, offset, offset);
-		} else if (item.getItemDamage() == BlockEnergyCell.REINFORCED_FRAME_EMPTY_ID) {
-			instance.renderFrame(BlockEnergyCell.Types.REINFORCED.ordinal(), null, offset, offset, offset);
-		} else if (item.getItemDamage() == BlockEnergyCell.REINFORCED_FRAME_FULL_ID) {
-			instance.renderFrame(BlockEnergyCell.Types.REINFORCED.ordinal(), null, offset, offset, offset);
-			instance.renderCenter(BlockEnergyCell.Types.REINFORCED.ordinal(), offset, offset, offset);
+		if (item.getItemDamage() == BlockCell.BASIC_FRAME_ID) {
+			instance.renderFrame(BlockCell.Types.BASIC.ordinal(), null, offset, offset, offset);
+			instance.renderCenter(BlockCell.Types.BASIC.ordinal(), offset, offset, offset);
+		} else if (item.getItemDamage() == BlockCell.REINFORCED_FRAME_EMPTY_ID) {
+			instance.renderFrame(BlockCell.Types.REINFORCED.ordinal(), null, offset, offset, offset);
+		} else if (item.getItemDamage() == BlockCell.REINFORCED_FRAME_FULL_ID) {
+			instance.renderFrame(BlockCell.Types.REINFORCED.ordinal(), null, offset, offset, offset);
+			instance.renderCenter(BlockCell.Types.REINFORCED.ordinal(), offset, offset, offset);
 		}
 		CCRenderState.draw();
-		CCRenderState.useNormals = false;
-		RenderHelper.setItemTextureSheet();
 
-		GL11.glDisable(GL11.GL_BLEND);
+		RenderHelper.setItemTextureSheet();
+		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}
 

@@ -115,7 +115,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
-		RenderUtils.preRender();
+		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
 		renderCoil(1, false, -0.5, -0.5, -0.5);
@@ -134,7 +134,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		}
 		TileDynamoBase theTile = (TileDynamoBase) tile;
 
-		RenderUtils.beforeWorldRender(world, x, y, z);
+		RenderUtils.preWorldRender(world, x, y, z);
 		renderCoil(theTile.getFacing(), theTile.isActive(), x, y, z);
 		renderAnimation(theTile.getFacing(), theTile.isActive(), theTile.getType(), theTile.getActiveIcon(), x, y, z);
 		renderBase(theTile.getFacing(), theTile.isActive(), theTile.getType(), x, y, z);

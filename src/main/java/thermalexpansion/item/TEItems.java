@@ -24,13 +24,15 @@ public class TEItems {
 	public static void preInit() {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
-		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("meter");
+		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
-		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component");
-		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material");
+		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component")
+				.setCreativeTab(ThermalExpansion.tabItems);
+		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
 
 		TEEquipment.preInit();
+		TEFlorbs.preInit();
 	}
 
 	public static void initialize() {
@@ -71,6 +73,7 @@ public class TEItems {
 		OreDictionary.registerOre("crystalCinnabar", crystalCinnabar);
 
 		TEEquipment.initialize();
+		TEFlorbs.initialize();
 	}
 
 	public static void postInit() {
@@ -101,23 +104,24 @@ public class TEItems {
 		boolean servosAllowBronze = ThermalExpansion.config.get(category, "PneumaticServo.AllowBronze", false);
 		boolean servosAllowSteel = ThermalExpansion.config.get(category, "PneumaticServo.AllowSteel", false);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "glass", 'I', "ingotIron" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo,
+				new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I', "ingotIron" }));
 
 		if (servosAllowSilver) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "glass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
 					"ingotSilver" }));
 		}
 		if (servosAllowInvar) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo,
-					new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "glass", 'I', "ingotInvar" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+					"ingotInvar" }));
 		}
 		if (servosAllowBronze) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "glass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
 					"ingotBronze" }));
 		}
 		if (servosAllowSteel) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo,
-					new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "glass", 'I', "ingotSteel" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+					"ingotSteel" }));
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotGold" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotSilver" }));
@@ -141,6 +145,7 @@ public class TEItems {
 		FurnaceRecipes.smelting().func_151394_a(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
 
 		TEEquipment.postInit();
+		TEFlorbs.postInit();
 	}
 
 	public static final int SCHEMATIC_ID = 0;

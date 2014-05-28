@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import thermalexpansion.fluid.TEFluids;
+import thermalexpansion.item.TEFlorbs;
 
 public class CreativeTabFlorbs extends CreativeTabs {
 
@@ -19,7 +19,7 @@ public class CreativeTabFlorbs extends CreativeTabs {
 	@Override
 	public ItemStack getIconItemStack() {
 
-		return TEFluids.florb;
+		return TEFlorbs.florb;
 	}
 
 	@Override

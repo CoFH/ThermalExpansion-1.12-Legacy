@@ -14,28 +14,28 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.energycell.TileEnergyCell;
+import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.gui.element.TabConfigEnergyCell;
+import thermalexpansion.gui.element.TabConfigCell;
 
-public class GuiEnergyCell extends GuiBaseAdv {
+public class GuiCell extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "EnergyCell.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "Cell.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final String INFO = "Stores Redstone Flux. Hold Shift or Ctrl to fine tune energy control.\n\nWrench while sneaking to dismantle.";
 
-	TileEnergyCell myTile;
+	TileCell myTile;
 
 	public ElementButton decRecv;
 	public ElementButton incRecv;
 	public ElementButton decSend;
 	public ElementButton incSend;
 
-	public GuiEnergyCell(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiCell(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
-		myTile = (TileEnergyCell) theTile;
+		myTile = (TileCell) theTile;
 		name = myTile.getName();
 	}
 
@@ -47,9 +47,9 @@ public class GuiEnergyCell extends GuiBaseAdv {
 		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
 
 		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfigEnergyCell(this, myTile));
+		addTab(new TabConfigCell(this, myTile));
 		addTab(new TabInfo(this, INFO, 1));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + TabConfigEnergyCell.TUTORIAL_CONFIG));
+		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
 
 		decRecv = new ElementButton(this, 28, 56, "DecRecv", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incRecv = new ElementButton(this, 44, 56, "IncRecv", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -90,6 +90,10 @@ public class GuiEnergyCell extends GuiBaseAdv {
 				pitch = 0.6F;
 			}
 		}
+
+		int curReceive = myTile.energyReceive;
+		int curSend = myTile.energySend;
+
 		if (buttonName.equalsIgnoreCase("DecRecv")) {
 			myTile.energyReceive -= change;
 			pitch -= 0.1F;
@@ -106,6 +110,9 @@ public class GuiEnergyCell extends GuiBaseAdv {
 		playSound("random.click", 1.0F, pitch);
 
 		myTile.sendModePacket();
+
+		myTile.energyReceive = curReceive;
+		myTile.energySend = curSend;
 	}
 
 	@Override
@@ -132,7 +139,7 @@ public class GuiEnergyCell extends GuiBaseAdv {
 			decRecv.setDisabled();
 			decRecv.clearToolTip();
 		}
-		if (myTile.energyReceive < TileEnergyCell.MAX_RECEIVE[myTile.type]) {
+		if (myTile.energyReceive < TileCell.MAX_RECEIVE[myTile.type]) {
 			incRecv.setActive();
 			incRecv.setToolTip(StringHelper.localize("info.thermalexpansion.cell.incRecv") + " " + change + "/" + change2);
 		} else {
@@ -146,7 +153,7 @@ public class GuiEnergyCell extends GuiBaseAdv {
 			decSend.setDisabled();
 			decSend.clearToolTip();
 		}
-		if (myTile.energySend < TileEnergyCell.MAX_SEND[myTile.type]) {
+		if (myTile.energySend < TileCell.MAX_SEND[myTile.type]) {
 			incSend.setActive();
 			incSend.setToolTip(StringHelper.localize("info.thermalexpansion.cell.incSend") + " " + change + "/" + change2);
 		} else {

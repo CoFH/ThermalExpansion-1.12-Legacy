@@ -1,4 +1,4 @@
-package thermalexpansion.block.energycell;
+package thermalexpansion.block.cell;
 
 import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
@@ -7,20 +7,20 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEnergyCellCreative extends TileEnergyCell {
+public class TileCellCreative extends TileCell {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileEnergyCellCreative.class, "thermalexpansion.EnergyCellCreative");
+		GameRegistry.registerTileEntity(TileCellCreative.class, "thermalexpansion.CellCreative");
 	}
 
 	public static final byte[] DEFAULT_SIDES = { 1, 1, 1, 1, 1, 1 };
 
-	public TileEnergyCellCreative() {
+	public TileCellCreative() {
 
 	}
 
-	public TileEnergyCellCreative(int metadata) {
+	public TileCellCreative(int metadata) {
 
 		super(metadata);
 	}
@@ -61,9 +61,9 @@ public class TileEnergyCellCreative extends TileEnergyCell {
 		} else if (pass == 1) {
 			return IconRegistry.getIcon("Cell", type * 2);
 		} else if (pass == 2) {
-			return IconRegistry.getIcon(BlockEnergyCell.textureSelection, sideCache[side]);
+			return IconRegistry.getIcon(BlockCell.textureSelection, sideCache[side]);
 		}
-		return side != facing ? IconRegistry.getIcon(BlockEnergyCell.textureSelection, 0) : IconRegistry.getIcon("CellMeterCreative");
+		return side != facing ? IconRegistry.getIcon(BlockCell.textureSelection, 0) : IconRegistry.getIcon("CellMeterCreative");
 	}
 
 	/* IReconfigurableSides */
