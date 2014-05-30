@@ -4,6 +4,7 @@ import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
 import cofh.block.BlockCoFHBase;
+import cofh.block.TileCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
@@ -96,16 +97,20 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	@Override
 	public ItemStack dismantleBlock(EntityPlayer player, NBTTagCompound nbt, World world, int x, int y, int z, boolean returnBlock, boolean simulate) {
 
+		TileEntity tile = world.getTileEntity(x, y, z);
 		int bMeta = world.getBlockMetadata(x, y, z);
+
+		if (tile instanceof TileCoFHBase) {
+			bMeta = ((TileCoFHBase) tile).getType();
+		}
 		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
 
+		if (nbt != null) {
+			dropBlock.setTagCompound(nbt);
+		}
 		if (!simulate) {
-			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof TileTEBase) {
 				((TileTEBase) tile).blockDismantled();
-			}
-			if (nbt != null) {
-				dropBlock.setTagCompound(nbt);
 			}
 			world.setBlockToAir(x, y, z);
 

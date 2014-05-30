@@ -2,6 +2,7 @@ package thermalexpansion.block.cache;
 
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
@@ -10,17 +11,21 @@ import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import java.util.List;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 
-public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedBlockTexture, IDeepStorageUnit {
+public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedBlockTexture, ITileInfo, IDeepStorageUnit {
 
 	public static void initialize() {
 
@@ -42,6 +47,9 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public byte facing = 3;
 	public boolean locked;
 
+	int meterTracker;
+	int compareTracker;
+
 	public ItemStack storedStack;
 	public int maxCacheStackSize;
 
@@ -58,6 +66,12 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	}
 
 	@Override
+	public int getComparatorInput(int side) {
+
+		return compareTracker;
+	}
+
+	@Override
 	public String getName() {
 
 		return "tile.thermalexpansion.cache." + BlockCache.NAMES[getType()] + ".name";
@@ -67,6 +81,64 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public int getType() {
 
 		return type;
+	}
+
+	protected void balanceStacks() {
+
+		inventory[1] = ItemHelper.cloneStack(storedStack, Math.min(storedStack.getMaxStackSize(), storedStack.stackSize));
+		storedStack.stackSize -= inventory[1].stackSize;
+
+		if (storedStack.stackSize > maxCacheStackSize) {
+			inventory[0] = ItemHelper.cloneStack(storedStack, storedStack.stackSize - maxCacheStackSize);
+			storedStack.stackSize = maxCacheStackSize;
+		}
+		updateTrackers();
+	}
+
+	protected void clearInventory() {
+
+		if (!locked) {
+			storedStack = null;
+		} else {
+			storedStack.stackSize = 0;
+		}
+		inventory[0] = null;
+		inventory[1] = null;
+		updateTrackers();
+	}
+
+	protected void updateTrackers() {
+
+		int curScale = getScaledItemsStored(15);
+
+		if (compareTracker != curScale) {
+			compareTracker = curScale;
+			callNeighborTileChange();
+		}
+		curScale = Math.min(8, getScaledItemsStored(9));
+
+		if (meterTracker != curScale) {
+			meterTracker = curScale;
+			sendUpdatePacket(Side.CLIENT);
+		}
+	}
+
+	public int getScaledItemsStored(int scale) {
+
+		if (storedStack == null) {
+			return 0;
+		}
+		int inv0 = 0;
+		int inv1 = 0;
+
+		if (inventory[1] != null) {
+			inv1 = inventory[1].stackSize;
+
+			if (inventory[0] != null) {
+				inv0 = inventory[0].stackSize;
+			}
+		}
+		return (storedStack.stackSize + inv0 + inv1) * scale / SIZE[type];
 	}
 
 	/* NETWORK METHODS */
@@ -174,8 +246,8 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 				maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
 			} else {
 				storedStack.stackSize += inventory[0].stackSize + (inventory[1] == null ? 0 : inventory[1].stackSize);
-				balanceStacks();
 			}
+			balanceStacks();
 		} else { // extraction!
 			if (storedStack == null) {
 				return;
@@ -191,32 +263,17 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		markDirty();
 	}
 
-	protected void balanceStacks() {
-
-		inventory[1] = ItemHelper.cloneStack(storedStack, Math.min(storedStack.getMaxStackSize(), storedStack.stackSize));
-		storedStack.stackSize -= inventory[1].stackSize;
-
-		if (storedStack.stackSize > maxCacheStackSize) {
-			inventory[0] = ItemHelper.cloneStack(storedStack, storedStack.stackSize - maxCacheStackSize);
-			storedStack.stackSize = maxCacheStackSize;
-		}
-	}
-
-	protected void clearInventory() {
-
-		if (!locked) {
-			storedStack = null;
-		} else {
-			storedStack.stackSize = 0;
-		}
-		inventory[0] = null;
-		inventory[1] = null;
-	}
-
 	/* ISidedBlockTexture */
 	@Override
 	public IIcon getBlockTexture(int side, int pass) {
 
+		if (pass == 1) {
+			if (side != facing) {
+				return IconRegistry.getIcon("CacheBlank");
+			}
+			int stored = Math.min(8, getScaledItemsStored(9));
+			return facing == 3 || facing == 4 ? IconRegistry.getIcon("CacheMeter", stored) : IconRegistry.getIcon("CacheMeterInv", stored);
+		}
 		if (side == 0) {
 			return IconRegistry.getIcon("CacheBottom", type);
 		} else if (side == 1) {
@@ -242,6 +299,23 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
 		return slot == 1;
+	}
+
+	/* ITileInfo */
+	@Override
+	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+
+		if (debug) {
+			return;
+		}
+		if (storedStack != null) {
+			info.add("Item: " + storedStack.getDisplayName());
+			info.add("Amount: " + storedStack.stackSize + (inventory[0] == null ? 0 : inventory[0].stackSize)
+					+ (inventory[1] == null ? 0 : inventory[1].stackSize));
+		} else {
+			info.add("Item: Empty");
+		}
+		info.add(locked ? "Locked" : "Unlocked");
 	}
 
 	/* IDeepStorageUnit */

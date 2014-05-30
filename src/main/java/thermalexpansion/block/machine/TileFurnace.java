@@ -103,6 +103,9 @@ public class TileFurnace extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (inventory[1] == null) {
 			return;
 		}

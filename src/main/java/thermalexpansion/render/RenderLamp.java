@@ -109,7 +109,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 	@Override
 	public boolean shouldRender3DInInventory(int modelId) {
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -161,7 +161,6 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		instance.renderFrame(metadata, offset, offset, offset);
 		CCRenderState.draw();
 
-		RenderHelper.setItemTextureSheet();
 		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}

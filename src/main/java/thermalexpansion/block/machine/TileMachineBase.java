@@ -47,6 +47,8 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	TimeTracker tracker = new TimeTracker();
 	boolean wasActive;
 
+	boolean upgradeAutoTransfer = true;
+
 	int processMax;
 	int processRem;
 

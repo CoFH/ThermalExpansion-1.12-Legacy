@@ -69,7 +69,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 	public byte type;
 
-	int energyTracker;
+	int meterTracker;
 	int compareTracker;
 	byte outputTracker;
 	EnergyStorage energyStorage;
@@ -189,17 +189,16 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 			outputTracker %= 6;
 		}
 		if (timeCheck()) {
-
 			int curScale = getScaledEnergyStored(15);
-			if (curScale != compareTracker) {
+
+			if (compareTracker != curScale) {
 				compareTracker = curScale;
 				callNeighborTileChange();
 			}
+			curScale = getLightValue();
 
-			int energyStage = getLightValue();
-
-			if (energyTracker != energyStage) {
-				energyTracker = energyStage;
+			if (meterTracker != curScale) {
+				meterTracker = curScale;
 				sendUpdatePacket(Side.CLIENT);
 			}
 		}
@@ -341,7 +340,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 		energyStorage = new EnergyStorage(STORAGE[type], MAX_RECEIVE[type]);
 		energyStorage.readFromNBT(nbt);
-		energyTracker = Math.min(8, getScaledEnergyStored(9));
+		meterTracker = Math.min(8, getScaledEnergyStored(9));
 	}
 
 	@Override
@@ -430,8 +429,11 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		} else if (pass == 2) {
 			return IconRegistry.getIcon(BlockCell.textureSelection, sideCache[side]);
 		}
-		int energy = Math.min(8, getScaledEnergyStored(9));
-		return side != facing ? IconRegistry.getIcon(BlockCell.textureSelection, 0) : IconRegistry.getIcon("CellMeter", energy);
+		if (side != facing) {
+			return IconRegistry.getIcon(BlockCell.textureSelection, 0);
+		}
+		int stored = Math.min(8, getScaledEnergyStored(9));
+		return IconRegistry.getIcon("CellMeter", stored);
 	}
 
 	/* SIDE TYPE */

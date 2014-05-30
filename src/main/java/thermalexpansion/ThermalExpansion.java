@@ -59,9 +59,10 @@ import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.ThermalFoundation;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@["
-		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",)")
+		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",);required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)")
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";

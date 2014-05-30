@@ -209,6 +209,9 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (inventory[1] == null) {
 			return;
 		}

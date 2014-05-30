@@ -1,6 +1,5 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -73,8 +72,7 @@ public class ItemBlockTesseract extends ItemBlock {
 			byte modeFluid = stack.stackTagCompound.getByte("ModeFluid");
 			byte modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
 			byte access = stack.stackTagCompound.getByte("Access");
-
-			ControlMode rsMode = ControlMode.values()[stack.stackTagCompound.getByte("rsMode")];
+			byte rsMode = stack.stackTagCompound.getByte("rsMode");
 
 			String accessString = "";
 
@@ -100,14 +98,18 @@ public class ItemBlockTesseract extends ItemBlock {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + MODES[modeFluid]);
 			list.add(StringHelper.localize("info.cofh.energy") + ": " + MODES[modeEnergy]);
 
-			if (rsMode.isDisabled()) {
+			switch (rsMode) {
+			case 0:
 				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
-			} else if (rsMode.isLow()) {
+				break;
+			case 1:
 				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
 						+ StringHelper.localize("info.cofh.redstoneStateLow"));
-			} else {
+				break;
+			case 2:
 				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
 						+ StringHelper.localize("info.cofh.redstoneStateHigh"));
+				break;
 			}
 		}
 	}

@@ -125,6 +125,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (inventory[0] == null) {
 			return;
 		}

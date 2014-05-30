@@ -118,6 +118,9 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 	protected void transferFluid() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}

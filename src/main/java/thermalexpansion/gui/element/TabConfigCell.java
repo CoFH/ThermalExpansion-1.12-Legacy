@@ -20,9 +20,6 @@ public class TabConfigCell extends TabBase {
 	public static String TUTORIAL_CONFIG = "The Configuration tab determines how energy is transferred to and from this device.";
 
 	TileCell myTile;
-	int headerColor = 0xe1c92f;
-	int subheaderColor = 0xaaafb8;
-	int textColor = 0x000000;
 
 	public TabConfigCell(GuiBase gui, TileCell theTile) {
 

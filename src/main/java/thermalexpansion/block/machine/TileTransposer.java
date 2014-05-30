@@ -206,6 +206,9 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 
 	protected void transferFluid() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
@@ -229,6 +232,9 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (inventory[1] == null) {
 			if (containerItem != null) {
 				inventory[1] = ItemHelper.cloneStack(inventory[0], 1);

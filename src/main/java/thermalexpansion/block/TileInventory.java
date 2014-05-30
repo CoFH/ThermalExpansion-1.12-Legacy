@@ -113,7 +113,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IT
 
 	public void readInventoryFromNBT(NBTTagCompound nbt) {
 
-		NBTTagList list = nbt.getTagList("Inventory", 9);
+		NBTTagList list = nbt.getTagList("Inventory", 10);
 		inventory = new ItemStack[inventory.length];
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);

@@ -17,9 +17,6 @@ public class TabConfigTesseract extends TabBase {
 
 	TileTesseract myTile;
 	String myPlayer;
-	int headerColor = 0xe1c92f;
-	int subheaderColor = 0xaaafb8;
-	int textColor = 0x000000;
 
 	public TabConfigTesseract(GuiBase gui, TileTesseract theTile, String playerName) {
 

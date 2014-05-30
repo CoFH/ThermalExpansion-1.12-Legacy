@@ -122,7 +122,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		renderBase(1, false, metadata, -0.5, -0.5, -0.5);
 		CCRenderState.draw();
 
-		CCRenderState.useNormals = false;
+		RenderUtils.postItemRender();
 	}
 
 	@Override

@@ -96,7 +96,7 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 		}
 		int send = stack.stackTagCompound.getInteger("Send");
 
-		ControlMode rsMode = ControlMode.values()[stack.stackTagCompound.getByte("rsMode")];
+		byte rsMode = stack.stackTagCompound.getByte("rsMode");
 
 		if (stack.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
@@ -109,14 +109,18 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 					+ StringHelper.getScaledNumber(TileCell.STORAGE[stack.getItemDamage()]) + " RF");
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + send + "/" + receive + " RF/t");
 		}
-		if (rsMode.isDisabled()) {
+		switch (rsMode) {
+		case 0:
 			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
-		} else if (rsMode.isLow()) {
+			break;
+		case 1:
 			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
 					+ StringHelper.localize("info.cofh.redstoneStateLow"));
-		} else {
+			break;
+		case 2:
 			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
 					+ StringHelper.localize("info.cofh.redstoneStateHigh"));
+			break;
 		}
 	}
 

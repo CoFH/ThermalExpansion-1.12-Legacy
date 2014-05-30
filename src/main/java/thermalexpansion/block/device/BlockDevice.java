@@ -2,7 +2,6 @@ package thermalexpansion.block.device;
 
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.tileentity.ISidedBlockTexture;
-import cofh.core.CoFHProps;
 import cofh.render.IconRegistry;
 import cofh.util.StringHelper;
 import cofh.util.UpgradeRecipe;
@@ -10,7 +9,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -94,27 +92,6 @@ public class BlockDevice extends BlockTEBase {
 			}
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		NBTTagCompound tag = null;
-
-		if (metadata == Types.WORKBENCH.ordinal()) {
-			if (!secureOwner.equals(CoFHProps.DEFAULT_OWNER)) {
-				tag = new NBTTagCompound();
-				tag.setString("Owner", secureOwner);
-				tag.setByte("Access", secureAccess);
-				secureOwner = CoFHProps.DEFAULT_OWNER;
-				secureAccess = 0;
-			}
-		}
-		ItemStack retStack = new ItemStack(this, 1, damageDropped(metadata));
-		retStack.setTagCompound(tag);
-		ret.add(retStack);
-		return ret;
 	}
 
 	@Override
@@ -211,8 +188,9 @@ public class BlockDevice extends BlockTEBase {
 
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 
-		if (world.getBlockMetadata(x, y, z) == Types.WORKBENCH.ordinal()) {
-			TileWorkbench tile = (TileWorkbench) world.getTileEntity(x, y, z);
+		TileEntity entity = world.getTileEntity(x, y, z);
+		if (entity instanceof TileWorkbench) {
+			TileWorkbench tile = (TileWorkbench) entity;
 
 			if (tag == null) {
 				tag = new NBTTagCompound();

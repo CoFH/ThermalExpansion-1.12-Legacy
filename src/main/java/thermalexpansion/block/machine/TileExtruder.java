@@ -129,6 +129,9 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (inventory[0] == null) {
 			return;
 		}

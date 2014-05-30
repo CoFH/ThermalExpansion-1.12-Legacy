@@ -2,14 +2,12 @@ package thermalexpansion.block.ender;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISecureTile;
-import cofh.core.CoFHProps;
 import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -56,25 +54,6 @@ public class BlockTesseract extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		list.add(new ItemStack(item, 1, 0));
-	}
-
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		NBTTagCompound tag = null;
-
-		if (!secureOwner.equals(CoFHProps.DEFAULT_OWNER)) {
-			tag = new NBTTagCompound();
-			tag.setString("Owner", secureOwner);
-			tag.setByte("Access", secureAccess);
-			secureOwner = CoFHProps.DEFAULT_OWNER;
-			secureAccess = 0;
-		}
-		ItemStack retStack = new ItemStack(this, 1, damageDropped(metadata));
-		retStack.setTagCompound(tag);
-		ret.add(retStack);
-		return ret;
 	}
 
 	@Override

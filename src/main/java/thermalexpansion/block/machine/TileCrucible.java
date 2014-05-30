@@ -116,6 +116,9 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	protected void transferFluid() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}

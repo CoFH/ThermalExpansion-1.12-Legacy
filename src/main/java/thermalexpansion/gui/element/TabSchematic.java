@@ -21,9 +21,6 @@ public class TabSchematic extends TabBase {
 	public static ResourceLocation OUTPUT_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Output_Schematic.png");
 
 	ISetSchematic myTile;
-	int headerColor = 0xe1c92f;
-	int subheaderColor = 0xaaafb8;
-	int textColor = 0x000000;
 
 	public TabSchematic(GuiBase gui, ISetSchematic tile) {
 

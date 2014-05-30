@@ -20,6 +20,7 @@ import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.item.TEFlorbs;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.render.RenderCache;
 import thermalexpansion.render.RenderCell;
 import thermalexpansion.render.RenderDynamo;
 import thermalexpansion.render.RenderItemFlorb;
@@ -82,6 +83,7 @@ public class ProxyClient extends Proxy {
 		RenderDynamo.initialize();
 		RenderCell.initialize();
 		RenderTank.initialize();
+		RenderCache.initialize();
 		RenderStrongbox.initialize();
 		RenderTesseract.initialize();
 		RenderLamp.initialize();

@@ -3,6 +3,8 @@ package thermalexpansion.block;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
+import cofh.util.ServerHelper;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -93,6 +95,9 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
 	}
 
 	@Override
@@ -105,6 +110,7 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	public void setControl(ControlMode control) {
 
 		rsMode = control;
+		sendUpdatePacket(Side.CLIENT);
 	}
 
 	@Override
@@ -112,60 +118,5 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 
 		return rsMode;
 	}
-	// @Override
-	// public boolean getControlDisable() {
-	//
-	// return rsDisable;
-	// }
-	//
-	// @Override
-	// public boolean getControlSetting() {
-	//
-	// return rsSetting;
-	// }
-	//
-	// @Override
-	// public boolean setControlDisable(boolean disable) {
-	//
-	// rsDisable = disable;
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean setControlSetting(boolean setting) {
-	//
-	// rsSetting = setting;
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean setRedstoneConfig(boolean disable, boolean setting) {
-	//
-	// rsDisable = disable;
-	// rsSetting = setting;
-	// TEPacketHandler.sendRSConfigUpdatePacketToServer(this, xCoord, yCoord, zCoord);
-	// return true;
-	// }
-	//
-	// @Override
-	// public boolean isPowered() {
-	//
-	// return isPowered;
-	// }
-	//
-	// @Override
-	// public void handlePowerUpdate(boolean powered) {
-	//
-	// isPowered = powered;
-	// worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	// }
-	//
-	// @Override
-	// public void handleConfigUpdate(boolean disable, boolean setting) {
-	//
-	// rsDisable = disable;
-	// rsSetting = setting;
-	// sendUpdatePacket(Side.CLIENT);
-	// }
 
 }

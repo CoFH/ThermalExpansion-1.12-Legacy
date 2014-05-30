@@ -184,10 +184,11 @@ public class TileSmelter extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		int side;
-		if (inventory[2] == null && inventory[3] == null) {
-
-		} else {
+		if (inventory[2] != null && inventory[3] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 

@@ -151,11 +151,11 @@ public class TilePulverizer extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
+		if (!upgradeAutoTransfer) {
+			return;
+		}
 		int side;
-
-		if (inventory[1] == null && inventory[2] == null) {
-
-		} else {
+		if (inventory[1] != null || inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; ++i) {
 				side = i % 6;
 

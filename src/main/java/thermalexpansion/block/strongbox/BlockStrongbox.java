@@ -1,12 +1,10 @@
 package thermalexpansion.block.strongbox;
 
 import cofh.api.tileentity.ISecureTile;
-import cofh.core.CoFHProps;
 import cofh.util.CoreUtils;
 import cofh.util.UpgradeRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -72,25 +70,6 @@ public class BlockStrongbox extends BlockTEBase {
 			}
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		NBTTagCompound tag = null;
-
-		if (!secureOwner.equals(CoFHProps.DEFAULT_OWNER)) {
-			tag = new NBTTagCompound();
-			tag.setString("Owner", secureOwner);
-			tag.setByte("Access", secureAccess);
-			secureOwner = CoFHProps.DEFAULT_OWNER;
-			secureAccess = 0;
-		}
-		ItemStack retStack = new ItemStack(this, 1, damageDropped(metadata));
-		retStack.setTagCompound(tag);
-		ret.add(retStack);
-		return ret;
 	}
 
 	@Override

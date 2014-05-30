@@ -22,6 +22,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
@@ -36,6 +37,7 @@ public class BlockCache extends BlockTEBase {
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setBlockName("thermalexpansion.cache");
+		setHarvestLevel("pickaxe", 1);
 	}
 
 	@Override
@@ -58,6 +60,24 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+
+		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
+	}
+
+	@Override
+	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
+
+		ItemStack stack = player.getCurrentEquippedItem();
+		if (stack == null || !ForgeHooks.isToolEffective(stack, world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) {
+			return -1;
+		}
+		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+	}
+
+	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedBlockTexture tile = (ISidedBlockTexture) world.getTileEntity(x, y, z);
@@ -77,6 +97,19 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
 	public boolean isOpaqueCube() {
 
 		return true;
@@ -92,12 +125,29 @@ public class BlockCache extends BlockTEBase {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
+		for (int i = 0; i < 9; i++) {
+			IconRegistry.addIcon("CacheMeter" + i, "thermalexpansion:cache/Cache_Meter_" + i, ir);
+			IconRegistry.addIcon("CacheMeterInv" + i, "thermalexpansion:cache/Cache_Meter_Inv_" + i, ir);
+		}
 		for (int i = 0; i < Types.values().length; i++) {
 			IconRegistry.addIcon("CacheBottom" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Bottom", ir);
 			IconRegistry.addIcon("CacheTop" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Top", ir);
 			IconRegistry.addIcon("CacheSide" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Side", ir);
 			IconRegistry.addIcon("CacheFace" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Face", ir);
 		}
+		IconRegistry.addIcon("CacheBlank", "thermalexpansion:config/Config_None", ir);
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		return super.getItemStackTag(world, x, y, z);
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride() {
+
+		return true;
 	}
 
 	/* IDismantleable */
