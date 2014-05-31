@@ -42,8 +42,8 @@ public class TabSchematic extends TabBase {
 		if (!isFullyOpened()) {
 			return;
 		}
-		GuiBase.guiFontRenderer.drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posX + 20, posY + 6, headerColor);
-		GuiBase.guiFontRenderer.drawString("", posX, posY, 0xffffff);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posX + 20, posY + 6, headerColor);
+		getFontRenderer().drawString("", posX, posY, 0xffffff);
 
 		if (myTile.canWriteSchematic()) {
 			gui.drawButton("IconAccept", posX + 77, posY + 60, 1, 0);
@@ -62,18 +62,18 @@ public class TabSchematic extends TabBase {
 	}
 
 	@Override
-	public boolean handleMouseClicked(int x, int y, int mouseButton) {
+	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) {
 
 		if (!isFullyOpened()) {
 			return false;
 		}
-		x -= currentShiftX;
-		y -= currentShiftY;
+		mouseX -= currentShiftX;
+		mouseY -= currentShiftY;
 
-		if (x < 8 || x >= 102 || y < 20 || y >= 84) {
+		if (mouseX < 8 || mouseX >= 102 || mouseY < 20 || mouseY >= 84) {
 			return false;
 		}
-		if (77 < x && x < 93 && 60 < y && y < 76) {
+		if (77 < mouseX && mouseX < 93 && 60 < mouseY && mouseY < 76) {
 
 			if (myTile.canWriteSchematic()) {
 				writeSchematic();

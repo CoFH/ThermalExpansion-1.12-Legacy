@@ -1,5 +1,6 @@
 package thermalexpansion.block.cache;
 
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -64,10 +65,27 @@ public class ItemBlockCache extends ItemBlock {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo);
+			list.add(StringHelper.shiftForInfo());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
+		}
+		if (stack.stackTagCompound == null) {
+			list.add(StringHelper.localize("info.cofh.unlocked"));
+			return;
+		}
+		boolean lock = stack.stackTagCompound.getBoolean("Lock");
+
+		if (lock) {
+			list.add(StringHelper.localize("info.cofh.locked"));
+		} else {
+			list.add(StringHelper.localize("info.cofh.unlocked"));
+		}
+		list.add(StringHelper.localize("info.cofh.contents") + ":");
+
+		if (stack.stackTagCompound.hasKey("Item")) {
+			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Item"));
+			list.add("    " + StringHelper.BRIGHT_GREEN + stored.stackSize + " " + StringHelper.getItemName(stored));
 		}
 	}
 

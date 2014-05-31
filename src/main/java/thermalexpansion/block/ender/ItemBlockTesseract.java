@@ -61,7 +61,7 @@ public class ItemBlockTesseract extends ItemBlock {
 			list.add(StringHelper.localize("info.cofh.owner") + ": " + stack.stackTagCompound.getString("Owner"));
 		}
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo);
+			list.add(StringHelper.shiftForInfo());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
@@ -100,15 +100,15 @@ public class ItemBlockTesseract extends ItemBlock {
 
 			switch (rsMode) {
 			case 0:
-				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOff"));
+				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.disabled"));
 				break;
 			case 1:
-				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-						+ StringHelper.localize("info.cofh.redstoneStateLow"));
+				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.enabled") + ", "
+						+ StringHelper.localize("info.cofh.low"));
 				break;
 			case 2:
-				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.redstoneControlOn") + ", "
-						+ StringHelper.localize("info.cofh.redstoneStateHigh"));
+				list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.enabled") + ", "
+						+ StringHelper.localize("info.cofh.high"));
 				break;
 			}
 		}

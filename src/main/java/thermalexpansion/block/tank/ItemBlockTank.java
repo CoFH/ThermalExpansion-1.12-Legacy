@@ -67,7 +67,7 @@ public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo);
+			list.add(StringHelper.shiftForInfo());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;

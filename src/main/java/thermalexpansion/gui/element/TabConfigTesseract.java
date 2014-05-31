@@ -39,9 +39,9 @@ public class TabConfigTesseract extends TabBase {
 		if (!isFullyOpened()) {
 			return;
 		}
-		GuiBase.guiFontRenderer.drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posX + 20, posY + 6, headerColor);
-		GuiBase.guiFontRenderer.drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posX + 8, posY + 42, subheaderColor);
-		GuiBase.guiFontRenderer.drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posX + 8, posY + 66, subheaderColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posX + 20, posY + 6, headerColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posX + 8, posY + 42, subheaderColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posX + 8, posY + 66, subheaderColor);
 
 		gui.drawButton(buttonNames[myTile.modeItem], posX + 24, posY + 20, 1, 0);
 		gui.drawButton(buttonNames[myTile.modeFluid], posX + 42, posY + 20, 1, 0);
@@ -94,8 +94,8 @@ public class TabConfigTesseract extends TabBase {
 				sending = StringHelper.localize("info.cofh.none");
 			}
 		}
-		GuiBase.guiFontRenderer.drawString(sending, posX + 16, posY + 54, textColor);
-		GuiBase.guiFontRenderer.drawString(receiving, posX + 16, posY + 78, textColor);
+		getFontRenderer().drawString(sending, posX + 16, posY + 54, textColor);
+		getFontRenderer().drawString(receiving, posX + 16, posY + 78, textColor);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
@@ -127,18 +127,18 @@ public class TabConfigTesseract extends TabBase {
 	}
 
 	@Override
-	public boolean handleMouseClicked(int x, int y, int mouseButton) {
+	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) {
 
 		if (!isFullyOpened()) {
 			return false;
 		}
-		x -= currentShiftX;
-		y -= currentShiftY;
+		mouseX -= currentShiftX;
+		mouseY -= currentShiftY;
 
-		if (x < 18 || x > 82 || y < 16 || y > 40) {
+		if (mouseX < 18 || mouseX > 82 || mouseY < 16 || mouseY > 40) {
 			return false;
 		}
-		if (24 <= x && x < 40 && 20 <= y && y < 36) {
+		if (24 <= mouseX && mouseX < 40 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incItemMode();
 				GuiBase.playSound("random.click", 1.0F, 0.8F);
@@ -147,7 +147,7 @@ public class TabConfigTesseract extends TabBase {
 				GuiBase.playSound("random.click", 1.0F, 0.6F);
 			}
 			myTile.setTileInfo(myTile.frequency);
-		} else if (42 <= x && x < 58 && 20 <= y && y < 36) {
+		} else if (42 <= mouseX && mouseX < 58 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incFluidMode();
 				GuiBase.playSound("random.click", 1.0F, 0.8F);
@@ -156,7 +156,7 @@ public class TabConfigTesseract extends TabBase {
 				GuiBase.playSound("random.click", 1.0F, 0.6F);
 			}
 			myTile.setTileInfo(myTile.frequency);
-		} else if (60 <= x && x < 76 && 20 <= y && y < 36) {
+		} else if (60 <= mouseX && mouseX < 76 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incEnergyMode();
 				GuiBase.playSound("random.click", 1.0F, 0.8F);

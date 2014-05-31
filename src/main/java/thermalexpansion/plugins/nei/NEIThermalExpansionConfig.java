@@ -3,7 +3,7 @@ package thermalexpansion.plugins.nei;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
-import thermalexpansion.core.TEProps;
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerCrucible;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerFurnace;
@@ -44,13 +44,13 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 	@Override
 	public String getName() {
 
-		return TEProps.NAME;
+		return ThermalExpansion.modName;
 	}
 
 	@Override
 	public String getVersion() {
 
-		return TEProps.VERSION;
+		return ThermalExpansion.version;
 	}
 
 }

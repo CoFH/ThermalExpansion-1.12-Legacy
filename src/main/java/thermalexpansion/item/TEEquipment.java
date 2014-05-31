@@ -1,14 +1,14 @@
 package thermalexpansion.item;
 
 import cofh.item.ItemArmorAdv;
-import cofh.item.ItemAxeAdv;
-import cofh.item.ItemFishingRodAdv;
-import cofh.item.ItemHoeAdv;
-import cofh.item.ItemPickaxeAdv;
-import cofh.item.ItemShearsAdv;
-import cofh.item.ItemShovelAdv;
-import cofh.item.ItemSickleAdv;
-import cofh.item.ItemSwordAdv;
+import cofh.item.tool.ItemAxeAdv;
+import cofh.item.tool.ItemFishingRodAdv;
+import cofh.item.tool.ItemHoeAdv;
+import cofh.item.tool.ItemPickaxeAdv;
+import cofh.item.tool.ItemShearsAdv;
+import cofh.item.tool.ItemShovelAdv;
+import cofh.item.tool.ItemSickleAdv;
+import cofh.item.tool.ItemSwordAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Items;

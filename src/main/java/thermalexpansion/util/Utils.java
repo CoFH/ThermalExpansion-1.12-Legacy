@@ -146,11 +146,6 @@ public class Utils {
 		return isPoweredTile(BlockHelper.getAdjacentTileEntity(tile, side), side);
 	}
 
-	public static boolean isHoldingNothing(EntityPlayer player) {
-
-		return player.getCurrentEquippedItem() == null;
-	}
-
 	public static boolean isHoldingBlock(EntityPlayer player) {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;

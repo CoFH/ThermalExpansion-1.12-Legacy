@@ -39,8 +39,8 @@ public class TabConfigCell extends TabBase {
 		if (!isFullyOpened()) {
 			return;
 		}
-		GuiBase.guiFontRenderer.drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posX + 20, posY + 6, headerColor);
-		GuiBase.guiFontRenderer.drawString("", posX, posY, 0xffffff);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posX + 20, posY + 6, headerColor);
+		getFontRenderer().drawString("", posX, posY, 0xffffff);
 		RenderHelper.setBlockTextureSheet();
 		Icon texIndex;
 
@@ -71,27 +71,27 @@ public class TabConfigCell extends TabBase {
 	}
 
 	@Override
-	public boolean handleMouseClicked(int x, int y, int mouseButton) {
+	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) {
 
 		if (!isFullyOpened()) {
 			return false;
 		}
-		x -= currentShiftX;
-		y -= currentShiftY;
-		if (x < 16 || x >= 80 || y < 20 || y >= 84) {
+		mouseX -= currentShiftX;
+		mouseY -= currentShiftY;
+		if (mouseX < 16 || mouseX >= 80 || mouseY < 20 || mouseY >= 84) {
 			return false;
 		}
-		if (40 <= x && x < 56 && 24 <= y && y < 40) {
+		if (40 <= mouseX && mouseX < 56 && 24 <= mouseY && mouseY < 40) {
 			handleSideChange(1, mouseButton);
-		} else if (20 <= x && x < 36 && 44 <= y && y < 60) {
+		} else if (20 <= mouseX && mouseX < 36 && 44 <= mouseY && mouseY < 60) {
 			handleSideChange(BlockHelper.SIDE_LEFT[myTile.getFacing()], mouseButton);
-		} else if (40 <= x && x < 56 && 44 <= y && y < 60) {
+		} else if (40 <= mouseX && mouseX < 56 && 44 <= mouseY && mouseY < 60) {
 			handleSideChange(myTile.getFacing(), mouseButton);
-		} else if (60 <= x && x < 76 && 44 <= y && y < 60) {
+		} else if (60 <= mouseX && mouseX < 76 && 44 <= mouseY && mouseY < 60) {
 			handleSideChange(BlockHelper.SIDE_RIGHT[myTile.getFacing()], mouseButton);
-		} else if (40 <= x && x < 56 && 64 <= y && y < 80) {
+		} else if (40 <= mouseX && mouseX < 56 && 64 <= mouseY && mouseY < 80) {
 			handleSideChange(0, mouseButton);
-		} else if (60 <= x && x < 76 && 64 <= y && y < 80) {
+		} else if (60 <= mouseX && mouseX < 76 && 64 <= mouseY && mouseY < 80) {
 			handleSideChange(BlockHelper.SIDE_OPPOSITE[myTile.getFacing()], mouseButton);
 		}
 		return true;

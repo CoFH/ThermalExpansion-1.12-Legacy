@@ -60,9 +60,9 @@ public class RenderItemFlorb implements IItemRenderer {
 			}
 		} else {
 			if (item.getItemDamage() == 1) {
-				RenderHelper.renderIcon(IconRegistry.getIcon("FlorbMagmatic"), 0);
+				RenderHelper.renderIcon(IconRegistry.getIcon("FlorbMagmatic"), 4);
 			} else {
-				RenderHelper.renderIcon(IconRegistry.getIcon("Florb"), 0);
+				RenderHelper.renderIcon(IconRegistry.getIcon("Florb"), 4);
 			}
 		}
 		RenderUtils.postItemRender();

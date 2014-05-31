@@ -127,7 +127,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo);
+			list.add(StringHelper.shiftForInfo());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;

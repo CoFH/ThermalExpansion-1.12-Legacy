@@ -10,6 +10,7 @@ import java.util.Set;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.dynamo.TileDynamoCompression;
 import thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import thermalexpansion.block.dynamo.TileDynamoReactant;
@@ -17,7 +18,7 @@ import thermalexpansion.core.TEProps;
 
 public class FuelHandler {
 
-	public static ConfigHandler configFuels = new ConfigHandler(TEProps.VERSION);
+	public static ConfigHandler configFuels = new ConfigHandler(ThermalExpansion.version);
 
 	static {
 		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Fuels.cfg")));

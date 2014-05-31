@@ -16,7 +16,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-import thermalexpansion.core.TEProps;
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.tool.ItemFlorb;
 import thermalexpansion.util.crafting.TransposerManager;
 
@@ -84,6 +84,6 @@ public class TEFlorbs {
 	public static boolean enableFlorbs = true;
 	public static final int MAGMATIC_FLORB_TEMPERATURE = 1000;
 
-	public static ConfigHandler configFlorbs = new ConfigHandler(TEProps.VERSION);
+	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.version);
 
 }

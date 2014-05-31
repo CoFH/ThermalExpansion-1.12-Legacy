@@ -9,10 +9,6 @@ public class TEProps {
 
 	}
 
-	public static final String NAME = "Thermal Expansion";
-	public static final String VERSION = "1.7.2R3.1.0B1";
-	public static final String RELEASE_URL = "http://teamcofh.com/thermalexpansion/version/version.txt";
-
 	/* Graphics */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";

@@ -387,10 +387,10 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add("Fluid: " + StringHelper.getFluidName(tank.getFluid()));
-			info.add("Amount: " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB");
+			info.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid()));
+			info.add(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB");
 		} else {
-			info.add("Fluid: Empty");
+			info.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 		}
 	}
 

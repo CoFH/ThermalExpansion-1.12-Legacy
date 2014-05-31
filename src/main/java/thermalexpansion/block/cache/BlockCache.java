@@ -3,6 +3,8 @@ package thermalexpansion.block.cache;
 import cofh.api.tileentity.ISidedBlockTexture;
 import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
+import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cofh.util.UpgradeRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -14,6 +16,7 @@ import java.util.List;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,6 +26,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
@@ -60,11 +64,71 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		if (stack.stackTagCompound != null) {
+			TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+			tile.locked = stack.stackTagCompound.getBoolean("Lock");
+
+			if (stack.stackTagCompound.hasKey("Item")) {
+				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Item"));
+				tile.setStoredItemType(stored, stored.stackSize);
+			}
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
-		TileEntity tile = world.getTileEntity(x, y, z);
+		if (super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ)) {
+			return true;
+		}
+		if (ServerHelper.isClientWorld(world)) {
+			return true;
+		}
+		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 
-		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.toggleLock();
+				return true;
+			}
+			// for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			// if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+			// player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+			// }
+			// }
+			return true;
+		}
+		ItemStack heldStack = player.getCurrentEquippedItem();
+		ItemStack ret = tile.insertItem(ForgeDirection.UNKNOWN, heldStack, false);
+
+		if (!player.capabilities.isCreativeMode && ret != heldStack) {
+			player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+		}
+		return true;
+	}
+
+	@Override
+	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
+
+		if (ServerHelper.isClientWorld(world)) {
+			return;
+		}
+		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+
+		int extractAmount = player.isSneaking() ? 1 : 64;
+		ItemStack extract = tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, true);
+
+		if (!player.capabilities.isCreativeMode) {
+			if (!player.inventory.addItemStackToInventory(extract)) {
+				return;
+			}
+			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
+		} else {
+			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
+		}
 	}
 
 	@Override
@@ -141,7 +205,19 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
-		return super.getItemStackTag(world, x, y, z);
+		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = null;
+
+		if (tile != null) {
+			tag = new NBTTagCompound();
+
+			tag.setBoolean("Lock", tile.locked);
+
+			if (tile.storedStack != null) {
+				tag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+			}
+		}
+		return tag;
 	}
 
 	@Override

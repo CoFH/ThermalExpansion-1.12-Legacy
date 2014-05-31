@@ -4,6 +4,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,7 +31,6 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.util.Utils;
 
 public class BlockDynamo extends BlockTEBase {
 
@@ -75,7 +75,6 @@ public class BlockDynamo extends BlockTEBase {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 
 		if (tile instanceof IFluidHandler) {
@@ -83,7 +82,7 @@ public class BlockDynamo extends BlockTEBase {
 				return true;
 			}
 		} else if (tile instanceof TileDynamoManual) {
-			if (Utils.isHoldingNothing(player)) {
+			if (ItemHelper.isPlayerHoldingNothing(player)) {
 				tile.receiveEnergy(ForgeDirection.UNKNOWN, 1000, false);
 				player.getFoodStats().addStats(-1, -0.2F);
 			} else if (EnergyHelper.isPlayerHoldingEnergyContainerItem(player)) {

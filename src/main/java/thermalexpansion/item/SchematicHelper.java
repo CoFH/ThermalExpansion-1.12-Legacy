@@ -138,7 +138,7 @@ public class SchematicHelper {
 			list.add(StringHelper.LIGHT_GRAY + entry.getValue() + "x " + entry.getKey());
 		}
 		if (hasOre && StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo);
+			list.add(StringHelper.shiftForInfo());
 		}
 	}
 

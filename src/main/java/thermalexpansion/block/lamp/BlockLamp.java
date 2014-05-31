@@ -61,7 +61,6 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int bSide, float hitX, float hitY, float hitZ) {
 
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 		TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
 
 		if (ItemHelper.isPlayerHoldingItem(Items.dye, player)) {

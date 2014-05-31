@@ -4,7 +4,7 @@ import cofh.block.TileCoFHBase;
 
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.core.TEProps;
+import thermalexpansion.ThermalExpansion;
 
 public abstract class TileTEBase extends TileCoFHBase {
 
@@ -13,7 +13,7 @@ public abstract class TileTEBase extends TileCoFHBase {
 	public void writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-		nbt.setString("Version", TEProps.VERSION);
+		nbt.setString("Version", ThermalExpansion.version);
 	}
 
 }

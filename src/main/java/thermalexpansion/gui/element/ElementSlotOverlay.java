@@ -42,7 +42,7 @@ public class ElementSlotOverlay extends ElementBase {
 	}
 
 	@Override
-	public void draw() {
+	public void drawBackground(int mouseX, int mouseY, float gameTicks) {
 
 		if (!visible) {
 			return;
@@ -53,6 +53,12 @@ public class ElementSlotOverlay extends ElementBase {
 		} else {
 			drawSlotNoBorder(posX, posY);
 		}
+	}
+
+	@Override
+	public void drawForeground(int mouseX, int mouseY) {
+
+		return;
 	}
 
 	@Override

@@ -8,6 +8,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ItemHelper;
 import cofh.util.MathHelper;
+import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -85,6 +86,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 
 	protected void balanceStacks() {
 
+		inventory[0] = null;
 		inventory[1] = ItemHelper.cloneStack(storedStack, Math.min(storedStack.getMaxStackSize(), storedStack.stackSize));
 		storedStack.stackSize -= inventory[1].stackSize;
 
@@ -92,19 +94,18 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 			inventory[0] = ItemHelper.cloneStack(storedStack, storedStack.stackSize - maxCacheStackSize);
 			storedStack.stackSize = maxCacheStackSize;
 		}
-		updateTrackers();
 	}
 
 	protected void clearInventory() {
 
 		if (!locked) {
 			storedStack = null;
+			sendUpdatePacket(Side.CLIENT);
 		} else {
 			storedStack.stackSize = 0;
 		}
 		inventory[0] = null;
 		inventory[1] = null;
-		updateTrackers();
 	}
 
 	protected void updateTrackers() {
@@ -125,20 +126,18 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 
 	public int getScaledItemsStored(int scale) {
 
-		if (storedStack == null) {
-			return 0;
-		}
-		int inv0 = 0;
-		int inv1 = 0;
+		return getStoredCount() * scale / SIZE[type];
+	}
 
-		if (inventory[1] != null) {
-			inv1 = inventory[1].stackSize;
+	public boolean toggleLock() {
 
-			if (inventory[0] != null) {
-				inv0 = inventory[0].stackSize;
-			}
+		locked = !locked;
+
+		if (getStoredCount() <= 0 && !locked) {
+			clearInventory();
 		}
-		return (storedStack.stackSize + inv0 + inv1) * scale / SIZE[type];
+		sendUpdatePacket(Side.CLIENT);
+		return locked;
 	}
 
 	/* NETWORK METHODS */
@@ -151,6 +150,10 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		payload.addByte(facing);
 		payload.addBool(locked);
 		payload.addItemStack(storedStack);
+
+		if (storedStack != null) {
+			payload.addInt(getStoredCount());
+		}
 		return payload;
 	}
 
@@ -164,6 +167,18 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		facing = payload.getByte();
 		locked = payload.getBool();
 		storedStack = payload.getItemStack();
+
+		if (storedStack != null) {
+			storedStack.stackSize = payload.getInt();
+			inventory[1] = null;
+			balanceStacks();
+		} else {
+			storedStack = null;
+			inventory[0] = null;
+			inventory[1] = null;
+		}
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	/* NBT METHODS */
@@ -175,7 +190,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		locked = nbt.getBoolean("Lock");
 
 		if (nbt.hasKey("Item")) {
-			storedStack = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("Item"));
+			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
 			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
 		} else {
 			maxCacheStackSize = SIZE[type] - 64 * 2;
@@ -193,7 +208,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		nbt.setBoolean("Lock", locked);
 
 		if (storedStack != null) {
-			nbt.setTag("Item", storedStack.writeToNBT(new NBTTagCompound()));
+			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
 		}
 	}
 
@@ -260,6 +275,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 				clearInventory();
 			}
 		}
+		updateTrackers();
 		markDirty();
 	}
 
@@ -309,13 +325,12 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 			return;
 		}
 		if (storedStack != null) {
-			info.add("Item: " + storedStack.getDisplayName());
-			info.add("Amount: " + storedStack.stackSize + (inventory[0] == null ? 0 : inventory[0].stackSize)
-					+ (inventory[1] == null ? 0 : inventory[1].stackSize));
+			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack));
+			info.add(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]);
 		} else {
-			info.add("Item: Empty");
+			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty"));
 		}
-		info.add(locked ? "Locked" : "Unlocked");
+		info.add(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked"));
 	}
 
 	/* IDeepStorageUnit */
@@ -328,33 +343,32 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	@Override
 	public void setStoredItemCount(int amount) {
 
-		if (storedStack != null && amount >= 0) {
-			storedStack.stackSize = Math.min(amount, getMaxStoredCount());
-
-			if (amount > 0) {
-				balanceStacks();
-			} else {
-				clearInventory();
-			}
+		if (storedStack == null || amount < 0) {
+			return;
 		}
+		storedStack.stackSize = Math.min(amount, getMaxStoredCount());
+
+		if (amount > 0) {
+			balanceStacks();
+		} else {
+			clearInventory();
+		}
+		updateTrackers();
 		markDirty();
 	}
 
 	@Override
 	public void setStoredItemType(ItemStack stack, int amount) {
 
-		if (stack != null && amount >= 0) {
+		if (stack == null || amount <= 0) {
+			clearInventory();
+		} else {
 			storedStack = ItemHelper.cloneStack(stack, Math.min(amount, getMaxStoredCount()));
 			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
-
-			if (amount > 0) {
-				balanceStacks();
-			} else {
-				clearInventory();
-			}
-		} else {
-			clearInventory();
+			balanceStacks();
 		}
+		updateTrackers();
+		sendUpdatePacket(Side.CLIENT);
 		markDirty();
 	}
 
@@ -362,6 +376,56 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public int getMaxStoredCount() {
 
 		return SIZE[type];
+	}
+
+	/* Prototype Handler Stuff */
+	public int getStoredCount() {
+
+		return storedStack == null ? 0 : storedStack.stackSize + (inventory[0] == null ? 0 : inventory[0].stackSize)
+				+ (inventory[1] == null ? 0 : inventory[1].stackSize);
+	}
+
+	public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate) {
+
+		if (item == null) {
+			return null;
+		}
+		if (storedStack == null) {
+			if (!simulate) {
+				setStoredItemType(item, item.stackSize);
+			}
+			return null;
+		}
+		if (getStoredCount() == SIZE[type]) {
+			return item;
+		}
+		if (ItemHelper.itemsEqualWithMetadata(item, storedStack, true)) {
+			if (getStoredCount() + item.stackSize > SIZE[type]) {
+				ItemStack retStack = ItemHelper.cloneStack(item, SIZE[type] - getStoredCount());
+				if (!simulate) {
+					setStoredItemCount(SIZE[type]);
+				}
+				return retStack;
+			}
+			if (!simulate) {
+				setStoredItemCount(getStoredCount() + item.stackSize);
+			}
+			return null;
+		}
+		return item;
+	}
+
+	public ItemStack extractItem(ForgeDirection from, int maxExtract, boolean simulate) {
+
+		if (storedStack == null) {
+			return null;
+		}
+		ItemStack ret = ItemHelper.cloneStack(storedStack, Math.min(getStoredCount(), Math.min(maxExtract, storedStack.getMaxStackSize())));
+
+		if (!simulate) {
+			setStoredItemCount(getStoredCount() - ret.stackSize);
+		}
+		return ret;
 	}
 
 }

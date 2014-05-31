@@ -4,7 +4,7 @@ import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
 import cofh.audio.SoundBase;
-import cofh.item.ItemSwordAdv;
+import cofh.item.tool.ItemSwordAdv;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.client.FMLClientHandler;

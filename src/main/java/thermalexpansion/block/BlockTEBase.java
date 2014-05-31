@@ -35,11 +35,11 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
+		if (Utils.isHoldingMultimeter(player, x, y, z)) {
+			return true;
+		}
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 
-		if (Utils.isHoldingMultimeter(player, x, y, z)) {
-			return false;
-		}
 		if (player.isSneaking()) {
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {

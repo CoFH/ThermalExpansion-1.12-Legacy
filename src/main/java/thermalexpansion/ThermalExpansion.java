@@ -1,9 +1,9 @@
 package thermalexpansion;
 
-import cofh.core.CoFHProps;
 import cofh.gui.GuiHandler;
 import cofh.mod.BaseMod;
 import cofh.network.CoFHPacket;
+import cofh.updater.UpdateManager;
 import cofh.util.ConfigHandler;
 import cofh.util.StringHelper;
 import com.google.common.eventbus.EventBus;
@@ -61,13 +61,14 @@ import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.ThermalFoundation;
 
-@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = "required-after:Forge@["
-		+ CoFHProps.FORGE_REQ + ",);required-after:CoFHCore@[" + CoFHProps.VERSION + ",);required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)")
+@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies)
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
-	public static final String version = TEProps.VERSION;
-	public static final String modName = TEProps.NAME;
+	public static final String modName = "Thermal Expansion";
+	public static final String version = "1.7.2R3.1.0B1";
+	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
+	public static final String releaseURL = "http://teamcofh.com/thermalexpansion/version/version.txt";
 
 	@Instance(modId)
 	public static ThermalExpansion instance;
@@ -77,7 +78,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final Logger log = LogManager.getLogger(modId);
 
-	public static final ConfigHandler config = new ConfigHandler(TEProps.VERSION);
+	public static final ConfigHandler config = new ConfigHandler(version);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
 	public static final CreativeTabs tabBlocks = new CreativeTabBlocks();
@@ -96,6 +97,8 @@ public class ThermalExpansion extends BaseMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+
+		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
 
 		GenericEventHandler.initialize();
 		TECraftingHandler.initialize();
@@ -116,7 +119,6 @@ public class ThermalExpansion extends BaseMod {
 		TEPlugins.preInit();
 
 		String category = "general";
-		String version = config.get(category, "Version", TEProps.VERSION);
 		String comment = null;
 
 		TEProps.enableUpdateNotice = config.get(category, "EnableUpdateNotifications", TEProps.enableUpdateNotice);
