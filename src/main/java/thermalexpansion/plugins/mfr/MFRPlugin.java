@@ -4,6 +4,7 @@ import cofh.util.MathHelper;
 import cpw.mods.fml.common.Loader;
 
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;
+import powercrystals.minefactoryreloaded.api.ValuedItem;
 
 import thermalexpansion.ThermalExpansion;
 
@@ -33,22 +34,22 @@ public class MFRPlugin {
 
 		if (Loader.isModLoaded("MineFactoryReloaded")) {
 			if (strawRedstone) {
-				FactoryRegistry.registerLiquidDrinkHandler("redstone", DrinkHandlerRedstone.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("redstone", DrinkHandlerRedstone.instance));
 			}
 			if (strawGlowstone) {
-				FactoryRegistry.registerLiquidDrinkHandler("glowstone", DrinkHandlerGlowstone.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("glowstone", DrinkHandlerGlowstone.instance));
 			}
 			if (strawEnder) {
-				FactoryRegistry.registerLiquidDrinkHandler("ender", DrinkHandlerEnder.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("ender", DrinkHandlerEnder.instance));
 			}
 			if (strawPyrotheum) {
-				FactoryRegistry.registerLiquidDrinkHandler("pyrotheum", DrinkHandlerPyrotheum.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("pyrotheum", DrinkHandlerPyrotheum.instance));
 			}
 			if (strawCryotheum) {
-				FactoryRegistry.registerLiquidDrinkHandler("cryotheum", DrinkHandlerCryotheum.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("cryotheum", DrinkHandlerCryotheum.instance));
 			}
 			if (strawCoal) {
-				FactoryRegistry.registerLiquidDrinkHandler("coal", DrinkHandlerCoal.instance);
+				FactoryRegistry.sendMessage("registerLiquidDrinkHandler", new ValuedItem("coal", DrinkHandlerCoal.instance));
 			}
 			ThermalExpansion.log.info("MineFactoryReloaded Plugin Enabled.");
 		}

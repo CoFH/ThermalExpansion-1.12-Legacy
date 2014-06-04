@@ -51,7 +51,7 @@ public class GuiDynamoSteam extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		duration.setQuantity(myTile.getScaledDuration(SPEED));
 	}

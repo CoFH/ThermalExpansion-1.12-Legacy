@@ -67,7 +67,7 @@ public class GuiSmelter extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		slotPrimaryInput[0].setVisible(myTile.hasSide(1));
 		slotPrimaryInput[1].setVisible(myTile.hasSide(5));

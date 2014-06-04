@@ -50,7 +50,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		if (gridHasStuff()) {
 			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");

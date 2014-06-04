@@ -70,7 +70,7 @@ public class GuiAssembler extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		slotInput.setVisible(myTile.hasSide(1));
 		slotInputFluid.setVisible(myTile.hasSide(1));

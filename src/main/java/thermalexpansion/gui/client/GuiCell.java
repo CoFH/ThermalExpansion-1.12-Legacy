@@ -116,7 +116,7 @@ public class GuiCell extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		int change = 0;
 		int change2 = 0;

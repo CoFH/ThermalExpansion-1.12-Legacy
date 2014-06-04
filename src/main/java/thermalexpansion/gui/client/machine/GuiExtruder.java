@@ -68,7 +68,7 @@ public class GuiExtruder extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		slotInputWater.setVisible(myTile.hasSide(1));
 		slotInputLava.setVisible(myTile.hasSide(1));

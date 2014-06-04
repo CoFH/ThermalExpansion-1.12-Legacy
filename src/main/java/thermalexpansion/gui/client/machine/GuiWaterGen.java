@@ -50,7 +50,7 @@ public class GuiWaterGen extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		slotOutput.setVisible(myTile.hasSide(1));
 	}

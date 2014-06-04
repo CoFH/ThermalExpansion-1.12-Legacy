@@ -81,7 +81,7 @@ public class GuiTransposer extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void updateElements() {
+	protected void updateElementInformation() {
 
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput[0].setVisible(myTile.hasSide(4));
