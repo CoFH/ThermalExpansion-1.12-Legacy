@@ -23,7 +23,7 @@ public class TileFurnace extends TileMachineEnergized {
 		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
 		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setEnergyParams(20);
+		energyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Furnace", "machine", true);
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");

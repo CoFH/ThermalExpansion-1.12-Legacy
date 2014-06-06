@@ -38,7 +38,7 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
 		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setEnergyParams(20);
+		energyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");

@@ -38,7 +38,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
 		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setEnergyParams(40, 400, 400000);
+		energyData[TYPE].setParams(40, 400, 400000);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Crucible", "machine", true);
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");

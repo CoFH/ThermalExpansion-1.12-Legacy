@@ -28,7 +28,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 		public int maxPowerLevel;
 		public int energyRamp;
 
-		public boolean setEnergyParams(int minPower, int maxPower, int maxEnergy) {
+		public boolean setParams(int minPower, int maxPower, int maxEnergy) {
 
 			if (minPower <= 0 || maxPower <= 0 || maxEnergy <= 0) {
 				return false;
@@ -43,9 +43,27 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 			return true;
 		}
 
-		public boolean setEnergyParams(int maxPower) {
+		public boolean setParamsPower(int maxPower) {
 
-			return setEnergyParams(maxPower / 4, maxPower, maxPower * 1200);
+			return setParams(maxPower / 4, maxPower, maxPower * 1200);
+		}
+
+		public boolean setParamsEnergy(int maxEnergy) {
+
+			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
+		}
+
+		public EnergyConfig copy() {
+
+			EnergyConfig newConfig = new EnergyConfig();
+			newConfig.minPower = this.minPower;
+			newConfig.maxPower = this.maxPower;
+			newConfig.maxEnergy = this.maxEnergy;
+			newConfig.minPowerLevel = this.minPowerLevel;
+			newConfig.maxPowerLevel = this.maxPowerLevel;
+			newConfig.energyRamp = this.energyRamp;
+
+			return newConfig;
 		}
 	}
 
@@ -53,6 +71,9 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 	EnergyConfig energyConfig;
 	EnergyStorage energyStorage;
+
+	int energyMod = 1;
+	int progressMod = 1;
 
 	public TileMachineEnergized() {
 
@@ -112,13 +133,13 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 		if (isActive) {
 			if (processRem > 0) {
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
+				energyStorage.modifyEnergyStored(-energy * energyMod);
+				processRem -= energy * progressMod;
 			}
 			if (canFinish()) {
 				processFinish();
 				transferProducts();
-				energyStorage.modifyEnergyStored(-processRem);
+				energyStorage.modifyEnergyStored(-processRem * energyMod / progressMod);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
 					isActive = false;
@@ -135,8 +156,8 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 			if (timeCheckEighth() && canStart()) {
 				processStart();
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
+				energyStorage.modifyEnergyStored(-energy * energyMod);
+				processRem -= energy * progressMod;
 				isActive = true;
 			}
 		}
@@ -309,7 +330,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		return energyConfig.maxPower;
+		return energyConfig.maxPower * energyMod;
 	}
 
 	@Override
@@ -321,7 +342,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 	@Override
 	public int getInfoMaxEnergy() {
 
-		return energyConfig.maxEnergy;
+		return energyStorage.getMaxEnergyStored();
 	}
 
 }
