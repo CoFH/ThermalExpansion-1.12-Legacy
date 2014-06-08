@@ -4,6 +4,7 @@ import cofh.util.ItemHelper;
 import cofh.util.MathHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStack;
+import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -399,7 +401,7 @@ public class PulverizerManager {
 			if (!safeOreType(oreName)) {
 				return -1;
 			}
-			return OreDictionary.getOreID(oreName);
+			return OreDictionaryArbiter.getOreID(oreName);
 		}
 
 		public ComparableItemStackPulverizer(ItemStack stack) {
@@ -408,9 +410,9 @@ public class PulverizerManager {
 			oreID = getOreID(stack);
 		}
 
-		public ComparableItemStackPulverizer(int itemID, int damage, int stackSize) {
+		public ComparableItemStackPulverizer(Item item, int damage, int stackSize) {
 
-			super(itemID, damage, stackSize);
+			super(item, damage, stackSize);
 			this.oreID = getOreID(this.toItemStack());
 		}
 

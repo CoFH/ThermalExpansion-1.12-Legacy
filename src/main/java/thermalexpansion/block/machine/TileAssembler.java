@@ -31,15 +31,15 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 3;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 3;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(20);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Assembler", "machine", true);
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
@@ -49,7 +49,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	FluidTank tank = new FluidTank(MAX_FLUID_LARGE);
 
-	public boolean needsCraft = false;
+	private boolean needsCraft = false;
 	private boolean needsCache = true;
 	ItemStack recipeOutput;
 	int outputTracker;
@@ -163,19 +163,23 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
 							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
-							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
-								containerStack = null;
-							}
-							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 3))) {
-								if (invCopy[j].stackSize <= 0) {
-									invCopy[j] = containerStack;
-									if (containerStack.stackSize <= 0) {
-										invCopy[j].stackSize = 1;
+							if (containerStack == null) {
+								// this is absolutely stupid and nobody should ever make a container item where this gets called
+							} else {
+								if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
+									containerStack = null;
+								}
+								if (containerStack != null
+										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+												invCopy, containerStack, 3))) {
+									if (invCopy[j].stackSize <= 0) {
+										invCopy[j] = containerStack;
+										if (containerStack.stackSize <= 0) {
+											invCopy[j].stackSize = 1;
+										}
+									} else {
+										return false;
 									}
-								} else {
-									return false;
 								}
 							}
 						}

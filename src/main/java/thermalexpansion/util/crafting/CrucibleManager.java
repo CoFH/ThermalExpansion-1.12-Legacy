@@ -2,6 +2,7 @@ package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
+import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -14,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
@@ -120,7 +120,7 @@ public class CrucibleManager {
 	/* HELPER FUNCTIONS */
 	public static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
 
-		ArrayList<ItemStack> registeredOres = OreDictionary.getOres(oreName);
+		ArrayList<ItemStack> registeredOres = OreDictionaryArbiter.getOres(oreName);
 		for (int i = 0; i < registeredOres.size(); i++) {
 			addTERecipe(energy, ItemHelper.cloneStack(registeredOres.get(i), stackSize), output);
 		}

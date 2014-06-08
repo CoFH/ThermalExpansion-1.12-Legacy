@@ -15,15 +15,15 @@ public class TileSawmill extends TileMachineEnergized {
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 5;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true, true, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 5;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(20);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Sawmill", "machine", true);
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");

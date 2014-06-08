@@ -15,15 +15,15 @@ public class TileFurnace extends TileMachineEnergized {
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 3;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 3;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(20);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Furnace", "machine", true);
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");

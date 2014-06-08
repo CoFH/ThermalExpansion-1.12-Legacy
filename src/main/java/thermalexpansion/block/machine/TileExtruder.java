@@ -45,12 +45,12 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[1]), 4, 72000);
 		processTime[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[2]), 4, 72000);
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 3;
-		sideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 3;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Extruder", "machine", true);
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");

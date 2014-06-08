@@ -67,17 +67,18 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 		}
 	}
 
-	protected static final EnergyConfig[] energyData = new EnergyConfig[BlockMachine.Types.values().length];
+	protected static final EnergyConfig[] defaultEnergyData = new EnergyConfig[BlockMachine.Types.values().length];
 
 	EnergyConfig energyConfig;
 	EnergyStorage energyStorage;
 
 	int energyMod = 1;
-	int progressMod = 1;
 
 	public TileMachineEnergized() {
 
-		energyConfig = energyData[getType()];
+		super();
+
+		energyConfig = defaultEnergyData[getType()];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 	}
 
@@ -134,12 +135,12 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 			if (processRem > 0) {
 				int energy = calcEnergy();
 				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * progressMod;
+				processRem -= energy * processMod;
 			}
 			if (canFinish()) {
 				processFinish();
 				transferProducts();
-				energyStorage.modifyEnergyStored(-processRem * energyMod / progressMod);
+				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
 					isActive = false;
@@ -157,7 +158,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 				processStart();
 				int energy = calcEnergy();
 				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * progressMod;
+				processRem -= energy * processMod;
 				isActive = true;
 			}
 		}

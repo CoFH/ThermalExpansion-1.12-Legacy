@@ -27,12 +27,12 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 2;
-		sideData[TYPE].slotGroups = new int[][] { {}, {} };
-		sideData[TYPE].allowInsertion = new boolean[] { false, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false };
-		sideData[TYPE].sideTex = new int[] { 0, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 2;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, {} };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 4 };
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("WaterGen", "machine", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion.WaterGen");

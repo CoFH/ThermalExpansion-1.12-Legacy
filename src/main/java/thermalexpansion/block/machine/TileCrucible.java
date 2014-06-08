@@ -30,15 +30,15 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 3;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, false };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 3;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, false };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParams(40, 400, 400000);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParams(40, 400, 400000);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Crucible", "machine", true);
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
@@ -271,8 +271,8 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon(
 					"MachineFace", getType());
 		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]) : isActive ? IconRegistry
-					.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon(
+					"MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
 		}
 	}
 

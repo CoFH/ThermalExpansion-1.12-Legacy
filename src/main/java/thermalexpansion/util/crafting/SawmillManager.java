@@ -2,6 +2,7 @@ package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStack;
+import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -13,6 +14,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
@@ -35,7 +37,7 @@ public class SawmillManager {
 		if (input == null) {
 			return null;
 		}
-		return recipeMap.get(query.set(input));
+		return recipeMap.get(new ComparableItemStackSawmill(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -272,7 +274,7 @@ public class SawmillManager {
 			if (!safeOreType(oreName)) {
 				return -1;
 			}
-			return OreDictionary.getOreID(oreName);
+			return OreDictionaryArbiter.getOreID(oreName);
 		}
 
 		public ComparableItemStackSawmill(ItemStack stack) {
@@ -281,9 +283,9 @@ public class SawmillManager {
 			oreID = getOreID(stack);
 		}
 
-		public ComparableItemStackSawmill(int itemID, int damage, int stackSize) {
+		public ComparableItemStackSawmill(Item item, int damage, int stackSize) {
 
-			super(itemID, damage, stackSize);
+			super(item, damage, stackSize);
 			this.oreID = getOreID(this.toItemStack());
 		}
 

@@ -30,15 +30,15 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		processItems[1] = new ItemStack(Blocks.snow);
 		processItems[2] = new ItemStack(Blocks.ice);
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 3;
-		sideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 3;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(20);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");

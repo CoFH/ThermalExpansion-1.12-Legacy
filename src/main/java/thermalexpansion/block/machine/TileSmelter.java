@@ -17,15 +17,15 @@ public class TileSmelter extends TileMachineEnergized {
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 7;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false, true, true };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true, true, true, false, false };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 7;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false, true, true };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, true, true, true, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(40);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Smelter", "machine", true);
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");

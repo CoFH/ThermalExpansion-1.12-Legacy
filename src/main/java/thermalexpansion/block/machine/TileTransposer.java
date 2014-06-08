@@ -32,15 +32,15 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 
 	public static void initialize() {
 
-		sideData[TYPE] = new SideConfig();
-		sideData[TYPE].numGroup = 5;
-		sideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, {}, { 1 } };
-		sideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		sideData[TYPE].allowExtraction = new boolean[] { false, false, true, false, true };
-		sideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideData[TYPE] = new SideConfig();
+		defaultSideData[TYPE].numGroup = 5;
+		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, {}, { 1 } };
+		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
+		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, false, true };
+		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 
-		energyData[TYPE] = new EnergyConfig();
-		energyData[TYPE].setParamsPower(40);
+		defaultEnergyData[TYPE] = new EnergyConfig();
+		defaultEnergyData[TYPE].setParamsPower(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Transposer", "machine", true);
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
@@ -619,8 +619,8 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon(
 					"MachineFace", getType());
 		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]) : isActive ? IconRegistry
-					.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon(
+					"MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
 		}
 	}
 

@@ -2,6 +2,7 @@ package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
+import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -140,7 +141,7 @@ public class FurnaceManager {
 	public static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
 		if (ItemHelper.oreNameExists(oreName)) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output, false);
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionaryArbiter.getOres(oreName).get(0), 1), output, false);
 		}
 	}
 

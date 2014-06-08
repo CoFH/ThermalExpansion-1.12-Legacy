@@ -123,20 +123,24 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
 							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
-							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
-								containerStack = null;
-							}
-							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 2))) {
+							if (containerStack == null) {
+								// this is absolutely stupid and nobody should ever make a container item where this gets called
+							} else {
+								if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
+									containerStack = null;
+								}
+								if (containerStack != null
+										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+												invCopy, containerStack, 2))) {
 
-								if (invCopy[j].stackSize <= 0) {
-									invCopy[j] = containerStack;
-									if (containerStack.stackSize <= 0) {
-										invCopy[j].stackSize = 1;
+									if (invCopy[j].stackSize <= 0) {
+										invCopy[j] = containerStack;
+										if (containerStack.stackSize <= 0) {
+											invCopy[j].stackSize = 1;
+										}
+									} else {
+										return false;
 									}
-								} else {
-									return false;
 								}
 							}
 						}

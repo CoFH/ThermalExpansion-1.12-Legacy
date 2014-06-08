@@ -35,7 +35,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		public int[] sideTex;
 	}
 
-	protected static final SideConfig[] sideData = new SideConfig[BlockMachine.Types.values().length];
+	protected static final SideConfig[] defaultSideData = new SideConfig[BlockMachine.Types.values().length];
 	protected static final int[] guiIds = new int[BlockMachine.Types.values().length];
 	protected static final int[] LIGHT_VALUE = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
 
@@ -44,13 +44,23 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	protected static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
 
+	SideConfig sideConfig;
 	TimeTracker tracker = new TimeTracker();
-	boolean wasActive;
 
+	boolean wasActive;
 	boolean upgradeAutoTransfer = true;
 
 	int processMax;
 	int processRem;
+
+	int processMod = 1;
+
+	public TileMachineBase() {
+
+		super();
+
+		sideConfig = defaultSideData[getType()];
+	}
 
 	public int getMaxInputSlot() {
 
@@ -88,6 +98,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		payload.addBool(isActive);
 		payload.addInt(processMax);
 		payload.addInt(processRem);
+
 		return payload;
 	}
 
@@ -96,6 +107,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
+
 		return payload;
 	}
 
@@ -104,6 +116,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
+
 		return payload;
 	}
 
@@ -203,7 +216,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	@Override
 	public int getNumConfig(int side) {
 
-		return sideData[getType()].numGroup;
+		return sideConfig.numGroup;
 	}
 
 	/* ISidedBlockTexture */
@@ -219,7 +232,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon(
 					"MachineFace", getType());
 		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideData[getType()].sideTex[sideCache[side]]);
+			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
 		return IconRegistry.getIcon("MachineSide");
 	}
@@ -228,19 +241,19 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return sideData[getType()].slotGroups[sideCache[side]];
+		return sideConfig.slotGroups[sideCache[side]];
 	}
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return sideData[getType()].allowInsertion[sideCache[side]] ? canAcceptItem(stack, slot, side) : false;
+		return sideConfig.allowInsertion[sideCache[side]] ? canAcceptItem(stack, slot, side) : false;
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return sideData[getType()].allowExtraction[sideCache[side]];
+		return sideConfig.allowExtraction[sideCache[side]];
 	}
 
 }
