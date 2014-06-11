@@ -8,6 +8,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -24,7 +26,7 @@ public class BlockRockwool extends Block implements IInitializer {
 
 	public BlockRockwool() {
 
-		super(ThermalExpansion.CLOTH_FIREPROOF);
+		super(new Material(MapColor.clothColor));
 		setHardness(0.8F);
 		setResistance(10.0F);
 		setStepSound(soundTypeCloth);

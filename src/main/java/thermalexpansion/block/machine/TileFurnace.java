@@ -37,6 +37,8 @@ public class TileFurnace extends TileMachineEnergized {
 
 		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 		inventory = new ItemStack[1 + 1 + 1];
+
+		processMod = 8;
 	}
 
 	@Override

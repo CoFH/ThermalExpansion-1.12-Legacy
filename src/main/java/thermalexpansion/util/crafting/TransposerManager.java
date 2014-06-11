@@ -21,7 +21,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.item.TEItems;
 import thermalfoundation.fluid.TFFluids;
 import thermalfoundation.item.TFItems;
 
@@ -103,7 +102,7 @@ public class TransposerManager {
 
 		addDefaultRecipes();
 
-		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(TEItems.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200),
+		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(TFItems.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200),
 				false);
 
 		for (FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {

@@ -8,6 +8,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -94,6 +95,19 @@ public class CrucibleManager {
 	public static void loadRecipes() {
 
 		addDefaultRecipes();
+	}
+
+	public static void refreshRecipes() {
+
+		TMap<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap(recipeMap.size());
+		RecipeCrucible tempRecipe;
+
+		for (Entry<ComparableItemStackSafe, RecipeCrucible> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
 	}
 
 	/* ADD RECIPES */

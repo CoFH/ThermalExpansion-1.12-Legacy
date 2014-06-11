@@ -29,7 +29,8 @@ public class TileLexicon extends TileReconfigurableInventory {
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.LEXICON.ordinal();
+		return 0;
+		// return BlockDevice.Types.LEXICON.ordinal();
 	}
 
 	@Override

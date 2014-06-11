@@ -121,6 +121,8 @@ public class ContainerWorkbench extends ContainerTEBase implements ISetSchematic
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
+		// System.out.println("called");
+
 		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, playerInv.player.worldObj));
 	}
 

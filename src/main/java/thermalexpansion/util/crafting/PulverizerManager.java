@@ -10,6 +10,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -26,7 +27,6 @@ public class PulverizerManager {
 	private static TMap<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap();
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
-	public static int secondaryWoolPercentages = 5;
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Pulverizer.AllowRecipeOverwrite", false);
@@ -63,6 +63,7 @@ public class PulverizerManager {
 		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "Pulverizer.BlizzRod", true);
 
 		int chanceCinnabar = (int) MathHelper.clip(ThermalExpansion.config.get(category, "Pulverizer.Cinnabar.Chance", 25), 1, 100);
+		int woolDyeChance = (int) MathHelper.clip(ThermalExpansion.config.get(category, "Pulverizer.Wool.Dye.Chance", 5), 0, 100);
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 10);
@@ -84,7 +85,7 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.emerald_ore), new ItemStack(Items.emerald, 2, 0));
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 8, 4));
-		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TEItems.crystalCinnabar, chanceCinnabar);
+		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, chanceCinnabar);
 		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 10);
 
 		for (int i = 0; i < 3; i++) {
@@ -99,9 +100,9 @@ public class PulverizerManager {
 
 		if (recipeCloth) {
 			ItemStack silkStack = new ItemStack(Items.string, 4);
-			if (secondaryWoolPercentages > 0) {
+			if (woolDyeChance > 0) {
 				for (int i = 1; i < 16; i++) {
-					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), silkStack, new ItemStack(Items.dye, 1, 15 - i), secondaryWoolPercentages);
+					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), silkStack, new ItemStack(Items.dye, 1, 15 - i), woolDyeChance);
 				}
 				addTERecipe(1600, new ItemStack(Blocks.wool, 1, 0), silkStack);
 			} else {
@@ -187,6 +188,19 @@ public class PulverizerManager {
 				addDefaultOreDictionaryRecipe(oreName);
 			}
 		}
+	}
+
+	public static void refreshRecipes() {
+
+		TMap<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap(recipeMap.size());
+		RecipePulverizer tempRecipe;
+
+		for (Entry<ComparableItemStackPulverizer, RecipePulverizer> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			tempMap.put(new ComparableItemStackPulverizer(tempRecipe.input), tempRecipe);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
 	}
 
 	/* ADD RECIPES */

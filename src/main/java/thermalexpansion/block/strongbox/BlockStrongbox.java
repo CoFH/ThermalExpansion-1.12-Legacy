@@ -2,7 +2,7 @@ package thermalexpansion.block.strongbox;
 
 import cofh.api.tileentity.ISecureTile;
 import cofh.util.CoreUtils;
-import cofh.util.UpgradeRecipe;
+import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.List;
@@ -158,15 +158,15 @@ public class BlockStrongbox extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', Blocks.chest }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
+			GameRegistry.addRecipe(new RecipeUpgrade(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y',
 					"ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(strongboxReinforced, new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "glassHardened" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced, new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "glassHardened" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));
 		}
 		return true;
 	}

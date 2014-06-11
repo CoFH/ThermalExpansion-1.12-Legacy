@@ -4,9 +4,9 @@ import cofh.api.tileentity.ISidedBlockTexture;
 import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
+import cofh.util.RecipeUpgrade;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
-import cofh.util.UpgradeRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,11 +94,13 @@ public class BlockCache extends BlockTEBase {
 				tile.toggleLock();
 				return true;
 			}
-			// for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			// if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
-			// player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
-			// }
-			// }
+			if (tile.getStoredItemType() != null) {
+				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+					if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+						player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+					}
+				}
+			}
 			return true;
 		}
 		ItemStack heldStack = player.getCurrentEquippedItem();
@@ -270,15 +272,15 @@ public class BlockCache extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(cacheBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', "logWood" }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
+			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
 			GameRegistry
 					.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "glassHardened" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "glassHardened" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(cacheResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cacheReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(cacheResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cacheReinforced }));
 		}
 		return true;
 	}

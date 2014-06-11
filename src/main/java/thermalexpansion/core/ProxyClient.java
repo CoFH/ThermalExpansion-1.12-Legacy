@@ -88,6 +88,8 @@ public class ProxyClient extends Proxy {
 		RenderTesseract.initialize();
 		RenderLamp.initialize();
 
+		RenderItemFlorb.initialize();
+
 		RenderEntityFlorb.initialize();
 	}
 

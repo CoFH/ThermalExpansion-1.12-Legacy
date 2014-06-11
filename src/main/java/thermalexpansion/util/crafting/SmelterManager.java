@@ -11,6 +11,7 @@ import gnu.trove.set.hash.THashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
@@ -40,6 +41,7 @@ public class SmelterManager {
 	static {
 		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Smelter.AllowRecipeOverwrite", false);
 
+		blastList.add("mithril");
 		blastList.add("enderium");
 
 		blastList.add("aluminum");
@@ -168,6 +170,27 @@ public class SmelterManager {
 		}
 	}
 
+	public static void refreshRecipes() {
+
+		TMap<List, RecipeSmelter> tempMap = new THashMap(recipeMap.size());
+		Set<ComparableItemStackSafe> tempSet = new THashSet();
+		RecipeSmelter tempRecipe;
+
+		for (Entry<List, RecipeSmelter> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			ComparableItemStackSafe primary = new ComparableItemStackSafe(tempRecipe.primaryInput);
+			ComparableItemStackSafe secondary = new ComparableItemStackSafe(tempRecipe.secondaryInput);
+
+			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
+			tempSet.add(primary);
+			tempSet.add(secondary);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
+		validationSet.clear();
+		validationSet = tempSet;
+	}
+
 	/* ADD RECIPES */
 	public static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
 			int secondaryChance) {
@@ -269,9 +292,9 @@ public class SmelterManager {
 			addRecipe(4000, ore, TFItems.dustPyrotheum, ingot2, TEItems.slagRich, Math.min(60, richSlagChance * 3));
 
 			if (ingotSecondary != null) {
-				addRecipe(4000, ore, TEItems.crystalCinnabar, ingot3, ingotSecondary, 100);
+				addRecipe(4000, ore, TFItems.crystalCinnabar, ingot3, ingotSecondary, 100);
 			} else {
-				addRecipe(4000, ore, TEItems.crystalCinnabar, ingot3, TEItems.slagRich, 75);
+				addRecipe(4000, ore, TFItems.crystalCinnabar, ingot3, TEItems.slagRich, 75);
 			}
 		}
 	}

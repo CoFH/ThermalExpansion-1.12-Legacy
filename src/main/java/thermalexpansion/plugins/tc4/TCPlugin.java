@@ -113,7 +113,7 @@ public class TCPlugin {
 			registerStack(TEItems.slagRich, new AspectList().add(Aspect.EARTH, 2).add(Aspect.ENTROPY, 2).add(Aspect.GREED, 2));
 			registerStack(TFItems.dustSulfur, new AspectList().add(Aspect.FIRE, 3).add(Aspect.EARTH, 1));
 			registerStack(TFItems.dustNiter, new AspectList().add(Aspect.EARTH, 1).add(Aspect.AIR, 3));
-			registerStack(TEItems.crystalCinnabar, new AspectList().add(Aspect.EARTH, 2).add(Aspect.EXCHANGE, 1).add(Aspect.POISON, 1));
+			registerStack(TFItems.crystalCinnabar, new AspectList().add(Aspect.EARTH, 2).add(Aspect.EXCHANGE, 1).add(Aspect.POISON, 1));
 			registerStack(TEItems.woodchips, new AspectList().add(Aspect.TREE, 1).add(Aspect.ENTROPY, 1));
 			registerStack(TEItems.sawdust, new AspectList().add(Aspect.TREE, 1).add(Aspect.ENTROPY, 1));
 			registerStack(TEItems.sawdustCompressed, new AspectList().add(Aspect.TREE, 3).add(Aspect.ENTROPY, 3));

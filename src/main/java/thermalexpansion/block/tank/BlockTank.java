@@ -4,8 +4,8 @@ import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
 import cofh.util.FluidHelper;
 import cofh.util.ItemHelper;
+import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
-import cofh.util.UpgradeRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -219,15 +219,15 @@ public class BlockTank extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(tankBasic, new Object[] { " G ", "GXG", " G ", 'G', "blockGlass", 'X', "ingotCopper" }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', tankBasic }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', tankBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'X', "ingotCopper", 'G',
 					"blockGlass" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "glassHardened", 'X', tankHardened }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "glassHardened", 'X', tankHardened }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(tankResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', tankReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', tankReinforced }));
 		}
 		return true;
 	}

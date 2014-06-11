@@ -8,6 +8,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -88,6 +89,19 @@ public class SawmillManager {
 				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3));
 			}
 		}
+	}
+
+	public static void refreshRecipes() {
+
+		TMap<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap(recipeMap.size());
+		RecipeSawmill tempRecipe;
+
+		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			tempMap.put(new ComparableItemStackSawmill(tempRecipe.input), tempRecipe);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
 	}
 
 	/* ADD RECIPES */

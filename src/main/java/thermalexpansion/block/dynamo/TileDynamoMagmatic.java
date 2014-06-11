@@ -75,10 +75,10 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public void generate() {
 
 		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy(tank.getFluid());
+			fuelRF += getFuelEnergy(tank.getFluid()) * fuelMod / 100;
 			tank.drain(10, true);
 		}
-		int energy = calcEnergy();
+		int energy = calcEnergy() * energyMod;
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 	}

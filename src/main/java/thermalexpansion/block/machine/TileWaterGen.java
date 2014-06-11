@@ -40,7 +40,8 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 	public static int genRate = 25 * CoFHProps.TIME_CONSTANT;
 	public static int transferRate = genRate / CoFHProps.TIME_CONSTANT;
-	public static boolean passiveGen = true;
+	public static boolean passiveGen = false;
+
 	public static FluidStack genStack;
 	public static FluidStack genStackSmall = new FluidStack(FluidRegistry.WATER, 1);
 	public static FluidStack genStackSnow = new FluidStack(FluidRegistry.WATER, 125);
@@ -50,13 +51,13 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 		if (rate > 0 && rate <= 50) {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
-			transferRate = genRate / CoFHProps.TIME_CONSTANT;
+			transferRate = rate;
 		} else {
 			ThermalExpansion.log.info("'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
 		ThermalExpansion.config.removeProperty("tweak", "WaterGen.PassiveGen");
-		// passiveGen = ThermalExpansion.config.get("tweak", "WaterGen.PassiveGen", true);
+		passiveGen = ThermalExpansion.config.get("tweak", "WaterGen.PassiveGen", false);
 	}
 
 	FluidTank tank = new FluidTank(MAX_FLUID_SMALL);

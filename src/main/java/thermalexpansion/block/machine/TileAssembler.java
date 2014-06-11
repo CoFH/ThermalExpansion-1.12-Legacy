@@ -56,6 +56,10 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	InventoryCrafting tempCraft = new InventoryCraftingFalse(3, 3);
 
+	ItemStack[] recipeSlot = new ItemStack[9];
+	String[] recipeOre = new String[9];
+	FluidStack[] filledContainer = new FluidStack[9];
+
 	public TileAssembler() {
 
 		super();
@@ -81,10 +85,6 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 		return recipe != null
 				&& (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
 	}
-
-	ItemStack[] recipeSlot = new ItemStack[9];
-	String[] recipeOre = new String[9];
-	FluidStack[] filledContainer = new FluidStack[9];
 
 	public void updateOutput() {
 

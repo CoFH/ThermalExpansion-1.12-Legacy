@@ -181,13 +181,6 @@ item.thermalexpansion.armor.invarPlate.name=Invar Armor
 item.thermalexpansion.armor.invarLegs.name=Invar Leggings
 item.thermalexpansion.armor.invarBoots.name=Invar Boots
 
-item.thermalexpansion.bucket.bucketRedstone.name=Destabilized Redstone Bucket
-item.thermalexpansion.bucket.bucketGlowstone.name=Energized Glowstone Bucket
-item.thermalexpansion.bucket.bucketEnder.name=Resonant Ender Bucket
-item.thermalexpansion.bucket.bucketPyrotheum.name=Blazing Pyrotheum Bucket
-item.thermalexpansion.bucket.bucketCryotheum.name=Gelid Cryotheum Bucket
-item.thermalexpansion.bucket.bucketCoal.name=Liquifacted Coal Bucket
-
 item.thermalexpansion.capacitor.capacitorPotato.name=Tuberous Flux Capacitor
 item.thermalexpansion.capacitor.capacitorBasic.name=Leadstone Flux Capacitor
 item.thermalexpansion.capacitor.capacitorHardened.name=Hardened Flux Capacitor
@@ -209,70 +202,16 @@ item.thermalexpansion.component.tesseractFrameEmpty.name=Tesseract Frame (Empty)
 item.thermalexpansion.component.tesseractFrameFull.name=Tesseract Frame (Full)
 item.thermalexpansion.component.lampFrame.name=Illuminator Frame
 
-item.thermalexpansion.material.dustIron.name=Pulverized Iron
-item.thermalexpansion.material.dustGold.name=Pulverized Gold
-item.thermalexpansion.material.dustCoal.name=Pulverized Coal
-item.thermalexpansion.material.dustObsidian.name=Pulverized Obsidian
-
-item.thermalexpansion.material.dustCopper.name=Pulverized Copper
-item.thermalexpansion.material.dustTin.name=Pulverized Tin
-item.thermalexpansion.material.dustSilver.name=Pulverized Silver
-item.thermalexpansion.material.dustLead.name=Pulverized Lead
-item.thermalexpansion.material.dustNickel.name=Pulverized Ferrous Metal
-item.thermalexpansion.material.dustPlatinum.name=Pulverized Shiny Metal
-item.thermalexpansion.material.dustElectrum.name=Electrum Blend
-item.thermalexpansion.material.dustInvar.name=Invar Blend
-item.thermalexpansion.material.dustBronze.name=Tinker's Alloy Blend
-item.thermalexpansion.material.dustEnderium.name=Enderium Blend
-
-item.thermalexpansion.material.ingotCopper.name=Copper Ingot
-item.thermalexpansion.material.ingotTin.name=Tin Ingot
-item.thermalexpansion.material.ingotSilver.name=Silver Ingot
-item.thermalexpansion.material.ingotLead.name=Lead Ingot
-item.thermalexpansion.material.ingotNickel.name=Ferrous Ingot
-item.thermalexpansion.material.ingotPlatinum.name=Shiny Ingot
-item.thermalexpansion.material.ingotElectrum.name=Electrum Ingot
-item.thermalexpansion.material.ingotInvar.name=Invar Ingot
-item.thermalexpansion.material.ingotBronze.name=Tinker's Alloy Ingot
-item.thermalexpansion.material.ingotEnderium.name=Enderium Ingot
-
-item.thermalexpansion.material.nuggetCopper.name=Copper Nugget
-item.thermalexpansion.material.nuggetTin.name=Tin Nugget
-item.thermalexpansion.material.nuggetSilver.name=Silver Nugget
-item.thermalexpansion.material.nuggetLead.name=Lead Nugget
-item.thermalexpansion.material.nuggetNickel.name=Ferrous Nugget
-item.thermalexpansion.material.nuggetPlatinum.name=Shiny Nugget
-item.thermalexpansion.material.nuggetElectrum.name=Electrum Nugget
-item.thermalexpansion.material.nuggetInvar.name=Invar Nugget
-item.thermalexpansion.material.nuggetBronze.name=Tinker's Alloy Nugget
-item.thermalexpansion.material.nuggetEnderium.name=Enderium Nugget
-
-item.thermalexpansion.material.dustSulfur.name=Sulfur
-item.thermalexpansion.material.dustNiter.name=Niter
-item.thermalexpansion.material.crystalCinnabar.name=Cinnabar
-
 item.thermalexpansion.material.woodchips.name=Wood Chips
 item.thermalexpansion.material.sawdust.name=Sawdust
 item.thermalexpansion.material.sawdustCompressed.name=Compressed Sawdust
 item.thermalexpansion.material.slag.name=Slag
 item.thermalexpansion.material.slagRich.name=Rich Slag
-item.thermalexpansion.material.dustPyrotheum.name=Pyrotheum Dust
-item.thermalexpansion.material.dustCryotheum.name=Cryotheum Dust
 
 item.thermalexpansion.material.pneumaticServo.name=Pneumatic Servo
 item.thermalexpansion.material.powerCoilGold.name=Redstone Reception Coil
 item.thermalexpansion.material.powerCoilSilver.name=Redstone Transmission Coil
 item.thermalexpansion.material.powerCoilElectrum.name=Redstone Conductance Coil
-
-item.thermalexpansion.material.gearCopper.name=Copper Gear
-item.thermalexpansion.material.gearTin.name=Tin Gear
-item.thermalexpansion.material.gearElectrum.name=Electrum Gear
-item.thermalexpansion.material.gearInvar.name=Invar Gear
-item.thermalexpansion.material.gearBronze.name=Tinker's Alloy Gear
-item.thermalexpansion.material.gearEnderium.name=Enderium Gear
-
-item.thermalexpansion.material.rodBlizz.name=Blizz Rod
-item.thermalexpansion.material.dustBlizz.name=Blizz Powder
 
 itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blocks
 itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Tools

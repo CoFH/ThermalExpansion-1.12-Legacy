@@ -24,8 +24,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import java.io.File;
 import java.lang.reflect.Field;
 
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
@@ -39,7 +37,6 @@ import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.core.Proxy;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.entity.TEPlayerTracker;
 import thermalexpansion.gui.CreativeTabBlocks;
 import thermalexpansion.gui.CreativeTabFlorbs;
 import thermalexpansion.gui.CreativeTabItems;
@@ -48,7 +45,7 @@ import thermalexpansion.item.TEItems;
 import thermalexpansion.network.GenericTEPacket;
 import thermalexpansion.network.GenericTEPacket.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
-import thermalexpansion.util.GenericEventHandler;
+import thermalexpansion.util.FMLEventHandler;
 import thermalexpansion.util.IMCHandler;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.ExtruderManager;
@@ -86,9 +83,6 @@ public class ThermalExpansion extends BaseMod {
 	public static final CreativeTabs tabTools = new CreativeTabTools();
 	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
 
-	public static final Material CLOTH_FIREPROOF = new Material(MapColor.clothColor);
-	public static final Material WOOD_FIREPROOF = new Material(MapColor.woodColor);
-
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
 
@@ -100,9 +94,8 @@ public class ThermalExpansion extends BaseMod {
 
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
 
-		GenericEventHandler.initialize();
+		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
-		TEPlayerTracker.initialize();
 
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
@@ -131,9 +124,6 @@ public class ThermalExpansion extends BaseMod {
 		category = "tweak";
 		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
 
-		comment = "Set this to 0 to disable getting dye from wools. Acceptable Ranges: 0-100. This is the percentage chance that you will get a dye as a secondary output on the pulverizer.";
-		PulverizerManager.secondaryWoolPercentages = config.get(category, "WoolColorChances", PulverizerManager.secondaryWoolPercentages, comment);
-
 		category = "holiday";
 		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
 		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
@@ -152,12 +142,6 @@ public class ThermalExpansion extends BaseMod {
 		} else {
 			log.info("'LavaRFValue' config value is out of acceptable range. Using default.");
 		}
-		if (PulverizerManager.secondaryWoolPercentages < 0 || PulverizerManager.secondaryWoolPercentages > 100) {
-			PulverizerManager.secondaryWoolPercentages = 25;
-			log.info("'WoolColorChances' config value is out of acceptable range. Using default. Must be 0-100.");
-		}
-
-		TEPlayerTracker.initialize();
 	}
 
 	@EventHandler

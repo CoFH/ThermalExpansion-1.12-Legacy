@@ -2,14 +2,13 @@ package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.util.ItemHelper;
-import cofh.util.UpgradeRecipe;
+import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
-import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -26,7 +25,7 @@ public class TEItems {
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
-		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
+		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
 		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component")
 				.setCreativeTab(ThermalExpansion.tabItems);
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
@@ -54,23 +53,18 @@ public class TEItems {
 		/* Diagram */
 		diagramSchematic = itemDiagram.addItem(SCHEMATIC_ID, "schematic");
 
-		/* Minerals */
-		crystalCinnabar = itemMaterial.addItem(130, "crystalCinnabar");
+		/* Parts */
+		pneumaticServo = itemMaterial.addItem(0, "pneumaticServo");
+		powerCoilGold = itemMaterial.addItem(1, "powerCoilGold");
+		powerCoilSilver = itemMaterial.addItem(2, "powerCoilSilver");
+		powerCoilElectrum = itemMaterial.addItem(3, "powerCoilElectrum");
 
 		/* Process Items */
-		woodchips = itemMaterial.addItem(160, "woodchips");
-		sawdust = itemMaterial.addItem(161, "sawdust");
-		sawdustCompressed = itemMaterial.addItem(162, "sawdustCompressed");
-		slag = itemMaterial.addItem(163, "slag");
-		slagRich = itemMaterial.addItem(164, "slagRich");
-
-		/* Parts */
-		pneumaticServo = itemMaterial.addItem(192, "pneumaticServo");
-		powerCoilGold = itemMaterial.addItem(193, "powerCoilGold");
-		powerCoilSilver = itemMaterial.addItem(194, "powerCoilSilver");
-		powerCoilElectrum = itemMaterial.addItem(195, "powerCoilElectrum");
-
-		OreDictionary.registerOre("crystalCinnabar", crystalCinnabar);
+		woodchips = itemMaterial.addItem(512, "woodchips");
+		sawdust = itemMaterial.addItem(513, "sawdust");
+		sawdustCompressed = itemMaterial.addItem(514, "sawdustCompressed");
+		slag = itemMaterial.addItem(515, "slag");
+		slagRich = itemMaterial.addItem(516, "slagRich");
 
 		TEEquipment.initialize();
 		TEFlorbs.initialize();
@@ -87,11 +81,11 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, Items.redstone, "nuggetLead" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', Items.redstone, 'X',
 				"ingotCopper", 'Y', "dustSulfur" }));
-		GameRegistry.addRecipe(new UpgradeRecipe(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', Items.redstone, 'X',
 				capacitorBasic, 'Y', "ingotTin" }));
-		GameRegistry.addRecipe(new UpgradeRecipe(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', Items.redstone, 'X',
 				capacitorHardened, 'Y', Items.diamond }));
-		GameRegistry.addRecipe(new UpgradeRecipe(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', Items.redstone, 'X',
 				capacitorReinforced, 'Y', TFItems.dustPyrotheum }));
 
 		/* Diagrams */
@@ -161,6 +155,7 @@ public class TEItems {
 	public static ItemStack toolWrench;
 	public static ItemStack toolMultimeter;
 	public static ItemStack toolDebugger;
+
 	public static ItemStack diagramSchematic;
 
 	public static ItemStack capacitorPotato;
@@ -170,17 +165,15 @@ public class TEItems {
 	public static ItemStack capacitorResonant;
 	public static ItemStack capacitorCreative;
 
-	public static ItemStack crystalCinnabar;
+	public static ItemStack pneumaticServo;
+	public static ItemStack powerCoilGold;
+	public static ItemStack powerCoilSilver;
+	public static ItemStack powerCoilElectrum;
 
 	public static ItemStack woodchips;
 	public static ItemStack sawdust;
 	public static ItemStack sawdustCompressed;
 	public static ItemStack slag;
 	public static ItemStack slagRich;
-
-	public static ItemStack pneumaticServo;
-	public static ItemStack powerCoilGold;
-	public static ItemStack powerCoilSilver;
-	public static ItemStack powerCoilElectrum;
 
 }

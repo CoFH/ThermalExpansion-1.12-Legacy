@@ -287,12 +287,12 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	protected void processContainerItem() {
 
 		if (isActive) {
-			int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy());
+			int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy() * energyMod);
 
 			if (!reverse) {
-				updateContainerFill(energy);
+				updateContainerFill(energy * processMod);
 			} else {
-				updateContainerEmpty(energy);
+				updateContainerEmpty(energy * processMod);
 			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;

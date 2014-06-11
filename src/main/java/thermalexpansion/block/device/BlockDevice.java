@@ -3,8 +3,8 @@ package thermalexpansion.block.device;
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.tileentity.ISidedBlockTexture;
 import cofh.render.IconRegistry;
+import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
-import cofh.util.UpgradeRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -253,7 +253,7 @@ public class BlockDevice extends BlockTEBase {
 			pickaxe = TEEquipment.toolInvarPickaxe;
 		}
 		if (enable[Types.WORKBENCH.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
+			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
 					BlockStrongbox.strongboxBasic, 'X', Items.paper }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] { "YXY", "ICI", "YPY", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
 					Blocks.chest, 'X', Items.paper, 'Y', "ingotTin" }));
@@ -274,7 +274,7 @@ public class BlockDevice extends BlockTEBase {
 	}
 
 	public static enum Types {
-		WORKBENCH, PLACE_HOLDER, ACTIVATOR, BREAKER, NULLIFIER, LEXICON
+		WORKBENCH, PLACE_HOLDER, ACTIVATOR, BREAKER, NULLIFIER
 	}
 
 	public static String[] NAMES = { "workbench", "PLACE_HOLDER", "activator", "breaker", "nullifier", "lexicon" };

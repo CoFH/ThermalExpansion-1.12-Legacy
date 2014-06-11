@@ -101,7 +101,7 @@ public class TEPlugins {
 		}
 	}
 
-	public static void cleanup() {
+	public static void cleanUp() {
 
 		pluginList.clear();
 	}
@@ -110,6 +110,7 @@ public class TEPlugins {
 
 		boolean enable = ThermalExpansion.config.get("plugins", pluginName, true);
 		ThermalExpansion.config.save();
+
 		if (enable) {
 			pluginList.add(new Plugin(pluginPath));
 			return true;

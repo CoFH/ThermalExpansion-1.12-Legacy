@@ -325,7 +325,7 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 	@Override
 	public int getInfoEnergyPerTick() {
 
-		return calcEnergy();
+		return calcEnergy() * energyMod;
 	}
 
 	@Override

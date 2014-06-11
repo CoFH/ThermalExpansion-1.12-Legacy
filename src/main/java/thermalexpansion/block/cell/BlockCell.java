@@ -5,7 +5,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
-import cofh.util.UpgradeRecipe;
+import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -256,7 +256,7 @@ public class BlockCell extends BlockTEBase {
 			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }));
+			GameRegistry.addRecipe(new RecipeUpgrade(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', cellBasicFrame, 'Y',
 					"ingotCopper", 'P', TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
@@ -266,7 +266,7 @@ public class BlockCell extends BlockTEBase {
 					TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new UpgradeRecipe(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
 				Blocks.redstone_block }));

@@ -2,6 +2,9 @@ package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -17,32 +20,23 @@ import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalfoundation.item.TFItems;
 
-//TODO: ICraftingHandler was removed and does not catch crafting anymore. Need to find an alternative solution for this.
 public class TECraftingHandler {
 
 	public static TECraftingHandler instance = new TECraftingHandler();
 
-	// public static Map<ItemStack, ItemStack> pyrotheumMap = new HashMap();
-
 	public static void initialize() {
 
-		// GameRegistry.registerCraftingHandler(instance);
+		FMLCommonHandler.instance().bus().register(instance);
 	}
 
-	// @Override
-	// public void onCrafting(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
-	//
-	// if (stack == null) {
-	// return;
-	// }
-	// checkAchievements(player, stack, craftMatrix);
-	//
-	// }
-	//
-	// @Override
-	// public void onSmelting(EntityPlayer player, ItemStack stack) {
-	//
-	// }
+	@SubscribeEvent
+	public void handleOnItemCrafted(PlayerEvent.ItemCraftedEvent event) {
+
+		if (event.crafting == null) {
+			return;
+		}
+		checkAchievements(event.player, event.crafting, event.craftMatrix);
+	}
 
 	private void checkAchievements(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
 
@@ -95,7 +89,6 @@ public class TECraftingHandler {
 					continue;
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
-				// pyrotheumMap.put(registeredOre.get(0), ingot);
 				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, TFItems.dustPyrotheum }));
 			}
 		}

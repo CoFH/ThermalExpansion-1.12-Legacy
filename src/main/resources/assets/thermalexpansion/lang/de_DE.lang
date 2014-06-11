@@ -180,13 +180,6 @@ item.thermalexpansion.armor.invarPlate.name=Invarbrustpanzer
 item.thermalexpansion.armor.invarLegs.name=Invarbeinschutz
 item.thermalexpansion.armor.invarBoots.name=Invarstiefel
 
-item.thermalexpansion.bucket.bucketRedstone.name=Eimer mit Destabilisiertem Redstone
-item.thermalexpansion.bucket.bucketGlowstone.name=Eimer mit Energetisiertem Glowstone
-item.thermalexpansion.bucket.bucketEnder.name=Eimer mit Resonantem Ender
-item.thermalexpansion.bucket.bucketPyrotheum.name=Eimer mit Flammendem Pyrotheum
-item.thermalexpansion.bucket.bucketCryotheum.name=Eimer mit Gelenem Kryotheum
-item.thermalexpansion.bucket.bucketCoal.name=Eimer mit Verflüssigter Kohle
-
 item.thermalexpansion.capacitor.capacitorPotato.name=Knolliger Fluxkompensator
 item.thermalexpansion.capacitor.capacitorBasic.name=Fluxkompensator
 item.thermalexpansion.capacitor.capacitorHardened.name=Gehärteter Fluxkompensator
@@ -208,48 +201,6 @@ item.thermalexpansion.component.tesseractFrameEmpty.name=Tesseraktrahmen (Leer)
 item.thermalexpansion.component.tesseractFrameFull.name=Tesseraktrahmen (Voll)
 item.thermalexpansion.component.lampFrame.name=Illuminatorrahmen
 
-item.thermalexpansion.material.dustIron.name=Pulverisiertes Eisen
-item.thermalexpansion.material.dustGold.name=Pulverisiertes Gold
-item.thermalexpansion.material.dustCoal.name=Pulverisierte Kohle
-item.thermalexpansion.material.dustObsidian.name=Pulverisiertes Obsidian
-
-item.thermalexpansion.material.dustCopper.name=Pulverisiertes Kupfer
-item.thermalexpansion.material.dustTin.name=Pulverisiertes Zinn
-item.thermalexpansion.material.dustSilver.name=Pulverisiertes Silber
-item.thermalexpansion.material.dustLead.name=Pulverisiertes Blei
-item.thermalexpansion.material.dustNickel.name=Pulverisiertes Ferröses Metall
-item.thermalexpansion.material.dustPlatinum.name=Pulverisiertes Schillerndes Metall
-item.thermalexpansion.material.dustElectrum.name=Elektrummischung
-item.thermalexpansion.material.dustInvar.name=Invarmischung
-item.thermalexpansion.material.dustBronze.name=Bastler-Legierungsmischung
-item.thermalexpansion.material.dustEnderium.name=Enderiummischung
-
-item.thermalexpansion.material.ingotCopper.name=Kupferbarren
-item.thermalexpansion.material.ingotTin.name=Zinnbarren
-item.thermalexpansion.material.ingotSilver.name=Silberbarren
-item.thermalexpansion.material.ingotLead.name=Bleibarren
-item.thermalexpansion.material.ingotNickel.name=Ferröser Barren
-item.thermalexpansion.material.ingotPlatinum.name=Schillernder Barren
-item.thermalexpansion.material.ingotElectrum.name=Elektrumbarren
-item.thermalexpansion.material.ingotInvar.name=Invarbarren
-item.thermalexpansion.material.ingotBronze.name=Bastler-Legierungsbarren
-item.thermalexpansion.material.ingotEnderium.name=Enderiumbarren
-
-item.thermalexpansion.material.nuggetCopper.name=Kupfernugget
-item.thermalexpansion.material.nuggetTin.name=Zinnnugget
-item.thermalexpansion.material.nuggetSilver.name=Silbernugget
-item.thermalexpansion.material.nuggetLead.name=Bleinugget
-item.thermalexpansion.material.nuggetNickel.name=Ferröser Nugget
-item.thermalexpansion.material.nuggetPlatinum.name=Schillerndes Nugget
-item.thermalexpansion.material.nuggetElectrum.name=Elektrumnugget
-item.thermalexpansion.material.nuggetInvar.name=Invarnugget
-item.thermalexpansion.material.nuggetBronze.name=Bastler-Legierungsnugget
-item.thermalexpansion.material.nuggetEnderium.name=Enderiumnugget
-
-item.thermalexpansion.material.dustSulfur.name=Schwefel
-item.thermalexpansion.material.dustNiter.name=Salpeter
-item.thermalexpansion.material.crystalCinnabar.name=Zinnober
-
 item.thermalexpansion.material.woodchips.name=Holzspäne
 item.thermalexpansion.material.sawdust.name=Sägemehl
 item.thermalexpansion.material.sawdustCompressed.name=Gepresstes Sägemehl
@@ -262,16 +213,6 @@ item.thermalexpansion.material.pneumaticServo.name=Pneumatischer Servo
 item.thermalexpansion.material.powerCoilGold.name=Redstone-Rezeptionsspule
 item.thermalexpansion.material.powerCoilSilver.name=Redstone-Transmissionsspule
 item.thermalexpansion.material.powerCoilElectrum.name=Redstone-Leitspule
-
-item.thermalexpansion.material.gearCopper.name=Kupferzahnrad
-item.thermalexpansion.material.gearTin.name=Zinnzahnrad
-item.thermalexpansion.material.gearElectrum.name=Elektrumzahnrad
-item.thermalexpansion.material.gearInvar.name=Invarzahnrad
-item.thermalexpansion.material.gearBronze.name=Bastler-Legierungszahnrad
-item.thermalexpansion.material.gearEnderium.name=Enderiumzahnrad
-
-item.thermalexpansion.material.rodBlizz.name=Blizzrute
-item.thermalexpansion.material.dustBlizz.name=Blizzstaub
 
 itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blöcke
 itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Werkzeug

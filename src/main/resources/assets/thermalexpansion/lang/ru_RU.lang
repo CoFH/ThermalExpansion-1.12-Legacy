@@ -208,48 +208,6 @@ item.thermalexpansion.component.tesseractFrameEmpty.name=Рамка тессер
 item.thermalexpansion.component.tesseractFrameFull.name=Рамка тессеракта (Полная)
 item.thermalexpansion.component.lampFrame.name=Рамка светильника
 
-item.thermalexpansion.material.dustIron.name=Измельчённое железо
-item.thermalexpansion.material.dustGold.name=Измельчённое золото
-item.thermalexpansion.material.dustCoal.name=Измельчённый уголь
-item.thermalexpansion.material.dustObsidian.name=Измельчённый обсидиан
-
-item.thermalexpansion.material.dustCopper.name=Измельчённая медь
-item.thermalexpansion.material.dustTin.name=Измельчённое олово
-item.thermalexpansion.material.dustSilver.name=Измельчённое серебро
-item.thermalexpansion.material.dustLead.name=Измельчённый свинец
-item.thermalexpansion.material.dustNickel.name=Измельчённый никель
-item.thermalexpansion.material.dustPlatinum.name=Измельчённая платина
-item.thermalexpansion.material.dustElectrum.name=Электрумовая смесь
-item.thermalexpansion.material.dustInvar.name=Инваровая смесь
-item.thermalexpansion.material.dustBronze.name=Смесь сплава лудильщика
-item.thermalexpansion.material.dustEnderium.name=Смесь эндриума
-
-item.thermalexpansion.material.ingotCopper.name=Медный слиток
-item.thermalexpansion.material.ingotTin.name=Оловянный слиток
-item.thermalexpansion.material.ingotSilver.name=Серебряный слиток
-item.thermalexpansion.material.ingotLead.name=Свинцовый слиток
-item.thermalexpansion.material.ingotNickel.name=Никелевый слиток
-item.thermalexpansion.material.ingotPlatinum.name=Платиновый слиток
-item.thermalexpansion.material.ingotElectrum.name=Электрумовый слиток
-item.thermalexpansion.material.ingotInvar.name=Инваровый слиток
-item.thermalexpansion.material.ingotBronze.name=Слиток сплава лудильщика
-item.thermalexpansion.material.ingotEnderium.name=Слиток эндриума
-
-item.thermalexpansion.material.nuggetCopper.name=Медный самородок
-item.thermalexpansion.material.nuggetTin.name=Оловянный самородок
-item.thermalexpansion.material.nuggetSilver.name=Серебряный самородок
-item.thermalexpansion.material.nuggetLead.name=Свинцовый самородок
-item.thermalexpansion.material.nuggetNickel.name=Никелевый самородок
-item.thermalexpansion.material.nuggetPlatinum.name=Платиновый самородок
-item.thermalexpansion.material.nuggetElectrum.name=Электрумовый самородок
-item.thermalexpansion.material.nuggetInvar.name=Инваровый самородок
-item.thermalexpansion.material.nuggetBronze.name=Самородок сплава лудильщика
-item.thermalexpansion.material.nuggetEnderium.name=Самородок эндриума
-
-item.thermalexpansion.material.dustSulfur.name=Сера
-item.thermalexpansion.material.dustNiter.name=Селитра
-item.thermalexpansion.material.crystalCinnabar.name=Киноварь
-
 item.thermalexpansion.material.woodchips.name=Древесная щепа
 item.thermalexpansion.material.sawdust.name=Опилки
 item.thermalexpansion.material.sawdustCompressed.name=Прессованные опилки
@@ -262,16 +220,6 @@ item.thermalexpansion.material.pneumaticServo.name=Пневматический 
 item.thermalexpansion.material.powerCoilGold.name=Красная принимающая катушка
 item.thermalexpansion.material.powerCoilSilver.name=Красная отдающая катушка
 item.thermalexpansion.material.powerCoilElectrum.name=Красная проводящая катушка
-
-item.thermalexpansion.material.gearCopper.name=Медная шестерня
-item.thermalexpansion.material.gearTin.name=Оловянная шестерня
-item.thermalexpansion.material.gearElectrum.name=Шестерня из электрума
-item.thermalexpansion.material.gearInvar.name=Инваровая шестерня
-item.thermalexpansion.material.gearBronze.name=Шестерня из сплава лудильщика
-item.thermalexpansion.material.gearEnderium.name=Шестерня из эндриума
-
-item.thermalexpansion.material.rodBlizz.name=Blizz Rod
-item.thermalexpansion.material.dustBlizz.name=Blizz Powder
 
 itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Блоки
 itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Инструменты
@@ -399,8 +347,3 @@ tile.thermalexpansion.tank.reinforced.name=Укреплённая перенос
 tile.thermalexpansion.tank.resonant.name=Резонирующая переносная цистерна
 
 tile.thermalexpansion.tesseract.name=Тессеракт
-
-fluid.tile.water=Вода
-fluid.tile.lava=Лава
-fluid.fuel=Топливо
-fluid.oil=Нефть

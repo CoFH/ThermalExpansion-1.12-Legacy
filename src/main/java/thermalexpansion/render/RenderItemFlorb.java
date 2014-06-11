@@ -5,6 +5,7 @@ import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -13,6 +14,17 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderItemFlorb implements IItemRenderer {
 
+	static IIcon[] florbs = new IIcon[2];
+	static IIcon mask;
+
+	public static void initialize() {
+
+		florbs[0] = IconRegistry.getIcon("Florb");
+		florbs[1] = IconRegistry.getIcon("FlorbMagmatic");
+		mask = IconRegistry.getIcon("FlorbMask");
+	}
+
+	/* IItemRenderer */
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 
@@ -47,22 +59,22 @@ public class RenderItemFlorb implements IItemRenderer {
 
 			if (fluid != null) {
 				RenderHelper.setItemTextureSheet();
-				RenderUtils.renderMask(IconRegistry.getIcon("FlorbMask"), fluid.getIcon(), null, type);
+				RenderUtils.renderMask(mask, fluid.getIcon(), null, type);
 			}
 		}
 		RenderHelper.setItemTextureSheet();
 
 		if (!type.equals(ItemRenderType.INVENTORY)) {
 			if (item.getItemDamage() == 1) {
-				RenderHelper.renderItemIn2D(IconRegistry.getIcon("FlorbMagmatic"));
+				RenderHelper.renderItemIn2D(florbs[1]);
 			} else {
-				RenderHelper.renderItemIn2D(IconRegistry.getIcon("Florb"));
+				RenderHelper.renderItemIn2D(florbs[0]);
 			}
 		} else {
 			if (item.getItemDamage() == 1) {
-				RenderHelper.renderIcon(IconRegistry.getIcon("FlorbMagmatic"), 4);
+				RenderHelper.renderIcon(florbs[1], 4);
 			} else {
-				RenderHelper.renderIcon(IconRegistry.getIcon("Florb"), 4);
+				RenderHelper.renderIcon(florbs[0], 4);
 			}
 		}
 		RenderUtils.postItemRender();

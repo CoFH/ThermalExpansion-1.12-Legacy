@@ -107,14 +107,14 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	protected void generate() {
 
 		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(fuelTank.getFluid());
+			fuelRF = getFuelEnergy(fuelTank.getFluid()) * fuelMod / 100;
 			fuelTank.drain(10, true);
 		}
 		if (coolantRF <= 0) {
-			coolantRF = getCoolantEnergy(coolantTank.getFluid());
+			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * fuelMod / 100;
 			coolantTank.drain(10, true);
 		}
-		int energy = calcEnergy();
+		int energy = calcEnergy() * energyMod;
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 		coolantRF -= energy;

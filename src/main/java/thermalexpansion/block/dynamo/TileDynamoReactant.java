@@ -130,16 +130,16 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		int energy;
 
 		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(tank.getFluid());
+			fuelRF = getFuelEnergy(tank.getFluid()) * fuelMod / 100;
 			tank.drain(10, true);
 		}
 		if (reactantRF <= 0) {
-			energy = getItemEnergyValue(inventory[0]);
+			energy = getItemEnergyValue(inventory[0]) * fuelMod / 100;
 			reactantRF += energy;
 			currentReactantRF = energy;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
-		energy = calcEnergy();
+		energy = calcEnergy() * energyMod;
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 		reactantRF -= energy;

@@ -33,21 +33,15 @@ import thermalexpansion.core.TEProps;
 public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
 		IEnergyInfo {
 
-	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
-
-	protected static final DynamoConfig defaultConfig = new DynamoConfig();
-	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
-	protected static final int[] SLOTS = { 0 };
-
 	public static class DynamoConfig {
 
-		public int minPower;
-		public int maxPower;
-		public int maxEnergy;
-		public int maxTransfer;
-		public int minPowerLevel;
-		public int maxPowerLevel;
-		public int energyRamp;
+		public int minPower = 4;
+		public int maxPower = 80;
+		public int maxEnergy = 40000;
+		public int maxTransfer = 160;
+		public int minPowerLevel = 9 * maxEnergy / 10;
+		public int maxPowerLevel = 1 * maxEnergy / 10;
+		public int energyRamp = minPowerLevel / maxPower;
 
 		public DynamoConfig() {
 
@@ -70,17 +64,13 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		}
 	}
 
-	static {
-		defaultConfig.minPower = 4;
-		defaultConfig.maxPower = 80;
-		defaultConfig.maxEnergy = 40000;
-		defaultConfig.maxTransfer = 160;
-		defaultConfig.minPowerLevel = 9 * defaultConfig.maxEnergy / 10;
-		defaultConfig.maxPowerLevel = 1 * defaultConfig.maxEnergy / 10;
-		defaultConfig.energyRamp = defaultConfig.minPowerLevel / defaultConfig.maxPower;
-	}
+	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
 
-	DynamoConfig config = new DynamoConfig(defaultConfig);
+	protected static final DynamoConfig defaultConfig = new DynamoConfig();
+	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
+	protected static final int[] SLOTS = { 0 };
+
+	DynamoConfig config;
 	EnergyStorage energyStorage;
 
 	boolean cached = false;
@@ -91,8 +81,12 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	int fuelRF;
 	int compareTracker;
 
+	int energyMod = 1;
+	int fuelMod = 100;
+
 	public TileDynamoBase() {
 
+		config = defaultConfig;
 		energyStorage = new EnergyStorage(config.maxEnergy, config.maxTransfer);
 	}
 
@@ -432,13 +426,13 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	@Override
 	public int getInfoEnergyPerTick() {
 
-		return calcEnergy();
+		return calcEnergy() * energyMod;
 	}
 
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		return config.maxPower;
+		return config.maxPower * energyMod;
 	}
 
 	@Override

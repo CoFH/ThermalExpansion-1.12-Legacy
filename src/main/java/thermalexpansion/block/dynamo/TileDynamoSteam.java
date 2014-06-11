@@ -132,12 +132,12 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	public void generate() {
 
 		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount) {
-			int energy = calcEnergy();
+			int energy = calcEnergy() * energyMod;
 			energyStorage.modifyEnergyStored(energy);
 			steamTank.drain(energy >> 1, true);
 		} else {
 			if (fuelRF <= 0 && inventory[0] != null) {
-				int energy = getItemEnergyValue(inventory[0]);
+				int energy = getItemEnergyValue(inventory[0]) * fuelMod / 100;
 				fuelRF += energy;
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);

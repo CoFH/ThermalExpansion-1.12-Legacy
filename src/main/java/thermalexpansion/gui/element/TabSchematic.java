@@ -43,7 +43,7 @@ public class TabSchematic extends TabBase {
 			return;
 		}
 		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posX + 20, posY + 6, headerColor);
-		getFontRenderer().drawString("", posX, posY, 0xffffff);
+		// getFontRenderer().drawString("", posX, posY, 0xffffff);
 
 		if (myTile.canWriteSchematic()) {
 			gui.drawButton("IconAccept", posX + 77, posY + 60, 1, 0);

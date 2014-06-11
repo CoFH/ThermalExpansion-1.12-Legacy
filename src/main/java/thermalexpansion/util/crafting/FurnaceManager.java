@@ -8,6 +8,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
+import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -109,6 +110,19 @@ public class FurnaceManager {
 				addRecipe(energy, key, output, false);
 			}
 		}
+	}
+
+	public static void refreshRecipes() {
+
+		TMap<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap(recipeMap.size());
+		RecipeFurnace tempRecipe;
+
+		for (Entry<ComparableItemStackSafe, RecipeFurnace> entry : recipeMap.entrySet()) {
+			tempRecipe = entry.getValue();
+			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+		}
+		recipeMap.clear();
+		recipeMap = tempMap;
 	}
 
 	/* ADD RECIPES */

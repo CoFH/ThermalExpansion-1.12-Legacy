@@ -74,7 +74,7 @@ public class ItemFlorb extends ItemBase {
 				list.add(StringHelper.localize("info.thermalexpansion.florb1a"));
 			}
 			list.add(StringHelper.localize("info.thermalexpansion.florb2") + " " + StringHelper.YELLOW + StringHelper.ITALIC
-					+ StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.GRAY + ".");
+					+ StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
 			list.add(StringHelper.localize("info.thermalexpansion.florb3"));
 		} else {
 			list.add(StringHelper.localize("info.thermalexpansion.florb4"));
