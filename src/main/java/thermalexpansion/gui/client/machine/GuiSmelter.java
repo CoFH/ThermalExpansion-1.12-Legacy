@@ -2,8 +2,11 @@ package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
+import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
+import cofh.gui.element.TabAugment;
+import cofh.gui.element.TabBase;
 import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
@@ -34,6 +37,9 @@ public class GuiSmelter extends GuiBaseAdv {
 	ElementDualScaled progress;
 	ElementDualScaled speed;
 
+	TabBase redstoneTab;
+	TabBase configTab;
+
 	public GuiSmelter(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerSmelter(inventory, theTile), TEXTURE);
@@ -60,10 +66,12 @@ public class GuiSmelter extends GuiBaseAdv {
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 
 		addTab(new TabEnergy(this, myTile, false));
-		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfiguration(this, myTile));
+		redstoneTab = addTab(new TabRedstone(this, myTile));
+		configTab = addTab(new TabConfiguration(this, myTile));
+
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
+		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}
 
 	@Override
@@ -93,6 +101,8 @@ public class GuiSmelter extends GuiBaseAdv {
 			slotPrimaryOutput[1].slotRender = 1;
 			slotSecondaryOutput[1].slotRender = 1;
 		}
+		redstoneTab.setVisible(myTile.augmentRSControl);
+		configTab.setVisible(myTile.augmentReconfigSides);
 
 		progress.setQuantity(myTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));

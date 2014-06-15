@@ -12,6 +12,7 @@ import thermalexpansion.block.ender.TileTesseract;
 
 public class TabConfigTesseract extends TabBase {
 
+	public static int defaultSide = 1;
 	public static final String[] TOOLTIPS = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
 			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
@@ -20,7 +21,12 @@ public class TabConfigTesseract extends TabBase {
 
 	public TabConfigTesseract(GuiBase gui, TileTesseract theTile, String playerName) {
 
-		super(gui);
+		this(gui, defaultSide, theTile, playerName);
+	}
+
+	public TabConfigTesseract(GuiBase gui, int side, TileTesseract theTile, String playerName) {
+
+		super(gui, side);
 
 		myPlayer = playerName;
 		myTile = theTile;
@@ -39,31 +45,31 @@ public class TabConfigTesseract extends TabBase {
 		if (!isFullyOpened()) {
 			return;
 		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posX + 20, posY + 6, headerColor);
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posX + 8, posY + 42, subheaderColor);
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posX + 8, posY + 66, subheaderColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posXOffset() + 18, posY + 6, headerColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posXOffset() + 6, posY + 42, subheaderColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posXOffset() + 6, posY + 66, subheaderColor);
 
-		gui.drawButton(buttonNames[myTile.modeItem], posX + 24, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeFluid], posX + 42, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeEnergy], posX + 60, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeItem], posX() + 24, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeFluid], posX() + 42, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeEnergy], posX() + 60, posY + 20, 1, 0);
 
 		String sending = "";
 		String receiving = "";
 
-		if (canReceiveAll()) {
+		if (modeReceiveAll()) {
 			receiving = StringHelper.localize("info.cofh.all");
 		} else {
-			if (myTile.canReceiveItems()) {
+			if (myTile.modeReceiveItems()) {
 				receiving += StringHelper.localize("info.cofh.items");
 			}
-			if (myTile.canReceiveFluid()) {
-				if (myTile.canReceiveItems()) {
+			if (myTile.modeReceiveFluid()) {
+				if (myTile.modeReceiveItems()) {
 					receiving += ", ";
 				}
 				receiving += StringHelper.localize("info.cofh.fluid");
 			}
-			if (myTile.canReceiveEnergy()) {
-				if (myTile.canReceiveItems() || myTile.canReceiveFluid()) {
+			if (myTile.modeReceiveEnergy()) {
+				if (myTile.modeReceiveItems() || myTile.modeReceiveFluid()) {
 					receiving += ", ";
 				}
 				receiving += StringHelper.localize("info.cofh.energy");
@@ -72,20 +78,20 @@ public class TabConfigTesseract extends TabBase {
 				receiving = StringHelper.localize("info.cofh.none");
 			}
 		}
-		if (canSendAll()) {
+		if (modeSendAll()) {
 			sending = StringHelper.localize("info.cofh.all");
 		} else {
-			if (myTile.canSendItems()) {
+			if (myTile.modeSendItems()) {
 				sending += StringHelper.localize("info.cofh.items");
 			}
-			if (myTile.canSendFluid()) {
-				if (myTile.canSendItems()) {
+			if (myTile.modeSendFluid()) {
+				if (myTile.modeSendItems()) {
 					sending += ", ";
 				}
 				sending += StringHelper.localize("info.cofh.fluid");
 			}
-			if (myTile.canSendEnergy()) {
-				if (myTile.canSendItems() || myTile.canSendFluid()) {
+			if (myTile.modeSendEnergy()) {
+				if (myTile.modeSendItems() || myTile.modeSendFluid()) {
 					sending += ", ";
 				}
 				sending += StringHelper.localize("info.cofh.energy");
@@ -94,19 +100,19 @@ public class TabConfigTesseract extends TabBase {
 				sending = StringHelper.localize("info.cofh.none");
 			}
 		}
-		getFontRenderer().drawString(sending, posX + 16, posY + 54, textColor);
-		getFontRenderer().drawString(receiving, posX + 16, posY + 78, textColor);
+		getFontRenderer().drawString(sending, posXOffset() + 14, posY + 54, textColor);
+		getFontRenderer().drawString(receiving, posXOffset() + 14, posY + 78, textColor);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
-	private boolean canReceiveAll() {
+	private boolean modeReceiveAll() {
 
-		return myTile.canReceiveItems() && myTile.canReceiveFluid() && myTile.canReceiveEnergy();
+		return myTile.modeReceiveItems() && myTile.modeReceiveFluid() && myTile.modeReceiveEnergy();
 	}
 
-	private boolean canSendAll() {
+	private boolean modeSendAll() {
 
-		return myTile.canSendItems() && myTile.canSendFluid() && myTile.canSendEnergy();
+		return myTile.modeSendItems() && myTile.modeSendFluid() && myTile.modeSendEnergy();
 	}
 
 	@Override
@@ -181,7 +187,7 @@ public class TabConfigTesseract extends TabBase {
 		float colorG = (backgroundColor >> 8 & 255) / 255.0F * 0.6F;
 		float colorB = (backgroundColor & 255) / 255.0F * 0.6F;
 		GL11.glColor4f(colorR, colorG, colorB, 1.0F);
-		gui.drawTexturedModalRect(posX + 18, posY + 16, 16, 20, 64, 24);
+		gui.drawTexturedModalRect(posX() + 18, posY + 16, 16, 20, 64, 24);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

@@ -27,9 +27,11 @@ import thermalexpansion.core.TEProps;
 
 public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler {
 
+	static final int TYPE = BlockDynamo.Types.REACTANT.ordinal();
+
 	public static void initialize() {
 
-		guiIds[BlockDynamo.Types.REACTANT.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoReactant", "dynamo", true);
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoReactant", "dynamo", true);
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
@@ -52,6 +54,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int reactantRF;
 	int currentReactantRF;
+	int reactantMod = 100;
 
 	public TileDynamoReactant() {
 
@@ -62,7 +65,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int getType() {
 
-		return BlockDynamo.Types.REACTANT.ordinal();
+		return TYPE;
 	}
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
@@ -130,7 +133,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		int energy;
 
 		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(tank.getFluid()) * fuelMod / 100;
+			fuelRF = getFuelEnergy(tank.getFluid()) * reactantMod / 100 * fuelMod / 100;
 			tank.drain(10, true);
 		}
 		if (reactantRF <= 0) {

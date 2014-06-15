@@ -3,6 +3,9 @@ package thermalexpansion.block.ender;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.ISecureTile;
 import cofh.api.transport.IEnderAttuned;
+import cofh.api.transport.IEnderEnergyHandler;
+import cofh.api.transport.IEnderFluidHandler;
+import cofh.api.transport.IEnderItemHandler;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -18,7 +21,6 @@ import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,7 +46,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
-		IEnderAttuned {
+		IEnderAttuned, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler {
 
 	public static void initialize() {
 
@@ -59,6 +61,10 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		NAME_LIST, ALTER_NAME_LIST, TILE_INFO
 	}
 
+	public enum TransferMode {
+		SEND, RECV, SENDRECV, BLOCKED
+	}
+
 	String owner = CoFHProps.DEFAULT_OWNER;
 	public int frequency = -1;
 
@@ -68,6 +74,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	public AccessMode access = AccessMode.PUBLIC;
 
 	public boolean isActive = false;
+	private boolean isSending = false;
 
 	int itemTrackerAdjacent;
 	int itemTrackerRemote;
@@ -170,66 +177,6 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
 					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
-	}
-
-	public List<IEnderAttuned> getValidItemOutputs() {
-
-		List<IEnderAttuned> theTeleports = RegistryEnderAttuned.getLinkedItemOutputs(this);
-		List<IEnderAttuned> validOutputs = new LinkedList<IEnderAttuned>();
-
-		if (theTeleports == null) {
-			return validOutputs;
-		}
-		IEnderAttuned curThing;
-
-		for (int i = 0; i < theTeleports.size(); ++i) {
-			curThing = theTeleports.get(i);
-
-			if (curThing.currentlyValidToReceiveItems(this)) {
-				validOutputs.add(curThing);
-			}
-		}
-		return validOutputs;
-	}
-
-	public List<IEnderAttuned> getValidFluidOutputs() {
-
-		List<IEnderAttuned> theTeleports = RegistryEnderAttuned.getLinkedFluidOutputs(this);
-		List<IEnderAttuned> validOutputs = new LinkedList<IEnderAttuned>();
-
-		if (theTeleports == null) {
-			return validOutputs;
-		}
-		IEnderAttuned curThing;
-
-		for (int i = 0; i < theTeleports.size(); ++i) {
-			curThing = theTeleports.get(i);
-
-			if (curThing.currentlyValidToReceiveFluid(this)) {
-				validOutputs.add(curThing);
-			}
-		}
-		return validOutputs;
-	}
-
-	public List<IEnderAttuned> getValidEnergyOutputs() {
-
-		List<IEnderAttuned> theTeleports = RegistryEnderAttuned.getLinkedEnergyOutputs(this);
-		List<IEnderAttuned> validOutputs = new LinkedList<IEnderAttuned>();
-
-		if (theTeleports == null) {
-			return validOutputs;
-		}
-		IEnderAttuned curThing;
-
-		for (int i = 0; i < theTeleports.size(); ++i) {
-			curThing = theTeleports.get(i);
-
-			if (curThing.currentlyValidToReceiveEnergy(this)) {
-				validOutputs.add(curThing);
-			}
-		}
-		return validOutputs;
 	}
 
 	public void addToRegistry() {
@@ -342,108 +289,91 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	/* SEND METHODS */
 	void sendItem(ItemStack item) {
 
-		List<IEnderAttuned> validOutputs = getValidItemOutputs();
+		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getLinkedItemOutputs(this);
 
-		for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
-			item = validOutputs.get(i).receiveItem(item);
-		}
-		for (int i = 0; i < validOutputs.size() && i < itemTrackerRemote && item != null && item.stackSize > 0; i++) {
-			item = validOutputs.get(i).receiveItem(item);
-		}
-		itemTrackerRemote = incrRemoteTracker(itemTrackerRemote, validOutputs.size());
+		if (validOutputs != null) {
+			isSending = true;
+			IEnderItemHandler handler;
 
+			for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveItems()) {
+					item = handler.receiveItem(item);
+				}
+			}
+			for (int i = 0; i < validOutputs.size() && i < itemTrackerRemote && item != null && item.stackSize > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveItems()) {
+					item = handler.receiveItem(item);
+				}
+			}
+			itemTrackerRemote = incrRemoteTracker(itemTrackerRemote, validOutputs.size());
+		}
 		if (item != null && item.stackSize > 0) {
 			inventory[0] = item;
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		}
+		isSending = false;
 	}
 
 	int sendFluid(FluidStack fluid, boolean doFill) {
 
-		List<IEnderAttuned> validOutputs = getValidFluidOutputs();
+		List<IEnderFluidHandler> validOutputs = RegistryEnderAttuned.getLinkedFluidOutputs(this);
 		int startAmount = fluid.amount;
 
-		if (validOutputs.size() <= 0 || startAmount <= 0) {
+		if (startAmount <= 0) {
 			return 0;
 		}
-		for (int i = fluidTrackerRemote; i < validOutputs.size() && fluid != null && fluid.amount > 0; i++) {
-			fluid = validOutputs.get(i).receiveFluid(fluid, doFill);
+		if (validOutputs != null) {
+			isSending = true;
+			IEnderFluidHandler handler;
+
+			for (int i = fluidTrackerRemote; i < validOutputs.size() && fluid != null && fluid.amount > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveFluid()) {
+					fluid = handler.receiveFluid(fluid, doFill);
+				}
+			}
+			for (int i = 0; i < validOutputs.size() && i < fluidTrackerRemote && fluid != null && fluid.amount > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveFluid()) {
+					fluid = handler.receiveFluid(fluid, doFill);
+				}
+			}
+			fluidTrackerRemote = incrRemoteTracker(fluidTrackerRemote, validOutputs.size());
 		}
-		for (int i = 0; i < validOutputs.size() && i < fluidTrackerRemote && fluid != null && fluid.amount > 0; i++) {
-			fluid = validOutputs.get(i).receiveFluid(fluid, doFill);
-		}
-		fluidTrackerRemote = incrRemoteTracker(fluidTrackerRemote, validOutputs.size());
+		isSending = false;
 		return startAmount - fluid.amount;
 	}
 
 	int sendEnergy(int energy, boolean simulate) {
 
-		List<IEnderAttuned> validOutputs = getValidEnergyOutputs();
+		List<IEnderEnergyHandler> validOutputs = RegistryEnderAttuned.getLinkedEnergyOutputs(this);
 		int startAmount = energy;
 
-		if (validOutputs.size() <= 0 || startAmount <= 0) {
+		if (startAmount <= 0) {
 			return 0;
 		}
-		for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
-			energy = validOutputs.get(i).receiveEnergy(energy, simulate);
+		if (validOutputs != null) {
+			isSending = true;
+			IEnderEnergyHandler handler;
+
+			for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveEnergy()) {
+					energy = handler.receiveEnergy(energy, simulate);
+				}
+			}
+			for (int i = 0; i < validOutputs.size() && i < energyTrackerRemote && energy > 0; i++) {
+				handler = validOutputs.get(i);
+				if (handler.canReceiveEnergy()) {
+					energy = handler.receiveEnergy(energy, simulate);
+				}
+			}
+			energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
 		}
-		for (int i = 0; i < validOutputs.size() && i < energyTrackerRemote && energy > 0; i++) {
-			energy = validOutputs.get(i).receiveEnergy(energy, simulate);
-		}
-		energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
+		isSending = false;
 		return startAmount - energy;
-	}
-
-	/* RECEIVE METHODS */
-	@Override
-	public ItemStack receiveItem(ItemStack stack) {
-
-		for (int side = itemTrackerAdjacent; side < 6 && stack != null && stack.stackSize > 0; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
-			}
-		}
-		for (int side = 0; side < itemTrackerAdjacent && stack != null && stack.stackSize > 0; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
-			}
-		}
-		incrItemTrackerAdjacent();
-		return stack;
-	}
-
-	@Override
-	public FluidStack receiveFluid(FluidStack fluid, boolean doFill) {
-
-		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
-			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
-			}
-		}
-		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
-			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
-			}
-		}
-		incrFluidTrackerAdjacent();
-		return fluid;
-	}
-
-	@Override
-	public int receiveEnergy(int energy, boolean simulate) {
-
-		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
-			}
-		}
-		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
-			}
-		}
-		incrEnergyTrackerAdjacent();
-		return energy;
 	}
 
 	/* TRACKER METHODS */
@@ -526,47 +456,68 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 	public void incItemMode() {
 
-		modeItem++;
-		modeItem %= 4;
+		modeItem = modeItem == 4 ? 0 : modeItem++;
 	}
 
 	public void decItemMode() {
 
-		if (modeItem == 0) {
-			modeItem = 4;
-		}
-		modeItem--;
-
+		modeItem = modeItem == 0 ? 3 : modeItem--;
 	}
 
 	public void incFluidMode() {
 
-		modeFluid++;
-		modeFluid %= 4;
+		modeFluid = modeFluid == 4 ? 0 : modeFluid++;
 	}
 
 	public void decFluidMode() {
 
-		if (modeFluid == 0) {
-			modeFluid = 4;
-		}
-		modeFluid--;
-
+		modeFluid = modeFluid == 0 ? 3 : modeFluid--;
 	}
 
 	public void incEnergyMode() {
 
-		modeEnergy++;
-		modeEnergy %= 4;
+		modeEnergy = modeEnergy == 4 ? 0 : modeEnergy++;
 	}
 
 	public void decEnergyMode() {
 
-		if (modeEnergy == 0) {
-			modeEnergy = 4;
-		}
-		modeEnergy--;
+		modeEnergy = modeEnergy == 0 ? 3 : modeEnergy--;
+	}
 
+	public boolean modeSendItems() {
+
+		return modeItem == TransferMode.SEND.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveItems() {
+
+		return modeItem == TransferMode.RECV.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeSendFluid() {
+
+		return modeFluid == TransferMode.SEND.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveFluid() {
+
+		return modeFluid == TransferMode.RECV.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeSendEnergy() {
+
+		return modeEnergy == TransferMode.SEND.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveEnergy() {
+
+		return modeEnergy == TransferMode.RECV.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean isAdjacentInventory(int side) {
+
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
+		return tile instanceof TileTesseract ? false : Utils.isInventory(tile, side);
 	}
 
 	/* NBT METHODS */
@@ -624,7 +575,6 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addBool(isActive);
 		payload.addByte(modeItem);
 		payload.addByte(modeFluid);
@@ -632,7 +582,6 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		payload.addByte((byte) access.ordinal());
 		payload.addInt(frequency);
 		payload.addString(owner);
-
 		return payload;
 	}
 
@@ -780,7 +729,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		if (frequency == -1 || !canSendItems() || !redstoneControlOrDisable() || inventory[0] != null) {
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
 			return false;
 		}
 		return true;
@@ -796,7 +745,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (frequency == -1 || !canSendFluid() || !redstoneControlOrDisable() || ServerHelper.isClientWorld(worldObj) || resource == null) {
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendFluid() || ServerHelper.isClientWorld(worldObj) || resource == null) {
 			return 0;
 		}
 		return sendFluid(resource, doFill);
@@ -836,7 +785,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		if (frequency == -1 || !canSendEnergy() || !redstoneControlOrDisable() || ServerHelper.isClientWorld(worldObj)) {
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendEnergy() || ServerHelper.isClientWorld(worldObj)) {
 			return 0;
 		}
 		return sendEnergy(maxReceive, simulate);
@@ -940,80 +889,103 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		return true;
 	}
 
+	/* IEnderItemReceptor */
 	@Override
 	public boolean canSendItems() {
 
-		return modeItem == TransferMode.SEND.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
-	}
-
-	@Override
-	public boolean canSendFluid() {
-
-		return modeFluid == TransferMode.SEND.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
-	}
-
-	@Override
-	public boolean canSendEnergy() {
-
-		return modeEnergy == TransferMode.SEND.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+		return modeSendItems();
 	}
 
 	@Override
 	public boolean canReceiveItems() {
 
-		return modeItem == TransferMode.RECV.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+		return !isSending && modeReceiveItems();
+	}
+
+	@Override
+	public ItemStack receiveItem(ItemStack stack) {
+
+		if (!redstoneControlOrDisable()) {
+			return stack;
+		}
+		for (int side = itemTrackerAdjacent; side < 6 && stack != null && stack.stackSize > 0; side++) {
+			if (isAdjacentInventory(side)) {
+				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+			}
+		}
+		for (int side = 0; side < itemTrackerAdjacent && stack != null && stack.stackSize > 0; side++) {
+			if (isAdjacentInventory(side)) {
+				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+			}
+		}
+		incrItemTrackerAdjacent();
+		return stack;
+	}
+
+	/* IEnderFluidReceptor */
+	@Override
+	public boolean canSendFluid() {
+
+		return modeSendFluid();
 	}
 
 	@Override
 	public boolean canReceiveFluid() {
 
-		return modeFluid == TransferMode.RECV.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+		return !isSending && modeReceiveFluid();
+	}
+
+	@Override
+	public FluidStack receiveFluid(FluidStack fluid, boolean doFill) {
+
+		if (!redstoneControlOrDisable()) {
+			return fluid;
+		}
+		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
+			if (adjacentFluidHandlers[side] != null) {
+				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+			}
+		}
+		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
+			if (adjacentFluidHandlers[side] != null) {
+				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+			}
+		}
+		incrFluidTrackerAdjacent();
+		return fluid;
+	}
+
+	/* IEnderEnergyReceptor */
+	@Override
+	public boolean canSendEnergy() {
+
+		return modeSendEnergy();
 	}
 
 	@Override
 	public boolean canReceiveEnergy() {
 
-		return modeEnergy == TransferMode.RECV.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+		return !isSending && modeReceiveEnergy();
 	}
 
 	@Override
-	public boolean currentlyValidToReceiveItems(IEnderAttuned asker) {
+	public int receiveEnergy(int energy, boolean simulate) {
 
-		return !asker.equals(this) && redstoneControlOrDisable() && canReceiveItems();
-	}
-
-	@Override
-	public boolean currentlyValidToReceiveFluid(IEnderAttuned asker) {
-
-		return !asker.equals(this) && redstoneControlOrDisable() && canReceiveFluid();
-	}
-
-	@Override
-	public boolean currentlyValidToReceiveEnergy(IEnderAttuned asker) {
-
-		return !asker.equals(this) && redstoneControlOrDisable() && canReceiveEnergy();
-	}
-
-	@Override
-	public boolean currentlyValidToSendItems(IEnderAttuned asker) {
-
-		return !asker.equals(this) && redstoneControlOrDisable() && canSendItems();
-	}
-
-	@Override
-	public boolean currentlyValidToSendFluid(IEnderAttuned asker) {
-
-		return !asker.equals(this) && redstoneControlOrDisable() && canSendFluid();
-	}
-
-	@Override
-	public boolean currentlyValidToSendEnergy(IEnderAttuned asker) {
-
-		return !asker.equals(this) && redstoneControlOrDisable() && canSendEnergy();
-	}
-
-	public enum TransferMode {
-		SEND, RECV, SENDRECV, BLOCKED
+		if (!redstoneControlOrDisable()) {
+			return energy;
+		}
+		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			}
+		}
+		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			}
+		}
+		incrEnergyTrackerAdjacent();
+		return energy;
 	}
 
 }

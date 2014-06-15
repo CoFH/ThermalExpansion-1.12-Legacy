@@ -1,5 +1,6 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotAugment;
 import cofh.gui.slot.SlotEnergy;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,8 +23,14 @@ public class ContainerCrucible extends ContainerTEBase {
 
 		myTile = (TileCrucible) entity;
 		addSlotToContainer(new Slot(myTile, 0, 56, 26));
-		addSlotToContainer(new SlotEnergy(myTile, 1, 8, 53));
+		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
+		/* Augment Slots */
+		augmentSlots = new Slot[myTile.getAugmentSlots().length];
+		for (int i = 0; i < augmentSlots.length; i++) {
+			augmentSlots[i] = addSlotToContainer(new SlotAugment(myTile, null, i, 0, 0));
+		}
+		/* Player Inventory */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));

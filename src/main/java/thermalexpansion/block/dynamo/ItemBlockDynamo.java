@@ -61,6 +61,9 @@ public class ItemBlockDynamo extends ItemBlock {
 		case REACTANT:
 			list.add(StringHelper.localize("info.thermalexpansion.dynamo.reactant"));
 			break;
+		case ENERVATION:
+			list.add(StringHelper.localize("info.thermalexpansion.dynamo.infusion"));
+			break;
 		}
 	}
 

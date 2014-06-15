@@ -43,7 +43,6 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
 		return payload;
@@ -83,7 +82,6 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 	}
 
 	/* IRedstoneControl */
-	// TODO: A packet needs to be sent here at some point for the GUI button clicks. Determine a good place for this.
 	@Override
 	public void setPowered(boolean isPowered) {
 
@@ -104,7 +102,11 @@ public abstract class TileRSBase extends TileTEBase implements IRedstoneControl,
 	public void setControl(ControlMode control) {
 
 		rsMode = control;
-		sendUpdatePacket(Side.CLIENT);
+		if (ServerHelper.isClientWorld(worldObj)) {
+			GenericTEPacket.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+		}
 	}
 
 	@Override

@@ -1,6 +1,7 @@
 package thermalexpansion.gui.container;
 
 import cofh.block.TileCoFHBase;
+import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.slot.SlotFalseCopy;
 import cofh.util.ItemHelper;
 
@@ -12,9 +13,12 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerTEBase extends Container {
+public class ContainerTEBase extends Container implements IAugmentableContainer {
 
 	TileCoFHBase baseTile;
+
+	protected Slot[] augmentSlots = new Slot[0];
+	protected boolean[] augmentStatus = new boolean[0];
 
 	public ContainerTEBase() {
 
@@ -30,6 +34,7 @@ public class ContainerTEBase extends Container {
 		if (entity instanceof TileCoFHBase) {
 			baseTile = (TileCoFHBase) entity;
 		}
+		/* Player Inventory */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -188,6 +193,24 @@ public class ContainerTEBase extends Container {
 			}
 		}
 		return slotFound;
+	}
+
+	/* IUpgradableContainer */
+	@Override
+	public void augmentTile() {
+
+	}
+
+	@Override
+	public Slot[] getAugmentSlots() {
+
+		return augmentSlots;
+	}
+
+	@Override
+	public boolean[] getAugmentStatus() {
+
+		return augmentStatus;
 	}
 
 }

@@ -54,7 +54,7 @@ public class TileCellCreative extends TileCell {
 	}
 
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return IconRegistry.getIcon("FluidRedstone");

@@ -125,7 +125,6 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addBool(modified);
 		payload.addInt(color);
 		payload.addByte(mode);

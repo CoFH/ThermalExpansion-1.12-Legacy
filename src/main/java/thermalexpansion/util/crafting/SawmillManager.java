@@ -8,6 +8,7 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,7 @@ import thermalexpansion.item.TEItems;
 
 public class SawmillManager {
 
-	private static TMap<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap();
+	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap();
 	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 

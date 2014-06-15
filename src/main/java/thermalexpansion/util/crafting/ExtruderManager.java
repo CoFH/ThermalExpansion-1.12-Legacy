@@ -1,9 +1,9 @@
 package thermalexpansion.util.crafting;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.List;
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -12,7 +12,7 @@ import thermalexpansion.ThermalExpansion;
 
 public class ExtruderManager {
 
-	private static TMap<List, RecipeExtruder> recipeMap = new THashMap();
+	private static Map<List, RecipeExtruder> recipeMap = new THashMap();
 	private static boolean allowOverwrite = false;
 
 	static {

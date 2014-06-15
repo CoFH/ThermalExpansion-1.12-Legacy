@@ -1,7 +1,7 @@
 package thermalexpansion.block.cache;
 
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
@@ -26,7 +26,7 @@ import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 
-public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedBlockTexture, ITileInfo, IDeepStorageUnit {
+public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo, IDeepStorageUnit {
 
 	public static void initialize() {
 
@@ -57,6 +57,12 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public TileCache() {
 
 		inventory = new ItemStack[2];
+	}
+
+	@Override
+	public boolean canUpdate() {
+
+		return false;
 	}
 
 	public TileCache(int metadata) {
@@ -145,7 +151,6 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addByte(type);
 		payload.addByte(facing);
 		payload.addBool(locked);
@@ -281,7 +286,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 1) {
 			if (side != facing) {

@@ -3,6 +3,7 @@ package thermalexpansion.item.tool;
 import cofh.item.ItemBase;
 import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
+import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -121,7 +122,7 @@ public class ItemFlorb extends ItemBase {
 		if (fluid != null) {
 			world.playSoundAtEntity(player, "random.bow", 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
-			if (!world.isRemote) {
+			if (ServerHelper.isServerWorld(world)) {
 				world.spawnEntityInWorld(new EntityFlorb(world, player, fluid));
 			}
 		}

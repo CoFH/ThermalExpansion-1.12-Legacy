@@ -6,7 +6,6 @@ import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,11 +18,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 
 public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
+	static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
 
 	public static void initialize() {
 
@@ -45,12 +43,12 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[1]), 4, 72000);
 		processTime[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[2]), 4, 72000);
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Extruder", "machine", true);
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
@@ -129,7 +127,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -190,17 +188,15 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addFluidStack(hotRenderFluid);
 		payload.addFluidStack(coldRenderFluid);
 		return payload;
 	}
 
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
-
+		CoFHPacket payload = super.getGuiPacket();
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
 
@@ -218,66 +214,58 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public CoFHPacket getFluidCoFHPacket() {
+	public CoFHPacket getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidCoFHPacket();
-
+		CoFHPacket payload = super.getFluidPacket();
 		payload.addFluidStack(hotRenderFluid);
 		payload.addFluidStack(coldRenderFluid);
-
 		return payload;
 	}
 
 	@Override
-	public CoFHPacket getModeCoFHPacket() {
+	public CoFHPacket getModePacket() {
 
-		CoFHPacket payload = super.getModeCoFHPacket();
-
+		CoFHPacket payload = super.getModePacket();
 		payload.addByte(curSelection);
-
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+		curSelection = payload.getByte();
+		prevSelection = payload.getByte();
+		hotTank.setFluid(payload.getFluidStack());
+		coldTank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	protected void handleFluidPacket(CoFHPacket payload) {
+
+		super.handleFluidPacket(payload);
+		hotRenderFluid = payload.getFluidStack();
+		coldRenderFluid = payload.getFluidStack();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	protected void handleModePacket(CoFHPacket payload) {
+
+		super.handleModePacket(payload);
+		curSelection = payload.getByte();
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	public void setMode(int i) {
 
 		byte lastSelection = curSelection;
 		curSelection = (byte) i;
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			sendModePacket();
-		}
+		sendModePacket();
 		curSelection = lastSelection;
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			curSelection = payload.getByte();
-			prevSelection = payload.getByte();
-			hotTank.setFluid(payload.getFluidStack());
-			coldTank.setFluid(payload.getFluidStack());
-			return;
-		case FLUID:
-			hotRenderFluid = payload.getFluidStack();
-			coldRenderFluid = payload.getFluidStack();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		case MODE:
-			curSelection = payload.getByte();
-
-			if (!isActive) {
-				prevSelection = curSelection;
-			}
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-			return;
-		default:
-		}
 	}
 
 	/* GUI METHODS */

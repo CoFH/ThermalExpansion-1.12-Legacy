@@ -231,34 +231,26 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addInt(energyStorage.getEnergyStored());
-
 		return payload;
 	}
 
 	public CoFHPacket getGuiPacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
-
 		payload.addInt(energySend);
 		payload.addInt(energyReceive);
 		payload.addInt(energyStorage.getEnergyStored());
-
 		return payload;
 	}
 
 	public CoFHPacket getModeCoFHPacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
-
 		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
 		payload.addInt(MathHelper.clampI(energyReceive, 0, MAX_RECEIVE[getType()]));
-
 		return payload;
 	}
 
@@ -420,7 +412,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return type < 2 ? IconRegistry.getIcon("StorageRedstone") : IconRegistry.getIcon("FluidRedstone");

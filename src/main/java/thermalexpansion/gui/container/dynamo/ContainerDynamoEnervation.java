@@ -1,8 +1,6 @@
-package thermalexpansion.gui.container.machine;
+package thermalexpansion.gui.container.dynamo;
 
 import cofh.gui.slot.SlotAugment;
-import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -10,25 +8,19 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-import thermalexpansion.block.machine.TileSmelter;
+import thermalexpansion.block.dynamo.TileDynamoEnervation;
 import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.util.crafting.SmelterManager;
 
-public class ContainerSmelter extends ContainerTEBase {
+public class ContainerDynamoEnervation extends ContainerTEBase {
 
-	TileSmelter myTile;
+	TileDynamoEnervation myTile;
 
-	public ContainerSmelter(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerDynamoEnervation(InventoryPlayer inventory, TileEntity entity) {
 
 		super(entity);
 
-		myTile = (TileSmelter) entity;
-		addSlotToContainer(new Slot(myTile, 0, 32, 26));
-		addSlotToContainer(new Slot(myTile, 1, 56, 26));
-		addSlotToContainer(new SlotOutput(myTile, 2, 116, 26));
-		addSlotToContainer(new SlotOutput(myTile, 3, 134, 26));
-		addSlotToContainer(new SlotOutput(myTile, 4, 116, 53));
-		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
+		myTile = (TileDynamoEnervation) entity;
+		addSlotToContainer(new Slot(myTile, 0, 44, 35));
 
 		/* Augment Slots */
 		augmentSlots = new Slot[myTile.getAugmentSlots().length];
@@ -60,13 +52,9 @@ public class ContainerSmelter extends ContainerTEBase {
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 
-			if (i == 2 || i == 3 || i == 4) {
-				if (!mergeItemStack(stackInSlot, invTile, invFull, true)) {
-					return null;
-				}
-			} else if (i != 0 && i != 1) {
-				if (SmelterManager.isItemValid(stackInSlot)) {
-					if (!mergeItemStack(stackInSlot, 0, 2, false)) {
+			if (i != 0) {
+				if (TileDynamoEnervation.getItemEnergyValue(stackInSlot) > 0) {
+					if (!mergeItemStack(stackInSlot, 0, 1, false)) {
 						return null;
 					}
 				} else if (i >= invTile && i < invPlayer) {

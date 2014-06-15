@@ -2,9 +2,7 @@ package thermalexpansion.block.dynamo;
 
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
 import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,6 +55,8 @@ public class BlockDynamo extends BlockTEBase {
 			return new TileDynamoCompression();
 		case REACTANT:
 			return new TileDynamoReactant();
+		case ENERVATION:
+			return new TileDynamoEnervation();
 		default:
 			return null;
 		}
@@ -80,14 +80,6 @@ public class BlockDynamo extends BlockTEBase {
 		if (tile instanceof IFluidHandler) {
 			if (FluidHelper.fillHandlerWithContainer(world, (IFluidHandler) tile, player)) {
 				return true;
-			}
-		} else if (tile instanceof TileDynamoManual) {
-			if (ItemHelper.isPlayerHoldingNothing(player)) {
-				tile.receiveEnergy(ForgeDirection.UNKNOWN, 1000, false);
-				player.getFoodStats().addStats(-1, -0.2F);
-			} else if (EnergyHelper.isPlayerHoldingEnergyContainerItem(player)) {
-				tile.receiveEnergy(ForgeDirection.UNKNOWN,
-						EnergyHelper.extractEnergyFromHeldContainer(player, tile.receiveEnergy(ForgeDirection.UNKNOWN, 10000, true), false), false);
 			}
 		}
 		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
@@ -144,10 +136,11 @@ public class BlockDynamo extends BlockTEBase {
 
 		IconRegistry.addIcon("DynamoCoilRedstone", "thermalexpansion:dynamo/Dynamo_Coil_Redstone", ir);
 
-		IconRegistry.addIcon("Dynamo" + 0, "thermalexpansion:dynamo/Dynamo_Steam", ir);
-		IconRegistry.addIcon("Dynamo" + 1, "thermalexpansion:dynamo/Dynamo_Magmatic", ir);
-		IconRegistry.addIcon("Dynamo" + 2, "thermalexpansion:dynamo/Dynamo_Compression", ir);
-		IconRegistry.addIcon("Dynamo" + 3, "thermalexpansion:dynamo/Dynamo_Reactant", ir);
+		IconRegistry.addIcon("Dynamo" + Types.STEAM.ordinal(), "thermalexpansion:dynamo/Dynamo_Steam", ir);
+		IconRegistry.addIcon("Dynamo" + Types.MAGMATIC.ordinal(), "thermalexpansion:dynamo/Dynamo_Magmatic", ir);
+		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:dynamo/Dynamo_Compression", ir);
+		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:dynamo/Dynamo_Reactant", ir);
+		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:dynamo/Dynamo_Enervation", ir);
 	}
 
 	/* IInitializer */
@@ -158,16 +151,19 @@ public class BlockDynamo extends BlockTEBase {
 		TileDynamoMagmatic.initialize();
 		TileDynamoCompression.initialize();
 		TileDynamoReactant.initialize();
+		TileDynamoEnervation.initialize();
 
 		dynamoSteam = new ItemStack(this, 1, Types.STEAM.ordinal());
 		dynamoMagmatic = new ItemStack(this, 1, Types.MAGMATIC.ordinal());
 		dynamoCompression = new ItemStack(this, 1, Types.COMPRESSION.ordinal());
 		dynamoReactant = new ItemStack(this, 1, Types.REACTANT.ordinal());
+		dynamoEnervation = new ItemStack(this, 1, Types.ENERVATION.ordinal());
 
 		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
 		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
 		GameRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
 		GameRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
+		GameRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 
 		return true;
 	}
@@ -191,14 +187,18 @@ public class BlockDynamo extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze",
 					'I', "ingotBronze", 'R', Items.redstone }));
 		}
+		if (enable[Types.ENERVATION.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
+					'I', "ingotElectrum", 'R', Items.redstone }));
+		}
 		return true;
 	}
 
 	public static enum Types {
-		STEAM, MAGMATIC, COMPRESSION, REACTANT
+		STEAM, MAGMATIC, COMPRESSION, REACTANT, ENERVATION
 	}
 
-	public static final String[] NAMES = { "steam", "magmatic", "compression", "reactant" };
+	public static final String[] NAMES = { "steam", "magmatic", "compression", "reactant", "enervation" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -207,11 +207,13 @@ public class BlockDynamo extends BlockTEBase {
 		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Magmatic", true);
 		enable[Types.COMPRESSION.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Compression", true);
 		enable[Types.REACTANT.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Reactant", true);
+		enable[Types.ENERVATION.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Enervation", true);
 	}
 
 	public static ItemStack dynamoSteam;
 	public static ItemStack dynamoMagmatic;
 	public static ItemStack dynamoCompression;
 	public static ItemStack dynamoReactant;
+	public static ItemStack dynamoEnervation;
 
 }

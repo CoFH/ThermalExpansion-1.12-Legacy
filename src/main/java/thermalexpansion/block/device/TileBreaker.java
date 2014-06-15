@@ -239,7 +239,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())

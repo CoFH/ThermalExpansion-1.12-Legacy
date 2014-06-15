@@ -1,7 +1,7 @@
 package thermalexpansion.block.device;
 
 import cofh.api.tileentity.ISecureTile;
-import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ISidedTexture;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -31,7 +31,7 @@ import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.SchematicHelper;
 
-public class TileWorkbench extends TileInventory implements ISecureTile, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedBlockTexture {
+public class TileWorkbench extends TileInventory implements ISecureTile, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedTexture {
 
 	public static void initialize() {
 
@@ -263,7 +263,6 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(selectedSchematic);
 		payload.addString(owner);
@@ -439,7 +438,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (side == 0) {
 			return IconRegistry.getIcon("WorkbenchBottom");

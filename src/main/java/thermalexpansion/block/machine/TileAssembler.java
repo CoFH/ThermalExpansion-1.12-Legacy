@@ -7,7 +7,6 @@ import cofh.util.ServerHelper;
 import cofh.util.inventory.InventoryCraftingFalse;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.InventoryCrafting;
@@ -22,24 +21,23 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.item.SchematicHelper;
 
 public class TileAssembler extends TileMachineEnergized implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.ASSEMBLER.ordinal();
+	static final int TYPE = BlockMachine.Types.ASSEMBLER.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Assembler", "machine", true);
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
@@ -213,7 +211,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -259,29 +257,18 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
-
+		CoFHPacket payload = super.getGuiPacket();
 		payload.addFluidStack(getTankFluid());
-
 		return payload;
 	}
 
-	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	protected void handleGuiPacket(CoFHPacket payload) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			tank.setFluid(payload.getFluidStack());
-			return;
-		default:
-		}
+		super.handleGuiPacket(payload);
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* GUI METHODS */

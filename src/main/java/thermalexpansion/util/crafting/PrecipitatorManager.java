@@ -1,7 +1,8 @@
 package thermalexpansion.util.crafting;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
+
+import java.util.Map;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -11,7 +12,7 @@ import thermalexpansion.ThermalExpansion;
 
 public class PrecipitatorManager {
 
-	private static TMap<Fluid, RecipePrecipitator> recipeMap = new THashMap();
+	private static Map<Fluid, RecipePrecipitator> recipeMap = new THashMap();
 	private static boolean allowOverwrite = false;
 
 	static {

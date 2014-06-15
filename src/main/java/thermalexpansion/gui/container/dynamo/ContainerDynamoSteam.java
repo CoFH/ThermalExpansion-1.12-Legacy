@@ -1,5 +1,7 @@
 package thermalexpansion.gui.container.dynamo;
 
+import cofh.gui.slot.SlotAugment;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -20,6 +22,12 @@ public class ContainerDynamoSteam extends ContainerTEBase {
 		myTile = (TileDynamoSteam) entity;
 		addSlotToContainer(new Slot(myTile, 0, 44, 35));
 
+		/* Augment Slots */
+		augmentSlots = new Slot[myTile.getAugmentSlots().length];
+		for (int i = 0; i < augmentSlots.length; i++) {
+			augmentSlots[i] = addSlotToContainer(new SlotAugment(myTile, null, i, 0, 0));
+		}
+		/* Player Inventory */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));

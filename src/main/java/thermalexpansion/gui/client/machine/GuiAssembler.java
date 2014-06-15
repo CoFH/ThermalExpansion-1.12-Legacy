@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.machine.TileAssembler;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.gui.element.TabSchematic;
@@ -56,17 +56,10 @@ public class GuiAssembler extends GuiBaseAdv {
 		addTab(new TabEnergy(this, myTile, false));
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfiguration(this, myTile));
+		addTab(new TabSchematic(this, (ISchematicContainer) inventorySlots));
+
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
-		addTab(new TabSchematic(this, (ISetSchematic) inventorySlots));
-
-		ISetSchematic schematicSlots = (ISetSchematic) inventorySlots;
-		for (int i = 0; i < schematicSlots.getCraftingSlots().length; i++) {
-			schematicSlots.getCraftingSlots()[i].xDisplayPosition = -guiLeft - 16;
-			schematicSlots.getCraftingSlots()[i].yDisplayPosition = -guiTop - 16;
-		}
-		schematicSlots.getResultSlot().xDisplayPosition = -guiLeft - 16;
-		schematicSlots.getResultSlot().yDisplayPosition = -guiTop - 16;
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.api.tileentity.IAugmentableTile;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
@@ -17,6 +18,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
@@ -24,7 +26,8 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
 
-public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler {
+public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler,
+		IAugmentableTile {
 
 	public static class SideConfig {
 
@@ -35,11 +38,10 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		public int[] sideTex;
 	}
 
-	protected static final SideConfig[] defaultSideData = new SideConfig[BlockMachine.Types.values().length];
+	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
+	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
 	protected static final int[] guiIds = new int[BlockMachine.Types.values().length];
-	protected static final int[] LIGHT_VALUE = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
 
-	protected static final int CHANCE = 100;
 	protected static final int RATE = 25;
 	protected static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
@@ -48,18 +50,26 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	TimeTracker tracker = new TimeTracker();
 
 	boolean wasActive;
-	boolean upgradeAutoTransfer = true;
 
 	int processMax;
 	int processRem;
 
+	/* Augment Variables */
+	int level = 0;
+	ItemStack[] augments = new ItemStack[6];
+	boolean[] augmentStatus = new boolean[6];
+
+	public boolean augmentRSControl = true;
+	public boolean augmentReconfigSides = true;
+	public boolean augmentAutoTransfer = true;
 	int processMod = 1;
+	int secondaryChance = 100;
 
 	public TileMachineBase() {
 
 		super();
 
-		sideConfig = defaultSideData[getType()];
+		sideConfig = defaultSideConfig[getType()];
 	}
 
 	public int getMaxInputSlot() {
@@ -80,7 +90,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	@Override
 	public int getLightValue() {
 
-		return isActive ? LIGHT_VALUE[getType()] : 0;
+		return isActive ? lightValue[getType()] : 0;
 	}
 
 	@Override
@@ -90,45 +100,66 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	}
 
 	/* NETWORK METHODS */
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addBool(isActive);
 		payload.addInt(processMax);
 		payload.addInt(processRem);
+		payload.addInt(processMod);
 
+		payload.addBool(augmentRSControl);
+		payload.addBool(augmentReconfigSides);
 		return payload;
 	}
 
-	public CoFHPacket getFluidCoFHPacket() {
+	public CoFHPacket getFluidPacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
-
 		return payload;
 	}
 
-	public CoFHPacket getModeCoFHPacket() {
+	public CoFHPacket getModePacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
-
 		return payload;
+	}
+
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		isActive = payload.getBool();
+		processMax = payload.getInt();
+		processRem = payload.getInt();
+		processMod = payload.getInt();
+
+		augmentRSControl = payload.getBool();
+		augmentReconfigSides = payload.getBool();
+	}
+
+	protected void handleFluidPacket(CoFHPacket payload) {
+
+	}
+
+	protected void handleModePacket(CoFHPacket payload) {
+
+	}
+
+	protected void handleAugmentPacket(CoFHPacket payload) {
+
 	}
 
 	public void sendFluidPacket() {
 
-		PacketHandler.sendToDimension(getFluidCoFHPacket(), worldObj.provider.dimensionId);
+		PacketHandler.sendToDimension(getFluidPacket(), worldObj.provider.dimensionId);
 	}
 
 	public void sendModePacket() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModeCoFHPacket());
+			PacketHandler.sendToServer(getModePacket());
 		}
 	}
 
@@ -138,9 +169,16 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
+			handleGuiPacket(payload);
+			return;
+		case FLUID:
+			handleFluidPacket(payload);
+			return;
+		case MODE:
+			handleModePacket(payload);
+			return;
+		case AUGMENT:
+			handleAugmentPacket(payload);
 			return;
 		default:
 		}
@@ -167,7 +205,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		if (iCrafting instanceof EntityPlayer) {
 			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendTo(getGuiCoFHPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
 			}
 		}
 	}
@@ -183,6 +221,9 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		super.readFromNBT(nbt);
 
+		readAugmentsFromNBT(nbt);
+		augmentTile();
+
 		processMax = nbt.getInteger("ProcMax");
 		processRem = nbt.getInteger("ProcRem");
 	}
@@ -192,8 +233,45 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		super.writeToNBT(nbt);
 
+		writeAugmentsToNBT(nbt);
+
 		nbt.setInteger("ProcMax", processMax);
 		nbt.setInteger("ProcRem", processRem);
+	}
+
+	public void readAugmentsFromNBT(NBTTagCompound nbt) {
+
+		level = nbt.getInteger("Level");
+
+		NBTTagList list = nbt.getTagList("Augments", 10);
+		augments = new ItemStack[augments.length + level];
+		for (int i = 0; i < list.tagCount(); i++) {
+			NBTTagCompound tag = list.getCompoundTagAt(i);
+			int slot = tag.getInteger("Slot");
+
+			if (slot >= 0 && slot < augments.length) {
+				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
+			}
+		}
+	}
+
+	public void writeAugmentsToNBT(NBTTagCompound nbt) {
+
+		nbt.setInteger("Level", level);
+
+		if (augments.length <= 0) {
+			return;
+		}
+		NBTTagList list = new NBTTagList();
+		for (int i = 0; i < augments.length; i++) {
+			if (augments[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setInteger("Slot", i);
+				augments[i].writeToNBT(tag);
+				list.appendTag(tag);
+			}
+		}
+		nbt.setTag("Augments", list);
 	}
 
 	/* IReconfigurableFacing */
@@ -221,7 +299,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {
@@ -254,6 +332,25 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
 		return sideConfig.allowExtraction[sideCache[side]];
+	}
+
+	/* IUpgradableTile */
+	@Override
+	public ItemStack[] getAugmentSlots() {
+
+		return augments;
+	}
+
+	@Override
+	public boolean[] getAugmentStatus() {
+
+		return augmentStatus;
+	}
+
+	@Override
+	public boolean augmentTile() {
+
+		return false;
 	}
 
 }

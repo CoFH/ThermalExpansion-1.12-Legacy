@@ -222,10 +222,8 @@ public class ThermalExpansion extends BaseMod {
 	public CoFHPacket getConfigSync() {
 
 		CoFHPacket payload = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
-
 		payload.addBool(TileWorkbench.enableSecurity);
 		payload.addBool(TileStrongbox.enableSecurity);
-
 		return payload;
 	}
 

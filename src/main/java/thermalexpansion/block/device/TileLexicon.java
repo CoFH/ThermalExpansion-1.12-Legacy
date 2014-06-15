@@ -48,7 +48,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 	}
 
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		// TODO Auto-generated method stub
 		return null;

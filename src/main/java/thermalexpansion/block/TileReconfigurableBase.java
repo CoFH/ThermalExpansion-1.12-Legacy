@@ -2,7 +2,7 @@ package thermalexpansion.block;
 
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
-import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ISidedTexture;
 import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
@@ -13,7 +13,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-public abstract class TileReconfigurableBase extends TileRSBase implements IReconfigurableFacing, IReconfigurableSides, ISidedBlockTexture, ITilePacketHandler {
+public abstract class TileReconfigurableBase extends TileRSBase implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture, ITilePacketHandler {
 
 	protected boolean isActive = false;
 	protected byte facing = 3;
@@ -30,7 +30,6 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
 		payload.addBool(isActive);
@@ -245,6 +244,6 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 
 	/* ISidedBlockTexture */
 	@Override
-	public abstract IIcon getBlockTexture(int side, int pass);
+	public abstract IIcon getTexture(int side, int pass);
 
 }

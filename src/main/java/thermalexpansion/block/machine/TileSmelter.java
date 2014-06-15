@@ -13,19 +13,19 @@ import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 public class TileSmelter extends TileMachineEnergized {
 
-	public static final int TYPE = BlockMachine.Types.SMELTER.ordinal();
+	static final int TYPE = BlockMachine.Types.SMELTER.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 7;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false, true, true };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, true, true, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 7;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false, true, true };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(40);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Smelter", "machine", true);
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
@@ -158,7 +158,7 @@ public class TileSmelter extends TileMachineEnergized {
 			}
 		}
 		if (secondaryItem != null) {
-			if (worldObj.rand.nextInt(CHANCE) < recipe.getSecondaryOutputChance()) {
+			if (worldObj.rand.nextInt(secondaryChance) < recipe.getSecondaryOutputChance()) {
 				if (inventory[4] == null) {
 					inventory[4] = secondaryItem;
 				} else {
@@ -184,7 +184,7 @@ public class TileSmelter extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		int side;

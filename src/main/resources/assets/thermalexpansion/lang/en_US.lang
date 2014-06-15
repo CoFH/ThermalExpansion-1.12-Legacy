@@ -154,6 +154,7 @@ info.thermalexpansion.dynamo.steam2=Steam may be pumped in instead.
 info.thermalexpansion.dynamo.magmatic=Requires hot fluids.
 info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
 info.thermalexpansion.dynamo.reactant=Requires fluid fuel and solid reactant.
+info.thermalexpansion.dynamo.enervation=Extracts flux from various objects.
 
 info.thermalexpansion.florb1=Holds 1000 mB of most fluids.
 info.thermalexpansion.florb1a=Holds 1000 mB of most hot fluids.
@@ -175,6 +176,7 @@ item.thermalexpansion.tool.invarBattleWrench.name=Invar BattleWrench
 item.thermalexpansion.tool.wrench.name=Crescent Hammer
 item.thermalexpansion.tool.multimeter.name=Multimeter
 item.thermalexpansion.tool.debugger.name=Debugger
+item.thermalexpansion.tool.igniter.name=Flux Igniter
 
 item.thermalexpansion.armor.invarHelmet.name=Invar Helmet
 item.thermalexpansion.armor.invarPlate.name=Invar Armor
@@ -270,6 +272,7 @@ tile.thermalexpansion.dynamo.steam.name=Steam Dynamo
 tile.thermalexpansion.dynamo.magmatic.name=Magmatic Dynamo
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.reactant.name=Reactant Dynamo
+tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo
 
 tile.thermalexpansion.cell.creative.name=Creative Energy Cell
 tile.thermalexpansion.cell.basic.name=Leadstone Energy Cell

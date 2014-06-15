@@ -366,7 +366,6 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addBool(actsSneaking);
 		payload.addBool(leftClick);
 		payload.addByte(tickSlot);
@@ -456,7 +455,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())

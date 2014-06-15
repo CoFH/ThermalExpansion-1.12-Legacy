@@ -15,20 +15,11 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import thermalexpansion.ThermalExpansion;
 
 public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
-
-	public static ItemStack setDefaultTag(ItemStack container, int energy) {
-
-		container.setTagCompound(new NBTTagCompound());
-		container.stackTagCompound.setInteger("Energy", energy);
-
-		return container;
-	}
 
 	public ItemCapacitor() {
 
@@ -56,11 +47,11 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-		list.add(setDefaultTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), STORAGE[Types.CREATIVE.ordinal()]));
-		list.add(setDefaultTag(new ItemStack(item, 1, Types.POTATO.ordinal()), STORAGE[Types.POTATO.ordinal()]));
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), STORAGE[Types.CREATIVE.ordinal()]));
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.POTATO.ordinal()), STORAGE[Types.POTATO.ordinal()]));
 		for (int i = 2; i < Types.values().length; i++) {
-			list.add(setDefaultTag(new ItemStack(item, 1, i), 0));
-			list.add(setDefaultTag(new ItemStack(item, 1, i), STORAGE[i]));
+			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), 0));
+			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), STORAGE[i]));
 		}
 	}
 
@@ -133,7 +124,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			return;
 		}
 		if (stack.stackTagCompound == null) {
-			setDefaultTag(stack, 0);
+			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
 		if (stack.getItemDamage() == Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
@@ -187,7 +178,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			return 0;
 		}
 		if (container.stackTagCompound == null) {
-			setDefaultTag(container, 0);
+			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(STORAGE[container.getItemDamage()] - stored, RECEIVE[container.getItemDamage()]));
@@ -203,7 +194,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
 		if (container.stackTagCompound == null) {
-			setDefaultTag(container, 0);
+			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
 		int extract = Math.min(maxExtract, Math.min(stored, SEND[container.getItemDamage()]));
@@ -223,7 +214,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public int getEnergyStored(ItemStack container) {
 
 		if (container.stackTagCompound == null) {
-			setDefaultTag(container, 0);
+			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		return container.stackTagCompound.getInteger("Energy");
 	}
@@ -238,8 +229,8 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		CREATIVE, POTATO, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 
-	public static final int[] SEND = { 5000, 20, 20, 100, 500, 2500 };
-	public static final int[] RECEIVE = { 0, 0, 80, 400, 2000, 10000 };
-	public static final int[] STORAGE = { 5000, 16000, 80000, 400000, 2000000, 10000000 };
+	public static final int[] SEND = { 10000, 80, 80, 400, 2000, 10000 };
+	public static final int[] RECEIVE = { 0, 0, 160, 800, 4000, 20000 };
+	public static final int[] STORAGE = { 10000, 16000, 80000, 400000, 2000000, 10000000 };
 
 }

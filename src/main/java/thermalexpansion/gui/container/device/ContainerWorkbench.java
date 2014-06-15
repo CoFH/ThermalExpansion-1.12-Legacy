@@ -15,13 +15,13 @@ import net.minecraft.tileentity.TileEntity;
 
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
 
-public class ContainerWorkbench extends ContainerTEBase implements ISetSchematic {
+public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
 	TileWorkbench myTile;
 	public InventoryPlayer playerInv;

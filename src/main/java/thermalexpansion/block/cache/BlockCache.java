@@ -1,6 +1,6 @@
 package thermalexpansion.block.cache;
 
-import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
@@ -146,8 +146,8 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
-		ISidedBlockTexture tile = (ISidedBlockTexture) world.getTileEntity(x, y, z);
-		return tile == null ? null : tile.getBlockTexture(side, renderPass);
+		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
+		return tile == null ? null : tile.getTexture(side, renderPass);
 	}
 
 	@Override

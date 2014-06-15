@@ -21,7 +21,7 @@ import thermalfoundation.item.TFItems;
 
 public class FurnaceManager {
 
-	private static TMap<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap();
+	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;

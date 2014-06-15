@@ -1,7 +1,7 @@
 package thermalexpansion.block.device;
 
 import cofh.api.tileentity.ISecureTile;
-import cofh.api.tileentity.ISidedBlockTexture;
+import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
@@ -111,8 +111,8 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
-		ISidedBlockTexture theTile = (ISidedBlockTexture) world.getTileEntity(x, y, z);
-		return theTile == null ? null : theTile.getBlockTexture(side, renderPass);
+		ISidedTexture theTile = (ISidedTexture) world.getTileEntity(x, y, z);
+		return theTile == null ? null : theTile.getTexture(side, renderPass);
 	}
 
 	@Override

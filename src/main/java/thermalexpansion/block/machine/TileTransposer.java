@@ -9,7 +9,6 @@ import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -28,19 +27,19 @@ import thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
 public class TileTransposer extends TileMachineEnergized implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.TRANSPOSER.ordinal();
+	static final int TYPE = BlockMachine.Types.TRANSPOSER.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 5;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, {}, { 1 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, false, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 5;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, {}, { 1 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, false, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(40);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Transposer", "machine", true);
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
@@ -187,7 +186,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[0]);
 			ItemStack output = recipe.getOutput();
 
-			if (worldObj.rand.nextInt(CHANCE) < recipe.getChance()) {
+			if (worldObj.rand.nextInt(secondaryChance) < recipe.getChance()) {
 				if (inventory[1] == null) {
 					inventory[1] = output;
 				} else {
@@ -206,7 +205,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 
 	protected void transferFluid() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -232,7 +231,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -424,9 +423,9 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	}
 
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
+		CoFHPacket payload = super.getGuiPacket();
 
 		payload.addBool(reverse);
 		payload.addBool(reverseFlag);
@@ -440,9 +439,9 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	}
 
 	@Override
-	public CoFHPacket getFluidCoFHPacket() {
+	public CoFHPacket getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidCoFHPacket();
+		CoFHPacket payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -450,21 +449,52 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	}
 
 	@Override
-	public CoFHPacket getModeCoFHPacket() {
+	public CoFHPacket getModePacket() {
 
-		CoFHPacket payload = super.getModeCoFHPacket();
+		CoFHPacket payload = super.getModePacket();
 
 		payload.addBool(reverseFlag);
 
 		return payload;
 	}
 
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		reverse = payload.getBool();
+		reverseFlag = payload.getBool();
+		tank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	protected void handleFluidPacket(CoFHPacket payload) {
+
+		super.handleFluidPacket(payload);
+
+		renderFluid = payload.getFluidStack();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	protected void handleModePacket(CoFHPacket payload) {
+
+		super.handleModePacket(payload);
+
+		reverseFlag = payload.getBool();
+		if (!isActive) {
+			reverse = reverseFlag;
+		}
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+	}
+
 	public void setMode(boolean mode) {
 
+		boolean lastFlag = reverseFlag;
 		reverseFlag = mode;
-		if (ServerHelper.isClientWorld(worldObj)) {
-			sendModePacket();
-		}
+		sendModePacket();
+		reverseFlag = lastFlag;
 	}
 
 	/* ITilePacketHandler */
@@ -477,36 +507,6 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 			renderFluid = payload.getFluidStack();
 		} else {
 			payload.getFluidStack();
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			reverse = payload.getBool();
-			reverseFlag = payload.getBool();
-			tank.setFluid(payload.getFluidStack());
-			return;
-		case FLUID:
-			renderFluid = payload.getFluidStack();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		case MODE:
-			reverseFlag = payload.getBool();
-
-			if (!isActive) {
-				reverse = reverseFlag;
-			}
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-			return;
-		default:
 		}
 	}
 
@@ -608,7 +608,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {

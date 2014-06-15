@@ -9,7 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.ISchematicContainer;
 
 public class GenericTEPacket extends CoFHPacket {
 
@@ -40,8 +40,8 @@ public class GenericTEPacket extends CoFHPacket {
 				rs.setControl(ControlMode.values()[getByte()]);
 				return;
 			case WRITE_SCHEM:
-				if (player.openContainer instanceof ISetSchematic) {
-					((ISetSchematic) player.openContainer).writeSchematic();
+				if (player.openContainer instanceof ISchematicContainer) {
+					((ISchematicContainer) player.openContainer).writeSchematic();
 				}
 				return;
 			case CONFIG_SYNC:

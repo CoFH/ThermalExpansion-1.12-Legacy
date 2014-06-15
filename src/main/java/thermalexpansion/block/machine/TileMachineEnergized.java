@@ -10,75 +10,25 @@ import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.core.TEProps;
-
 public abstract class TileMachineEnergized extends TileMachineBase implements IEnergyHandler, IEnergyInfo {
 
-	public static class EnergyConfig {
-
-		public int minPower;
-		public int maxPower;
-		public int maxEnergy;
-		public int minPowerLevel;
-		public int maxPowerLevel;
-		public int energyRamp;
-
-		public boolean setParams(int minPower, int maxPower, int maxEnergy) {
-
-			if (minPower <= 0 || maxPower <= 0 || maxEnergy <= 0) {
-				return false;
-			}
-			this.minPower = minPower;
-			this.maxPower = maxPower;
-			this.maxEnergy = maxEnergy;
-			this.maxPowerLevel = maxEnergy * 8 / 10;
-			this.energyRamp = maxPowerLevel / maxPower;
-			this.minPowerLevel = minPower * energyRamp;
-
-			return true;
-		}
-
-		public boolean setParamsPower(int maxPower) {
-
-			return setParams(maxPower / 4, maxPower, maxPower * 1200);
-		}
-
-		public boolean setParamsEnergy(int maxEnergy) {
-
-			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
-		}
-
-		public EnergyConfig copy() {
-
-			EnergyConfig newConfig = new EnergyConfig();
-			newConfig.minPower = this.minPower;
-			newConfig.maxPower = this.maxPower;
-			newConfig.maxEnergy = this.maxEnergy;
-			newConfig.minPowerLevel = this.minPowerLevel;
-			newConfig.maxPowerLevel = this.maxPowerLevel;
-			newConfig.energyRamp = this.energyRamp;
-
-			return newConfig;
-		}
-	}
-
-	protected static final EnergyConfig[] defaultEnergyData = new EnergyConfig[BlockMachine.Types.values().length];
+	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 
 	EnergyConfig energyConfig;
 	EnergyStorage energyStorage;
 
+	/* Augment Variables */
 	int energyMod = 1;
 
 	public TileMachineEnergized() {
 
 		super();
 
-		energyConfig = defaultEnergyData[getType()];
+		energyConfig = defaultEnergyConfig[getType()];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 	}
 
@@ -168,10 +118,15 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 	public void chargeEnergy() {
 
-		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[getChargeSlot()])) {
+		int chargeSlot = getChargeSlot();
+
+		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(
-					((IEnergyContainerItem) inventory[getChargeSlot()].getItem()).extractEnergy(inventory[getChargeSlot()], energyRequest, false), false);
+			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false),
+					false);
+			if (inventory[chargeSlot].stackSize <= 0) {
+				inventory[chargeSlot] = null;
+			}
 		}
 	}
 
@@ -192,28 +147,23 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
+		CoFHPacket payload = super.getGuiPacket();
 
 		payload.addInt(energyStorage.getEnergyStored());
+		payload.addInt(energyMod);
 
 		return payload;
 	}
 
-	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	protected void handleGuiPacket(CoFHPacket payload) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			return;
-		default:
-		}
+		super.handleGuiPacket(payload);
+
+		energyStorage.setEnergyStored(payload.getInt());
+		energyMod = payload.getInt();
 	}
 
 	/* GUI METHODS */
@@ -335,13 +285,13 @@ public abstract class TileMachineEnergized extends TileMachineBase implements IE
 	}
 
 	@Override
-	public int getInfoEnergy() {
+	public int getInfoEnergyStored() {
 
 		return energyStorage.getEnergyStored();
 	}
 
 	@Override
-	public int getInfoMaxEnergy() {
+	public int getInfoMaxEnergyStored() {
 
 		return energyStorage.getMaxEnergyStored();
 	}

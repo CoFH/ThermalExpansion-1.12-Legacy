@@ -40,7 +40,7 @@ public class TEProps {
 	}
 
 	public static enum PacketID {
-		GUI, FLUID, MODE
+		GUI, FLUID, MODE, AUGMENT
 	}
 
 	public static boolean holidayChristmas = true;

@@ -66,7 +66,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IT
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addString(invName);
 		return payload;
 	}

@@ -1,13 +1,11 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,13 +18,14 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 
 public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler {
 
+	static final int TYPE = BlockDynamo.Types.MAGMATIC.ordinal();
+
 	public static void initialize() {
 
-		guiIds[BlockDynamo.Types.MAGMATIC.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoMagmatic", "dynamo", "TEBase", null, true);
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoMagmatic", "dynamo", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
@@ -38,7 +37,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int getType() {
 
-		return BlockDynamo.Types.MAGMATIC.ordinal();
+		return TYPE;
 	}
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
@@ -100,7 +99,6 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
@@ -108,13 +106,16 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		CoFHPacket payload = super.getGuiPacket();
 		payload.addFluidStack(tank.getFluid());
-		payload.addInt(energyStorage.getEnergyStored());
-
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* ITilePacketHandler */
@@ -122,24 +123,9 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
-
 		renderFluid = payload.getFluidStack();
-
 		if (renderFluid == null) {
 			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			tank.setFluid(payload.getFluidStack());
-			energyStorage.setEnergyStored(payload.getInt());
-			return;
-		default:
 		}
 	}
 

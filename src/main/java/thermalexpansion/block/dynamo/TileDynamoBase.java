@@ -3,6 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
+import cofh.api.tileentity.IAugmentableTile;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.network.CoFHPacket;
@@ -20,6 +21,7 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -31,46 +33,15 @@ import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 
 public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
-		IEnergyInfo {
+		IEnergyInfo, IAugmentableTile {
 
-	public static class DynamoConfig {
-
-		public int minPower = 4;
-		public int maxPower = 80;
-		public int maxEnergy = 40000;
-		public int maxTransfer = 160;
-		public int minPowerLevel = 9 * maxEnergy / 10;
-		public int maxPowerLevel = 1 * maxEnergy / 10;
-		public int energyRamp = minPowerLevel / maxPower;
-
-		public DynamoConfig() {
-
-		}
-
-		public DynamoConfig(DynamoConfig config) {
-
-			this.minPower = config.minPower;
-			this.maxPower = config.maxPower;
-			this.maxEnergy = config.maxEnergy;
-			this.maxTransfer = config.maxTransfer;
-			this.minPowerLevel = config.minPowerLevel;
-			this.maxPowerLevel = config.maxPowerLevel;
-			this.energyRamp = config.energyRamp;
-		}
-
-		public DynamoConfig copy() {
-
-			return new DynamoConfig(this);
-		}
-	}
-
+	protected static final EnergyConfig defaultConfig = new EnergyConfig();
 	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
 
-	protected static final DynamoConfig defaultConfig = new DynamoConfig();
 	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
 
-	DynamoConfig config;
+	EnergyConfig config;
 	EnergyStorage energyStorage;
 
 	boolean cached = false;
@@ -81,18 +52,36 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	int fuelRF;
 	int compareTracker;
 
+	/* Augment Variables */
+	ItemStack[] augments = new ItemStack[3];
+	boolean[] augmentStatus = new boolean[3];
+
 	int energyMod = 1;
 	int fuelMod = 100;
 
 	public TileDynamoBase() {
 
 		config = defaultConfig;
-		energyStorage = new EnergyStorage(config.maxEnergy, config.maxTransfer);
+		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 2);
 	}
 
 	protected abstract boolean canGenerate();
 
 	protected abstract void generate();
+
+	protected boolean hasStoredEnergy() {
+
+		return energyStorage.getEnergyStored() > 0;
+	}
+
+	protected void transferEnergy(int bSide) {
+
+		if (adjacentHandler == null) {
+			return;
+		}
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+				Math.min(config.maxPower * 2, energyStorage.getEnergyStored()), false));
+	}
 
 	public IIcon getActiveIcon() {
 
@@ -122,15 +111,6 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 			return config.minPower;
 		}
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
-	}
-
-	protected void transferEnergy(int bSide) {
-
-		if (adjacentHandler == null) {
-			return;
-		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(config.maxTransfer, energyStorage.getEnergyStored()), false));
 	}
 
 	@Override
@@ -244,7 +224,6 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addByte(facing);
 		payload.addBool(isActive);
 		return payload;
@@ -253,11 +232,16 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	public CoFHPacket getGuiPacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		payload.addInt(energyStorage.getEnergyStored());
-
+		payload.addInt(fuelRF);
 		return payload;
+	}
+
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		energyStorage.setEnergyStored(payload.getInt());
+		fuelRF = payload.getInt();
 	}
 
 	/* ITilePacketHandler */
@@ -283,7 +267,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:
-			energyStorage.setEnergyStored(payload.getInt());
+			handleGuiPacket(payload);
 			return;
 		default:
 		}
@@ -311,10 +295,12 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		super.readFromNBT(nbt);
 
+		readAugmentsFromNBT(nbt);
+		augmentTile();
+
 		facing = nbt.getByte("Facing");
 		isActive = nbt.getBoolean("Active");
 		fuelRF = nbt.getInteger("Fuel");
-
 		energyStorage.readFromNBT(nbt);
 	}
 
@@ -323,11 +309,44 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		super.writeToNBT(nbt);
 
+		writeAugmentsToNBT(nbt);
+
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Active", isActive);
 		nbt.setInteger("Fuel", fuelRF);
 
 		energyStorage.writeToNBT(nbt);
+	}
+
+	public void readAugmentsFromNBT(NBTTagCompound nbt) {
+
+		NBTTagList list = nbt.getTagList("Augments", 10);
+		augments = new ItemStack[augments.length];
+		for (int i = 0; i < list.tagCount(); i++) {
+			NBTTagCompound tag = list.getCompoundTagAt(i);
+			int slot = tag.getInteger("Slot");
+
+			if (slot >= 0 && slot < augments.length) {
+				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
+			}
+		}
+	}
+
+	public void writeAugmentsToNBT(NBTTagCompound nbt) {
+
+		if (augments.length <= 0) {
+			return;
+		}
+		NBTTagList list = new NBTTagList();
+		for (int i = 0; i < augments.length; i++) {
+			if (augments[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setInteger("Slot", i);
+				augments[i].writeToNBT(tag);
+				list.appendTag(tag);
+			}
+		}
+		nbt.setTag("Augments", list);
 	}
 
 	/* ISidedInventory */
@@ -436,15 +455,34 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	}
 
 	@Override
-	public int getInfoEnergy() {
+	public int getInfoEnergyStored() {
 
 		return energyStorage.getEnergyStored();
 	}
 
 	@Override
-	public int getInfoMaxEnergy() {
+	public int getInfoMaxEnergyStored() {
 
 		return config.maxEnergy;
+	}
+
+	/* IAugmentableTile */
+	@Override
+	public ItemStack[] getAugmentSlots() {
+
+		return augments;
+	}
+
+	@Override
+	public boolean[] getAugmentStatus() {
+
+		return augmentStatus;
+	}
+
+	@Override
+	public boolean augmentTile() {
+
+		return false;
 	}
 
 }

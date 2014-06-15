@@ -11,19 +11,19 @@ import thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
 public class TileFurnace extends TileMachineEnergized {
 
-	public static final int TYPE = BlockMachine.Types.FURNACE.ordinal();
+	static final int TYPE = BlockMachine.Types.FURNACE.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Furnace", "machine", true);
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
@@ -37,8 +37,6 @@ public class TileFurnace extends TileMachineEnergized {
 
 		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 		inventory = new ItemStack[1 + 1 + 1];
-
-		processMod = 8;
 	}
 
 	@Override
@@ -105,7 +103,7 @@ public class TileFurnace extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -122,12 +120,6 @@ public class TileFurnace extends TileMachineEnergized {
 				}
 			}
 		}
-	}
-
-	@Override
-	public int getChargeSlot() {
-
-		return 2;
 	}
 
 	@Override

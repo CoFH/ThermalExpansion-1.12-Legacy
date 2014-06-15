@@ -13,19 +13,19 @@ import thermalexpansion.ThermalExpansion;
 
 public class TileCharger extends TileMachineEnergized {
 
-	public static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
+	static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParams(1, 10000, 400000);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParams(1, 10000, 400000);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Charger", "machine", true);
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
@@ -69,7 +69,7 @@ public class TileCharger extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[1] == null) {

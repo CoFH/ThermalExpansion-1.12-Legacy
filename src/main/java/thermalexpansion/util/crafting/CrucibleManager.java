@@ -4,10 +4,10 @@ import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 import cofh.util.oredict.OreDictionaryArbiter;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import net.minecraft.init.Blocks;
@@ -24,7 +24,7 @@ import thermalfoundation.item.TFItems;
 
 public class CrucibleManager {
 
-	private static TMap<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap();
+	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
@@ -99,7 +99,7 @@ public class CrucibleManager {
 
 	public static void refreshRecipes() {
 
-		TMap<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap(recipeMap.size());
 		RecipeCrucible tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeCrucible> entry : recipeMap.entrySet()) {

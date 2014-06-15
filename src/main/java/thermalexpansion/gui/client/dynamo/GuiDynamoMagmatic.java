@@ -2,8 +2,10 @@ package thermalexpansion.gui.client.dynamo;
 
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
+import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluidTank;
+import cofh.gui.element.TabAugment;
 import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
@@ -41,8 +43,10 @@ public class GuiDynamoMagmatic extends GuiBaseAdv {
 
 		addTab(new TabEnergy(this, myTile, true));
 		addTab(new TabRedstone(this, myTile));
+
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone));
+		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}
 
 }

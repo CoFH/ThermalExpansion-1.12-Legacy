@@ -20,21 +20,21 @@ import net.minecraft.tileentity.TileEntity;
 
 import thermalexpansion.block.machine.TileAssembler;
 import thermalexpansion.gui.container.ContainerTEBase;
-import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.network.GenericTEPacket;
 
-public class ContainerAssembler extends ContainerTEBase implements ISetSchematic {
+public class ContainerAssembler extends ContainerTEBase implements ISchematicContainer {
 
 	TileAssembler myTile;
 
 	// Schematic Tab Stuff
-	public InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-	public IInventory craftResult = new InventoryCraftResult();
-	public InventoryPlayer playerInv;
-	public Slot craftSlots[] = new Slot[9];
-	public Slot resultSlot;
+	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+	IInventory craftResult = new InventoryCraftResult();
+	InventoryPlayer playerInv;
+	Slot craftSlots[] = new Slot[9];
+	Slot resultSlot;
 
 	public ContainerAssembler(InventoryPlayer inventory, TileEntity entity) {
 

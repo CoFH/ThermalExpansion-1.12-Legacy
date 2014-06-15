@@ -5,7 +5,6 @@ import cofh.gui.GuiBaseAdv;
 import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
-import cofh.gui.element.ElementFluidTank;
 import cofh.gui.element.TabAugment;
 import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
@@ -16,23 +15,23 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.dynamo.TileDynamoReactant;
+import thermalexpansion.block.dynamo.TileDynamoEnervation;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
+import thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 
-public class GuiDynamoReactant extends GuiBaseAdv {
+public class GuiDynamoEnervation extends GuiBaseAdv {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoReactant.png");
-	static final String INFO = "Generates Redstone Flux using alchemical reactions.\n\nA solid reactant and a fluid fuel must be provided.\n\nGeneration rate varies according to energy demand.";
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoEnervation.png");
+	static final String INFO = "Extracts Redstone Flux directly from natural sources or from objects which store it.\n\nGeneration rate varies according to energy demand.";
 
-	TileDynamoReactant myTile;
+	TileDynamoEnervation myTile;
 
 	ElementDualScaled duration;
 
-	public GuiDynamoReactant(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiDynamoEnervation(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerDynamoReactant(inventory, theTile), TEXTURE);
-		myTile = (TileDynamoReactant) theTile;
+		super(new ContainerDynamoEnervation(inventory, theTile), TEXTURE);
+		myTile = (TileDynamoEnervation) theTile;
 		name = myTile.getInventoryName();
 	}
 
@@ -42,13 +41,12 @@ public class GuiDynamoReactant extends GuiBaseAdv {
 		super.initGui();
 
 		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)));
-		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 
 		addTab(new TabEnergy(this, myTile, true));
 		addTab(new TabRedstone(this, myTile));
 
-		addTab(new TabInfo(this, INFO));
+		addTab(new TabInfo(this, INFO, 1));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone));
 		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}

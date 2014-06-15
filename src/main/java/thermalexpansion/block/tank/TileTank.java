@@ -260,11 +260,9 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = CoFHTilePacket.newPacket(this);
-
 		payload.addByte(type);
 		payload.addByte(mode);
 		payload.addFluidStack(tank.getFluid());
-
 		return payload;
 	}
 

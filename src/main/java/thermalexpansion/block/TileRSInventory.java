@@ -48,7 +48,6 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
 		return payload;
@@ -110,7 +109,11 @@ public abstract class TileRSInventory extends TileInventory implements IRedstone
 	public void setControl(ControlMode control) {
 
 		rsMode = control;
-		sendUpdatePacket(Side.CLIENT);
+		if (ServerHelper.isClientWorld(worldObj)) {
+			GenericTEPacket.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+		}
 	}
 
 	@Override

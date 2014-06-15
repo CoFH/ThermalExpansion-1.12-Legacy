@@ -12,25 +12,37 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.container.ISetSchematic;
+import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.network.GenericTEPacket;
 
 public class TabSchematic extends TabBase {
 
+	public static int defaultSide = 1;
 	public static ResourceLocation GRID_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Grid_Schematic.png");
 	public static ResourceLocation OUTPUT_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Output_Schematic.png");
 
-	ISetSchematic myTile;
+	ISchematicContainer myContainer;
 
-	public TabSchematic(GuiBase gui, ISetSchematic tile) {
+	public TabSchematic(GuiBase gui, ISchematicContainer theTile) {
 
-		super(gui);
+		this(gui, defaultSide, theTile);
+	}
 
-		myTile = tile;
+	public TabSchematic(GuiBase gui, int side, ISchematicContainer theTile) {
+
+		super(gui, side);
+
+		myContainer = theTile;
 		maxHeight = 92;
 		maxWidth = 112;
 		backgroundColor = 0x2020B0;
-		// backgroundColor = 0xCA1F7B;
+
+		for (int i = 0; i < myContainer.getCraftingSlots().length; i++) {
+			myContainer.getCraftingSlots()[i].xDisplayPosition = -gui.getGuiLeft() - 16;
+			myContainer.getCraftingSlots()[i].yDisplayPosition = -gui.getGuiTop() - 16;
+		}
+		myContainer.getResultSlot().xDisplayPosition = -gui.getGuiLeft() - 16;
+		myContainer.getResultSlot().yDisplayPosition = -gui.getGuiTop() - 16;
 	}
 
 	@Override
@@ -38,17 +50,15 @@ public class TabSchematic extends TabBase {
 
 		drawBackground();
 		drawTabIcon("schematic");
-
 		if (!isFullyOpened()) {
 			return;
 		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posX + 20, posY + 6, headerColor);
-		// getFontRenderer().drawString("", posX, posY, 0xffffff);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posXOffset() + 18, posY + 6, headerColor);
 
-		if (myTile.canWriteSchematic()) {
-			gui.drawButton("IconAccept", posX + 77, posY + 60, 1, 0);
+		if (myContainer.canWriteSchematic()) {
+			gui.drawButton("IconAccept", posX() + 77, posY + 60, 1, 0);
 		} else {
-			gui.drawButton("IconAcceptInactive", posX + 77, posY + 60, 1, 2);
+			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 1, 2);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
@@ -75,7 +85,7 @@ public class TabSchematic extends TabBase {
 		}
 		if (77 < mouseX && mouseX < 93 && 60 < mouseY && mouseY < 76) {
 
-			if (myTile.canWriteSchematic()) {
+			if (myContainer.canWriteSchematic()) {
 				writeSchematic();
 			}
 		} else {
@@ -96,13 +106,13 @@ public class TabSchematic extends TabBase {
 		float colorG = (backgroundColor >> 8 & 255) / 255.0F * 0.6F;
 		float colorB = (backgroundColor & 255) / 255.0F * 0.6F;
 		GL11.glColor4f(colorR, colorG, colorB, 1.0F);
-		gui.drawTexturedModalRect(posX + 8, posY + 20, 16, 20, 94, 64);
+		gui.drawTexturedModalRect(posX() + 8, posY + 20, 16, 20, 94, 64);
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderHelper.bindTexture(GRID_TEXTURE);
-		gui.drawSizedTexturedModalRect(posX + 8, posY + 20, 0, 0, 64, 64, 64, 64);
+		gui.drawSizedTexturedModalRect(posX() + 8, posY + 20, 0, 0, 64, 64, 64, 64);
 		RenderHelper.bindTexture(OUTPUT_TEXTURE);
-		gui.drawSizedTexturedModalRect(posX + 72, posY + 25, 0, 0, 26, 26, 26, 26);
+		gui.drawSizedTexturedModalRect(posX() + 72, posY + 25, 0, 0, 26, 26, 26, 26);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
@@ -110,31 +120,31 @@ public class TabSchematic extends TabBase {
 	public void setFullyOpen() {
 
 		super.setFullyOpen();
-		for (int i = 0; i < myTile.getCraftingSlots().length; i++) {
-			myTile.getCraftingSlots()[i].xDisplayPosition = posX - gui.getGuiLeft() + 14 + 18 * (i % 3);
-			myTile.getCraftingSlots()[i].yDisplayPosition = posY - gui.getGuiTop() + 26 + 18 * (i / 3);
+		for (int i = 0; i < myContainer.getCraftingSlots().length; i++) {
+			myContainer.getCraftingSlots()[i].xDisplayPosition = posX() - gui.getGuiLeft() + 14 + 18 * (i % 3);
+			myContainer.getCraftingSlots()[i].yDisplayPosition = posY - gui.getGuiTop() + 26 + 18 * (i / 3);
 		}
-		myTile.getResultSlot().xDisplayPosition = posX - gui.getGuiLeft() + 77;
-		myTile.getResultSlot().yDisplayPosition = posY - gui.getGuiTop() + 30;
+		myContainer.getResultSlot().xDisplayPosition = posX() - gui.getGuiLeft() + 77;
+		myContainer.getResultSlot().yDisplayPosition = posY - gui.getGuiTop() + 30;
 	}
 
 	@Override
 	public void toggleOpen() {
 
 		if (open) {
-			for (int i = 0; i < myTile.getCraftingSlots().length; i++) {
-				myTile.getCraftingSlots()[i].xDisplayPosition = -gui.getGuiLeft() - 16;
-				myTile.getCraftingSlots()[i].yDisplayPosition = -gui.getGuiTop() - 16;
+			for (int i = 0; i < myContainer.getCraftingSlots().length; i++) {
+				myContainer.getCraftingSlots()[i].xDisplayPosition = -gui.getGuiLeft() - 16;
+				myContainer.getCraftingSlots()[i].yDisplayPosition = -gui.getGuiTop() - 16;
 			}
-			myTile.getResultSlot().xDisplayPosition = -gui.getGuiLeft() - 16;
-			myTile.getResultSlot().yDisplayPosition = -gui.getGuiTop() - 16;
+			myContainer.getResultSlot().xDisplayPosition = -gui.getGuiLeft() - 16;
+			myContainer.getResultSlot().yDisplayPosition = -gui.getGuiTop() - 16;
 		}
 		super.toggleOpen();
 	}
 
 	private boolean writeSchematic() {
 
-		if (myTile.canWriteSchematic()) {
+		if (myContainer.canWriteSchematic()) {
 			GenericTEPacket.sendCreateSchematicPacketToServer();
 			return true;
 		}

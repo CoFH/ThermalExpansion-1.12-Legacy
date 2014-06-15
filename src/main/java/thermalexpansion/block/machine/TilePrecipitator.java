@@ -5,7 +5,6 @@ import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -18,11 +17,10 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 
 public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
+	static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
 	public static void initialize() {
 
@@ -30,15 +28,15 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		processItems[1] = new ItemStack(Blocks.snow);
 		processItems[2] = new ItemStack(Blocks.ice);
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
@@ -125,7 +123,7 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -155,9 +153,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	}
 
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
+		CoFHPacket payload = super.getGuiPacket();
 
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
@@ -171,9 +169,9 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	}
 
 	@Override
-	public CoFHPacket getFluidCoFHPacket() {
+	public CoFHPacket getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidCoFHPacket();
+		CoFHPacket payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -181,23 +179,51 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	}
 
 	@Override
-	public CoFHPacket getModeCoFHPacket() {
+	public CoFHPacket getModePacket() {
 
-		CoFHPacket payload = super.getModeCoFHPacket();
+		CoFHPacket payload = super.getModePacket();
 
 		payload.addByte(curSelection);
 
 		return payload;
 	}
 
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		curSelection = payload.getByte();
+		prevSelection = payload.getByte();
+		tank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	protected void handleFluidPacket(CoFHPacket payload) {
+
+		super.handleFluidPacket(payload);
+
+		renderFluid = payload.getFluidStack();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	protected void handleModePacket(CoFHPacket payload) {
+
+		super.handleModePacket(payload);
+
+		curSelection = payload.getByte();
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+	}
+
 	public void setMode(int i) {
 
 		byte lastSelection = curSelection;
 		curSelection = (byte) i;
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			sendModePacket();
-		}
+		sendModePacket();
 		curSelection = lastSelection;
 	}
 
@@ -211,36 +237,6 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 			renderFluid = payload.getFluidStack();
 		} else {
 			payload.getFluidStack();
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			curSelection = payload.getByte();
-			prevSelection = payload.getByte();
-			tank.setFluid(payload.getFluidStack());
-			return;
-		case FLUID:
-			renderFluid = payload.getFluidStack();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		case MODE:
-			curSelection = payload.getByte();
-
-			if (!isActive) {
-				prevSelection = curSelection;
-			}
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-			return;
-		default:
 		}
 	}
 

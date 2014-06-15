@@ -23,16 +23,16 @@ import thermalexpansion.ThermalExpansion;
 
 public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.WATER_GEN.ordinal();
+	static final int TYPE = BlockMachine.Types.WATER_GEN.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 2;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, false };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 2;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("WaterGen", "machine", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion.WaterGen");
@@ -119,7 +119,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 	protected void transferFluid() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -183,6 +183,18 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 		super.onNeighborBlockChange();
 		updateAdjacentSources();
 	}
+
+	/* NETWORK METHODS */
+	// TODO: Add these if Accumulator changes over to something else.
+	// @Override
+	// public CoFHPacket getGuiPacket() {
+	//
+	// }
+	//
+	// @Override
+	// protected void handleGuiPacket(CoFHPacket payload) {
+	//
+	// }
 
 	/* GUI METHODS */
 	public FluidTank getTank() {

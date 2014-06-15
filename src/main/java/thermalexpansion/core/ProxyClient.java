@@ -65,7 +65,6 @@ public class ProxyClient extends Proxy {
 			IconRegistry.addIcon("machineFrame", "thermalexpansion:component/MachineFrame", event.map);
 			IconRegistry.addIcon("lampFrame", "thermalexpansion:component/LampFrame", event.map);
 
-			IconRegistry.addIcon("IconConfigMachine", "thermalexpansion:icons/Icon_Config_Machine", event.map);
 			IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:icons/Icon_Config_Tesseract", event.map);
 			IconRegistry.addIcon("IconRecvOnly", "thermalexpansion:icons/Icon_RecvOnly", event.map);
 			IconRegistry.addIcon("IconSendOnly", "thermalexpansion:icons/Icon_SendOnly", event.map);

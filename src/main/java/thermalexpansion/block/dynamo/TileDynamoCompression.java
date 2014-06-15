@@ -1,13 +1,11 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -20,13 +18,14 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 
 public class TileDynamoCompression extends TileDynamoBase implements IFluidHandler {
 
+	static final int TYPE = BlockDynamo.Types.COMPRESSION.ordinal();
+
 	public static void initialize() {
 
-		guiIds[BlockDynamo.Types.COMPRESSION.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoCompression", "dynamo", "TEBase", null, true);
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoCompression", "dynamo", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
 
@@ -42,7 +41,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public int getType() {
 
-		return BlockDynamo.Types.COMPRESSION.ordinal();
+		return TYPE;
 	}
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
@@ -131,7 +130,6 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addFluidStack(fuelTank.getFluid());
 		return payload;
 	}
@@ -139,14 +137,18 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		CoFHPacket payload = super.getGuiPacket();
 		payload.addFluidStack(fuelTank.getFluid());
 		payload.addFluidStack(coolantTank.getFluid());
-		payload.addInt(energyStorage.getEnergyStored());
-
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+		fuelTank.setFluid(payload.getFluidStack());
+		coolantTank.setFluid(payload.getFluidStack());
 	}
 
 	/* ITilePacketHandler */
@@ -154,25 +156,9 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
-
 		renderFluid = payload.getFluidStack();
-
 		if (renderFluid == null) {
 			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			fuelTank.setFluid(payload.getFluidStack());
-			coolantTank.setFluid(payload.getFluidStack());
-			energyStorage.setEnergyStored(payload.getInt());
-			return;
-		default:
 		}
 	}
 
@@ -181,7 +167,6 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
 		coolantRF = nbt.getInteger("Coolant");
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
@@ -201,7 +186,6 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public void writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-
 		nbt.setInteger("Coolant", coolantRF);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));

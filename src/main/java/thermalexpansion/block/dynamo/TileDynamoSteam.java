@@ -2,12 +2,10 @@ package thermalexpansion.block.dynamo;
 
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -30,9 +28,11 @@ import thermalfoundation.fluid.TFFluids;
 
 public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
+	static final int TYPE = BlockDynamo.Types.STEAM.ordinal();
+
 	public static void initialize() {
 
-		guiIds[BlockDynamo.Types.STEAM.ordinal()] = ThermalExpansion.proxy.registerGui("DynamoSteam", "dynamo", true);
+		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoSteam", "dynamo", true);
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
 	}
 
@@ -41,7 +41,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	static int coalRF = 48000;
 	static int charcoalRF = 32000;
 	static int woodRF = 4500;
-	static int blockCoalRF = coalRF * 9;
+	static int blockCoalRF = coalRF * 10;
 	static int otherRF = woodRF / 3;
 
 	static ItemStack coal = new ItemStack(Items.coal, 1, 0);
@@ -55,29 +55,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		woodRF = FuelHandler.configFuels.get(category, "wood", woodRF);
 		blockCoalRF = coalRF * 10;
 		otherRF = woodRF / 3;
-	}
-
-	FluidTank steamTank = new FluidTank(MAX_FLUID);
-	FluidTank waterTank = new FluidTank(MAX_FLUID);
-
-	int currentFuelRF = getItemEnergyValue(coal);
-	int steamAmount = 40;
-
-	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
-
-	public TileDynamoSteam() {
-
-		super();
-		inventory = new ItemStack[1];
-
-		steamAmount = config.maxPower / 2;
-		steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
-	}
-
-	@Override
-	public int getType() {
-
-		return BlockDynamo.Types.STEAM.ordinal();
 	}
 
 	public static int getItemEnergyValue(ItemStack fuel) {
@@ -103,6 +80,29 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 			return otherRF;
 		}
 		return GameRegistry.getFuelValue(fuel) * CoFHProps.RF_PER_MJ * 3 / 2;
+	}
+
+	FluidTank steamTank = new FluidTank(MAX_FLUID);
+	FluidTank waterTank = new FluidTank(MAX_FLUID);
+
+	int currentFuelRF = getItemEnergyValue(coal);
+	int steamAmount = 40;
+
+	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+
+	public TileDynamoSteam() {
+
+		super();
+		inventory = new ItemStack[1];
+
+		steamAmount = config.maxPower / 2;
+		steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	public FluidTank getTank(int tankIndex) {
@@ -180,32 +180,20 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
+		CoFHPacket payload = super.getGuiPacket();
+		payload.addInt(currentFuelRF);
 		payload.addFluidStack(steamTank.getFluid());
 		payload.addFluidStack(waterTank.getFluid());
-		payload.addInt(energyStorage.getEnergyStored());
-		payload.addInt(fuelRF);
-		payload.addInt(currentFuelRF);
-
 		return payload;
 	}
 
-	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	protected void handleGuiPacket(CoFHPacket payload) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			steamTank.setFluid(payload.getFluidStack());
-			waterTank.setFluid(payload.getFluidStack());
-			energyStorage.setEnergyStored(payload.getInt());
-			fuelRF = payload.getInt();
-			currentFuelRF = payload.getInt();
-			return;
-		default:
-		}
+		super.handleGuiPacket(payload);
+		currentFuelRF = payload.getInt();
+		steamTank.setFluid(payload.getFluidStack());
+		waterTank.setFluid(payload.getFluidStack());
 	}
 
 	/* GUI METHODS */

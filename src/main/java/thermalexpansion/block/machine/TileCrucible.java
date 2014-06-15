@@ -7,7 +7,6 @@ import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -26,19 +25,19 @@ import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 
 public class TileCrucible extends TileMachineEnergized implements IFluidHandler {
 
-	public static final int TYPE = BlockMachine.Types.CRUCIBLE.ordinal();
+	static final int TYPE = BlockMachine.Types.CRUCIBLE.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 3;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, false };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 3;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParams(40, 400, 400000);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParams(40, 400, 400000);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Crucible", "machine", true);
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
@@ -116,7 +115,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	protected void transferFluid() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -161,16 +160,14 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	public CoFHPacket getGuiCoFHPacket() {
+	public CoFHPacket getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiCoFHPacket();
-
+		CoFHPacket payload = super.getGuiPacket();
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -180,13 +177,26 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	}
 
 	@Override
-	public CoFHPacket getFluidCoFHPacket() {
+	public CoFHPacket getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidCoFHPacket();
-
+		CoFHPacket payload = super.getFluidPacket();
 		payload.addFluidStack(renderFluid);
-
 		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+		tank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	protected void handleFluidPacket(CoFHPacket payload) {
+
+		super.handleFluidPacket(payload);
+		renderFluid = payload.getFluidStack();
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	/* ITilePacketHandler */
@@ -194,31 +204,10 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
-
 		if (ServerHelper.isClientWorld(worldObj)) {
 			renderFluid = payload.getFluidStack();
 		} else {
 			payload.getFluidStack();
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			isActive = payload.getBool();
-			processMax = payload.getInt();
-			processRem = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			tank.setFluid(payload.getFluidStack());
-			return;
-		case FLUID:
-			renderFluid = payload.getFluidStack();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			return;
-		default:
 		}
 	}
 
@@ -238,7 +227,6 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
 		outputTrackerFluid = nbt.getInteger("Tracker");
 		tank.readFromNBT(nbt);
 
@@ -260,7 +248,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 
 	/* ISidedBlockTexture */
 	@Override
-	public IIcon getBlockTexture(int side, int pass) {
+	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {

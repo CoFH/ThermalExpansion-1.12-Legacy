@@ -83,10 +83,10 @@ public class RenderCell implements ISimpleBlockRenderingHandler, IItemRenderer {
 		}
 		if (tile != null) {
 			for (int i = 0; i < 6; i++) {
-				modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(i, 2)));
+				modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getTexture(i, 2)));
 			}
 			int facing = tile.getFacing();
-			modelFrame.render(facing * 4, facing * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getBlockTexture(facing, 3)));
+			modelFrame.render(facing * 4, facing * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getTexture(facing, 3)));
 		}
 	}
 

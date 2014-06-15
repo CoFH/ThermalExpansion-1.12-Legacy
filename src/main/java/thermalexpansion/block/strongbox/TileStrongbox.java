@@ -181,7 +181,6 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-
 		payload.addByte(type);
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(facing);

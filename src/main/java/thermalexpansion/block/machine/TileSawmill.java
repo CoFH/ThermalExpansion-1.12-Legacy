@@ -11,19 +11,19 @@ import thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 
 public class TileSawmill extends TileMachineEnergized {
 
-	public static final int TYPE = BlockMachine.Types.SAWMILL.ordinal();
+	static final int TYPE = BlockMachine.Types.SAWMILL.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 5;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 5;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(20);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Sawmill", "machine", true);
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
@@ -133,7 +133,7 @@ public class TileSawmill extends TileMachineEnergized {
 			}
 		}
 		if (secondaryItem != null) {
-			if (worldObj.rand.nextInt(CHANCE) < recipe.getSecondaryOutputChance()) {
+			if (worldObj.rand.nextInt(secondaryChance) < recipe.getSecondaryOutputChance()) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
 				} else {
@@ -151,7 +151,7 @@ public class TileSawmill extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		int side;

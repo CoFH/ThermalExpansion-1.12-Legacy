@@ -1,6 +1,7 @@
 package thermalexpansion.item;
 
 import cofh.item.ItemBase;
+import cofh.util.EnergyHelper;
 import cofh.util.ItemHelper;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -14,6 +15,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.tool.ItemCapacitor;
+import thermalexpansion.item.tool.ItemIgniter;
 import thermalexpansion.item.tool.ItemMultimeter;
 import thermalexpansion.item.tool.ItemWrench;
 import thermalfoundation.item.TFItems;
@@ -24,6 +26,7 @@ public class TEItems {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
+		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
 		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component")
@@ -40,10 +43,11 @@ public class TEItems {
 		toolWrench = itemWrench.addItem(0, "wrench");
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
+		toolIgniter = itemIgniter.addItem(0, "igniter");
 
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
-		capacitorPotato = ItemCapacitor.setDefaultTag(itemCapacitor.addItem(ItemCapacitor.Types.POTATO.ordinal(), "capacitorPotato", 0),
+		capacitorPotato = EnergyHelper.setDefaultEnergyTag(itemCapacitor.addItem(ItemCapacitor.Types.POTATO.ordinal(), "capacitorPotato", 0),
 				ItemCapacitor.STORAGE[ItemCapacitor.Types.POTATO.ordinal()]);
 		capacitorBasic = itemCapacitor.addItem(ItemCapacitor.Types.BASIC.ordinal(), "capacitorBasic", 0);
 		capacitorHardened = itemCapacitor.addItem(ItemCapacitor.Types.HARDENED.ordinal(), "capacitorHardened", 0);
@@ -76,6 +80,8 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolWrench, new Object[] { "I I", " T ", " I ", 'I', Items.iron_ingot, 'T', "ingotTin" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P',
 				powerCoilElectrum, 'G', "gearElectrum" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', Items.iron_ingot, 'R', Items.redstone, 'X',
+				capacitorBasic, 'G', Items.flint }));
 
 		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, Items.redstone, "nuggetLead" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, Items.redstone, "nuggetLead" }));
@@ -146,6 +152,7 @@ public class TEItems {
 
 	public static ItemWrench itemWrench;
 	public static ItemMultimeter itemMultimeter;
+	public static ItemIgniter itemIgniter;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemComponent;
 	public static ItemBase itemMaterial;
@@ -155,6 +162,7 @@ public class TEItems {
 	public static ItemStack toolWrench;
 	public static ItemStack toolMultimeter;
 	public static ItemStack toolDebugger;
+	public static ItemStack toolIgniter;
 
 	public static ItemStack diagramSchematic;
 

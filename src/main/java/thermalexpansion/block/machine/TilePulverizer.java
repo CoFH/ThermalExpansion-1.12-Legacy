@@ -11,19 +11,19 @@ import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
 public class TilePulverizer extends TileMachineEnergized {
 
-	public static final int TYPE = BlockMachine.Types.PULVERIZER.ordinal();
+	static final int TYPE = BlockMachine.Types.PULVERIZER.ordinal();
 
 	public static void initialize() {
 
-		defaultSideData[TYPE] = new SideConfig();
-		defaultSideData[TYPE].numGroup = 5;
-		defaultSideData[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
-		defaultSideData[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		defaultSideData[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
-		defaultSideData[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numGroup = 5;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 
-		defaultEnergyData[TYPE] = new EnergyConfig();
-		defaultEnergyData[TYPE].setParamsPower(40);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(40);
 
 		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Pulverizer", "machine", true);
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
@@ -133,7 +133,7 @@ public class TilePulverizer extends TileMachineEnergized {
 			}
 		}
 		if (secondaryItem != null) {
-			if (worldObj.rand.nextInt(CHANCE) < recipe.getSecondaryOutputChance()) {
+			if (worldObj.rand.nextInt(secondaryChance) < recipe.getSecondaryOutputChance()) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
 				} else {
@@ -151,7 +151,7 @@ public class TilePulverizer extends TileMachineEnergized {
 	@Override
 	protected void transferProducts() {
 
-		if (!upgradeAutoTransfer) {
+		if (!augmentAutoTransfer) {
 			return;
 		}
 		int side;

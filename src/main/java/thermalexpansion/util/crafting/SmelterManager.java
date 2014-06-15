@@ -11,6 +11,7 @@ import gnu.trove.set.hash.THashSet;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -30,7 +31,7 @@ public class SmelterManager {
 	public static ItemStack ingotIron = new ItemStack(Items.iron_ingot);
 	public static ItemStack ingotGold = new ItemStack(Items.gold_ingot);
 
-	private static TMap<List, RecipeSmelter> recipeMap = new THashMap();
+	private static Map<List, RecipeSmelter> recipeMap = new THashMap();
 	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
