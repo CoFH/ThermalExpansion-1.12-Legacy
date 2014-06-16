@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.api.tileentity.ICustomInventory;
 import cofh.network.CoFHPacket;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
@@ -18,7 +19,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
 
-public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler {
+public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler, ICustomInventory {
 
 	static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
@@ -60,23 +61,13 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		super();
 
 		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
-		inventory = new ItemStack[1 + 1 + 3];
-
-		inventory[2] = processItems[0];
-		inventory[3] = processItems[1];
-		inventory[4] = processItems[2];
+		inventory = new ItemStack[1 + 1];
 	}
 
 	@Override
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public int getChargeSlot() {
-
-		return 1;
 	}
 
 	@Override
@@ -291,13 +282,6 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		tank.writeToNBT(nbt);
 	}
 
-	/* IInventory */
-	@Override
-	public int getSizeInventory() {
-
-		return inventory.length - 3;
-	}
-
 	/* IFluidHandler */
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -339,6 +323,19 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
+	}
+
+	/* ICustomInventory */
+	@Override
+	public ItemStack[] getInventorySlots(int inventoryIndex) {
+
+		return processItems;
+	}
+
+	@Override
+	public int getSlotStackLimit(int slotIndex) {
+
+		return 64;
 	}
 
 }

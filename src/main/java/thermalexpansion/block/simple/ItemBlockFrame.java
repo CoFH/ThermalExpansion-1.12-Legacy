@@ -1,4 +1,4 @@
-package thermalexpansion.block.machine;
+package thermalexpansion.block.simple;
 
 import cofh.util.StringHelper;
 
@@ -6,14 +6,9 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockMachine extends ItemBlock {
+public class ItemBlockFrame extends ItemBlock {
 
-	public static ItemStack setDefaultTag(ItemStack container) {
-
-		return container;
-	}
-
-	public ItemBlockMachine(Block block) {
+	public ItemBlockFrame(Block block) {
 
 		super(block);
 		setHasSubtypes(true);
@@ -29,7 +24,7 @@ public class ItemBlockMachine extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.frame." + BlockFrame.NAMES[stack.getItemDamage()] + ".name";
 	}
 
 	@Override

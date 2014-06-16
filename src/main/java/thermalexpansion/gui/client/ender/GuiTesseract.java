@@ -1,5 +1,6 @@
 package thermalexpansion.gui.client.ender;
 
+import cofh.api.transport.RegistryEnderAttuned;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.GuiLimitedTextField;
@@ -8,7 +9,6 @@ import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
-import cofh.util.RegistryEnderAttuned;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -14,9 +14,12 @@ public class RenderCache extends TileEntitySpecialRenderer implements IItemRende
 
 	public static final RenderCache instance = new RenderCache();
 
+	static {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, instance);
+	}
+
 	public static void initialize() {
 
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, instance);
 	}
 
 	@Override

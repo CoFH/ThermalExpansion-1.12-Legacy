@@ -18,7 +18,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -28,16 +27,14 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
+import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.PulverizerManager;
-import thermalexpansion.util.crafting.TransposerManager;
-import thermalfoundation.fluid.TFFluids;
 import thermalfoundation.item.TFItems;
 
 public class BlockCell extends BlockTEBase {
@@ -87,7 +84,6 @@ public class BlockCell extends BlockTEBase {
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = stack.stackTagCompound.getByte("Facing");
-
 			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
 
 			if (sideCache.length <= 0) {
@@ -219,10 +215,6 @@ public class BlockCell extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		cellBasicFrame = TEItems.itemComponent.addItem(BASIC_FRAME_ID, "cellBasicFrame");
-		cellReinforcedFrameEmpty = TEItems.itemComponent.addItem(REINFORCED_FRAME_EMPTY_ID, "cellReinforcedFrameEmpty", 1);
-		cellReinforcedFrameFull = TEItems.itemComponent.addItem(REINFORCED_FRAME_FULL_ID, "cellReinforcedFrameFull", 1);
-
 		TileCell.initialize();
 		TileCellCreative.initialize();
 
@@ -251,30 +243,23 @@ public class BlockCell extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', cellBasicFrame, 'P',
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellBasic, 'P',
 					TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', cellBasicFrame, 'Y',
-					"ingotCopper", 'P', TEItems.powerCoilElectrum }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic,
+					'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', cellReinforcedFrameFull, 'I', "ingotLead", 'P',
-					TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameCellReinforcedFull, 'I',
+					"ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(cellBasicFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
-				Blocks.redstone_block }));
-		PulverizerManager.addRecipe(4000, cellBasicFrame, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
-
-		GameRegistry.addRecipe(new ShapedOreRecipe(cellReinforcedFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "glassHardened",
-				'X', Items.diamond }));
-		TransposerManager.addTEFillRecipe(16000, cellReinforcedFrameEmpty, cellReinforcedFrameFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 		return true;
 	}
 
@@ -307,11 +292,4 @@ public class BlockCell extends BlockTEBase {
 	public static ItemStack cellReinforced;
 	public static ItemStack cellResonant;
 
-	public static ItemStack cellBasicFrame;
-	public static ItemStack cellReinforcedFrameEmpty;
-	public static ItemStack cellReinforcedFrameFull;
-
-	public static final int BASIC_FRAME_ID = 64;
-	public static final int REINFORCED_FRAME_EMPTY_ID = 72;
-	public static final int REINFORCED_FRAME_FULL_ID = 73;
 }

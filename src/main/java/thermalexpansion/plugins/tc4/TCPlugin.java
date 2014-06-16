@@ -14,6 +14,7 @@ import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
+import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.block.simple.BlockRockwool;
 import thermalexpansion.block.strongbox.BlockStrongbox;
@@ -146,7 +147,7 @@ public class TCPlugin {
 			registerStack(TEItems.toolMultimeter, new AspectList().add(Aspect.METAL, 4).add(Aspect.ENERGY, 2).add(Aspect.MECHANISM, 3).add(Aspect.SENSES, 2)
 					.add(Aspect.TOOL, 2));
 
-			registerStack(BlockMachine.machineFrame, new AspectList().add(Aspect.METAL, 4).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 4));
+			registerStack(BlockFrame.frameMachineBasic, new AspectList().add(Aspect.METAL, 4).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 4));
 			registerStack(BlockMachine.furnace, new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2)
 					.add(Aspect.FIRE, 4).add(Aspect.CRAFT, 2));
 			registerStack(BlockMachine.pulverizer, new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2)
@@ -189,12 +190,12 @@ public class TCPlugin {
 			registerStack(BlockDynamo.dynamoReactant, new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 6)
 					.add(Aspect.MOTION, 4).add(Aspect.FIRE, 2).add(Aspect.WATER, 2));
 
-			registerStack(BlockCell.cellBasicFrame, new AspectList().add(Aspect.METAL, 6).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 5)
+			registerStack(BlockFrame.frameCellBasic, new AspectList().add(Aspect.METAL, 6).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 5)
 					.add(Aspect.MECHANISM, 3));
-			registerStack(BlockCell.cellReinforcedFrameEmpty,
+			registerStack(BlockFrame.frameCellReinforcedEmpty,
 					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6));
 			registerStack(
-					BlockCell.cellReinforcedFrameFull,
+					BlockFrame.frameCellReinforcedFull,
 					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 20)
 							.add(Aspect.MECHANISM, 16).add(Aspect.WATER, 2));
 
@@ -232,12 +233,10 @@ public class TCPlugin {
 					new AspectList().add(Aspect.VOID, 16).add(Aspect.METAL, 18).add(Aspect.CRYSTAL, 4).add(Aspect.ARMOR, 4).add(Aspect.FIRE, 2)
 							.add(Aspect.ELDRITCH, 2));
 
-			registerStack(BlockTesseract.tesseractFrameEmpty,
-					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ELDRITCH, 4));
-			registerStack(
-					BlockTesseract.tesseractFrameFull,
-					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ELDRITCH, 18)
-							.add(Aspect.TRAVEL, 8).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
+			registerStack(BlockFrame.frameTesseractEmpty, new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6)
+					.add(Aspect.ELDRITCH, 4));
+			registerStack(BlockFrame.frameTesseractFull, new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6)
+					.add(Aspect.ELDRITCH, 18).add(Aspect.TRAVEL, 8).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
 			registerStack(
 					BlockTesseract.tesseract,
 					new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ELDRITCH, 18)

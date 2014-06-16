@@ -5,9 +5,8 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.render.IconRegistry;
+import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,7 +25,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.util.Utils;
@@ -46,7 +44,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < 1; ++i) {
+		for (int i = 0; i < 1; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -170,9 +168,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
 		glassHardened = new ItemStack(this);
 
-		OreDictionary.registerOre("glassHardened", glassHardened);
-		GameRegistry.registerCustomItemStack("glassHardened", glassHardened);
-		FMLInterModComms.sendMessage("ForgeMicroblock", "microMaterial", glassHardened);
+		ItemHelper.registerWithHandlers("blockGlassHardened", glassHardened);
 
 		return true;
 	}

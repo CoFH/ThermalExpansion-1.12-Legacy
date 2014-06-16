@@ -30,6 +30,7 @@ public class ContainerStrongbox extends ContainerTEBase {
 
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			rows = 2;
+			addPlayerSlotsToContainer(inventory, invOffset, rows);
 			addSlotToContainer(new Slot(myTile, 0, 80, 26));
 		} else {
 			if (myTile.type == BlockStrongbox.Types.RESONANT.ordinal()) {
@@ -37,10 +38,15 @@ public class ContainerStrongbox extends ContainerTEBase {
 				invOffset = 35;
 			}
 			rows = myTile.getSizeInventory() / slotsPerRow;
+			addPlayerSlotsToContainer(inventory, invOffset, rows);
 			for (int i = 0; i < myTile.getSizeInventory(); i++) {
 				addSlotToContainer(new Slot(myTile, i, 8 + i % slotsPerRow * 18, 17 + i / slotsPerRow * 18));
 			}
 		}
+	}
+
+	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int invOffset, int rows) {
+
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, invOffset + j * 18, 30 + 18 * rows + i * 18));

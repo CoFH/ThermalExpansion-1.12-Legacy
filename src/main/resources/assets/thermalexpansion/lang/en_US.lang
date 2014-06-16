@@ -195,15 +195,6 @@ item.thermalexpansion.diagram.schematic=Schematic
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
 
-item.thermalexpansion.component.machineFrame.name=Machine Frame
-item.thermalexpansion.component.cellBasicFrame.name=Leadstone Energy Cell Frame
-item.thermalexpansion.component.cellReinforcedFrameEmpty.name=Redstone Energy Cell Frame (Empty)
-item.thermalexpansion.component.cellReinforcedFrameFull.name=Redstone Energy Cell Frame (Full)
-item.thermalexpansion.component.conduitEnergyReinforcedEmpty.name=Redstone Energy Conduit (Empty)
-item.thermalexpansion.component.tesseractFrameEmpty.name=Tesseract Frame (Empty)
-item.thermalexpansion.component.tesseractFrameFull.name=Tesseract Frame (Full)
-item.thermalexpansion.component.lampFrame.name=Illuminator Frame
-
 item.thermalexpansion.material.woodchips.name=Wood Chips
 item.thermalexpansion.material.sawdust.name=Sawdust
 item.thermalexpansion.material.sawdustCompressed.name=Compressed Sawdust
@@ -279,6 +270,16 @@ tile.thermalexpansion.cell.basic.name=Leadstone Energy Cell
 tile.thermalexpansion.cell.hardened.name=Hardened Energy Cell
 tile.thermalexpansion.cell.reinforced.name=Redstone Energy Cell
 tile.thermalexpansion.cell.resonant.name=Resonant Energy Cell
+
+tile.thermalexpansion.frame.machineBasic.name=Machine Frame (Basic)
+tile.thermalexpansion.frame.machineHardened.name=Machine Frame (Improved)
+tile.thermalexpansion.frame.machineReinforced.name=Machine Frame (Advanced)
+tile.thermalexpansion.frame.machineEnderium.name=Machine Frame (Enderium)
+tile.thermalexpansion.frame.cellBasic.name=Leadstone Energy Cell Frame
+tile.thermalexpansion.frame.cellReinforcedEmpty.name=Redstone Energy Cell Frame (Empty)
+tile.thermalexpansion.frame.cellReinforcedFull.name=Redstone Energy Cell Frame (Full)
+tile.thermalexpansion.frame.tesseractEmpty.name=Tesseract Frame (Empty)
+tile.thermalexpansion.frame.tesseractFull.name=Tesseract Frame (Full)
 
 tile.thermalexpansion.glass.name=Hardened Glass
 

@@ -173,6 +173,7 @@ public class CrucibleManager {
 
 			return energy;
 		}
+
 	}
 
 }

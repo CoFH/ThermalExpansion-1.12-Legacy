@@ -187,6 +187,7 @@ public class FurnaceManager {
 
 			return energy;
 		}
+
 	}
 
 }

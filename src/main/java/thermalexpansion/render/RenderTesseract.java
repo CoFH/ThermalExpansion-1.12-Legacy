@@ -7,7 +7,6 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
 import cofh.block.BlockCoFHBase;
 import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -16,20 +15,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
 
-import org.lwjgl.opengl.GL11;
-
-import thermalexpansion.block.ender.BlockTesseract;
 import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.core.TEProps;
 
 @SideOnly(Side.CLIENT)
-public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class RenderTesseract implements ISimpleBlockRenderingHandler {
 
 	public static final RenderTesseract instance = new RenderTesseract();
 
@@ -130,45 +124,6 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 	public int getRenderId() {
 
 		return TEProps.renderIdTesseract;
-	}
-
-	/* IItemRenderer */
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-
-		return true;
-	}
-
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-
-		GL11.glPushMatrix();
-		double offset = -0.5;
-		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-			offset = 0;
-		} else if (type == ItemRenderType.ENTITY) {
-			GL11.glScaled(0.5, 0.5, 0.5);
-		}
-		RenderUtils.preItemRender();
-		RenderHelper.setBlockTextureSheet();
-
-		CCRenderState.startDrawing();
-		instance.renderFrame(0, null, offset, offset, offset);
-
-		if (item.getItemDamage() == BlockTesseract.TESSERACT_FRAME_FULL_ID) {
-			instance.renderCenter(0, null, offset, offset, offset);
-		}
-		CCRenderState.draw();
-
-		RenderHelper.setItemTextureSheet();
-		RenderUtils.postItemRender();
-		GL11.glPopMatrix();
 	}
 
 }

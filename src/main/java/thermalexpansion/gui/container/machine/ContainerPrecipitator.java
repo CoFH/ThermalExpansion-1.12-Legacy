@@ -1,13 +1,10 @@
 package thermalexpansion.gui.container.machine;
 
+import cofh.gui.slot.SlotCustomInventory;
 import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotLocked;
 import cofh.gui.slot.SlotOutput;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
 import thermalexpansion.block.machine.TilePrecipitator;
@@ -19,63 +16,17 @@ public class ContainerPrecipitator extends ContainerTEBase {
 
 	public ContainerPrecipitator(InventoryPlayer inventory, TileEntity entity) {
 
-		super(entity);
+		super(inventory, entity);
 
 		myTile = (TilePrecipitator) entity;
 		addSlotToContainer(new SlotOutput(myTile, 0, 80, 49));
-		addSlotToContainer(new SlotEnergy(myTile, 1, 8, 53));
-		addSlotToContainer(new SlotLocked(myTile, 2, 50, 19));
-		addSlotToContainer(new SlotLocked(myTile, 3, 80, 19));
-		addSlotToContainer(new SlotLocked(myTile, 4, 110, 19));
+		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
-		}
-	}
+		/* Custom Inventory */
+		addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 0, 50, 19, false));
+		addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 1, 80, 19, false));
+		addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 2, 110, 19, false));
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
-
-		ItemStack stack = null;
-		Slot slot = (Slot) inventorySlots.get(i);
-
-		int invTile = myTile.inventory.length;
-		int invPlayer = invTile + 27;
-		int invFull = invTile + 36;
-
-		if (slot != null && slot.getHasStack()) {
-			ItemStack stackInSlot = slot.getStack();
-			stack = stackInSlot.copy();
-
-			if (i == 0) {
-				if (!mergeItemStack(stackInSlot, invTile, invFull, true)) {
-					return null;
-				}
-			} else {
-				if (i >= invTile && i < invPlayer) {
-					if (!mergeItemStack(stackInSlot, invPlayer, invFull, false)) {
-						return null;
-					}
-				} else if (i >= invPlayer && i < invFull && !mergeItemStack(stackInSlot, invTile, invPlayer, false)) {
-					return null;
-				}
-			}
-			if (stackInSlot.stackSize == 0) {
-				slot.putStack((ItemStack) null);
-			} else {
-				slot.onSlotChanged();
-			}
-			if (stackInSlot.stackSize == stack.stackSize) {
-				return null;
-			}
-			slot.onPickupFromSlot(player, stackInSlot);
-		}
-		return stack;
 	}
 
 }

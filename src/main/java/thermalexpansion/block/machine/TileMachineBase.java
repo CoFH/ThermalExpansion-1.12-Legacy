@@ -56,8 +56,8 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	/* Augment Variables */
 	int level = 0;
-	ItemStack[] augments = new ItemStack[6];
-	boolean[] augmentStatus = new boolean[6];
+	ItemStack[] augments = new ItemStack[3];
+	boolean[] augmentStatus = new boolean[3];
 
 	public boolean augmentRSControl = true;
 	public boolean augmentReconfigSides = true;
@@ -245,6 +245,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
 		augments = new ItemStack[augments.length + level];
+		augmentStatus = new boolean[augments.length];
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");

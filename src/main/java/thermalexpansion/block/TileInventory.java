@@ -34,7 +34,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IT
 		/* Add to Adjacent Inventory */
 		if (Utils.isInventory(curTile, side)) {
 			inventory[slot].stackSize -= amount - Utils.addToInventory(curTile, side, stack);
-
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}
@@ -43,7 +42,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IT
 		/* Add to Adjacent Pipe */
 		if (Utils.isPipeTile(curTile)) {
 			inventory[slot].stackSize -= Utils.addToPipeTile(curTile, side, stack);
-
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}

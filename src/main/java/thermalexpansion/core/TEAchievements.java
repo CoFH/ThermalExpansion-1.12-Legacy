@@ -39,7 +39,6 @@ public class TEAchievements {
 	public static Achievement fluidCryotheum;
 
 	/* Items */
-	public static Achievement machineFrame;
 	public static Achievement wrench;
 	public static Achievement multimeter;
 	public static Achievement florb;

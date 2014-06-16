@@ -1,7 +1,9 @@
 package thermalexpansion.gui.container;
 
+import cofh.api.tileentity.IAugmentableTile;
 import cofh.block.TileCoFHBase;
 import cofh.gui.container.IAugmentableContainer;
+import cofh.gui.slot.SlotAugment;
 import cofh.gui.slot.SlotFalseCopy;
 import cofh.util.ItemHelper;
 
@@ -34,7 +36,27 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 		if (entity instanceof TileCoFHBase) {
 			baseTile = (TileCoFHBase) entity;
 		}
+
+		/* Augment Slots */
+		if (baseTile instanceof IAugmentableTile) {
+			augmentSlots = new Slot[((IAugmentableTile) baseTile).getAugmentSlots().length];
+			for (int i = 0; i < augmentSlots.length; i++) {
+				augmentSlots[i] = addSlotToContainer(new SlotAugment((IAugmentableTile) baseTile, null, i, 0, 0));
+			}
+		}
 		/* Player Inventory */
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
+			}
+		}
+		for (int i = 0; i < 9; i++) {
+			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
+		}
+	}
+
+	protected void addPlayerInventory(InventoryPlayer inventory) {
+
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
@@ -74,27 +96,37 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
 
 		ItemStack stack = null;
-		Slot slot = (Slot) inventorySlots.get(i);
+		Slot slot = (Slot) inventorySlots.get(slotIndex);
 
-		int invTile = baseTile == null ? 0 : baseTile.getInvSlotCount();
-		int invPlayer = invTile + 27;
-		int invFull = invTile + 36;
+		int invPlayer = augmentSlots.length + 27;
+		int invFull = invPlayer + 9;
+		int invTile = invFull + (baseTile == null ? 0 : baseTile.getInvSlotCount());
 
 		if (slot != null && slot.getHasStack()) {
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 
-			if (i < invTile) {
-				if (!this.mergeItemStack(stackInSlot, invTile, invFull, true)) {
+			if (slotIndex >= invFull) {
+				if (!this.mergeItemStack(stackInSlot, 0, invFull, true)) {
 					return null;
 				}
-			} else if (!this.mergeItemStack(stackInSlot, 0, invTile, false)) {
-				return null;
+			} else {
+				if (!this.mergeItemStack(stackInSlot, invFull, invTile, true)) {
+					if (slotIndex >= invPlayer) {
+						if (!this.mergeItemStack(stackInSlot, 0, invPlayer, true)) {
+							return null;
+						}
+					} else {
+						if (!this.mergeItemStack(stackInSlot, invPlayer, invFull, false)) {
+							return null;
+						}
+					}
+				}
 			}
-			if (stackInSlot.stackSize == 0) {
+			if (stackInSlot.stackSize <= 0) {
 				slot.putStack((ItemStack) null);
 			} else {
 				slot.onSlotChanged();
@@ -127,11 +159,8 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 	protected boolean mergeItemStack(ItemStack stack, int slotMin, int slotMax, boolean reverse) {
 
 		boolean slotFound = false;
-		int k = slotMin;
+		int k = reverse ? slotMax - 1 : slotMin;
 
-		if (reverse) {
-			k = slotMax - 1;
-		}
 		Slot slot;
 		ItemStack stackInSlot;
 
@@ -140,9 +169,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 				slot = (Slot) this.inventorySlots.get(k);
 				stackInSlot = slot.getStack();
 
-				if (stackInSlot != null && stackInSlot.getItem() == stack.getItem()
-						&& (!stack.getHasSubtypes() || ItemHelper.getItemDamage(stack) == ItemHelper.getItemDamage(stackInSlot))
-						&& ItemStack.areItemStackTagsEqual(stack, stackInSlot)) {
+				if (slot.isItemValid(stack) && ItemHelper.itemsEqualWithMetadata(stack, stackInSlot, true)) {
 					int l = stackInSlot.stackSize + stack.stackSize;
 					int slotLimit = Math.min(stack.getMaxStackSize(), slot.getSlotStackLimit());
 
@@ -158,24 +185,17 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 						slotFound = true;
 					}
 				}
-				if (reverse) {
-					--k;
-				} else {
-					++k;
-				}
+				k += reverse ? -1 : 1;
 			}
 		}
 		if (stack.stackSize > 0) {
-			if (reverse) {
-				k = slotMax - 1;
-			} else {
-				k = slotMin;
-			}
+			k = reverse ? slotMax - 1 : slotMin;
+
 			while (!reverse && k < slotMax || reverse && k >= slotMin) {
 				slot = (Slot) this.inventorySlots.get(k);
 				stackInSlot = slot.getStack();
 
-				if (stackInSlot == null) {
+				if (slot.isItemValid(stack) && stackInSlot == null) {
 					slot.putStack(ItemHelper.cloneStack(stack, Math.min(stack.stackSize, slot.getSlotStackLimit())));
 					slot.onSlotChanged();
 
@@ -185,11 +205,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 					}
 					break;
 				}
-				if (reverse) {
-					--k;
-				} else {
-					++k;
-				}
+				k += reverse ? -1 : 1;
 			}
 		}
 		return slotFound;

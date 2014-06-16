@@ -15,7 +15,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -24,15 +23,12 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
+import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.TEItems;
-import thermalexpansion.util.crafting.TransposerManager;
-import thermalfoundation.fluid.TFFluids;
 
 public class BlockTesseract extends BlockTEBase {
 
@@ -163,9 +159,6 @@ public class BlockTesseract extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		tesseractFrameEmpty = TEItems.itemComponent.addItem(128, "tesseractFrameEmpty");
-		tesseractFrameFull = TEItems.itemComponent.addItem(129, "tesseractFrameFull", 1);
-
 		TileTesseract.initialize();
 
 		tesseract = new ItemStack(this, 1, 0);
@@ -177,13 +170,9 @@ public class BlockTesseract extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', tesseractFrameFull, 'I', "ingotSilver", 'B',
-					"ingotBronze" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
+					'B', "ingotBronze" }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(tesseractFrameEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "glassHardened", 'X',
-				Items.diamond }));
-		TransposerManager.addTEFillRecipe(16000, tesseractFrameEmpty, tesseractFrameFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
-
 		return true;
 	}
 
@@ -195,10 +184,5 @@ public class BlockTesseract extends BlockTEBase {
 	}
 
 	public static ItemStack tesseract;
-
-	public static ItemStack tesseractFrameEmpty;
-	public static ItemStack tesseractFrameFull;
-
-	public static final int TESSERACT_FRAME_FULL_ID = 129;
 
 }

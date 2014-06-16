@@ -1,22 +1,23 @@
 package thermalexpansion.block.machine;
 
+import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -25,13 +26,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
-import thermalexpansion.block.cell.BlockCell;
+import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.TEItems;
 
 public class BlockMachine extends BlockTEBase {
 
@@ -85,6 +85,35 @@ public class BlockMachine extends BlockTEBase {
 				list.add(new ItemStack(item, 1, i));
 			}
 		}
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		if (stack.stackTagCompound != null) {
+			TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
+
+			// tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
+			// tile.energySend = stack.stackTagCompound.getInteger("Send");
+			// tile.energyReceive = stack.stackTagCompound.getInteger("Receive");
+
+			int facing = BlockHelper.determineXZPlaceFacing(living);
+			int storedFacing = stack.stackTagCompound.getByte("Facing");
+			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
+
+			if (sideCache.length <= 0) {
+				sideCache = TileCell.DEFAULT_SIDES.clone();
+			}
+			tile.sideCache[0] = sideCache[0];
+			tile.sideCache[1] = sideCache[1];
+			tile.sideCache[facing] = sideCache[storedFacing];
+			tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
+			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
+			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
 
 	@Override
@@ -193,8 +222,6 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		machineFrame = TEItems.itemComponent.addItem(0, "machineFrame");
-
 		TileFurnace.initialize();
 		TilePulverizer.initialize();
 		TileSawmill.initialize();
@@ -237,93 +264,84 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
+		ItemStack[] machineFrames = new ItemStack[4];
+
 		String category = "tweak.recipe";
-		boolean machineFrameRequireSteel = ThermalExpansion.config.get(category, "MachineFrame.RequireSteel", false);
-		boolean machineFrameAllowSteel = ThermalExpansion.config.get(category, "MachineFrame.AllowSteel", true);
-		boolean machinesUseGears = ThermalExpansion.config.get(category, "UseGears", false);
+		String comment = "If enabled, Machines use gears instead of ingots in their default recipes.";
+		boolean machinesUseGears = ThermalExpansion.config.get(category, "UseGears", false, comment);
 		boolean[] expensiveRecipe = new boolean[Types.values().length];
 
 		expensiveRecipe[Types.PULVERIZER.ordinal()] = ThermalExpansion.config.get(category, "Pulverizer.AddDiamonds", false);
 		expensiveRecipe[Types.SMELTER.ordinal()] = ThermalExpansion.config.get(category, "Smelter.AddDiamonds", false);
 
-		String copperPart = "ingotCopper";
-		String tinPart = "ingotTin";
+		String copperPart = "thermalexpansion:machineCopper";
+		String tinPart = "thermalexpansion:machineTin";
 
-		if (machinesUseGears) {
-			copperPart = "gearCopper";
-			tinPart = "gearTin";
+		String prefix = machinesUseGears ? "gear" : "ingot";
+		ArrayList<ItemStack> copperPartList = OreDictionary.getOres(prefix + "Copper");
+		ArrayList<ItemStack> tinPartList = OreDictionary.getOres(prefix + "Tin");
+
+		for (int i = 0; i < copperPartList.size(); i++) {
+			OreDictionary.registerOre(copperPart, copperPartList.get(i));
 		}
-		if (ItemHelper.oreNameExists("ingotSteel")) {
-			if (machineFrameRequireSteel) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "blockGlass", 'X',
-						"ingotGold" }));
-			} else if (machineFrameAllowSteel) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotSteel", 'G', "blockGlass", 'X',
-						"ingotGold" }));
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X',
-						"ingotGold" }));
-			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X',
-						"ingotGold" }));
-			}
-		} else {
-			GameRegistry.addRecipe(new ShapedOreRecipe(machineFrame,
-					new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "ingotGold" }));
+		for (int i = 0; i < tinPartList.size(); i++) {
+			OreDictionary.registerOre(tinPart, tinPartList.get(i));
 		}
-		if (enable[Types.FURNACE.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Items.redstone, 'Y', Blocks.brick_block }));
-		}
-		if (enable[Types.PULVERIZER.ordinal()]) {
-			if (expensiveRecipe[Types.PULVERIZER.ordinal()]) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-						TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint, 'D', Items.diamond }));
-			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-						TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
-			}
-		}
-		if (enable[Types.SAWMILL.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(sawmill, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
-		}
-		if (enable[Types.SMELTER.ordinal()]) {
-			if (expensiveRecipe[Types.SMELTER.ordinal()]) {
-				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-						TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar", 'D', Items.diamond }));
-			} else {
-				GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-						TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
-			}
-		}
-		if (enable[Types.CRUCIBLE.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(crucible, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', BlockCell.cellBasicFrame, 'Y', Blocks.nether_brick }));
-		}
-		if (enable[Types.TRANSPOSER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "blockGlass" }));
-		}
-		if (enable[Types.PRECIPITATOR.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(precipitator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
-		}
-		if (enable[Types.EXTRUDER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(extruder, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
-					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
-		}
-		if (enable[Types.WATER_GEN.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(waterGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
-					TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
-		}
-		if (enable[Types.ASSEMBLER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(assembler, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
-		}
-		if (enable[Types.CHARGER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', BlockCell.cellBasicFrame, 'Y', TEItems.powerCoilSilver }));
-		}
+
+		// if (enable[Types.FURNACE.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Items.redstone, 'Y', Blocks.brick_block }));
+		// }
+		// if (enable[Types.PULVERIZER.ordinal()]) {
+		// if (expensiveRecipe[Types.PULVERIZER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint, 'D', Items.diamond }));
+		// } else {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
+		// }
+		// }
+		// if (enable[Types.SAWMILL.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(sawmill, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
+		// }
+		// if (enable[Types.SMELTER.ordinal()]) {
+		// if (expensiveRecipe[Types.SMELTER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { "DXD", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar", 'D', Items.diamond }));
+		// } else {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(smelter, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
+		// }
+		// }
+		// if (enable[Types.CRUCIBLE.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(crucible, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', Blocks.nether_brick }));
+		// }
+		// if (enable[Types.TRANSPOSER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "blockGlass" }));
+		// }
+		// if (enable[Types.PRECIPITATOR.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(precipitator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
+		// }
+		// if (enable[Types.EXTRUDER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(extruder, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+		// TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
+		// }
+		// if (enable[Types.WATER_GEN.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(waterGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+		// TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
+		// }
+		// if (enable[Types.ASSEMBLER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(assembler, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
+		// }
+		// if (enable[Types.CHARGER.ordinal()]) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+		// TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
+		// }
 		return true;
 	}
 
@@ -362,5 +380,4 @@ public class BlockMachine extends BlockTEBase {
 	public static ItemStack assembler;
 	public static ItemStack charger;
 
-	public static ItemStack machineFrame;
 }

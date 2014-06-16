@@ -16,13 +16,13 @@ public class ItemBlockGlass extends ItemBlock {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack item) {
+	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize(getUnlocalizedName(item));
+		return StringHelper.localize(getUnlocalizedName(stack));
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack item) {
+	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.glass.name";
 	}

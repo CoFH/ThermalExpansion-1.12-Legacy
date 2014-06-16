@@ -321,11 +321,9 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
-		augments = new ItemStack[augments.length];
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
-
 			if (slot >= 0 && slot < augments.length) {
 				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}

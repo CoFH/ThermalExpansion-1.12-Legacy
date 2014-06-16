@@ -186,7 +186,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 			return false;
 		}
 		facing = (byte) side;
-		markDirty();
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}

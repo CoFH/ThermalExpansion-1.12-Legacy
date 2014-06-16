@@ -38,18 +38,12 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		if (input == null || fluid == null) {
-			return null;
-		}
-		return recipeMapFill.get(Arrays.asList(query.set(input).hashCode(), fluid.fluidID));
+		return input == null || fluid == null ? null : recipeMapFill.get(Arrays.asList(query.set(input).hashCode(), fluid.fluidID));
 	}
 
 	public static RecipeTransposer getExtractionRecipe(ItemStack input) {
 
-		if (input == null) {
-			return null;
-		}
-		return recipeMapExtraction.get(query.set(input));
+		return input == null ? null : recipeMapExtraction.get(query.set(input));
 	}
 
 	public static boolean fillRecipeExists(ItemStack input, FluidStack fluid) {
@@ -74,10 +68,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		if (input == null) {
-			return false;
-		}
-		return validationSet.contains(query.set(input));
+		return input == null ? false : validationSet.contains(query.set(input));
 	}
 
 	public static void addDefaultRecipes() {
@@ -246,6 +237,7 @@ public class TransposerManager {
 
 			return chance;
 		}
+
 	}
 
 }

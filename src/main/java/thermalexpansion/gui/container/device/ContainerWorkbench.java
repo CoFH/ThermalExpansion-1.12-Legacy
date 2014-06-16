@@ -67,10 +67,10 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
 
 		ItemStack stack = null;
-		Slot slot = (Slot) inventorySlots.get(i);
+		Slot slot = (Slot) inventorySlots.get(slotIndex);
 
 		int invTile = myTile.getSizeInventory() - 3 + INV_TILE_START;
 		int invPlayer = invTile + 27;
@@ -80,22 +80,22 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 
-			if (i == 0) {
+			if (slotIndex == 0) {
 				if (!mergeItemStack(stackInSlot, invTile, invFull, false)) {
 					return null;
 				}
 				slot.onSlotChange(stackInSlot, stack);
 			}
-			if (i >= 1 && i <= 3) {
+			if (slotIndex >= 1 && slotIndex <= 3) {
 				if (!mergeItemStack(stackInSlot, invTile, invPlayer, false)) {
 					return null;
 				}
-			} else if (i != 0) {
-				if (i >= INV_TILE_START && i < invTile) {
+			} else if (slotIndex != 0) {
+				if (slotIndex >= INV_TILE_START && slotIndex < invTile) {
 					if (!mergeItemStack(stackInSlot, invTile, invFull, true)) {
 						return null;
 					}
-				} else if (i >= invTile && i < invFull) {
+				} else if (slotIndex >= invTile && slotIndex < invFull) {
 					if (SchematicHelper.isSchematic(stackInSlot)) {
 						if (!mergeItemStack(stackInSlot, 1, 4, false)) {
 							return null;
@@ -121,12 +121,30 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
-		// System.out.println("called");
-
 		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, playerInv.player.worldObj));
 	}
 
-	/* ISetSchematic */
+	@Override
+	public ItemStack slotClick(int slotId, int mouseButton, int modifier, EntityPlayer player) {
+
+		if (ServerHelper.isClientWorld(player.worldObj)) {
+			ItemStack result = super.slotClick(slotId, mouseButton, modifier, player);
+			int invTile = myTile.getSizeInventory() - 3 + INV_TILE_START;
+
+			if (slotId >= INV_TILE_START && slotId < invTile) {
+				myTile.createItemClient(false, myOutput.getStackNoUpdate());
+			}
+			return result;
+		}
+		return super.slotClick(slotId, mouseButton, modifier, player);
+	}
+
+	public boolean hasSchematic() {
+
+		return SchematicHelper.isSchematic(myTile.getStackInSlot(myTile.getCurrentSchematicSlot()));
+	}
+
+	/* ISchematicContainer */
 	@Override
 	public void writeSchematic() {
 
@@ -138,11 +156,6 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 			newSchematic.stackSize = theStackSize;
 			myTile.setInventorySlotContents(myTile.selectedSchematic + 18, newSchematic);
 		}
-	}
-
-	public boolean hasSchematic() {
-
-		return SchematicHelper.isSchematic(myTile.getStackInSlot(myTile.getCurrentSchematicSlot()));
 	}
 
 	@Override
@@ -161,21 +174,6 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	public Slot getResultSlot() {
 
 		return null;
-	}
-
-	@Override
-	public ItemStack slotClick(int slotId, int mouseButton, int modifier, EntityPlayer player) {
-
-		if (ServerHelper.isClientWorld(player.worldObj)) {
-			ItemStack result = super.slotClick(slotId, mouseButton, modifier, player);
-			int invTile = myTile.getSizeInventory() - 3 + INV_TILE_START;
-
-			if (slotId >= INV_TILE_START && slotId < invTile) {
-				myTile.createItemClient(false, myOutput.getStackNoUpdate());
-			}
-			return result;
-		}
-		return super.slotClick(slotId, mouseButton, modifier, player);
 	}
 
 }

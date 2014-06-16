@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import thermalexpansion.block.cell.BlockCell;
+import thermalexpansion.block.simple.BlockFrame;
 
 public class CreativeTabBlocks extends CreativeTabs {
 
@@ -20,7 +20,7 @@ public class CreativeTabBlocks extends CreativeTabs {
 	@SideOnly(Side.CLIENT)
 	public ItemStack getIconItemStack() {
 
-		return BlockCell.cellReinforcedFrameFull;
+		return BlockFrame.frameCellReinforcedFull;
 	}
 
 	@Override

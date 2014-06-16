@@ -2,7 +2,6 @@ package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStack;
-import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -36,10 +35,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
-		if (input == null) {
-			return null;
-		}
-		return recipeMap.get(new ComparableItemStackSawmill(input));
+		return input == null ? null : recipeMap.get(new ComparableItemStackSawmill(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -276,9 +272,9 @@ public class SawmillManager {
 
 		public static int getOreID(ItemStack stack) {
 
-			int id = OreDictionary.getOreID(stack);
+			int id = ItemHelper.oreProxy.getOreID(stack);
 
-			if (id == -1 || !safeOreType(OreDictionary.getOreName(id))) {
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
 				return -1;
 			}
 			return id;
@@ -289,7 +285,7 @@ public class SawmillManager {
 			if (!safeOreType(oreName)) {
 				return -1;
 			}
-			return OreDictionaryArbiter.getOreID(oreName);
+			return ItemHelper.oreProxy.getOreID(oreName);
 		}
 
 		public ComparableItemStackSawmill(ItemStack stack) {

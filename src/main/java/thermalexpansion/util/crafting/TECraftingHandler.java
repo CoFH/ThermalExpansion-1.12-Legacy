@@ -43,9 +43,7 @@ public class TECraftingHandler {
 		if (!TEProps.enableAchievements) {
 			return;
 		}
-		if (stack.isItemEqual(BlockMachine.machineFrame)) {
-			player.addStat(TEAchievements.machineFrame, 1);
-		} else if (stack.isItemEqual(BlockMachine.furnace)) {
+		if (stack.isItemEqual(BlockMachine.furnace)) {
 			player.addStat(TEAchievements.furnace, 1);
 		} else if (stack.isItemEqual(BlockMachine.pulverizer)) {
 			player.addStat(TEAchievements.pulverizer, 1);

@@ -4,7 +4,6 @@ import cofh.util.ItemHelper;
 import cofh.util.MathHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStack;
-import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -35,10 +34,7 @@ public class PulverizerManager {
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
 
-		if (input == null) {
-			return null;
-		}
-		return recipeMap.get(query.set(input));
+		return input == null ? null : recipeMap.get(query.set(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {
@@ -383,6 +379,7 @@ public class PulverizerManager {
 
 			return energy;
 		}
+
 	}
 
 	/* ITEMSTACK CLASS */
@@ -403,9 +400,9 @@ public class PulverizerManager {
 
 		public static int getOreID(ItemStack stack) {
 
-			int id = OreDictionary.getOreID(stack);
+			int id = ItemHelper.oreProxy.getOreID(stack);
 
-			if (id == -1 || !safeOreType(OreDictionary.getOreName(id))) {
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
 				return -1;
 			}
 			return id;
@@ -416,7 +413,7 @@ public class PulverizerManager {
 			if (!safeOreType(oreName)) {
 				return -1;
 			}
-			return OreDictionaryArbiter.getOreID(oreName);
+			return ItemHelper.oreProxy.getOreID(oreName);
 		}
 
 		public ComparableItemStackPulverizer(ItemStack stack) {
@@ -439,6 +436,7 @@ public class PulverizerManager {
 
 			return this;
 		}
+
 	}
 
 }

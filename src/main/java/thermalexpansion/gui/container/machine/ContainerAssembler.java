@@ -44,7 +44,8 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		playerInv = inventory;
 		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, TEItems.diagramSchematic).setSlotStackLimit(1));
 		addSlotToContainer(new SlotOutput(myTile, 1, 116, 35));
-		addSlotToContainer(new SlotEnergy(myTile, 2, 8, 53));
+		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
+
 		for (int i = 0; i < 2; ++i) {
 			for (int j = 0; j < 9; ++j) {
 				addSlotToContainer(new Slot(myTile, j + i * 9 + 3, 8 + j * 18, 74 + i * 18));
@@ -108,7 +109,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int par2, int par3, EntityPlayer player) {
+	public ItemStack slotClick(int slot, int x, int y, EntityPlayer player) {
 
 		if (slot == 66 && CoFHCore.proxy.isClient()) {
 			ItemStack stack = myTile.getStackInSlot(0);
@@ -119,7 +120,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 				}
 			}
 		}
-		return super.slotClick(slot, par2, par3, player);
+		return super.slotClick(slot, x, y, player);
 	}
 
 	@Override

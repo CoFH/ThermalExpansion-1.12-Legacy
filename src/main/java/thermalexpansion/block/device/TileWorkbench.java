@@ -376,16 +376,6 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		return inventory.length - 9;
 	}
 
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-
-		inventory[slot] = stack;
-
-		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
-			stack.stackSize = getInventoryStackLimit();
-		}
-	}
-
 	/* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {

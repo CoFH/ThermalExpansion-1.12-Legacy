@@ -2,10 +2,10 @@ package thermalexpansion.block.ender;
 
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.ISecureTile;
-import cofh.api.transport.IEnderAttuned;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
+import cofh.api.transport.RegistryEnderAttuned;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -15,7 +15,6 @@ import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
 import cofh.util.FluidHelper;
-import cofh.util.RegistryEnderAttuned;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -46,7 +45,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
-		IEnderAttuned, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler {
+		IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler {
 
 	public static void initialize() {
 
@@ -86,6 +85,8 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 	boolean cached = false;
 	IEnergyHandler[] adjacentEnergyHandlers = new IEnergyHandler[6];
 	IFluidHandler[] adjacentFluidHandlers = new IFluidHandler[6];
+
+	/* Augment Variables */
 
 	/* Client-Side Only */
 	public boolean canAccess = true;
@@ -456,32 +457,50 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 
 	public void incItemMode() {
 
-		modeItem = modeItem == 4 ? 0 : modeItem++;
+		modeItem++;
+		if (modeItem == 4) {
+			modeItem = 0;
+		}
 	}
 
 	public void decItemMode() {
 
-		modeItem = modeItem == 0 ? 3 : modeItem--;
+		modeItem--;
+		if (modeItem == 0) {
+			modeItem = 4;
+		}
 	}
 
 	public void incFluidMode() {
 
-		modeFluid = modeFluid == 4 ? 0 : modeFluid++;
+		modeFluid++;
+		if (modeFluid == 4) {
+			modeFluid = 0;
+		}
 	}
 
 	public void decFluidMode() {
 
-		modeFluid = modeFluid == 0 ? 3 : modeFluid--;
+		modeFluid--;
+		if (modeFluid == 0) {
+			modeFluid = 4;
+		}
 	}
 
 	public void incEnergyMode() {
 
-		modeEnergy = modeEnergy == 4 ? 0 : modeEnergy++;
+		modeEnergy++;
+		if (modeEnergy == 4) {
+			modeEnergy = 0;
+		}
 	}
 
 	public void decEnergyMode() {
 
-		modeEnergy = modeEnergy == 0 ? 3 : modeEnergy--;
+		modeEnergy--;
+		if (modeEnergy == 0) {
+			modeEnergy = 4;
+		}
 	}
 
 	public boolean modeSendItems() {

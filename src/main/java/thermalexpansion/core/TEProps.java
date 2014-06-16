@@ -62,11 +62,12 @@ public class TEProps {
 	public static boolean enableDebugOutput = false;
 
 	/* Render Ids */
-	public static int renderIdDynamo = -1;
 	public static int renderIdCell = -1;
-	public static int renderIdTank = -1;
-	public static int renderIdTesseract = -1;
-	public static int renderIdPlate = -1;
+	public static int renderIdDynamo = -1;
+	public static int renderIdFrame = -1;
 	public static int renderIdLamp = -1;
+	public static int renderIdTank = -1;
+	public static int renderIdPlate = -1;
+	public static int renderIdTesseract = -1;
 
 }

@@ -87,10 +87,7 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		if (input == null) {
-			return false;
-		}
-		return validationSet.contains(query.set(input));
+		return input == null ? false : validationSet.contains(query.set(input));
 	}
 
 	public static boolean isStandardOre(String oreName) {
@@ -431,6 +428,7 @@ public class SmelterManager {
 
 			return energy;
 		}
+
 	}
 
 }
