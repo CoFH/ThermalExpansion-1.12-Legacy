@@ -2,10 +2,14 @@ package thermalexpansion.block.machine;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiPulverizer;
+import thermalexpansion.gui.container.machine.ContainerPulverizer;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
@@ -25,7 +29,6 @@ public class TilePulverizer extends TileMachineEnergized {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(40);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Pulverizer", "machine", true);
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
 	}
 
@@ -192,6 +195,19 @@ public class TilePulverizer extends TileMachineEnergized {
 	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? PulverizerManager.recipeExists(stack) : true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPulverizer(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerPulverizer(inventory, this);
 	}
 
 	/* NBT METHODS */

@@ -1,10 +1,10 @@
 package thermalexpansion.block.machine;
 
+import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
-import cofh.api.tileentity.IEnergyInfo;
 import cofh.network.CoFHPacket;
 import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;

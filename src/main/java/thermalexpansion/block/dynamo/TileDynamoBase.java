@@ -1,10 +1,10 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.api.core.IAugmentable;
+import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
-import cofh.api.tileentity.IAugmentableTile;
-import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -33,10 +33,9 @@ import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
 
 public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
-		IEnergyInfo, IAugmentableTile {
+		IEnergyInfo, IAugmentable {
 
 	protected static final EnergyConfig defaultConfig = new EnergyConfig();
-	protected static final int[] guiIds = new int[BlockDynamo.Types.values().length];
 
 	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
@@ -181,7 +180,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiIds[getType()], worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

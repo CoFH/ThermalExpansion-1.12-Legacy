@@ -1,7 +1,7 @@
 package thermalexpansion.gui.container.machine;
 
 import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
+import cofh.gui.slot.SlotRemoveOnly;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,7 @@ public class ContainerCharger extends ContainerTEBase {
 
 		myTile = (TileCharger) entity;
 		addSlotToContainer(new SlotEnergy(myTile, 0, 35, 31));
-		addSlotToContainer(new SlotOutput(myTile, 1, 125, 31));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 125, 31));
 	}
 
 }

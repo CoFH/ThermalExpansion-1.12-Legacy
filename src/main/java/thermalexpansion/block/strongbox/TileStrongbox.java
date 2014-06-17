@@ -1,7 +1,7 @@
 package thermalexpansion.block.strongbox;
 
+import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.api.tileentity.ISecureTile;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.util.BlockHelper;
@@ -14,7 +14,9 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.Iterator;
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
@@ -26,18 +28,22 @@ import net.minecraft.util.ChatComponentText;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
-public class TileStrongbox extends TileInventory implements ISecureTile, IReconfigurableFacing, ISidedInventory {
+public class TileStrongbox extends TileInventory implements ISecurable, IReconfigurableFacing, ISidedInventory {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileStrongbox.class, "thermalexpansion.Strongbox");
-		guiId = ThermalExpansion.proxy.registerGui("Strongbox", null, true);
 		configure();
 	}
 
-	protected static int guiId;
+	public static void configure() {
+
+		String comment = "Enable this to allow for Strongboxes to be secure inventories. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
+	}
 
 	protected static final int[] INV_SIZE = { 1, 18, 36, 54, 72 };
 	protected static final int[][] SLOTS = new int[5][];
@@ -50,12 +56,6 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 				SLOTS[i][j] = j;
 			}
 		}
-	}
-
-	public static void configure() {
-
-		String comment = "Enable this to allow for Strongboxes to be secure inventories. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
 	}
 
 	String owner = CoFHProps.DEFAULT_OWNER;
@@ -166,7 +166,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 	public boolean openGui(EntityPlayer player) {
 
 		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
@@ -195,7 +195,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 		super.handleTilePacket(payload, isServer);
 
 		type = payload.getByte();
-		access = ISecureTile.AccessMode.values()[payload.getByte()];
+		access = ISecurable.AccessMode.values()[payload.getByte()];
 		if (ServerHelper.isClientWorld(worldObj)) {
 			facing = payload.getByte();
 			owner = payload.getString();
@@ -211,6 +211,18 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiStrongbox(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerStrongbox(inventory, this);
+	}
+
 	@Override
 	public void receiveGuiNetworkData(int i, int j) {
 
@@ -333,7 +345,7 @@ public class TileStrongbox extends TileInventory implements ISecureTile, IReconf
 		return access.isPublic();
 	}
 
-	/* ISecureTile */
+	/* ISecureable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 

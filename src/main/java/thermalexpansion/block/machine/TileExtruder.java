@@ -1,13 +1,16 @@
 package thermalexpansion.block.machine;
 
-import cofh.api.tileentity.ICustomInventory;
+import cofh.api.core.ICustomInventory;
 import cofh.network.CoFHPacket;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -19,6 +22,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiExtruder;
+import thermalexpansion.gui.container.machine.ContainerExtruder;
 
 public class TileExtruder extends TileMachineBase implements IFluidHandler, ICustomInventory {
 
@@ -51,7 +56,6 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Extruder", "machine", true);
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
 	}
 
@@ -266,6 +270,18 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiExtruder(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerExtruder(inventory, this);
+	}
+
 	public int getCurSelection() {
 
 		return curSelection;
@@ -375,6 +391,12 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	public int getSlotStackLimit(int slotIndex) {
 
 		return 64;
+	}
+
+	@Override
+	public void onSlotUpdate() {
+
+		markDirty();
 	}
 
 }

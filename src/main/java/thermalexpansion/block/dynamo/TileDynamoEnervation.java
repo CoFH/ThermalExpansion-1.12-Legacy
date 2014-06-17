@@ -6,14 +6,18 @@ import cofh.util.EnergyHelper;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
+import thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import thermalexpansion.util.FuelHandler;
 import thermalfoundation.fluid.TFFluids;
 
@@ -23,7 +27,6 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static void initialize() {
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoEnervation", "dynamo", true);
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.DynamoEnervation");
 	}
 
@@ -125,6 +128,18 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiDynamoEnervation(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerDynamoEnervation(inventory, this);
+	}
+
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {

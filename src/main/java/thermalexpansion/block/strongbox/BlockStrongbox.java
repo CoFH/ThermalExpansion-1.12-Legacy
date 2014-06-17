@@ -1,6 +1,6 @@
 package thermalexpansion.block.strongbox;
 
-import cofh.api.tileentity.ISecureTile;
+import cofh.api.core.ISecurable;
 import cofh.util.CoreUtils;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -65,7 +65,7 @@ public class BlockStrongbox extends BlockTEBase {
 
 			if (stack.stackTagCompound.hasKey("Owner")) {
 				tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-				tile.setAccess(ISecureTile.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
+				tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
 				tile.readInventoryFromNBT(stack.stackTagCompound);
 			}
 		}

@@ -6,7 +6,10 @@ import cofh.util.FluidHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,16 +24,16 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.device.GuiNullifier;
+import thermalexpansion.gui.container.device.ContainerNullifier;
 
 public class TileNullifier extends TileReconfigurableInventory implements IFluidHandler, ISidedInventory {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
-		guiId = ThermalExpansion.proxy.registerGui("Nullifier", "device", true);
 	}
 
-	protected static int guiId;
 	protected static final int[] SIDE_TEX = new int[] { 0, 1, 4 };
 	protected static final int[] SLOTS = { 0 };
 
@@ -68,7 +71,7 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -81,6 +84,19 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 	public boolean isSideAccessible(int side) {
 
 		return sideCache[side] == 1 && redstoneControlOrDisable();
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiNullifier(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerNullifier(inventory, this);
 	}
 
 	/* NBT METHODS */

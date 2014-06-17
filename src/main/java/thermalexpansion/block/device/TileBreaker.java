@@ -13,7 +13,10 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -29,16 +32,15 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.device.GuiBreaker;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TileBreaker extends TileReconfigurableInventory implements IFluidHandler {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
-		guiId = ThermalExpansion.proxy.registerGui("Breaker", "device", "TEBase", null, true);
 	}
-
-	protected static int guiId;
 
 	public static final int[] SIDE_TEX = new int[] { 0, 4 };
 
@@ -62,7 +64,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -140,6 +142,19 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 			myFakePlayer = new PlayerFake((WorldServer) worldObj);
 			needsWorld = false;
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiBreaker(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
 	}
 
 	/* NBT METHODS */

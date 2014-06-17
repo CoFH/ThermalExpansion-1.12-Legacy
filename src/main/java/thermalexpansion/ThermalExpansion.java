@@ -1,6 +1,5 @@
 package thermalexpansion;
 
-import cofh.gui.GuiHandler;
 import cofh.mod.BaseMod;
 import cofh.network.CoFHPacket;
 import cofh.updater.UpdateManager;
@@ -41,7 +40,9 @@ import thermalexpansion.gui.CreativeTabBlocks;
 import thermalexpansion.gui.CreativeTabFlorbs;
 import thermalexpansion.gui.CreativeTabItems;
 import thermalexpansion.gui.CreativeTabTools;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.item.tool.ItemSatchel;
 import thermalexpansion.network.GenericTEPacket;
 import thermalexpansion.network.GenericTEPacket.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
@@ -232,6 +233,7 @@ public class ThermalExpansion extends BaseMod {
 
 		TileWorkbench.configure();
 		TileStrongbox.configure();
+		ItemSatchel.configure();
 
 		log.info(StringHelper.localize("message.cofh.restoreConfig"));
 	}

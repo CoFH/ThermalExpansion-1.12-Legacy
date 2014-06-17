@@ -1,6 +1,6 @@
 package thermalexpansion.block.device;
 
-import cofh.api.tileentity.ISecureTile;
+import cofh.api.core.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
@@ -16,7 +16,9 @@ import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,18 +31,17 @@ import net.minecraftforge.oredict.OreDictionary;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.device.GuiWorkbench;
+import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.item.SchematicHelper;
 
-public class TileWorkbench extends TileInventory implements ISecureTile, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedTexture {
+public class TileWorkbench extends TileInventory implements ISecurable, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedTexture {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileWorkbench.class, "thermalexpansion.Workbench");
-		guiId = ThermalExpansion.proxy.registerGui("Workbench", "device", true);
 		configure();
 	}
-
-	protected static int guiId;
 
 	public static final int[] SLOTS = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
@@ -93,7 +94,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 	public boolean openGui(EntityPlayer player) {
 
 		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
@@ -275,7 +276,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 
 		super.handleTilePacket(payload, isServer);
 
-		access = ISecureTile.AccessMode.values()[payload.getByte()];
+		access = ISecurable.AccessMode.values()[payload.getByte()];
 		selectedSchematic = payload.getByte();
 
 		if (ServerHelper.isClientWorld(worldObj)) {
@@ -324,6 +325,18 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiWorkbench(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerWorkbench(inventory, this);
+	}
+
 	@Override
 	public void receiveGuiNetworkData(int i, int j) {
 
@@ -395,7 +408,7 @@ public class TileWorkbench extends TileInventory implements ISecureTile, ISidedI
 		return false;
 	}
 
-	/* ISecureTile */
+	/* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 

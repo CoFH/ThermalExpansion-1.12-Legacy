@@ -6,8 +6,11 @@ import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -21,8 +24,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
+import thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import thermalexpansion.util.FuelHandler;
 import thermalfoundation.fluid.TFFluids;
 
@@ -32,7 +36,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	public static void initialize() {
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoSteam", "dynamo", true);
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
 	}
 
@@ -197,6 +200,18 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiDynamoSteam(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerDynamoSteam(inventory, this);
+	}
+
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {

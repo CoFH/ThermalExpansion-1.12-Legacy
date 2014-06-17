@@ -5,6 +5,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.api.transport.IPipeTile;
 
+import cofh.api.item.IAugmentItem;
 import cofh.api.transport.IItemDuct;
 import cofh.util.BlockHelper;
 import cofh.util.InventoryHelper;
@@ -34,6 +35,12 @@ public class Utils {
 
 		statId++;
 		return statId;
+	}
+
+	/* ITEM FUNCTIONS */
+	public static boolean isAugmentItem(ItemStack container) {
+
+		return container != null && container.getItem() instanceof IAugmentItem;
 	}
 
 	/* TILE FUNCTIONS */

@@ -71,7 +71,7 @@ public class ItemBlockCache extends ItemBlock {
 			return;
 		}
 		if (stack.stackTagCompound == null) {
-			list.add(StringHelper.localize("info.cofh.unlocked"));
+			list.add(StringHelper.localize("info.cofh.empty"));
 			return;
 		}
 		boolean lock = stack.stackTagCompound.getBoolean("Lock");

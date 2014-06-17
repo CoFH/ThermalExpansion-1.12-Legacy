@@ -1,6 +1,6 @@
 package thermalexpansion.block.device;
 
-import cofh.api.tileentity.ISecureTile;
+import cofh.api.core.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.RecipeUpgrade;
@@ -85,7 +85,7 @@ public class BlockDevice extends BlockTEBase {
 
 				if (stack.stackTagCompound.hasKey("Owner")) {
 					tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-					tile.setAccess(ISecureTile.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
+					tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
 					tile.selectedSchematic = stack.stackTagCompound.getByte("Mode");
 					tile.readInventoryFromNBT(stack.stackTagCompound);
 				}
@@ -98,14 +98,14 @@ public class BlockDevice extends BlockTEBase {
 	public float getBlockHardness(World world, int x, int y, int z) {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		return tile instanceof ISecureTile ? -1 : super.getBlockHardness(world, x, y, z);
+		return tile instanceof ISecurable ? -1 : super.getBlockHardness(world, x, y, z);
 	}
 
 	@Override
 	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		return tile instanceof ISecureTile ? 1200 : super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
+		return tile instanceof ISecurable ? 1200 : super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
 	}
 
 	@Override

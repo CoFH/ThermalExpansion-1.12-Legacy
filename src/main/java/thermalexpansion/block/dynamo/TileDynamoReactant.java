@@ -8,8 +8,11 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -22,8 +25,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
+import thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 
 public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler {
 
@@ -31,7 +35,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	public static void initialize() {
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoReactant", "dynamo", true);
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
@@ -207,6 +210,18 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiDynamoReactant(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerDynamoReactant(inventory, this);
+	}
+
 	public int getScaledDuration(int scale) {
 
 		if (currentReactantRF <= 0) {

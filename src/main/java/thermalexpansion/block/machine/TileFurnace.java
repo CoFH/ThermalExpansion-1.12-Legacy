@@ -2,10 +2,14 @@ package thermalexpansion.block.machine;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiFurnace;
+import thermalexpansion.gui.container.machine.ContainerFurnace;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
@@ -25,7 +29,6 @@ public class TileFurnace extends TileMachineEnergized {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Furnace", "machine", true);
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
 	}
 
@@ -126,6 +129,19 @@ public class TileFurnace extends TileMachineEnergized {
 	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? FurnaceManager.recipeExists(stack) : true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiFurnace(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerFurnace(inventory, this);
 	}
 
 	/* NBT METHODS */

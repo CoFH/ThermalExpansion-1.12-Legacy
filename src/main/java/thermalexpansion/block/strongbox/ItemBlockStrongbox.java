@@ -1,5 +1,6 @@
 package thermalexpansion.block.strongbox;
 
+import cofh.api.item.IInventoryContainerItem;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
@@ -14,7 +15,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class ItemBlockStrongbox extends ItemBlock {
+public class ItemBlockStrongbox extends ItemBlock implements IInventoryContainerItem {
 
 	public ItemBlockStrongbox(Block block) {
 
@@ -101,6 +102,13 @@ public class ItemBlockStrongbox extends ItemBlock {
 
 		entity.age = 0;
 		return false;
+	}
+
+	/* IInventoryContainerItem */
+	@Override
+	public int getSizeInventory(ItemStack container) {
+
+		return TileStrongbox.INV_SIZE[container.getItemDamage()];
 	}
 
 }

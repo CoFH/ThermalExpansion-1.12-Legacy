@@ -7,6 +7,9 @@ import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -18,8 +21,9 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.machine.GuiCrucible;
+import thermalexpansion.gui.container.machine.ContainerCrucible;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 
@@ -39,7 +43,6 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParams(40, 400, 400000);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Crucible", "machine", true);
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}
 
@@ -212,6 +215,18 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiCrucible(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerCrucible(inventory, this);
+	}
+
 	public FluidTank getTank() {
 
 		return tank;

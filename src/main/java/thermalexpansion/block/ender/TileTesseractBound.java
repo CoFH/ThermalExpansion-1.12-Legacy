@@ -1,8 +1,9 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.tileentity.ISecureTile;
+import cofh.api.core.ISecurable;
 import cofh.core.CoFHProps;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -10,21 +11,27 @@ import net.minecraft.item.ItemStack;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 
-public class TileTesseractBound extends TileRSInventory implements ISecureTile, ISidedInventory {
-
-	String owner = CoFHProps.DEFAULT_OWNER;
-
-	int[] slots = new int[0];
-	boolean[] insert = new boolean[27];
-	boolean[] extract = new boolean[27];
+public class TileTesseractBound extends TileRSInventory implements ISecurable, ISidedInventory {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileTesseract.class, "thermalexpansion.Tesseract");
-		guiId = ThermalExpansion.proxy.registerGui("Tesseract", null, true);
 	}
 
-	protected static int guiId;
+	public static void configure() {
+
+		String comment = "Enable this to allow for Strongboxes to be secure inventories. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
+
+	String owner = CoFHProps.DEFAULT_OWNER;
+	private AccessMode access = AccessMode.PUBLIC;
+
+	int[] slots = new int[0];
+	boolean[] insert = new boolean[27];
+	boolean[] extract = new boolean[27];
 
 	/* Client-Side Only */
 	public boolean canAccess = true;
@@ -60,33 +67,35 @@ public class TileTesseractBound extends TileRSInventory implements ISecureTile, 
 		return false;
 	}
 
-	/* ISecureTile */
+	/* ISecureable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 
-		// TODO Auto-generated method stub
-		return false;
+		this.access = access;
+		sendUpdatePacket(Side.SERVER);
+		return true;
 	}
 
 	@Override
 	public AccessMode getAccess() {
 
-		// TODO Auto-generated method stub
-		return null;
+		return access;
 	}
 
 	@Override
 	public boolean setOwnerName(String name) {
 
-		// TODO Auto-generated method stub
+		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
+			owner = name;
+			return true;
+		}
 		return false;
 	}
 
 	@Override
 	public String getOwnerName() {
 
-		// TODO Auto-generated method stub
-		return null;
+		return owner;
 	}
 
 }

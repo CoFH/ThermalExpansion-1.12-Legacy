@@ -210,14 +210,10 @@ public class BlockCache extends BlockTEBase {
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 		NBTTagCompound tag = null;
 
-		if (tile != null) {
+		if (tile != null && tile.storedStack != null) {
 			tag = new NBTTagCompound();
-
 			tag.setBoolean("Lock", tile.locked);
-
-			if (tile.storedStack != null) {
-				tag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
-			}
+			tag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
 		}
 		return tag;
 	}

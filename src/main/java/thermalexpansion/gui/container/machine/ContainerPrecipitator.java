@@ -2,7 +2,7 @@ package thermalexpansion.gui.container.machine;
 
 import cofh.gui.slot.SlotCustomInventory;
 import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
+import cofh.gui.slot.SlotRemoveOnly;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +19,7 @@ public class ContainerPrecipitator extends ContainerTEBase {
 		super(inventory, entity);
 
 		myTile = (TilePrecipitator) entity;
-		addSlotToContainer(new SlotOutput(myTile, 0, 80, 49));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 0, 80, 49));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
 		/* Custom Inventory */

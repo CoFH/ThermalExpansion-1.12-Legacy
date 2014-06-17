@@ -17,6 +17,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.tool.ItemCapacitor;
 import thermalexpansion.item.tool.ItemIgniter;
 import thermalexpansion.item.tool.ItemMultimeter;
+import thermalexpansion.item.tool.ItemSatchel;
 import thermalexpansion.item.tool.ItemWrench;
 import thermalfoundation.item.TFItems;
 
@@ -27,6 +28,7 @@ public class TEItems {
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
+		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
 		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component")
@@ -39,11 +41,20 @@ public class TEItems {
 
 	public static void initialize() {
 
+		ItemSatchel.configure();
+
 		/* Tools */
 		toolWrench = itemWrench.addItem(0, "wrench");
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = itemIgniter.addItem(0, "igniter");
+
+		/* Satchel */
+		satchelCreative = itemSatchel.addItem(ItemSatchel.Types.CREATIVE.ordinal(), "satchelCreative", 3);
+		satchelBasic = itemSatchel.addItem(ItemSatchel.Types.BASIC.ordinal(), "satchelBasic", 0);
+		satchelHardened = itemSatchel.addItem(ItemSatchel.Types.HARDENED.ordinal(), "satchelHardened", 0);
+		satchelReinforced = itemSatchel.addItem(ItemSatchel.Types.REINFORCED.ordinal(), "satchelReinforced", 1);
+		satchelResonant = itemSatchel.addItem(ItemSatchel.Types.RESONANT.ordinal(), "satchelResonant", 2);
 
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
@@ -153,6 +164,7 @@ public class TEItems {
 	public static ItemWrench itemWrench;
 	public static ItemMultimeter itemMultimeter;
 	public static ItemIgniter itemIgniter;
+	public static ItemSatchel itemSatchel;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemComponent;
 	public static ItemBase itemMaterial;
@@ -165,6 +177,12 @@ public class TEItems {
 	public static ItemStack toolIgniter;
 
 	public static ItemStack diagramSchematic;
+
+	public static ItemStack satchelBasic;
+	public static ItemStack satchelHardened;
+	public static ItemStack satchelReinforced;
+	public static ItemStack satchelResonant;
+	public static ItemStack satchelCreative;
 
 	public static ItemStack capacitorPotato;
 	public static ItemStack capacitorBasic;

@@ -15,7 +15,9 @@ import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
@@ -26,16 +28,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiCell;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TileCell extends TileReconfigurableBase implements ITileInfoPacketHandler, IEnergyHandler {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileCell.class, "thermalexpansion.Cell");
-		guiId = ThermalExpansion.proxy.registerGui("Cell", null, "TEBase", null, true);
 	}
-
-	protected static int guiId;
 
 	public static int[] MAX_SEND = { 10000, 80, 400, 2000, 10000 };
 	public static int[] MAX_RECEIVE = { 0, 80, 400, 2000, 10000 };
@@ -118,7 +119,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -245,7 +246,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		return payload;
 	}
 
-	public CoFHPacket getModeCoFHPacket() {
+	public CoFHPacket getModePacket() {
 
 		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
@@ -286,11 +287,33 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	public void sendModePacket() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModeCoFHPacket());
+			PacketHandler.sendToServer(getModePacket());
 		}
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiCell(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
+
+	@Override
+	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
+
+		if (iCrafting instanceof EntityPlayer) {
+			if (ServerHelper.isServerWorld(worldObj)) {
+				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
+			}
+		}
+	}
+
 	public int getEnergy() {
 
 		return energyStorage.getEnergyStored();
@@ -304,16 +327,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	public int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		if (iCrafting instanceof EntityPlayer) {
-			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
-			}
-		}
 	}
 
 	/* NBT METHODS */

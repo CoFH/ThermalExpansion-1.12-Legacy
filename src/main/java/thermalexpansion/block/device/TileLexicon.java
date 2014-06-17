@@ -13,10 +13,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileLexicon.class, "thermalexpansion.lexicon");
-		guiId = ThermalExpansion.proxy.registerGui("Lexicon", "device", true);
 	}
-
-	protected static int guiId;
 
 	public static final int[] SIDE_TEX = new int[] { 0, 1, 4 };
 
@@ -36,7 +33,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

@@ -9,6 +9,9 @@ import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -20,8 +23,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.machine.GuiTransposer;
+import thermalexpansion.gui.container.machine.ContainerTransposer;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
@@ -41,7 +45,6 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(40);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Transposer", "machine", true);
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}
 
@@ -511,6 +514,18 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiTransposer(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTransposer(inventory, this);
+	}
+
 	public FluidTankAdv getTank() {
 
 		return tank;

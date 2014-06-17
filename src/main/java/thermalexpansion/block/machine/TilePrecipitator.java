@@ -1,13 +1,16 @@
 package thermalexpansion.block.machine;
 
-import cofh.api.tileentity.ICustomInventory;
+import cofh.api.core.ICustomInventory;
 import cofh.network.CoFHPacket;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,7 +20,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiPrecipitator;
+import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 
 public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler, ICustomInventory {
 
@@ -39,7 +43,6 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Precipitator", "machine", true);
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
 	}
 
@@ -232,6 +235,18 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPrecipitator(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerPrecipitator(inventory, this);
+	}
+
 	public FluidTankAdv getTank() {
 
 		return tank;
@@ -336,6 +351,12 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	public int getSlotStackLimit(int slotIndex) {
 
 		return 64;
+	}
+
+	@Override
+	public void onSlotUpdate() {
+
+		markDirty();
 	}
 
 }

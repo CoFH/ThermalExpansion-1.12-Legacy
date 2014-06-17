@@ -1,6 +1,6 @@
 package thermalexpansion.block.machine;
 
-import cofh.api.tileentity.IAugmentableTile;
+import cofh.api.core.IAugmentable;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
@@ -25,9 +25,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.Utils;
 
-public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler,
-		IAugmentableTile {
+public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, IAugmentable {
 
 	public static class SideConfig {
 
@@ -40,7 +40,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
-	protected static final int[] guiIds = new int[BlockMachine.Types.values().length];
 
 	protected static final int RATE = 25;
 	protected static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
@@ -188,7 +187,7 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiIds[getType()], worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -350,6 +349,12 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	@Override
 	public boolean augmentTile() {
+
+		for (int i = 0; i < augments.length; i++) {
+			if (Utils.isAugmentItem(augments[i])) {
+
+			}
+		}
 
 		return false;
 	}

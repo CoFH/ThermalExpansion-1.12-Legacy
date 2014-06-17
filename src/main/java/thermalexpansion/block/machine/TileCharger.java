@@ -6,10 +6,14 @@ import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiCharger;
+import thermalexpansion.gui.container.machine.ContainerCharger;
 
 public class TileCharger extends TileMachineEnergized {
 
@@ -27,7 +31,6 @@ public class TileCharger extends TileMachineEnergized {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParams(1, 10000, 400000);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Charger", "machine", true);
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}
 
@@ -144,6 +147,19 @@ public class TileCharger extends TileMachineEnergized {
 			power = energyStorage.getEnergyStored() / energyConfig.energyRamp;
 		}
 		return Math.min(power, ((IEnergyContainerItem) inventory[0].getItem()).receiveEnergy(inventory[0], power, true));
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiCharger(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerCharger(inventory, this);
 	}
 
 	/* NBT METHODS */

@@ -1,6 +1,6 @@
 package thermalexpansion.gui.container;
 
-import cofh.api.tileentity.IAugmentableTile;
+import cofh.api.core.IAugmentable;
 import cofh.block.TileCoFHBase;
 import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.slot.SlotAugment;
@@ -36,12 +36,11 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 		if (entity instanceof TileCoFHBase) {
 			baseTile = (TileCoFHBase) entity;
 		}
-
 		/* Augment Slots */
-		if (baseTile instanceof IAugmentableTile) {
-			augmentSlots = new Slot[((IAugmentableTile) baseTile).getAugmentSlots().length];
+		if (baseTile instanceof IAugmentable) {
+			augmentSlots = new Slot[((IAugmentable) baseTile).getAugmentSlots().length];
 			for (int i = 0; i < augmentSlots.length; i++) {
-				augmentSlots[i] = addSlotToContainer(new SlotAugment((IAugmentableTile) baseTile, null, i, 0, 0));
+				augmentSlots[i] = addSlotToContainer(new SlotAugment((IAugmentable) baseTile, null, i, 0, 0));
 			}
 		}
 		/* Player Inventory */
@@ -213,7 +212,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	/* IUpgradableContainer */
 	@Override
-	public void augmentTile() {
+	public void installAugments() {
 
 	}
 

@@ -2,10 +2,14 @@ package thermalexpansion.block.machine;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiSawmill;
+import thermalexpansion.gui.container.machine.ContainerSawmill;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 
@@ -25,7 +29,6 @@ public class TileSawmill extends TileMachineEnergized {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Sawmill", "machine", true);
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
 	}
 
@@ -192,6 +195,19 @@ public class TileSawmill extends TileMachineEnergized {
 	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? SawmillManager.recipeExists(stack) : true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiSawmill(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerSawmill(inventory, this);
 	}
 
 	/* NBT METHODS */

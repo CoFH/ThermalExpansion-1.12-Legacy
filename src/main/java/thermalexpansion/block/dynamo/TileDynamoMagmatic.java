@@ -6,6 +6,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -17,7 +20,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler {
 
@@ -25,7 +29,6 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	public static void initialize() {
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("DynamoMagmatic", "dynamo", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
@@ -127,6 +130,19 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		if (renderFluid == null) {
 			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiDynamoMagmatic(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
 	}
 
 	/* NBT METHODS */

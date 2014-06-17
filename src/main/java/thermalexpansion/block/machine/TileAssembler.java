@@ -7,8 +7,9 @@ import cofh.util.ServerHelper;
 import cofh.util.inventory.InventoryCraftingFalse;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +21,8 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiAssembler;
+import thermalexpansion.gui.container.machine.ContainerAssembler;
 import thermalexpansion.item.SchematicHelper;
 
 public class TileAssembler extends TileMachineEnergized implements IFluidHandler {
@@ -39,7 +41,6 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Assembler", "machine", true);
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
 	}
 
@@ -272,6 +273,18 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 	}
 
 	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiAssembler(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerAssembler(inventory, this);
+	}
+
 	public FluidTank getTank() {
 
 		return tank;
@@ -280,12 +293,6 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		super.sendGuiNetworkData(container, iCrafting);
 	}
 
 	/* NBT METHODS */

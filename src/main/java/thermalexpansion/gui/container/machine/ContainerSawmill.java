@@ -2,7 +2,7 @@ package thermalexpansion.gui.container.machine;
 
 import cofh.gui.slot.ISlotValidator;
 import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotOutput;
+import cofh.gui.slot.SlotRemoveOnly;
 import cofh.gui.slot.SlotValidated;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -23,9 +23,9 @@ public class ContainerSawmill extends ContainerTEBase implements ISlotValidator 
 
 		myTile = (TileSawmill) entity;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
-		addSlotToContainer(new SlotOutput(myTile, 1, 116, 26));
-		addSlotToContainer(new SlotOutput(myTile, 2, 134, 26));
-		addSlotToContainer(new SlotOutput(myTile, 3, 116, 53));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 134, 26));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 116, 53));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
 

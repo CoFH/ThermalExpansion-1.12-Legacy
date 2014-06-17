@@ -1,11 +1,11 @@
 package thermalexpansion.gui.container.machine;
 
 import cofh.CoFHCore;
-import cofh.gui.ContainerFalse;
+import cofh.gui.container.ContainerFalse;
 import cofh.gui.slot.SlotCraftingLocked;
 import cofh.gui.slot.SlotEnergy;
 import cofh.gui.slot.SlotFalseCopy;
-import cofh.gui.slot.SlotOutput;
+import cofh.gui.slot.SlotRemoveOnly;
 import cofh.gui.slot.SlotSpecificItem;
 import cofh.util.ItemHelper;
 
@@ -43,7 +43,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		myTile = (TileAssembler) entity;
 		playerInv = inventory;
 		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, TEItems.diagramSchematic).setSlotStackLimit(1));
-		addSlotToContainer(new SlotOutput(myTile, 1, 116, 35));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
 		for (int i = 0; i < 2; ++i) {

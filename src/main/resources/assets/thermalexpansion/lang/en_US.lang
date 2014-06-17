@@ -190,6 +190,12 @@ item.thermalexpansion.capacitor.capacitorReinforced.name=Redstone Flux Capacitor
 item.thermalexpansion.capacitor.capacitorResonant.name=Resonant Flux Capacitor
 item.thermalexpansion.capacitor.capacitorCreative.name=Creative Flux Capacitor
 
+item.thermalexpansion.satchel.satchelBasic.name=Satchel
+item.thermalexpansion.satchel.satchelHardened.name=Hardened Satchel
+item.thermalexpansion.satchel.satchelReinforced.name=Reinforced Satchel
+item.thermalexpansion.satchel.satchelResonant.name=Resonant Satchel
+item.thermalexpansion.satchel.satchelCreative.name=Creative Satchel
+
 item.thermalexpansion.diagram.schematic=Schematic
 
 item.thermalexpansion.florb.florb.name=Florb

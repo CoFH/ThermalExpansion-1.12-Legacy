@@ -14,9 +14,12 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -29,16 +32,15 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.device.GuiActivator;
+import thermalexpansion.gui.container.device.ContainerActivator;
 
 public class TileActivator extends TileReconfigurableInventory implements ISidedInventory, ITileInfoPacketHandler {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
-		guiId = ThermalExpansion.proxy.registerGui("Activator", "device", true);
 	}
-
-	protected static int guiId;
 
 	public static final int[] SIDE_TEX = new int[] { 0, 1, 4 };
 	public static final int[] SLOTS = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
@@ -73,7 +75,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 
@@ -398,6 +400,19 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 			return;
 		default:
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiActivator(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerActivator(inventory, this);
 	}
 
 	/* NBT METHODS */

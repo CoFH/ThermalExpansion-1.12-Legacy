@@ -4,10 +4,14 @@ import cofh.util.BlockHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiSmelter;
+import thermalexpansion.gui.container.machine.ContainerSmelter;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
@@ -27,7 +31,6 @@ public class TileSmelter extends TileMachineEnergized {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(40);
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("Smelter", "machine", true);
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}
 
@@ -225,6 +228,19 @@ public class TileSmelter extends TileMachineEnergized {
 	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? SmelterManager.isItemValid(stack) : true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiSmelter(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerSmelter(inventory, this);
 	}
 
 	/* NBT METHODS */

@@ -1,7 +1,7 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.api.tileentity.ISecureTile;
 import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -60,7 +60,7 @@ public class BlockTesseract extends BlockTEBase {
 			tile.removeFromRegistry();
 
 			tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-			tile.setAccess(ISecureTile.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
+			tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
 
 			tile.modeItem = stack.stackTagCompound.getByte("ModeItems");
 			tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");

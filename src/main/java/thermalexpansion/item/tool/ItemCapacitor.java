@@ -120,11 +120,11 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForInfo());
 		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
-		}
 		if (stack.stackTagCompound == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
 		}
 		if (stack.getItemDamage() == Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));

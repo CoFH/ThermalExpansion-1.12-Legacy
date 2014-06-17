@@ -44,7 +44,7 @@ public class ElementSlotOverlay extends ElementBase {
 	@Override
 	public void drawBackground(int mouseX, int mouseY, float gameTicks) {
 
-		if (!visible) {
+		if (!isVisible()) {
 			return;
 		}
 		RenderHelper.bindTexture(texture);

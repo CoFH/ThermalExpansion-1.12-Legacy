@@ -21,6 +21,7 @@ public class TEProps {
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_ENDER = PATH_GUI + "ender/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
+	public static final String PATH_GUI_SATCHEL = PATH_GUI + "satchel/";
 	public static final String PATH_GUI_STRONGBOX = PATH_GUI + "strongbox/";
 
 	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "Slots.png");

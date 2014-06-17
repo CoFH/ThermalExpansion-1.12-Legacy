@@ -6,6 +6,8 @@ import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -20,6 +22,8 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.client.machine.GuiWaterGen;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
@@ -34,7 +38,6 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 
-		guiIds[TYPE] = ThermalExpansion.proxy.registerGui("WaterGen", "machine", "TEBase", null, true);
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion.WaterGen");
 	}
 
@@ -197,14 +200,16 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 	// }
 
 	/* GUI METHODS */
-	public FluidTank getTank() {
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
 
-		return tank;
+		return new GuiWaterGen(inventory, this);
 	}
 
-	public FluidStack getTankFluid() {
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
 
-		return tank.getFluid();
+		return new ContainerTEBase(inventory, this);
 	}
 
 	@Override
@@ -229,6 +234,16 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 
 		iCrafting.sendProgressBarUpdate(container, 0, adjacentSources);
 		iCrafting.sendProgressBarUpdate(container, 1, tank.getFluidAmount());
+	}
+
+	public FluidTank getTank() {
+
+		return tank;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
 	}
 
 	/* NBT METHODS */

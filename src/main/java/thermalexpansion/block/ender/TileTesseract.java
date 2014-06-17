@@ -1,7 +1,7 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.core.ISecurable;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.tileentity.ISecureTile;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
@@ -23,8 +23,10 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 import java.util.Map;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
@@ -42,18 +44,18 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.ender.GuiTesseract;
+import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSInventory implements ISecureTile, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
+public class TileTesseract extends TileRSInventory implements ISecurable, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
 		IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileTesseract.class, "thermalexpansion.Tesseract");
-		guiId = ThermalExpansion.proxy.registerGui("Tesseract", "ender", true);
 	}
 
-	protected static int guiId;
 	protected static final int[] SLOTS = { 0 };
 
 	public enum PacketInfoID {
@@ -204,7 +206,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		}
 		if (canPlayerAccess(player.getCommandSenderName())) {
 			sendNamesList((EntityPlayerMP) player);
-			player.openGui(ThermalExpansion.instance, guiId, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
@@ -539,6 +541,136 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		return tile instanceof TileTesseract ? false : Utils.isInventory(tile, side);
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+		payload.addBool(isActive);
+		payload.addByte(modeItem);
+		payload.addByte(modeFluid);
+		payload.addByte(modeEnergy);
+		payload.addByte((byte) access.ordinal());
+		payload.addInt(frequency);
+		payload.addString(owner);
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		isActive = payload.getBool();
+		modeItem = payload.getByte();
+		modeFluid = payload.getByte();
+		modeEnergy = payload.getByte();
+		access = ISecurable.AccessMode.values()[payload.getByte()];
+		frequency = payload.getInt();
+		owner = payload.getString();
+
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	/* ITileInfoPacketHandler */
+	@Override
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+
+		switch (PacketInfoID.values()[payload.getByte()]) {
+		case NAME_LIST:
+			RegistryEnderAttuned.clearClientNames();
+			int nameCount = payload.getInt();
+			for (int i = 0; i < nameCount; i++) {
+				RegistryEnderAttuned.addClientNames(payload.getString(), payload.getString());
+			}
+			ThermalExpansion.proxy.updateTesseractGui();
+			return;
+		case ALTER_NAME_LIST:
+			if (payload.getBool()) { // If Remove
+				RegistryEnderAttuned.linkConf.getCategory(payload.getString()).remove(payload.getString());
+			} else {
+				RegistryEnderAttuned.linkConf.get(payload.getString(), payload.getString(), "").set(payload.getString());
+			}
+			sendNamesList((EntityPlayerMP) thePlayer);
+			RegistryEnderAttuned.linkConf.save();
+			return;
+		case TILE_INFO:
+			removeFromRegistry();
+			modeItem = payload.getByte();
+			modeFluid = payload.getByte();
+			modeEnergy = payload.getByte();
+			access = ISecurable.AccessMode.values()[payload.getByte()];
+			frequency = payload.getInt();
+			addToRegistry();
+
+			isActive = frequency == -1 ? false : true;
+
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+
+			sendNamesList((EntityPlayerMP) thePlayer);
+			return;
+		}
+	}
+
+	/*
+	 * WARNING - Only sends to player
+	 */
+	public void sendNamesList(EntityPlayerMP thePlayer) {
+
+		String lookupName = access.isPublic() ? "_Public_" : owner;
+		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
+
+		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
+		if (curList != null) {
+			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			payload.addInt(curList.size());
+
+			for (Property curProp : curList.values()) {
+				payload.addString(curProp.getName());
+				payload.addString(curProp.getString());
+			}
+		} else {
+			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
+			payload.addInt(0);
+		}
+		PacketHandler.sendTo(payload, thePlayer);
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiTesseract(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTesseract(inventory, this);
+	}
+
+	@Override
+	public void receiveGuiNetworkData(int i, int j) {
+
+		if (j == 0) {
+			canAccess = false;
+		} else {
+			canAccess = true;
+		}
+	}
+
+	@Override
+	public void sendGuiNetworkData(Container container, ICrafting player) {
+
+		int access = 0;
+		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
+			access = 1;
+		}
+		player.sendProgressBarUpdate(container, 0, access);
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -586,125 +718,6 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		nbt.setInteger("Fluid.Rem", fluidTrackerRemote);
 		nbt.setInteger("Energy.Adj", energyTrackerAdjacent);
 		nbt.setInteger("Energy.Rem", energyTrackerRemote);
-
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addBool(isActive);
-		payload.addByte(modeItem);
-		payload.addByte(modeFluid);
-		payload.addByte(modeEnergy);
-		payload.addByte((byte) access.ordinal());
-		payload.addInt(frequency);
-		payload.addString(owner);
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		isActive = payload.getBool();
-		modeItem = payload.getByte();
-		modeFluid = payload.getByte();
-		modeEnergy = payload.getByte();
-		access = ISecureTile.AccessMode.values()[payload.getByte()];
-		frequency = payload.getInt();
-		owner = payload.getString();
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (PacketInfoID.values()[payload.getByte()]) {
-		case NAME_LIST:
-			RegistryEnderAttuned.clearClientNames();
-			int nameCount = payload.getInt();
-			for (int i = 0; i < nameCount; i++) {
-				RegistryEnderAttuned.addClientNames(payload.getString(), payload.getString());
-			}
-			ThermalExpansion.proxy.updateTesseractGui();
-			return;
-		case ALTER_NAME_LIST:
-			if (payload.getBool()) { // If Remove
-				RegistryEnderAttuned.linkConf.getCategory(payload.getString()).remove(payload.getString());
-			} else {
-				RegistryEnderAttuned.linkConf.get(payload.getString(), payload.getString(), "").set(payload.getString());
-			}
-			sendNamesList((EntityPlayerMP) thePlayer);
-			RegistryEnderAttuned.linkConf.save();
-			return;
-		case TILE_INFO:
-			removeFromRegistry();
-			modeItem = payload.getByte();
-			modeFluid = payload.getByte();
-			modeEnergy = payload.getByte();
-			access = ISecureTile.AccessMode.values()[payload.getByte()];
-			frequency = payload.getInt();
-			addToRegistry();
-
-			isActive = frequency == -1 ? false : true;
-
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-
-			sendNamesList((EntityPlayerMP) thePlayer);
-			return;
-		}
-	}
-
-	/*
-	 * WARNING - Only sends to player
-	 */
-	public void sendNamesList(EntityPlayerMP thePlayer) {
-
-		String lookupName = access.isPublic() ? "_Public_" : owner;
-		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		if (curList != null) {
-			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			payload.addInt(curList.size());
-
-			for (Property curProp : curList.values()) {
-				payload.addString(curProp.getName());
-				payload.addString(curProp.getString());
-			}
-		} else {
-			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			payload.addInt(0);
-		}
-		PacketHandler.sendTo(payload, thePlayer);
-	}
-
-	/* GUI METHODS */
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		int access = 0;
-		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
-			access = 1;
-		}
-		player.sendProgressBarUpdate(container, 0, access);
 	}
 
 	/* IInventory */
@@ -834,7 +847,7 @@ public class TileTesseract extends TileRSInventory implements ISecureTile, ISide
 		return 0;
 	}
 
-	/* ISecureTile */
+	/* ISecureable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 
