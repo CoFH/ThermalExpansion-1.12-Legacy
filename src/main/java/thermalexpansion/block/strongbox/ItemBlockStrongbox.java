@@ -1,12 +1,15 @@
 package thermalexpansion.block.strongbox;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.CoFHProps;
+import cofh.enchantment.CoFHEnchantment;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -60,12 +63,6 @@ public class ItemBlockStrongbox extends ItemBlock implements IInventoryContainer
 	}
 
 	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
-	}
-
-	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Owner")) {
@@ -104,11 +101,36 @@ public class ItemBlockStrongbox extends ItemBlock implements IInventoryContainer
 		return false;
 	}
 
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	public static int getStorageIndex(int type, int enchant) {
+
+		return type > 0 ? 2 * type + enchant : 0;
+	}
+
+	public static int getStorageIndex(ItemStack container) {
+
+		int type = container.getItemDamage();
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container);
+
+		return getStorageIndex(type, enchant);
+	}
+
 	/* IInventoryContainerItem */
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return TileStrongbox.INV_SIZE[container.getItemDamage()];
+		return CoFHProps.STORAGE_SIZE[getStorageIndex(container)];
 	}
 
 }

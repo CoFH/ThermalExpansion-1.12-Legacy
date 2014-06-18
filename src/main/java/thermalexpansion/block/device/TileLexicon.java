@@ -7,6 +7,7 @@ import net.minecraft.util.IIcon;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
+import thermalexpansion.gui.GuiHandler;
 
 public class TileLexicon extends TileReconfigurableInventory {
 
@@ -33,7 +34,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

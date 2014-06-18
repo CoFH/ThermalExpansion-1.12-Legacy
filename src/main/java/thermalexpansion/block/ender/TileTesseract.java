@@ -44,6 +44,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
@@ -206,7 +207,7 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		}
 		if (canPlayerAccess(player.getCommandSenderName())) {
 			sendNamesList((EntityPlayerMP) player);
-			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {

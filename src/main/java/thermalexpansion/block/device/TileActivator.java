@@ -32,6 +32,7 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiActivator;
 import thermalexpansion.gui.container.device.ContainerActivator;
 
@@ -75,7 +76,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 
 public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
 		IEnergyInfo, IAugmentable {
@@ -180,7 +181,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

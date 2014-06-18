@@ -31,6 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.item.SchematicHelper;
@@ -94,7 +95,7 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	public boolean openGui(EntityPlayer player) {
 
 		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {

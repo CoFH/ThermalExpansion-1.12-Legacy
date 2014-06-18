@@ -1,5 +1,10 @@
 package thermalexpansion.gui.container;
 
+import cofh.api.item.IInventoryContainerItem;
+import cofh.gui.slot.ISlotValidator;
+import cofh.gui.slot.SlotValidated;
+import cofh.util.MathHelper;
+
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 
@@ -13,8 +18,10 @@ import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.strongbox.TileStrongbox;
 
 @ChestContainer()
-public class ContainerStrongbox extends ContainerTEBase {
+public class ContainerStrongbox extends ContainerTEBase implements ISlotValidator {
 
+	int storageIndex;
+	int rowSize;
 	TileStrongbox myTile;
 
 	public ContainerStrongbox(InventoryPlayer inventory, TileEntity entity) {
@@ -24,23 +31,21 @@ public class ContainerStrongbox extends ContainerTEBase {
 		myTile = (TileStrongbox) entity;
 		myTile.openInventory();
 
-		int slotsPerRow = 9;
-		int rows = myTile.getSizeInventory() / slotsPerRow;
-		int invOffset = 8;
+		storageIndex = myTile.getStorageIndex();
+		rowSize = MathHelper.clampI(storageIndex + 1, 9, 13);
 
-		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
-			rows = 2;
-			addPlayerSlotsToContainer(inventory, invOffset, rows);
-			addSlotToContainer(new Slot(myTile, 0, 80, 26));
+		int rows = MathHelper.clampI(storageIndex, 2, 8);
+		int slots = rowSize * rows;
+
+		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
+
+		if (storageIndex == 0) {
+			addSlotToContainer(new SlotValidated(this, myTile, 0, 80, 26));
+			rowSize = 1;
 		} else {
-			if (myTile.type == BlockStrongbox.Types.RESONANT.ordinal()) {
-				slotsPerRow = 12;
-				invOffset = 35;
-			}
-			rows = myTile.getSizeInventory() / slotsPerRow;
-			addPlayerSlotsToContainer(inventory, invOffset, rows);
-			for (int i = 0; i < myTile.getSizeInventory(); i++) {
-				addSlotToContainer(new Slot(myTile, i, 8 + i % slotsPerRow * 18, 17 + i / slotsPerRow * 18));
+			int yOffset = storageIndex == 2 ? 26 : 17;
+			for (int i = 0; i < slots; i++) {
+				addSlotToContainer(new SlotValidated(this, myTile, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}
 		}
 	}
@@ -81,14 +86,20 @@ public class ContainerStrongbox extends ContainerTEBase {
 	@RowSizeCallback
 	public int getRowSize() {
 
-		switch (BlockStrongbox.Types.values()[myTile.type]) {
-		case CREATIVE:
-			return 1;
-		case RESONANT:
-			return 12;
-		default:
-			return 9;
+		return rowSize;
+	}
+
+	/* ISlotValidator */
+	@Override
+	public boolean isItemValid(ItemStack stack) {
+
+		if (stack == null) {
+			return false;
 		}
+		if (stack.getItem() instanceof IInventoryContainerItem) {
+			return ((IInventoryContainerItem) stack.getItem()).getSizeInventory(stack) <= 0;
+		}
+		return true;
 	}
 
 }

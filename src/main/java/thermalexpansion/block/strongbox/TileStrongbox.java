@@ -28,6 +28,7 @@ import net.minecraft.util.ChatComponentText;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
@@ -45,23 +46,13 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
 	}
 
-	protected static final int[] INV_SIZE = { 1, 18, 36, 54, 72 };
-	protected static final int[][] SLOTS = new int[5][];
 	public static boolean enableSecurity = true;
-
-	static {
-		for (int i = 0; i < 5; i++) {
-			SLOTS[i] = new int[INV_SIZE[i]];
-			for (int j = 0; j < INV_SIZE[i]; j++) {
-				SLOTS[i][j] = j;
-			}
-		}
-	}
 
 	String owner = CoFHProps.DEFAULT_OWNER;
 	private AccessMode access = AccessMode.PUBLIC;
 
 	public byte type;
+	public byte enchant = 0;
 	public byte facing = 3;
 
 	public double prevLidAngle;
@@ -79,7 +70,7 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public TileStrongbox(int metadata) {
 
 		type = (byte) metadata;
-		inventory = new ItemStack[INV_SIZE[type]];
+		createInventory();
 	}
 
 	@Override
@@ -92,6 +83,16 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public int getType() {
 
 		return type;
+	}
+
+	public int getStorageIndex() {
+
+		return type > 0 ? 2 * type + enchant : 0;
+	}
+
+	public void createInventory() {
+
+		inventory = new ItemStack[CoFHProps.STORAGE_SIZE[getStorageIndex()]];
 	}
 
 	public double getRadianLidAngle(float f) {
@@ -166,7 +167,7 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public boolean openGui(EntityPlayer player) {
 
 		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
@@ -181,10 +182,13 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
+
 		payload.addByte(type);
+		payload.addByte(enchant);
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(facing);
 		payload.addString(owner);
+
 		return payload;
 	}
 
@@ -195,12 +199,13 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		super.handleTilePacket(payload, isServer);
 
 		type = payload.getByte();
+		enchant = payload.getByte();
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 		if (ServerHelper.isClientWorld(worldObj)) {
 			facing = payload.getByte();
 			owner = payload.getString();
 			if (inventory.length <= 0) {
-				inventory = new ItemStack[INV_SIZE[type]];
+				createInventory();
 			}
 		} else {
 			payload.getByte();
@@ -248,11 +253,16 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		type = nbt.getByte("Type");
+		enchant = nbt.getByte("Enchant");
 		facing = nbt.getByte("Facing");
 		access = AccessMode.values()[nbt.getByte("Access")];
 		owner = nbt.getString("Owner");
-		inventory = new ItemStack[INV_SIZE[type]];
 
+		if (type > 0) {
+			inventory = new ItemStack[CoFHProps.STORAGE_SIZE[2 * type + enchant]];
+		} else {
+			inventory = new ItemStack[1];
+		}
 		if (!enableSecurity) {
 			access = AccessMode.PUBLIC;
 		}
@@ -265,6 +275,7 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Type", type);
+		nbt.setByte("Enchant", enchant);
 		nbt.setByte("Facing", facing);
 		nbt.setByte("Access", (byte) access.ordinal());
 		nbt.setString("Owner", owner);
@@ -330,7 +341,7 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return access.isPublic() ? SLOTS[type] : TEProps.EMPTY_INVENTORY;
+		return access.isPublic() ? CoFHProps.SLOTS[type] : TEProps.EMPTY_INVENTORY;
 	}
 
 	@Override

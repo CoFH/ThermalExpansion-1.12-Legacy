@@ -14,16 +14,19 @@ import thermalexpansion.item.tool.ItemSatchel;
 
 public class GuiHandler implements IGuiHandler {
 
+	public static final int TILE_ID = 0;
+	public static final int SATCHEL_ID = 1;
+
 	@Override
 	public Object getClientGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 
 		switch (id) {
-		case 0:
+		case TILE_ID:
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof TileCoFHBase) {
 				return ((TileCoFHBase) tile).getGuiClient(player.inventory);
 			}
-		case 1:
+		case SATCHEL_ID:
 			if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
 				return new GuiSatchel(player.inventory, new ContainerSatchel(player.getCurrentEquippedItem(), player.inventory));
 			}
@@ -36,12 +39,12 @@ public class GuiHandler implements IGuiHandler {
 	public Object getServerGuiElement(int id, EntityPlayer player, World world, int x, int y, int z) {
 
 		switch (id) {
-		case 0:
+		case TILE_ID:
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof TileCoFHBase) {
 				return ((TileCoFHBase) tile).getGuiServer(player.inventory);
 			}
-		case 1:
+		case SATCHEL_ID:
 			if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
 				return new ContainerSatchel(player.getCurrentEquippedItem(), player.inventory);
 			}

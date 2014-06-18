@@ -34,6 +34,10 @@ import thermalexpansion.block.tank.ItemBlockTank;
 
 public class TEBlocks {
 
+	private TEBlocks() {
+
+	}
+
 	public static ArrayList<IInitializer> blockList = new ArrayList();
 
 	public static void preInit() {

@@ -1,53 +1,46 @@
 package thermalexpansion.gui.client;
 
 import cofh.api.core.ISecurable;
+import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabSecurity;
+import cofh.util.MathHelper;
+import cofh.util.SecurityHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerSatchel;
 import thermalexpansion.item.tool.ItemSatchel;
 
 public class GuiSatchel extends GuiBaseAdv {
 
-	static final ResourceLocation[] TEXTURE = new ResourceLocation[7];
-
-	static {
-		for (int i = 0; i < 7; i++) {
-			TEXTURE[i] = new ResourceLocation(TEProps.PATH_GUI_SATCHEL + "Satchel" + i + ".png");
-		}
-	}
-
-	static final String INFO = "It's a satchel. It stores most things.\n\nNo refunds.";
+	static final String INFO = "It's a satchel. Will not store some objects.\n\nNo refunds.";
 	static final String INFO_ENCHANT = "\n\nCan be enchanted to hold more items!";
 	static final String INFO_CREATIVE = "Only holds one thing...kind of.";
 
-	int satchelType;
 	boolean enchanted;
 	boolean secure;
 	String playerName;
+	int storageIndex;
 
 	public GuiSatchel(InventoryPlayer inventory, ContainerSatchel container) {
 
-		super(container, TEXTURE[0]);
-		playerName = inventory.player.getCommandSenderName();
-		satchelType = container.getContainerStack().getItemDamage();
+		super(container);
 
-		if (true) {
-			// enchant check
+		playerName = inventory.player.getCommandSenderName();
+		storageIndex = ItemSatchel.getStorageIndex(container.getContainerStack());
+		enchanted = ItemSatchel.isEnchanted(container.getContainerStack());
+
+		if (SecurityHelper.isSecure(container.getContainerStack())) {
+			secure = true;
 		}
-		if (true) {
-			// secure check
-		}
-		texture = TEXTURE[satchelType];
+		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
 		name = container.getInventoryName();
 		allowUserInput = false;
 
-		ySize = 112 + Math.max(2, satchelType) * 18;
+		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
+		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
 	}
 
 	@Override
@@ -55,7 +48,7 @@ public class GuiSatchel extends GuiBaseAdv {
 
 		super.initGui();
 
-		if (satchelType == ItemSatchel.Types.CREATIVE.ordinal()) {
+		if (storageIndex == ItemSatchel.Types.CREATIVE.ordinal()) {
 			addTab(new TabInfo(this, INFO_CREATIVE));
 		} else {
 			addTab(new TabInfo(this, enchanted ? INFO : INFO + INFO_ENCHANT));

@@ -24,6 +24,10 @@ import thermalexpansion.item.tool.ItemWrenchBattle;
 
 public class TEEquipment {
 
+	private TEEquipment() {
+
+	}
+
 	public static void preInit() {
 
 		itemHelmetInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 0).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)

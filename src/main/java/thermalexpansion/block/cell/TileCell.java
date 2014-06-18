@@ -28,6 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.GuiCell;
 import thermalexpansion.gui.container.ContainerTEBase;
 
@@ -119,7 +120,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

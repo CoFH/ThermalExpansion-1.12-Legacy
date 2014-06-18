@@ -1,53 +1,40 @@
 package thermalexpansion.gui.client;
 
+import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabSecurity;
+import cofh.util.MathHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.strongbox.TileStrongbox;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
 public class GuiStrongbox extends GuiBaseAdv {
 
-	static final ResourceLocation[] TEXTURE = { new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxCreative.png"),
-			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxBasic.png"),
-			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxHardened.png"),
-			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxReinforced.png"),
-			new ResourceLocation(TEProps.PATH_GUI_STRONGBOX + "StrongboxResonant.png") };
-
-	static final String INFO = "Stores things securely!\n\nCan store things that store things so you can store things while you store things.\n\nWrench while sneaking to dismantle.";
+	static final String INFO = "Stores things securely!\n\nWill not store some objects.\n\nWrench while sneaking to dismantle.";
+	static final String INFO_ENCHANT = "\n\nCan be enchanted to hold more items!";
 	static final String INFO_CREATIVE = "Stores something securely!\n\nAllows you to pull out infinite amounts of the item stored inside.";
 
 	TileStrongbox myTile;
 	String playerName;
+	int storageIndex;
 
 	public GuiStrongbox(InventoryPlayer inventory, TileEntity entity) {
 
-		super(new ContainerStrongbox(inventory, entity), TEXTURE[((TileStrongbox) entity).type]);
-		myTile = (TileStrongbox) entity;
-		name = myTile.getInventoryName();
-		playerName = inventory.player.getCommandSenderName();
+		super(new ContainerStrongbox(inventory, entity));
 
-		switch (BlockStrongbox.Types.values()[myTile.type]) {
-		case HARDENED:
-			ySize = 184;
-			break;
-		case REINFORCED:
-			ySize = 220;
-			break;
-		case RESONANT:
-			xSize = 230;
-			ySize = 220;
-			break;
-		default:
-			ySize = 148;
-		}
+		myTile = (TileStrongbox) entity;
+		playerName = inventory.player.getCommandSenderName();
+		storageIndex = myTile.getStorageIndex();
+		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
+		name = myTile.getInventoryName();
+
+		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
+		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
 	}
 
 	@Override
@@ -58,7 +45,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			addTab(new TabInfo(this, INFO_CREATIVE));
 		} else {
-			addTab(new TabInfo(this, INFO, 1));
+			addTab(new TabInfo(this, myTile.enchant > 0 ? INFO : INFO + INFO_ENCHANT, 1));
 		}
 		if (TileStrongbox.enableSecurity) {
 			addTab(new TabSecurity(this, myTile, playerName));

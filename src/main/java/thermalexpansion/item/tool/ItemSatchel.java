@@ -1,6 +1,8 @@
 package thermalexpansion.item.tool;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.CoFHProps;
+import cofh.enchantment.CoFHEnchantment;
 import cofh.item.ItemBase;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
@@ -11,6 +13,7 @@ import cofh.util.StringHelper;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,6 +23,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.gui.GuiHandler;
 
 public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
@@ -66,7 +70,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			return stack;
 		}
 		if (ServerHelper.isServerWorld(world)) {
-			player.openGui(ThermalExpansion.instance, 1, world, 0, 0, 0);
+			player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 		}
 		return stack;
 	}
@@ -113,15 +117,41 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		return false;
 	}
 
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	public static boolean isEnchanted(ItemStack container) {
+
+		return EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container) > 0;
+	}
+
+	public static int getStorageIndex(int type, int enchant) {
+
+		return type > 0 ? 2 * type + enchant : 0;
+	}
+
+	public static int getStorageIndex(ItemStack container) {
+
+		int type = container.getItemDamage();
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container);
+
+		return getStorageIndex(type, enchant);
+	}
+
 	/* IInventoryContainerItem */
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		int satchelType = container.getItemDamage();
-		if (container.getItemDamage() == Types.CREATIVE.ordinal()) {
-			return 1;
-		}
-		return satchelType * 9;
+		return CoFHProps.STORAGE_SIZE[getStorageIndex(container)];
 	}
 
 	public static enum Types {

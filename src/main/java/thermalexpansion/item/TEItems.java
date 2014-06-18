@@ -23,6 +23,10 @@ import thermalfoundation.item.TFItems;
 
 public class TEItems {
 
+	private TEItems() {
+
+	}
+
 	public static void preInit() {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
@@ -73,6 +77,8 @@ public class TEItems {
 		powerCoilGold = itemMaterial.addItem(1, "powerCoilGold");
 		powerCoilSilver = itemMaterial.addItem(2, "powerCoilSilver");
 		powerCoilElectrum = itemMaterial.addItem(3, "powerCoilElectrum");
+
+		lock = itemMaterial.addItem(16, "lock");
 
 		/* Process Items */
 		woodchips = itemMaterial.addItem(512, "woodchips");
@@ -138,6 +144,8 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotSilver" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilElectrum, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotElectrum" }));
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(lock, new Object[] { " S ", "SBS", "SSS", 'B', "ingotBronze", 'S', "nuggetSignalum" }));
+
 		/* Misc Items */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
 				"dustCoal" }));
@@ -195,6 +203,8 @@ public class TEItems {
 	public static ItemStack powerCoilGold;
 	public static ItemStack powerCoilSilver;
 	public static ItemStack powerCoilElectrum;
+
+	public static ItemStack lock;
 
 	public static ItemStack woodchips;
 	public static ItemStack sawdust;

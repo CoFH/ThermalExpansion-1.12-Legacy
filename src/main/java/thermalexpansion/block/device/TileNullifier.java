@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurableInventory;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiNullifier;
 import thermalexpansion.gui.container.device.ContainerNullifier;
 
@@ -71,7 +72,7 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, 0, worldObj, xCoord, yCoord, zCoord);
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 		return true;
 	}
 

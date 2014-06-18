@@ -8,6 +8,7 @@ import cofh.gui.slot.SlotValidated;
 import cofh.gui.slot.SlotViewOnly;
 import cofh.social.RegistryFriends;
 import cofh.util.CoreUtils;
+import cofh.util.MathHelper;
 import cofh.util.SecurityHelper;
 
 import invtweaks.api.container.ChestContainer;
@@ -22,25 +23,28 @@ import thermalexpansion.item.tool.ItemSatchel;
 @ChestContainer()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
 
-	int satchelType;
+	int storageIndex;
+	int rowSize;
 
 	public ContainerSatchel(ItemStack stack, InventoryPlayer inventory) {
 
 		super(stack, inventory);
-		satchelType = containerWrapper.getContainerStack().getItemDamage();
-		int slots = ((ItemSatchel) containerWrapper.getContainerStack().getItem()).getSizeInventory(stack);
 
-		addPlayerSlotsToContainer(inventory, 8, Math.max(2, satchelType));
+		storageIndex = ItemSatchel.getStorageIndex(stack);
+		rowSize = MathHelper.clampI(storageIndex + 1, 9, 13);
 
-		if (slots == 1) {
+		int rows = MathHelper.clampI(storageIndex, 2, 8);
+		int slots = rowSize * rows;
+
+		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
+
+		if (storageIndex == 0) {
 			addSlotToContainer(new SlotValidated(this, containerWrapper, 0, 80, 26));
-		} else if (slots == 9) {
-			for (int i = 0; i < slots; i++) {
-				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % 9 * 18, 26 + i / 9 * 18));
-			}
+			rowSize = 1;
 		} else {
+			int yOffset = storageIndex == 2 ? 26 : 17;
 			for (int i = 0; i < slots; i++) {
-				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % 9 * 18, 17 + i / 9 * 18));
+				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}
 		}
 	}
@@ -64,10 +68,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	@RowSizeCallback
 	public int getRowSize() {
 
-		if (satchelType == ItemSatchel.Types.CREATIVE.ordinal()) {
-			return 1;
-		}
-		return 9;
+		return rowSize;
 	}
 
 	/* ISecurable */

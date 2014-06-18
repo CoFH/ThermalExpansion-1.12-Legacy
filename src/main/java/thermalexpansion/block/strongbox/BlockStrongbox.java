@@ -1,6 +1,7 @@
 package thermalexpansion.block.strongbox;
 
 import cofh.api.core.ISecurable;
+import cofh.enchantment.CoFHEnchantment;
 import cofh.util.CoreUtils;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -63,6 +65,9 @@ public class BlockStrongbox extends BlockTEBase {
 		if (stack.stackTagCompound != null) {
 			TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
 
+			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, stack);
+			tile.createInventory();
+
 			if (stack.stackTagCompound.hasKey("Owner")) {
 				tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
 				tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
@@ -99,6 +104,9 @@ public class BlockStrongbox extends BlockTEBase {
 		if (tile != null) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
+			}
+			if (tile.enchant > 0) {
+				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.enchantmentHolding.effectId, tile.enchant);
 			}
 			tag.setString("Owner", tile.getOwnerName());
 			tag.setByte("Access", (byte) tile.getAccess().ordinal());

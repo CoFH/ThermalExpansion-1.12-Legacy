@@ -22,6 +22,10 @@ import thermalexpansion.util.crafting.TransposerManager;
 
 public class TEFlorbs {
 
+	private TEFlorbs() {
+
+	}
+
 	public static void preInit() {
 
 		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Florbs.cfg")));
