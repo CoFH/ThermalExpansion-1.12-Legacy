@@ -176,6 +176,11 @@ public class Utils {
 		return ItemHelper.isPlayerHoldingItemStack(TEItems.toolMultimeter, player);
 	}
 
+	public static boolean isHoldingDebugger(EntityPlayer player) {
+
+		return ItemHelper.isPlayerHoldingItemStack(TEItems.toolDebugger, player);
+	}
+
 	public static boolean isHoldingServo(EntityPlayer player) {
 
 		return ItemHelper.isPlayerHoldingItemStack(TEItems.pneumaticServo, player);
