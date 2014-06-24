@@ -89,8 +89,8 @@ public class PulverizerManager {
 			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
 		}
 		addRecipe(2400, new ItemStack(Blocks.quartz_stairs), new ItemStack(Items.quartz, 6));
-		addRecipe(1600, new ItemStack(Blocks.log), TEItems.woodchips);
-		addRecipe(1600, new ItemStack(Blocks.log2), TEItems.woodchips);
+		addRecipe(1600, new ItemStack(Blocks.log), ItemHelper.cloneStack(TEItems.sawdust, 2));
+		addRecipe(1600, new ItemStack(Blocks.log2), ItemHelper.cloneStack(TEItems.sawdust, 2));
 
 		addRecipe(1600, new ItemStack(Blocks.red_flower), new ItemStack(Items.dye, 4, 1));
 		addRecipe(1600, new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 4, 11));
@@ -219,6 +219,11 @@ public class PulverizerManager {
 		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackPulverizer(input), recipe);
 		return true;
+	}
+
+	public static boolean removeRecipe(ItemStack input) {
+
+		return recipeMap.remove(new ComparableItemStackPulverizer(input)) != null;
 	}
 
 	/* HELPER FUNCTIONS */

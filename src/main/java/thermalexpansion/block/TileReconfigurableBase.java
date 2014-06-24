@@ -51,7 +51,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 			payload.getByte();
 			payload.getBool();
 		}
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;
 			}
@@ -68,7 +68,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 
 	public boolean hasSide(int side) {
 
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] == side) {
 				return true;
 			}
@@ -89,7 +89,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 		if (sideCache.length == 0) {
 			sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
 		}
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;
 			}
@@ -227,7 +227,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	public boolean resetSides() {
 
 		boolean update = false;
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] > 0) {
 				sideCache[i] = 0;
 				update = true;
@@ -242,7 +242,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	@Override
 	public abstract int getNumConfig(int side);
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public abstract IIcon getTexture(int side, int pass);
 

@@ -296,7 +296,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		super.readFromNBT(nbt);
 
 		readAugmentsFromNBT(nbt);
-		augmentTile();
+		installAugments();
 
 		facing = nbt.getByte("Facing");
 		isActive = nbt.getBoolean("Active");
@@ -377,7 +377,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	public boolean rotateBlock() {
 
 		int[] coords;
-		for (int i = facing + 1; i < facing + 6; ++i) {
+		for (int i = facing + 1; i < facing + 6; i++) {
 			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
 				facing = (byte) (i % 6);
 				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
@@ -478,7 +478,7 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	}
 
 	@Override
-	public boolean augmentTile() {
+	public boolean installAugments() {
 
 		return false;
 	}

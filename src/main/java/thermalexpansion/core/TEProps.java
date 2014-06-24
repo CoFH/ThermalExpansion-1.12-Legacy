@@ -1,6 +1,7 @@
 package thermalexpansion.core;
 
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidTankInfo;
 
 public class TEProps {
@@ -34,7 +35,10 @@ public class TEProps {
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
 	public static String textureSelection = TEXTURE_DEFAULT;
 
+	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
+	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	public static final int LAVA_MAX_RF = 400000;
+	public static final int MAGMATIC_TEMPERATURE = 1000;
 
 	public static enum Ores {
 		COPPER, TIN, SILVER, LEAD, NICKEL
@@ -67,8 +71,8 @@ public class TEProps {
 	public static int renderIdDynamo = -1;
 	public static int renderIdFrame = -1;
 	public static int renderIdLamp = -1;
-	public static int renderIdTank = -1;
 	public static int renderIdPlate = -1;
+	public static int renderIdTank = -1;
 	public static int renderIdTesseract = -1;
 
 }

@@ -17,6 +17,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.core.TEProps;
 import thermalexpansion.item.tool.ItemFlorb;
 import thermalexpansion.util.crafting.TransposerManager;
 
@@ -68,7 +69,7 @@ public class TEFlorbs {
 
 		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 			if (fluid.canBePlacedInWorld() && configFlorbs.get("whitelist", fluid.getName(), true)) {
-				if (fluid.getTemperature() < MAGMATIC_FLORB_TEMPERATURE) {
+				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
 					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 0), fluid));
 					TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
 				} else {
@@ -86,8 +87,6 @@ public class TEFlorbs {
 	public static ArrayList<ItemStack> florbList = new ArrayList();
 
 	public static boolean enableFlorbs = true;
-	public static final int MAGMATIC_FLORB_TEMPERATURE = 1000;
-
 	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.version);
 
 }

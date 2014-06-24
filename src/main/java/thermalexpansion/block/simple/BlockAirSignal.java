@@ -1,6 +1,5 @@
 package thermalexpansion.block.simple;
 
-import cofh.api.core.IInitializer;
 import cofh.block.BlockCoFHBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -8,35 +7,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.block.BlockContainer;
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockInvisible extends BlockContainer implements IInitializer {
+public class BlockAirSignal extends Block {
 
-	public BlockInvisible(int id) {
+	public BlockAirSignal() {
 
 		super(Material.air);
 		disableStats();
 		setBlockTextureName("glowstone");
 		setBlockBounds(0, 0, 0, 0, 0, 0);
-	}
-
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
-
-		return new TileInvisible();
-	}
-
-	@Override
-	public boolean canProvidePower() {
-
-		return true;
 	}
 
 	@Override
@@ -46,36 +32,21 @@ public class BlockInvisible extends BlockContainer implements IInitializer {
 	}
 
 	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+	public boolean canProvidePower() {
 
-		TileInvisible tile = (TileInvisible) world.getTileEntity(x, y, z);
-
-		if (tile != null) {
-			return tile.light;
-		}
-		return 0;
+		return true;
 	}
 
 	@Override
 	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
 
-		TileInvisible tile = (TileInvisible) world.getTileEntity(x, y, z);
-
-		if (tile != null) {
-			return tile.signal;
-		}
-		return 0;
+		return world.getBlockMetadata(x, y, z);
 	}
 
 	@SideOnly(Side.CLIENT)
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-		TileInvisible tile = (TileInvisible) world.getTileEntity(x, y, z);
-
-		if (tile != null) {
-
-		}
 	}
 
 	@Override
@@ -106,26 +77,6 @@ public class BlockInvisible extends BlockContainer implements IInitializer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-	}
-
-	/* IIinitializer */
-	@Override
-	public boolean preInit() {
-
-		return true;
-	}
-
-	@Override
-	public boolean initialize() {
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
-		TileInvisible.initialize();
-		return true;
 	}
 
 }

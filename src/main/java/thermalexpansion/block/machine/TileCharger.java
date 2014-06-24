@@ -15,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import thermalexpansion.gui.client.machine.GuiCharger;
 import thermalexpansion.gui.container.machine.ContainerCharger;
 
-public class TileCharger extends TileMachineEnergized {
+public class TileCharger extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
 

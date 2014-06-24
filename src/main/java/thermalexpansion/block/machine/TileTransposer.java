@@ -29,7 +29,7 @@ import thermalexpansion.gui.container.machine.ContainerTransposer;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 
-public class TileTransposer extends TileMachineEnergized implements IFluidHandler {
+public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.TRANSPOSER.ordinal();
 
@@ -54,7 +54,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 	IFluidContainerItem containerItem = null;
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID_LARGE);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
 	FluidStack outputBuffer;
 	int outputTracker;
 	int outputTrackerFluid;
@@ -621,7 +621,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 		super.markDirty();
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 
@@ -655,10 +655,7 @@ public class TileTransposer extends TileMachineEnergized implements IFluidHandle
 		if (!reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 3) {
 			return null;
 		}
-		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-			return null;
-		}
-		return tank.drain(resource.amount, doDrain);
+		return tank.drain(resource, doDrain);
 	}
 
 	@Override

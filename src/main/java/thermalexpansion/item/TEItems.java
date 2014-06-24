@@ -2,7 +2,6 @@ package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.util.EnergyHelper;
-import cofh.util.ItemHelper;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -35,8 +34,6 @@ public class TEItems {
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
-		itemComponent = (ItemBase) new ItemBase("thermalexpansion").setHasTextures(false).setUnlocalizedName("component")
-				.setCreativeTab(ThermalExpansion.tabItems);
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
 
 		TEEquipment.preInit();
@@ -81,11 +78,10 @@ public class TEItems {
 		lock = itemMaterial.addItem(16, "lock");
 
 		/* Process Items */
-		woodchips = itemMaterial.addItem(512, "woodchips");
-		sawdust = itemMaterial.addItem(513, "sawdust");
-		sawdustCompressed = itemMaterial.addItem(514, "sawdustCompressed");
-		slag = itemMaterial.addItem(515, "slag");
-		slagRich = itemMaterial.addItem(516, "slagRich");
+		sawdust = itemMaterial.addOreDictItem(512, "dustWood");
+		sawdustCompressed = itemMaterial.addItem(513, "dustWoodCompressed");
+		slag = itemMaterial.addItem(514, "slag");
+		slagRich = itemMaterial.addItem(515, "slagRich");
 
 		TEEquipment.initialize();
 		TEFlorbs.initialize();
@@ -152,14 +148,9 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(Items.gunpowder, new Object[] { "dustSaltpeter", "dustSulfur", Items.coal }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(Items.gunpowder, new Object[] { "dustSaltpeter", "dustSulfur", new ItemStack(Items.coal, 1, 1) }));
 
-		GameRegistry.addRecipe(new ItemStack(Items.paper, 3), new Object[] { "###", '#', woodchips });
-		GameRegistry.addRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', sawdust });
+		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.paper, 3), new Object[] { "###", '#', "dustWood" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.clay_ball, 2), new Object[] { slag, slag, Blocks.dirt, Items.water_bucket }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustPyrotheum, 2), new Object[] { "dustCoal", "dustSulfur", Items.redstone,
-				Items.blaze_powder }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustCryotheum, 2), new Object[] { Items.snowball, "dustSaltpeter",
-				Items.redstone, TFItems.dustBlizz }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(TFItems.dustBlizz, 2), new Object[] { TFItems.rodBlizz }));
 
 		FurnaceRecipes.smelting().func_151394_a(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
 
@@ -174,7 +165,6 @@ public class TEItems {
 	public static ItemIgniter itemIgniter;
 	public static ItemSatchel itemSatchel;
 	public static ItemDiagram itemDiagram;
-	public static ItemBase itemComponent;
 	public static ItemBase itemMaterial;
 
 	public static ItemCapacitor itemCapacitor;
@@ -206,7 +196,6 @@ public class TEItems {
 
 	public static ItemStack lock;
 
-	public static ItemStack woodchips;
 	public static ItemStack sawdust;
 	public static ItemStack sawdustCompressed;
 	public static ItemStack slag;

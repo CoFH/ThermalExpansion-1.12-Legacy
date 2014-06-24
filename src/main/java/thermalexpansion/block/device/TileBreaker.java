@@ -253,7 +253,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 		return 2;
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

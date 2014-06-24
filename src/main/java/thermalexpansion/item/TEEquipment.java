@@ -2,6 +2,7 @@ package thermalexpansion.item;
 
 import cofh.item.ItemArmorAdv;
 import cofh.item.tool.ItemAxeAdv;
+import cofh.item.tool.ItemBowAdv;
 import cofh.item.tool.ItemFishingRodAdv;
 import cofh.item.tool.ItemHoeAdv;
 import cofh.item.tool.ItemPickaxeAdv;
@@ -31,32 +32,50 @@ public class TEEquipment {
 	public static void preInit() {
 
 		itemHelmetInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 0).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
-				.setUnlocalizedName(ARMOR + "invarHelmet").setTextureName("thermalexpansion:armor/ArmorInvarHelmet");
+				.setUnlocalizedName(ARMOR + "invarHelmet").setTextureName("thermalexpansion:armor/ArmorInvarHelmet").setCreativeTab(ThermalExpansion.tabItems);
 		itemPlateInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 1).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
-				.setUnlocalizedName(ARMOR + "invarPlate").setTextureName("thermalexpansion:armor/ArmorInvarChestplate");
+				.setUnlocalizedName(ARMOR + "invarPlate").setTextureName("thermalexpansion:armor/ArmorInvarChestplate")
+				.setCreativeTab(ThermalExpansion.tabItems);
 		itemLegsInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 2).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
-				.setUnlocalizedName(ARMOR + "invarLegs").setTextureName("thermalexpansion:armor/ArmorInvarLegs");
+				.setUnlocalizedName(ARMOR + "invarLegs").setTextureName("thermalexpansion:armor/ArmorInvarLegs").setCreativeTab(ThermalExpansion.tabItems);
 		itemBootsInvar = (ItemArmorAdv) new ItemArmorAdv(ARMOR_INVAR, 3).setRepairIngot("ingotInvar").setArmorTextures(TEXTURE_INVAR)
-				.setUnlocalizedName(ARMOR + "invarBoots").setTextureName("thermalexpansion:armor/ArmorInvarBoots");
+				.setUnlocalizedName(ARMOR + "invarBoots").setTextureName("thermalexpansion:armor/ArmorInvarBoots").setCreativeTab(ThermalExpansion.tabItems);
 
-		itemSwordInvar = new ItemSwordAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSword")
-				.setTextureName("thermalexpansion:tool/InvarSword");
-		itemShovelInvar = new ItemShovelAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShovel")
-				.setTextureName("thermalexpansion:tool/InvarShovel");
-		itemPickaxeInvar = new ItemPickaxeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarPickaxe")
-				.setTextureName("thermalexpansion:tool/InvarPickaxe");
-		itemAxeInvar = new ItemAxeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarAxe")
-				.setTextureName("thermalexpansion:tool/InvarAxe");
-		itemHoeInvar = new ItemHoeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarHoe")
-				.setTextureName("thermalexpansion:tool/InvarHoe");
-		itemShearsInvar = new ItemShearsAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShears")
-				.setTextureName("thermalexpansion:tool/InvarShears");
-		itemFishingRodInvar = new ItemFishingRodAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarFishingRod")
-				.setTextureName("thermalexpansion:tool/InvarFishingRod");
-		itemSickleInvar = new ItemSickleAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSickle")
-				.setTextureName("thermalexpansion:tool/InvarSickle");
 		itemBattleWrenchInvar = new ItemWrenchBattle(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarBattleWrench")
-				.setTextureName("thermalexpansion:tool/InvarBattleWrench");
+				.setTextureName("thermalexpansion:tool/InvarBattleWrench").setCreativeTab(ThermalExpansion.tabTools);
+		itemSwordInvar = new ItemSwordAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSword")
+				.setTextureName("thermalexpansion:tool/InvarSword").setCreativeTab(ThermalExpansion.tabTools);
+		itemShovelInvar = new ItemShovelAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShovel")
+				.setTextureName("thermalexpansion:tool/InvarShovel").setCreativeTab(ThermalExpansion.tabTools);
+		itemPickaxeInvar = new ItemPickaxeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarPickaxe")
+				.setTextureName("thermalexpansion:tool/InvarPickaxe").setCreativeTab(ThermalExpansion.tabTools);
+		itemAxeInvar = new ItemAxeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarAxe")
+				.setTextureName("thermalexpansion:tool/InvarAxe").setCreativeTab(ThermalExpansion.tabTools);
+		itemHoeInvar = new ItemHoeAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarHoe")
+				.setTextureName("thermalexpansion:tool/InvarHoe").setCreativeTab(ThermalExpansion.tabTools);
+		itemShearsInvar = new ItemShearsAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarShears")
+				.setTextureName("thermalexpansion:tool/InvarShears").setCreativeTab(ThermalExpansion.tabTools);
+		itemFishingRodInvar = new ItemFishingRodAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarFishingRod")
+				.setTextureName("thermalexpansion:tool/InvarFishingRod").setCreativeTab(ThermalExpansion.tabTools);
+		itemSickleInvar = new ItemSickleAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setUnlocalizedName(TOOL + "invarSickle")
+				.setTextureName("thermalexpansion:tool/InvarSickle").setCreativeTab(ThermalExpansion.tabTools);
+		itemBowInvar = new ItemBowAdv(TOOL_INVAR).setRepairIngot("ingotInvar").setArrowSpeed(2.5F).setArrowDamage(1.25F).setUnlocalizedName(TOOL + "invarBow")
+				.setTextureName("thermalexpansion:tool/InvarBow").setCreativeTab(ThermalExpansion.tabTools);
+
+		GameRegistry.registerItem(itemHelmetInvar, "armor.helmetInvar");
+		GameRegistry.registerItem(itemPlateInvar, "armor.plateInvar");
+		GameRegistry.registerItem(itemLegsInvar, "armor.legsInvar");
+		GameRegistry.registerItem(itemBootsInvar, "armor.bootsInvar");
+
+		GameRegistry.registerItem(itemBattleWrenchInvar, "tool.battleWrenchInvar");
+		GameRegistry.registerItem(itemSwordInvar, "tool.swordInvar");
+		GameRegistry.registerItem(itemShovelInvar, "tool.shovelInvar");
+		GameRegistry.registerItem(itemPickaxeInvar, "tool.pickaxeInvar");
+		GameRegistry.registerItem(itemAxeInvar, "tool.axeInvar");
+		GameRegistry.registerItem(itemFishingRodInvar, "tool.fishingRodInvar");
+		GameRegistry.registerItem(itemSickleInvar, "tool.sickleInvar");
+		GameRegistry.registerItem(itemBowInvar, "tool.bowInvar");
+
 	}
 
 	public static void initialize() {
@@ -66,12 +85,14 @@ public class TEEquipment {
 		armorInvarPlate = new ItemStack(itemPlateInvar);
 		armorInvarLegs = new ItemStack(itemLegsInvar);
 		armorInvarBoots = new ItemStack(itemBootsInvar);
+
 		GameRegistry.registerCustomItemStack("armorInvarHelmet", armorInvarHelmet);
 		GameRegistry.registerCustomItemStack("armorInvarPlate", armorInvarPlate);
 		GameRegistry.registerCustomItemStack("armorInvarLegs", armorInvarLegs);
 		GameRegistry.registerCustomItemStack("armorInvarBoots", armorInvarBoots);
 
 		/* Tools */
+		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
 		toolInvarSword = new ItemStack(itemSwordInvar);
 		toolInvarShovel = new ItemStack(itemShovelInvar);
 		toolInvarPickaxe = new ItemStack(itemPickaxeInvar);
@@ -80,8 +101,9 @@ public class TEEquipment {
 		toolInvarShears = new ItemStack(itemShearsInvar);
 		toolInvarFishingRod = new ItemStack(itemFishingRodInvar);
 		toolInvarSickle = new ItemStack(itemSickleInvar);
-		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
+		toolInvarBow = new ItemStack(itemBowInvar);
 
+		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
 		GameRegistry.registerCustomItemStack("toolInvarSword", toolInvarSword);
 		GameRegistry.registerCustomItemStack("toolInvarShovel", toolInvarShovel);
 		GameRegistry.registerCustomItemStack("toolInvarPickaxe", toolInvarPickaxe);
@@ -90,7 +112,7 @@ public class TEEquipment {
 		GameRegistry.registerCustomItemStack("toolInvarShears", toolInvarShears);
 		GameRegistry.registerCustomItemStack("toolInvarFishingRod", toolInvarFishingRod);
 		GameRegistry.registerCustomItemStack("toolInvarSickle", toolInvarSickle);
-		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
+		GameRegistry.registerCustomItemStack("toolInvarBow", toolInvarBow);
 	}
 
 	public static void postInit() {
@@ -105,51 +127,56 @@ public class TEEquipment {
 
 		/* Tools */
 		if (enableTools[0]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarSword, new Object[] { " I ", " I ", " S ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[1]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarShovel, new Object[] { " I ", " S ", " S ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[2]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarPickaxe, new Object[] { "III", " S ", " S ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[3]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarAxe, new Object[] { "II ", "IS ", " S ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[4]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarHoe, new Object[] { "II ", " S ", " S ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[5]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarShears, new Object[] { " I", "I ", 'I', "ingotInvar" }));
-		}
-		if (enableTools[6]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarFishingRod, new Object[] { "  I", " IW", "S W", 'I', "ingotInvar", 'S', "stickWood", 'W',
-					Items.string }));
-		}
-		if (enableTools[7]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarSickle, new Object[] { " I ", "  I", "SI ", 'I', "ingotInvar", 'S', "stickWood" }));
-		}
-		if (enableTools[8]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
 					TEItems.toolWrench }));
+		}
+		if (enableTools[1]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarSword, new Object[] { " I ", " I ", " W ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[2]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarShovel, new Object[] { " I ", " W ", " W ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[3]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarPickaxe, new Object[] { "III", " W ", " W ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[4]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarAxe, new Object[] { "II ", "IW ", " W ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[5]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarHoe, new Object[] { "II ", " W ", " W ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[6]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarShears, new Object[] { " I", "I ", 'I', "ingotInvar" }));
+		}
+		if (enableTools[7]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarFishingRod, new Object[] { "  I", " IS", "W S", 'I', "ingotInvar", 'W', "stickWood", 'S',
+					Items.string }));
+		}
+		if (enableTools[8]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarSickle, new Object[] { " I ", "  I", "WI ", 'I', "ingotInvar", 'W', "stickWood" }));
+		}
+		if (enableTools[9]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBow,
+					new Object[] { " IW", "S W", " IW", 'I', "ingotInvar", 'S', "stickWood", 'W', Items.string }));
 		}
 	}
 
 	public static boolean enableArmor = true;
-	public static boolean[] enableTools = new boolean[9];
+	public static boolean[] enableTools = new boolean[10];
 
 	static {
 		String category = "item.feature";
 		enableArmor = ThermalExpansion.config.get(category, "Armor.Invar", true);
-		enableTools[0] = ThermalExpansion.config.get(category, "Tool.Invar.Sword", true);
-		enableTools[1] = ThermalExpansion.config.get(category, "Tool.Invar.Shovel", true);
-		enableTools[2] = ThermalExpansion.config.get(category, "Tool.Invar.Pickaxe", true);
-		enableTools[3] = ThermalExpansion.config.get(category, "Tool.Invar.Axe", true);
-		enableTools[4] = ThermalExpansion.config.get(category, "Tool.Invar.Hoe", true);
-		enableTools[5] = ThermalExpansion.config.get(category, "Tool.Invar.Shears", true);
-		enableTools[6] = ThermalExpansion.config.get(category, "Tool.Invar.FishingRod", true);
-		enableTools[7] = ThermalExpansion.config.get(category, "Tool.Invar.Sickle", true);
-		enableTools[8] = ThermalExpansion.config.get(category, "Tool.Invar.BattleWrench", true);
+		enableTools[0] = ThermalExpansion.config.get(category, "Tool.Invar.BattleWrench", true);
+		enableTools[1] = ThermalExpansion.config.get(category, "Tool.Invar.Sword", true);
+		enableTools[2] = ThermalExpansion.config.get(category, "Tool.Invar.Shovel", true);
+		enableTools[3] = ThermalExpansion.config.get(category, "Tool.Invar.Pickaxe", true);
+		enableTools[4] = ThermalExpansion.config.get(category, "Tool.Invar.Axe", true);
+		enableTools[5] = ThermalExpansion.config.get(category, "Tool.Invar.Hoe", true);
+		enableTools[6] = ThermalExpansion.config.get(category, "Tool.Invar.Shears", true);
+		enableTools[7] = ThermalExpansion.config.get(category, "Tool.Invar.FishingRod", true);
+		enableTools[8] = ThermalExpansion.config.get(category, "Tool.Invar.Sickle", true);
+		enableTools[9] = ThermalExpansion.config.get(category, "Tool.Invar.Bow", true);
 	}
 
 	public static ItemArmorAdv itemHelmetInvar;
@@ -157,6 +184,7 @@ public class TEEquipment {
 	public static ItemArmorAdv itemLegsInvar;
 	public static ItemArmorAdv itemBootsInvar;
 
+	public static Item itemBattleWrenchInvar;
 	public static Item itemSwordInvar;
 	public static Item itemShovelInvar;
 	public static Item itemPickaxeInvar;
@@ -165,13 +193,14 @@ public class TEEquipment {
 	public static Item itemShearsInvar;
 	public static Item itemFishingRodInvar;
 	public static Item itemSickleInvar;
-	public static Item itemBattleWrenchInvar;
+	public static Item itemBowInvar;
 
 	public static ItemStack armorInvarHelmet;
 	public static ItemStack armorInvarPlate;
 	public static ItemStack armorInvarLegs;
 	public static ItemStack armorInvarBoots;
 
+	public static ItemStack toolInvarBattleWrench;
 	public static ItemStack toolInvarSword;
 	public static ItemStack toolInvarShovel;
 	public static ItemStack toolInvarPickaxe;
@@ -180,7 +209,7 @@ public class TEEquipment {
 	public static ItemStack toolInvarShears;
 	public static ItemStack toolInvarFishingRod;
 	public static ItemStack toolInvarSickle;
-	public static ItemStack toolInvarBattleWrench;
+	public static ItemStack toolInvarBow;
 
 	public static final Item.ToolMaterial TOOL_INVAR = EnumHelper.addToolMaterial("TE_INVAR", 2, 450, 7F, 2, 16);
 	public static final ItemArmor.ArmorMaterial ARMOR_INVAR = EnumHelper.addArmorMaterial("TE_INVAR", 25, new int[] { 2, 7, 5, 2 }, 11);

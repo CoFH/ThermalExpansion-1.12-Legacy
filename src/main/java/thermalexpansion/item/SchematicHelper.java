@@ -22,25 +22,25 @@ public class SchematicHelper {
 	/* MUST BE PASSED AN INVENTORY WITH 9 SLOTS! */
 	public static NBTTagCompound getNBTForSchematic(IInventory craftSlots, ItemStack output) {
 
-		NBTTagCompound theComp = new NBTTagCompound();
+		NBTTagCompound nbt = new NBTTagCompound();
 		for (int i = 0; i < 9 && i < craftSlots.getSizeInventory(); i++) {
 			if (craftSlots.getStackInSlot(i) != null) {
-				theComp.setString("Slot" + i + "Id", craftSlots.getStackInSlot(i).getUnlocalizedName());
-				theComp.setInteger("Slot" + i + "Meta", craftSlots.getStackInSlot(i).getItemDamage());
-				theComp.setString("Slot" + i + "Name", craftSlots.getStackInSlot(i).getDisplayName());
+				nbt.setString("Slot" + i + "Id", craftSlots.getStackInSlot(i).getUnlocalizedName());
+				nbt.setInteger("Slot" + i + "Meta", craftSlots.getStackInSlot(i).getItemDamage());
+				nbt.setString("Slot" + i + "Name", craftSlots.getStackInSlot(i).getDisplayName());
 				String OreName = ItemHelper.getOreName(craftSlots.getStackInSlot(i));
 
 				if (!OreName.equals("Unknown") && !ItemHelper.isBlacklist(output)) {
-					theComp.setString("Slot" + i + "Ore", OreName);
+					nbt.setString("Slot" + i + "Ore", OreName);
 				}
 			} else {
-				theComp.setString("Slot" + i + "Id", "");
-				theComp.setInteger("Slot" + i + "Meta", -1);
-				theComp.setString("Slot" + i + "Name", "");
+				nbt.setString("Slot" + i + "Id", "");
+				nbt.setInteger("Slot" + i + "Meta", -1);
+				nbt.setString("Slot" + i + "Name", "");
 			}
 		}
-		theComp.setString("OutputName", output.stackSize + "x " + output.getDisplayName());
-		return theComp;
+		nbt.setString("OutputName", output.stackSize + "x " + output.getDisplayName());
+		return nbt;
 	}
 
 	public static ItemStack getSchematic(NBTTagCompound nbt) {

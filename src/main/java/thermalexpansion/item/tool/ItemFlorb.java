@@ -20,6 +20,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.core.TEProps;
 import thermalexpansion.entity.projectile.EntityFlorb;
 import thermalexpansion.item.TEFlorbs;
 
@@ -141,7 +142,7 @@ public class ItemFlorb extends ItemBase {
 	public static void dropFlorb(Fluid fluid, World worldObj, int x, int y, int z) {
 
 		if (fluid != null) {
-			if (fluid.getTemperature() < TEFlorbs.MAGMATIC_FLORB_TEMPERATURE) {
+			if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
 				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 0), fluid), worldObj, x, y, z);
 			} else {
 				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 1), fluid), worldObj, x, y, z);

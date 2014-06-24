@@ -20,7 +20,7 @@ public class TEAchievements {
 	public static Achievement transposer;
 	public static Achievement precipitator;
 	public static Achievement extruder;
-	public static Achievement waterGen;
+	public static Achievement accumulator;
 	public static Achievement assembler;
 	public static Achievement charger;
 
@@ -70,7 +70,7 @@ public class TEAchievements {
 		// transposer = new Achievement(Utils.getStatId(), "te.transposer", -2, 6, BlockMachine.transposer, machineFrame).registerAchievement();
 		// precipitator = new Achievement(Utils.getStatId(), "te.precipitator", 2, 2, BlockMachine.precipitator, machineFrame).registerAchievement();
 		// extruder = new Achievement(Utils.getStatId(), "te.extruder", 2, 3, BlockMachine.extruder, machineFrame).registerAchievement();
-		// waterGen = new Achievement(Utils.getStatId(), "te.waterGen", 2, 4, BlockMachine.waterGen, machineFrame).registerAchievement();
+		// accumulator = new Achievement(Utils.getStatId(), "te.accumulator", 2, 4, BlockMachine.accumulator, machineFrame).registerAchievement();
 		// assembler = new Achievement(Utils.getStatId(), "te.assembler", 2, 5, BlockMachine.assembler, machineFrame).registerAchievement();
 		// charger = new Achievement(Utils.getStatId(), "te.charger", 2, 6, BlockMachine.charger, machineFrame).registerAchievement();
 		//
@@ -87,7 +87,7 @@ public class TEAchievements {
 		// fluidCoal = new Achievement(Utils.getStatId(), "te.fluidCoal", -1, 8, TEFluids.blockCoal, null).registerAchievement();
 		//
 		// achievementList = new Achievement[] { baseTE, machineFrame, furnace, pulverizer, sawmill, smelter, crucible, transposer, precipitator, extruder,
-		// waterGen,
+		// accumulator,
 		// assembler, charger, wrench, multimeter, capacitorPotato, fluidRedstone, fluidGlowstone, fluidEnder, fluidCoal, fluidPyrotheum, fluidCryotheum };
 		//
 		// pageTE = new AchievementPage("Thermal Expansion", achievementList);

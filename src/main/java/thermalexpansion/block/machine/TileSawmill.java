@@ -13,7 +13,7 @@ import thermalexpansion.gui.container.machine.ContainerSawmill;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 
-public class TileSawmill extends TileMachineEnergized {
+public class TileSawmill extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.SAWMILL.ordinal();
 
@@ -57,7 +57,7 @@ public class TileSawmill extends TileMachineEnergized {
 		}
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {

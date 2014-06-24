@@ -22,6 +22,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiExtruder;
 import thermalexpansion.gui.container.machine.ContainerExtruder;
 
@@ -37,13 +38,13 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 
 		String category = "tweak.crafting";
 
-		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0, MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0, MAX_FLUID_SMALL);
-		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0, MAX_FLUID_SMALL);
+		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
 
-		processWater[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0]), 0, MAX_FLUID_SMALL);
-		processWater[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[1]), 0, MAX_FLUID_SMALL);
-		processWater[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[2]), 0, MAX_FLUID_SMALL);
+		processWater[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[1]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[2]), 0, TEProps.MAX_FLUID_SMALL);
 
 		processTime[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Time", processTime[0]), 4, 72000);
 		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[1]), 4, 72000);
@@ -55,6 +56,9 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(0);
 
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
 	}
@@ -68,8 +72,8 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
 
-	FluidTankAdv hotTank = new FluidTankAdv(MAX_FLUID_SMALL);
-	FluidTankAdv coldTank = new FluidTankAdv(MAX_FLUID_SMALL);
+	FluidTankAdv hotTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankAdv coldTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 
 	byte curSelection;
 	byte prevSelection;
@@ -88,6 +92,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		return TYPE;
 	}
 
+	@Override
 	public boolean canStart() {
 
 		if (hotTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME || coldTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
@@ -102,11 +107,13 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[curSelection].getMaxStackSize();
 	}
 
+	@Override
 	public boolean canFinish() {
 
 		return processRem <= 0;
 	}
 
+	@Override
 	protected void processStart() {
 
 		processMax = processTime[curSelection];
@@ -114,6 +121,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		prevSelection = curSelection;
 	}
 
+	@Override
 	protected void processFinish() {
 
 		if (inventory[0] == null) {
@@ -126,6 +134,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		prevSelection = curSelection;
 	}
 
+	@Override
 	protected void transferProducts() {
 
 		if (!augmentAutoTransfer) {

@@ -52,7 +52,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 			payload.getByte();
 			payload.getBool();
 		}
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;
 			}
@@ -69,7 +69,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 
 	public boolean hasSide(int side) {
 
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] == side) {
 				return true;
 			}
@@ -90,7 +90,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 		if (sideCache.length == 0) {
 			sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
 		}
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;
 			}
@@ -231,7 +231,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 	public boolean resetSides() {
 
 		boolean update = false;
-		for (int i = 0; i < 6; ++i) {
+		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] > 0) {
 				sideCache[i] = 0;
 				update = true;
@@ -246,7 +246,7 @@ public abstract class TileReconfigurableInventory extends TileRSInventory implem
 	@Override
 	public abstract int getNumConfig(int side);
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public abstract IIcon getTexture(int side, int pass);
 

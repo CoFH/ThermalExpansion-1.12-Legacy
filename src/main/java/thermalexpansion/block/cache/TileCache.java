@@ -284,7 +284,7 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		markDirty();
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

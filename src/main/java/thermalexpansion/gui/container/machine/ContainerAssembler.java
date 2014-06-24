@@ -46,17 +46,17 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
-		for (int i = 0; i < 2; ++i) {
-			for (int j = 0; j < 9; ++j) {
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(myTile, j + i * 9 + 3, 8 + j * 18, 74 + i * 18));
 			}
 		}
-		for (int i = 0; i < 3; ++i) {
-			for (int j = 0; j < 9; ++j) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 123 + i * 18));
 			}
 		}
-		for (int i = 0; i < 9; ++i) {
+		for (int i = 0; i < 9; i++) {
 			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 181));
 		}
 

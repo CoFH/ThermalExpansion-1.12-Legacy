@@ -21,8 +21,8 @@ achievement.thermalexpansion.precipitator=Snowball Fight!
 achievement.thermalexpansion.precipitator.desc=Will not make yellow snow.
 achievement.thermalexpansion.extruder=This Thing Rocks!
 achievement.thermalexpansion.extruder.desc=It also Obsidians!
-achievement.thermalexpansion.waterGen=Water, Water Everywhere
-achievement.thermalexpansion.waterGen.desc=No, it does not work with lava. You monster.
+achievement.thermalexpansion.accumulator=Water, Water Everywhere
+achievement.thermalexpansion.accumulator.desc=No, it does not work with lava. You monster.
 achievement.thermalexpansion.assembler=A Vicious Cycle
 achievement.thermalexpansion.assembler.desc=No, it will not craft that.
 achievement.thermalexpansion.charger=What The Flux?
@@ -163,15 +163,16 @@ info.thermalexpansion.florb3=Yes, you can throw it.
 info.thermalexpansion.florb4=This fluid is lighter than air.
 info.thermalexpansion.florb5=The Florb will travel further.
 
+item.thermalexpansion.tool.invarBattleWrench.name=Invar BattleWrench
 item.thermalexpansion.tool.invarSword.name=Invar Sword
 item.thermalexpansion.tool.invarShovel.name=Invar Shovel
 item.thermalexpansion.tool.invarPickaxe.name=Invar Pickaxe
 item.thermalexpansion.tool.invarAxe.name=Invar Axe
 item.thermalexpansion.tool.invarHoe.name=Invar Hoe
 item.thermalexpansion.tool.invarShears.name=Invar Shears
-item.thermalexpansion.tool.invarFishingRod.name=Invar Fishing Rod
+item.thermalexpansion.tool.invarFishingRod.name=Invar Reinforced Fishing Rod
 item.thermalexpansion.tool.invarSickle.name=Invar Sickle
-item.thermalexpansion.tool.invarBattleWrench.name=Invar BattleWrench
+item.thermalexpansion.tool.invarBow.name=Invar Reinforced Bow
 
 item.thermalexpansion.tool.wrench.name=Crescent Hammer
 item.thermalexpansion.tool.multimeter.name=Multimeter
@@ -179,7 +180,7 @@ item.thermalexpansion.tool.debugger.name=Debugger
 item.thermalexpansion.tool.igniter.name=Flux Igniter
 
 item.thermalexpansion.armor.invarHelmet.name=Invar Helmet
-item.thermalexpansion.armor.invarPlate.name=Invar Armor
+item.thermalexpansion.armor.invarPlate.name=Invar Chestplate
 item.thermalexpansion.armor.invarLegs.name=Invar Leggings
 item.thermalexpansion.armor.invarBoots.name=Invar Boots
 
@@ -202,8 +203,8 @@ item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
 
 item.thermalexpansion.material.woodchips.name=Wood Chips
-item.thermalexpansion.material.sawdust.name=Sawdust
-item.thermalexpansion.material.sawdustCompressed.name=Compressed Sawdust
+item.thermalexpansion.material.dustWood.name=Sawdust
+item.thermalexpansion.material.dustWoodCompressed.name=Compressed Sawdust
 item.thermalexpansion.material.slag.name=Slag
 item.thermalexpansion.material.slagRich.name=Rich Slag
 
@@ -299,7 +300,7 @@ tile.thermalexpansion.machine.crucible.name=Magma Crucible
 tile.thermalexpansion.machine.transposer.name=Fluid Transposer
 tile.thermalexpansion.machine.precipitator.name=Glacial Precipitator
 tile.thermalexpansion.machine.extruder.name=Igneous Extruder
-tile.thermalexpansion.machine.waterGen.name=Aqueous Accumulator
+tile.thermalexpansion.machine.accumulator.name=Aqueous Accumulator
 tile.thermalexpansion.machine.assembler.name=Cyclic Assembler
 tile.thermalexpansion.machine.charger.name=Energetic Infuser
 
@@ -330,6 +331,10 @@ tile.thermalexpansion.rockwool.lightBlue.name=Light Blue Rockwool
 tile.thermalexpansion.rockwool.magenta.name=Magenta Rockwool
 tile.thermalexpansion.rockwool.orange.name=Orange Rockwool
 tile.thermalexpansion.rockwool.white.name=White Rockwool
+
+tile.thermalexpansion.sponge.creative.name=Creative Sponge
+tile.thermalexpansion.sponge.basic.name=Plain Sponge
+tile.thermalexpansion.sponge.magmatic.name=Magmatic Sponge
 
 tile.thermalexpansion.storage.copper.name=Copper Block
 tile.thermalexpansion.storage.tin.name=Tin Block

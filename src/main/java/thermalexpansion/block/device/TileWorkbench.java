@@ -440,7 +440,7 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 		return owner;
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

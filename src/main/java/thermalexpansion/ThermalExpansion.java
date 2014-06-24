@@ -241,29 +241,6 @@ public class ThermalExpansion extends BaseMod {
 	/* LOADING FUNCTIONS */
 	void loadWorldGeneration() {
 
-		// String category = "world.thermalexpansion";
-		//
-		// List<WeightedRandomBlock>[] oreList = new List[TEProps.Ores.values().length];
-		//
-		// for (int i = 0; i < oreList.length; i++) {
-		// oreList[i] = new ArrayList<WeightedRandomBlock>();
-		// }
-		// oreList[TEProps.Ores.COPPER.ordinal()].add(new WeightedRandomBlock(BlockOre.oreCopper));
-		// oreList[TEProps.Ores.TIN.ordinal()].add(new WeightedRandomBlock(BlockOre.oreTin));
-		// oreList[TEProps.Ores.SILVER.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 90));
-		// oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreLead, 80));
-		// oreList[TEProps.Ores.NICKEL.ordinal()].add(new WeightedRandomBlock(BlockOre.oreNickel));
-		//
-		// if (BlockOre.enable[TEProps.Ores.LEAD.ordinal()]) {
-		// oreList[TEProps.Ores.SILVER.ordinal()].add(new WeightedRandomBlock(BlockOre.oreLead, 10));
-		// }
-		// if (BlockOre.enable[TEProps.Ores.SILVER.ordinal()]) {
-		// oreList[TEProps.Ores.LEAD.ordinal()].add(new WeightedRandomBlock(BlockOre.oreSilver, 20));
-		// }
-		// for (int i = 0; i < oreList.length; i++) {
-		// ThermalFoundation.addFeature(category, oreList[i], BlockOre.NAMES[i], TEProps.oreClusterSize[i], TEProps.oreNumCluster[i], TEProps.oreMinY[i],
-		// TEProps.oreMaxY[i], ThermalFoundation.ORE_UNIFORM, true, BlockOre.enable[i]);
-		// }
 	}
 
 	void cleanConfig(boolean preInit) {

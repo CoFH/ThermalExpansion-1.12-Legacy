@@ -27,7 +27,7 @@ import thermalexpansion.gui.container.machine.ContainerCrucible;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 
-public class TileCrucible extends TileMachineEnergized implements IFluidHandler {
+public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.CRUCIBLE.ordinal();
 
@@ -47,7 +47,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 	}
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
-	FluidTank tank = new FluidTank(MAX_FLUID_LARGE);
+	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
 	FluidStack outputBuffer;
 	int outputTrackerFluid;
 
@@ -73,7 +73,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 		}
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -261,7 +261,7 @@ public class TileCrucible extends TileMachineEnergized implements IFluidHandler 
 		tank.writeToNBT(nbt);
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

@@ -1,8 +1,8 @@
 package thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
+import cofh.block.BlockCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
@@ -31,10 +31,10 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	static final int NUM_RENDERS = 1;
 
-	static IIcon[] textureCenter = new IIcon[2];
-	static IIcon[] textureFrame = new IIcon[NUM_RENDERS];
-	static CCModel[] modelCenter = new CCModel[NUM_RENDERS];
-	static CCModel[] modelFrame = new CCModel[NUM_RENDERS];
+	static IIcon[] textureBase = new IIcon[NUM_RENDERS];
+	static IIcon textureHalo;
+	static CCModel[] modelBase = new CCModel[NUM_RENDERS];
+	static CCModel[] modelHalo = new CCModel[NUM_RENDERS];
 
 	static {
 		TEProps.renderIdLamp = RenderingRegistry.getNextAvailableRenderId();
@@ -47,36 +47,29 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static void initialize() {
 
-		textureCenter[0] = IconRegistry.getIcon("FluidGlowstone");
-		textureCenter[1] = IconRegistry.getIcon("LampEffect");
-
 		for (int i = 0; i < NUM_RENDERS; i++) {
-			textureFrame[i] = IconRegistry.getIcon("Lamp", i);
+			textureBase[i] = IconRegistry.getIcon("Lamp", i);
 		}
+		textureHalo = IconRegistry.getIcon("LampHalo");
 	}
 
 	private static void generateModels() {
 
 		double d1 = RenderHelper.RENDER_OFFSET;
-		double d2 = 2.0D * d1;
+		double d3 = 0.0625D;
 
-		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals()
-				.computeLighting(LightModel.standardLightModel);
-		modelCenter[0] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2).computeNormals();
+		modelBase[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals();
+		modelHalo[0] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3).shrinkUVs(d3).computeNormals();
 	}
 
-	public void renderCenter(int metadata, boolean modified, double x, double y, double z) {
+	public void renderBase(int metadata, double x, double y, double z) {
 
-		if (modified) {
-			modelCenter[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureCenter[1]));
-		} else {
-			modelCenter[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureCenter[0]));
-		}
+		modelBase[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureBase[metadata]));
 	}
 
-	public void renderFrame(int metadata, double x, double y, double z) {
+	public void renderHalo(int metadata, double x, double y, double z) {
 
-		modelFrame[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureFrame[metadata]));
+		modelHalo[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureHalo));
 	}
 
 	/* ISimpleBlockRenderingHandler */
@@ -96,14 +89,14 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 		int bMeta = world.getBlockMetadata(x, y, z);
 
 		RenderUtils.preWorldRender(world, x, y, z);
-
-		CCRenderState.setColour(theTile.getColorMultiplier());
-		renderCenter(bMeta, theTile.modified, x, y, z);
-
-		CCRenderState.setColour(0xFFFFFFFF);
-		renderFrame(bMeta, x, y, z);
-
-		return true;
+		if (BlockCoFHBase.renderPass == 0) {
+			modelBase[bMeta].setColour(0);
+			renderBase(bMeta, x, y, z);
+			return true;
+		} else if (theTile.getLightValue() > 0) {
+			renderHalo(bMeta, x, y, z);
+		}
+		return theTile.getLightValue() > 0;
 	}
 
 	@Override
@@ -140,12 +133,10 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 			offset = 0;
 		}
 		int metadata = item.getItemDamage();
-		boolean modified = false;
 		int color = 0xFFFFFFFF;
 
 		if (item.hasTagCompound()) {
-			modified = item.getTagCompound().getBoolean("modified");
-			color = item.getTagCompound().getInteger("color");
+			color = item.getTagCompound().getInteger("Color");
 			color = (color << 8) + 0xFF;
 		}
 		RenderUtils.preItemRender();
@@ -153,12 +144,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 		CCRenderState.setColour(color);
 		CCRenderState.startDrawing();
-		instance.renderCenter(metadata, modified, offset, offset, offset);
-		CCRenderState.draw();
-
-		CCRenderState.setColour(0xFFFFFFFF);
-		CCRenderState.startDrawing();
-		instance.renderFrame(metadata, offset, offset, offset);
+		instance.renderBase(metadata, offset, offset, offset);
 		CCRenderState.draw();
 
 		RenderUtils.postItemRender();

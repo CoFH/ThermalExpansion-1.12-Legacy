@@ -47,6 +47,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		super("thermalexpansion");
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
+		setNoRepair();
 	}
 
 	@Override

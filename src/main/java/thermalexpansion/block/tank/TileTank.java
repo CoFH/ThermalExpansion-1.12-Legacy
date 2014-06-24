@@ -341,10 +341,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		if (from.ordinal() > 1 && from.ordinal() < 6) {
 			return null;
 		}
-		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-			return null;
-		}
-		return tank.drain(resource.amount, doDrain);
+		return tank.drain(resource, doDrain);
 	}
 
 	@Override

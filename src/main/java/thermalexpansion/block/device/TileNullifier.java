@@ -139,7 +139,7 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 		return 2;
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

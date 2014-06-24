@@ -13,7 +13,7 @@ import thermalexpansion.gui.container.machine.ContainerFurnace;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
-public class TileFurnace extends TileMachineEnergized {
+public class TileFurnace extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.FURNACE.ordinal();
 
@@ -56,7 +56,7 @@ public class TileFurnace extends TileMachineEnergized {
 		}
 		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();

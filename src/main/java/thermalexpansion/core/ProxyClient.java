@@ -2,7 +2,6 @@ package thermalexpansion.core;
 
 import cofh.render.IconRegistry;
 import cofh.render.ItemRenderRegistry;
-import cofh.render.RenderItemAsBlock;
 import cofh.render.RenderItemModular;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
@@ -12,7 +11,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
-import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.item.TEFlorbs;
@@ -24,6 +22,7 @@ import thermalexpansion.render.RenderFrame;
 import thermalexpansion.render.RenderItemFlorb;
 import thermalexpansion.render.RenderLamp;
 import thermalexpansion.render.RenderSchematic;
+import thermalexpansion.render.RenderSponge;
 import thermalexpansion.render.RenderStrongbox;
 import thermalexpansion.render.RenderTank;
 import thermalexpansion.render.RenderTesseract;
@@ -39,11 +38,8 @@ public class ProxyClient extends Proxy {
 
 		ElementSlotOverlay.enableBorders = TEProps.enableGuiBorders;
 
-		MinecraftForgeClient.registerItemRenderer(TEItems.itemComponent, rendererComponent);
 		MinecraftForgeClient.registerItemRenderer(TEItems.itemDiagram, rendererComponent);
 		MinecraftForgeClient.registerItemRenderer(TEFlorbs.itemFlorb, rendererFlorb);
-
-		ItemRenderRegistry.addItemRenderer(BlockLamp.lampFrame, RenderItemAsBlock.instance);
 
 		ItemRenderRegistry.addItemRenderer(TEItems.diagramSchematic, RenderSchematic.instance);
 	}
@@ -76,6 +72,7 @@ public class ProxyClient extends Proxy {
 		RenderDynamo.initialize();
 		RenderFrame.initialize();
 		RenderLamp.initialize();
+		RenderSponge.initialize();
 		RenderStrongbox.initialize();
 		RenderTank.initialize();
 		RenderTesseract.initialize();

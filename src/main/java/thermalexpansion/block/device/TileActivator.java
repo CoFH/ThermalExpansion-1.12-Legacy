@@ -469,7 +469,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 		return 3;
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

@@ -146,6 +146,11 @@ public class FurnaceManager {
 		return true;
 	}
 
+	public static boolean removeRecipe(ItemStack input) {
+
+		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	public static void addOreDictRecipe(String oreName, ItemStack output) {
 

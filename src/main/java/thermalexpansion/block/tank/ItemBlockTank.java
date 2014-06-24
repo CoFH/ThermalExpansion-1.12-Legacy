@@ -85,7 +85,7 @@ public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
 		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
 
 		if (fluid != null) {
-			String color = StringHelper.GRAY;
+			String color = StringHelper.LIGHT_GRAY;
 
 			if (fluid.getFluid().getRarity() == EnumRarity.uncommon) {
 				color = StringHelper.YELLOW;
@@ -94,7 +94,7 @@ public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
 			} else if (fluid.getFluid().getRarity() == EnumRarity.epic) {
 				color = StringHelper.PINK;
 			}
-			list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName() + StringHelper.GRAY);
+			list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName() + StringHelper.LIGHT_GRAY);
 
 			if (stack.getItemDamage() == BlockTank.Types.CREATIVE.ordinal()) {
 				list.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));

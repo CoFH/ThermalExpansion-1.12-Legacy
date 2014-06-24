@@ -424,7 +424,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		return 3;
 	}
 
-	/* ISidedBlockTexture */
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 

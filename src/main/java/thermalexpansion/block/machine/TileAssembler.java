@@ -21,11 +21,12 @@ import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiAssembler;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
 import thermalexpansion.item.SchematicHelper;
 
-public class TileAssembler extends TileMachineEnergized implements IFluidHandler {
+public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.ASSEMBLER.ordinal();
 
@@ -46,7 +47,7 @@ public class TileAssembler extends TileMachineEnergized implements IFluidHandler
 
 	public static final int PROCESS_ENERGY = 2;
 
-	FluidTank tank = new FluidTank(MAX_FLUID_LARGE);
+	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
 
 	private boolean needsCraft = false;
 	private boolean needsCache = true;

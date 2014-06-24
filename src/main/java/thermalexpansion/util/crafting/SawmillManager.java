@@ -122,6 +122,11 @@ public class SawmillManager {
 		return true;
 	}
 
+	public static boolean removeRecipe(ItemStack input) {
+
+		return recipeMap.remove(new ComparableItemStackSawmill(input)) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	public static void addAllLogs() {
 

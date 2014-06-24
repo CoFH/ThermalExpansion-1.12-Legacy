@@ -64,9 +64,9 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 		case 1:
 			return isPowered ? 0 : 15;
 		case 2:
-			return worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
+			return inputPower;
 		case 3:
-			return 15 - worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
+			return 15 - inputPower;
 		case 5:
 			return 15;
 		}

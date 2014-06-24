@@ -113,7 +113,6 @@ public class RenderCell implements ISimpleBlockRenderingHandler {
 			return false;
 		}
 		TileCell theTile = (TileCell) tile;
-
 		int chargeLevel = Math.min(15, theTile.getScaledEnergyStored(16));
 
 		RenderUtils.preWorldRender(world, x, y, z);

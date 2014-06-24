@@ -21,12 +21,17 @@ import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.lamp.ItemBlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.machine.ItemBlockMachine;
+import thermalexpansion.block.simple.BlockAirBarrier;
+import thermalexpansion.block.simple.BlockAirLight;
+import thermalexpansion.block.simple.BlockAirSignal;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.block.simple.BlockRockwool;
 import thermalexpansion.block.simple.ItemBlockFrame;
 import thermalexpansion.block.simple.ItemBlockGlass;
 import thermalexpansion.block.simple.ItemBlockRockwool;
+import thermalexpansion.block.sponge.BlockSponge;
+import thermalexpansion.block.sponge.ItemBlockSponge;
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.block.strongbox.ItemBlockStrongbox;
 import thermalexpansion.block.tank.BlockTank;
@@ -54,12 +59,16 @@ public class TEBlocks {
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
 		blockTesseract = addBlock(new BlockTesseract());
-		// blockPlate = addBlock(new BlockPlate(ThermalExpansion.config.getBlockId("Plate")));
+		// blockPlate = addBlock(new BlockPlate());
 		blockLamp = addBlock(new BlockLamp());
 		blockFrame = addBlock(new BlockFrame());
 		blockGlass = addBlock(new BlockGlass());
 		blockRockwool = addBlock(new BlockRockwool());
-		// blockInvisible = addBlock(new BlockInvisible(ThermalExpansion.config.getBlockId("Invisible")));
+		blockSponge = addBlock(new BlockSponge());
+
+		blockAirSignal = new BlockAirSignal();
+		blockAirLight = new BlockAirLight();
+		blockAirBarrier = new BlockAirBarrier();
 
 		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
 		GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
@@ -74,7 +83,11 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
 		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
 		GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
-		// GameRegistry.registerBlock(blockInvisible, "Invisible");
+		GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
+
+		GameRegistry.registerBlock(blockAirSignal, "AirSignal");
+		GameRegistry.registerBlock(blockAirLight, "AirLight");
+		GameRegistry.registerBlock(blockAirBarrier, "AirDam");
 
 		for (IInitializer initializer : blockList) {
 			initializer.initialize();
@@ -107,6 +120,10 @@ public class TEBlocks {
 	public static Block blockFrame;
 	public static Block blockGlass;
 	public static Block blockRockwool;
-	public static Block blockInvisible;
+	public static Block blockSponge;
+
+	public static Block blockAirSignal;
+	public static Block blockAirLight;
+	public static Block blockAirBarrier;
 
 }

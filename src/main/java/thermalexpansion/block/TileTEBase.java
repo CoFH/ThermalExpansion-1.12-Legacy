@@ -38,14 +38,11 @@ public abstract class TileTEBase extends TileCoFHBase {
 
 		public boolean setParams(int minPower, int maxPower, int maxEnergy) {
 
-			if (minPower <= 0 || maxPower <= 0 || maxEnergy <= 0) {
-				return false;
-			}
 			this.minPower = minPower;
 			this.maxPower = maxPower;
 			this.maxEnergy = maxEnergy;
 			this.maxPowerLevel = maxEnergy * 8 / 10;
-			this.energyRamp = maxPowerLevel / maxPower;
+			this.energyRamp = maxPower > 0 ? maxPowerLevel / maxPower : 0;
 			this.minPowerLevel = minPower * energyRamp;
 
 			return true;

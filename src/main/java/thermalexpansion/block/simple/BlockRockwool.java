@@ -79,7 +79,7 @@ public class BlockRockwool extends Block implements IInitializer {
 	public boolean postInit() {
 
 		FurnaceRecipes.smelting().func_151394_a(TEItems.slag, new ItemStack(this, 1, 8), 0.0F);
-		for (int i = 0; i < 16; ++i) {
+		for (int i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(this, 8, i), new Object[] { "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.dye, 1, 15 - i) });
 		}
 		return true;

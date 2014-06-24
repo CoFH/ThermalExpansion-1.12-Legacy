@@ -20,10 +20,11 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiPrecipitator;
 import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 
-public class TilePrecipitator extends TileMachineEnergized implements IFluidHandler, ICustomInventory {
+public class TilePrecipitator extends TileMachineBase implements IFluidHandler, ICustomInventory {
 
 	static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
@@ -52,7 +53,7 @@ public class TilePrecipitator extends TileMachineEnergized implements IFluidHand
 	static ItemStack[] processItems = new ItemStack[3];
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID_SMALL);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 
 	byte curSelection;
 	byte prevSelection;

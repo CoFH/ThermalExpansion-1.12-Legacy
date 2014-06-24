@@ -52,7 +52,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		if (fluid == null || energy <= 10000) {
 			return false;
 		}
-		fuels.put(fluid, energy / 100);
+		fuels.put(fluid, energy / 20);
 		return true;
 	}
 
@@ -61,7 +61,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		if (fluid == null || cooling <= 10000) {
 			return false;
 		}
-		coolants.put(fluid, cooling / 100);
+		coolants.put(fluid, cooling / 20);
 		return true;
 	}
 
@@ -97,12 +97,12 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	protected boolean canGenerate() {
 
 		if (fuelRF > 0) {
-			return coolantRF > 0 || coolantTank.getFluidAmount() >= 10;
+			return coolantRF > 0 || coolantTank.getFluidAmount() >= 50;
 		}
 		if (coolantRF > 0) {
-			return fuelTank.getFluidAmount() >= 10;
+			return fuelTank.getFluidAmount() >= 50;
 		}
-		return fuelTank.getFluidAmount() >= 10 && coolantTank.getFluidAmount() >= 10;
+		return fuelTank.getFluidAmount() >= 50 && coolantTank.getFluidAmount() >= 50;
 	}
 
 	@Override
@@ -110,11 +110,11 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 		if (fuelRF <= 0) {
 			fuelRF = getFuelEnergy(fuelTank.getFluid()) * fuelMod / 100;
-			fuelTank.drain(10, true);
+			fuelTank.drain(50, true);
 		}
 		if (coolantRF <= 0) {
 			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * fuelMod / 100;
-			coolantTank.drain(10, true);
+			coolantTank.drain(50, true);
 		}
 		int energy = calcEnergy() * energyMod;
 		energyStorage.modifyEnergyStored(energy);

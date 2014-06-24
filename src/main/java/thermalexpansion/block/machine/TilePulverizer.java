@@ -13,7 +13,7 @@ import thermalexpansion.gui.container.machine.ContainerPulverizer;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
-public class TilePulverizer extends TileMachineEnergized {
+public class TilePulverizer extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.PULVERIZER.ordinal();
 
@@ -57,7 +57,7 @@ public class TilePulverizer extends TileMachineEnergized {
 		}
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -159,7 +159,7 @@ public class TilePulverizer extends TileMachineEnergized {
 		}
 		int side;
 		if (inventory[1] != null || inventory[2] != null) {
-			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; ++i) {
+			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
@@ -179,7 +179,7 @@ public class TilePulverizer extends TileMachineEnergized {
 		if (inventory[3] == null) {
 			return;
 		}
-		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; ++i) {
+		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {

@@ -80,7 +80,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 		if (baseTile == null) {
 			return;
 		}
-		for (int i = 0; i < crafters.size(); ++i) {
+		for (int i = 0; i < crafters.size(); i++) {
 			baseTile.sendGuiNetworkData(this, (ICrafting) crafters.get(i));
 		}
 	}
@@ -210,22 +210,11 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 		return slotFound;
 	}
 
-	/* IUpgradableContainer */
-	@Override
-	public void installAugments() {
-
-	}
-
+	/* IAugmentableContainer */
 	@Override
 	public Slot[] getAugmentSlots() {
 
 		return augmentSlots;
-	}
-
-	@Override
-	public boolean[] getAugmentStatus() {
-
-		return augmentStatus;
 	}
 
 }

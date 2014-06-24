@@ -27,7 +27,7 @@ public class GuiBreaker extends GuiBaseAdv {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileBreaker) theTile;
-		name = myTile.getName();
+		name = myTile.getInventoryName();
 	}
 
 	@Override

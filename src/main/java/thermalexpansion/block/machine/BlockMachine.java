@@ -20,6 +20,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -66,8 +67,8 @@ public class BlockMachine extends BlockTEBase {
 			return new TilePrecipitator();
 		case EXTRUDER:
 			return new TileExtruder();
-		case WATER_GEN:
-			return new TileWaterGen();
+		case ACCUMULATOR:
+			return new TileAccumulator();
 		case ASSEMBLER:
 			return new TileAssembler();
 		case CHARGER:
@@ -218,6 +219,14 @@ public class BlockMachine extends BlockTEBase {
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:config/Config_Purple_CB", ir);
 	}
 
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = null;
+		return tag;
+	}
+
 	/* IInitializer */
 	@Override
 	public boolean initialize() {
@@ -230,7 +239,7 @@ public class BlockMachine extends BlockTEBase {
 		TileTransposer.initialize();
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
-		TileWaterGen.initialize();
+		TileAccumulator.initialize();
 		TileAssembler.initialize();
 		TileCharger.initialize();
 
@@ -242,7 +251,7 @@ public class BlockMachine extends BlockTEBase {
 		transposer = new ItemStack(this, 1, Types.TRANSPOSER.ordinal());
 		precipitator = new ItemStack(this, 1, Types.PRECIPITATOR.ordinal());
 		extruder = new ItemStack(this, 1, Types.EXTRUDER.ordinal());
-		waterGen = new ItemStack(this, 1, Types.WATER_GEN.ordinal());
+		accumulator = new ItemStack(this, 1, Types.ACCUMULATOR.ordinal());
 		assembler = new ItemStack(this, 1, Types.ASSEMBLER.ordinal());
 		charger = new ItemStack(this, 1, Types.CHARGER.ordinal());
 
@@ -254,7 +263,7 @@ public class BlockMachine extends BlockTEBase {
 		GameRegistry.registerCustomItemStack("transposer", transposer);
 		GameRegistry.registerCustomItemStack("precipitator", precipitator);
 		GameRegistry.registerCustomItemStack("extruder", extruder);
-		GameRegistry.registerCustomItemStack("waterGen", waterGen);
+		GameRegistry.registerCustomItemStack("accumulator", accumulator);
 		GameRegistry.registerCustomItemStack("assembler", assembler);
 		GameRegistry.registerCustomItemStack("charger", charger);
 
@@ -331,7 +340,7 @@ public class BlockMachine extends BlockTEBase {
 		// TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
 		// }
 		// if (enable[Types.WATER_GEN.ordinal()]) {
-		// GameRegistry.addRecipe(new ShapedOreRecipe(waterGen, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
+		// GameRegistry.addRecipe(new ShapedOreRecipe(accumulator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P',
 		// TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
 		// }
 		// if (enable[Types.ASSEMBLER.ordinal()]) {
@@ -346,10 +355,10 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static enum Types {
-		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, WATER_GEN, ASSEMBLER, CHARGER
+		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER
 	}
 
-	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "waterGen",
+	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
@@ -363,8 +372,8 @@ public class BlockMachine extends BlockTEBase {
 		enable[Types.TRANSPOSER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Transposer", true);
 		enable[Types.PRECIPITATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Precipitator", true);
 		enable[Types.EXTRUDER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Extruder", true);
-		enable[Types.WATER_GEN.ordinal()] = ThermalExpansion.config.get(category, "Machine.WaterGen", true);
-		enable[Types.ASSEMBLER.ordinal()] = ThermalExpansion.config.get(category, "Machine.AutoCrafter", true);
+		enable[Types.ACCUMULATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Accumulator", true);
+		enable[Types.ASSEMBLER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Assembler", true);
 		enable[Types.CHARGER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Charger", true);
 	}
 
@@ -376,7 +385,7 @@ public class BlockMachine extends BlockTEBase {
 	public static ItemStack transposer;
 	public static ItemStack precipitator;
 	public static ItemStack extruder;
-	public static ItemStack waterGen;
+	public static ItemStack accumulator;
 	public static ItemStack assembler;
 	public static ItemStack charger;
 

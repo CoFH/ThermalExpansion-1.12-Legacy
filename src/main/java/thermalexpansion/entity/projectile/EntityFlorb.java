@@ -148,9 +148,9 @@ public class EntityFlorb extends EntityThrowable {
 		int j1 = MathHelper.floor_double(this.boundingBox.maxZ - 0.001D);
 
 		if (this.worldObj.checkChunksExist(i, j, k, l, i1, j1)) {
-			for (int k1 = i; k1 <= l; ++k1) {
-				for (int l1 = j; l1 <= i1; ++l1) {
-					for (int i2 = k; i2 <= j1; ++i2) {
+			for (int k1 = i; k1 <= l; k1++) {
+				for (int l1 = j; l1 <= i1; l1++) {
+					for (int i2 = k; i2 <= j1; i2++) {
 						Block block = this.worldObj.getBlock(k1, l1, i2);
 
 						if (block != null) {

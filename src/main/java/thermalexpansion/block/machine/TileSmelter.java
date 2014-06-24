@@ -15,7 +15,7 @@ import thermalexpansion.gui.container.machine.ContainerSmelter;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
-public class TileSmelter extends TileMachineEnergized {
+public class TileSmelter extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.SMELTER.ordinal();
 
@@ -65,7 +65,7 @@ public class TileSmelter extends TileMachineEnergized {
 		}
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {

@@ -22,12 +22,13 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.gui.client.machine.GuiWaterGen;
+import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.machine.GuiAccumulator;
 import thermalexpansion.gui.container.ContainerTEBase;
 
-public class TileWaterGen extends TileMachineBase implements IFluidHandler {
+public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.WATER_GEN.ordinal();
+	static final int TYPE = BlockMachine.Types.ACCUMULATOR.ordinal();
 
 	public static void initialize() {
 
@@ -38,7 +39,10 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 
-		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion.WaterGen");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(0);
+
+		GameRegistry.registerTileEntity(TileAccumulator.class, "thermalexpansion.Accumulator");
 	}
 
 	public static int genRate = 25 * CoFHProps.TIME_CONSTANT;
@@ -50,26 +54,26 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 	public static FluidStack genStackSnow = new FluidStack(FluidRegistry.WATER, 125);
 
 	static {
-		int rate = ThermalExpansion.config.get("tweak", "WaterGen.Rate", TileWaterGen.genRate / CoFHProps.TIME_CONSTANT);
+		int rate = ThermalExpansion.config.get("tweak", "Accumulator.Rate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT);
 
 		if (rate > 0 && rate <= 50) {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
 			transferRate = rate;
 		} else {
-			ThermalExpansion.log.info("'WaterGen.Rate' config value is out of acceptable range. Using default. (25)");
+			ThermalExpansion.log.info("'Accumulator.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
-		ThermalExpansion.config.removeProperty("tweak", "WaterGen.PassiveGen");
-		passiveGen = ThermalExpansion.config.get("tweak", "WaterGen.PassiveGen", false);
+		ThermalExpansion.config.removeProperty("tweak", "Accumulator.PassiveGen");
+		passiveGen = ThermalExpansion.config.get("tweak", "Accumulator.PassiveGen", false);
 	}
 
-	FluidTank tank = new FluidTank(MAX_FLUID_SMALL);
+	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_SMALL);
 
 	int adjacentSources = -1;
 	FluidStack outputBuffer;
 	int outputTrackerFluid;
 
-	public TileWaterGen() {
+	public TileAccumulator() {
 
 		sideCache = new byte[] { 1, 1, 1, 1, 1, 1 };
 	}
@@ -115,6 +119,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
+	@Override
 	protected boolean canStart() {
 
 		return worldObj.getBiomeGenForCoords(xCoord, zCoord) != BiomeGenBase.hell;
@@ -203,7 +208,7 @@ public class TileWaterGen extends TileMachineBase implements IFluidHandler {
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiWaterGen(inventory, this);
+		return new GuiAccumulator(inventory, this);
 	}
 
 	@Override

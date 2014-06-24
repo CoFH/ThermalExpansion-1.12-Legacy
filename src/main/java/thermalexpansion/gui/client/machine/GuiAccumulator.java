@@ -13,24 +13,24 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.machine.TileWaterGen;
+import thermalexpansion.block.machine.TileAccumulator;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiWaterGen extends GuiBaseAdv {
+public class GuiAccumulator extends GuiBaseAdv {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "WaterGen.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Accumulator.png");
 	static final String INFO = "Extracts water from its surroundings.\n\nPlace in a pool of water to speed this up.\n\nDon't drown.";
 
-	TileWaterGen myTile;
+	TileAccumulator myTile;
 
 	ElementBase slotOutput;
 
-	public GuiWaterGen(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiAccumulator(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
-		myTile = (TileWaterGen) theTile;
+		myTile = (TileAccumulator) theTile;
 		name = myTile.getInventoryName();
 	}
 

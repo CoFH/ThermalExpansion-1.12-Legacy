@@ -23,15 +23,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.TEItems;
-import thermalexpansion.util.crafting.TransposerManager;
-import thermalfoundation.fluid.TFFluids;
 
 public class BlockLamp extends BlockTEBase {
 
@@ -105,6 +100,13 @@ public class BlockLamp extends BlockTEBase {
 	}
 
 	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
 	public int getRenderBlockPass() {
 
 		return 1;
@@ -127,7 +129,7 @@ public class BlockLamp extends BlockTEBase {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		IconRegistry.addIcon("Lamp0", "thermalexpansion:lamp/Lamp_Basic", ir);
-		IconRegistry.addIcon("LampEffect", "thermalexpansion:lamp/Lamp_Effect", ir);
+		IconRegistry.addIcon("LampHalo", "thermalexpansion:lamp/Lamp_Halo", ir);
 	}
 
 	@Override
@@ -147,8 +149,6 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		lampFrame = TEItems.itemComponent.addItem(160, "lampFrame");
-
 		TileLamp.initialize();
 
 		lamp = new ItemStack(this, 1, 0);
@@ -162,9 +162,7 @@ public class BlockLamp extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampFrame, new Object[] { " N ", "RGR", " N ", 'G', "glassHardened", 'N', "nuggetSilver", 'R',
-					Items.redstone }));
-			TransposerManager.addFillRecipe(2000, lampFrame, lamp, new FluidStack(TFFluids.fluidGlowstone, 1000), false, false);
+
 		}
 		return true;
 	}
@@ -177,7 +175,5 @@ public class BlockLamp extends BlockTEBase {
 	}
 
 	public static ItemStack lamp;
-
-	public static ItemStack lampFrame;
 
 }
