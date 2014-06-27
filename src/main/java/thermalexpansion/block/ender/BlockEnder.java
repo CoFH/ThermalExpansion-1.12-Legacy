@@ -30,14 +30,14 @@ import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
 
-public class BlockTesseract extends BlockTEBase {
+public class BlockEnder extends BlockTEBase {
 
-	public BlockTesseract() {
+	public BlockEnder() {
 
 		super(Material.iron);
 		setHardness(15.0F);
 		setResistance(2000.0F);
-		setBlockName("thermalexpansion.tesseract");
+		setBlockName("thermalexpansion.ender");
 	}
 
 	@Override
@@ -91,12 +91,6 @@ public class BlockTesseract extends BlockTEBase {
 	}
 
 	@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		return IconRegistry.getIcon("Tesseract");
-	}
-
-	@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
@@ -107,6 +101,12 @@ public class BlockTesseract extends BlockTEBase {
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 
 		return true;
+	}
+
+	@Override
+	public IIcon getIcon(int side, int metadata) {
+
+		return IconRegistry.getIcon("Tesseract");
 	}
 
 	@Override
@@ -123,8 +123,8 @@ public class BlockTesseract extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
-		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
 
 		if (tile != null) {
 			if (tag == null) {

@@ -24,9 +24,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileInventory;
+import thermalexpansion.block.TileTEBase;
 
-public class TileCache extends TileInventory implements IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo, IDeepStorageUnit {
+public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo {
 
 	public static void initialize() {
 
@@ -44,25 +44,18 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		SIZE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Basic.Capacity", SIZE[1]), SIZE[1] / 8, SIZE[2]);
 	}
 
-	public byte type;
-	public byte facing = 3;
-	public boolean locked;
-
 	int meterTracker;
 	int compareTracker;
 
-	public ItemStack storedStack;
 	public int maxCacheStackSize;
+	public byte type;
+	public byte facing = 3;
+	public boolean locked;
+	public ItemStack storedStack;
 
 	public TileCache() {
 
 		inventory = new ItemStack[2];
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
 	}
 
 	public TileCache(int metadata) {
@@ -73,9 +66,9 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	}
 
 	@Override
-	public int getComparatorInput(int side) {
+	public boolean canUpdate() {
 
-		return compareTracker;
+		return false;
 	}
 
 	@Override
@@ -88,6 +81,12 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public int getType() {
 
 		return type;
+	}
+
+	@Override
+	public int getComparatorInput(int side) {
+
+		return compareTracker;
 	}
 
 	protected void balanceStacks() {
@@ -146,6 +145,44 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 		return locked;
 	}
 
+	/* GUI METHODS */
+	@Override
+	public boolean hasGui() {
+
+		return false;
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		type = nbt.getByte("Type");
+		facing = nbt.getByte("Facing");
+		locked = nbt.getBoolean("Lock");
+
+		if (nbt.hasKey("Item")) {
+			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
+			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+		} else {
+			maxCacheStackSize = SIZE[type] - 64 * 2;
+		}
+		super.readFromNBT(nbt);
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setByte("Type", type);
+		nbt.setByte("Facing", facing);
+		nbt.setBoolean("Lock", locked);
+
+		if (storedStack != null) {
+			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
+		}
+	}
+
 	/* NETWORK METHODS */
 	@Override
 	public CoFHPacket getPacket() {
@@ -182,160 +219,6 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 			inventory[0] = null;
 			inventory[1] = null;
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		type = nbt.getByte("Type");
-		facing = nbt.getByte("Facing");
-		locked = nbt.getBoolean("Lock");
-
-		if (nbt.hasKey("Item")) {
-			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
-			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
-		} else {
-			maxCacheStackSize = SIZE[type] - 64 * 2;
-		}
-		super.readFromNBT(nbt);
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		nbt.setByte("Type", type);
-		nbt.setByte("Facing", facing);
-		nbt.setBoolean("Lock", locked);
-
-		if (storedStack != null) {
-			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
-		}
-	}
-
-	/* IReconfigurableFacing */
-	@Override
-	public int getFacing() {
-
-		return facing;
-	}
-
-	@Override
-	public boolean allowYAxisFacing() {
-
-		return false;
-	}
-
-	@Override
-	public boolean rotateBlock() {
-
-		facing = BlockHelper.SIDE_LEFT[facing];
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 2 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
-	/* IInventory */
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-
-		inventory[slot] = stack;
-
-		if (slot == 0) { // insertion!
-			if (inventory[0] == null) {
-				return;
-			}
-			if (storedStack == null) {
-				storedStack = inventory[0].copy();
-				inventory[0] = null;
-				maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
-			} else {
-				storedStack.stackSize += inventory[0].stackSize + (inventory[1] == null ? 0 : inventory[1].stackSize);
-			}
-			balanceStacks();
-		} else { // extraction!
-			if (storedStack == null) {
-				return;
-			}
-			storedStack.stackSize += (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
-
-			if (storedStack.stackSize > 0) {
-				balanceStacks();
-			} else {
-				clearInventory();
-			}
-		}
-		updateTrackers();
-		markDirty();
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 1) {
-			if (side != facing) {
-				return IconRegistry.getIcon("CacheBlank");
-			}
-			int stored = Math.min(8, getScaledItemsStored(9));
-			return facing == 3 || facing == 4 ? IconRegistry.getIcon("CacheMeter", stored) : IconRegistry.getIcon("CacheMeterInv", stored);
-		}
-		if (side == 0) {
-			return IconRegistry.getIcon("CacheBottom", type);
-		} else if (side == 1) {
-			return IconRegistry.getIcon("CacheTop", type);
-		}
-		return side != facing ? IconRegistry.getIcon("CacheSide", type) : IconRegistry.getIcon("CacheFace", type);
-	}
-
-	/* ISidedInventory */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-
-		return SLOTS;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
-
-		return slot == 0 && (storedStack == null || stack != null && ItemHelper.itemsEqualWithMetadata(stack, storedStack, true));
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-
-		return slot == 1;
-	}
-
-	/* ITileInfo */
-	@Override
-	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
-
-		if (debug) {
-			return;
-		}
-		if (storedStack != null) {
-			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack));
-			info.add(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]);
-		} else {
-			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty"));
-		}
-		info.add(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked"));
 	}
 
 	/* IDeepStorageUnit */
@@ -381,6 +264,127 @@ public class TileCache extends TileInventory implements IReconfigurableFacing, I
 	public int getMaxStoredCount() {
 
 		return SIZE[type];
+	}
+
+	/* IInventory */
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+
+		inventory[slot] = stack;
+
+		if (slot == 0) { // insertion!
+			if (inventory[0] == null) {
+				return;
+			}
+			if (storedStack == null) {
+				storedStack = inventory[0].copy();
+				inventory[0] = null;
+				maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+			} else {
+				storedStack.stackSize += inventory[0].stackSize + (inventory[1] == null ? 0 : inventory[1].stackSize);
+			}
+			balanceStacks();
+		} else { // extraction!
+			if (storedStack == null) {
+				return;
+			}
+			storedStack.stackSize += (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
+
+			if (storedStack.stackSize > 0) {
+				balanceStacks();
+			} else {
+				clearInventory();
+			}
+		}
+		updateTrackers();
+		markDirty();
+	}
+
+	/* IReconfigurableFacing */
+	@Override
+	public int getFacing() {
+
+		return facing;
+	}
+
+	@Override
+	public boolean allowYAxisFacing() {
+
+		return false;
+	}
+
+	@Override
+	public boolean rotateBlock() {
+
+		facing = BlockHelper.SIDE_LEFT[facing];
+		sendUpdatePacket(Side.CLIENT);
+		return true;
+	}
+
+	@Override
+	public boolean setFacing(int side) {
+
+		if (side < 2 || side > 5) {
+			return false;
+		}
+		facing = (byte) side;
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		sendUpdatePacket(Side.CLIENT);
+		return true;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return SLOTS;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+		return slot == 0 && (storedStack == null || stack != null && ItemHelper.itemsEqualWithMetadata(stack, storedStack, true));
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+		return slot == 1;
+	}
+
+	/* ISidedTexture */
+	@Override
+	public IIcon getTexture(int side, int pass) {
+
+		if (pass == 1) {
+			if (side != facing) {
+				return IconRegistry.getIcon("CacheBlank");
+			}
+			int stored = Math.min(8, getScaledItemsStored(9));
+			return facing == 3 || facing == 4 ? IconRegistry.getIcon("CacheMeter", stored) : IconRegistry.getIcon("CacheMeterInv", stored);
+		}
+		if (side == 0) {
+			return IconRegistry.getIcon("CacheBottom", type);
+		} else if (side == 1) {
+			return IconRegistry.getIcon("CacheTop", type);
+		}
+		return side != facing ? IconRegistry.getIcon("CacheSide", type) : IconRegistry.getIcon("CacheFace", type);
+	}
+
+	/* ITileInfo */
+	@Override
+	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+
+		if (debug) {
+			return;
+		}
+		if (storedStack != null) {
+			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack));
+			info.add(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]);
+		} else {
+			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty"));
+		}
+		info.add(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked"));
 	}
 
 	/* Prototype Handler Stuff */

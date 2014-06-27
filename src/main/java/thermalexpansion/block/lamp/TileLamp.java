@@ -120,17 +120,26 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 		return true;
 	}
 
+	/* GUI METHODS */
+	@Override
+	public boolean hasGui() {
+
+		return false;
+	}
+
 	/* NETWORK METHODS */
 	@Override
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
+
 		payload.addBool(modified);
 		payload.addInt(color);
 		payload.addByte(mode);
 		payload.addByte(getLightValue());
 		payload.addBool(isPowered);
 		payload.addByte(inputPower);
+
 		return payload;
 	}
 
@@ -138,10 +147,12 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 	@Override
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
+		super.handleTilePacket(payload, isServer);
+
 		modified = payload.getBool();
 		color = payload.getInt();
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (!isServer) {
 			mode = payload.getByte();
 			lightValue = payload.getByte();
 
@@ -154,10 +165,7 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 			isPowered = payload.getBool();
 			inputPower = payload.getByte();
-
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord); // This was mark for light update
 	}
 
 	/* NBT METHODS */

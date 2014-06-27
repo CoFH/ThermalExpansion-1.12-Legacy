@@ -58,7 +58,7 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (inventory[0] == null && inventory[1] == null) {
 			return false;
@@ -131,7 +131,7 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -225,7 +225,7 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? SmelterManager.isItemValid(stack) : true;
 	}

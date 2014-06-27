@@ -44,7 +44,7 @@ public class TileCellCreative extends TileCell {
 	@Override
 	protected void transferEnergy(int bSide) {
 
-		if (sideCache[bSide] != SideType.OUTPUT) {
+		if (sideCache[bSide] != 1) {
 			return;
 		}
 		if (adjacentHandlers[bSide] == null) {
@@ -53,6 +53,14 @@ public class TileCellCreative extends TileCell {
 		adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false);
 	}
 
+	/* IReconfigurableSides */
+	@Override
+	public int getNumConfig(int side) {
+
+		return 2;
+	}
+
+	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 
@@ -64,13 +72,6 @@ public class TileCellCreative extends TileCell {
 			return IconRegistry.getIcon(BlockCell.textureSelection, sideCache[side]);
 		}
 		return side != facing ? IconRegistry.getIcon(BlockCell.textureSelection, 0) : IconRegistry.getIcon("CellMeterCreative");
-	}
-
-	/* IReconfigurableSides */
-	@Override
-	public int getNumConfig(int side) {
-
-		return 2;
 	}
 
 }

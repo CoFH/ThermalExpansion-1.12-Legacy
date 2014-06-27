@@ -50,7 +50,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (inventory[0] == null) {
 			return false;
@@ -104,7 +104,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -192,7 +192,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? PulverizerManager.recipeExists(stack) : true;
 	}

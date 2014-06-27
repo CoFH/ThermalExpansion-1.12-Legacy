@@ -4,18 +4,15 @@ import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.network.CoFHPacket;
-import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
-public abstract class TileReconfigurableBase extends TileRSBase implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture, ITilePacketHandler {
+public abstract class TileReconfigurable extends TileRSControl implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
 
-	protected boolean isActive = false;
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
 
@@ -25,48 +22,14 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 		return rotateBlock();
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addByteArray(sideCache);
-		payload.addByte(facing);
-		payload.addBool(isActive);
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		payload.getByteArray(sideCache);
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			facing = payload.getByte();
-			isActive = payload.getBool();
-		} else {
-			payload.getByte();
-			payload.getBool();
-		}
-		for (int i = 0; i < 6; i++) {
-			if (sideCache[i] >= getNumConfig(i)) {
-				sideCache[i] = 0;
-			}
-		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-	}
-
 	/* GUI METHODS */
-	public boolean isActive() {
+	@Override
+	public final boolean isActive() {
 
 		return isActive;
 	}
 
-	public boolean hasSide(int side) {
+	public final boolean hasSide(int side) {
 
 		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] == side) {
@@ -82,7 +45,6 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 
 		super.readFromNBT(nbt);
 
-		isActive = nbt.getBoolean("Active");
 		facing = nbt.getByte("Facing");
 		sideCache = nbt.getByteArray("SideCache");
 
@@ -101,14 +63,45 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("Active", isActive);
 		nbt.setByte("Facing", facing);
 		nbt.setByteArray("SideCache", sideCache);
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addByteArray(sideCache);
+		payload.addByte(facing);
+
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		payload.getByteArray(sideCache);
+
+		if (!isServer) {
+			facing = payload.getByte();
+		} else {
+			payload.getByte();
+		}
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+	}
+
 	/* IReconfigurableFacing */
 	@Override
-	public int getFacing() {
+	public final int getFacing() {
 
 		return facing;
 	}
@@ -116,7 +109,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	@Override
 	public boolean allowYAxisFacing() {
 
-		return true;
+		return false;
 	}
 
 	@Override
@@ -173,7 +166,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 		}
 		sideCache = tempCache.clone();
 		facing = BlockHelper.SIDE_LEFT[facing];
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
@@ -184,7 +177,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 		if (side < 0 || side > 5) {
 			return false;
 		}
-		if (allowYAxisFacing() && side < 2) {
+		if (!allowYAxisFacing() && side < 2) {
 			return false;
 		}
 		facing = (byte) side;
@@ -197,6 +190,9 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	@Override
 	public boolean decrSide(int side) {
 
+		if (side == facing) {
+			return false;
+		}
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
 		sendUpdatePacket(Side.SERVER);
@@ -206,6 +202,9 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	@Override
 	public boolean incrSide(int side) {
 
+		if (side == facing) {
+			return false;
+		}
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
 		sendUpdatePacket(Side.SERVER);
@@ -213,7 +212,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	}
 
 	@Override
-	public boolean setSide(int side, int config) {
+	public final boolean setSide(int side, int config) {
 
 		if (side == facing || sideCache[side] == config || config >= getNumConfig(side)) {
 			return false;
@@ -224,7 +223,7 @@ public abstract class TileReconfigurableBase extends TileRSBase implements IReco
 	}
 
 	@Override
-	public boolean resetSides() {
+	public final boolean resetSides() {
 
 		boolean update = false;
 		for (int i = 0; i < 6; i++) {

@@ -1,7 +1,7 @@
 package thermalexpansion.block.device;
 
 import cofh.core.CoFHProps;
-import cofh.entity.PlayerFake;
+import cofh.entity.CoFHFakePlayer;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
@@ -14,7 +14,6 @@ import java.util.LinkedList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -29,14 +28,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableInventory;
+import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiBreaker;
 import thermalexpansion.gui.container.ContainerTEBase;
 
-public class TileBreaker extends TileReconfigurableInventory implements IFluidHandler {
+public class TileBreaker extends TileReconfigurable implements IFluidHandler {
 
 	public static void initialize() {
 
@@ -45,10 +42,10 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 
 	public static final int[] SIDE_TEX = new int[] { 0, 4 };
 
-	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
-
-	PlayerFake myFakePlayer;
 	boolean needsWorld = true;
+	CoFHFakePlayer myFakePlayer;
+
+	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
 	@Override
 	public String getName() {
@@ -60,13 +57,6 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 	public int getType() {
 
 		return BlockDevice.Types.BREAKER.ordinal();
-	}
-
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
 	}
 
 	@Override
@@ -90,6 +80,11 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 		}
 	}
 
+	public boolean isEmpty() {
+
+		return stuffedItems.size() == 0;
+	}
+
 	public void breakBlock() {
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
@@ -102,14 +97,9 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 				}
 			}
 			worldObj.setBlockToAir(coords[0], coords[1], coords[2]);
-		} else if (PlayerFake.isBlockBreakable(myFakePlayer, worldObj, coords[0], coords[1], coords[2])) {
+		} else if (CoFHFakePlayer.isBlockBreakable(myFakePlayer, worldObj, coords[0], coords[1], coords[2])) {
 			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, coords[0], coords[1], coords[2], block, 0, true, false));
 		}
-	}
-
-	public boolean isEmpty() {
-
-		return stuffedItems.size() == 0;
 	}
 
 	public void outputBuffer() {
@@ -140,7 +130,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 	public void updateFakePlayer() {
 
 		if (needsWorld) {
-			myFakePlayer = new PlayerFake((WorldServer) worldObj);
+			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 			needsWorld = false;
 		}
 	}
@@ -164,7 +154,7 @@ public class TileBreaker extends TileReconfigurableInventory implements IFluidHa
 
 		super.readFromNBT(nbt);
 
-		NBTTagList list = nbt.getTagList("StuffedInv", 9);
+		NBTTagList list = nbt.getTagList("StuffedInv", 10);
 		stuffedItems.clear();
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound compound = list.getCompoundTagAt(i);

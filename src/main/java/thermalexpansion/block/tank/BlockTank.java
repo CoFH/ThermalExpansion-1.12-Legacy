@@ -67,12 +67,18 @@ public class BlockTank extends BlockTEBase {
 	}
 
 	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
-		if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
-			return true;
+		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Fluid")) {
+			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
+
+			if (fluid != null) {
+				TileTank tile = (TileTank) world.getTileEntity(x, y, z);
+				tile.tank.setFluid(fluid);
+				tile.calcLastDisplay();
+			}
 		}
-		return false;
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
 
 	@Override
@@ -92,22 +98,7 @@ public class BlockTank extends BlockTEBase {
 		if (ItemHelper.isPlayerHoldingFluidContainer(player)) {
 			return true;
 		}
-		return false;
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Fluid")) {
-			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
-
-			if (fluid != null) {
-				TileTank tile = (TileTank) world.getTileEntity(x, y, z);
-				tile.tank.setFluid(fluid);
-				tile.calcLastDisplay();
-			}
-		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
 	}
 
 	@Override
@@ -129,6 +120,34 @@ public class BlockTank extends BlockTEBase {
 	}
 
 	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+
+		if (side == ForgeDirection.UP || side == ForgeDirection.DOWN) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride() {
+
+		return true;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
@@ -145,23 +164,10 @@ public class BlockTank extends BlockTEBase {
 	}
 
 	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileTank tile = (TileTank) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
 
 		if (tile != null) {
 			FluidStack fluid = tile.getTankFluid();
@@ -172,12 +178,6 @@ public class BlockTank extends BlockTEBase {
 			}
 		}
 		return tag;
-	}
-
-	@Override
-	public boolean hasComparatorInputOverride() {
-
-		return true;
 	}
 
 	/* IDismantleable */

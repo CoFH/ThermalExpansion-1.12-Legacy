@@ -26,15 +26,15 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	}
 
-	public ContainerTEBase(TileEntity entity) {
+	public ContainerTEBase(TileEntity tile) {
 
-		baseTile = (TileCoFHBase) entity;
+		baseTile = (TileCoFHBase) tile;
 	}
 
-	public ContainerTEBase(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile) {
 
-		if (entity instanceof TileCoFHBase) {
-			baseTile = (TileCoFHBase) entity;
+		if (tile instanceof TileCoFHBase) {
+			baseTile = (TileCoFHBase) tile;
 		}
 		/* Augment Slots */
 		if (baseTile instanceof IAugmentable) {

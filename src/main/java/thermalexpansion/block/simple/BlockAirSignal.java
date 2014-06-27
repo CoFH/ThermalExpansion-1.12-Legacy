@@ -26,15 +26,15 @@ public class BlockAirSignal extends Block {
 	}
 
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 
-		return BlockCoFHBase.NO_DROP;
+		return null;
 	}
 
 	@Override
-	public boolean canProvidePower() {
+	public int getRenderType() {
 
-		return true;
+		return -1;
 	}
 
 	@Override
@@ -43,16 +43,10 @@ public class BlockAirSignal extends Block {
 		return world.getBlockMetadata(x, y, z);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+	public boolean canProvidePower() {
 
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-
-		return null;
+		return true;
 	}
 
 	@Override
@@ -68,15 +62,20 @@ public class BlockAirSignal extends Block {
 	}
 
 	@Override
-	public int getRenderType() {
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-		return -1;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
+	}
+
+	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+
+		return BlockCoFHBase.NO_DROP;
 	}
 
 }

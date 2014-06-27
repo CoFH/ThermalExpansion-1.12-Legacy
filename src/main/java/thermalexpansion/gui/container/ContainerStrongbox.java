@@ -24,11 +24,11 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	int rowSize;
 	TileStrongbox myTile;
 
-	public ContainerStrongbox(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerStrongbox(InventoryPlayer inventory, TileEntity tile) {
 
-		super(entity);
+		super(tile);
 
-		myTile = (TileStrongbox) entity;
+		myTile = (TileStrongbox) tile;
 		myTile.openInventory();
 
 		storageIndex = myTile.getStorageIndex();
@@ -43,7 +43,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 			addSlotToContainer(new SlotValidated(this, myTile, 0, 80, 26));
 			rowSize = 1;
 		} else {
-			int yOffset = storageIndex == 2 ? 26 : 17;
+			int yOffset = 17;
 			for (int i = 0; i < slots; i++) {
 				addSlotToContainer(new SlotValidated(this, myTile, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}

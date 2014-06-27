@@ -5,6 +5,7 @@ import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -46,10 +46,10 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}
 
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
-	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
-	FluidStack outputBuffer;
 	int outputTrackerFluid;
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	FluidStack outputBuffer;
+	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 
 	public TileCrucible() {
 
@@ -66,7 +66,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (inventory[0] == null) {
 			return false;
@@ -106,7 +106,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		tank.fill(CrucibleManager.getRecipe(inventory[0]).getOutput(), true);
 		inventory[0].stackSize--;
@@ -153,9 +153,56 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiCrucible(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerCrucible(inventory, this);
+	}
+
+	public FluidTankAdv getTank() {
+
+		return tank;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+		outputTrackerFluid = nbt.getInteger("Tracker");
+		tank.readFromNBT(nbt);
+
+		if (tank.getFluid() != null) {
+			renderFluid = tank.getFluid();
+		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
+			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Tracker", outputTrackerFluid);
+		tank.writeToNBT(nbt);
 	}
 
 	/* NETWORK METHODS */
@@ -207,75 +254,11 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
-		if (ServerHelper.isClientWorld(worldObj)) {
+
+		if (!isServer) {
 			renderFluid = payload.getFluidStack();
 		} else {
 			payload.getFluidStack();
-		}
-	}
-
-	/* GUI METHODS */
-	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-
-		return new GuiCrucible(inventory, this);
-	}
-
-	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerCrucible(inventory, this);
-	}
-
-	public FluidTank getTank() {
-
-		return tank;
-	}
-
-	public FluidStack getTankFluid() {
-
-		return tank.getFluid();
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-		outputTrackerFluid = nbt.getInteger("Tracker");
-		tank.readFromNBT(nbt);
-
-		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
-		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
-			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
-		}
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		nbt.setInteger("Tracker", outputTrackerFluid);
-		tank.writeToNBT(nbt);
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return IconRegistry.getIcon("MachineBottom");
-			} else if (side == 1) {
-				return IconRegistry.getIcon("MachineTop");
-			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon(
-					"MachineFace", getType());
-		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon(
-					"MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
 		}
 	}
 
@@ -323,6 +306,24 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
+	}
+
+	/* ISidedTexture */
+	@Override
+	public IIcon getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return IconRegistry.getIcon("MachineBottom");
+			} else if (side == 1) {
+				return IconRegistry.getIcon("MachineTop");
+			}
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon(
+					"MachineFace", getType());
+		} else {
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon(
+					"MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
+		}
 	}
 
 }

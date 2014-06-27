@@ -93,23 +93,6 @@ public class BlockSponge extends BlockTEBase implements IInitializer {
 	}
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
-
-		TileSponge tile = (TileSponge) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
-
-		if (tile != null) {
-			FluidStack fluid = tile.getFluid();
-
-			if (fluid != null) {
-				tag = new NBTTagCompound();
-				tag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
-			}
-		}
-		return tag;
-	}
-
-	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -132,6 +115,23 @@ public class BlockSponge extends BlockTEBase implements IInitializer {
 
 		IconRegistry.addIcon("Sponge" + 9, "thermalexpansion:sponge/Sponge_Basic_Soaked", ir);
 		IconRegistry.addIcon("Sponge" + 10, "thermalexpansion:sponge/Sponge_Magmatic_Soaked", ir);
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileSponge tile = (TileSponge) world.getTileEntity(x, y, z);
+
+		if (tile != null) {
+			FluidStack fluid = tile.getFluid();
+
+			if (fluid != null) {
+				tag = new NBTTagCompound();
+				tag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
+			}
+		}
+		return tag;
 	}
 
 	/* IInitializer */

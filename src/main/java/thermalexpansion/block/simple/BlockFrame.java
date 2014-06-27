@@ -65,7 +65,44 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public int getRenderType() {
+
+		return TEProps.renderIdFrame;
+	}
+
+	@Override
 	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+
+		return false;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+
+		return false;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
 
 		return false;
 	}
@@ -122,43 +159,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	private IIcon getCenterIcon(int metadata) {
 
 		return IconRegistry.getIcon("FrameCenter", metadata);
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
-	public int getRenderType() {
-
-		return TEProps.renderIdFrame;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return false;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return false;
-	}
-
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
-		return true;
 	}
 
 	@Override

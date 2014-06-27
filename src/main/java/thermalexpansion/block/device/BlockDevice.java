@@ -58,6 +58,8 @@ public class BlockDevice extends BlockTEBase {
 			return new TileActivator();
 		case BREAKER:
 			return new TileBreaker();
+		case PUMP:
+			return new TilePump();
 		case NULLIFIER:
 			return new TileNullifier();
 		default:
@@ -109,6 +111,43 @@ public class BlockDevice extends BlockTEBase {
 	}
 
 	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
+	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+
+		return true;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+
+		return true;
+	}
+
+	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture theTile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -127,43 +166,6 @@ public class BlockDevice extends BlockTEBase {
 			return IconRegistry.getIcon("WorkbenchSide");
 		}
 		return side != 3 ? IconRegistry.getIcon("DeviceSide") : IconRegistry.getIcon("DeviceFace" + metadata);
-	}
-
-	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return true;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
-	}
-
-	@Override
-	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
-
-		return false;
-	}
-
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
-		return true;
 	}
 
 	@Override
@@ -187,19 +189,19 @@ public class BlockDevice extends BlockTEBase {
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 
-		TileEntity entity = world.getTileEntity(x, y, z);
-		if (entity instanceof TileWorkbench) {
-			TileWorkbench tile = (TileWorkbench) entity;
+		if (tile instanceof TileWorkbench) {
+			TileWorkbench theTile = (TileWorkbench) tile;
 
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setString("Owner", tile.owner);
-			tag.setByte("Access", (byte) tile.getAccess().ordinal());
-			tag.setByte("Mode", (byte) tile.selectedSchematic);
+			tag.setString("Owner", theTile.owner);
+			tag.setByte("Access", (byte) theTile.getAccess().ordinal());
+			tag.setByte("Mode", (byte) theTile.selectedSchematic);
 
-			tile.writeInventoryToNBT(tag);
+			theTile.writeInventoryToNBT(tag);
 		}
 		return tag;
 	}
@@ -221,14 +223,16 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
+		TileWorkbench.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
-		TileWorkbench.initialize();
+		// TilePump.initialize();
 		TileNullifier.initialize();
 
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
 		breaker = new ItemStack(this, 1, Types.BREAKER.ordinal());
+		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
 		nullifier = new ItemStack(this, 1, Types.NULLIFIER.ordinal());
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
@@ -266,18 +270,24 @@ public class BlockDevice extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(breaker, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', pickaxe }));
 		}
+		if (enable[Types.PUMP.ordinal()]) {
+
+		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', "ingotInvar" }));
+		}
+		if (enable[Types.LEXICON.ordinal()]) {
+
 		}
 		return true;
 	}
 
 	public static enum Types {
-		WORKBENCH, PLACE_HOLDER, ACTIVATOR, BREAKER, NULLIFIER
+		WORKBENCH, PLACE_HOLDER, ACTIVATOR, BREAKER, PUMP, NULLIFIER, LEXICON
 	}
 
-	public static String[] NAMES = { "workbench", "PLACE_HOLDER", "activator", "breaker", "nullifier", "lexicon" };
+	public static String[] NAMES = { "workbench", "PLACE_HOLDER", "activator", "breaker", "pump", "nullifier", "lexicon" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -291,6 +301,7 @@ public class BlockDevice extends BlockTEBase {
 	public static ItemStack workbench;
 	public static ItemStack activator;
 	public static ItemStack breaker;
+	public static ItemStack pump;
 	public static ItemStack nullifier;
 
 }

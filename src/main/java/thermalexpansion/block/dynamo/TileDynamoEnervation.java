@@ -111,22 +111,6 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return TFFluids.fluidRedstone.getIcon();
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
-		payload.addInt(currentFuelRF);
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		super.handleGuiPacket(payload);
-		currentFuelRF = payload.getInt();
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -169,6 +153,25 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("FuelMax", currentFuelRF);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addInt(currentFuelRF);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		currentFuelRF = payload.getInt();
 	}
 
 	/* ISidedInventory */

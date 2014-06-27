@@ -4,20 +4,15 @@ import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
-import cofh.network.PacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,29 +23,24 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileRSInventory;
+import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 
-public abstract class TileDynamoBase extends TileRSInventory implements ITileInfoPacketHandler, IReconfigurableFacing, ISidedInventory, IEnergyHandler,
-		IEnergyInfo, IAugmentable {
+public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig defaultConfig = new EnergyConfig();
 
 	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
 
-	EnergyConfig config;
-	EnergyStorage energyStorage;
+	int compareTracker;
+	int fuelRF;
+	byte facing = 1;
 
 	boolean cached = false;
 	IEnergyHandler adjacentHandler = null;
 
-	byte facing = 1;
-	boolean isActive;
-	int fuelRF;
-	int compareTracker;
+	EnergyConfig config;
 
 	/* Augment Variables */
 	ItemStack[] augments = new ItemStack[3];
@@ -59,58 +49,51 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	int energyMod = 1;
 	int fuelMod = 100;
 
+	public boolean augmentRSControl = true;
+
 	public TileDynamoBase() {
 
 		config = defaultConfig;
 		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 2);
 	}
 
-	protected abstract boolean canGenerate();
+	@Override
+	public String getName() {
 
-	protected abstract void generate();
-
-	protected boolean hasStoredEnergy() {
-
-		return energyStorage.getEnergyStored() > 0;
+		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[getType()] + ".name";
 	}
 
-	protected void transferEnergy(int bSide) {
+	@Override
+	public int getComparatorInput(int side) {
 
-		if (adjacentHandler == null) {
-			return;
-		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(config.maxPower * 2, energyStorage.getEnergyStored()), false));
+		return compareTracker;
 	}
 
-	public IIcon getActiveIcon() {
+	@Override
+	public int getLightValue() {
 
-		return FluidRegistry.WATER.getIcon();
+		return isActive ? 7 : 0;
 	}
 
-	protected void attenuate() {
+	@Override
+	public boolean onWrench(EntityPlayer player, int hitSide) {
 
-		if (timeCheck() && fuelRF > 0) {
-			fuelRF -= 10;
-
-			if (fuelRF < 0) {
-				fuelRF = 0;
-			}
-		}
+		rotateBlock();
+		return true;
 	}
 
-	public int calcEnergy() {
+	@Override
+	public void onNeighborBlockChange() {
 
-		if (!isActive) {
-			return 0;
-		}
-		if (energyStorage.getEnergyStored() < config.maxPowerLevel) {
-			return config.maxPower;
-		}
-		if (energyStorage.getEnergyStored() > config.minPowerLevel) {
-			return config.minPower;
-		}
-		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
+		super.onNeighborBlockChange();
+		updateAdjacentHandlers();
+	}
+
+	@Override
+	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+
+		super.onNeighborTileChange(tileX, tileY, tileZ);
+		updateAdjacentHandlers();
 	}
 
 	@Override
@@ -155,48 +138,61 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		}
 	}
 
-	@Override
-	public int getComparatorInput(int side) {
+	protected abstract boolean canGenerate();
 
-		return compareTracker;
+	protected abstract void generate();
+
+	protected int calcEnergy() {
+
+		if (!isActive) {
+			return 0;
+		}
+		if (energyStorage.getEnergyStored() < config.maxPowerLevel) {
+			return config.maxPower;
+		}
+		if (energyStorage.getEnergyStored() > config.minPowerLevel) {
+			return config.minPower;
+		}
+		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
 	}
 
-	public int getScaledEnergyStored(int scale) {
+	protected int calcEnergy2() {
 
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+		if (!isActive || energyStorage.getEnergyStored() == energyStorage.getMaxEnergyStored()) {
+			return 0;
+		}
+		if (energyStorage.getEnergyStored() < config.maxPowerLevel) {
+			return config.maxPower;
+		}
+		if (energyStorage.getEnergyStored() > config.minPowerLevel) {
+			return config.minPower;
+		}
+		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
 	}
 
-	@Override
-	public int getLightValue() {
+	protected boolean hasStoredEnergy() {
 
-		return isActive ? 7 : 0;
+		return energyStorage.getEnergyStored() > 0;
 	}
 
-	@Override
-	public String getName() {
+	protected void attenuate() {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[getType()] + ".name";
+		if (timeCheck() && fuelRF > 0) {
+			fuelRF -= 10;
+
+			if (fuelRF < 0) {
+				fuelRF = 0;
+			}
+		}
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
+	protected void transferEnergy(int bSide) {
 
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
-	}
-
-	@Override
-	public void onNeighborBlockChange() {
-
-		super.onNeighborBlockChange();
-		updateAdjacentHandlers();
-	}
-
-	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
-
-		super.onNeighborTileChange(tileX, tileY, tileZ);
-		updateAdjacentHandlers();
+		if (adjacentHandler == null) {
+			return;
+		}
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+				Math.min(config.maxPower * 2, energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -214,79 +210,9 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		cached = true;
 	}
 
-	public IEnergyStorage getEnergyStorage() {
+	public IIcon getActiveIcon() {
 
-		return energyStorage;
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addByte(facing);
-		payload.addBool(isActive);
-		return payload;
-	}
-
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		payload.addInt(energyStorage.getEnergyStored());
-		payload.addInt(fuelRF);
-		return payload;
-	}
-
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		energyStorage.setEnergyStored(payload.getInt());
-		fuelRF = payload.getInt();
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			facing = payload.getByte();
-			isActive = payload.getBool();
-		} else {
-			payload.getByte();
-			payload.getBool();
-		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			handleGuiPacket(payload);
-			return;
-		default:
-		}
-	}
-
-	/* GUI METHODS */
-	public boolean isActive() {
-
-		return isActive;
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		if (iCrafting instanceof EntityPlayer) {
-			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
-			}
-		}
+		return FluidRegistry.WATER.getIcon();
 	}
 
 	/* NBT METHODS */
@@ -297,11 +223,11 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 
 		readAugmentsFromNBT(nbt);
 		installAugments();
+		energyStorage.readFromNBT(nbt);
 
 		facing = nbt.getByte("Facing");
 		isActive = nbt.getBoolean("Active");
 		fuelRF = nbt.getInteger("Fuel");
-		energyStorage.readFromNBT(nbt);
 	}
 
 	@Override
@@ -314,8 +240,6 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Active", isActive);
 		nbt.setInteger("Fuel", fuelRF);
-
-		energyStorage.writeToNBT(nbt);
 	}
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
@@ -347,65 +271,79 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		nbt.setTag("Augments", list);
 	}
 
-	/* ISidedInventory */
+	/* NETWORK METHODS */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public CoFHPacket getPacket() {
 
-		return TEProps.EMPTY_INVENTORY;
+		CoFHPacket payload = super.getPacket();
+
+		payload.addByte(facing);
+
+		return payload;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public CoFHPacket getGuiPacket() {
 
-		return side != facing;
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addInt(energyStorage.getEnergyStored());
+		payload.addInt(fuelRF);
+
+		return payload;
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	protected void handleGuiPacket(CoFHPacket payload) {
 
-		return side != facing;
+		super.handleGuiPacket(payload);
+
+		energyStorage.setEnergyStored(payload.getInt());
+		fuelRF = payload.getInt();
 	}
 
-	/* IReconfigurableFacing */
+	/* ITilePacketHandler */
 	@Override
-	public int getFacing() {
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
 
-		return facing;
-	}
+		super.handleTilePacket(payload, isServer);
 
-	@Override
-	public boolean rotateBlock() {
-
-		int[] coords;
-		for (int i = facing + 1; i < facing + 6; i++) {
-			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
-				facing = (byte) (i % 6);
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-				updateAdjacentHandlers();
-				sendUpdatePacket(Side.CLIENT);
-				return true;
-			}
+		if (!isServer) {
+			facing = payload.getByte();
+		} else {
+			payload.getByte();
 		}
+	}
+
+	/* ITileInfoPacketHandler */
+	@Override
+	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+
+		switch (TEProps.PacketID.values()[payload.getByte()]) {
+		case GUI:
+			handleGuiPacket(payload);
+			return;
+		default:
+		}
+	}
+
+	/* IAugmentable */
+	@Override
+	public ItemStack[] getAugmentSlots() {
+
+		return augments;
+	}
+
+	@Override
+	public boolean[] getAugmentStatus() {
+
+		return augmentStatus;
+	}
+
+	@Override
+	public boolean installAugments() {
+
 		return false;
-	}
-
-	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
-
-		rotateBlock();
-		return true;
-	}
-
-	@Override
-	public boolean setFacing(int side) {
-
-		return false;
-	}
-
-	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
 	}
 
 	/* IEnergyHandler */
@@ -422,12 +360,6 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-
-		return from.ordinal() == facing;
-	}
-
-	@Override
 	public int getEnergyStored(ForgeDirection from) {
 
 		return energyStorage.getEnergyStored();
@@ -437,6 +369,12 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 	public int getMaxEnergyStored(ForgeDirection from) {
 
 		return energyStorage.getMaxEnergyStored();
+	}
+
+	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+
+		return from.ordinal() == facing;
 	}
 
 	/* IEnergyInfo */
@@ -464,23 +402,58 @@ public abstract class TileDynamoBase extends TileRSInventory implements ITileInf
 		return config.maxEnergy;
 	}
 
-	/* IAugmentableTile */
+	/* IReconfigurableFacing */
 	@Override
-	public ItemStack[] getAugmentSlots() {
+	public int getFacing() {
 
-		return augments;
+		return facing;
 	}
 
 	@Override
-	public boolean[] getAugmentStatus() {
+	public boolean allowYAxisFacing() {
 
-		return augmentStatus;
+		return true;
 	}
 
 	@Override
-	public boolean installAugments() {
+	public boolean rotateBlock() {
+
+		int[] coords;
+		for (int i = facing + 1; i < facing + 6; i++) {
+			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
+				facing = (byte) (i % 6);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+				updateAdjacentHandlers();
+				sendUpdatePacket(Side.CLIENT);
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean setFacing(int side) {
 
 		return false;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return TEProps.EMPTY_INVENTORY;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+		return side != facing;
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+		return side != facing;
 	}
 
 }

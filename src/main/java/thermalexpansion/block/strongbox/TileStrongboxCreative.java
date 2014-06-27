@@ -21,6 +21,7 @@ public class TileStrongboxCreative extends TileStrongbox {
 		super(metadata);
 	}
 
+	/* IInventory */
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 

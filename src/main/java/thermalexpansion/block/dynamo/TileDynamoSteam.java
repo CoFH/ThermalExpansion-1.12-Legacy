@@ -108,14 +108,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return TYPE;
 	}
 
-	public FluidTank getTank(int tankIndex) {
-
-		if (tankIndex == 0) {
-			return steamTank;
-		}
-		return waterTank;
-	}
-
 	@Override
 	protected boolean canGenerate() {
 
@@ -129,6 +121,19 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 			return true;
 		}
 		return getItemEnergyValue(inventory[0]) > 0;
+	}
+
+	@Override
+	public void attenuate() {
+
+		if (timeCheck()) {
+			fuelRF -= 10;
+
+			if (fuelRF < 0) {
+				fuelRF = 0;
+			}
+			steamTank.drain(config.minPower, true);
+		}
 	}
 
 	@Override
@@ -166,39 +171,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return TFFluids.fluidSteam.getIcon();
 	}
 
-	@Override
-	public void attenuate() {
-
-		if (timeCheck()) {
-			fuelRF -= 10;
-
-			if (fuelRF < 0) {
-				fuelRF = 0;
-			}
-			steamTank.drain(config.minPower, true);
-		}
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
-		payload.addInt(currentFuelRF);
-		payload.addFluidStack(steamTank.getFluid());
-		payload.addFluidStack(waterTank.getFluid());
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		super.handleGuiPacket(payload);
-		currentFuelRF = payload.getInt();
-		steamTank.setFluid(payload.getFluidStack());
-		waterTank.setFluid(payload.getFluidStack());
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -218,6 +190,14 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 			currentFuelRF = coalRF;
 		}
 		return fuelRF * scale / currentFuelRF;
+	}
+
+	public FluidTank getTank(int tankIndex) {
+
+		if (tankIndex == 0) {
+			return steamTank;
+		}
+		return waterTank;
 	}
 
 	/* NBT METHODS */
@@ -246,11 +226,34 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		nbt.setTag("WaterTank", waterTank.writeToNBT(new NBTTagCompound()));
 	}
 
-	/* ISidedInventory */
+	/* NETWORK METHODS */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public CoFHPacket getGuiPacket() {
 
-		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addInt(currentFuelRF);
+		payload.addFluidStack(steamTank.getFluid());
+		payload.addFluidStack(waterTank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		currentFuelRF = payload.getInt();
+		steamTank.setFluid(payload.getFluidStack());
+		waterTank.setFluid(payload.getFluidStack());
+	}
+
+	/* IEnergyInfo */
+	@Override
+	public int getInfoEnergyPerTick() {
+
+		return steamTank.getFluidAmount() > STEAM_MIN ? Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy()) : 0;
 	}
 
 	/* IFluidHandler */
@@ -314,11 +317,11 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() };
 	}
 
-	/* IEnergyInfo */
+	/* ISidedInventory */
 	@Override
-	public int getInfoEnergyPerTick() {
+	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return steamTank.getFluidAmount() > STEAM_MIN ? Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy()) : 0;
+		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
 	}
 
 }

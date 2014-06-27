@@ -7,7 +7,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
@@ -21,14 +20,12 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableInventory;
+import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiNullifier;
 import thermalexpansion.gui.container.device.ContainerNullifier;
 
-public class TileNullifier extends TileReconfigurableInventory implements IFluidHandler, ISidedInventory {
+public class TileNullifier extends TileReconfigurable implements IFluidHandler, ISidedInventory {
 
 	public static void initialize() {
 
@@ -70,19 +67,12 @@ public class TileNullifier extends TileReconfigurableInventory implements IFluid
 	}
 
 	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
-	}
-
-	@Override
 	public boolean sendRedstoneUpdates() {
 
 		return true;
 	}
 
-	public boolean isSideAccessible(int side) {
+	protected boolean isSideAccessible(int side) {
 
 		return sideCache[side] == 1 && redstoneControlOrDisable();
 	}

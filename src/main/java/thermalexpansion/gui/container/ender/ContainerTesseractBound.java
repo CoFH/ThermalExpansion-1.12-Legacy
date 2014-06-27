@@ -10,9 +10,9 @@ public class ContainerTesseractBound extends ContainerTEBase {
 
 	TileTesseractBound myTile;
 
-	public ContainerTesseractBound(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerTesseractBound(InventoryPlayer inventory, TileEntity tile) {
 
-		super(entity);
+		super(tile);
 	}
 
 }

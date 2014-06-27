@@ -26,9 +26,9 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 		GameRegistry.registerTileEntity(TileSponge.class, "thermalexpansion.Sponge");
 	}
 
-	FluidStack fluid;
-	boolean fullOnPlace = false;
 	boolean full = false;
+	boolean fullOnPlace = false;
+	FluidStack fluid;
 
 	public TileSponge() {
 
@@ -36,12 +36,6 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 
 	public TileSponge(int metadata) {
 
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
 	}
 
 	@Override
@@ -54,6 +48,12 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 	public int getType() {
 
 		return BlockSponge.Types.BASIC.ordinal();
+	}
+
+	@Override
+	public boolean canUpdate() {
+
+		return false;
 	}
 
 	@Override
@@ -103,21 +103,14 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 		}
 	}
 
-	public void absorb() {
-
-		placeAir();
-	}
-
 	public FluidStack getFluid() {
 
 		return fluid;
 	}
 
-	public void setFluid(FluidStack fluid) {
+	public void absorb() {
 
-		this.fluid = fluid;
-		fullOnPlace = true;
-		full = true;
+		placeAir();
 	}
 
 	public void placeAir() {
@@ -168,29 +161,18 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 		}
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
+	public void setFluid(FluidStack fluid) {
 
-		CoFHPacket payload = super.getPacket();
-		payload.addBool(full);
-		payload.addFluidStack(fluid);
-		return payload;
+		this.fluid = fluid;
+		fullOnPlace = true;
+		full = true;
 	}
 
-	/* ITilePacketHandler */
+	/* GUI METHODS */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public boolean hasGui() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			full = payload.getBool();
-			fluid = payload.getFluidStack();
-		} else {
-			payload.getBool();
-			payload.getFluidStack();
-		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		return false;
 	}
 
 	/* NBT METHODS */
@@ -212,6 +194,33 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 		nbt.setBoolean("PlaceFull", fullOnPlace);
 		if (fluid != null) {
 			fluid.writeToNBT(nbt);
+		}
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addBool(full);
+		payload.addFluidStack(fluid);
+
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			full = payload.getBool();
+			fluid = payload.getFluidStack();
+		} else {
+			payload.getBool();
+			payload.getFluidStack();
 		}
 	}
 

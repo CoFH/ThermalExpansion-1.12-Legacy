@@ -1,9 +1,8 @@
 package thermalexpansion.block.device;
 
 import cofh.core.CoFHProps;
-import cofh.entity.PlayerFake;
+import cofh.entity.CoFHFakePlayer;
 import cofh.network.CoFHPacket;
-import cofh.network.ITileInfoPacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
@@ -30,13 +29,13 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableInventory;
+import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiActivator;
 import thermalexpansion.gui.container.device.ContainerActivator;
 
-public class TileActivator extends TileReconfigurableInventory implements ISidedInventory, ITileInfoPacketHandler {
+public class TileActivator extends TileReconfigurable implements ISidedInventory {
 
 	public static void initialize() {
 
@@ -51,7 +50,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public boolean actsSneaking = false;
 	public byte angle = 1;
 
-	PlayerFake myFakePlayer;
+	CoFHFakePlayer myFakePlayer;
 	boolean needsWorld = true;
 	int slotTracker = 0;
 
@@ -71,13 +70,6 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public int getType() {
 
 		return BlockDevice.Types.ACTIVATOR.ordinal();
-	}
-
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
 	}
 
 	@Override
@@ -201,7 +193,7 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public void updateFakePlayer(int tickSlot) {
 
 		if (needsWorld) {
-			myFakePlayer = new PlayerFake((WorldServer) worldObj);
+			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 			needsWorld = false;
 		}
 		myFakePlayer.inventory.mainInventory = new ItemStack[36];
@@ -364,45 +356,6 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 		}
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addBool(actsSneaking);
-		payload.addBool(leftClick);
-		payload.addByte(tickSlot);
-		payload.addByte(angle);
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		actsSneaking = payload.getBool();
-		leftClick = payload.getBool();
-		tickSlot = payload.getByte();
-		angle = payload.getByte();
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case MODE:
-			leftClick = payload.getBool();
-			actsSneaking = payload.getBool();
-			tickSlot = payload.getByte();
-			angle = payload.getByte();
-			return;
-		default:
-		}
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -414,6 +367,13 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 	public Container getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerActivator(inventory, this);
+	}
+
+	@Override
+	public boolean openGui(EntityPlayer player) {
+
+		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+		return true;
 	}
 
 	/* NBT METHODS */
@@ -440,6 +400,54 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 		nbt.setBoolean("LeftClick", leftClick);
 		nbt.setByte("TickSlotB", tickSlot);
 		nbt.setByte("Angle", angle);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addBool(leftClick);
+		payload.addBool(actsSneaking);
+		payload.addByte(tickSlot);
+		payload.addByte(angle);
+
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getModePacket() {
+
+		CoFHPacket payload = super.getModePacket();
+
+		payload.addBool(leftClick);
+		payload.addBool(actsSneaking);
+		payload.addByte(tickSlot);
+		payload.addByte(angle);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(CoFHPacket payload) {
+
+		leftClick = payload.getBool();
+		actsSneaking = payload.getBool();
+		tickSlot = payload.getByte();
+		angle = payload.getByte();
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		leftClick = payload.getBool();
+		actsSneaking = payload.getBool();
+		tickSlot = payload.getByte();
+		angle = payload.getByte();
 	}
 
 	/* IReconfigurableFacing */
@@ -469,19 +477,6 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 		return 3;
 	}
 
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
-					: IconRegistry.getIcon("DeviceFace", getType());
-		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
-		}
-		return IconRegistry.getIcon("DeviceSide");
-	}
-
 	/* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
@@ -500,4 +495,18 @@ public class TileActivator extends TileReconfigurableInventory implements ISided
 
 		return sideCache[side] == 2;
 	}
+
+	/* ISidedTexture */
+	@Override
+	public IIcon getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
+					: IconRegistry.getIcon("DeviceFace", getType());
+		} else if (side < 6) {
+			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
+		}
+		return IconRegistry.getIcon("DeviceSide");
+	}
+
 }

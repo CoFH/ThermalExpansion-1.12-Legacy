@@ -26,13 +26,13 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileInventory;
+import thermalexpansion.block.TileTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
-public class TileStrongbox extends TileInventory implements ISecurable, IReconfigurableFacing, ISidedInventory {
+public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, ISecurable, ISidedInventory {
 
 	public static void initialize() {
 
@@ -85,48 +85,20 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		return type;
 	}
 
-	public int getStorageIndex() {
+	@Override
+	public boolean onWrench(EntityPlayer player, int hitSide) {
 
-		return type > 0 ? 2 * type + enchant : 0;
+		return rotateBlock();
 	}
 
-	public void createInventory() {
+	@Override
+	public boolean receiveClientEvent(int i, int j) {
 
-		inventory = new ItemStack[CoFHProps.STORAGE_SIZE[getStorageIndex()]];
-	}
-
-	public double getRadianLidAngle(float f) {
-
-		double a = MathHelper.interpolate(prevLidAngle, lidAngle, f);
-		a = 1.0F - a;
-		a = 1.0F - a * a * a;
-		return a * Math.PI * -0.5;
-	}
-
-	public void getNumPlayers() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
+		if (i == 1) {
+			numUsingPlayers = j;
+			return true;
 		}
-		if (numUsingPlayers != 0 && (worldObj.getTotalWorldTime() + xCoord + yCoord + zCoord) % 200 == 0) {
-			numUsingPlayers = 0;
-			float dist = 5.0F;
-			List nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-					AxisAlignedBB.getAABBPool().getAABB(xCoord - dist, yCoord - dist, zCoord - dist, xCoord + 1 + dist, yCoord + 1 + dist, zCoord + 1 + dist));
-			Iterator anIt = nearbyEntities.iterator();
-
-			while (anIt.hasNext()) {
-				EntityPlayer player = (EntityPlayer) anIt.next();
-
-				if (player.openContainer instanceof ContainerStrongbox) {
-					TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
-
-					if (box == this) {
-						++numUsingPlayers;
-					}
-				}
-			}
-		}
+		return false;
 	}
 
 	@Override
@@ -147,20 +119,59 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		}
 	}
 
-	@Override
-	public boolean receiveClientEvent(int i, int j) {
+	public double getRadianLidAngle(float f) {
 
-		if (i == 1) {
-			numUsingPlayers = j;
-			return true;
+		double a = MathHelper.interpolate(prevLidAngle, lidAngle, f);
+		a = 1.0F - a;
+		a = 1.0F - a * a * a;
+		return a * Math.PI * -0.5;
+	}
+
+	public int getStorageIndex() {
+
+		return type > 0 ? 2 * type + enchant : 0;
+	}
+
+	public void createInventory() {
+
+		inventory = new ItemStack[CoFHProps.STORAGE_SIZE[getStorageIndex()]];
+	}
+
+	public void getNumPlayers() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
 		}
-		return false;
+		if (numUsingPlayers != 0 && (worldObj.getTotalWorldTime() + xCoord + yCoord + zCoord) % 200 == 0) {
+			numUsingPlayers = 0;
+			float dist = 5.0F;
+			List nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+					AxisAlignedBB.getBoundingBox(xCoord - dist, yCoord - dist, zCoord - dist, xCoord + 1 + dist, yCoord + 1 + dist, zCoord + 1 + dist));
+			Iterator anIt = nearbyEntities.iterator();
+
+			while (anIt.hasNext()) {
+				EntityPlayer player = (EntityPlayer) anIt.next();
+				if (player.openContainer instanceof ContainerStrongbox) {
+					TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
+					if (box == this) {
+						++numUsingPlayers;
+					}
+				}
+			}
+		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiStrongbox(inventory, this);
 	}
 
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	public Container getGuiServer(InventoryPlayer inventory) {
 
-		return rotateBlock();
+		return new ContainerStrongbox(inventory, this);
 	}
 
 	@Override
@@ -175,57 +186,6 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 					+ StringHelper.localize("message.cofh.secure2")));
 		}
 		return true;
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-
-		payload.addByte(type);
-		payload.addByte(enchant);
-		payload.addByte((byte) access.ordinal());
-		payload.addByte(facing);
-		payload.addString(owner);
-
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		type = payload.getByte();
-		enchant = payload.getByte();
-		access = ISecurable.AccessMode.values()[payload.getByte()];
-		if (ServerHelper.isClientWorld(worldObj)) {
-			facing = payload.getByte();
-			owner = payload.getString();
-			if (inventory.length <= 0) {
-				createInventory();
-			}
-		} else {
-			payload.getByte();
-			payload.getString();
-		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-	}
-
-	/* GUI METHODS */
-	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-
-		return new GuiStrongbox(inventory, this);
-	}
-
-	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerStrongbox(inventory, this);
 	}
 
 	@Override
@@ -279,6 +239,43 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		nbt.setByte("Facing", facing);
 		nbt.setByte("Access", (byte) access.ordinal());
 		nbt.setString("Owner", owner);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addByte(type);
+		payload.addByte(enchant);
+		payload.addByte((byte) access.ordinal());
+		payload.addByte(facing);
+		payload.addString(owner);
+
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		type = payload.getByte();
+		enchant = payload.getByte();
+		access = ISecurable.AccessMode.values()[payload.getByte()];
+
+		if (!isServer) {
+			facing = payload.getByte();
+			owner = payload.getString();
+			if (inventory.length <= 0) {
+				createInventory();
+			}
+		} else {
+			payload.getByte();
+			payload.getString();
+		}
 	}
 
 	/* IInventory */
@@ -337,25 +334,6 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 		return true;
 	}
 
-	/* ISidedInventory */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-
-		return access.isPublic() ? CoFHProps.SLOTS[type] : TEProps.EMPTY_INVENTORY;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
-
-		return access.isPublic();
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-
-		return access.isPublic();
-	}
-
 	/* ISecureable */
 	@Override
 	public boolean setAccess(AccessMode access) {
@@ -385,6 +363,25 @@ public class TileStrongbox extends TileInventory implements ISecurable, IReconfi
 	public String getOwnerName() {
 
 		return owner;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return access.isPublic() ? CoFHProps.SLOTS[type] : TEProps.EMPTY_INVENTORY;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+		return access.isPublic();
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+		return access.isPublic();
 	}
 
 }

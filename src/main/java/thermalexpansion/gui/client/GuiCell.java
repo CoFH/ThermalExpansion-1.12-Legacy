@@ -36,7 +36,7 @@ public class GuiCell extends GuiBaseAdv {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileCell) theTile;
-		name = myTile.getName();
+		name = myTile.getInventoryName();
 	}
 
 	@Override

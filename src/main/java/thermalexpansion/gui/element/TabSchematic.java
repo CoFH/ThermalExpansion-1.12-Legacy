@@ -121,11 +121,11 @@ public class TabSchematic extends TabBase {
 
 		super.setFullyOpen();
 		for (int i = 0; i < myContainer.getCraftingSlots().length; i++) {
-			myContainer.getCraftingSlots()[i].xDisplayPosition = posX() - gui.getGuiLeft() + 14 + 18 * (i % 3);
-			myContainer.getCraftingSlots()[i].yDisplayPosition = posY - gui.getGuiTop() + 26 + 18 * (i / 3);
+			myContainer.getCraftingSlots()[i].xDisplayPosition = posX() + 14 + 18 * (i % 3);
+			myContainer.getCraftingSlots()[i].yDisplayPosition = posY + 26 + 18 * (i / 3);
 		}
-		myContainer.getResultSlot().xDisplayPosition = posX() - gui.getGuiLeft() + 77;
-		myContainer.getResultSlot().yDisplayPosition = posY - gui.getGuiTop() + 30;
+		myContainer.getResultSlot().xDisplayPosition = posX() + 77;
+		myContainer.getResultSlot().yDisplayPosition = posY + 30;
 	}
 
 	@Override
@@ -133,11 +133,11 @@ public class TabSchematic extends TabBase {
 
 		if (open) {
 			for (int i = 0; i < myContainer.getCraftingSlots().length; i++) {
-				myContainer.getCraftingSlots()[i].xDisplayPosition = -gui.getGuiLeft() - 16;
-				myContainer.getCraftingSlots()[i].yDisplayPosition = -gui.getGuiTop() - 16;
+				myContainer.getCraftingSlots()[i].xDisplayPosition = -16;
+				myContainer.getCraftingSlots()[i].yDisplayPosition = -16;
 			}
-			myContainer.getResultSlot().xDisplayPosition = -gui.getGuiLeft() - 16;
-			myContainer.getResultSlot().yDisplayPosition = -gui.getGuiTop() - 16;
+			myContainer.getResultSlot().xDisplayPosition = -16;
+			myContainer.getResultSlot().yDisplayPosition = -16;
 		}
 		super.toggleOpen();
 	}
@@ -146,6 +146,7 @@ public class TabSchematic extends TabBase {
 
 		if (myContainer.canWriteSchematic()) {
 			GenericTEPacket.sendCreateSchematicPacketToServer();
+			myContainer.writeSchematic();
 			return true;
 		}
 		return false;

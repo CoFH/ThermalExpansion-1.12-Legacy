@@ -2,11 +2,7 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
@@ -16,23 +12,19 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableBase;
-import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
+import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.gui.client.GuiCell;
 import thermalexpansion.gui.container.ContainerTEBase;
 
-public class TileCell extends TileReconfigurableBase implements ITileInfoPacketHandler, IEnergyHandler {
+public class TileCell extends TileReconfigurable {
 
 	public static void initialize() {
 
@@ -69,18 +61,16 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		STORAGE[0] = MAX_SEND[0];
 	}
 
-	public byte type;
-
-	int meterTracker;
 	int compareTracker;
+	byte meterTracker;
 	byte outputTracker;
-	EnergyStorage energyStorage;
 
 	boolean cached = false;
 	IEnergyHandler[] adjacentHandlers = new IEnergyHandler[6];
 
 	public int energyReceive;
 	public int energySend;
+	public byte type;
 
 	public TileCell() {
 
@@ -91,18 +81,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 		energyStorage = new EnergyStorage(STORAGE[metadata], MAX_RECEIVE[metadata]);
 		type = (byte) metadata;
-	}
-
-	@Override
-	public int getComparatorInput(int side) {
-
-		return compareTracker;
-	}
-
-	@Override
-	public int getLightValue() {
-
-		return Math.min(8, getScaledEnergyStored(9));
 	}
 
 	@Override
@@ -118,10 +96,15 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	}
 
 	@Override
-	public boolean openGui(EntityPlayer player) {
+	public int getComparatorInput(int side) {
 
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
+		return compareTracker;
+	}
+
+	@Override
+	public int getLightValue() {
+
+		return Math.min(8, getScaledEnergyStored(9));
 	}
 
 	@Override
@@ -136,6 +119,53 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 		super.onNeighborTileChange(tileX, tileY, tileZ);
 		updateAdjacentHandler(tileX, tileY, tileZ);
+	}
+
+	@Override
+	public void updateEntity() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		if (!cached) {
+			onNeighborBlockChange();
+		}
+		if (redstoneControlOrDisable()) {
+			for (int i = outputTracker; i < 6 && energyStorage.getEnergyStored() > 0; i++) {
+				transferEnergy(i);
+			}
+			for (int i = 0; i < outputTracker && energyStorage.getEnergyStored() > 0; i++) {
+				transferEnergy(i);
+			}
+			++outputTracker;
+			outputTracker %= 6;
+		}
+		if (timeCheck()) {
+			int curScale = getScaledEnergyStored(15);
+
+			if (compareTracker != curScale) {
+				compareTracker = curScale;
+				callNeighborTileChange();
+			}
+			curScale = getLightValue();
+
+			if (meterTracker != curScale) {
+				meterTracker = (byte) curScale;
+				sendUpdatePacket(Side.CLIENT);
+			}
+		}
+	}
+
+	protected void transferEnergy(int bSide) {
+
+		if (sideCache[bSide] != 1) {
+			return;
+		}
+		if (adjacentHandlers[bSide] == null) {
+			return;
+		}
+		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+				Math.min(energySend, energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -171,127 +201,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		}
 	}
 
-	@Override
-	public void updateEntity() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		if (!cached) {
-			onNeighborBlockChange();
-		}
-		if (redstoneControlOrDisable()) {
-			for (int i = outputTracker; i < 6 && energyStorage.getEnergyStored() > 0; i++) {
-				transferEnergy(i);
-			}
-			for (int i = 0; i < outputTracker && energyStorage.getEnergyStored() > 0; i++) {
-				transferEnergy(i);
-			}
-			++outputTracker;
-			outputTracker %= 6;
-		}
-		if (timeCheck()) {
-			int curScale = getScaledEnergyStored(15);
-
-			if (compareTracker != curScale) {
-				compareTracker = curScale;
-				callNeighborTileChange();
-			}
-			curScale = getLightValue();
-
-			if (meterTracker != curScale) {
-				meterTracker = curScale;
-				sendUpdatePacket(Side.CLIENT);
-			}
-		}
-	}
-
-	public void setEnergyStored(int quantity) {
-
-		energyStorage.setEnergyStored(quantity);
-	}
-
-	protected void transferEnergy(int bSide) {
-
-		if (sideCache[bSide] != SideType.OUTPUT) {
-			return;
-		}
-		if (adjacentHandlers[bSide] == null) {
-			return;
-		}
-		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(energySend, energyStorage.getEnergyStored()), false));
-	}
-
-	public IEnergyStorage getEnergyStorage() {
-
-		return energyStorage;
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addInt(energyStorage.getEnergyStored());
-		return payload;
-	}
-
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		payload.addInt(energySend);
-		payload.addInt(energyReceive);
-		payload.addInt(energyStorage.getEnergyStored());
-		return payload;
-	}
-
-	public CoFHPacket getModePacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.MODE.ordinal());
-		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
-		payload.addInt(MathHelper.clampI(energyReceive, 0, MAX_RECEIVE[getType()]));
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			energyStorage.setEnergyStored(payload.getInt());
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			energySend = payload.getInt();
-			energyReceive = payload.getInt();
-			energyStorage.setEnergyStored(payload.getInt());
-			return;
-		case MODE:
-			energySend = payload.getInt();
-			energyReceive = payload.getInt();
-			return;
-		default:
-		}
-	}
-
-	public void sendModePacket() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModePacket());
-		}
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -305,31 +214,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		return new ContainerTEBase(inventory, this);
 	}
 
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		if (iCrafting instanceof EntityPlayer) {
-			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
-			}
-		}
-	}
-
-	public int getEnergy() {
-
-		return energyStorage.getEnergyStored();
-	}
-
-	public int getMaxEnergy() {
-
-		return energyStorage.getMaxEnergyStored();
-	}
-
-	public int getScaledEnergyStored(int scale) {
-
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -338,15 +222,12 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 
 		type = nbt.getByte("Type");
 		outputTracker = nbt.getByte("Tracker");
-		energySend = nbt.getInteger("Send");
-		energyReceive = nbt.getInteger("Recv");
-
-		energySend = MathHelper.clampI(energySend, 0, MAX_SEND[type]);
-		energyReceive = MathHelper.clampI(energyReceive, 0, MAX_RECEIVE[type]);
+		energySend = MathHelper.clampI(nbt.getInteger("Send"), 0, MAX_SEND[type]);
+		energyReceive = MathHelper.clampI(nbt.getInteger("Recv"), 0, MAX_RECEIVE[type]);
 
 		energyStorage = new EnergyStorage(STORAGE[type], MAX_RECEIVE[type]);
 		energyStorage.readFromNBT(nbt);
-		meterTracker = Math.min(8, getScaledEnergyStored(9));
+		meterTracker = (byte) Math.min(8, getScaledEnergyStored(9));
 	}
 
 	@Override
@@ -358,15 +239,56 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		nbt.setByte("Tracker", outputTracker);
 		nbt.setInteger("Send", energySend);
 		nbt.setInteger("Recv", energyReceive);
+	}
 
-		energyStorage.writeToNBT(nbt);
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addInt(energySend);
+		payload.addInt(energyReceive);
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getModePacket() {
+
+		CoFHPacket payload = super.getModePacket();
+
+		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
+		payload.addInt(MathHelper.clampI(energyReceive, 0, MAX_RECEIVE[getType()]));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		energySend = payload.getInt();
+		energyReceive = payload.getInt();
+		energyStorage.setEnergyStored(payload.getInt());
+	}
+
+	@Override
+	protected void handleModePacket(CoFHPacket payload) {
+
+		super.handleModePacket(payload);
+
+		energySend = payload.getInt();
+		energyReceive = payload.getInt();
 	}
 
 	/* IEnergyHandler */
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == SideType.INPUT) {
+		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 2) {
 			return energyStorage.receiveEnergy(Math.min(maxReceive, energyReceive), simulate);
 		}
 		return 0;
@@ -375,7 +297,7 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == SideType.OUTPUT) {
+		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 1) {
 			return energyStorage.extractEnergy(Math.min(maxExtract, energySend), simulate);
 		}
 		return 0;
@@ -388,18 +310,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 			return false;
 		}
 		return sideCache[from.ordinal()] > 0;
-	}
-
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getEnergyStored();
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getMaxEnergyStored();
 	}
 
 	/* IReconfigurableFacing */
@@ -418,6 +328,24 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 	}
 
 	/* IReconfigurableSides */
+	@Override
+	public final boolean decrSide(int side) {
+
+		sideCache[side] += getNumConfig(side) - 1;
+		sideCache[side] %= getNumConfig(side);
+		sendUpdatePacket(Side.SERVER);
+		return true;
+	}
+
+	@Override
+	public final boolean incrSide(int side) {
+
+		sideCache[side] += 1;
+		sideCache[side] %= getNumConfig(side);
+		sendUpdatePacket(Side.SERVER);
+		return true;
+	}
+
 	@Override
 	public int getNumConfig(int side) {
 
@@ -440,14 +368,6 @@ public class TileCell extends TileReconfigurableBase implements ITileInfoPacketH
 		}
 		int stored = Math.min(8, getScaledEnergyStored(9));
 		return IconRegistry.getIcon("CellMeter", stored);
-	}
-
-	/* SIDE TYPE */
-	public static class SideType {
-
-		public static final byte NONE = 0;
-		public static final byte OUTPUT = 1;
-		public static final byte INPUT = 2;
 	}
 
 }

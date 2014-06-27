@@ -70,8 +70,9 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_SMALL);
 
 	int adjacentSources = -1;
-	FluidStack outputBuffer;
 	int outputTrackerFluid;
+	boolean inHell;
+	FluidStack outputBuffer;
 
 	public TileAccumulator() {
 
@@ -84,70 +85,11 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		return TYPE;
 	}
 
-	protected void updateAdjacentSources() {
-
-		adjacentSources = 0;
-		Block block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
-		int bMeta = worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord);
-
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
-			++adjacentSources;
-		}
-		block = worldObj.getBlock(xCoord + 1, yCoord, zCoord);
-		bMeta = worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord);
-
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
-			++adjacentSources;
-		}
-		block = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
-		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1);
-
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
-			++adjacentSources;
-		}
-		block = worldObj.getBlock(xCoord, yCoord, zCoord + 1);
-		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1);
-
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
-			++adjacentSources;
-		}
-		block = worldObj.getBlock(xCoord, yCoord + 1, zCoord);
-
-		if (block == Blocks.snow) {
-			worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
-			tank.fill(genStackSnow, true);
-		}
-	}
-
 	@Override
-	protected boolean canStart() {
+	public void onNeighborBlockChange() {
 
-		return worldObj.getBiomeGenForCoords(xCoord, zCoord) != BiomeGenBase.hell;
-	}
-
-	protected void transferFluid() {
-
-		if (!augmentAutoTransfer) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
-			return;
-		}
-		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
-		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
-			side = i % 6;
-
-			if (sideCache[side] == 1) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
-
-				if (toDrain > 0) {
-					tank.drain(toDrain, true);
-					outputTrackerFluid = side;
-					break;
-				}
-			}
-		}
+		super.onNeighborBlockChange();
+		updateAdjacentSources();
 	}
 
 	@Override
@@ -186,23 +128,72 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void onNeighborBlockChange() {
+	protected boolean canStart() {
 
-		super.onNeighborBlockChange();
-		updateAdjacentSources();
+		return !inHell;
 	}
 
-	/* NETWORK METHODS */
-	// TODO: Add these if Accumulator changes over to something else.
-	// @Override
-	// public CoFHPacket getGuiPacket() {
-	//
-	// }
-	//
-	// @Override
-	// protected void handleGuiPacket(CoFHPacket payload) {
-	//
-	// }
+	protected void updateAdjacentSources() {
+
+		inHell = worldObj.getBiomeGenForCoords(xCoord, zCoord) != BiomeGenBase.hell;
+
+		adjacentSources = 0;
+		Block block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
+		int bMeta = worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord);
+
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+		block = worldObj.getBlock(xCoord + 1, yCoord, zCoord);
+		bMeta = worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord);
+
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+		block = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
+		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1);
+
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+		block = worldObj.getBlock(xCoord, yCoord, zCoord + 1);
+		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1);
+
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+		block = worldObj.getBlock(xCoord, yCoord + 1, zCoord);
+
+		if (block == Blocks.snow) {
+			worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
+			tank.fill(genStackSnow, true);
+		}
+	}
+
+	protected void transferFluid() {
+
+		if (!augmentAutoTransfer) {
+			return;
+		}
+		if (tank.getFluidAmount() <= 0) {
+			return;
+		}
+		int side;
+		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
+			side = i % 6;
+
+			if (sideCache[side] == 1) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
+
+				if (toDrain > 0) {
+					tank.drain(toDrain, true);
+					outputTrackerFluid = side;
+					break;
+				}
+			}
+		}
+	}
 
 	/* GUI METHODS */
 	@Override
@@ -257,6 +248,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 		super.readFromNBT(nbt);
 
+		inHell = nbt.getBoolean("Hell");
 		adjacentSources = nbt.getInteger("Sources");
 		outputTrackerFluid = nbt.getInteger("Tracker");
 		tank.readFromNBT(nbt);
@@ -267,10 +259,26 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 		super.writeToNBT(nbt);
 
+		nbt.setBoolean("Hell", inHell);
 		nbt.setInteger("Sources", adjacentSources);
 		nbt.setInteger("Tracker", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 	}
+
+	/* NETWORK METHODS */
+	// TODO: Add these if Accumulator changes over to something else.
+	// @Override
+	// public CoFHPacket getGuiPacket() {
+	//
+	// CoFHPacket payload = super.getGuiPacket();
+	//
+	// return payload;
+	// }
+	//
+	// @Override
+	// protected void handleGuiPacket(CoFHPacket payload) {
+	//
+	// }
 
 	/* IFluidHandler */
 	@Override

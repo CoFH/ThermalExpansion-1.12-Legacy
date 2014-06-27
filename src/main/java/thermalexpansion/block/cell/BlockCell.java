@@ -126,12 +126,6 @@ public class BlockCell extends BlockTEBase {
 	}
 
 	@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		return IconRegistry.getIcon("Cell" + 2 * metadata);
-	}
-
-	@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
@@ -139,9 +133,21 @@ public class BlockCell extends BlockTEBase {
 	}
 
 	@Override
+	public boolean hasComparatorInputOverride() {
+
+		return true;
+	}
+
+	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 
 		return true;
+	}
+
+	@Override
+	public IIcon getIcon(int side, int metadata) {
+
+		return IconRegistry.getIcon("Cell" + 2 * metadata);
 	}
 
 	@Override
@@ -177,28 +183,23 @@ public class BlockCell extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileCell tile = (TileCell) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
 
 		if (tile != null) {
-			tag = new NBTTagCompound();
-
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
 			tag.setByteArray("SideCache", tile.sideCache);
 			tag.setByte("Facing", (byte) tile.getFacing());
 
-			tag.setInteger("Energy", tile.getEnergy());
+			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
 			tag.setInteger("Send", tile.energySend);
 			tag.setInteger("Receive", tile.energyReceive);
 
 			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
 		}
 		return tag;
-	}
-
-	@Override
-	public boolean hasComparatorInputOverride() {
-
-		return true;
 	}
 
 	/* IDismantleable */

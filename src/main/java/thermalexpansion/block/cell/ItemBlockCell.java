@@ -62,6 +62,33 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 	}
 
 	@Override
+	public int getDisplayDamage(ItemStack stack) {
+
+		if (stack.stackTagCompound == null) {
+			return 1 + TileCell.STORAGE[stack.getItemDamage()];
+		}
+		return 1 + TileCell.STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
+	}
+
+	@Override
+	public int getMaxDamage(ItemStack stack) {
+
+		return 1 + TileCell.STORAGE[stack.getItemDamage()];
+	}
+
+	@Override
+	public boolean isDamaged(ItemStack stack) {
+
+		return stack.getItemDamage() != BlockCell.Types.CREATIVE.ordinal();
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return false;
+	}
+
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockCell.Types.values()[stack.getItemDamage()]) {
@@ -74,12 +101,6 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 		default:
 			return EnumRarity.common;
 		}
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
 	}
 
 	@Override
@@ -122,27 +143,6 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 					+ StringHelper.localize("info.cofh.high"));
 			break;
 		}
-	}
-
-	@Override
-	public int getDisplayDamage(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
-			return 1 + TileCell.STORAGE[stack.getItemDamage()];
-		}
-		return 1 + TileCell.STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
-	}
-
-	@Override
-	public int getMaxDamage(ItemStack stack) {
-
-		return 1 + TileCell.STORAGE[stack.getItemDamage()];
-	}
-
-	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return stack.getItemDamage() != BlockCell.Types.CREATIVE.ordinal();
 	}
 
 	/* IEnergyContainerItem */

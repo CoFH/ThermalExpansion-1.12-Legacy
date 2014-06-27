@@ -7,9 +7,6 @@ import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
-import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
-import cofh.network.PacketHandler;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -75,14 +72,12 @@ public class GuiActivator extends GuiBaseAdv {
 			settingClick.setToolTip(myTile.leftClick ? "info.thermalexpansion.activator.clickLeft" : "info.thermalexpansion.activator.clickRight");
 			settingClick.setSheetX(myTile.leftClick ? 176 : 196);
 			settingClick.setHoverX(myTile.leftClick ? 176 : 196);
-			sendUpdatePacket();
 			playSound("random.click", 1.0F, myTile.leftClick ? 0.8F : 0.6F);
 		} else if (buttonName.equalsIgnoreCase("Sneak")) {
 			myTile.actsSneaking = !myTile.actsSneaking;
 			settingSneak.setToolTip(myTile.actsSneaking ? "info.thermalexpansion.activator.sneakOn" : "info.thermalexpansion.activator.sneakOff");
 			settingSneak.setSheetX(myTile.actsSneaking ? 176 : 196);
 			settingSneak.setHoverX(myTile.actsSneaking ? 176 : 196);
-			sendUpdatePacket();
 			playSound("random.click", 1.0F, myTile.actsSneaking ? 0.6F : 0.8F);
 		} else if (buttonName.equalsIgnoreCase("tickSlot")) {
 			myTile.tickSlot++;
@@ -91,7 +86,6 @@ public class GuiActivator extends GuiBaseAdv {
 					: myTile.tickSlot == 1 ? "info.thermalexpansion.activator.slotsRand" : "info.thermalexpansion.activator.slotsFirst");
 			settingSlot.setSheetX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
 			settingSlot.setHoverX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
-			sendUpdatePacket();
 			playSound("random.click", 1.0F, 0.6F + myTile.tickSlot * 0.1F);
 		} else if (buttonName.equalsIgnoreCase("Angle")) {
 			myTile.angle++;
@@ -100,21 +94,9 @@ public class GuiActivator extends GuiBaseAdv {
 					: myTile.angle == 1 ? "info.thermalexpansion.activator.angleLevel" : "info.thermalexpansion.activator.angleHigh");
 			settingAngle.setSheetX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
 			settingAngle.setHoverX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
-			sendUpdatePacket();
 			playSound("random.click", 1.0F, 0.6F + myTile.angle * 0.1F);
 		}
-	}
-
-	public void sendUpdatePacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(myTile);
-		payload.addByte(TEProps.PacketID.MODE.ordinal());
-		payload.addBool(myTile.leftClick);
-		payload.addBool(myTile.actsSneaking);
-		payload.addByte(myTile.tickSlot);
-		payload.addByte(myTile.angle);
-
-		PacketHandler.sendToServer(payload);
+		myTile.sendModePacket();
 	}
 
 }

@@ -131,13 +131,38 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
 	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
 
 		return false;
 	}
 
 	@Override
+	public boolean isOpaqueCube() {
+
+		return true;
+	}
+
+	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
 
 		return true;
 	}
@@ -159,31 +184,6 @@ public class BlockMachine extends BlockTEBase {
 			return IconRegistry.getIcon("MachineTop");
 		}
 		return side != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace" + metadata);
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return true;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
 	}
 
 	@Override
@@ -222,8 +222,9 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
+
 		return tag;
 	}
 

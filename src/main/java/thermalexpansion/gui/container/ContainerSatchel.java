@@ -42,7 +42,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 			addSlotToContainer(new SlotValidated(this, containerWrapper, 0, 80, 26));
 			rowSize = 1;
 		} else {
-			int yOffset = storageIndex == 2 ? 26 : 17;
+			int yOffset = 17;
 			for (int i = 0; i < slots; i++) {
 				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}

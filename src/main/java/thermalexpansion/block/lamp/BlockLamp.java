@@ -54,6 +54,22 @@ public class BlockLamp extends BlockTEBase {
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		if (stack.stackTagCompound != null) {
+			TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
+			theTile.modified = true;
+			theTile.color = stack.stackTagCompound.getInteger("Color");
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
+	}
+
+	@Override
+	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int bSide, float hitX, float hitY, float hitZ) {
 
 		TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
@@ -84,29 +100,6 @@ public class BlockLamp extends BlockTEBase {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		if (stack.stackTagCompound != null) {
-			TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
-			theTile.modified = true;
-			theTile.color = stack.stackTagCompound.getInteger("Color");
-		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
-	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
-
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
 	public int getRenderBlockPass() {
 
 		return 1;
@@ -116,6 +109,13 @@ public class BlockLamp extends BlockTEBase {
 	public int getRenderType() {
 
 		return TEProps.renderIdLamp;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
 	}
 
 	@Override
@@ -135,12 +135,11 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
-		TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
-
-		if (theTile != null && theTile.modified) {
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileLamp tile = (TileLamp) world.getTileEntity(x, y, z);
+		if (tile != null && tile.modified) {
 			tag = new NBTTagCompound();
-			tag.setInteger("Color", theTile.color);
+			tag.setInteger("Color", tile.color);
 		}
 		return tag;
 	}

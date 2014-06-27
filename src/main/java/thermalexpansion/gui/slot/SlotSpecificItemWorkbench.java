@@ -23,11 +23,11 @@ public class SlotSpecificItemWorkbench extends SlotSpecificItem {
 
 		if (myTile.getCurrentSchematicSlot() == getSlotIndex()) {
 			return true;
-		} else {
-			myTile.setCurrentSchematicSlot(getSlotIndex());
-			onSlotChanged();
-			return false;
 		}
+		myTile.setCurrentSchematicSlot(getSlotIndex());
+		onSlotChanged();
+		return false;
+
 	}
 
 }

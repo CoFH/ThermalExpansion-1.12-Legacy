@@ -49,7 +49,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (inventory[0] == null) {
 			return false;
@@ -88,7 +88,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		ItemStack output = FurnaceManager.getRecipe(inventory[0]).getOutput();
 		if (inventory[1] == null) {
@@ -126,7 +126,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? FurnaceManager.recipeExists(stack) : true;
 	}

@@ -41,19 +41,24 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int coolantRF;
 
-	@Override
-	public int getType() {
+	public static int getCoolantEnergy(FluidStack stack) {
 
-		return TYPE;
+		return stack == null ? 0 : (Integer) coolants.get(stack.getFluid());
 	}
 
-	public static boolean registerFuel(Fluid fluid, int energy) {
+	public static int getFuelEnergy(FluidStack stack) {
 
-		if (fluid == null || energy <= 10000) {
-			return false;
-		}
-		fuels.put(fluid, energy / 20);
-		return true;
+		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
+	}
+
+	public static boolean isValidCoolant(FluidStack stack) {
+
+		return stack == null ? false : coolants.containsKey(stack.getFluid());
+	}
+
+	public static boolean isValidFuel(FluidStack stack) {
+
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
 	}
 
 	public static boolean registerCoolant(Fluid fluid, int cooling) {
@@ -65,32 +70,19 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		return true;
 	}
 
-	public static int getFuelEnergy(FluidStack stack) {
+	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
-	}
-
-	public static int getCoolantEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : (Integer) coolants.get(stack.getFluid());
-	}
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean isValidCoolant(FluidStack stack) {
-
-		return stack == null ? false : coolants.containsKey(stack.getFluid());
-	}
-
-	public FluidTank getTank(int tankIndex) {
-
-		if (tankIndex == 0) {
-			return fuelTank;
+		if (fluid == null || energy <= 10000) {
+			return false;
 		}
-		return coolantTank;
+		fuels.put(fluid, energy / 20);
+		return true;
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -128,43 +120,6 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		return renderFluid.getFluid().getIcon(renderFluid);
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addFluidStack(fuelTank.getFluid());
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
-		payload.addFluidStack(fuelTank.getFluid());
-		payload.addFluidStack(coolantTank.getFluid());
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		super.handleGuiPacket(payload);
-		fuelTank.setFluid(payload.getFluidStack());
-		coolantTank.setFluid(payload.getFluidStack());
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-		renderFluid = payload.getFluidStack();
-		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-		}
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -176,6 +131,14 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public Container getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
+	}
+
+	public FluidTank getTank(int tankIndex) {
+
+		if (tankIndex == 0) {
+			return fuelTank;
+		}
+		return coolantTank;
 	}
 
 	/* NBT METHODS */
@@ -205,6 +168,49 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		nbt.setInteger("Coolant", coolantRF);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addFluidStack(fuelTank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addFluidStack(fuelTank.getFluid());
+		payload.addFluidStack(coolantTank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		fuelTank.setFluid(payload.getFluidStack());
+		coolantTank.setFluid(payload.getFluidStack());
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		renderFluid = payload.getFluidStack();
+		if (renderFluid == null) {
+			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+		}
 	}
 
 	/* IFluidHandler */

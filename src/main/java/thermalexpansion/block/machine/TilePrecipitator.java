@@ -2,7 +2,6 @@ package thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
 import cofh.network.CoFHPacket;
-import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -24,7 +23,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiPrecipitator;
 import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 
-public class TilePrecipitator extends TileMachineBase implements IFluidHandler, ICustomInventory {
+public class TilePrecipitator extends TileMachineBase implements ICustomInventory, IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
 
@@ -49,16 +48,13 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 
 	static int[] processWater = { 500, 500, 1000 };
 	static int[] processEnergy = { 800, 800, 1600 };
-
 	static ItemStack[] processItems = new ItemStack[3];
 
-	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
-
+	int outputTracker;
 	byte curSelection;
 	byte prevSelection;
-
-	int outputTracker;
+	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 
 	public TilePrecipitator() {
 
@@ -75,7 +71,7 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || tank.getFluidAmount() < processWater[curSelection]) {
 			return false;
@@ -90,7 +86,7 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 	}
 
 	@Override
-	public boolean canFinish() {
+	protected boolean canComplete() {
 
 		return processRem <= 0;
 	}
@@ -104,7 +100,7 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		if (inventory[0] == null) {
 			inventory[0] = processItems[prevSelection].copy();
@@ -135,6 +131,66 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 				}
 			}
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPrecipitator(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerPrecipitator(inventory, this);
+	}
+
+	public FluidTankAdv getTank() {
+
+		return tank;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	public int getCurSelection() {
+
+		return curSelection;
+	}
+
+	public int getPrevSelection() {
+
+		return prevSelection;
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		outputTracker = nbt.getInteger("Tracker");
+		prevSelection = nbt.getByte("Prev");
+		curSelection = nbt.getByte("Sel");
+		tank.readFromNBT(nbt);
+
+		if (tank.getFluid() != null) {
+			renderFluid = tank.getFluid();
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Tracker", outputTracker);
+		nbt.setByte("Prev", prevSelection);
+		nbt.setByte("Sel", curSelection);
+		tank.writeToNBT(nbt);
 	}
 
 	/* NETWORK METHODS */
@@ -228,74 +284,30 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 
 		super.handleTilePacket(payload, isServer);
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (!isServer) {
 			renderFluid = payload.getFluidStack();
 		} else {
 			payload.getFluidStack();
 		}
 	}
 
-	/* GUI METHODS */
+	/* ICustomInventory */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return new GuiPrecipitator(inventory, this);
-	}
-
-	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerPrecipitator(inventory, this);
-	}
-
-	public FluidTankAdv getTank() {
-
-		return tank;
-	}
-
-	public FluidStack getTankFluid() {
-
-		return tank.getFluid();
-	}
-
-	public int getCurSelection() {
-
-		return curSelection;
-	}
-
-	public int getPrevSelection() {
-
-		return prevSelection;
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-
-		outputTracker = nbt.getInteger("Tracker");
-		prevSelection = nbt.getByte("Prev");
-		curSelection = nbt.getByte("Sel");
-		tank.readFromNBT(nbt);
-
-		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
-		}
-		inventory[2] = processItems[0];
-		inventory[3] = processItems[1];
-		inventory[4] = processItems[2];
+		return processItems;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public int getSlotStackLimit(int slotIndex) {
 
-		super.writeToNBT(nbt);
+		return 64;
+	}
 
-		nbt.setInteger("Tracker", outputTracker);
-		nbt.setByte("Prev", prevSelection);
-		nbt.setByte("Sel", curSelection);
-		tank.writeToNBT(nbt);
+	@Override
+	public void onSlotUpdate() {
+
+		markDirty();
 	}
 
 	/* IFluidHandler */
@@ -339,25 +351,6 @@ public class TilePrecipitator extends TileMachineBase implements IFluidHandler, 
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
-	}
-
-	/* ICustomInventory */
-	@Override
-	public ItemStack[] getInventorySlots(int inventoryIndex) {
-
-		return processItems;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-
-		return 64;
-	}
-
-	@Override
-	public void onSlotUpdate() {
-
-		markDirty();
 	}
 
 }

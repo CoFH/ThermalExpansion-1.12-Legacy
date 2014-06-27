@@ -21,16 +21,16 @@ public class SlotCraftingOutputWorkbench extends Slot {
 
 	EntityPlayer myPlayer;
 	TileWorkbench myTile;
-	ContainerWorkbench myBoss;
+	ContainerWorkbench myContainer;
 
 	int amountCrafted;
 
-	public SlotCraftingOutputWorkbench(EntityPlayer myPlayer, IInventory inventory, int slotIndex, int x, int y, TileWorkbench myTile, ContainerWorkbench myBoss) {
+	public SlotCraftingOutputWorkbench(TileWorkbench tile, ContainerWorkbench container, EntityPlayer player, IInventory inventory, int slotIndex, int x, int y) {
 
 		super(inventory, slotIndex, x, y);
-		this.myPlayer = myPlayer;
-		this.myTile = myTile;
-		this.myBoss = myBoss;
+		myPlayer = player;
+		myTile = tile;
+		myContainer = container;
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	@Override
 	public void onSlotChanged() {
 
-		myBoss.onCraftMatrixChanged(null);
+		myContainer.onCraftMatrixChanged(null);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	public ItemStack getStack() {
 
 		myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
-		myBoss.onCraftMatrixChanged(null);
+		myContainer.onCraftMatrixChanged(null);
 		return this.inventory.getStackInSlot(getSlotIndex());
 	}
 

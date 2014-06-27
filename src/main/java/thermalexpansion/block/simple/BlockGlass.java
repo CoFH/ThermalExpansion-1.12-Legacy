@@ -67,21 +67,21 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
-	public int quantityDropped(Random random) {
-
-		return 0;
-	}
-
-	@Override
-	protected boolean canSilkHarvest() {
-
-		return true;
-	}
-
-	@Override
 	public int damageDropped(int i) {
 
 		return i;
+	}
+
+	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public int quantityDropped(Random random) {
+
+		return 0;
 	}
 
 	@Override
@@ -91,15 +91,9 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
-	public IIcon getIcon(int side, int metadata) {
+	protected boolean canSilkHarvest() {
 
-		return IconRegistry.getIcon("GlassHardened");
-	}
-
-	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
+		return true;
 	}
 
 	@Override
@@ -119,6 +113,12 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
 		Block block = world.getBlock(x, y, z);
 		return block == this ? false : super.shouldSideBeRendered(world, x, y, z, side);
+	}
+
+	@Override
+	public IIcon getIcon(int side, int metadata) {
+
+		return IconRegistry.getIcon("GlassHardened");
 	}
 
 	@Override

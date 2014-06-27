@@ -18,6 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -73,6 +74,17 @@ public class BlockDynamo extends BlockTEBase {
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
+
+		if (tile != null) {
+			tile.rotateBlock();
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
@@ -86,32 +98,21 @@ public class BlockDynamo extends BlockTEBase {
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
-
-		if (tile != null) {
-			tile.rotateBlock();
-		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
 	public int getRenderBlockPass() {
 
 		return 0;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride() {
-
-		return true;
-	}
-
-	@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdDynamo;
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride() {
+
+		return true;
 	}
 
 	@Override
@@ -141,6 +142,15 @@ public class BlockDynamo extends BlockTEBase {
 		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:dynamo/Dynamo_Compression", ir);
 		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:dynamo/Dynamo_Reactant", ir);
 		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:dynamo/Dynamo_Enervation", ir);
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
+
+		return tag;
 	}
 
 	/* IInitializer */

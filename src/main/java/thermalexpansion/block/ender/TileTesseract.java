@@ -42,15 +42,15 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileRSInventory;
+import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSInventory implements ISecurable, ISidedInventory, IFluidHandler, IEnergyHandler, ITileInfoPacketHandler,
-		IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler {
+public class TileTesseract extends TileRSControl implements ITileInfoPacketHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
+		ISecurable, ISidedInventory {
 
 	public static void initialize() {
 
@@ -67,17 +67,8 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		SEND, RECV, SENDRECV, BLOCKED
 	}
 
-	String owner = CoFHProps.DEFAULT_OWNER;
-	public int frequency = -1;
-
-	public byte modeItem = (byte) TransferMode.RECV.ordinal();
-	public byte modeFluid = (byte) TransferMode.RECV.ordinal();
-	public byte modeEnergy = (byte) TransferMode.RECV.ordinal();
-	public AccessMode access = AccessMode.PUBLIC;
-
-	public boolean isActive = false;
 	private boolean isSending = false;
-
+	String owner = CoFHProps.DEFAULT_OWNER;
 	int itemTrackerAdjacent;
 	int itemTrackerRemote;
 	int fluidTrackerAdjacent;
@@ -88,6 +79,13 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 	boolean cached = false;
 	IEnergyHandler[] adjacentEnergyHandlers = new IEnergyHandler[6];
 	IFluidHandler[] adjacentFluidHandlers = new IFluidHandler[6];
+
+	public int frequency = -1;
+	public byte modeItem = (byte) TransferMode.RECV.ordinal();
+	public byte modeFluid = (byte) TransferMode.RECV.ordinal();
+	public byte modeEnergy = (byte) TransferMode.RECV.ordinal();
+	public boolean isActive = false;
+	public AccessMode access = AccessMode.PUBLIC;
 
 	/* Augment Variables */
 
@@ -100,9 +98,47 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 	}
 
 	@Override
+	public String getName() {
+
+		return "tile.thermalexpansion.tesseract.name";
+	}
+
+	@Override
+	public int getType() {
+
+		return 0;
+	}
+
+	@Override
+	public boolean sendRedstoneUpdates() {
+
+		return true;
+	}
+
+	@Override
 	public void blockBroken() {
 
 		removeFromRegistry();
+	}
+
+	@Override
+	public void onChunkUnload() {
+
+		removeFromRegistry();
+	}
+
+	@Override
+	public void onNeighborBlockChange() {
+
+		super.onNeighborBlockChange();
+		updateAdjacentHandlers();
+	}
+
+	@Override
+	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+
+		super.onNeighborTileChange(tileX, tileY, tileZ);
+		updateAdjacentHandler(tileX, tileY, tileZ);
 	}
 
 	@Override
@@ -122,24 +158,6 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 	}
 
 	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
-	}
-
-	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.tesseract.name";
-	}
-
-	@Override
-	public int getType() {
-
-		return 0;
-	}
-
-	@Override
 	public void updateEntity() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
@@ -156,79 +174,6 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 			}
 		}
-	}
-
-	public void setTileInfo(int theFreq) {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			frequency = theFreq;
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
-					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
-		}
-	}
-
-	public void addEntry(int theFreq, String freqName) {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
-		}
-	}
-
-	public void removeEntry(int theFreq, String freqName) {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
-					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
-		}
-	}
-
-	public void addToRegistry() {
-
-		RegistryEnderAttuned.add(this);
-	}
-
-	public void removeFromRegistry() {
-
-		RegistryEnderAttuned.remove(this);
-	}
-
-	@Override
-	public void onChunkUnload() {
-
-		removeFromRegistry();
-	}
-
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		if (CoreUtils.isFakePlayer(player)) {
-			return true;
-		}
-		if (canPlayerAccess(player.getCommandSenderName())) {
-			sendNamesList((EntityPlayerMP) player);
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
-		}
-		return true;
-	}
-
-	@Override
-	public void onNeighborBlockChange() {
-
-		super.onNeighborBlockChange();
-		updateAdjacentHandlers();
-	}
-
-	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
-
-		super.onNeighborTileChange(tileX, tileY, tileZ);
-		updateAdjacentHandler(tileX, tileY, tileZ);
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -284,40 +229,70 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		return username == null ? false : username.equals(owner);
 	}
 
-	@Override
-	public String getOwnerString() {
+	public void addEntry(int theFreq, String freqName) {
 
-		return access.isPublic() ? "_public_" : owner;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+		}
+	}
+
+	public void removeEntry(int theFreq, String freqName) {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
+					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+		}
+	}
+
+	public void addToRegistry() {
+
+		RegistryEnderAttuned.add(this);
+	}
+
+	public void removeFromRegistry() {
+
+		RegistryEnderAttuned.remove(this);
+	}
+
+	public void setTileInfo(int theFreq) {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			frequency = theFreq;
+			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
+					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
+		}
 	}
 
 	/* SEND METHODS */
-	void sendItem(ItemStack item) {
+	int sendEnergy(int energy, boolean simulate) {
 
-		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getLinkedItemOutputs(this);
+		List<IEnderEnergyHandler> validOutputs = RegistryEnderAttuned.getLinkedEnergyOutputs(this);
+		int startAmount = energy;
 
+		if (startAmount <= 0) {
+			return 0;
+		}
 		if (validOutputs != null) {
 			isSending = true;
-			IEnderItemHandler handler;
+			IEnderEnergyHandler handler;
 
-			for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
+			for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
 				handler = validOutputs.get(i);
-				if (handler.canReceiveItems()) {
-					item = handler.receiveItem(item);
+				if (handler.canReceiveEnergy()) {
+					energy = handler.receiveEnergy(energy, simulate);
 				}
 			}
-			for (int i = 0; i < validOutputs.size() && i < itemTrackerRemote && item != null && item.stackSize > 0; i++) {
+			for (int i = 0; i < validOutputs.size() && i < energyTrackerRemote && energy > 0; i++) {
 				handler = validOutputs.get(i);
-				if (handler.canReceiveItems()) {
-					item = handler.receiveItem(item);
+				if (handler.canReceiveEnergy()) {
+					energy = handler.receiveEnergy(energy, simulate);
 				}
 			}
-			itemTrackerRemote = incrRemoteTracker(itemTrackerRemote, validOutputs.size());
-		}
-		if (item != null && item.stackSize > 0) {
-			inventory[0] = item;
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+			energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
 		}
 		isSending = false;
+		return startAmount - energy;
 	}
 
 	int sendFluid(FluidStack fluid, boolean doFill) {
@@ -350,54 +325,53 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		return startAmount - fluid.amount;
 	}
 
-	int sendEnergy(int energy, boolean simulate) {
+	void sendItem(ItemStack item) {
 
-		List<IEnderEnergyHandler> validOutputs = RegistryEnderAttuned.getLinkedEnergyOutputs(this);
-		int startAmount = energy;
+		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getLinkedItemOutputs(this);
 
-		if (startAmount <= 0) {
-			return 0;
-		}
 		if (validOutputs != null) {
 			isSending = true;
-			IEnderEnergyHandler handler;
+			IEnderItemHandler handler;
 
-			for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
+			for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
 				handler = validOutputs.get(i);
-				if (handler.canReceiveEnergy()) {
-					energy = handler.receiveEnergy(energy, simulate);
+				if (handler.canReceiveItems()) {
+					item = handler.receiveItem(item);
 				}
 			}
-			for (int i = 0; i < validOutputs.size() && i < energyTrackerRemote && energy > 0; i++) {
+			for (int i = 0; i < validOutputs.size() && i < itemTrackerRemote && item != null && item.stackSize > 0; i++) {
 				handler = validOutputs.get(i);
-				if (handler.canReceiveEnergy()) {
-					energy = handler.receiveEnergy(energy, simulate);
+				if (handler.canReceiveItems()) {
+					item = handler.receiveItem(item);
 				}
 			}
-			energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
+			itemTrackerRemote = incrRemoteTracker(itemTrackerRemote, validOutputs.size());
+		}
+		if (item != null && item.stackSize > 0) {
+			inventory[0] = item;
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		}
 		isSending = false;
-		return startAmount - energy;
 	}
 
 	/* TRACKER METHODS */
-	public void incrItemTrackerAdjacent() {
+	public void incrEnergyTrackerAdjacent() {
 
-		itemTrackerAdjacent++;
-		for (int side = itemTrackerAdjacent; side < 6; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
-				itemTrackerAdjacent = side;
+		energyTrackerAdjacent++;
+		for (int side = energyTrackerAdjacent; side < 6; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energyTrackerAdjacent = side;
 				return;
 			}
 		}
-		itemTrackerAdjacent %= 6;
-		for (int side = 0; side < itemTrackerAdjacent; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
-				itemTrackerAdjacent = side;
+		energyTrackerAdjacent %= 6;
+		for (int side = 0; side < energyTrackerAdjacent; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energyTrackerAdjacent = side;
 				return;
 			}
 		}
-		itemTrackerAdjacent = 0;
+		energyTrackerAdjacent = 0;
 	}
 
 	public void incrFluidTrackerAdjacent() {
@@ -419,23 +393,23 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		fluidTrackerAdjacent = 0;
 	}
 
-	public void incrEnergyTrackerAdjacent() {
+	public void incrItemTrackerAdjacent() {
 
-		energyTrackerAdjacent++;
-		for (int side = energyTrackerAdjacent; side < 6; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energyTrackerAdjacent = side;
+		itemTrackerAdjacent++;
+		for (int side = itemTrackerAdjacent; side < 6; side++) {
+			if (Utils.isAdjacentInventory(this, side)) {
+				itemTrackerAdjacent = side;
 				return;
 			}
 		}
-		energyTrackerAdjacent %= 6;
-		for (int side = 0; side < energyTrackerAdjacent; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energyTrackerAdjacent = side;
+		itemTrackerAdjacent %= 6;
+		for (int side = 0; side < itemTrackerAdjacent; side++) {
+			if (Utils.isAdjacentInventory(this, side)) {
+				itemTrackerAdjacent = side;
 				return;
 			}
 		}
-		energyTrackerAdjacent = 0;
+		itemTrackerAdjacent = 0;
 	}
 
 	public int incrRemoteTracker(int tracker, int max) {
@@ -458,19 +432,55 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		return Utils.addToAdjacentInventory(this, from, stack);
 	}
 
-	public void incItemMode() {
+	public boolean isAdjacentInventory(int side) {
 
-		modeItem++;
-		if (modeItem == 4) {
-			modeItem = 0;
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
+		return tile instanceof TileTesseract ? false : Utils.isInventory(tile, side);
+	}
+
+	public boolean modeSendEnergy() {
+
+		return modeEnergy == TransferMode.SEND.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveEnergy() {
+
+		return modeEnergy == TransferMode.RECV.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeSendFluid() {
+
+		return modeFluid == TransferMode.SEND.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveFluid() {
+
+		return modeFluid == TransferMode.RECV.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeSendItems() {
+
+		return modeItem == TransferMode.SEND.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+	}
+
+	public boolean modeReceiveItems() {
+
+		return modeItem == TransferMode.RECV.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+	}
+
+	public void incEnergyMode() {
+
+		modeEnergy++;
+		if (modeEnergy == 4) {
+			modeEnergy = 0;
 		}
 	}
 
-	public void decItemMode() {
+	public void decEnergyMode() {
 
-		modeItem--;
-		if (modeItem == 0) {
-			modeItem = 4;
+		modeEnergy--;
+		if (modeEnergy == 0) {
+			modeEnergy = 4;
 		}
 	}
 
@@ -490,56 +500,118 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		}
 	}
 
-	public void incEnergyMode() {
+	public void incItemMode() {
 
-		modeEnergy++;
-		if (modeEnergy == 4) {
-			modeEnergy = 0;
+		modeItem++;
+		if (modeItem == 4) {
+			modeItem = 0;
 		}
 	}
 
-	public void decEnergyMode() {
+	public void decItemMode() {
 
-		modeEnergy--;
-		if (modeEnergy == 0) {
-			modeEnergy = 4;
+		modeItem--;
+		if (modeItem == 0) {
+			modeItem = 4;
 		}
 	}
 
-	public boolean modeSendItems() {
+	/* GUI METHODS */
+	@Override
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
 
-		return modeItem == TransferMode.SEND.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+		return new GuiTesseract(inventory, this);
 	}
 
-	public boolean modeReceiveItems() {
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
 
-		return modeItem == TransferMode.RECV.ordinal() || modeItem == TransferMode.SENDRECV.ordinal();
+		return new ContainerTesseract(inventory, this);
 	}
 
-	public boolean modeSendFluid() {
+	@Override
+	public boolean openGui(EntityPlayer player) {
 
-		return modeFluid == TransferMode.SEND.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+		if (CoreUtils.isFakePlayer(player)) {
+			return true;
+		}
+		if (canPlayerAccess(player.getCommandSenderName())) {
+			sendNamesList((EntityPlayerMP) player);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			return true;
+		}
+		if (ServerHelper.isServerWorld(worldObj)) {
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("message.cofh.secure2")));
+		}
+		return true;
 	}
 
-	public boolean modeReceiveFluid() {
+	@Override
+	public void receiveGuiNetworkData(int i, int j) {
 
-		return modeFluid == TransferMode.RECV.ordinal() || modeFluid == TransferMode.SENDRECV.ordinal();
+		if (j == 0) {
+			canAccess = false;
+		} else {
+			canAccess = true;
+		}
 	}
 
-	public boolean modeSendEnergy() {
+	@Override
+	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		return modeEnergy == TransferMode.SEND.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+		int access = 0;
+		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
+			access = 1;
+		}
+		player.sendProgressBarUpdate(container, 0, access);
 	}
 
-	public boolean modeReceiveEnergy() {
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
 
-		return modeEnergy == TransferMode.RECV.ordinal() || modeEnergy == TransferMode.SENDRECV.ordinal();
+		super.readFromNBT(nbt);
+
+		access = AccessMode.values()[nbt.getByte("Access")];
+		owner = nbt.getString("Owner");
+
+		modeItem = nbt.getByte("Item.Mode");
+		modeFluid = nbt.getByte("Fluid.Mode");
+		modeEnergy = nbt.getByte("Energy.Mode");
+
+		itemTrackerAdjacent = nbt.getInteger("Item.Adj");
+		itemTrackerRemote = nbt.getInteger("Item.Rem");
+		fluidTrackerAdjacent = nbt.getInteger("Fluid.Adj");
+		fluidTrackerRemote = nbt.getInteger("Fluid.Rem");
+		energyTrackerAdjacent = nbt.getInteger("Energy.Adj");
+		energyTrackerRemote = nbt.getInteger("Energy.Rem");
+
+		frequency = nbt.getInteger("Frequency");
+
+		addToRegistry();
 	}
 
-	public boolean isAdjacentInventory(int side) {
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
 
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
-		return tile instanceof TileTesseract ? false : Utils.isInventory(tile, side);
+		super.writeToNBT(nbt);
+
+		nbt.setByte("Access", (byte) access.ordinal());
+		nbt.setString("Owner", owner);
+
+		nbt.setByte("Item.Mode", modeItem);
+		nbt.setByte("Fluid.Mode", modeFluid);
+		nbt.setByte("Energy.Mode", modeEnergy);
+
+		nbt.setInteger("Item.Adj", itemTrackerAdjacent);
+		nbt.setInteger("Item.Rem", itemTrackerRemote);
+		nbt.setInteger("Fluid.Adj", fluidTrackerAdjacent);
+		nbt.setInteger("Fluid.Rem", fluidTrackerRemote);
+		nbt.setInteger("Energy.Adj", energyTrackerAdjacent);
+		nbt.setInteger("Energy.Rem", energyTrackerRemote);
+
+		nbt.setInteger("Frequency", frequency);
 	}
 
 	/* NETWORK METHODS */
@@ -547,13 +619,14 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
-		payload.addBool(isActive);
-		payload.addByte(modeItem);
-		payload.addByte(modeFluid);
+
 		payload.addByte(modeEnergy);
+		payload.addByte(modeFluid);
+		payload.addByte(modeItem);
 		payload.addByte((byte) access.ordinal());
 		payload.addInt(frequency);
 		payload.addString(owner);
+
 		return payload;
 	}
 
@@ -563,15 +636,12 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 
 		super.handleTilePacket(payload, isServer);
 
-		isActive = payload.getBool();
-		modeItem = payload.getByte();
-		modeFluid = payload.getByte();
 		modeEnergy = payload.getByte();
+		modeFluid = payload.getByte();
+		modeItem = payload.getByte();
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 		frequency = payload.getInt();
 		owner = payload.getString();
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
 	/* ITileInfoPacketHandler */
@@ -639,88 +709,6 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		PacketHandler.sendTo(payload, thePlayer);
 	}
 
-	/* GUI METHODS */
-	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
-
-		return new GuiTesseract(inventory, this);
-	}
-
-	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerTesseract(inventory, this);
-	}
-
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		int access = 0;
-		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
-			access = 1;
-		}
-		player.sendProgressBarUpdate(container, 0, access);
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-
-		access = AccessMode.values()[nbt.getByte("Access")];
-		owner = nbt.getString("Owner");
-
-		frequency = nbt.getInteger("Frequency");
-		isActive = nbt.getBoolean("Active");
-
-		modeItem = nbt.getByte("Item.Mode");
-		modeFluid = nbt.getByte("Fluid.Mode");
-		modeEnergy = nbt.getByte("Energy.Mode");
-
-		itemTrackerAdjacent = nbt.getInteger("Item.Adj");
-		itemTrackerRemote = nbt.getInteger("Item.Rem");
-		fluidTrackerAdjacent = nbt.getInteger("Fluid.Adj");
-		fluidTrackerRemote = nbt.getInteger("Fluid.Rem");
-		energyTrackerAdjacent = nbt.getInteger("Energy.Adj");
-		energyTrackerRemote = nbt.getInteger("Energy.Rem");
-
-		addToRegistry();
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("Owner", owner);
-
-		nbt.setInteger("Frequency", frequency);
-		nbt.setBoolean("Active", isActive);
-
-		nbt.setByte("Item.Mode", modeItem);
-		nbt.setByte("Fluid.Mode", modeFluid);
-		nbt.setByte("Energy.Mode", modeEnergy);
-
-		nbt.setInteger("Item.Adj", itemTrackerAdjacent);
-		nbt.setInteger("Item.Rem", itemTrackerRemote);
-		nbt.setInteger("Fluid.Adj", fluidTrackerAdjacent);
-		nbt.setInteger("Fluid.Rem", fluidTrackerRemote);
-		nbt.setInteger("Energy.Adj", energyTrackerAdjacent);
-		nbt.setInteger("Energy.Rem", energyTrackerRemote);
-	}
-
 	/* IInventory */
 	@Override
 	public int getSizeInventory() {
@@ -752,26 +740,182 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		sendItem(stack);
 	}
 
-	/* ISidedInventory */
+	/* IEnderAttuned */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public String getOwnerString() {
 
-		return SLOTS;
+		return access.isPublic() ? "_public_" : owner;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public int getFrequency() {
 
-		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
+		return frequency;
+	}
+
+	@Override
+	public boolean setFrequency(int frequency) {
+
+		if (!access.isPublic() || frequency > 999 || frequency < 0) {
 			return false;
 		}
+		removeFromRegistry();
+		this.frequency = frequency;
+		addToRegistry();
+		isActive = true;
+
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		return true;
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean clearFrequency() {
 
-		return false;
+		if (!access.isPublic()) {
+			return false;
+		}
+		removeFromRegistry();
+		frequency = -1;
+		addToRegistry();
+		isActive = false;
+
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		return true;
+	}
+
+	/* IEnderEnergyReceptor */
+	@Override
+	public boolean canSendEnergy() {
+
+		return modeSendEnergy();
+	}
+
+	@Override
+	public boolean canReceiveEnergy() {
+
+		return !isSending && modeReceiveEnergy();
+	}
+
+	@Override
+	public int receiveEnergy(int energy, boolean simulate) {
+
+		if (!redstoneControlOrDisable()) {
+			return energy;
+		}
+		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			}
+		}
+		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
+			if (adjacentEnergyHandlers[side] != null) {
+				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			}
+		}
+		incrEnergyTrackerAdjacent();
+		return energy;
+	}
+
+	/* IEnderFluidReceptor */
+	@Override
+	public boolean canSendFluid() {
+
+		return modeSendFluid();
+	}
+
+	@Override
+	public boolean canReceiveFluid() {
+
+		return !isSending && modeReceiveFluid();
+	}
+
+	@Override
+	public FluidStack receiveFluid(FluidStack fluid, boolean doFill) {
+
+		if (!redstoneControlOrDisable()) {
+			return fluid;
+		}
+		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
+			if (adjacentFluidHandlers[side] != null) {
+				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+			}
+		}
+		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
+			if (adjacentFluidHandlers[side] != null) {
+				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+			}
+		}
+		incrFluidTrackerAdjacent();
+		return fluid;
+	}
+
+	/* IEnderItemReceptor */
+	@Override
+	public boolean canSendItems() {
+
+		return modeSendItems();
+	}
+
+	@Override
+	public boolean canReceiveItems() {
+
+		return !isSending && modeReceiveItems();
+	}
+
+	@Override
+	public ItemStack receiveItem(ItemStack stack) {
+
+		if (!redstoneControlOrDisable()) {
+			return stack;
+		}
+		for (int side = itemTrackerAdjacent; side < 6 && stack != null && stack.stackSize > 0; side++) {
+			if (isAdjacentInventory(side)) {
+				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+			}
+		}
+		for (int side = 0; side < itemTrackerAdjacent && stack != null && stack.stackSize > 0; side++) {
+			if (isAdjacentInventory(side)) {
+				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+			}
+		}
+		incrItemTrackerAdjacent();
+		return stack;
+	}
+
+	/* IEnergyHandler */
+	@Override
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendEnergy() || ServerHelper.isClientWorld(worldObj)) {
+			return 0;
+		}
+		return sendEnergy(maxReceive, simulate);
+	}
+
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+
+		return 0;
+	}
+
+	@Override
+	public int getEnergyStored(ForgeDirection from) {
+
+		return 0;
+	}
+
+	@Override
+	public int getMaxEnergyStored(ForgeDirection from) {
+
+		return 0;
+	}
+
+	@Override
+	public boolean canConnectEnergy(ForgeDirection from) {
+
+		return true;
 	}
 
 	/* IFluidHandler */
@@ -814,40 +958,6 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		return TEProps.EMPTY_TANK_INFO;
 	}
 
-	/* IEnergyHandler */
-	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-
-		if (frequency == -1 || !redstoneControlOrDisable() || !canSendEnergy() || ServerHelper.isClientWorld(worldObj)) {
-			return 0;
-		}
-		return sendEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-
-		return 0;
-	}
-
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-
-		return true;
-	}
-
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-
-		return 0;
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-
-		return 0;
-	}
-
 	/* ISecureable */
 	@Override
 	public boolean setAccess(AccessMode access) {
@@ -883,142 +993,26 @@ public class TileTesseract extends TileRSInventory implements ISecurable, ISided
 		return owner;
 	}
 
-	/* IEnderAttuned */
+	/* ISidedInventory */
 	@Override
-	public int getFrequency() {
+	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return frequency;
+		return SLOTS;
 	}
 
 	@Override
-	public boolean setFrequency(int frequency) {
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		if (!access.isPublic() || frequency > 999 || frequency < 0) {
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
 			return false;
 		}
-		removeFromRegistry();
-		this.frequency = frequency;
-		addToRegistry();
-		isActive = true;
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		return true;
 	}
 
 	@Override
-	public boolean clearFrequency() {
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		if (!access.isPublic()) {
-			return false;
-		}
-		removeFromRegistry();
-		frequency = -1;
-		addToRegistry();
-		isActive = false;
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-		return true;
-	}
-
-	/* IEnderItemReceptor */
-	@Override
-	public boolean canSendItems() {
-
-		return modeSendItems();
-	}
-
-	@Override
-	public boolean canReceiveItems() {
-
-		return !isSending && modeReceiveItems();
-	}
-
-	@Override
-	public ItemStack receiveItem(ItemStack stack) {
-
-		if (!redstoneControlOrDisable()) {
-			return stack;
-		}
-		for (int side = itemTrackerAdjacent; side < 6 && stack != null && stack.stackSize > 0; side++) {
-			if (isAdjacentInventory(side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
-			}
-		}
-		for (int side = 0; side < itemTrackerAdjacent && stack != null && stack.stackSize > 0; side++) {
-			if (isAdjacentInventory(side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
-			}
-		}
-		incrItemTrackerAdjacent();
-		return stack;
-	}
-
-	/* IEnderFluidReceptor */
-	@Override
-	public boolean canSendFluid() {
-
-		return modeSendFluid();
-	}
-
-	@Override
-	public boolean canReceiveFluid() {
-
-		return !isSending && modeReceiveFluid();
-	}
-
-	@Override
-	public FluidStack receiveFluid(FluidStack fluid, boolean doFill) {
-
-		if (!redstoneControlOrDisable()) {
-			return fluid;
-		}
-		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
-			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
-			}
-		}
-		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
-			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
-			}
-		}
-		incrFluidTrackerAdjacent();
-		return fluid;
-	}
-
-	/* IEnderEnergyReceptor */
-	@Override
-	public boolean canSendEnergy() {
-
-		return modeSendEnergy();
-	}
-
-	@Override
-	public boolean canReceiveEnergy() {
-
-		return !isSending && modeReceiveEnergy();
-	}
-
-	@Override
-	public int receiveEnergy(int energy, boolean simulate) {
-
-		if (!redstoneControlOrDisable()) {
-			return energy;
-		}
-		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
-			}
-		}
-		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
-			}
-		}
-		incrEnergyTrackerAdjacent();
-		return energy;
+		return false;
 	}
 
 }

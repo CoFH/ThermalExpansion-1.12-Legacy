@@ -51,9 +51,61 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	public boolean hasChargeSlot() {
+	public void updateEntity() {
 
-		return false;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		boolean curActive = isActive;
+
+		if (isActive) {
+			int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy());
+
+			if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
+				IEnergyContainerItem theItem = (IEnergyContainerItem) inventory[0].getItem();
+				energyStorage.extractEnergy(theItem.receiveEnergy(inventory[0], energy, false), false);
+
+				if (theItem.getEnergyStored(inventory[0]) >= theItem.getMaxEnergyStored(inventory[0]) || (energyStorage.getEnergyStored() > 0 && energy <= 0)) {
+					processComplete();
+					transferProducts();
+					if (!redstoneControlOrDisable() || !canStart()) {
+						isActive = false;
+						wasActive = true;
+						tracker.markTime(worldObj);
+					}
+				}
+			} else if (energyStorage.getEnergyStored() <= 0 || inventory[1] == null) {
+				isActive = false;
+				wasActive = true;
+				tracker.markTime(worldObj);
+			}
+		} else if (redstoneControlOrDisable()) {
+			if (timeCheck()) {
+				transferProducts();
+			}
+			if (canStart()) {
+				isActive = true;
+			}
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
+	protected int calcEnergy() {
+
+		if (!isActive || inventory[0] == null) {
+			return 0;
+		}
+		int power = 0;
+
+		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
+			power = energyConfig.maxPower;
+		} else if (energyStorage.getEnergyStored() < energyConfig.energyRamp) {
+			power = energyConfig.minPower;
+		} else {
+			power = energyStorage.getEnergyStored() / energyConfig.energyRamp;
+		}
+		return Math.min(power, ((IEnergyContainerItem) inventory[0].getItem()).receiveEnergy(inventory[0], power, true));
 	}
 
 	@Override
@@ -63,7 +115,13 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected boolean hasChargeSlot() {
+
+		return false;
+	}
+
+	@Override
+	protected void processComplete() {
 
 		inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
@@ -92,61 +150,9 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	public void updateEntity() {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
-
-		if (isActive) {
-			int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy());
-
-			if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
-				IEnergyContainerItem theItem = (IEnergyContainerItem) inventory[0].getItem();
-				energyStorage.extractEnergy(theItem.receiveEnergy(inventory[0], energy, false), false);
-
-				if (theItem.getEnergyStored(inventory[0]) >= theItem.getMaxEnergyStored(inventory[0]) || (energyStorage.getEnergyStored() > 0 && energy <= 0)) {
-					processFinish();
-					transferProducts();
-					if (!redstoneControlOrDisable() || !canStart()) {
-						isActive = false;
-						wasActive = true;
-						tracker.markTime(worldObj);
-					}
-				}
-			} else if (energyStorage.getEnergyStored() <= 0 || inventory[1] == null) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferProducts();
-			}
-			if (canStart()) {
-				isActive = true;
-			}
-		}
-		updateIfChanged(curActive);
-	}
-
-	@Override
-	public int calcEnergy() {
-
-		if (!isActive || inventory[0] == null) {
-			return 0;
-		}
-		int power = 0;
-
-		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
-			power = energyConfig.maxPower;
-		} else if (energyStorage.getEnergyStored() < energyConfig.energyRamp) {
-			power = energyConfig.minPower;
-		} else {
-			power = energyStorage.getEnergyStored() / energyConfig.energyRamp;
-		}
-		return Math.min(power, ((IEnergyContainerItem) inventory[0].getItem()).receiveEnergy(inventory[0], power, true));
+		return stack == null ? false : stack.getItem() instanceof IEnergyContainerItem;
 	}
 
 	/* GUI METHODS */
@@ -177,16 +183,6 @@ public class TileCharger extends TileMachineBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Tracker", outputTracker);
-	}
-
-	/* ISidedInventory */
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
-
-		if (super.canInsertItem(slot, stack, side)) {
-			return stack == null ? false : stack.getItem() instanceof IEnergyContainerItem;
-		}
-		return false;
 	}
 
 }

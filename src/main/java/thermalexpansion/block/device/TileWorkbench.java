@@ -1,18 +1,18 @@
 package thermalexpansion.block.device;
 
+import cofh.api.core.ICustomInventory;
 import cofh.api.core.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.ITilePacketHandler;
 import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
+import cofh.util.oredict.OreDictionaryArbiter;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -24,27 +24,25 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileInventory;
+import thermalexpansion.block.TileTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.item.SchematicHelper;
 
-public class TileWorkbench extends TileInventory implements ISecurable, ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, ISidedTexture {
+public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecurable, ISidedInventory, ISidedTexture {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileWorkbench.class, "thermalexpansion.Workbench");
 		configure();
 	}
-
-	public static final int[] SLOTS = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 
 	public static enum PacketInfoID {
 		CLEAR_GRID, SET_GRID, NEI_SUP
@@ -62,21 +60,15 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	private AccessMode access = AccessMode.PUBLIC;
 
 	public int selectedSchematic = 0;
-
 	public boolean[] missingItem = { false, false, false, false, false, false, false, false, false };
+	public ItemStack[] craftingGrid = new ItemStack[9];
 
 	/* Client-Side Only */
 	public boolean canAccess = true;
 
 	public TileWorkbench() {
 
-		inventory = new ItemStack[30];
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
+		inventory = new ItemStack[21];
 	}
 
 	@Override
@@ -91,35 +83,32 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 		return BlockDevice.Types.WORKBENCH.ordinal();
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
+	public int getCurrentSchematicSlot() {
 
-		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
-		}
-		return true;
+		return selectedSchematic;
+	}
+
+	@Override
+	public boolean canUpdate() {
+
+		return false;
 	}
 
 	public boolean createItem(boolean doCreate, ItemStack output) {
 
 		ItemStack[] invCopy = InventoryHelper.cloneInventory(inventory);
 		ItemStack recipeSlot;
-		String recipeOre;
+		String recipeOreName;
 		boolean found = false;
 
 		for (int i = 0; i < 9; i++) {
-			recipeSlot = getStackInSlot(i + getMatrixOffset());
-			recipeOre = OreDictionary.getOreName(OreDictionary.getOreID(recipeSlot));
+			recipeSlot = craftingGrid[i];
+			recipeOreName = OreDictionaryArbiter.getOreName(recipeSlot);
 
 			if (recipeSlot != null) {
 				for (int j = 0; j < getSizeInventory(); j++) {
-					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot, recipeOre, output)) {
-						inventory[i + getMatrixOffset()] = ItemHelper.cloneStack(invCopy[j], 1);
+					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot, recipeOreName, output)) {
+						craftingGrid[i] = ItemHelper.cloneStack(invCopy[j], 1);
 						invCopy[j].stackSize--;
 
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
@@ -134,7 +123,6 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 								if (containerStack != null
 										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
 												invCopy, containerStack, 2))) {
-
 									if (invCopy[j].stackSize <= 0) {
 										invCopy[j] = containerStack;
 										if (containerStack.stackSize <= 0) {
@@ -170,19 +158,19 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 
 		ItemStack[] invCopy = InventoryHelper.cloneInventory(inventory);
 		ItemStack recipeSlot;
-		String recipeOre;
+		String recipeOreName;
 		boolean found = false;
 		boolean masterFound = true;
 		missingItem = new boolean[] { false, false, false, false, false, false, false, false, false };
 
 		for (int i = 0; i < 9; i++) {
-			recipeSlot = getStackInSlot(i + getMatrixOffset());
-			recipeOre = OreDictionary.getOreName(OreDictionary.getOreID(recipeSlot));
+			recipeSlot = craftingGrid[i];
+			recipeOreName = OreDictionaryArbiter.getOreName(recipeSlot);
 
 			if (recipeSlot != null) {
 				for (int j = 0; j < getSizeInventory(); j++) {
-					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot, recipeOre, output)) {
-						inventory[i + getMatrixOffset()] = ItemHelper.cloneStack(invCopy[j], 1);
+					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot, recipeOreName, output)) {
+						craftingGrid[i] = ItemHelper.cloneStack(invCopy[j], 1);
 						invCopy[j].stackSize--;
 
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
@@ -194,7 +182,6 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 							if (containerStack != null
 									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
 											invCopy, containerStack, 2))) {
-
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
 									if (containerStack.stackSize <= 0) {
@@ -229,25 +216,10 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 		return true;
 	}
 
-	public int getCurrentSchematicSlot() {
-
-		return 18 + selectedSchematic;
-	}
-
-	public int getMatrixOffset() {
-
-		return 21;
-	}
-
-	public void setCurrentSchematicSlot(int slotIndex) {
-
-		selectedSchematic = slotIndex - 18;
-	}
-
 	public void clearCraftingGrid() {
 
 		for (int i = 0; i < 9; i++) {
-			inventory[getMatrixOffset() + i] = null;
+			craftingGrid[i] = null;
 		}
 		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
 	}
@@ -255,9 +227,14 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	public void setCraftingGrid() {
 
 		for (int i = 0; i < 9; i++) {
-			inventory[getMatrixOffset() + i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
+			craftingGrid[i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 		}
 		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
+	}
+
+	public void setCurrentSchematicSlot(int slotIndex) {
+
+		selectedSchematic = slotIndex;
 	}
 
 	/* NETWORK METHODS */
@@ -265,9 +242,11 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	public CoFHPacket getPacket() {
 
 		CoFHPacket payload = super.getPacket();
+
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(selectedSchematic);
 		payload.addString(owner);
+
 		return payload;
 	}
 
@@ -280,13 +259,11 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 		selectedSchematic = payload.getByte();
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (!isServer) {
 			owner = payload.getString();
 		} else {
 			payload.getString();
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	/* ITileInfoPacketHandler */
@@ -297,14 +274,14 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 
 		if (type == PacketInfoID.CLEAR_GRID.ordinal()) {
 			for (int i = 0; i < 9; i++) {
-				inventory[getMatrixOffset() + i] = null;
+				craftingGrid[i] = null;
 				if (thePlayer.openContainer != null) {
 					thePlayer.openContainer.onCraftMatrixChanged(null);
 				}
 			}
 		} else if (type == PacketInfoID.SET_GRID.ordinal()) {
 			for (int i = 0; i < 9; i++) {
-				inventory[getMatrixOffset() + i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
+				craftingGrid[i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 				if (thePlayer.openContainer != null) {
 					thePlayer.openContainer.onCraftMatrixChanged(null);
 				}
@@ -312,10 +289,10 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 		} else if (type == PacketInfoID.NEI_SUP.ordinal()) {
 			int slot;
 			for (int i = 0; i < 9; i++) {
-				inventory[getMatrixOffset() + i] = null;
+				craftingGrid[i] = null;
 			}
 			while ((slot = payload.getByte()) >= 0) {
-				inventory[slot + getMatrixOffset()] = payload.getItemStack();
+				craftingGrid[slot] = payload.getItemStack();
 			}
 			Container container = thePlayer.openContainer;
 			if (container != null) {
@@ -336,6 +313,20 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	public Container getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerWorkbench(inventory, this);
+	}
+
+	@Override
+	public boolean openGui(EntityPlayer player) {
+
+		if (canPlayerAccess(player.getDisplayName())) {
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			return true;
+		}
+		if (ServerHelper.isServerWorld(worldObj)) {
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("message.cofh.secure2")));
+		}
+		return true;
 	}
 
 	@Override
@@ -364,6 +355,8 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 
 		super.readFromNBT(nbt);
 
+		readCraftingFromNBT(nbt);
+
 		access = AccessMode.values()[nbt.getByte("Access")];
 		owner = nbt.getString("Owner");
 		selectedSchematic = nbt.getByte("Mode");
@@ -378,35 +371,58 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 
 		super.writeToNBT(nbt);
 
+		writeCraftingToNBT(nbt);
+
 		nbt.setByte("Access", (byte) access.ordinal());
 		nbt.setString("Owner", owner);
 		nbt.setByte("Mode", (byte) selectedSchematic);
 	}
 
-	/* IInventory */
-	@Override
-	public int getSizeInventory() {
+	public void readCraftingFromNBT(NBTTagCompound nbt) {
 
-		return inventory.length - 9;
+		NBTTagList list = nbt.getTagList("Crafting", 10);
+		craftingGrid = new ItemStack[9];
+		for (int i = 0; i < list.tagCount(); i++) {
+			NBTTagCompound tag = list.getCompoundTagAt(i);
+			int slot = tag.getInteger("Slot");
+
+			if (slot >= 0 && slot < craftingGrid.length) {
+				craftingGrid[slot] = ItemStack.loadItemStackFromNBT(tag);
+			}
+		}
 	}
 
-	/* ISidedInventory */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public void writeCraftingToNBT(NBTTagCompound nbt) {
 
-		return TEProps.EMPTY_INVENTORY;
+		NBTTagList list = new NBTTagList();
+		for (int i = 0; i < craftingGrid.length; i++) {
+			if (craftingGrid[i] != null) {
+				NBTTagCompound tag = new NBTTagCompound();
+				tag.setInteger("Slot", i);
+				craftingGrid[i].writeToNBT(tag);
+				list.appendTag(tag);
+			}
+		}
+		nbt.setTag("Crafting", list);
+	}
+
+	/* ICustomInventory */
+	@Override
+	public ItemStack[] getInventorySlots(int inventoryIndex) {
+
+		return craftingGrid;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public int getSlotStackLimit(int slotIndex) {
 
-		return false;
+		return 1;
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public void onSlotUpdate() {
 
-		return false;
+		markDirty();
 	}
 
 	/* ISecurable */
@@ -438,6 +454,25 @@ public class TileWorkbench extends TileInventory implements ISecurable, ISidedIn
 	public String getOwnerName() {
 
 		return owner;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return TEProps.EMPTY_INVENTORY;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+		return false;
 	}
 
 	/* ISidedTexture */

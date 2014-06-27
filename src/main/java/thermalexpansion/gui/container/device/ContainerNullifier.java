@@ -12,11 +12,11 @@ public class ContainerNullifier extends ContainerTEBase {
 	TileNullifier myTile;
 	public InventoryPlayer playerInv;
 
-	public ContainerNullifier(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerNullifier(InventoryPlayer inventory, TileEntity tile) {
 
-		super(entity);
+		super(tile);
 
-		myTile = (TileNullifier) entity;
+		myTile = (TileNullifier) tile;
 		playerInv = inventory;
 
 		addPlayerSlotsToContainer(inventory);

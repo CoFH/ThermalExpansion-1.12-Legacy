@@ -1,5 +1,6 @@
 package thermalexpansion.gui.container.device;
 
+import cofh.gui.container.CustomInventoryWrapper;
 import cofh.gui.slot.SlotFalseCopy;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
@@ -24,104 +25,55 @@ import thermalexpansion.item.TEItems;
 public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
 	TileWorkbench myTile;
-	public InventoryPlayer playerInv;
-	public InventoryCraftingCustom craftMatrix;
-	public IInventory craftResult = new InventoryCraftResult();
+	InventoryCraftingCustom craftMatrix;
+	IInventory craftResult = new InventoryCraftResult();
+
 	public SlotCraftingOutputWorkbench myOutput;
 
-	int INV_TILE_START = 13;
+	public ContainerWorkbench(InventoryPlayer inventory, TileEntity tile) {
 
-	public ContainerWorkbench(InventoryPlayer inventory, TileEntity entity) {
+		super(tile);
 
-		super(entity);
+		myTile = (TileWorkbench) tile;
+		addPlayerSlotsToContainer(inventory, 8, 128);
+		for (int i = 0; i < 2; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 79 + i * 18));
+			}
+		}
+		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 2, 17, 57, TEItems.diagramSchematic).setSlotStackLimit(1));
+		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 1, 17, 37, TEItems.diagramSchematic).setSlotStackLimit(1));
+		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 0, 17, 17, TEItems.diagramSchematic).setSlotStackLimit(1));
 
-		myTile = (TileWorkbench) entity;
-		playerInv = inventory;
-		craftMatrix = new InventoryCraftingCustom(this, 3, 3, myTile, myTile.getMatrixOffset());
-		myOutput = new SlotCraftingOutputWorkbench(inventory.player, craftResult, 0, 143, 37, myTile, this);
+		craftMatrix = new InventoryCraftingCustom(this, 3, 3, new CustomInventoryWrapper(myTile, 0), 0);
+		myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
 		addSlotToContainer(myOutput);
-		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 18, 17, 17, TEItems.diagramSchematic).setSlotStackLimit(1));
-		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 19, 17, 37, TEItems.diagramSchematic).setSlotStackLimit(1));
-		addSlotToContainer(new SlotSpecificItemWorkbench(myTile, 20, 17, 57, TEItems.diagramSchematic).setSlotStackLimit(1));
 
-		// Fake Crafting Grid
+		/* Crafting Grid */
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				this.addSlotToContainer(new SlotFalseCopy(craftMatrix, j + i * 3, 44 + j * 18, 19 + i * 18));
 			}
 		}
-		for (int i = 0; i < 2; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(myTile, j + i * 9, 8 + j * 18, 79 + i * 18));
-			}
-		}
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 128 + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 186));
-		}
 		onCraftMatrixChanged(null);
 	}
 
-	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int xOffset, int yOffset) {
 
-		ItemStack stack = null;
-		Slot slot = (Slot) inventorySlots.get(slotIndex);
-
-		int invTile = myTile.getSizeInventory() - 3 + INV_TILE_START;
-		int invPlayer = invTile + 27;
-		int invFull = invTile + 36;
-
-		if (slot != null && slot.getHasStack()) {
-			ItemStack stackInSlot = slot.getStack();
-			stack = stackInSlot.copy();
-
-			if (slotIndex == 0) {
-				if (!mergeItemStack(stackInSlot, invTile, invFull, false)) {
-					return null;
-				}
-				slot.onSlotChange(stackInSlot, stack);
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 9; j++) {
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
 			}
-			if (slotIndex >= 1 && slotIndex <= 3) {
-				if (!mergeItemStack(stackInSlot, invTile, invPlayer, false)) {
-					return null;
-				}
-			} else if (slotIndex != 0) {
-				if (slotIndex >= INV_TILE_START && slotIndex < invTile) {
-					if (!mergeItemStack(stackInSlot, invTile, invFull, true)) {
-						return null;
-					}
-				} else if (slotIndex >= invTile && slotIndex < invFull) {
-					if (SchematicHelper.isSchematic(stackInSlot)) {
-						if (!mergeItemStack(stackInSlot, 1, 4, false)) {
-							return null;
-						}
-					} else if (!mergeItemStack(stackInSlot, INV_TILE_START, invTile, false)) {
-						return null;
-					}
-				}
-			}
-			if (stackInSlot.stackSize == 0) {
-				slot.putStack((ItemStack) null);
-			} else {
-				slot.onSlotChanged();
-			}
-			if (stackInSlot.stackSize == stack.stackSize) {
-				return null;
-			}
-			slot.onPickupFromSlot(player, stackInSlot);
 		}
-		return stack;
+		for (int i = 0; i < 9; i++) {
+			addSlotToContainer(new Slot(inventory, i, xOffset + i * 18, yOffset + 58));
+		}
 	}
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
-		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, playerInv.player.worldObj));
+		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorldObj()));
 	}
 
 	@Override
@@ -129,9 +81,8 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 
 		if (ServerHelper.isClientWorld(player.worldObj)) {
 			ItemStack result = super.slotClick(slotId, mouseButton, modifier, player);
-			int invTile = myTile.getSizeInventory() - 3 + INV_TILE_START;
 
-			if (slotId >= INV_TILE_START && slotId < invTile) {
+			if (slotId >= 36 && slotId < 36 + myTile.getSizeInventory()) {
 				myTile.createItemClient(false, myOutput.getStackNoUpdate());
 			}
 			return result;
@@ -148,13 +99,12 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	@Override
 	public void writeSchematic() {
 
-		ItemStack theSchematic = myTile.getStackInSlot(myTile.selectedSchematic + 18);
+		ItemStack schematic = myTile.getStackInSlot(myTile.selectedSchematic);
 
-		if (theSchematic != null && craftResult.getStackInSlot(0) != null) {
-			int theStackSize = theSchematic.stackSize;
+		if (schematic != null && craftResult.getStackInSlot(0) != null) {
 			ItemStack newSchematic = SchematicHelper.getSchematic(SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
-			newSchematic.stackSize = theStackSize;
-			myTile.setInventorySlotContents(myTile.selectedSchematic + 18, newSchematic);
+			newSchematic.stackSize = schematic.stackSize;
+			myTile.setInventorySlotContents(myTile.selectedSchematic, newSchematic);
 		}
 	}
 

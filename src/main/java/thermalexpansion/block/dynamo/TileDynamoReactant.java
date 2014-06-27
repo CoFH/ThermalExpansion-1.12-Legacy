@@ -1,7 +1,6 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -65,29 +64,9 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		inventory = new ItemStack[1];
 	}
 
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
-
-	public static boolean registerFuel(Fluid fluid, int energy) {
-
-		if (fluid == null || energy <= 10000) {
-			return false;
-		}
-		fuels.put(fluid, energy / 20);
-		return true;
-	}
-
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
-	}
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
 	}
 
 	public static int getItemEnergyValue(ItemStack reactant) {
@@ -113,9 +92,24 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		return 0;
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	public static boolean isValidFuel(FluidStack stack) {
 
-		return tank;
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
+	}
+
+	public static boolean registerFuel(Fluid fluid, int energy) {
+
+		if (fluid == null || energy <= 10000) {
+			return false;
+		}
+		fuels.put(fluid, energy / 20);
+		return true;
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -157,43 +151,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		return renderFluid.getFluid().getIcon();
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-
-		payload.addFluidStack(tank.getFluid());
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		payload.addFluidStack(tank.getFluid());
-		payload.addInt(energyStorage.getEnergyStored());
-		payload.addInt(reactantRF);
-		payload.addInt(currentReactantRF);
-
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		renderFluid = payload.getFluidStack();
-
-		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-		}
-	}
-
 	/* ITileInfoPacketHandler */
 	@Override
 	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
@@ -230,6 +187,11 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		return reactantRF * scale / currentReactantRF;
 	}
 
+	public FluidTank getTank(int tankIndex) {
+
+		return tank;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -261,11 +223,49 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		tank.writeToNBT(nbt);
 	}
 
-	/* ISidedInventory */
+	/* NETWORK METHODS */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public CoFHPacket getPacket() {
 
-		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
+		CoFHPacket payload = super.getPacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addFluidStack(tank.getFluid());
+		payload.addInt(reactantRF);
+		payload.addInt(currentReactantRF);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+		reactantRF = payload.getInt();
+		currentReactantRF = payload.getInt();
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		renderFluid = payload.getFluidStack();
+		if (renderFluid == null) {
+			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+		}
 	}
 
 	/* IFluidHandler */
@@ -315,6 +315,13 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
 	}
 
 }

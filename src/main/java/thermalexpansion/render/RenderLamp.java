@@ -90,7 +90,7 @@ public class RenderLamp implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 		RenderUtils.preWorldRender(world, x, y, z);
 		if (BlockCoFHBase.renderPass == 0) {
-			modelBase[bMeta].setColour(0);
+			modelBase[bMeta].setColour(0xFF);
 			renderBase(bMeta, x, y, z);
 			return true;
 		} else if (theTile.getLightValue() > 0) {

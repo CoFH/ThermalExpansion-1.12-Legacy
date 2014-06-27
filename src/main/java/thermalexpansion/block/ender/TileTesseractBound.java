@@ -9,9 +9,9 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileRSInventory;
+import thermalexpansion.block.TileRSControl;
 
-public class TileTesseractBound extends TileRSInventory implements ISecurable, ISidedInventory {
+public class TileTesseractBound extends TileRSControl implements ISecurable, ISidedInventory {
 
 	public static void initialize() {
 

@@ -50,9 +50,19 @@ public class GuiWorkbench extends GuiBaseAdv {
 	}
 
 	@Override
+	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+
+		super.drawGuiContainerBackgroundLayer(f, x, y);
+
+		mc.renderEngine.bindTexture(texture);
+		drawCurSelection();
+		drawCurMissing();
+	}
+
+	@Override
 	protected void updateElementInformation() {
 
-		if (gridHasStuff()) {
+		if (gridNotEmpty()) {
 			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");
 			getSchematic.setSheetX(208);
 			getSchematic.setHoverX(208);
@@ -82,16 +92,6 @@ public class GuiWorkbench extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
-
-		super.drawGuiContainerBackgroundLayer(f, x, y);
-
-		mc.renderEngine.bindTexture(texture);
-		drawCurSelection();
-		drawCurMissing();
-	}
-
-	@Override
 	public void updateScreen() {
 
 		super.updateScreen();
@@ -99,6 +99,59 @@ public class GuiWorkbench extends GuiBaseAdv {
 		if (!myTile.canAccess) {
 			this.mc.thePlayer.closeScreen();
 		}
+	}
+
+	@Override
+	public void handleElementButtonClick(String buttonName, int mouseButton) {
+
+		if (buttonName.equals("Set")) {
+			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
+				GenericTEPacket.sendCreateSchematicPacketToServer();
+				playSound("random.click", 1.0F, 0.8F);
+			}
+		} else if (buttonName.equals("Get")) {
+			if (gridNotEmpty()) {
+				myTile.clearCraftingGrid();
+				playSound("random.click", 1.0F, 0.6F);
+			} else if (hasValidSchematic()) {
+				myTile.setCraftingGrid();
+				playSound("random.click", 1.0F, 0.8F);
+			}
+		}
+	}
+
+	@Override
+	public void overlayRecipe() {
+
+		if (!gridNotEmpty()) {
+			getSchematic.setToolTip("info.thermalexpansion.workbench.gridSet");
+			getSchematic.setSheetX(192);
+			getSchematic.setHoverX(192);
+		} else {
+			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");
+			getSchematic.setSheetX(208);
+			getSchematic.setHoverX(208);
+		}
+	}
+
+	protected boolean gridNotEmpty() {
+
+		for (int i = 0; i < 9; i++) {
+			if (myTile.getInventorySlots(0)[i] != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected boolean hasSchematic() {
+
+		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null;
+	}
+
+	protected boolean hasValidSchematic() {
+
+		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null && myTile.inventory[myTile.getCurrentSchematicSlot()].stackTagCompound != null;
 	}
 
 	protected void drawCurMissing() {
@@ -129,59 +182,6 @@ public class GuiWorkbench extends GuiBaseAdv {
 		case 2:
 			drawTexturedModalRect(guiLeft + 15, guiTop + 55, 176 + offset, 0, 20, 20);
 			break;
-		}
-	}
-
-	protected boolean gridHasStuff() {
-
-		for (int i = 0; i < 9; i++) {
-			if (myTile.inventory[myTile.getMatrixOffset() + i] != null) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean hasSchematic() {
-
-		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null;
-	}
-
-	protected boolean hasValidSchematic() {
-
-		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null && myTile.inventory[myTile.getCurrentSchematicSlot()].stackTagCompound != null;
-	}
-
-	@Override
-	public void handleElementButtonClick(String buttonName, int mouseButton) {
-
-		if (buttonName.equals("Set")) {
-			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
-				GenericTEPacket.sendCreateSchematicPacketToServer();
-				playSound("random.click", 1.0F, 0.8F);
-			}
-		} else if (buttonName.equals("Get")) {
-			if (gridHasStuff()) {
-				myTile.clearCraftingGrid();
-				playSound("random.click", 1.0F, 0.6F);
-			} else if (hasValidSchematic()) {
-				myTile.setCraftingGrid();
-				playSound("random.click", 1.0F, 0.8F);
-			}
-		}
-	}
-
-	@Override
-	public void overlayRecipe() {
-
-		if (!gridHasStuff()) {
-			getSchematic.setToolTip("info.thermalexpansion.workbench.gridSet");
-			getSchematic.setSheetX(192);
-			getSchematic.setHoverX(192);
-		} else {
-			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");
-			getSchematic.setSheetX(208);
-			getSchematic.setHoverX(208);
 		}
 	}
 

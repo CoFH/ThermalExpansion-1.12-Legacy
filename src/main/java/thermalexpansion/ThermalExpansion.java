@@ -47,6 +47,7 @@ import thermalexpansion.network.GenericTEPacket;
 import thermalexpansion.network.GenericTEPacket.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
 import thermalexpansion.util.FMLEventHandler;
+import thermalexpansion.util.FuelHandler;
 import thermalexpansion.util.IMCHandler;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.ExtruderManager;
@@ -199,6 +200,8 @@ public class ThermalExpansion extends BaseMod {
 		TransposerManager.loadRecipes();
 		PrecipitatorManager.loadRecipes();
 		ExtruderManager.loadRecipes();
+
+		FuelHandler.parseFuels();
 
 		cleanConfig(false);
 		config.cleanUp(false, true);

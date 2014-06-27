@@ -41,6 +41,12 @@ public class ItemBlockCache extends ItemBlock {
 	}
 
 	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return false;
+	}
+
+	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockCache.Types.values()[stack.getItemDamage()]) {
@@ -53,12 +59,6 @@ public class ItemBlockCache extends ItemBlock {
 		default:
 			return EnumRarity.common;
 		}
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
 	}
 
 	@Override

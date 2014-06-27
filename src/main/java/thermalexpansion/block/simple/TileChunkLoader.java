@@ -16,10 +16,10 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.block.TileRSInventory;
+import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
 
-public class TileChunkLoader extends TileRSInventory implements IFluidHandler, IEnergyHandler, IEnergyInfo {
+public class TileChunkLoader extends TileRSControl implements IFluidHandler, IEnergyHandler, IEnergyInfo {
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 	EnergyStorage energyStorage = new EnergyStorage(400000);

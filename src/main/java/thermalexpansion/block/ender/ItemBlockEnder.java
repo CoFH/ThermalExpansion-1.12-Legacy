@@ -10,9 +10,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockTesseract extends ItemBlock {
+public class ItemBlockEnder extends ItemBlock {
 
-	public ItemBlockTesseract(Block block) {
+	public ItemBlockEnder(Block block) {
 
 		super(block);
 		setHasSubtypes(true);

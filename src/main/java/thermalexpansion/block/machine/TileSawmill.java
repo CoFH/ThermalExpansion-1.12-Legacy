@@ -50,7 +50,7 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canStart() {
+	protected boolean canStart() {
 
 		if (inventory[0] == null) {
 			return false;
@@ -104,7 +104,7 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -192,7 +192,7 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? SawmillManager.recipeExists(stack) : true;
 	}

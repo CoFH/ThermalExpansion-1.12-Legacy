@@ -12,11 +12,11 @@ public class ContainerTesseract extends ContainerTEBase {
 
 	TileTesseract myTile;
 
-	public ContainerTesseract(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerTesseract(InventoryPlayer inventory, TileEntity tile) {
 
-		super(entity);
+		super(tile);
 
-		myTile = (TileTesseract) entity;
+		myTile = (TileTesseract) tile;
 	}
 
 	@Override

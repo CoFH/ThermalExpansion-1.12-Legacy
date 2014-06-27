@@ -2,7 +2,6 @@ package thermalexpansion.block.tank;
 
 import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTilePacket;
 import cofh.network.ITilePacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
@@ -47,16 +46,16 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Basic.Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
-	public byte type;
-	public byte mode;
+	int compareTracker;
+	int lastDisplayLevel;
 	FluidTankAdv tank;
 
 	boolean cached = false;
-	IFluidHandler adjacentHandlers[] = new IFluidHandler[2];
 	boolean adjacentTanks[] = new boolean[2];
+	IFluidHandler adjacentHandlers[] = new IFluidHandler[2];
 
-	public int lastDisplayLevel = 0;
-	int compareTracker;
+	public byte mode;
+	public byte type;
 
 	public TileTank() {
 
@@ -81,51 +80,29 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		return type;
 	}
 
-	public void updateRender() {
+	@Override
+	public int getComparatorInput(int side) {
 
-		int curDisplayLevel = 0;
+		return compareTracker;
+	}
 
-		if (tank.getFluidAmount() > 0) {
-			curDisplayLevel = (int) (tank.getFluidAmount() / (float) CAPACITY[type] * (RENDER_LEVELS - 1));
-			if (curDisplayLevel == 0) {
-				curDisplayLevel = 1;
-			}
-			if (lastDisplayLevel == 0) {
-				lastDisplayLevel = curDisplayLevel;
-				sendUpdatePacket(Side.CLIENT);
-				return;
-			}
-		} else if (lastDisplayLevel != 0) {
-			lastDisplayLevel = 0;
-			sendUpdatePacket(Side.CLIENT);
+	@Override
+	public int getLightValue() {
+
+		if (tank.getFluid() == null || tank.getFluid().getFluid() == null) {
+			return 0;
 		}
-		if (curDisplayLevel <= lastDisplayLevel - UPDATE_FACTOR) {
-			lastDisplayLevel = curDisplayLevel;
-			sendUpdatePacket(Side.CLIENT);
-		} else if (curDisplayLevel >= lastDisplayLevel + UPDATE_FACTOR) {
-			lastDisplayLevel = curDisplayLevel;
-			sendUpdatePacket(Side.CLIENT);
+		int fluidLightLevel = tank.getFluid().getFluid().getLuminosity();
+		// if under 1/4 full, half light level
+		if (tank.getFluidAmount() <= CAPACITY[type] / 4) {
+			return fluidLightLevel >> 1;
 		}
-	}
-
-	public void calcLastDisplay() {
-
-		lastDisplayLevel = (int) (tank.getFluidAmount() / (float) CAPACITY[type] * (RENDER_LEVELS - 1));
-	}
-
-	public FluidStack getTankFluid() {
-
-		return tank.getFluid();
-	}
-
-	public int getTankFluidAmount() {
-
-		return tank.getFluidAmount();
-	}
-
-	public int getTankCapacity() {
-
-		return tank.getCapacity();
+		// if over 3/4 full, full light level
+		if (tank.getFluidAmount() >= CAPACITY[type] * 3 / 4) {
+			return fluidLightLevel;
+		}
+		// otherwise scale between half and full
+		return (fluidLightLevel >> 1) + (fluidLightLevel - (fluidLightLevel >> 1)) * (tank.getFluidAmount() - (CAPACITY[type] >> 2)) / (CAPACITY[type] >> 1);
 	}
 
 	@Override
@@ -148,6 +125,50 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 
 		super.onNeighborTileChange(tileX, tileY, tileZ);
 		updateAdjacentHandlers();
+	}
+
+	@Override
+	public void updateEntity() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		if (!cached) {
+			onNeighborBlockChange();
+		}
+		if (mode == 1) {
+			transferFluid();
+		}
+		if (timeCheck()) {
+			int curScale = getScaledFluidStored(15);
+			if (curScale != compareTracker) {
+				compareTracker = curScale;
+				callNeighborTileChange();
+			}
+		}
+		if (worldObj.getTotalWorldTime() % 4 == 0) {
+			updateRender();
+		}
+		super.updateEntity();
+	}
+
+	protected int getScaledFluidStored(int scale) {
+
+		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
+	}
+
+	protected void transferFluid() {
+
+		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
+			return;
+		}
+		tank.drain(
+				adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1],
+						new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
+
+		if (tank.getFluidAmount() <= 0) {
+			updateRender();
+		}
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -186,96 +207,58 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		}
 	}
 
-	@Override
-	public void updateEntity() {
+	public int getTankCapacity() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		if (!cached) {
-			onNeighborBlockChange();
-		}
-		if (mode == 1) {
-			transferFluid();
-		}
-		if (timeCheck()) {
-			int curScale = getScaledFluidStored(15);
-			if (curScale != compareTracker) {
-				compareTracker = curScale;
-				callNeighborTileChange();
+		return tank.getCapacity();
+	}
+
+	public int getTankFluidAmount() {
+
+		return tank.getFluidAmount();
+	}
+
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	public void calcLastDisplay() {
+
+		lastDisplayLevel = (int) (tank.getFluidAmount() / (float) CAPACITY[type] * (RENDER_LEVELS - 1));
+	}
+
+	public void updateRender() {
+
+		int curDisplayLevel = 0;
+
+		if (tank.getFluidAmount() > 0) {
+			curDisplayLevel = (int) (tank.getFluidAmount() / (float) CAPACITY[type] * (RENDER_LEVELS - 1));
+			if (curDisplayLevel == 0) {
+				curDisplayLevel = 1;
 			}
+			if (lastDisplayLevel == 0) {
+				lastDisplayLevel = curDisplayLevel;
+				sendUpdatePacket(Side.CLIENT);
+				return;
+			}
+		} else if (lastDisplayLevel != 0) {
+			lastDisplayLevel = 0;
+			sendUpdatePacket(Side.CLIENT);
 		}
-		if (worldObj.getTotalWorldTime() % 4 == 0) {
-			updateRender();
-		}
-		super.updateEntity();
-	}
-
-	protected void transferFluid() {
-
-		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
-			return;
-		}
-		tank.drain(
-				adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1],
-						new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
-
-		if (tank.getFluidAmount() <= 0) {
-			updateRender();
+		if (curDisplayLevel <= lastDisplayLevel - UPDATE_FACTOR) {
+			lastDisplayLevel = curDisplayLevel;
+			sendUpdatePacket(Side.CLIENT);
+		} else if (curDisplayLevel >= lastDisplayLevel + UPDATE_FACTOR) {
+			lastDisplayLevel = curDisplayLevel;
+			sendUpdatePacket(Side.CLIENT);
 		}
 	}
 
+	/* GUI METHODS */
 	@Override
-	public int getComparatorInput(int side) {
+	public boolean hasGui() {
 
-		return compareTracker;
-	}
-
-	public int getScaledFluidStored(int scale) {
-
-		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
-	}
-
-	@Override
-	public int getLightValue() {
-
-		if (tank.getFluid() == null || tank.getFluid().getFluid() == null) {
-			return 0;
-		}
-		int fluidLightLevel = tank.getFluid().getFluid().getLuminosity();
-		// if under 1/4 full, half light level
-		if (tank.getFluidAmount() <= CAPACITY[type] / 4) {
-			return fluidLightLevel >> 1;
-		}
-		// if over 3/4 full, full light level
-		if (tank.getFluidAmount() >= CAPACITY[type] * 3 / 4) {
-			return fluidLightLevel;
-		}
-		// otherwise scale between half and full
-		return (fluidLightLevel >> 1) + (fluidLightLevel - (fluidLightLevel >> 1)) * (tank.getFluidAmount() - (CAPACITY[type] >> 2)) / (CAPACITY[type] >> 1);
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = CoFHTilePacket.newPacket(this);
-		payload.addByte(type);
-		payload.addByte(mode);
-		payload.addFluidStack(tank.getFluid());
-		return payload;
-	}
-
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		byte prevMode = mode;
-
-		type = payload.getByte();
-		mode = payload.getByte();
-		tank.setFluid(payload.getFluidStack());
-
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		return false;
 	}
 
 	/* NBT METHODS */
@@ -302,6 +285,29 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		tank.writeToNBT(nbt);
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addByte(type);
+		payload.addByte(mode);
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		type = payload.getByte();
+		mode = payload.getByte();
+		tank.setFluid(payload.getFluidStack());
+	}
+
 	/* IFluidHandler */
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
@@ -310,12 +316,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 			return 0;
 		}
 		if (from.ordinal() > 1 && from.ordinal() < 6) {
-			return 0;
-		}
-		if (tank.getFluid() != null && !tank.getFluid().isFluidEqual(resource)) {
-			return 0;
-		}
-		if (resource.fluidID == 0) {
 			return 0;
 		}
 		int amount = tank.fill(resource, doFill);

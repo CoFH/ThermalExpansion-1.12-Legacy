@@ -26,7 +26,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiExtruder;
 import thermalexpansion.gui.container.machine.ContainerExtruder;
 
-public class TileExtruder extends TileMachineBase implements IFluidHandler, ICustomInventory {
+public class TileExtruder extends TileMachineBase implements ICustomInventory, IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
 
@@ -63,22 +63,18 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
 	}
 
-	public static int[] processLava = { 0, 0, 1000 };
-	public static int[] processWater = { 0, 1000, 1000 };
-	public static int[] processTime = { 40, 80, 120 };
-
+	static int[] processLava = { 0, 0, 1000 };
+	static int[] processWater = { 0, 1000, 1000 };
+	static int[] processTime = { 40, 80, 120 };
 	static ItemStack[] processItems = new ItemStack[3];
 
-	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
-	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
-
-	FluidTankAdv hotTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
-	FluidTankAdv coldTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
-
+	int outputTracker;
 	byte curSelection;
 	byte prevSelection;
-
-	int outputTracker;
+	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
+	FluidTankAdv hotTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankAdv coldTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 
 	public TileExtruder() {
 
@@ -93,7 +89,44 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	}
 
 	@Override
-	public boolean canStart() {
+	public void updateEntity() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		boolean curActive = isActive;
+
+		if (isActive) {
+			if (processRem > 0) {
+				processRem--;
+			} else if (canComplete()) {
+				processComplete();
+				transferProducts();
+				processRem = processMax;
+
+				if (redstoneControlOrDisable() && canStart()) {
+					processStart();
+				} else {
+					isActive = false;
+					wasActive = true;
+					tracker.markTime(worldObj);
+				}
+			}
+		} else if (redstoneControlOrDisable()) {
+			if (timeCheck()) {
+				transferProducts();
+			}
+			if (timeCheckEighth() && canStart()) {
+				processStart();
+				processRem--;
+				isActive = true;
+			}
+		}
+		updateIfChanged(curActive);
+	}
+
+	@Override
+	protected boolean canStart() {
 
 		if (hotTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME || coldTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
 			return false;
@@ -108,7 +141,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	}
 
 	@Override
-	public boolean canFinish() {
+	protected boolean canComplete() {
 
 		return processRem <= 0;
 	}
@@ -122,7 +155,7 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	}
 
 	@Override
-	protected void processFinish() {
+	protected void processComplete() {
 
 		if (inventory[0] == null) {
 			inventory[0] = processItems[prevSelection].copy();
@@ -156,41 +189,70 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		}
 	}
 
+	/* GUI METHODS */
 	@Override
-	public void updateEntity() {
+	public GuiContainer getGuiClient(InventoryPlayer inventory) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
+		return new GuiExtruder(inventory, this);
+	}
+
+	@Override
+	public Container getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerExtruder(inventory, this);
+	}
+
+	public int getCurSelection() {
+
+		return curSelection;
+	}
+
+	public int getPrevSelection() {
+
+		return prevSelection;
+	}
+
+	public FluidTankAdv getTank(int tankIndex) {
+
+		if (tankIndex == 0) {
+			return hotTank;
 		}
-		boolean curActive = isActive;
+		return coldTank;
+	}
 
-		if (isActive) {
-			if (processRem > 0) {
-				processRem--;
-			} else if (canFinish()) {
-				processFinish();
-				transferProducts();
-				processRem = processMax;
+	public FluidStack getTankFluid(int tankIndex) {
 
-				if (redstoneControlOrDisable() && canStart()) {
-					processStart();
-				} else {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferProducts();
-			}
-			if (timeCheckEighth() && canStart()) {
-				processStart();
-				processRem--;
-				isActive = true;
-			}
+		if (tankIndex == 0) {
+			return hotTank.getFluid();
 		}
-		updateIfChanged(curActive);
+		return coldTank.getFluid();
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		outputTracker = nbt.getInteger("Tracker");
+		prevSelection = nbt.getByte("Prev");
+		curSelection = nbt.getByte("Sel");
+
+		hotTank.readFromNBT(nbt.getCompoundTag("HotTank"));
+		coldTank.readFromNBT(nbt.getCompoundTag("ColdTank"));
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Tracker", outputTracker);
+		nbt.setByte("Prev", prevSelection);
+		nbt.setByte("Sel", curSelection);
+
+		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
+		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
 	}
 
 	/* NETWORK METHODS */
@@ -278,70 +340,23 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 		curSelection = lastSelection;
 	}
 
-	/* GUI METHODS */
+	/* ICustomInventory */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return new GuiExtruder(inventory, this);
-	}
-
-	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerExtruder(inventory, this);
-	}
-
-	public int getCurSelection() {
-
-		return curSelection;
-	}
-
-	public int getPrevSelection() {
-
-		return prevSelection;
-	}
-
-	public FluidTankAdv getTank(int tankIndex) {
-
-		if (tankIndex == 0) {
-			return hotTank;
-		}
-		return coldTank;
-	}
-
-	public FluidStack getTankFluid(int tankIndex) {
-
-		if (tankIndex == 0) {
-			return hotTank.getFluid();
-		}
-		return coldTank.getFluid();
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-
-		outputTracker = nbt.getInteger("Tracker");
-		prevSelection = nbt.getByte("Prev");
-		curSelection = nbt.getByte("Sel");
-
-		hotTank.readFromNBT(nbt.getCompoundTag("HotTank"));
-		coldTank.readFromNBT(nbt.getCompoundTag("ColdTank"));
+		return processItems;
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public int getSlotStackLimit(int slotIndex) {
 
-		super.writeToNBT(nbt);
+		return 64;
+	}
 
-		nbt.setInteger("Tracker", outputTracker);
-		nbt.setByte("Prev", prevSelection);
-		nbt.setByte("Sel", curSelection);
+	@Override
+	public void onSlotUpdate() {
 
-		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
-		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
+		markDirty();
 	}
 
 	/* IFluidHandler */
@@ -387,25 +402,6 @@ public class TileExtruder extends TileMachineBase implements IFluidHandler, ICus
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { hotTank.getInfo(), coldTank.getInfo() };
-	}
-
-	/* ICustomInventory */
-	@Override
-	public ItemStack[] getInventorySlots(int inventoryIndex) {
-
-		return processItems;
-	}
-
-	@Override
-	public int getSlotStackLimit(int slotIndex) {
-
-		return 64;
-	}
-
-	@Override
-	public void onSlotUpdate() {
-
-		markDirty();
 	}
 
 }

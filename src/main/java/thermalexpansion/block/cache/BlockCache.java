@@ -31,7 +31,6 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
-import thermalexpansion.block.TileInventory;
 
 public class BlockCache extends BlockTEBase {
 
@@ -61,6 +60,12 @@ public class BlockCache extends BlockTEBase {
 				list.add(new ItemStack(item, 1, i));
 			}
 		}
+	}
+
+	@Override
+	public boolean hasComparatorInputOverride() {
+
+		return true;
 	}
 
 	@Override
@@ -144,6 +149,31 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
+	}
+
+	@Override
+	public boolean canRenderInPass(int pass) {
+
+		renderPass = pass;
+		return pass < 2;
+	}
+
+	@Override
+	public boolean isOpaqueCube() {
+
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+
+		return true;
+	}
+
+	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -160,31 +190,6 @@ public class BlockCache extends BlockTEBase {
 			return IconRegistry.getIcon("CacheTop", metadata);
 		}
 		return side != 3 ? IconRegistry.getIcon("CacheSide", metadata) : IconRegistry.getIcon("CacheFace", metadata);
-	}
-
-	@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
-	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return true;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
 	}
 
 	@Override
@@ -207,8 +212,8 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
-		NBTTagCompound tag = null;
 
 		if (tile != null && tile.storedStack != null) {
 			tag = new NBTTagCompound();
@@ -218,12 +223,6 @@ public class BlockCache extends BlockTEBase {
 		return tag;
 	}
 
-	@Override
-	public boolean hasComparatorInputOverride() {
-
-		return true;
-	}
-
 	/* IDismantleable */
 	@Override
 	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
@@ -231,8 +230,8 @@ public class BlockCache extends BlockTEBase {
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileInventory) {
-			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
+		if (tile instanceof TileCache) {
+			((TileCache) tile).inventory = new ItemStack[((TileCache) tile).inventory.length];
 		}
 		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
 	}

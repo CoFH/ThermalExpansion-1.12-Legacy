@@ -17,29 +17,13 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.0"
-group= "com.yourname.modid" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "modid"
+version = "1.7.10R3.1.0"
+group = "thermalexpansion"
+archivesBaseName = "ThermalExpansion"
 
 minecraft {
-    version = "1.7.2-10.12.1.1082"
+    version = "1.7.10-10.13.0.1151"
     assetDir = "eclipse/assets"
-}
-
-repositories {
-    maven {
-        name = "Mobius Repo"
-        url = "http://mobiusstrip.eu/maven"
-    }
-    maven {
-        name = "CB Repo"
-        url = "http://chickenbones.net/maven"
-    }
-}
-
-dependencies {
-    //compile "mcp.mobius.waila:Waila:1.5.2a:dev"
-    compile "codechicken:NotEnoughItems:1.7.2-1.0.1:dev"
 }
 
 processResources

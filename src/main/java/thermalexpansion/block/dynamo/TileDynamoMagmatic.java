@@ -37,10 +37,9 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	FluidTank tank = new FluidTank(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 
-	@Override
-	public int getType() {
+	public static boolean isValidFuel(FluidStack stack) {
 
-		return TYPE;
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
 	}
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
@@ -57,14 +56,16 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
 	}
 
-	public static boolean isValidFuel(FluidStack stack) {
+	@Override
+	public int getType() {
 
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
+		return TYPE;
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	@Override
+	public int getLightValue() {
 
-		return tank;
+		return isActive ? 14 : 0;
 	}
 
 	@Override
@@ -91,47 +92,6 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		return renderFluid.getFluid().getIcon(renderFluid);
 	}
 
-	@Override
-	public int getLightValue() {
-
-		return isActive ? 14 : 0;
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getPacket() {
-
-		CoFHPacket payload = super.getPacket();
-		payload.addFluidStack(tank.getFluid());
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
-		payload.addFluidStack(tank.getFluid());
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-		renderFluid = payload.getFluidStack();
-		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-		}
-	}
-
 	/* GUI METHODS */
 	@Override
 	public GuiContainer getGuiClient(InventoryPlayer inventory) {
@@ -143,6 +103,11 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public Container getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
+	}
+
+	public FluidTank getTank(int tankIndex) {
+
+		return tank;
 	}
 
 	/* NBT METHODS */
@@ -167,6 +132,47 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		super.writeToNBT(nbt);
 
 		tank.writeToNBT(nbt);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		renderFluid = payload.getFluidStack();
+		if (renderFluid == null) {
+			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+		}
 	}
 
 	/* IFluidHandler */

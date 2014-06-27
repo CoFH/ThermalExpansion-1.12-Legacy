@@ -79,19 +79,6 @@ public class BlockPlate extends BlockTEBase {
 		tile.onEntityCollidedWithBlock(entity);
 	}
 
-	// @Override
-	// public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-	//
-	// return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 0.0625, z + 1);
-	// }
-
-	@Override
-	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1) {
-
-		setBlockBoundsBasedOnState(world, x, y, z);
-		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
-	}
-
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
@@ -125,6 +112,19 @@ public class BlockPlate extends BlockTEBase {
 	public int getRenderType() {
 
 		return TEProps.renderIdPlate;
+	}
+
+	// @Override
+	// public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+	//
+	// return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 0.0625, z + 1);
+	// }
+
+	@Override
+	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1) {
+
+		setBlockBoundsBasedOnState(world, x, y, z);
+		return super.collisionRayTrace(world, x, y, z, vec3d, vec3d1);
 	}
 
 	@Override

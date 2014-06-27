@@ -24,7 +24,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
-import thermalexpansion.block.TileInventory;
+import thermalexpansion.block.TileTEBase;
 
 public class BlockStrongbox extends BlockTEBase {
 
@@ -98,8 +98,8 @@ public class BlockStrongbox extends BlockTEBase {
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
-		TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
 
 		if (tile != null) {
 			if (tag == null) {
@@ -122,8 +122,8 @@ public class BlockStrongbox extends BlockTEBase {
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileInventory) {
-			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
+		if (tile instanceof TileTEBase) {
+			((TileTEBase) tile).inventory = new ItemStack[((TileTEBase) tile).inventory.length];
 		}
 		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
 	}

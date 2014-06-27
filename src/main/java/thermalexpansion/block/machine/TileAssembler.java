@@ -47,18 +47,17 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	public static final int PROCESS_ENERGY = 2;
 
-	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
-
-	private boolean needsCraft = false;
 	private boolean needsCache = true;
-	ItemStack recipeOutput;
+	private boolean needsCraft = false;
+
 	int outputTracker;
+	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
+	InventoryCrafting crafting = new InventoryCraftingFalse(3, 3);
+	ItemStack recipeOutput;
 
-	InventoryCrafting tempCraft = new InventoryCraftingFalse(3, 3);
-
+	FluidStack[] filledContainer = new FluidStack[9];
 	ItemStack[] recipeSlot = new ItemStack[9];
 	String[] recipeOre = new String[9];
-	FluidStack[] filledContainer = new FluidStack[9];
 
 	public TileAssembler() {
 
@@ -75,6 +74,53 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
+	public void updateEntity() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		boolean curActive = isActive;
+
+		if (redstoneControlOrDisable()) {
+			if (needsCraft) {
+				updateOutput();
+			}
+			if (timeCheck()) {
+				transferProducts();
+			}
+		} else {
+			if (isActive) {
+				wasActive = true;
+			}
+			isActive = false;
+		}
+		updateIfChanged(curActive);
+		chargeEnergy();
+	}
+
+	@Override
+	protected void transferProducts() {
+
+		if (!augmentAutoTransfer) {
+			return;
+		}
+		if (inventory[1] == null) {
+			return;
+		}
+		int side;
+		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
+			side = i % 6;
+
+			if (sideCache[side] == 2) {
+				if (transferItem(1, 64, side)) {
+					outputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
 	public int getChargeSlot() {
 
 		return 2;
@@ -84,51 +130,6 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 		return recipe != null
 				&& (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
-	}
-
-	public void updateOutput() {
-
-		if (inventory[0] != null) {
-			if (needsCache) {
-				recipeOutput = SchematicHelper.getOutput(inventory[0], worldObj);
-				for (int i = 0; i < 9; i++) {
-					recipeSlot[i] = SchematicHelper.getSchematicSlot(inventory[0], i);
-					filledContainer[i] = FluidContainerRegistry.getFluidForFilledItem(recipeSlot[i]);
-					recipeOre[i] = SchematicHelper.getSchematicOreSlot(inventory[0], i);
-				}
-				needsCache = false;
-			}
-			if (recipeOutput == null) {
-				isActive = false;
-				return;
-			}
-
-			if (canCreate(recipeOutput)) {
-				if (createItem()) {
-					recipeOutput = ItemHelper.findMatchingRecipe(tempCraft, worldObj);
-					if (recipeOutput != null) {
-						if (inventory[1] == null) {
-							inventory[1] = recipeOutput.copy();
-						} else {
-							inventory[1].stackSize += recipeOutput.stackSize;
-						}
-						isActive = true;
-					}
-				} else {
-					if (energyStorage.getEnergyStored() >= PROCESS_ENERGY) {
-						needsCraft = false;
-					}
-					wasActive = true;
-					isActive = false;
-					return;
-				}
-			} else {
-				if (isActive) {
-					wasActive = true;
-				}
-				isActive = false;
-			}
-		}
 	}
 
 	public boolean createItem() {
@@ -148,7 +149,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 				if (fluidCopy.isFluidEqual(filledContainer[i])) {
 					if (fluidCopy.amount >= filledContainer[i].amount) {
 						fluidCopy.amount -= filledContainer[i].amount;
-						tempCraft.setInventorySlotContents(i, recipeSlot[i].copy());
+						crafting.setInventorySlotContents(i, recipeSlot[i].copy());
 						continue; // Go to the next item in the schematic
 					}
 				}
@@ -157,7 +158,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 			if (recipeSlot[i] != null) {
 				for (int j = 2; j < invCopy.length; j++) {
 					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot[i], recipeOre[i], recipeOutput)) {
-						tempCraft.setInventorySlotContents(i, invCopy[j].copy());
+						crafting.setInventorySlotContents(i, invCopy[j].copy());
 						invCopy[j].stackSize--;
 
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
@@ -196,7 +197,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 				found = false;
 			} else {
-				tempCraft.setInventorySlotContents(i, null);
+				crafting.setInventorySlotContents(i, null);
 			}
 		}
 		// Update the inventories since we can make it.
@@ -210,67 +211,49 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		return true;
 	}
 
-	@Override
-	protected void transferProducts() {
+	public void updateOutput() {
 
-		if (!augmentAutoTransfer) {
-			return;
-		}
-		if (inventory[1] == null) {
-			return;
-		}
-		int side;
-		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
-			side = i % 6;
-
-			if (sideCache[side] == 2) {
-				if (transferItem(1, 64, side)) {
-					outputTracker = side;
-					break;
+		if (inventory[0] != null) {
+			if (needsCache) {
+				recipeOutput = SchematicHelper.getOutput(inventory[0], worldObj);
+				for (int i = 0; i < 9; i++) {
+					recipeSlot[i] = SchematicHelper.getSchematicSlot(inventory[0], i);
+					filledContainer[i] = FluidContainerRegistry.getFluidForFilledItem(recipeSlot[i]);
+					recipeOre[i] = SchematicHelper.getSchematicOreSlot(inventory[0], i);
 				}
+				needsCache = false;
+			}
+			if (recipeOutput == null) {
+				isActive = false;
+				return;
+			}
+
+			if (canCreate(recipeOutput)) {
+				if (createItem()) {
+					recipeOutput = ItemHelper.findMatchingRecipe(crafting, worldObj);
+					if (recipeOutput != null) {
+						if (inventory[1] == null) {
+							inventory[1] = recipeOutput.copy();
+						} else {
+							inventory[1].stackSize += recipeOutput.stackSize;
+						}
+						isActive = true;
+					}
+				} else {
+					if (energyStorage.getEnergyStored() >= PROCESS_ENERGY) {
+						needsCraft = false;
+					}
+					wasActive = true;
+					isActive = false;
+					return;
+				}
+			} else {
+				if (isActive) {
+					wasActive = true;
+				}
+				isActive = false;
 			}
 		}
-	}
-
-	@Override
-	public void updateEntity() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
-
-		if (redstoneControlOrDisable()) {
-			if (needsCraft) {
-				updateOutput();
-			}
-			if (timeCheck()) {
-				transferProducts();
-			}
-		} else {
-			if (isActive) {
-				wasActive = true;
-			}
-			isActive = false;
-		}
-		updateIfChanged(curActive);
-		chargeEnergy();
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
-		payload.addFluidStack(getTankFluid());
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* GUI METHODS */
@@ -313,6 +296,22 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		super.writeToNBT(nbt);
 		nbt.setInteger("Output", outputTracker);
 		tank.writeToNBT(nbt);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+		payload.addFluidStack(getTankFluid());
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* IInventory */

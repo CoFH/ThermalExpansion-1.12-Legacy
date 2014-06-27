@@ -3,6 +3,7 @@ package thermalexpansion.item;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.InventoryCraftingFalse;
+import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
@@ -12,7 +13,6 @@ import java.util.Map;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -24,22 +24,23 @@ public class SchematicHelper {
 
 		NBTTagCompound nbt = new NBTTagCompound();
 		for (int i = 0; i < 9 && i < craftSlots.getSizeInventory(); i++) {
-			if (craftSlots.getStackInSlot(i) != null) {
-				nbt.setString("Slot" + i + "Id", craftSlots.getStackInSlot(i).getUnlocalizedName());
-				nbt.setInteger("Slot" + i + "Meta", craftSlots.getStackInSlot(i).getItemDamage());
-				nbt.setString("Slot" + i + "Name", craftSlots.getStackInSlot(i).getDisplayName());
-				String OreName = ItemHelper.getOreName(craftSlots.getStackInSlot(i));
-
-				if (!OreName.equals("Unknown") && !ItemHelper.isBlacklist(output)) {
-					nbt.setString("Slot" + i + "Ore", OreName);
-				}
+			if (craftSlots.getStackInSlot(i) == null) {
+				nbt.removeTag("Slot" + i);
+				nbt.removeTag("Name" + i);
+				nbt.removeTag("Ore" + i);
 			} else {
-				nbt.setString("Slot" + i + "Id", "");
-				nbt.setInteger("Slot" + i + "Meta", -1);
-				nbt.setString("Slot" + i + "Name", "");
+				NBTTagCompound itemTag = new NBTTagCompound();
+				craftSlots.getStackInSlot(i).writeToNBT(itemTag);
+				nbt.setTag("Slot" + i, itemTag);
+				nbt.setString("Name" + i, craftSlots.getStackInSlot(i).getDisplayName());
+				String oreName = ItemHelper.getOreName(craftSlots.getStackInSlot(i));
+
+				if (!oreName.equals(OreDictionaryArbiter.UNKNOWN) && !ItemHelper.isBlacklist(output)) {
+					nbt.setString("Ore" + i, oreName);
+				}
 			}
 		}
-		nbt.setString("OutputName", output.stackSize + "x " + output.getDisplayName());
+		nbt.setString("Output", output.stackSize + "x " + output.getDisplayName());
 		return nbt;
 	}
 
@@ -52,8 +53,8 @@ public class SchematicHelper {
 
 	public static String getOutputName(ItemStack stack) {
 
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("OutputName")) {
-			return ": " + stack.stackTagCompound.getString("OutputName");
+		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Output")) {
+			return ": " + stack.stackTagCompound.getString("Output");
 		}
 		return "";
 	}
@@ -72,18 +73,16 @@ public class SchematicHelper {
 		if (schematic == null) {
 			return null;
 		}
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Id")
-				&& schematic.stackTagCompound.getInteger("Slot" + slot + "Id") > -1) {
-			return new ItemStack((Item) Item.itemRegistry.getObject(schematic.stackTagCompound.getString("Slot" + slot + "Id")), 1,
-					schematic.stackTagCompound.getInteger("Slot" + slot + "Meta"));
+		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot)) {
+			return ItemStack.loadItemStackFromNBT(schematic.stackTagCompound.getCompoundTag("Slot" + slot));
 		}
 		return null;
 	}
 
 	public static String getSchematicOreSlot(ItemStack schematic, int slot) {
 
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot + "Ore")) {
-			return schematic.stackTagCompound.getString("Slot" + slot + "Ore");
+		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Ore" + slot)) {
+			return schematic.stackTagCompound.getString("Ore" + slot);
 		}
 		return null;
 	}
@@ -95,10 +94,7 @@ public class SchematicHelper {
 	}
 
 	/**
-	 * 
-	 * @param list
-	 * @param schematic
-	 *            :WARNING: Validity not checked
+	 * Add schematic information. Validity not checked.
 	 */
 	public static void addSchematicInformation(List list, ItemStack schematic) {
 
@@ -109,28 +105,26 @@ public class SchematicHelper {
 		boolean hasOre = false;
 		TMap<String, Integer> aMap = new THashMap<String, Integer>();
 		String curName;
+
 		for (int i = 0; i < 9; i++) {
-			if (schematic.stackTagCompound.hasKey("Slot" + i + "Name") && !schematic.stackTagCompound.getString("Slot" + i + "Name").equalsIgnoreCase("")) {
-				if (schematic.stackTagCompound.hasKey("Slot" + i + "Ore")) {
+			if (schematic.stackTagCompound.hasKey("Name" + i)) {
+				if (schematic.stackTagCompound.hasKey("Ore" + i)) {
 					hasOre = true;
-
 					if (StringHelper.isShiftKeyDown()) {
-						curName = schematic.stackTagCompound.getString("Slot" + i + "Ore");
-
+						curName = schematic.stackTagCompound.getString("Ore" + i);
 						if (aMap.containsKey(curName)) {
 							aMap.put(curName, aMap.get(curName) + 1);
 						} else {
 							aMap.put(curName, 1);
 						}
-						continue;
 					}
-				}
-				curName = schematic.stackTagCompound.getString("Slot" + i + "Name");
-
-				if (aMap.containsKey(curName)) {
-					aMap.put(curName, aMap.get(curName) + 1);
 				} else {
-					aMap.put(curName, 1);
+					curName = schematic.stackTagCompound.getString("Name" + i);
+					if (aMap.containsKey(curName)) {
+						aMap.put(curName, aMap.get(curName) + 1);
+					} else {
+						aMap.put(curName, 1);
+					}
 				}
 			}
 		}

@@ -33,6 +33,17 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	}
 
 	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		TileEntity tile = world.getTileEntity(x, y, z);
+
+		if (tile instanceof TileTEBase) {
+			((TileTEBase) tile).setInvName(ItemHelper.getNameFromItemStack(stack));
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
 		if (Utils.isHoldingMultimeter(player, x, y, z)) {
@@ -66,17 +77,6 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	}
 
 	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
-
-		if (tile instanceof TileInventory) {
-			((TileInventory) tile).setInvName(ItemHelper.getNameFromItemStack(stack));
-		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
 	public IIcon getIcon(int side, int metadata) {
 
 		return IconRegistry.getIcon("GlassHardened");
@@ -87,8 +87,8 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof TileInventory && (!((TileInventory) tile).invName.isEmpty())) {
-			return ItemHelper.setItemStackTagName(null, ((TileInventory) tile).invName);
+		if (tile instanceof TileTEBase && (!((TileTEBase) tile).invName.isEmpty())) {
+			return ItemHelper.setItemStackTagName(null, ((TileTEBase) tile).invName);
 		}
 		return null;
 	}

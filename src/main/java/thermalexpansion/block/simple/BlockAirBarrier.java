@@ -29,45 +29,15 @@ public class BlockAirBarrier extends Block {
 	}
 
 	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-
-		return BlockCoFHBase.NO_DROP;
-	}
-
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-
-		return world.getBlockMetadata(x, y, z);
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-
-	}
-
-	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
 
 		return null;
 	}
 
 	@Override
-	public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
+	public int getLightValue(IBlockAccess world, int x, int y, int z) {
 
-		return true;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return false;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return false;
+		return world.getBlockMetadata(x, y, z);
 	}
 
 	@Override
@@ -77,9 +47,38 @@ public class BlockAirBarrier extends Block {
 	}
 
 	@Override
+	public boolean isOpaqueCube() {
+
+		return false;
+	}
+
+	@Override
+	public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
+
+		return true;
+	}
+
+	@Override
+	public boolean renderAsNormalBlock() {
+
+		return false;
+	}
+
+	@Override
+	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
+
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
+	}
+
+	@Override
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
+
+		return BlockCoFHBase.NO_DROP;
 	}
 
 }

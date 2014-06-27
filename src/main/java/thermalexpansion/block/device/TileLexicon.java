@@ -2,14 +2,11 @@ package thermalexpansion.block.device;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.IIcon;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableInventory;
-import thermalexpansion.gui.GuiHandler;
+import thermalexpansion.block.TileReconfigurable;
 
-public class TileLexicon extends TileReconfigurableInventory {
+public class TileLexicon extends TileReconfigurable {
 
 	public static void initialize() {
 
@@ -27,15 +24,7 @@ public class TileLexicon extends TileReconfigurableInventory {
 	@Override
 	public int getType() {
 
-		return 0;
-		// return BlockDevice.Types.LEXICON.ordinal();
-	}
-
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
+		return BlockDevice.Types.LEXICON.ordinal();
 	}
 
 	/* IReconfigurableSides */
@@ -48,7 +37,6 @@ public class TileLexicon extends TileReconfigurableInventory {
 	@Override
 	public IIcon getTexture(int side, int pass) {
 
-		// TODO Auto-generated method stub
 		return null;
 	}
 

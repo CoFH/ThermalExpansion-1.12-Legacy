@@ -15,8 +15,8 @@ import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.device.ItemBlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.dynamo.ItemBlockDynamo;
-import thermalexpansion.block.ender.BlockTesseract;
-import thermalexpansion.block.ender.ItemBlockTesseract;
+import thermalexpansion.block.ender.BlockEnder;
+import thermalexpansion.block.ender.ItemBlockEnder;
 import thermalexpansion.block.lamp.BlockLamp;
 import thermalexpansion.block.lamp.ItemBlockLamp;
 import thermalexpansion.block.machine.BlockMachine;
@@ -58,7 +58,7 @@ public class TEBlocks {
 		blockTank = addBlock(new BlockTank());
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
-		blockTesseract = addBlock(new BlockTesseract());
+		blockTesseract = addBlock(new BlockEnder());
 		// blockPlate = addBlock(new BlockPlate());
 		blockLamp = addBlock(new BlockLamp());
 		blockFrame = addBlock(new BlockFrame());
@@ -77,7 +77,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
-		GameRegistry.registerBlock(blockTesseract, ItemBlockTesseract.class, "Tesseract");
+		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
 		// GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
 		GameRegistry.registerBlock(blockLamp, ItemBlockLamp.class, "Lamp");
 		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");

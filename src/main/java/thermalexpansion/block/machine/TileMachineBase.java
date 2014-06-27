@@ -3,49 +3,25 @@ package thermalexpansion.block.machine;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
 import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.ITilePacketHandler;
-import cofh.network.PacketHandler;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.TimeTracker;
 import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurableInventory;
+import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.util.Utils;
 
-public abstract class TileMachineBase extends TileReconfigurableInventory implements ISidedInventory, ITilePacketHandler, ITileInfoPacketHandler, IAugmentable,
-		IEnergyHandler, IEnergyInfo {
-
-	public static class SideConfig {
-
-		public int numGroup;
-		public int[][] slotGroups;
-		public boolean[] allowInsertion;
-		public boolean[] allowExtraction;
-		public int[] sideTex;
-	}
+public abstract class TileMachineBase extends TileReconfigurable implements IAugmentable, IEnergyInfo, ISidedInventory {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
@@ -53,28 +29,26 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 	protected static final int RATE = 100;
 
-	SideConfig sideConfig;
-	EnergyConfig energyConfig;
-	EnergyStorage energyStorage;
-
-	TimeTracker tracker = new TimeTracker();
-
-	boolean wasActive;
-
 	int processMax;
 	int processRem;
+	boolean wasActive;
+
+	SideConfig sideConfig;
+	EnergyConfig energyConfig;
+	TimeTracker tracker = new TimeTracker();
 
 	/* Augment Variables */
-	int level = 0;
-	ItemStack[] augments = new ItemStack[3];
 	boolean[] augmentStatus = new boolean[3];
+	ItemStack[] augments = new ItemStack[3];
 
-	public boolean augmentRSControl = true;
-	public boolean augmentReconfigSides = true;
-	public boolean augmentAutoTransfer = true;
+	int level = 0;
 	int processMod = 1;
 	int energyMod = 1;
 	int secondaryChance = 100;
+
+	public boolean augmentAutoTransfer = true;
+	public boolean augmentReconfigSides = true;
+	public boolean augmentRSControl = true;
 
 	public TileMachineBase() {
 
@@ -85,60 +59,16 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 	}
 
-	public int getMaxInputSlot() {
+	@Override
+	public String getName() {
 
-		return 0;
+		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[getType()] + ".name";
 	}
 
-	public void updateIfChanged(boolean curActive) {
+	@Override
+	public int getLightValue() {
 
-		if (curActive != isActive && isActive == true) {
-			sendUpdatePacket(Side.CLIENT);
-		} else if (tracker.hasDelayPassed(worldObj, 200) && wasActive) {
-			wasActive = false;
-			sendUpdatePacket(Side.CLIENT);
-		}
-	}
-
-	protected int calcEnergy() {
-
-		if (!isActive) {
-			return 0;
-		}
-		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
-			return energyConfig.maxPower;
-		}
-		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {
-			return energyConfig.minPower;
-		}
-		return energyStorage.getEnergyStored() / energyConfig.energyRamp;
-	}
-
-	protected boolean canStart() {
-
-		return false;
-	}
-
-	public boolean canFinish() {
-
-		return processRem > 0 ? false : hasValidInput();
-	}
-
-	protected boolean hasValidInput() {
-
-		return true;
-	}
-
-	protected void processStart() {
-
-	}
-
-	protected void processFinish() {
-
-	}
-
-	protected void transferProducts() {
-
+		return isActive ? lightValue[getType()] : 0;
 	}
 
 	@Override
@@ -155,8 +85,8 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 				energyStorage.modifyEnergyStored(-energy * energyMod);
 				processRem -= energy * processMod;
 			}
-			if (canFinish()) {
-				processFinish();
+			if (canComplete()) {
+				processComplete();
 				transferProducts();
 				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
 
@@ -184,144 +114,68 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		chargeEnergy();
 	}
 
-	public void chargeEnergy() {
+	protected int calcEnergy() {
 
-		int chargeSlot = getChargeSlot();
-
-		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
-			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false),
-					false);
-			if (inventory[chargeSlot].stackSize <= 0) {
-				inventory[chargeSlot] = null;
-			}
+		if (!isActive) {
+			return 0;
 		}
+		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
+			return energyConfig.maxPower;
+		}
+		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {
+			return energyConfig.minPower;
+		}
+		return energyStorage.getEnergyStored() / energyConfig.energyRamp;
 	}
 
-	public boolean hasChargeSlot() {
+	protected int getMaxInputSlot() {
+
+		return 0;
+	}
+
+	protected boolean canStart() {
+
+		return false;
+	}
+
+	protected boolean canComplete() {
+
+		return processRem > 0 ? false : hasValidInput();
+	}
+
+	protected boolean hasValidInput() {
 
 		return true;
 	}
 
-	public int getChargeSlot() {
-
-		return inventory.length - 1;
-	}
-
-	public IEnergyStorage getEnergyStorage() {
-
-		return energyStorage;
-	}
-
-	@Override
-	public int getLightValue() {
-
-		return isActive ? lightValue[getType()] : 0;
-	}
-
-	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[getType()] + ".name";
-	}
-
-	/* NETWORK METHODS */
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		payload.addBool(isActive);
-		payload.addInt(processMax);
-		payload.addInt(processRem);
-		payload.addInt(processMod);
-		payload.addInt(energyStorage.getEnergyStored());
-		payload.addInt(energyMod);
-
-		payload.addBool(augmentRSControl);
-		payload.addBool(augmentReconfigSides);
-		return payload;
-	}
-
-	public CoFHPacket getFluidPacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.FLUID.ordinal());
-		return payload;
-	}
-
-	public CoFHPacket getModePacket() {
-
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
-		payload.addByte(TEProps.PacketID.MODE.ordinal());
-		return payload;
-	}
-
-	protected void handleGuiPacket(CoFHPacket payload) {
-
-		isActive = payload.getBool();
-		processMax = payload.getInt();
-		processRem = payload.getInt();
-		processMod = payload.getInt();
-		energyStorage.setEnergyStored(payload.getInt());
-		energyMod = payload.getInt();
-
-		augmentRSControl = payload.getBool();
-		augmentReconfigSides = payload.getBool();
-	}
-
-	protected void handleFluidPacket(CoFHPacket payload) {
+	protected void processStart() {
 
 	}
 
-	protected void handleModePacket(CoFHPacket payload) {
+	protected void processComplete() {
 
 	}
 
-	protected void handleAugmentPacket(CoFHPacket payload) {
+	protected void transferProducts() {
 
 	}
 
-	public void sendFluidPacket() {
+	protected void updateIfChanged(boolean curActive) {
 
-		PacketHandler.sendToDimension(getFluidPacket(), worldObj.provider.dimensionId);
-	}
-
-	public void sendModePacket() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModePacket());
+		if (curActive != isActive && isActive == true) {
+			sendUpdatePacket(Side.CLIENT);
+		} else if (tracker.hasDelayPassed(worldObj, 200) && wasActive) {
+			wasActive = false;
+			sendUpdatePacket(Side.CLIENT);
 		}
 	}
 
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			handleGuiPacket(payload);
-			return;
-		case FLUID:
-			handleFluidPacket(payload);
-			return;
-		case MODE:
-			handleModePacket(payload);
-			return;
-		case AUGMENT:
-			handleAugmentPacket(payload);
-			return;
-		default:
-		}
+		return true;
 	}
 
 	/* GUI METHODS */
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
-	}
-
 	public int getScaledProgress(int scale) {
 
 		if (!isActive || processMax <= 0 || processRem <= 0) {
@@ -341,21 +195,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		return MathHelper.round(scale * power / energyConfig.maxPower);
 	}
 
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
-
-		if (iCrafting instanceof EntityPlayer) {
-			if (ServerHelper.isServerWorld(worldObj)) {
-				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
-			}
-		}
-	}
-
-	public boolean canAcceptItem(ItemStack stack, int slot, int side) {
-
-		return true;
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -364,7 +203,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 
 		readAugmentsFromNBT(nbt);
 		installAugments();
-
 		energyStorage.readFromNBT(nbt);
 
 		processMax = nbt.getInteger("ProcMax");
@@ -377,8 +215,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		super.writeToNBT(nbt);
 
 		writeAugmentsToNBT(nbt);
-
-		energyStorage.writeToNBT(nbt);
 
 		nbt.setInteger("ProcMax", processMax);
 		nbt.setInteger("ProcRem", processRem);
@@ -418,6 +254,37 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			}
 		}
 		nbt.setTag("Augments", list);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		CoFHPacket payload = super.getGuiPacket();
+		payload.addBool(isActive);
+		payload.addInt(processMax);
+		payload.addInt(processRem);
+		payload.addInt(processMod);
+		payload.addInt(energyStorage.getEnergyStored());
+		payload.addInt(energyMod);
+
+		payload.addBool(augmentRSControl);
+		payload.addBool(augmentReconfigSides);
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(CoFHPacket payload) {
+
+		isActive = payload.getBool();
+		processMax = payload.getInt();
+		processRem = payload.getInt();
+		processMod = payload.getInt();
+		energyStorage.setEnergyStored(payload.getInt());
+		energyMod = payload.getInt();
+
+		augmentRSControl = payload.getBool();
+		augmentReconfigSides = payload.getBool();
 	}
 
 	/* IInventory */
@@ -465,35 +332,28 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		super.markDirty();
 	}
 
-	/* IEnergyHandler */
+	/* IAugmentable */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public ItemStack[] getAugmentSlots() {
 
-		return energyStorage.receiveEnergy(maxReceive, simulate);
+		return augments;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public boolean[] getAugmentStatus() {
 
-		return 0;
+		return augmentStatus;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean installAugments() {
 
-		return energyStorage.getMaxEnergyStored() > 0;
-	}
+		for (int i = 0; i < augments.length; i++) {
+			if (Utils.isAugmentItem(augments[i])) {
 
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getEnergyStored();
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getMaxEnergyStored();
+			}
+		}
+		return false;
 	}
 
 	/* IEnergyInfo */
@@ -544,6 +404,25 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 		return sideConfig.numGroup;
 	}
 
+	/* ISidedInventory */
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
+
+		return sideConfig.slotGroups[sideCache[side]];
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+
+		return sideConfig.allowInsertion[sideCache[side]] ? isItemValid(stack, slot, side) : false;
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+
+		return sideConfig.allowExtraction[sideCache[side]];
+	}
+
 	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
@@ -560,49 +439,6 @@ public abstract class TileMachineBase extends TileReconfigurableInventory implem
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
 		return IconRegistry.getIcon("MachineSide");
-	}
-
-	/* ISidedInventory */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-
-		return sideConfig.slotGroups[sideCache[side]];
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
-
-		return sideConfig.allowInsertion[sideCache[side]] ? canAcceptItem(stack, slot, side) : false;
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-
-		return sideConfig.allowExtraction[sideCache[side]];
-	}
-
-	/* IAugmentable */
-	@Override
-	public ItemStack[] getAugmentSlots() {
-
-		return augments;
-	}
-
-	@Override
-	public boolean[] getAugmentStatus() {
-
-		return augmentStatus;
-	}
-
-	@Override
-	public boolean installAugments() {
-
-		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i])) {
-
-			}
-		}
-		return false;
 	}
 
 }
