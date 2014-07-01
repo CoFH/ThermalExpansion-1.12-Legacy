@@ -42,7 +42,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		blockRedstoneRF = redstoneRF * 10;
 	}
 
-	public static int getItemEnergyValue(ItemStack fuel) {
+	public static int getEnergyValue(ItemStack fuel) {
 
 		if (fuel == null) {
 			return 0;
@@ -60,7 +60,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return 0;
 	}
 
-	int currentFuelRF = getItemEnergyValue(redstone);
+	int currentFuelRF = getEnergyValue(redstone);
 
 	public TileDynamoEnervation() {
 
@@ -80,7 +80,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		if (fuelRF > 0) {
 			return true;
 		}
-		return getItemEnergyValue(inventory[0]) >= config.maxPower;
+		return getEnergyValue(inventory[0]) >= config.maxPower;
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 				fuelRF += container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
 				currentFuelRF = redstoneRF;
 			} else {
-				energy = getItemEnergyValue(inventory[0]) * fuelMod / 100;
+				energy = getEnergyValue(inventory[0]) * fuelMod / 100;
 				fuelRF += energy;
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);

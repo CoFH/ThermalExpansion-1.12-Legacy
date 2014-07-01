@@ -330,7 +330,6 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 		facing = (byte) side;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
-
 		return true;
 	}
 

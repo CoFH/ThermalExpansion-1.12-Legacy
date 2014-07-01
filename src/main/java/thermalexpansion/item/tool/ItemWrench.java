@@ -3,13 +3,11 @@ package thermalexpansion.item.tool;
 import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
-import cofh.audio.SoundBase;
 import cofh.item.ItemBase;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
-import cpw.mods.fml.client.FMLClientHandler;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -57,18 +55,10 @@ public class ItemWrench extends ItemBase implements IToolWrench {
 
 			if (player.isSneaking()) {
 				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlockAlt(world, block, x, y, z), 3);
-
-				if (ServerHelper.isClientWorld(world)) {
-					String soundName = block.stepSound.getBreakSound();
-					FMLClientHandler.instance().getClient().getSoundHandler().playSound(new SoundBase(soundName, 1.0F, 0.6F));
-				}
+				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.6F);
 			} else {
 				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlock(world, block, x, y, z), 3);
-
-				if (ServerHelper.isClientWorld(world)) {
-					String soundName = block.stepSound.getBreakSound();
-					FMLClientHandler.instance().getClient().getSoundHandler().playSound(new SoundBase(soundName, 1.0F, 0.8F));
-				}
+				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.8F);
 			}
 			return ServerHelper.isServerWorld(world);
 		} else if (!player.isSneaking() && block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(hitSide))) {

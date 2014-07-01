@@ -25,7 +25,7 @@ public class ContainerDynamoSteam extends ContainerTEBase implements ISlotValida
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoSteam.getItemEnergyValue(stack) > 0;
+		return TileDynamoSteam.getEnergyValue(stack) > 0;
 	}
 
 }

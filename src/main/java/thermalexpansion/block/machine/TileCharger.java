@@ -40,7 +40,7 @@ public class TileCharger extends TileMachineBase {
 
 		super();
 
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1];
 	}
 
@@ -48,6 +48,12 @@ public class TileCharger extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -66,7 +72,7 @@ public class TileCharger extends TileMachineBase {
 				energyStorage.extractEnergy(theItem.receiveEnergy(inventory[0], energy, false), false);
 
 				if (theItem.getEnergyStored(inventory[0]) >= theItem.getMaxEnergyStored(inventory[0]) || (energyStorage.getEnergyStored() > 0 && energy <= 0)) {
-					processComplete();
+					processFinish();
 					transferProducts();
 					if (!redstoneControlOrDisable() || !canStart()) {
 						isActive = false;
@@ -121,7 +127,7 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);

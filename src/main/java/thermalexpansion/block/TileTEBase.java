@@ -335,9 +335,9 @@ public abstract class TileTEBase extends TileCoFHBase implements IInventory, ITi
 		public int minPower = 8;
 		public int maxPower = 80;
 		public int maxEnergy = 40000;
-		public int minPowerLevel = 9 * maxEnergy / 10;
-		public int maxPowerLevel = 1 * maxEnergy / 10;
-		public int energyRamp = minPowerLevel / maxPower;
+		public int minPowerLevel = 1 * maxEnergy / 10;
+		public int maxPowerLevel = 9 * maxEnergy / 10;
+		public int energyRamp = maxPowerLevel / maxPower;
 
 		public EnergyConfig() {
 
@@ -375,8 +375,19 @@ public abstract class TileTEBase extends TileCoFHBase implements IInventory, ITi
 			return setParams(maxPower / 4, maxPower, maxPower * 1200);
 		}
 
+		public boolean setParamsPower(int maxPower, int scale) {
+
+			return setParams(maxPower / 4, maxPower, maxPower * 1200 * scale);
+		}
+
 		public boolean setParamsEnergy(int maxEnergy) {
 
+			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
+		}
+
+		public boolean setParamsEnergy(int maxEnergy, int scale) {
+
+			maxEnergy *= scale;
 			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
 		}
 	}
@@ -390,5 +401,27 @@ public abstract class TileTEBase extends TileCoFHBase implements IInventory, ITi
 		public boolean[] allowExtraction;
 		public int[] sideTex;
 	}
+
+	/* Augment Helpers */
+	public static String DYNAMO_EFFICIENCY = "dynamoEfficiency";
+	public static String DYNAMO_OUTPUT = "dynamoOutput";
+	public static String DYNAMO_THROTTLE = "dynamoThrottle";
+	public static String ENDER_ENERGY = "enderEnergy";
+	public static String ENDER_FLUID = "enderFluid";
+	public static String ENDER_ITEM = "enderItem";
+	public static String GENERAL_AUTO_TRANSFER = "autoTransfer";
+	public static String GENERAL_RECONFIG_SIDES = "reconfigSides";
+	public static String GENERAL_RS_CONTROL = "rsControl";
+	public static String MACHINE_SECONDARY = "machineSecondary";
+	public static String MACHINE_SPEED = "machineSpeed";
+
+	public static byte NUM_DYNAMO_EFFICIENCY = 3;
+	public static byte NUM_DYNAMO_OUTPUT = 3;
+
+	public static byte NUM_MACHINE_SECONDARY = 3;
+	public static byte NUM_MACHINE_SPEED = 3;
+
+	public static final int[] MACHINE_SPEED_PROCESS_MOD = { 1, 2, 4, 8 };
+	public static final int[] MACHINE_SPEED_ENERGY_MOD = { 1, 3, 8, 20 };
 
 }

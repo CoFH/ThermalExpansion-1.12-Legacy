@@ -25,7 +25,7 @@ public class ContainerDynamoEnervation extends ContainerTEBase implements ISlotV
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoEnervation.getItemEnergyValue(stack) > 0;
+		return TileDynamoEnervation.getEnergyValue(stack) > 0;
 	}
 
 }

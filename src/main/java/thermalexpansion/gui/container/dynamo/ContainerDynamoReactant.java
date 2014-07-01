@@ -25,7 +25,7 @@ public class ContainerDynamoReactant extends ContainerTEBase implements ISlotVal
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoReactant.getItemEnergyValue(stack) > 0;
+		return TileDynamoReactant.getReactantEnergy(stack) > 0;
 	}
 
 }

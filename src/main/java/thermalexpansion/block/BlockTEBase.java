@@ -5,7 +5,6 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.block.IDismantleable;
 import cofh.block.BlockCoFHBase;
 import cofh.block.TileCoFHBase;
-import cofh.render.IconRegistry;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 
@@ -21,6 +20,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.util.Utils;
 
 public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleable {
@@ -79,7 +79,7 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 
-		return IconRegistry.getIcon("GlassHardened");
+		return BlockGlass.TEXTURE;
 	}
 
 	@Override

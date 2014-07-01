@@ -38,7 +38,7 @@ public class TileFurnace extends TileMachineBase {
 
 		super();
 
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1];
 	}
 
@@ -46,6 +46,12 @@ public class TileFurnace extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -88,7 +94,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		ItemStack output = FurnaceManager.getRecipe(inventory[0]).getOutput();
 		if (inventory[1] == null) {

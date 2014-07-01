@@ -69,7 +69,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
 	}
 
-	public static int getItemEnergyValue(ItemStack reactant) {
+	public static int getReactantEnergy(ItemStack reactant) {
 
 		if (reactant == null) {
 			return 0;
@@ -90,6 +90,14 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 			return netherStarRF;
 		}
 		return 0;
+	}
+
+	public static int getReactantMod(ItemStack reactant) {
+
+		if (reactant == null) {
+			return 0;
+		}
+		return 100;
 	}
 
 	public static boolean isValidFuel(FluidStack stack) {
@@ -116,12 +124,12 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	protected boolean canGenerate() {
 
 		if (fuelRF > 0) {
-			return reactantRF > 0 || getItemEnergyValue(inventory[0]) > 0;
+			return reactantRF > 0 || getReactantEnergy(inventory[0]) > 0;
 		}
 		if (reactantRF > 0) {
 			return tank.getFluidAmount() >= 50;
 		}
-		return tank.getFluidAmount() >= 50 && getItemEnergyValue(inventory[0]) > 0;
+		return tank.getFluidAmount() >= 50 && getReactantEnergy(inventory[0]) > 0;
 	}
 
 	@Override
@@ -134,7 +142,8 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 			tank.drain(50, true);
 		}
 		if (reactantRF <= 0) {
-			energy = getItemEnergyValue(inventory[0]) * fuelMod / 100;
+			energy = getReactantEnergy(inventory[0]) * fuelMod / 100;
+			reactantMod = getReactantMod(inventory[0]);
 			reactantRF += energy;
 			currentReactantRF = energy;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);

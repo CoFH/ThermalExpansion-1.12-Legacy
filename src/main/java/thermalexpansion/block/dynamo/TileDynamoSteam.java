@@ -60,7 +60,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		otherRF = woodRF / 3;
 	}
 
-	public static int getItemEnergyValue(ItemStack fuel) {
+	public static int getEnergyValue(ItemStack fuel) {
 
 		if (fuel == null) {
 			return 0;
@@ -88,7 +88,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	FluidTank steamTank = new FluidTank(MAX_FLUID);
 	FluidTank waterTank = new FluidTank(MAX_FLUID);
 
-	int currentFuelRF = getItemEnergyValue(coal);
+	int currentFuelRF = getEnergyValue(coal);
 	int steamAmount = 40;
 
 	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
@@ -120,7 +120,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		if (fuelRF > 0) {
 			return true;
 		}
-		return getItemEnergyValue(inventory[0]) > 0;
+		return getEnergyValue(inventory[0]) > 0;
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 			steamTank.drain(energy >> 1, true);
 		} else {
 			if (fuelRF <= 0 && inventory[0] != null) {
-				int energy = getItemEnergyValue(inventory[0]) * fuelMod / 100;
+				int energy = getEnergyValue(inventory[0]) * fuelMod / 100;
 				fuelRF += energy;
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);

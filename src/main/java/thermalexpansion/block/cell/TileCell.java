@@ -156,6 +156,13 @@ public class TileCell extends TileReconfigurable {
 		}
 	}
 
+	@Override
+	public void invalidate() {
+
+		cached = false;
+		super.invalidate();
+	}
+
 	protected void transferEnergy(int bSide) {
 
 		if (sideCache[bSide] != 1) {

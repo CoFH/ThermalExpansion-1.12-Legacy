@@ -62,7 +62,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		sideCache = new byte[] { 3, 3, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1];
 	}
 
@@ -97,6 +97,12 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		} else {
 			super.updateEntity();
 		}
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -194,7 +200,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		if (!reverse) {
 			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());

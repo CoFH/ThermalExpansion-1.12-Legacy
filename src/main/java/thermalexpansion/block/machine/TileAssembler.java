@@ -63,7 +63,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1 + 18];
 	}
 
@@ -71,6 +71,12 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override

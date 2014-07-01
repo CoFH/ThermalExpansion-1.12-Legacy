@@ -78,7 +78,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 	public TileExtruder() {
 
-		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
+		super();
+
+		setDefaultSides();
 		inventory = new ItemStack[1];
 	}
 
@@ -86,6 +88,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -99,8 +107,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		if (isActive) {
 			if (processRem > 0) {
 				processRem--;
-			} else if (canComplete()) {
-				processComplete();
+			} else if (canFinish()) {
+				processFinish();
 				transferProducts();
 				processRem = processMax;
 
@@ -141,7 +149,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	protected boolean canComplete() {
+	protected boolean canFinish() {
 
 		return processRem <= 0;
 	}
@@ -155,7 +163,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		if (inventory[0] == null) {
 			inventory[0] = processItems[prevSelection].copy();

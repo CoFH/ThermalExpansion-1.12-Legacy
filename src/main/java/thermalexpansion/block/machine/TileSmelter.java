@@ -1,8 +1,6 @@
 package thermalexpansion.block.machine;
 
-import cofh.util.BlockHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -41,7 +39,7 @@ public class TileSmelter extends TileMachineBase {
 
 		super();
 
-		sideCache = new byte[] { 3, 3, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[2 + 2 + 1 + 1];
 	}
 
@@ -49,6 +47,12 @@ public class TileSmelter extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -131,7 +135,7 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -260,21 +264,6 @@ public class TileSmelter extends TileMachineBase {
 
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
-	}
-
-	/* IReconfigurableFacing */
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		sideCache[side] = 0;
-		sideCache[BlockHelper.SIDE_OPPOSITE[side]] = 6;
-		sideCache[BlockHelper.SIDE_LEFT[side]] = 5;
-		facing = (byte) side;
-		sendUpdatePacket(Side.CLIENT);
-		return true;
 	}
 
 }

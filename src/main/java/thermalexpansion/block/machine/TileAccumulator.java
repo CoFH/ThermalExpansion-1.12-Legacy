@@ -76,13 +76,21 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	public TileAccumulator() {
 
-		sideCache = new byte[] { 1, 1, 1, 1, 1, 1 };
+		super();
+
+		setDefaultSides();
 	}
 
 	@Override
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 1, 1, 1, 1 };
 	}
 
 	@Override

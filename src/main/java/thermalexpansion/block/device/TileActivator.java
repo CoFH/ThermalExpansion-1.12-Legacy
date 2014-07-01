@@ -464,7 +464,7 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 			return false;
 		}
 		facing = (byte) side;
-		sideCache[facing ^ 1] = 2;
+		sideCache[facing ^ 1] = 1;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
 		return true;

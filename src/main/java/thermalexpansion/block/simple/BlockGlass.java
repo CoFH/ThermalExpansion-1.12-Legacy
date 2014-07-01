@@ -4,7 +4,6 @@ import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
-import cofh.render.IconRegistry;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -118,14 +117,14 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 
-		return IconRegistry.getIcon("GlassHardened");
+		return TEXTURE;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-		IconRegistry.addIcon("GlassHardened", "thermalexpansion:glass/Glass_Hardened", ir);
+		TEXTURE = ir.registerIcon("thermalexpansion:glass/Glass_Hardened");
 	}
 
 	/* IDismantleable */
@@ -178,6 +177,8 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
 		return true;
 	}
+
+	public static IIcon TEXTURE;
 
 	public static ItemStack glassHardened;
 

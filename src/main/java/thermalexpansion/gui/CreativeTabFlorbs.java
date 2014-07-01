@@ -1,11 +1,11 @@
 package thermalexpansion.gui;
 
+import cofh.CoFHCore;
 import cofh.util.MathHelper;
 import cofh.util.TimeTracker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.client.Minecraft;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -46,9 +46,9 @@ public class CreativeTabFlorbs extends CreativeTabs {
 
 	private void updateIcon() {
 
-		World world = Minecraft.getMinecraft().theWorld;
+		World world = CoFHCore.proxy.getWorld();
 
-		if (iconTracker.hasDelayPassed(world, 80)) {
+		if (CoFHCore.proxy.isClient() && iconTracker.hasDelayPassed(world, 80)) {
 			int next = MathHelper.RANDOM.nextInt(TEFlorbs.florbList.size() - 1);
 			iconIndex = next >= iconIndex ? next + 1 : next;
 			iconTracker.markTime(world);

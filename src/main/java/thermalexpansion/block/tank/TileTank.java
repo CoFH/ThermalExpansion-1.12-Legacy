@@ -152,6 +152,13 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 		super.updateEntity();
 	}
 
+	@Override
+	public void invalidate() {
+
+		cached = false;
+		super.invalidate();
+	}
+
 	protected int getScaledFluidStored(int scale) {
 
 		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();

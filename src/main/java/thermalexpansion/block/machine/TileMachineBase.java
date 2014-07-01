@@ -3,9 +3,9 @@ package thermalexpansion.block.machine;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
+import cofh.api.item.IAugmentItem;
 import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.TimeTracker;
@@ -56,7 +56,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 		sideConfig = defaultSideConfig[getType()];
 		energyConfig = defaultEnergyConfig[getType()];
-		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
+		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 10);
 	}
 
 	@Override
@@ -85,8 +85,8 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 				energyStorage.modifyEnergyStored(-energy * energyMod);
 				processRem -= energy * processMod;
 			}
-			if (canComplete()) {
-				processComplete();
+			if (canFinish()) {
+				processFinish();
 				transferProducts();
 				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
 
@@ -138,7 +138,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		return false;
 	}
 
-	protected boolean canComplete() {
+	protected boolean canFinish() {
 
 		return processRem > 0 ? false : hasValidInput();
 	}
@@ -152,7 +152,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	}
 
-	protected void processComplete() {
+	protected void processFinish() {
 
 	}
 
@@ -346,14 +346,108 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	}
 
 	@Override
-	public boolean installAugments() {
+	public void installAugments() {
+
+		resetAugments();
+		for (int i = 0; i < augments.length; i++) {
+			augmentStatus[i] = false;
+			if (Utils.isAugmentItem(augments[i])) {
+				augmentStatus[i] = installAugment(i);
+			}
+		}
+	}
+
+	/* AUGMENT HELPERS */
+	private boolean hasAugment(String type, int level) {
 
 		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i])) {
-
+			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == level) {
+				return true;
 			}
 		}
 		return false;
+	}
+
+	private boolean hasAugmentChain(String type, int level) {
+
+		boolean preReq = true;
+		for (int i = 1; i < level; i++) {
+			preReq = preReq && hasAugment(type, i);
+		}
+		return preReq;
+	}
+
+	private boolean installAugment(int slot) {
+
+		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+		boolean installed = false;
+
+		if (augmentItem.getAugmentLevel(augments[slot], MACHINE_SECONDARY) > 0) {
+			int level = Math.min(NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], MACHINE_SECONDARY));
+			if (hasAugment(MACHINE_SECONDARY, level)) {
+				return false;
+			}
+			if (hasAugmentChain(MACHINE_SECONDARY, level)) {
+				secondaryChance -= 15;
+				installed = true;
+			} else {
+				return false;
+			}
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], MACHINE_SPEED) > 0) {
+			int level = Math.min(NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], MACHINE_SPEED));
+			if (hasAugment(MACHINE_SPEED, level)) {
+				return false;
+			}
+			if (hasAugmentChain(MACHINE_SPEED, level)) {
+				secondaryChance += 5;
+				processMod = Math.max(processMod, MACHINE_SPEED_PROCESS_MOD[level]);
+				energyMod = Math.max(energyMod, MACHINE_SPEED_ENERGY_MOD[level]);
+				installed = true;
+			} else {
+				return false;
+			}
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_AUTO_TRANSFER) > 0) {
+			augmentAutoTransfer = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RECONFIG_SIDES) > 0) {
+			augmentReconfigSides = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RS_CONTROL) > 0) {
+			augmentRSControl = true;
+			installed = true;
+		}
+		return installed;
+	}
+
+	private void onInstalled() {
+
+		if (!augmentReconfigSides) {
+			setDefaultSides();
+		}
+		if (!augmentRSControl) {
+			this.rsMode = ControlMode.DISABLED;
+		}
+		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
+			processRem = 0;
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+		}
+	}
+
+	private void resetAugments() {
+
+		processMod = 1;
+		energyMod = 1;
+		secondaryChance = 100;
+
+		augmentAutoTransfer = false;
+		augmentReconfigSides = false;
+		augmentRSControl = false;
 	}
 
 	/* IEnergyInfo */
@@ -381,23 +475,31 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		return energyStorage.getMaxEnergyStored();
 	}
 
-	/* IReconfigurableFacing */
+	/* IReconfigurableSides */
 	@Override
-	public boolean setFacing(int side) {
+	public boolean decrSide(int side) {
 
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		sideCache[side] = 0;
-		sideCache[BlockHelper.SIDE_LEFT[side]] = 1;
-		sideCache[BlockHelper.SIDE_OPPOSITE[side]] = 1;
-		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-		sendUpdatePacket(Side.CLIENT);
-		return true;
+		return augmentReconfigSides ? super.decrSide(side) : false;
 	}
 
-	/* IReconfigurableSides */
+	@Override
+	public boolean incrSide(int side) {
+
+		return augmentReconfigSides ? super.incrSide(side) : false;
+	}
+
+	@Override
+	public boolean setSide(int side, int config) {
+
+		return augmentReconfigSides ? super.setSide(side, config) : false;
+	}
+
+	@Override
+	public boolean resetSides() {
+
+		return augmentReconfigSides ? super.resetSides() : false;
+	}
+
 	@Override
 	public int getNumConfig(int side) {
 

@@ -55,7 +55,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1];
 	}
 
@@ -63,6 +63,12 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -106,7 +112,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		tank.fill(CrucibleManager.getRecipe(inventory[0]).getOutput(), true);
 		inventory[0].stackSize--;

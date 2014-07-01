@@ -4,6 +4,7 @@ import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.network.CoFHPacket;
 import cofh.network.ITileInfoPacketHandler;
@@ -25,6 +26,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.Utils;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
@@ -50,11 +52,12 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	int fuelMod = 100;
 
 	public boolean augmentRSControl = true;
+	public boolean augmentThrottle = true;
 
 	public TileDynamoBase() {
 
 		config = defaultConfig;
-		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 2);
+		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 5);
 	}
 
 	@Override
@@ -138,6 +141,13 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		}
 	}
 
+	@Override
+	public void invalidate() {
+
+		cached = false;
+		super.invalidate();
+	}
+
 	protected abstract boolean canGenerate();
 
 	protected abstract void generate();
@@ -147,10 +157,10 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		if (!isActive) {
 			return 0;
 		}
-		if (energyStorage.getEnergyStored() < config.maxPowerLevel) {
+		if (energyStorage.getEnergyStored() < config.minPowerLevel) {
 			return config.maxPower;
 		}
-		if (energyStorage.getEnergyStored() > config.minPowerLevel) {
+		if (energyStorage.getEnergyStored() > config.maxPowerLevel) {
 			return config.minPower;
 		}
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
@@ -341,9 +351,98 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	}
 
 	@Override
-	public boolean installAugments() {
+	public void installAugments() {
 
+		resetAugments();
+		for (int i = 0; i < augments.length; i++) {
+			augmentStatus[i] = false;
+			if (Utils.isAugmentItem(augments[i])) {
+				augmentStatus[i] = installAugment(i);
+			}
+		}
+	}
+
+	/* AUGMENT HELPERS */
+	private boolean hasAugment(String type, int level) {
+
+		for (int i = 0; i < augments.length; i++) {
+			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == level) {
+				return true;
+			}
+		}
 		return false;
+	}
+
+	private boolean hasAugmentChain(String type, int level) {
+
+		boolean preReq = true;
+		for (int i = 1; i < level; i++) {
+			preReq = preReq && hasAugment(type, i);
+		}
+		return preReq;
+	}
+
+	private boolean installAugment(int slot) {
+
+		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+		boolean installed = false;
+
+		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_EFFICIENCY) > 0) {
+			if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT) > 0) {
+				return false;
+			}
+			int level = Math.min(NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], DYNAMO_EFFICIENCY));
+			if (hasAugment(DYNAMO_EFFICIENCY, level)) {
+				return false;
+			}
+			if (hasAugmentChain(DYNAMO_EFFICIENCY, level)) {
+				fuelMod += 20;
+				installed = true;
+			} else {
+				return false;
+			}
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT) > 0) {
+			int level = augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT);
+			if (hasAugment(DYNAMO_OUTPUT, level)) {
+				return false;
+			}
+			if (hasAugmentChain(DYNAMO_OUTPUT, level)) {
+				energyMod += 1;
+				fuelMod -= 15;
+				installed = true;
+			} else {
+				return false;
+			}
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_THROTTLE) > 0) {
+			augmentThrottle = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], ENDER_ENERGY) > 0) {
+
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RS_CONTROL) > 0) {
+			augmentRSControl = true;
+			installed = true;
+		}
+		return installed;
+	}
+
+	private void onInstalled() {
+
+		if (!augmentRSControl) {
+			this.rsMode = ControlMode.DISABLED;
+		}
+	}
+
+	private void resetAugments() {
+
+		energyMod = 1;
+		fuelMod = 100;
+
+		augmentRSControl = false;
+		augmentThrottle = false;
 	}
 
 	/* IEnergyHandler */

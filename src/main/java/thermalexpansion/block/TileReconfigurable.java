@@ -180,6 +180,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 		if (!allowYAxisFacing() && side < 2) {
 			return false;
 		}
+		sideCache[side] = 0;
 		facing = (byte) side;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
@@ -212,7 +213,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 	}
 
 	@Override
-	public final boolean setSide(int side, int config) {
+	public boolean setSide(int side, int config) {
 
 		if (side == facing || sideCache[side] == config || config >= getNumConfig(side)) {
 			return false;
@@ -223,7 +224,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 	}
 
 	@Override
-	public final boolean resetSides() {
+	public boolean resetSides() {
 
 		boolean update = false;
 		for (int i = 0; i < 6; i++) {
@@ -240,6 +241,11 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 	@Override
 	public abstract int getNumConfig(int side);
+
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
+	}
 
 	/* ISidedTexture */
 	@Override

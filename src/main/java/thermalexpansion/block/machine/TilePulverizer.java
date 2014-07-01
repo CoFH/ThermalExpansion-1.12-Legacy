@@ -39,7 +39,7 @@ public class TilePulverizer extends TileMachineBase {
 
 		super();
 
-		sideCache = new byte[] { 3, 3, 2, 2, 2, 2 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 2 + 1 + 1];
 	}
 
@@ -47,6 +47,12 @@ public class TilePulverizer extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -104,7 +110,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
 		ItemStack primaryItem = recipe.getPrimaryOutput();

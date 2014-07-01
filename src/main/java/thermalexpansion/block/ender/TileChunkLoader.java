@@ -1,4 +1,4 @@
-package thermalexpansion.block.simple;
+package thermalexpansion.block.ender;
 
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;

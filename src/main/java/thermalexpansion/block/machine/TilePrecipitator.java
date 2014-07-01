@@ -60,7 +60,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super();
 
-		sideCache = new byte[] { 2, 2, 1, 1, 1, 1 };
+		setDefaultSides();
 		inventory = new ItemStack[1 + 1];
 	}
 
@@ -68,6 +68,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	protected void setDefaultSides() {
+
+		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -86,7 +92,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected boolean canComplete() {
+	protected boolean canFinish() {
 
 		return processRem <= 0;
 	}
@@ -100,7 +106,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void processComplete() {
+	protected void processFinish() {
 
 		if (inventory[0] == null) {
 			inventory[0] = processItems[prevSelection].copy();
