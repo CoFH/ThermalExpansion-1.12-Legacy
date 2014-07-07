@@ -242,7 +242,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 	@Override
 	public abstract int getNumConfig(int side);
 
-	protected void setDefaultSides() {
+	public void setDefaultSides() {
 
 		sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
 	}

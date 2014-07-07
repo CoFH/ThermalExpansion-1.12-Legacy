@@ -17,8 +17,8 @@ import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.dynamo.ItemBlockDynamo;
 import thermalexpansion.block.ender.BlockEnder;
 import thermalexpansion.block.ender.ItemBlockEnder;
-import thermalexpansion.block.lamp.BlockLamp;
-import thermalexpansion.block.lamp.ItemBlockLamp;
+import thermalexpansion.block.light.BlockLight;
+import thermalexpansion.block.light.ItemBlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.machine.ItemBlockMachine;
 import thermalexpansion.block.simple.BlockAirBarrier;
@@ -60,7 +60,7 @@ public class TEBlocks {
 		blockCache = addBlock(new BlockCache());
 		blockTesseract = addBlock(new BlockEnder());
 		// blockPlate = addBlock(new BlockPlate());
-		blockLamp = addBlock(new BlockLamp());
+		blockLight = addBlock(new BlockLight());
 		blockFrame = addBlock(new BlockFrame());
 		blockGlass = addBlock(new BlockGlass());
 		blockRockwool = addBlock(new BlockRockwool());
@@ -79,7 +79,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
 		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
 		// GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
-		GameRegistry.registerBlock(blockLamp, ItemBlockLamp.class, "Lamp");
+		GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
 		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
 		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
 		GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
@@ -87,7 +87,7 @@ public class TEBlocks {
 
 		GameRegistry.registerBlock(blockAirSignal, "AirSignal");
 		GameRegistry.registerBlock(blockAirLight, "AirLight");
-		GameRegistry.registerBlock(blockAirBarrier, "AirDam");
+		GameRegistry.registerBlock(blockAirBarrier, "AirBarrier");
 
 		for (IInitializer initializer : blockList) {
 			initializer.initialize();
@@ -116,7 +116,7 @@ public class TEBlocks {
 	public static Block blockStrongbox;
 	public static Block blockCache;
 	public static Block blockTesseract;
-	public static Block blockLamp;
+	public static Block blockLight;
 	public static Block blockFrame;
 	public static Block blockGlass;
 	public static Block blockRockwool;

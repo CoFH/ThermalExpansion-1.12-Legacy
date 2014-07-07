@@ -5,6 +5,7 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import cofh.api.energy.IEnergyContainerItem;
 import cofh.block.BlockCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderUtils;
@@ -15,16 +16,23 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 
+import org.lwjgl.opengl.GL11;
+
+import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.core.TEProps;
 
 @SideOnly(Side.CLIENT)
-public class RenderCell implements ISimpleBlockRenderingHandler {
+public class RenderCell implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderCell instance = new RenderCell();
 
@@ -36,6 +44,8 @@ public class RenderCell implements ISimpleBlockRenderingHandler {
 	static {
 		TEProps.renderIdCell = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
+
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockCell), instance);
 
 		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
@@ -85,24 +95,17 @@ public class RenderCell implements ISimpleBlockRenderingHandler {
 		}
 	}
 
+	private int getScaledEnergyStored(ItemStack container, int scale) {
+
+		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+
+		return containerItem.getEnergyStored(container) * scale / containerItem.getMaxEnergyStored(container);
+	}
+
 	/* ISimpleBlockRenderingHandler */
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
-		int chargeLevel = 9;
-
-		RenderUtils.preItemRender();
-
-		CCRenderState.startDrawing();
-		renderFrame(metadata, null, -0.5, -0.5, -0.5);
-		CCRenderState.draw();
-
-		CCRenderState.startDrawing();
-		CCRenderState.setBrightness(165 + chargeLevel * 5);
-		renderCenter(metadata, -0.5, -0.5, -0.5);
-		CCRenderState.draw();
-
-		RenderUtils.postItemRender();
 	}
 
 	@Override
@@ -135,6 +138,48 @@ public class RenderCell implements ISimpleBlockRenderingHandler {
 	public int getRenderId() {
 
 		return TEProps.renderIdCell;
+	}
+
+	/* IItemRenderer */
+	@Override
+	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+
+		return true;
+	}
+
+	@Override
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+
+		return true;
+	}
+
+	@Override
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+
+		GL11.glPushMatrix();
+		double offset = -0.5;
+		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+			offset = 0;
+		}
+		int chargeLevel = 0;
+
+		if (item.stackTagCompound != null) {
+			chargeLevel = Math.min(15, getScaledEnergyStored(item, 16));
+		}
+		int metadata = item.getItemDamage();
+		RenderUtils.preItemRender();
+
+		CCRenderState.startDrawing();
+		renderFrame(metadata, null, offset, offset, offset);
+		CCRenderState.draw();
+
+		CCRenderState.startDrawing();
+		CCRenderState.setBrightness(165 + chargeLevel * 5);
+		renderCenter(metadata, offset, offset, offset);
+		CCRenderState.draw();
+
+		RenderUtils.postItemRender();
+		GL11.glPopMatrix();
 	}
 
 }

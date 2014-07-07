@@ -50,7 +50,7 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	protected void setDefaultSides() {
+	public void setDefaultSides() {
 
 		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}

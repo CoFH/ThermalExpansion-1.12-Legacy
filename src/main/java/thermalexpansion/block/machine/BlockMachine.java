@@ -31,7 +31,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
-import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.core.TEProps;
 
 public class BlockMachine extends BlockTEBase {
@@ -94,16 +93,15 @@ public class BlockMachine extends BlockTEBase {
 		if (stack.stackTagCompound != null) {
 			TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
 
-			// tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
-			// tile.energySend = stack.stackTagCompound.getInteger("Send");
-			// tile.energyReceive = stack.stackTagCompound.getInteger("Receive");
+			tile.readAugmentsFromNBT(stack.stackTagCompound);
+			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = stack.stackTagCompound.getByte("Facing");
 			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
 
 			if (sideCache.length <= 0) {
-				sideCache = TileCell.DEFAULT_SIDES.clone();
+				sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
 			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
@@ -225,6 +223,17 @@ public class BlockMachine extends BlockTEBase {
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
 
+		if (tile != null) {
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			tag.setByteArray("SideCache", tile.sideCache);
+			tag.setByte("Facing", (byte) tile.getFacing());
+			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
+			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+
+			tile.writeAugmentsToNBT(tag);
+		}
 		return tag;
 	}
 

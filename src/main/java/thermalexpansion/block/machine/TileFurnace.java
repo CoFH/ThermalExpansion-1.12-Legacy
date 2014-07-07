@@ -49,7 +49,7 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	protected void setDefaultSides() {
+	public void setDefaultSides() {
 
 		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}

@@ -93,7 +93,7 @@ public abstract class TileTEBase extends TileCoFHBase implements IInventory, ITi
 		if (iCrafting instanceof EntityPlayer) {
 			CoFHPacket guiPacket = getGuiPacket();
 			if (guiPacket != null) {
-				PacketHandler.sendTo(getGuiPacket(), (EntityPlayer) iCrafting);
+				PacketHandler.sendTo(guiPacket, (EntityPlayer) iCrafting);
 			}
 		}
 	}

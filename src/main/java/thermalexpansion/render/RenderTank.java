@@ -191,6 +191,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		CCRenderState.draw();
 
 		CCRenderState.startDrawing();
+		// CCRenderState.setBrightness(255);
 		instance.renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
 		CCRenderState.draw();
 

@@ -198,7 +198,6 @@ public class BlockCache extends BlockTEBase {
 
 		for (int i = 0; i < 9; i++) {
 			IconRegistry.addIcon("CacheMeter" + i, "thermalexpansion:cache/Cache_Meter_" + i, ir);
-			IconRegistry.addIcon("CacheMeterInv" + i, "thermalexpansion:cache/Cache_Meter_Inv_" + i, ir);
 		}
 		for (int i = 0; i < Types.values().length; i++) {
 			IconRegistry.addIcon("CacheBottom" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Bottom", ir);

@@ -1,4 +1,4 @@
-package thermalexpansion.block.lamp;
+package thermalexpansion.block.light;
 
 import cofh.render.IconRegistry;
 import cofh.util.ColorHelper;
@@ -28,28 +28,30 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 
-public class BlockLamp extends BlockTEBase {
+public class BlockLight extends BlockTEBase {
 
-	public BlockLamp() {
+	public BlockLight() {
 
 		super(Material.glass);
 		setHardness(3.0F);
 		setResistance(150.0F);
 		setStepSound(soundTypeGlass);
-		setBlockName("thermalexpansion.lamp");
+		setBlockName("thermalexpansion.light");
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		return new TileLamp();
+		return new TileLight();
 	}
 
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		if (enable) {
-			list.add(new ItemStack(item, 1, 0));
+		for (int i = 0; i < Types.values().length; i++) {
+			if (enable[i]) {
+				list.add(new ItemStack(item, 1, i));
+			}
 		}
 	}
 
@@ -57,9 +59,10 @@ public class BlockLamp extends BlockTEBase {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.stackTagCompound != null) {
-			TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
-			theTile.modified = true;
-			theTile.color = stack.stackTagCompound.getInteger("Color");
+			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
+
+			tile.modified = true;
+			tile.setColor(stack.stackTagCompound.getInteger("Color"));
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -72,7 +75,7 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int bSide, float hitX, float hitY, float hitZ) {
 
-		TileLamp theTile = (TileLamp) world.getTileEntity(x, y, z);
+		TileLight theTile = (TileLight) world.getTileEntity(x, y, z);
 
 		if (ItemHelper.isPlayerHoldingItem(Items.dye, player)) {
 			if (ServerHelper.isServerWorld(world)) {
@@ -108,7 +111,7 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public int getRenderType() {
 
-		return TEProps.renderIdLamp;
+		return TEProps.renderIdLight;
 	}
 
 	@Override
@@ -128,15 +131,17 @@ public class BlockLamp extends BlockTEBase {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-		IconRegistry.addIcon("Lamp0", "thermalexpansion:lamp/Lamp_Basic", ir);
-		IconRegistry.addIcon("LampHalo", "thermalexpansion:lamp/Lamp_Halo", ir);
+		IconRegistry.addIcon("Light0", "thermalexpansion:light/Illuminator_Frame", ir);
+		IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Frame", ir);
+		IconRegistry.addIcon("LightEffect", "thermalexpansion:light/Illuminator_Effect", ir);
+		IconRegistry.addIcon("LightHalo", "thermalexpansion:light/Lamp_Halo", ir);
 	}
 
 	@Override
 	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileLamp tile = (TileLamp) world.getTileEntity(x, y, z);
+		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 		if (tile != null && tile.modified) {
 			tag = new NBTTagCompound();
 			tag.setInteger("Color", tile.color);
@@ -148,11 +153,13 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		TileLamp.initialize();
+		TileLight.initialize();
 
-		lamp = new ItemStack(this, 1, 0);
+		illuminator = new ItemStack(this, 1, 0);
+		lampBasic = new ItemStack(this, 1, 1);
 
-		GameRegistry.registerCustomItemStack("lamp", lamp);
+		GameRegistry.registerCustomItemStack("illuminator", illuminator);
+		GameRegistry.registerCustomItemStack("lampBasic", lampBasic);
 
 		return true;
 	}
@@ -160,19 +167,29 @@ public class BlockLamp extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		if (enable) {
+		if (enable[Types.ILLUMINATOR.ordinal()]) {
+
+		}
+		if (enable[Types.LAMP_BASIC.ordinal()]) {
 
 		}
 		return true;
 	}
 
-	public static boolean enable;
+	public static enum Types {
+		ILLUMINATOR, LAMP_BASIC
+	}
+
+	public static final String[] NAMES = { "illuminator", "lampBasic" };
+	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
 		String category = "block.feature";
-		enable = ThermalExpansion.config.get(category, "Lamp.Enable", true);
+		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Light.Illuminator", true);
+		enable[Types.LAMP_BASIC.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
 	}
 
-	public static ItemStack lamp;
+	public static ItemStack illuminator;
+	public static ItemStack lampBasic;
 
 }

@@ -536,7 +536,10 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return true;
 		}
 		if (canPlayerAccess(player.getCommandSenderName())) {
-			sendNamesList((EntityPlayerMP) player);
+
+			if (ServerHelper.isServerWorld(worldObj)) {
+				sendNamesList((EntityPlayerMP) player);
+			}
 			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}

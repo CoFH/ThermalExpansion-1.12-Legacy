@@ -1,4 +1,4 @@
-package thermalexpansion.block.lamp;
+package thermalexpansion.block.light;
 
 import cofh.api.tileentity.ITileInfo;
 import cofh.network.CoFHPacket;
@@ -17,11 +17,11 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
 
-public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInfo {
+public class TileLight extends TileTEBase implements ITilePacketHandler, ITileInfo {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileLamp.class, "thermalexpansion.Lamp");
+		GameRegistry.registerTileEntity(TileLight.class, "thermalexpansion.Light");
 	}
 
 	// 0 = OFF DEFAULT, 1 = ON DEFAULT, 2 = OFF SCALED, 3 = ON SCALED, 4 = OFF, 5 = ON
@@ -91,7 +91,6 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 		mode = (byte) (++mode % 6);
 		sendUpdatePacket(Side.CLIENT);
-
 		player.addChatMessage(new ChatComponentText(StringHelper.localize("message.thermalexpansion.lamp" + mode)));
 		return true;
 	}
@@ -116,7 +115,22 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 
 		this.modified = true;
 		this.color = color;
+		setRenderColor();
 		sendUpdatePacket(Side.CLIENT);
+		return true;
+	}
+
+	public boolean setRenderColor() {
+
+		if (ServerHelper.isServerWorld(worldObj)) {
+			return false;
+		}
+		int colorMod = 10 + getLightValue() / 3;
+		int red = (color >> 16 & 0xFF) * colorMod / 15;
+		int green = (color >> 8 & 0xFF) * colorMod / 15;
+		int blue = (color & 0xFF) * colorMod / 15;
+
+		renderColor = (red << 24) + (green << 16) + (blue << 8) + 0xFF;
 		return true;
 	}
 
@@ -155,16 +169,9 @@ public class TileLamp extends TileTEBase implements ITilePacketHandler, ITileInf
 		if (!isServer) {
 			mode = payload.getByte();
 			lightValue = payload.getByte();
-
-			int colorMod = 10 + getLightValue() / 3;
-			int red = (color >> 16 & 0xFF) * colorMod / 15;
-			int green = (color >> 8 & 0xFF) * colorMod / 15;
-			int blue = (color & 0xFF) * colorMod / 15;
-
-			renderColor = (red << 24) + (green << 16) + (blue << 8) + 0xFF;
-
 			isPowered = payload.getBool();
 			inputPower = payload.getByte();
+			setRenderColor();
 		}
 	}
 

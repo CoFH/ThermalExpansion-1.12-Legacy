@@ -74,7 +74,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void setDefaultSides() {
+	public void setDefaultSides() {
 
 		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}

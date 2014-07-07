@@ -230,6 +230,7 @@ public class BlockDevice extends BlockTEBase {
 		TileNullifier.initialize();
 
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
+		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
 		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
 		breaker = new ItemStack(this, 1, Types.BREAKER.ordinal());
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
@@ -262,6 +263,9 @@ public class BlockDevice extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] { "YXY", "ICI", "YPY", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
 					Blocks.chest, 'X', Items.paper, 'Y', "ingotTin" }));
 		}
+		if (enable[Types.LEXICON.ordinal()]) {
+
+		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(activator, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', Blocks.chest }));
@@ -277,17 +281,14 @@ public class BlockDevice extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
-		if (enable[Types.LEXICON.ordinal()]) {
-
-		}
 		return true;
 	}
 
 	public static enum Types {
-		WORKBENCH, PLACE_HOLDER, ACTIVATOR, BREAKER, PUMP, NULLIFIER, LEXICON
+		WORKBENCH, LEXICON, ACTIVATOR, BREAKER, PUMP, NULLIFIER
 	}
 
-	public static String[] NAMES = { "workbench", "PLACE_HOLDER", "activator", "breaker", "pump", "nullifier", "lexicon" };
+	public static String[] NAMES = { "workbench", "lexicon", "activator", "breaker", "pump", "nullifier" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -299,6 +300,7 @@ public class BlockDevice extends BlockTEBase {
 	}
 
 	public static ItemStack workbench;
+	public static ItemStack lexicon;
 	public static ItemStack activator;
 	public static ItemStack breaker;
 	public static ItemStack pump;

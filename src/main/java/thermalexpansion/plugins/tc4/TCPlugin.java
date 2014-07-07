@@ -12,7 +12,7 @@ import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.ender.BlockEnder;
-import thermalexpansion.block.lamp.BlockLamp;
+import thermalexpansion.block.light.BlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.block.simple.BlockGlass;
@@ -282,7 +282,7 @@ public class TCPlugin {
 						.add(Aspect.TRAVEL, 12).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
 
 		registerStack(
-				BlockLamp.lamp,
+				BlockLight.lampBasic,
 				new AspectList().add(Aspect.FIRE, 5).add(Aspect.ARMOR, 1).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 2).add(Aspect.METAL, 2)
 						.add(Aspect.MECHANISM, 1).add(Aspect.LIGHT, 10).add(Aspect.SENSES, 2).add(Aspect.WATER, 2));
 

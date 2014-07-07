@@ -11,12 +11,19 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
 
+import org.lwjgl.opengl.GL11;
+
+import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
 
-public class RenderFrame implements ISimpleBlockRenderingHandler {
+public class RenderFrame implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderFrame instance = new RenderFrame();
 
@@ -26,6 +33,8 @@ public class RenderFrame implements ISimpleBlockRenderingHandler {
 	static {
 		TEProps.renderIdFrame = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
+
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockFrame), instance);
 
 		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
@@ -62,14 +71,6 @@ public class RenderFrame implements ISimpleBlockRenderingHandler {
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
 
-		RenderUtils.preItemRender();
-
-		CCRenderState.startDrawing();
-		renderFrame(block, metadata, -0.5, -0.5, -0.5);
-		renderCenter(block, metadata, -0.5, -0.5, -0.5);
-		CCRenderState.draw();
-
-		RenderUtils.postItemRender();
 	}
 
 	@Override
@@ -96,6 +97,40 @@ public class RenderFrame implements ISimpleBlockRenderingHandler {
 	public int getRenderId() {
 
 		return TEProps.renderIdFrame;
+	}
+
+	/* IItemRenderer */
+	@Override
+	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+
+		return true;
+	}
+
+	@Override
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+
+		return true;
+	}
+
+	@Override
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+
+		GL11.glPushMatrix();
+		double offset = -0.5;
+		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+			offset = 0;
+		}
+		Block block = Block.getBlockFromItem(item.getItem());
+		int metadata = item.getItemDamage();
+		RenderUtils.preItemRender();
+
+		CCRenderState.startDrawing();
+		renderFrame(block, metadata, offset, offset, offset);
+		renderCenter(block, metadata, offset, offset, offset);
+		CCRenderState.draw();
+
+		RenderUtils.postItemRender();
+		GL11.glPopMatrix();
 	}
 
 }

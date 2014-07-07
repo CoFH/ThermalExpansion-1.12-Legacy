@@ -41,14 +41,14 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	boolean[] augmentStatus = new boolean[3];
 	ItemStack[] augments = new ItemStack[3];
 
-	int level = 0;
+	byte level = 0;
 	int processMod = 1;
 	int energyMod = 1;
 	int secondaryChance = 100;
 
-	public boolean augmentAutoTransfer = true;
-	public boolean augmentReconfigSides = true;
-	public boolean augmentRSControl = true;
+	public boolean augmentAutoTransfer;
+	public boolean augmentReconfigSides;
+	public boolean augmentRSControl;
 
 	public TileMachineBase() {
 
@@ -222,7 +222,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
 
-		level = nbt.getInteger("Level");
+		level = nbt.getByte("Level");
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
 		augments = new ItemStack[augments.length + level];
@@ -239,7 +239,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	public void writeAugmentsToNBT(NBTTagCompound nbt) {
 
-		nbt.setInteger("Level", level);
+		nbt.setByte("Level", level);
 
 		if (augments.length <= 0) {
 			return;

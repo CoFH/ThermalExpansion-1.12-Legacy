@@ -71,7 +71,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void setDefaultSides() {
+	public void setDefaultSides() {
 
 		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}

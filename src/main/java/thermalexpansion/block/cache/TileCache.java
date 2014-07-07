@@ -360,8 +360,7 @@ public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfig
 			if (side != facing) {
 				return IconRegistry.getIcon("CacheBlank");
 			}
-			int stored = Math.min(8, getScaledItemsStored(9));
-			return facing == 3 || facing == 4 ? IconRegistry.getIcon("CacheMeter", stored) : IconRegistry.getIcon("CacheMeterInv", stored);
+			return IconRegistry.getIcon("CacheMeter", Math.min(8, getScaledItemsStored(9)));
 		}
 		if (side == 0) {
 			return IconRegistry.getIcon("CacheBottom", type);
