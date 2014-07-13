@@ -79,6 +79,15 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	@Override
 	public ItemStack slotClick(int slotId, int mouseButton, int modifier, EntityPlayer player) {
 
+		if (mouseButton == 1 && modifier == 1 && slotId >= 54 && slotId < 57) {
+			Slot slot = (Slot) inventorySlots.get(slotId);
+			if (slot.getHasStack()) {
+				myTile.setCurrentSchematicSlot(slot.getSlotIndex());
+				myTile.setCraftingGrid();
+				modifier = 0;
+				slotId = 57;
+			}
+		}
 		if (ServerHelper.isClientWorld(player.worldObj)) {
 			ItemStack result = super.slotClick(slotId, mouseButton, modifier, player);
 

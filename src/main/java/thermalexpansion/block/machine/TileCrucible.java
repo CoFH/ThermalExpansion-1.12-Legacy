@@ -39,6 +39,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParams(40, 400, 400000);
@@ -55,7 +56,6 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		setDefaultSides();
 		inventory = new ItemStack[1 + 1];
 	}
 
@@ -63,12 +63,6 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -177,11 +171,13 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		return new ContainerCrucible(inventory, this);
 	}
 
+	@Override
 	public FluidTankAdv getTank() {
 
 		return tank;
 	}
 
+	@Override
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();

@@ -1,6 +1,7 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.TMap;
@@ -16,7 +17,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -34,7 +34,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	static TMap fuels = new THashMap<Fluid, Integer>();
 
-	FluidTank tank = new FluidTank(MAX_FLUID);
+	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 
 	public static boolean isValidFuel(FluidStack stack) {
@@ -105,7 +105,8 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		return new ContainerTEBase(inventory, this);
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	@Override
+	public FluidTankAdv getTank(int tankIndex) {
 
 		return tank;
 	}

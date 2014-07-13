@@ -58,7 +58,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		for (int i = 24; i < 48; i++) {
 			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
 		}
-		modelFrame.computeLighting(LightModel.standardLightModel);
+		modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
 	public static void initialize() {
@@ -187,12 +187,11 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
-		instance.renderFrame(item.getItemDamage(), 0, offset, offset, offset);
+		renderFrame(item.getItemDamage(), 0, offset, offset, offset);
 		CCRenderState.draw();
 
 		CCRenderState.startDrawing();
-		// CCRenderState.setBrightness(255);
-		instance.renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
+		renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
 		CCRenderState.draw();
 
 		RenderUtils.postItemRender();

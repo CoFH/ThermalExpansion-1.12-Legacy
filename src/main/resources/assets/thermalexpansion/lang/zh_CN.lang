@@ -127,16 +127,6 @@ info.thermalexpansion.capacitor4=按住潜行(shift)键再次右击即可取消�
 info.thermalexpansion.capacitor5=必须放在快捷栏内.
 info.thermalexpansion.capacitor.potato=机智的马铃薯君,可惜不能再次充能.
 
-info.thermalexpansion.conduit.energy=传输RF能量.
-info.thermalexpansion.conduit.fluid1=传输流体.
-info.thermalexpansion.conduit.fluid2=传输速率依赖流体类型.
-info.thermalexpansion.conduit.item=传输物品.
-info.thermalexpansion.conduit.itemFast=快捷地传输物品.
-info.thermalexpansion.conduit.opaque=所容纳的物品不可见
-info.thermalexpansion.conduit.rate=速率
-info.thermalexpansion.conduit.servo0=安装气动伺服器以升级.
-info.thermalexpansion.conduit.servo1=升级后空手配置.
-
 info.thermalexpansion.dynamo.generate=产能(RF)
 info.thermalexpansion.dynamo.steam1=需要水以及固态燃料.
 info.thermalexpansion.dynamo.steam2=需要泵入蒸汽以替代.
@@ -215,24 +205,6 @@ itemGroup.thermalexpansion.creativeTabBlocks=热能扩展|方块
 itemGroup.thermalexpansion.creativeTabTools=热能扩展|工具
 itemGroup.thermalexpansion.creativeTabItems=热能扩展|物品
 itemGroup.thermalexpansion.creativeTabFlorbs=热能扩展|流体球
-
-message.thermalexpansion.conduit.energy0=网络饱和
-message.thermalexpansion.conduit.energy1=持续监控20ticks
-message.thermalexpansion.conduit.energy2=平均分布
-message.thermalexpansion.conduit.energy3=ticks
-
-message.thermalexpansion.conduit.item0=模式: 标准
-message.thermalexpansion.conduit.item1=模式: 路径延长
-message.thermalexpansion.conduit.item2=模式: 路径缩短
-message.thermalexpansion.conduit.item3=模式: 循环赛式
-
-message.thermalexpansion.conduit.item.warn0=导管内阻塞的物品空间已被疏通!
-message.thermalexpansion.conduit.item.warn1=导管内包含超过64个阻塞物品!
-message.thermalexpansion.conduit.item.warn2=再敲打会拆掉导管丢失其中的物品,先将它清空吧!
-
-message.thermalexpansion.conduit.servo0=需要安装气动伺服器以进行控制.
-message.thermalexpansion.conduit.servo1=气动伺服器已安装!
-message.thermalexpansion.conduit.servo2=已经安装过气动伺服器!
  
 message.thermalexpansion.lamp0=模式: 已切换; 默认: 关闭
 message.thermalexpansion.lamp1=模式: 已切换; 默认: 开启
@@ -240,16 +212,6 @@ message.thermalexpansion.lamp2=模式: 同比缩放
 message.thermalexpansion.lamp3=模式: 反比缩放
 message.thermalexpansion.lamp4=模式: 常关
 message.thermalexpansion.lamp5=模式: 常开
-
-tile.thermalexpansion.conduit.energyBasic.name=铅石能量导管
-tile.thermalexpansion.conduit.energyHardened.name=强化能量导管
-tile.thermalexpansion.conduit.energyReinforced.name=红石能量导管
-tile.thermalexpansion.conduit.fluidTrans.name=液体导管
-tile.thermalexpansion.conduit.fluidOpaque.name=液体导管 (非透明)
-tile.thermalexpansion.conduit.itemTrans.name=物品导管
-tile.thermalexpansion.conduit.itemOpaque.name=物品导管 (非透明)
-tile.thermalexpansion.conduit.itemFastTrans.name=脉冲物品导管
-tile.thermalexpansion.conduit.itemFastOpaque.name=脉冲物品导管 (非透明)
 
 tile.thermalexpansion.device.workbench.name=机械师工作台
 tile.thermalexpansion.device.tinkerbench.name=巧匠工作台

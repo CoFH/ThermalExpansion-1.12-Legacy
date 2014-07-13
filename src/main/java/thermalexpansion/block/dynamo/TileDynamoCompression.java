@@ -1,6 +1,7 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.TMap;
@@ -16,7 +17,6 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -35,8 +35,8 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	static TMap fuels = new THashMap<Fluid, Integer>();
 	static TMap coolants = new THashMap<Fluid, Integer>();
 
-	FluidTank fuelTank = new FluidTank(MAX_FLUID);
-	FluidTank coolantTank = new FluidTank(MAX_FLUID);
+	FluidTankAdv fuelTank = new FluidTankAdv(MAX_FLUID);
+	FluidTankAdv coolantTank = new FluidTankAdv(MAX_FLUID);
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int coolantRF;
@@ -133,7 +133,8 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		return new ContainerTEBase(inventory, this);
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	@Override
+	public FluidTankAdv getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return fuelTank;

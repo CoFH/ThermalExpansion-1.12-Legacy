@@ -8,6 +8,7 @@ import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabEnergy;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
+import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,6 +26,7 @@ public class GuiCharger extends GuiBaseAdv {
 	static final String INFO = "Infuse energy into compatible items.\n\nCharge rate may be limited by the item.\n\nFeel the hum.";
 
 	TileCharger myTile;
+	String playerName;
 
 	ElementBase slotInput;
 	ElementBase slotOutput;
@@ -34,6 +36,7 @@ public class GuiCharger extends GuiBaseAdv {
 		super(new ContainerCharger(inventory, theTile), TEXTURE);
 		myTile = (TileCharger) theTile;
 		name = myTile.getInventoryName();
+		playerName = inventory.player.getCommandSenderName();
 	}
 
 	@Override
@@ -51,6 +54,19 @@ public class GuiCharger extends GuiBaseAdv {
 		addTab(new TabConfiguration(this, myTile));
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone));
+		if (myTile.enableSecurity() && myTile.isSecured()) {
+			addTab(new TabSecurity(this, myTile, playerName));
+		}
+	}
+
+	@Override
+	public void updateScreen() {
+
+		super.updateScreen();
+
+		if (!myTile.canAccess()) {
+			this.mc.thePlayer.closeScreen();
+		}
 	}
 
 	@Override

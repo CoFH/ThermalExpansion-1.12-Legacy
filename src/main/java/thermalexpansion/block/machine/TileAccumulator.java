@@ -3,6 +3,7 @@ package thermalexpansion.block.machine;
 import cofh.core.CoFHProps;
 import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -17,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -38,6 +38,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(0);
@@ -67,7 +68,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		passiveGen = ThermalExpansion.config.get("tweak", "Accumulator.PassiveGen", false);
 	}
 
-	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_SMALL);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 
 	int adjacentSources = -1;
 	int outputTrackerFluid;
@@ -77,20 +78,12 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public TileAccumulator() {
 
 		super();
-
-		setDefaultSides();
 	}
 
 	@Override
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 1, 1, 1, 1, 1, 1 };
 	}
 
 	@Override
@@ -143,7 +136,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	protected void updateAdjacentSources() {
 
-		inHell = worldObj.getBiomeGenForCoords(xCoord, zCoord) != BiomeGenBase.hell;
+		inHell = worldObj.getBiomeGenForCoords(xCoord, zCoord) == BiomeGenBase.hell;
 
 		adjacentSources = 0;
 		Block block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
@@ -234,17 +227,21 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
+	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		iCrafting.sendProgressBarUpdate(container, 0, adjacentSources);
-		iCrafting.sendProgressBarUpdate(container, 1, tank.getFluidAmount());
+		super.sendGuiNetworkData(container, player);
+
+		player.sendProgressBarUpdate(container, 0, adjacentSources);
+		player.sendProgressBarUpdate(container, 1, tank.getFluidAmount());
 	}
 
-	public FluidTank getTank() {
+	@Override
+	public FluidTankAdv getTank() {
 
 		return tank;
 	}
 
+	@Override
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();

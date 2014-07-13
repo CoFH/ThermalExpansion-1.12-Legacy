@@ -1,10 +1,10 @@
 package thermalexpansion.block.cell;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
+import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,6 +34,7 @@ import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.ReconfigurableHelper;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalfoundation.item.TFItems;
 
@@ -80,23 +81,18 @@ public class BlockCell extends BlockTEBase {
 
 			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 			tile.energySend = stack.stackTagCompound.getInteger("Send");
-			tile.energyReceive = stack.stackTagCompound.getInteger("Receive");
+			tile.energyReceive = stack.stackTagCompound.getInteger("Recv");
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
-			int storedFacing = stack.stackTagCompound.getByte("Facing");
-			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
+			int storedFacing = ReconfigurableHelper.getFacing(stack);
+			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
 
-			if (sideCache.length <= 0) {
-				sideCache = TileCell.DEFAULT_SIDES.clone();
-			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
 			tile.sideCache[facing] = sideCache[storedFacing];
 			tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
 			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
-
-			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -190,14 +186,11 @@ public class BlockCell extends BlockTEBase {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setByteArray("SideCache", tile.sideCache);
-			tag.setByte("Facing", (byte) tile.getFacing());
+			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
 
 			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
 			tag.setInteger("Send", tile.energySend);
-			tag.setInteger("Receive", tile.energyReceive);
-
-			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
+			tag.setInteger("Recv", tile.energyReceive);
 		}
 		return tag;
 	}
@@ -261,6 +254,14 @@ public class BlockCell extends BlockTEBase {
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
+
+		GameRegistry.addRecipe(new RecipeSecure(cellBasic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellBasic }));
+		GameRegistry
+				.addRecipe(new RecipeSecure(cellHardened, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellHardened }));
+		GameRegistry.addRecipe(new RecipeSecure(cellReinforced, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				cellReinforced }));
+		GameRegistry
+				.addRecipe(new RecipeSecure(cellResonant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellResonant }));
 		return true;
 	}
 

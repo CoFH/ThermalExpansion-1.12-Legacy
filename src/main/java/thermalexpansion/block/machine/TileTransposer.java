@@ -41,6 +41,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, false, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(40);
@@ -62,7 +63,6 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1];
 	}
 
@@ -97,12 +97,6 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		} else {
 			super.updateEntity();
 		}
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -433,11 +427,13 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		return new ContainerTransposer(inventory, this);
 	}
 
+	@Override
 	public FluidTankAdv getTank() {
 
 		return tank;
 	}
 
+	@Override
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();

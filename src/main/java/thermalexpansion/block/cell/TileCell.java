@@ -29,11 +29,20 @@ public class TileCell extends TileReconfigurable {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileCell.class, "thermalexpansion.Cell");
+		configure();
 	}
 
-	public static int[] MAX_SEND = { 10000, 80, 400, 2000, 10000 };
-	public static int[] MAX_RECEIVE = { 0, 80, 400, 2000, 10000 };
-	public static int[] STORAGE = { 10000, 400000, 2000000, 10000000, 50000000 };
+	public static void configure() {
+
+		String comment = "Enable this to allow for Energy Cells to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("block.security", "Cell.Secure", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
+
+	public static int[] MAX_SEND = { 20000, 80, 400, 2000, 10000 };
+	public static int[] MAX_RECEIVE = { 20000, 80, 400, 2000, 10000 };
+	public static int[] STORAGE = { 20000, 400000, 2000000, 10000000, 50000000 };
 	public static final byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
 
 	static {
@@ -57,7 +66,8 @@ public class TileCell extends TileReconfigurable {
 		MAX_RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Basic.MaxReceive", MAX_RECEIVE[1]), MAX_RECEIVE[1] / 10,
 				MAX_RECEIVE[1] * 1000);
 
-		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Creative.MaxSend", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
+		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Creative.MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
+		MAX_RECEIVE[0] = MAX_SEND[0];
 		STORAGE[0] = MAX_SEND[0];
 	}
 
@@ -105,6 +115,18 @@ public class TileCell extends TileReconfigurable {
 	public int getLightValue() {
 
 		return Math.min(8, getScaledEnergyStored(9));
+	}
+
+	@Override
+	public byte[] getDefaultSides() {
+
+		return DEFAULT_SIDES.clone();
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
 	}
 
 	@Override
@@ -250,6 +272,18 @@ public class TileCell extends TileReconfigurable {
 
 	/* NETWORK METHODS */
 	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addInt(energySend);
+		payload.addInt(energyReceive);
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	@Override
 	public CoFHPacket getGuiPacket() {
 
 		CoFHPacket payload = super.getGuiPacket();
@@ -289,6 +323,21 @@ public class TileCell extends TileReconfigurable {
 
 		energySend = payload.getInt();
 		energyReceive = payload.getInt();
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			energySend = payload.getInt();
+			energyReceive = payload.getInt();
+		} else {
+			payload.getInt();
+			payload.getInt();
+		}
 	}
 
 	/* IEnergyHandler */

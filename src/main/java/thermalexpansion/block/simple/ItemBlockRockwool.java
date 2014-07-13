@@ -25,7 +25,7 @@ public class ItemBlockRockwool extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 
-		return "tile.thermalexpansion.rockwool." + ItemDye.field_150923_a[item.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.rockwool." + ItemDye.field_150923_a[15 - item.getItemDamage()] + ".name";
 	}
 
 	@Override

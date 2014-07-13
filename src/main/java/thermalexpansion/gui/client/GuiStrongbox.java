@@ -45,9 +45,9 @@ public class GuiStrongbox extends GuiBaseAdv {
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			addTab(new TabInfo(this, INFO_CREATIVE));
 		} else {
-			addTab(new TabInfo(this, myTile.enchant > 0 ? INFO : INFO + INFO_ENCHANT, 1));
+			addTab(new TabInfo(this, myTile.enchant > 0 ? INFO : INFO + INFO_ENCHANT));
 		}
-		if (TileStrongbox.enableSecurity) {
+		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 	}
@@ -57,7 +57,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 
 		super.updateScreen();
 
-		if (!myTile.canAccess) {
+		if (!myTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
 	}

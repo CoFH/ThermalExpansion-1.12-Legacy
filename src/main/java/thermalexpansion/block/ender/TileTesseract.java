@@ -1,12 +1,10 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.core.ISecurable;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
 import cofh.api.transport.RegistryEnderAttuned;
-import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
@@ -50,7 +48,7 @@ import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSControl implements ITileInfoPacketHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-		ISecurable, ISidedInventory {
+		ISidedInventory {
 
 	public static void initialize() {
 
@@ -68,7 +66,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	}
 
 	private boolean isSending = false;
-	String owner = CoFHProps.DEFAULT_OWNER;
 	int itemTrackerAdjacent;
 	int itemTrackerRemote;
 	int fluidTrackerAdjacent;
@@ -84,13 +81,8 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public byte modeItem = (byte) TransferMode.RECV.ordinal();
 	public byte modeFluid = (byte) TransferMode.RECV.ordinal();
 	public byte modeEnergy = (byte) TransferMode.RECV.ordinal();
-	public boolean isActive = false;
-	public AccessMode access = AccessMode.PUBLIC;
 
 	/* Augment Variables */
-
-	/* Client-Side Only */
-	public boolean canAccess = true;
 
 	public TileTesseract() {
 
@@ -471,7 +463,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void incEnergyMode() {
 
 		modeEnergy++;
-		if (modeEnergy == 4) {
+		if (modeEnergy > 3) {
 			modeEnergy = 0;
 		}
 	}
@@ -479,15 +471,15 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void decEnergyMode() {
 
 		modeEnergy--;
-		if (modeEnergy == 0) {
-			modeEnergy = 4;
+		if (modeEnergy < 0) {
+			modeEnergy = 3;
 		}
 	}
 
 	public void incFluidMode() {
 
 		modeFluid++;
-		if (modeFluid == 4) {
+		if (modeFluid > 3) {
 			modeFluid = 0;
 		}
 	}
@@ -495,15 +487,15 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void decFluidMode() {
 
 		modeFluid--;
-		if (modeFluid == 0) {
-			modeFluid = 4;
+		if (modeFluid < 0) {
+			modeFluid = 3;
 		}
 	}
 
 	public void incItemMode() {
 
 		modeItem++;
-		if (modeItem == 4) {
+		if (modeItem > 3) {
 			modeItem = 0;
 		}
 	}
@@ -511,8 +503,8 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void decItemMode() {
 
 		modeItem--;
-		if (modeItem == 0) {
-			modeItem = 4;
+		if (modeItem < 0) {
+			modeItem = 3;
 		}
 	}
 
@@ -536,7 +528,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return true;
 		}
 		if (canPlayerAccess(player.getCommandSenderName())) {
-
 			if (ServerHelper.isServerWorld(worldObj)) {
 				sendNamesList((EntityPlayerMP) player);
 			}
@@ -551,23 +542,9 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	}
 
 	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
 	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		int access = 0;
-		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
-			access = 1;
-		}
-		player.sendProgressBarUpdate(container, 0, access);
+		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getDisplayName()) ? 1 : 0);
 	}
 
 	/* NBT METHODS */
@@ -575,9 +552,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
-		access = AccessMode.values()[nbt.getByte("Access")];
-		owner = nbt.getString("Owner");
 
 		modeItem = nbt.getByte("Item.Mode");
 		modeFluid = nbt.getByte("Fluid.Mode");
@@ -599,9 +573,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("Owner", owner);
 
 		nbt.setByte("Item.Mode", modeItem);
 		nbt.setByte("Fluid.Mode", modeFluid);
@@ -626,11 +597,15 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		payload.addByte(modeEnergy);
 		payload.addByte(modeFluid);
 		payload.addByte(modeItem);
-		payload.addByte((byte) access.ordinal());
 		payload.addInt(frequency);
-		payload.addString(owner);
 
 		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		return null;
 	}
 
 	/* ITilePacketHandler */
@@ -642,9 +617,9 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		modeEnergy = payload.getByte();
 		modeFluid = payload.getByte();
 		modeItem = payload.getByte();
-		access = ISecurable.AccessMode.values()[payload.getByte()];
 		frequency = payload.getInt();
-		owner = payload.getString();
+
+		isActive = frequency == -1 ? false : true;
 	}
 
 	/* ITileInfoPacketHandler */
@@ -674,7 +649,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			modeItem = payload.getByte();
 			modeFluid = payload.getByte();
 			modeEnergy = payload.getByte();
-			access = ISecurable.AccessMode.values()[payload.getByte()];
+			access = AccessMode.values()[payload.getByte()];
 			frequency = payload.getInt();
 			addToRegistry();
 
@@ -972,28 +947,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			setTileInfo(-1);
 		}
 		return true;
-	}
-
-	@Override
-	public AccessMode getAccess() {
-
-		return access;
-	}
-
-	@Override
-	public boolean setOwnerName(String name) {
-
-		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
-			owner = name;
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getOwnerName() {
-
-		return owner;
 	}
 
 	/* ISidedInventory */

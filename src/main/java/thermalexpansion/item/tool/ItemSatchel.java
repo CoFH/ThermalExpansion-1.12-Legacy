@@ -1,5 +1,6 @@
 package thermalexpansion.item.tool;
 
+import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.core.CoFHProps;
 import cofh.enchantment.CoFHEnchantment;
@@ -8,18 +9,20 @@ import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.ServerHelper;
+import cofh.util.SocialRegistry;
 import cofh.util.StringHelper;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
 import thermalexpansion.ThermalExpansion;
@@ -27,9 +30,13 @@ import thermalexpansion.gui.GuiHandler;
 
 public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
+	IIcon latch[] = new IIcon[3];
+
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
 
-		container.setTagCompound(new NBTTagCompound());
+		if (container.stackTagCompound == null) {
+			container.setTagCompound(new NBTTagCompound());
+		}
 		container.stackTagCompound.setBoolean("Accessible", true);
 		return container;
 	}
@@ -70,8 +77,18 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		if (CoreUtils.isFakePlayer(player)) {
 			return stack;
 		}
+		if (SecurityHelper.isSecure(stack)) {
+			if (SecurityHelper.getOwnerName(stack).isEmpty()) {
+				SecurityHelper.setOwnerName(stack, player.getDisplayName());
+			}
+		}
 		if (ServerHelper.isServerWorld(world)) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
+			if (canPlayerAccess(stack, player.getDisplayName())) {
+				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
+			} else if (SecurityHelper.isSecure(stack)) {
+				player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + SecurityHelper.getOwnerName(stack) + "! "
+						+ StringHelper.localize("message.cofh.secure2")));
+			}
 		}
 		return stack;
 	}
@@ -85,41 +102,19 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
+		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForInfo());
-		}
-		if (stack.stackTagCompound == null) {
-			return;
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		SecurityHelper.addAccessInformation(stack, list);
 		ItemHelper.addInventoryInformation(stack, list);
 	}
 
 	@Override
-	public boolean hasCustomEntity(ItemStack stack) {
-
-		return SecurityHelper.isSecure(stack);
-	}
-
-	@Override
-	public Entity createEntity(World world, Entity location, ItemStack stack) {
-
-		location.invulnerable = true;
-		location.isImmuneToFire = true;
-		return null;
-	}
-
-	@Override
-	public boolean onEntityItemUpdate(EntityItem entity) {
-
-		entity.age = 0;
-		return false;
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
+	public boolean requiresMultipleRenderPasses() {
 
 		return true;
 	}
@@ -130,6 +125,28 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		return 10;
 	}
 
+	@Override
+	public IIcon getIcon(ItemStack stack, int pass) {
+
+		if (pass == 0) {
+			return super.getIcon(stack, pass);
+		}
+		if (SecurityHelper.isSecure(stack)) {
+			return latch[SecurityHelper.getAccess(stack).ordinal()];
+		}
+		return latch[0];
+	}
+
+	@Override
+	public void registerIcons(IIconRegister ir) {
+
+		super.registerIcons(ir);
+
+		latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPublic");
+		latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchFriends");
+		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPrivate");
+	}
+
 	public static boolean isEnchanted(ItemStack container) {
 
 		return EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container) > 0;
@@ -137,7 +154,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static int getStorageIndex(int type, int enchant) {
 
-		return type > 0 ? 2 * type + enchant : 0;
+		return type > 0 ? type + enchant : 0;
 	}
 
 	public static int getStorageIndex(ItemStack container) {
@@ -146,6 +163,18 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container);
 
 		return getStorageIndex(type, enchant);
+	}
+
+	public static boolean canPlayerAccess(ItemStack stack, String name) {
+
+		if (!SecurityHelper.isSecure(stack)) {
+			return true;
+		}
+		AccessMode access = SecurityHelper.getAccess(stack);
+		String owner = SecurityHelper.getOwnerName(stack);
+
+		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
+				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
 	}
 
 	/* IInventoryContainerItem */

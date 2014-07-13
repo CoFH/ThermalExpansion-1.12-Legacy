@@ -1,15 +1,10 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementFluid;
 import cofh.gui.element.ElementFluidTank;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
 import cofh.util.FluidHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -21,7 +16,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.machine.ContainerExtruder;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiExtruder extends GuiBaseAdv {
+public class GuiExtruder extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
 	static final String INFO = "Mixes water and lava to make different types of igneous rock.\n\nThe selected item is what you'll get, if there is enough water and lava in the tanks.\n\nMC physics is fun!";
@@ -36,11 +31,13 @@ public class GuiExtruder extends GuiBaseAdv {
 	ElementDualScaled progressLavaOverlay;
 	ElementDualScaled progressWaterOverlay;
 
-	public GuiExtruder(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiExtruder(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerExtruder(inventory, theTile), TEXTURE);
-		myTile = (TileExtruder) theTile;
-		name = myTile.getInventoryName();
+		super(new ContainerExtruder(inventory, tile), tile, inventory.player, TEXTURE);
+
+		myTile = (TileExtruder) tile;
+		myInfo = INFO;
+		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override
@@ -60,15 +57,12 @@ public class GuiExtruder extends GuiBaseAdv {
 				.setTexture(TEX_DROP_RIGHT, 48, 16));
 		progressWaterOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
 				.setTexture(TEX_DROP_LEFT, 48, 16));
-
-		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfiguration(this, myTile));
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration));
 	}
 
 	@Override
 	protected void updateElementInformation() {
+
+		super.updateElementInformation();
 
 		slotInputWater.setVisible(myTile.hasSide(1));
 		slotInputLava.setVisible(myTile.hasSide(1));
@@ -110,7 +104,7 @@ public class GuiExtruder extends GuiBaseAdv {
 	protected void drawCurSelection() {
 
 		int offset = 32;
-		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive()) {
+		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive) {
 			offset = 64;
 		}
 		switch (myTile.getCurSelection()) {

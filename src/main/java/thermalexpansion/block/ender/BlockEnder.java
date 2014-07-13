@@ -1,8 +1,7 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.core.ISecurable;
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.render.IconRegistry;
+import cofh.util.RecipeSecure;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -29,6 +28,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEItems;
 
 public class BlockEnder extends BlockTEBase {
 
@@ -49,24 +49,19 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		list.add(new ItemStack(item, 1, 0));
+		list.add(ItemBlockEnder.setDefaultTag(new ItemStack(item, 1, 0)));
 	}
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
-		if (ServerHelper.isServerWorld(world) && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Owner")) {
+		if (ServerHelper.isServerWorld(world) && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
 			TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
 			tile.removeFromRegistry();
-
-			tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-			tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
 
 			tile.modeItem = stack.stackTagCompound.getByte("ModeItems");
 			tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");
 			tile.modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
-
-			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
 
 			tile.frequency = stack.stackTagCompound.getInteger("Frequency");
 			tile.isActive = tile.frequency != -1;
@@ -130,15 +125,11 @@ public class BlockEnder extends BlockTEBase {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setString("Owner", tile.getOwnerName());
 			tag.setInteger("Frequency", tile.frequency);
 
 			tag.setByte("ModeItems", tile.modeItem);
 			tag.setByte("ModeFluid", tile.modeFluid);
 			tag.setByte("ModeEnergy", tile.modeEnergy);
-
-			tag.setByte("Access", (byte) tile.getAccess().ordinal());
-			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
 		}
 		return tag;
 	}
@@ -163,6 +154,8 @@ public class BlockEnder extends BlockTEBase {
 
 		tesseract = new ItemStack(this, 1, 0);
 
+		ItemBlockEnder.setDefaultTag(tesseract);
+
 		return true;
 	}
 
@@ -173,6 +166,7 @@ public class BlockEnder extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
 					'B', "ingotBronze" }));
 		}
+		GameRegistry.addRecipe(new RecipeSecure(tesseract, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', tesseract }));
 		return true;
 	}
 

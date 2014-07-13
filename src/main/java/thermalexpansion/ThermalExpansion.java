@@ -32,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.cell.BlockCell;
+import thermalexpansion.block.cell.TileCell;
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.core.Proxy;
@@ -95,17 +96,10 @@ public class ThermalExpansion extends BaseMod {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
+		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/ThermalExpansion.cfg")));
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
-
-		boolean optionColorBlind = false;
-		boolean optionDrawBorders = true;
-		boolean optionEnableAchievements = true;
-
-		int tweakLavaRF = TEProps.lavaRF;
-
-		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/ThermalExpansion.cfg")));
 
 		cleanConfig(true);
 
@@ -113,37 +107,7 @@ public class ThermalExpansion extends BaseMod {
 		TEBlocks.preInit();
 		TEPlugins.preInit();
 
-		String category = "general";
-		String comment = null;
-
-		TEProps.enableUpdateNotice = config.get(category, "EnableUpdateNotifications", TEProps.enableUpdateNotice);
-		TEProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", TEProps.enableDismantleLogging);
-		TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
-		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
-		optionColorBlind = config.get(category, "ColorBlindTextures", false);
-		optionDrawBorders = config.get(category, "DrawGUISlotBorders", true);
-
-		category = "tweak";
-		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
-
-		category = "holiday";
-		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
-		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
-
-		/* Graphics Config */
-		if (optionColorBlind) {
-			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
-			TEProps.textureSelection = TEProps.TEXTURE_CB;
-			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
-		}
-		TEProps.enableGuiBorders = optionDrawBorders;
-
-		/* Tweaks */
-		if (tweakLavaRF >= 10000 && tweakLavaRF < TEProps.LAVA_MAX_RF) {
-			TEProps.lavaRF = tweakLavaRF;
-		} else {
-			log.info("'LavaRFValue' config value is out of acceptable range. Using default.");
-		}
+		configOptions();
 	}
 
 	@EventHandler
@@ -162,8 +126,8 @@ public class ThermalExpansion extends BaseMod {
 
 		/* Register Handlers */
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
-		GenericTEPacket.initialize();
 		MinecraftForge.EVENT_BUS.register(proxy);
+		GenericTEPacket.initialize();
 
 		try {
 			Field eBus = FMLModContainer.class.getDeclaredField("eventBus");
@@ -217,8 +181,10 @@ public class ThermalExpansion extends BaseMod {
 
 	public void handleConfigSync(CoFHPacket payload) {
 
+		TileCell.enableSecurity = payload.getBool();
 		TileWorkbench.enableSecurity = payload.getBool();
 		TileStrongbox.enableSecurity = payload.getBool();
+		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info(StringHelper.localize("message.cofh.receiveConfig"));
 	}
@@ -226,14 +192,19 @@ public class ThermalExpansion extends BaseMod {
 	public CoFHPacket getConfigSync() {
 
 		CoFHPacket payload = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
+
+		payload.addBool(TileCell.enableSecurity);
 		payload.addBool(TileWorkbench.enableSecurity);
 		payload.addBool(TileStrongbox.enableSecurity);
+		payload.addBool(ItemSatchel.enableSecurity);
+
 		return payload;
 	}
 
-	// Called when the client is d/ced from the server.
+	// Called when the client disconnects from the server.
 	public void resetClientConfigs() {
 
+		TileCell.configure();
 		TileWorkbench.configure();
 		TileStrongbox.configure();
 		ItemSatchel.configure();
@@ -244,6 +215,47 @@ public class ThermalExpansion extends BaseMod {
 	/* LOADING FUNCTIONS */
 	void loadWorldGeneration() {
 
+	}
+
+	void configOptions() {
+
+		boolean optionColorBlind = false;
+		boolean optionDrawBorders = true;
+		boolean optionEnableAchievements = true;
+		int tweakLavaRF = TEProps.lavaRF;
+
+		String category = "general";
+		String comment = null;
+
+		TEProps.enableUpdateNotice = config.get(category, "EnableUpdateNotifications", TEProps.enableUpdateNotice);
+		TEProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", TEProps.enableDismantleLogging);
+		TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
+		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
+		optionColorBlind = config.get(category, "ColorBlindTextures", false);
+		optionDrawBorders = config.get(category, "DrawGUISlotBorders", true);
+
+		category = "tweak";
+		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
+
+		category = "holiday";
+		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
+		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
+
+		/* Graphics Config */
+		if (optionColorBlind) {
+			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
+			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
+			TEProps.textureSelection = TEProps.TEXTURE_CB;
+			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
+		}
+		TEProps.enableGuiBorders = optionDrawBorders;
+
+		/* Tweaks */
+		if (tweakLavaRF >= 10000 && tweakLavaRF < TEProps.LAVA_MAX_RF) {
+			TEProps.lavaRF = tweakLavaRF;
+		} else {
+			log.info("'LavaRFValue' config value is out of acceptable range. Using default.");
+		}
 	}
 
 	void cleanConfig(boolean preInit) {

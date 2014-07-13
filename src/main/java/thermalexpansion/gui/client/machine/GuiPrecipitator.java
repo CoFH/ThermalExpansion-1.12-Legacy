@@ -1,17 +1,11 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluid;
 import cofh.gui.element.ElementFluidTank;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabEnergy;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +16,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiPrecipitator extends GuiBaseAdv {
+public class GuiPrecipitator extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
 	static final String INFO = "Uses Redstone Flux to freeze various fluids!\n\nThe selected item is what you'll get, if there is enough fluid in the tank.\n\nHave a snowball fight.";
@@ -35,11 +29,13 @@ public class GuiPrecipitator extends GuiBaseAdv {
 	ElementDualScaled progressOverlay;
 	ElementDualScaled speed;
 
-	public GuiPrecipitator(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerPrecipitator(inventory, theTile), TEXTURE);
-		myTile = (TilePrecipitator) theTile;
-		name = myTile.getInventoryName();
+		super(new ContainerPrecipitator(inventory, tile), tile, inventory.player, TEXTURE);
+
+		myTile = (TilePrecipitator) tile;
+		myInfo = INFO;
+		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override
@@ -56,16 +52,12 @@ public class GuiPrecipitator extends GuiBaseAdv {
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
 				.setTexture(TEX_DROP_LEFT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_SNOWFLAKE, 32, 16));
-
-		addTab(new TabEnergy(this, myTile, false));
-		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfiguration(this, myTile));
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
 	}
 
 	@Override
 	protected void updateElementInformation() {
+
+		super.updateElementInformation();
 
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput.setVisible(myTile.hasSide(2));
@@ -105,7 +97,7 @@ public class GuiPrecipitator extends GuiBaseAdv {
 	protected void drawCurSelection() {
 
 		int offset = 32;
-		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive()) {
+		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive) {
 			offset = 64;
 		}
 		switch (myTile.getCurSelection()) {

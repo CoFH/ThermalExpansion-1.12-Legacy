@@ -124,6 +124,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return new ContainerDynamoEnervation(inventory, this);
 	}
 
+	@Override
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {

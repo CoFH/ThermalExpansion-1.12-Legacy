@@ -2,6 +2,7 @@ package thermalexpansion.gui.element;
 
 import cofh.gui.GuiBase;
 import cofh.gui.element.TabBase;
+import cofh.gui.element.TabConfiguration;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -12,7 +13,6 @@ import thermalexpansion.block.ender.TileTesseract;
 
 public class TabConfigTesseract extends TabBase {
 
-	public static int defaultSide = 1;
 	public static final String[] TOOLTIPS = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
 			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
@@ -21,18 +21,22 @@ public class TabConfigTesseract extends TabBase {
 
 	public TabConfigTesseract(GuiBase gui, TileTesseract theTile, String playerName) {
 
-		this(gui, defaultSide, theTile, playerName);
+		this(gui, TabConfiguration.defaultSide, theTile, playerName);
 	}
 
 	public TabConfigTesseract(GuiBase gui, int side, TileTesseract theTile, String playerName) {
 
 		super(gui, side);
 
-		myPlayer = playerName;
-		myTile = theTile;
+		headerColor = TabConfiguration.defaultHeaderColor;
+		subheaderColor = TabConfiguration.defaultSubHeaderColor;
+		textColor = TabConfiguration.defaultTextColor;
+		backgroundColor = TabConfiguration.defaultBackgroundColor;
+
 		maxHeight = 92;
 		maxWidth = 100;
-		backgroundColor = 0x089e4c;
+		myTile = theTile;
+		myPlayer = playerName;
 	}
 
 	public static final String[] buttonNames = { "IconSendOnly", "IconRecvOnly", "IconSendRecv", "IconBlocked" };
@@ -137,6 +141,9 @@ public class TabConfigTesseract extends TabBase {
 
 		if (!isFullyOpened()) {
 			return false;
+		}
+		if (side == LEFT) {
+			mouseX += currentWidth;
 		}
 		mouseX -= currentShiftX;
 		mouseY -= currentShiftY;

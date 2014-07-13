@@ -3,7 +3,6 @@ package thermalexpansion.block.device;
 import cofh.api.core.ICustomInventory;
 import cofh.api.core.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
-import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
 import cofh.network.PacketHandler;
@@ -14,7 +13,6 @@ import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cofh.util.oredict.OreDictionaryArbiter;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -29,14 +27,14 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileTEBase;
+import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.item.SchematicHelper;
 
-public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecurable, ISidedInventory, ISidedTexture {
+public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture {
 
 	public static void initialize() {
 
@@ -44,27 +42,21 @@ public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecu
 		configure();
 	}
 
-	public static enum PacketInfoID {
-		CLEAR_GRID, SET_GRID, NEI_SUP
+	public static void configure() {
+
+		String comment = "Enable this to allow for Machinist Workbenches to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("block.security", "Workbench.Secure", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
 
-	public static void configure() {
-
-		String comment = "Enable this to allow for Machinist Workbenches to be secure inventories. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("block.security", "Workbench.Secure", enableSecurity, comment);
+	public static enum PacketInfoID {
+		CLEAR_GRID, SET_GRID, NEI_SUP
 	}
-
-	String owner = CoFHProps.DEFAULT_OWNER;
-	private AccessMode access = AccessMode.PUBLIC;
 
 	public int selectedSchematic = 0;
 	public boolean[] missingItem = { false, false, false, false, false, false, false, false, false };
 	public ItemStack[] craftingGrid = new ItemStack[9];
-
-	/* Client-Side Only */
-	public boolean canAccess = true;
 
 	public TileWorkbench() {
 
@@ -216,6 +208,12 @@ public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecu
 		return true;
 	}
 
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
+	}
+
 	public void clearCraftingGrid() {
 
 		for (int i = 0; i < 9; i++) {
@@ -357,13 +355,7 @@ public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecu
 
 		readCraftingFromNBT(nbt);
 
-		access = AccessMode.values()[nbt.getByte("Access")];
-		owner = nbt.getString("Owner");
 		selectedSchematic = nbt.getByte("Mode");
-
-		if (!enableSecurity) {
-			access = AccessMode.PUBLIC;
-		}
 	}
 
 	@Override
@@ -373,8 +365,6 @@ public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecu
 
 		writeCraftingToNBT(nbt);
 
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("Owner", owner);
 		nbt.setByte("Mode", (byte) selectedSchematic);
 	}
 
@@ -423,37 +413,6 @@ public class TileWorkbench extends TileTEBase implements ICustomInventory, ISecu
 	public void onSlotUpdate() {
 
 		markDirty();
-	}
-
-	/* ISecurable */
-	@Override
-	public boolean setAccess(AccessMode access) {
-
-		this.access = access;
-		sendUpdatePacket(Side.SERVER);
-		return true;
-	}
-
-	@Override
-	public AccessMode getAccess() {
-
-		return access;
-	}
-
-	@Override
-	public boolean setOwnerName(String name) {
-
-		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
-			owner = name;
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getOwnerName() {
-
-		return owner;
 	}
 
 	/* ISidedInventory */

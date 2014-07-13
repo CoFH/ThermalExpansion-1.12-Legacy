@@ -5,6 +5,7 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -46,7 +47,7 @@ public class RenderFrame implements ISimpleBlockRenderingHandler, IItemRenderer 
 		for (int i = 24; i < 48; i++) {
 			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
 		}
-		modelFrame.computeLighting(LightModel.standardLightModel);
+		modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
 	public static void initialize() {

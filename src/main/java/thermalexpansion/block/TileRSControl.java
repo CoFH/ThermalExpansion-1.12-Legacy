@@ -16,13 +16,13 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.network.GenericTEPacket;
 
-public abstract class TileRSControl extends TileTEBase implements ITilePacketHandler, IEnergyHandler, IRedstoneControl {
+public abstract class TileRSControl extends TileInventory implements ITilePacketHandler, IEnergyHandler, IRedstoneControl {
 
-	protected boolean isActive;
+	public boolean isActive;
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
-	protected ControlMode rsMode = ControlMode.LOW;
+	protected ControlMode rsMode = ControlMode.DISABLED;
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
 
 	@Override
@@ -37,7 +37,12 @@ public abstract class TileRSControl extends TileTEBase implements ITilePacketHan
 		}
 	}
 
-	protected boolean hasChargeSlot() {
+	public int getChargeSlot() {
+
+		return inventory.length - 1;
+	}
+
+	public boolean hasChargeSlot() {
 
 		return true;
 	}
@@ -66,11 +71,6 @@ public abstract class TileRSControl extends TileTEBase implements ITilePacketHan
 		}
 	}
 
-	public int getChargeSlot() {
-
-		return inventory.length - 1;
-	}
-
 	public void onRedstoneUpdate() {
 
 	}
@@ -81,19 +81,14 @@ public abstract class TileRSControl extends TileTEBase implements ITilePacketHan
 	}
 
 	/* GUI METHODS */
-	public int getScaledEnergyStored(int scale) {
-
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
-	}
-
-	public boolean isActive() {
-
-		return isActive;
-	}
-
 	public IEnergyStorage getEnergyStorage() {
 
 		return energyStorage;
+	}
+
+	public int getScaledEnergyStored(int scale) {
+
+		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
 	/* NBT METHODS */
@@ -104,10 +99,10 @@ public abstract class TileRSControl extends TileTEBase implements ITilePacketHan
 
 		isActive = nbt.getBoolean("Active");
 		energyStorage.readFromNBT(nbt);
-		NBTTagCompound rsControl = nbt.getCompoundTag("RS");
+		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
-		isPowered = rsControl.getBoolean("Power");
-		rsMode = ControlMode.values()[rsControl.getByte("Mode")];
+		isPowered = rsTag.getBoolean("Power");
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
 	@Override
@@ -117,11 +112,11 @@ public abstract class TileRSControl extends TileTEBase implements ITilePacketHan
 
 		nbt.setBoolean("Active", isActive);
 		energyStorage.writeToNBT(nbt);
-		NBTTagCompound rsControl = new NBTTagCompound();
+		NBTTagCompound rsTag = new NBTTagCompound();
 
-		rsControl.setBoolean("Power", isPowered);
-		rsControl.setByte("Mode", (byte) rsMode.ordinal());
-		nbt.setTag("RS", rsControl);
+		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		nbt.setTag("RS", rsTag);
 	}
 
 	/* NETWORK METHODS */

@@ -43,7 +43,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.lamp.name";
+		return "tile.thermalexpansion.light.name";
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 		mode = (byte) (++mode % 6);
 		sendUpdatePacket(Side.CLIENT);
-		player.addChatMessage(new ChatComponentText(StringHelper.localize("message.thermalexpansion.lamp" + mode)));
+		player.addChatMessage(new ChatComponentText(StringHelper.localize("message.thermalexpansion.light" + mode)));
 		return true;
 	}
 
@@ -209,7 +209,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 		if (debug) {
 			return;
 		}
-		info.add(StringHelper.localize("message.thermalexpansion.lamp" + mode));
+		info.add(StringHelper.localize("message.thermalexpansion.light" + mode));
 	}
 
 }

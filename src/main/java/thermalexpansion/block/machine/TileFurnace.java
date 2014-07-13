@@ -25,6 +25,7 @@ public class TileFurnace extends TileMachineBase {
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
@@ -38,7 +39,6 @@ public class TileFurnace extends TileMachineBase {
 
 		super();
 
-		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1];
 	}
 
@@ -46,12 +46,6 @@ public class TileFurnace extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override

@@ -3,9 +3,13 @@ package thermalexpansion.block;
 import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
+import cofh.api.core.ISecurable;
+import cofh.api.tileentity.IRedstoneControl;
 import cofh.block.BlockCoFHBase;
 import cofh.block.TileCoFHBase;
 import cofh.util.ItemHelper;
+import cofh.util.RSControlHelper;
+import cofh.util.SecurityHelper;
 import cofh.util.ServerHelper;
 
 import net.minecraft.block.material.Material;
@@ -87,10 +91,18 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof TileTEBase && (!((TileTEBase) tile).invName.isEmpty())) {
-			return ItemHelper.setItemStackTagName(null, ((TileTEBase) tile).invName);
+		NBTTagCompound retTag = null;
+
+		if (tile instanceof TileTEBase && (!((TileTEBase) tile).tileName.isEmpty())) {
+			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
 		}
-		return null;
+		if (tile instanceof TileInventory && ((TileInventory) tile).isSecured()) {
+			retTag = SecurityHelper.setItemStackTagSecure(retTag, (ISecurable) tile);
+		}
+		if (tile instanceof IRedstoneControl) {
+			retTag = RSControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
+		}
+		return retTag;
 	}
 
 	/* Dismantle Helper */

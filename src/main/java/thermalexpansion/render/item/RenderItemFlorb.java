@@ -1,4 +1,4 @@
-package thermalexpansion.render;
+package thermalexpansion.render.item;
 
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;

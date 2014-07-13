@@ -6,10 +6,10 @@ import cofh.gui.container.ContainerInventoryItem;
 import cofh.gui.slot.ISlotValidator;
 import cofh.gui.slot.SlotValidated;
 import cofh.gui.slot.SlotViewOnly;
-import cofh.social.RegistryFriends;
 import cofh.util.CoreUtils;
 import cofh.util.MathHelper;
 import cofh.util.SecurityHelper;
+import cofh.util.SocialRegistry;
 
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
@@ -35,14 +35,19 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		int rows = MathHelper.clampI(storageIndex, 2, 8);
 		int slots = rowSize * rows;
+		int yOffset = 17;
 
 		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
 
 		if (storageIndex == 0) {
 			addSlotToContainer(new SlotValidated(this, containerWrapper, 0, 80, 26));
 			rowSize = 1;
+		} else if (storageIndex == 1) {
+			yOffset += 9;
+			for (int i = 0; i < 9; i++) {
+				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
+			}
 		} else {
-			int yOffset = 17;
 			for (int i = 0; i < slots; i++) {
 				addSlotToContainer(new SlotValidated(this, containerWrapper, i, 8 + i % rowSize * 18, yOffset + i / rowSize * 18));
 			}
@@ -111,7 +116,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		String owner = getOwnerName();
 
 		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
-				|| access.isRestricted() && RegistryFriends.playerHasAccess(name, owner);
+				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
 	}
 
 	/* ISlotValidator */

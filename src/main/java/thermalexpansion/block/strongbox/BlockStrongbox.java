@@ -1,8 +1,8 @@
 package thermalexpansion.block.strongbox;
 
-import cofh.api.core.ISecurable;
 import cofh.enchantment.CoFHEnchantment;
 import cofh.util.CoreUtils;
+import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -24,7 +24,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
-import thermalexpansion.block.TileTEBase;
+import thermalexpansion.block.TileInventory;
+import thermalexpansion.item.TEItems;
 
 public class BlockStrongbox extends BlockTEBase {
 
@@ -68,9 +69,7 @@ public class BlockStrongbox extends BlockTEBase {
 			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, stack);
 			tile.createInventory();
 
-			if (stack.stackTagCompound.hasKey("Owner")) {
-				tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-				tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
+			if (stack.stackTagCompound.hasKey("Inventory")) {
 				tile.readInventoryFromNBT(stack.stackTagCompound);
 			}
 		}
@@ -80,7 +79,7 @@ public class BlockStrongbox extends BlockTEBase {
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 
-		return -1; // HARDNESS[world.getBlockMetadata(x, y, z)];
+		return HARDNESS[world.getBlockMetadata(x, y, z)];
 	}
 
 	@Override
@@ -108,8 +107,6 @@ public class BlockStrongbox extends BlockTEBase {
 			if (tile.enchant > 0) {
 				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.enchantmentHolding.effectId, tile.enchant);
 			}
-			tag.setString("Owner", tile.getOwnerName());
-			tag.setByte("Access", (byte) tile.getAccess().ordinal());
 			tile.writeInventoryToNBT(tag);
 		}
 		return tag;
@@ -122,8 +119,8 @@ public class BlockStrongbox extends BlockTEBase {
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileTEBase) {
-			((TileTEBase) tile).inventory = new ItemStack[((TileTEBase) tile).inventory.length];
+		if (tile instanceof TileInventory) {
+			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
 		}
 		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
 	}
@@ -176,6 +173,15 @@ public class BlockStrongbox extends BlockTEBase {
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));
 		}
+
+		GameRegistry.addRecipe(new RecipeSecure(strongboxBasic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				strongboxBasic }));
+		GameRegistry.addRecipe(new RecipeSecure(strongboxHardened, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				strongboxHardened }));
+		GameRegistry.addRecipe(new RecipeSecure(strongboxReinforced, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				strongboxReinforced }));
+		GameRegistry.addRecipe(new RecipeSecure(strongboxResonant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				strongboxResonant }));
 		return true;
 	}
 

@@ -1,6 +1,5 @@
 package thermalexpansion.block.machine;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
@@ -32,6 +31,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.ReconfigurableHelper;
 
 public class BlockMachine extends BlockTEBase {
 
@@ -82,7 +82,7 @@ public class BlockMachine extends BlockTEBase {
 
 		for (int i = 0; i < Types.values().length; i++) {
 			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
+				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
 	}
@@ -94,23 +94,19 @@ public class BlockMachine extends BlockTEBase {
 			TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
 
 			tile.readAugmentsFromNBT(stack.stackTagCompound);
+			tile.installAugments();
 			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
-			int storedFacing = stack.stackTagCompound.getByte("Facing");
-			byte[] sideCache = stack.stackTagCompound.getByteArray("SideCache");
+			int storedFacing = ReconfigurableHelper.getFacing(stack);
+			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
 
-			if (sideCache.length <= 0) {
-				sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
-			}
 			tile.sideCache[0] = sideCache[0];
 			tile.sideCache[1] = sideCache[1];
-			tile.sideCache[facing] = sideCache[storedFacing];
+			tile.sideCache[facing] = 0;
 			tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
 			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
-
-			tile.setControl(ControlMode.values()[stack.stackTagCompound.getByte("rsMode")]);
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -227,9 +223,7 @@ public class BlockMachine extends BlockTEBase {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setByteArray("SideCache", tile.sideCache);
-			tag.setByte("Facing", (byte) tile.getFacing());
-			tag.setByte("rsMode", (byte) tile.getControl().ordinal());
+			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
 			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
 
 			tile.writeAugmentsToNBT(tag);

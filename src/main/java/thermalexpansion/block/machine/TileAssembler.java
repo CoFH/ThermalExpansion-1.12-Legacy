@@ -4,6 +4,7 @@ import cofh.network.CoFHPacket;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cofh.util.inventory.InventoryCraftingFalse;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -17,7 +18,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -33,11 +33,13 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 3;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE].numGroup = 5;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 },
+				{ 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
+		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, true, true };
+		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
@@ -45,13 +47,13 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
 	}
 
-	public static final int PROCESS_ENERGY = 2;
+	public static final int PROCESS_ENERGY = 20;
 
 	private boolean needsCache = true;
 	private boolean needsCraft = false;
 
 	int outputTracker;
-	FluidTank tank = new FluidTank(TEProps.MAX_FLUID_LARGE);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
 	InventoryCrafting crafting = new InventoryCraftingFalse(3, 3);
 	ItemStack recipeOutput;
 
@@ -63,7 +65,6 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 		super();
 
-		setDefaultSides();
 		inventory = new ItemStack[1 + 1 + 1 + 18];
 	}
 
@@ -71,12 +72,6 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 1, 1, 2, 2, 2, 2 };
 	}
 
 	@Override
@@ -275,11 +270,13 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		return new ContainerAssembler(inventory, this);
 	}
 
-	public FluidTank getTank() {
+	@Override
+	public FluidTankAdv getTank() {
 
 		return tank;
 	}
 
+	@Override
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
@@ -354,7 +351,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 1) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowInsertion[sideCache[from.ordinal()]]) {
 			return 0;
 		}
 		int filled = tank.fill(resource, doFill);
@@ -368,7 +365,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 2) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtraction[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -380,7 +377,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 2) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtraction[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

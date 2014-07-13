@@ -1,33 +1,21 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
-import cofh.gui.element.TabAugment;
-import cofh.gui.element.TabBase;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabEnergy;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.machine.TileSmelter;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.machine.ContainerSmelter;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiSmelter extends GuiBaseAdv {
+public class GuiSmelter extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Smelter.png");
 	static final String INFO = "Smelts metals and things that require high temperatures.\n\nUseful for processing ores and building advanced devices.\n\nWill absolutely not cook food.";
-
-	TileSmelter myTile;
 
 	ElementSlotOverlay[] slotPrimaryInput = new ElementSlotOverlay[2];
 	ElementSlotOverlay[] slotSecondaryInput = new ElementSlotOverlay[2];
@@ -37,14 +25,12 @@ public class GuiSmelter extends GuiBaseAdv {
 	ElementDualScaled progress;
 	ElementDualScaled speed;
 
-	TabBase redstoneTab;
-	TabBase configTab;
+	public GuiSmelter(InventoryPlayer inventory, TileEntity tile) {
 
-	public GuiSmelter(InventoryPlayer inventory, TileEntity theTile) {
+		super(new ContainerSmelter(inventory, tile), tile, inventory.player, TEXTURE);
 
-		super(new ContainerSmelter(inventory, theTile), TEXTURE);
-		myTile = (TileSmelter) theTile;
-		name = myTile.getInventoryName();
+		myInfo = INFO;
+		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override
@@ -64,18 +50,12 @@ public class GuiSmelter extends GuiBaseAdv {
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
-
-		addTab(new TabEnergy(this, myTile, false));
-		redstoneTab = addTab(new TabRedstone(this, myTile));
-		configTab = addTab(new TabConfiguration(this, myTile));
-
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}
 
 	@Override
 	protected void updateElementInformation() {
+
+		super.updateElementInformation();
 
 		slotPrimaryInput[0].setVisible(myTile.hasSide(1));
 		slotPrimaryInput[1].setVisible(myTile.hasSide(5));
@@ -101,9 +81,6 @@ public class GuiSmelter extends GuiBaseAdv {
 			slotPrimaryOutput[1].slotRender = 1;
 			slotSecondaryOutput[1].slotRender = 1;
 		}
-		redstoneTab.setVisible(myTile.augmentRSControl);
-		configTab.setVisible(myTile.augmentReconfigSides);
-
 		progress.setQuantity(myTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));
 	}

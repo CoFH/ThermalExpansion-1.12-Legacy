@@ -24,9 +24,9 @@ import net.minecraftforge.common.util.ForgeDirection;
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileTEBase;
+import thermalexpansion.block.TileInventory;
 
-public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo {
+public class TileCache extends TileInventory implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo {
 
 	public static void initialize() {
 
@@ -47,9 +47,10 @@ public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfig
 	int meterTracker;
 	int compareTracker;
 
-	public int maxCacheStackSize;
-	public byte type;
+	public byte type = 1;
 	public byte facing = 3;
+
+	public int maxCacheStackSize;
 	public boolean locked;
 	public ItemStack storedStack;
 
@@ -63,12 +64,6 @@ public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfig
 		type = (byte) metadata;
 		inventory = new ItemStack[2];
 		maxCacheStackSize = SIZE[type] - 64 * 2;
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
 	}
 
 	@Override
@@ -87,6 +82,28 @@ public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfig
 	public int getComparatorInput(int side) {
 
 		return compareTracker;
+	}
+
+	public int getScaledItemsStored(int scale) {
+
+		return getStoredCount() * scale / SIZE[type];
+	}
+
+	@Override
+	public boolean canUpdate() {
+
+		return false;
+	}
+
+	public boolean toggleLock() {
+
+		locked = !locked;
+
+		if (getStoredCount() <= 0 && !locked) {
+			clearInventory();
+		}
+		sendUpdatePacket(Side.CLIENT);
+		return locked;
 	}
 
 	protected void balanceStacks() {
@@ -127,22 +144,6 @@ public class TileCache extends TileTEBase implements IDeepStorageUnit, IReconfig
 			meterTracker = curScale;
 			sendUpdatePacket(Side.CLIENT);
 		}
-	}
-
-	public int getScaledItemsStored(int scale) {
-
-		return getStoredCount() * scale / SIZE[type];
-	}
-
-	public boolean toggleLock() {
-
-		locked = !locked;
-
-		if (getStoredCount() <= 0 && !locked) {
-			clearInventory();
-		}
-		sendUpdatePacket(Side.CLIENT);
-		return locked;
 	}
 
 	/* GUI METHODS */

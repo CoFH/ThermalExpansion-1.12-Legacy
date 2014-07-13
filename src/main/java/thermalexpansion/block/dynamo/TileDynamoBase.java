@@ -11,6 +11,7 @@ import cofh.network.ITileInfoPacketHandler;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,7 +52,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	int energyMod = 1;
 	int fuelMod = 100;
 
-	public boolean augmentRSControl = true;
+	public boolean augmentRSControl;
 	public boolean augmentThrottle = true;
 
 	public TileDynamoBase() {
@@ -225,6 +226,17 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return FluidRegistry.WATER.getIcon();
 	}
 
+	/* GUI METHODS */
+	public FluidTankAdv getTank(int tankIndex) {
+
+		return null;
+	}
+
+	public int getScaledDuration(int scale) {
+
+		return 0;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -255,6 +267,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
+
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
@@ -360,6 +373,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 				augmentStatus[i] = installAugment(i);
 			}
 		}
+		onInstalled();
 	}
 
 	/* AUGMENT HELPERS */

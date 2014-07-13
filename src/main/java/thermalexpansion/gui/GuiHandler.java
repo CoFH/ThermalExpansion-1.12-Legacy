@@ -26,10 +26,12 @@ public class GuiHandler implements IGuiHandler {
 			if (tile instanceof TileCoFHBase) {
 				return ((TileCoFHBase) tile).getGuiClient(player.inventory);
 			}
+			return null;
 		case SATCHEL_ID:
 			if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
 				return new GuiSatchel(player.inventory, new ContainerSatchel(player.getCurrentEquippedItem(), player.inventory));
 			}
+			return null;
 		default:
 			return null;
 		}
@@ -44,10 +46,12 @@ public class GuiHandler implements IGuiHandler {
 			if (tile instanceof TileCoFHBase) {
 				return ((TileCoFHBase) tile).getGuiServer(player.inventory);
 			}
+			return null;
 		case SATCHEL_ID:
 			if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
 				return new ContainerSatchel(player.getCurrentEquippedItem(), player.inventory);
 			}
+			return null;
 		default:
 			return null;
 		}

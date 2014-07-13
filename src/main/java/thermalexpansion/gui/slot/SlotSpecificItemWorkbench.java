@@ -19,7 +19,7 @@ public class SlotSpecificItemWorkbench extends SlotSpecificItem {
 	}
 
 	@Override
-	public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
+	public boolean canTakeStack(EntityPlayer player) {
 
 		if (myTile.getCurrentSchematicSlot() == getSlotIndex()) {
 			return true;

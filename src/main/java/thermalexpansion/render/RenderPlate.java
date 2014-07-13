@@ -51,7 +51,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 
 		double d = RenderHelper.RENDER_OFFSET;
 		side_model[0] = CCModel.quadModel(24).generateBlock(0, d, d, d, 1 - d, 0.0625 - d, 1 - d).computeNormals()
-				.computeLighting(LightModel.standardLightModel);
+				.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
 		CCModel.generateSidedModels(side_model, 0, Vector3.zero);
 	}
 

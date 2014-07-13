@@ -49,7 +49,7 @@ public class TabSchematic extends TabBase {
 	public void draw() {
 
 		drawBackground();
-		drawTabIcon("schematic");
+		drawTabIcon("IconSchematic");
 		if (!isFullyOpened()) {
 			return;
 		}
@@ -76,6 +76,9 @@ public class TabSchematic extends TabBase {
 
 		if (!isFullyOpened()) {
 			return false;
+		}
+		if (side == LEFT) {
+			mouseX += currentWidth;
 		}
 		mouseX -= currentShiftX;
 		mouseY -= currentShiftY;

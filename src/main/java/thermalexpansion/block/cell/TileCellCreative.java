@@ -4,6 +4,7 @@ import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -18,11 +19,19 @@ public class TileCellCreative extends TileCell {
 
 	public TileCellCreative() {
 
+		energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
 	}
 
 	public TileCellCreative(int metadata) {
 
 		super(metadata);
+		energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
+	}
+
+	@Override
+	public byte[] getDefaultSides() {
+
+		return DEFAULT_SIDES.clone();
 	}
 
 	@Override
@@ -53,11 +62,32 @@ public class TileCellCreative extends TileCell {
 		adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false);
 	}
 
-	/* IReconfigurableSides */
+	/* NBT METHODS */
 	@Override
-	public int getNumConfig(int side) {
+	public void readFromNBT(NBTTagCompound nbt) {
 
-		return 2;
+		super.readFromNBT(nbt);
+
+		energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
+	}
+
+	/* IEnergyHandler */
+	@Override
+	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+
+		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 2) {
+			return Math.min(maxReceive, energyReceive);
+		}
+		return 0;
+	}
+
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+
+		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 1) {
+			return Math.min(maxExtract, energySend);
+		}
+		return 0;
 	}
 
 	/* ISidedTexture */

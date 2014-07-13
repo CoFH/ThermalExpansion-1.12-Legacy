@@ -3,6 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.util.ItemHelper;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.material.Material;
@@ -20,7 +21,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
@@ -85,8 +85,8 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return GameRegistry.getFuelValue(fuel) * CoFHProps.RF_PER_MJ * 3 / 2;
 	}
 
-	FluidTank steamTank = new FluidTank(MAX_FLUID);
-	FluidTank waterTank = new FluidTank(MAX_FLUID);
+	FluidTankAdv steamTank = new FluidTankAdv(MAX_FLUID);
+	FluidTankAdv waterTank = new FluidTankAdv(MAX_FLUID);
 
 	int currentFuelRF = getEnergyValue(coal);
 	int steamAmount = 40;
@@ -184,6 +184,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return new ContainerDynamoSteam(inventory, this);
 	}
 
+	@Override
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
@@ -192,7 +193,8 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return fuelRF * scale / currentFuelRF;
 	}
 
-	public FluidTank getTank(int tankIndex) {
+	@Override
+	public FluidTankAdv getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return steamTank;

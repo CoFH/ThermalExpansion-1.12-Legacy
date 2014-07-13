@@ -2,6 +2,7 @@ package thermalexpansion.gui.element;
 
 import cofh.gui.GuiBase;
 import cofh.gui.element.TabBase;
+import cofh.gui.element.TabConfiguration;
 import cofh.render.RenderHelper;
 import cofh.util.BlockHelper;
 import cofh.util.StringHelper;
@@ -16,24 +17,27 @@ import thermalexpansion.block.cell.TileCell;
 
 public class TabConfigCell extends TabBase {
 
-	public static int defaultSide = 1;
 	public static String TUTORIAL_CONFIG = "The Configuration tab determines how energy is transferred to and from this device.";
 
 	TileCell myTile;
 
 	public TabConfigCell(GuiBase gui, TileCell theTile) {
 
-		this(gui, defaultSide, theTile);
+		this(gui, TabConfiguration.defaultSide, theTile);
 	}
 
 	public TabConfigCell(GuiBase gui, int side, TileCell theTile) {
 
 		super(gui, side);
 
-		myTile = theTile;
+		headerColor = TabConfiguration.defaultHeaderColor;
+		subheaderColor = TabConfiguration.defaultSubHeaderColor;
+		textColor = TabConfiguration.defaultTextColor;
+		backgroundColor = TabConfiguration.defaultBackgroundColor;
+
 		maxHeight = 92;
 		maxWidth = 100;
-		backgroundColor = 0x089e4c;
+		myTile = theTile;
 	}
 
 	@Override
@@ -79,8 +83,12 @@ public class TabConfigCell extends TabBase {
 		if (!isFullyOpened()) {
 			return false;
 		}
+		if (side == LEFT) {
+			mouseX += currentWidth;
+		}
 		mouseX -= currentShiftX;
 		mouseY -= currentShiftY;
+
 		if (mouseX < 16 || mouseX >= 80 || mouseY < 20 || mouseY >= 84) {
 			return false;
 		}

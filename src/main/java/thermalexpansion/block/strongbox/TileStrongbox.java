@@ -1,13 +1,11 @@
 package thermalexpansion.block.strongbox;
 
-import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -18,21 +16,18 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ChatComponentText;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileTEBase;
+import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
-public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, ISecurable, ISidedInventory {
+public class TileStrongbox extends TileInventory implements IReconfigurableFacing, ISidedInventory {
 
 	public static void initialize() {
 
@@ -42,16 +37,13 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Strongboxes to be secure inventories. (Default: true)";
+		String comment = "Enable this to allow for Strongboxes to be securable. (Default: true)";
 		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
 
-	String owner = CoFHProps.DEFAULT_OWNER;
-	private AccessMode access = AccessMode.PUBLIC;
-
-	public byte type;
+	public byte type = 1;
 	public byte enchant = 0;
 	public byte facing = 3;
 
@@ -59,9 +51,6 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 	public double lidAngle;
 
 	public int numUsingPlayers;
-
-	/* Client-Side Only */
-	public boolean canAccess = true;
 
 	public TileStrongbox() {
 
@@ -83,6 +72,12 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 	public int getType() {
 
 		return type;
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
 	}
 
 	@Override
@@ -174,40 +169,6 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 		return new ContainerStrongbox(inventory, this);
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
-		}
-		return true;
-	}
-
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		int access = 0;
-		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
-			access = 1;
-		}
-		player.sendProgressBarUpdate(container, 0, access);
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -215,16 +176,11 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 		type = nbt.getByte("Type");
 		enchant = nbt.getByte("Enchant");
 		facing = nbt.getByte("Facing");
-		access = AccessMode.values()[nbt.getByte("Access")];
-		owner = nbt.getString("Owner");
 
 		if (type > 0) {
 			inventory = new ItemStack[CoFHProps.STORAGE_SIZE[2 * type + enchant]];
 		} else {
 			inventory = new ItemStack[1];
-		}
-		if (!enableSecurity) {
-			access = AccessMode.PUBLIC;
 		}
 		super.readFromNBT(nbt);
 	}
@@ -237,8 +193,6 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 		nbt.setByte("Type", type);
 		nbt.setByte("Enchant", enchant);
 		nbt.setByte("Facing", facing);
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("Owner", owner);
 	}
 
 	/* NETWORK METHODS */
@@ -249,11 +203,15 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 
 		payload.addByte(type);
 		payload.addByte(enchant);
-		payload.addByte((byte) access.ordinal());
 		payload.addByte(facing);
-		payload.addString(owner);
 
 		return payload;
+	}
+
+	@Override
+	public CoFHPacket getGuiPacket() {
+
+		return null;
 	}
 
 	/* ITilePacketHandler */
@@ -264,17 +222,14 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 
 		type = payload.getByte();
 		enchant = payload.getByte();
-		access = ISecurable.AccessMode.values()[payload.getByte()];
 
 		if (!isServer) {
 			facing = payload.getByte();
-			owner = payload.getString();
 			if (inventory.length <= 0) {
 				createInventory();
 			}
 		} else {
 			payload.getByte();
-			payload.getString();
 		}
 	}
 
@@ -331,37 +286,6 @@ public class TileStrongbox extends TileTEBase implements IReconfigurableFacing, 
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
 		return true;
-	}
-
-	/* ISecureable */
-	@Override
-	public boolean setAccess(AccessMode access) {
-
-		this.access = access;
-		sendUpdatePacket(Side.SERVER);
-		return true;
-	}
-
-	@Override
-	public AccessMode getAccess() {
-
-		return access;
-	}
-
-	@Override
-	public boolean setOwnerName(String name) {
-
-		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
-			owner = name;
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getOwnerName() {
-
-		return owner;
 	}
 
 	/* ISidedInventory */

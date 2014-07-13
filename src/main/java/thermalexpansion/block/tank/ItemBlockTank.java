@@ -1,5 +1,6 @@
 package thermalexpansion.block.tank;
 
+import cofh.item.ItemBlockBase;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -7,13 +8,12 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
+public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem {
 
 	public ItemBlockTank(Block block) {
 
@@ -25,21 +25,9 @@ public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		return StringHelper.localize(getUnlocalizedName(stack));
-	}
-
-	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.tank." + BlockTank.NAMES[stack.getItemDamage()] + ".name";
-	}
-
-	@Override
-	public int getMetadata(int i) {
-
-		return i;
 	}
 
 	@Override
@@ -55,12 +43,6 @@ public class ItemBlockTank extends ItemBlock implements IFluidContainerItem {
 		default:
 			return EnumRarity.common;
 		}
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
 	}
 
 	@Override

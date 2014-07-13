@@ -8,9 +8,6 @@ import thermalexpansion.core.TEProps;
 
 public class ElementSlotOverlay extends ElementBase {
 
-	public static boolean enableBorders;
-	public static boolean colorBlind;
-
 	public int slotColor;
 	public int slotType;
 	public int slotRender;
@@ -48,7 +45,7 @@ public class ElementSlotOverlay extends ElementBase {
 			return;
 		}
 		RenderHelper.bindTexture(texture);
-		if (enableBorders) {
+		if (TEProps.enableGuiBorders) {
 			drawSlotWithBorder(posX, posY);
 		} else {
 			drawSlotNoBorder(posX, posY);
@@ -99,12 +96,6 @@ public class ElementSlotOverlay extends ElementBase {
 			offsetX = slotColor * 32 + 8;
 			offsetY = 98;
 			break;
-		case 4:
-			sizeX = 34;
-			sizeY = 160;
-			offsetX += 8;
-			offsetY += 164;
-			break;
 		}
 
 		switch (slotRender) {
@@ -153,14 +144,6 @@ public class ElementSlotOverlay extends ElementBase {
 			x -= 8;
 			y -= 2;
 			break;
-		case 4:
-			sizeX = 164;
-			sizeY = 38;
-			offsetX = slotColor / 3 * 128 + 6;
-			offsetY += 162;
-			x -= 2;
-			y -= 2;
-			break;
 		}
 
 		switch (slotRender) {
@@ -172,7 +155,7 @@ public class ElementSlotOverlay extends ElementBase {
 			y += sizeY;
 			offsetY += sizeY;
 			break;
-		case 2:
+		default:
 			break;
 		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);

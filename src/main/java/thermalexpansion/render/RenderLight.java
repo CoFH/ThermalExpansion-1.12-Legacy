@@ -68,7 +68,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals();
 		modelFrame[1] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals();
 		modelCenter[0] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2).computeNormals();
-		modelHalo[1] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3).shrinkUVs(d3).computeNormals();
+		modelHalo[1] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3).computeNormals().shrinkUVs(d3);
 	}
 
 	public void renderCenter(int metadata, boolean modified, double x, double y, double z) {

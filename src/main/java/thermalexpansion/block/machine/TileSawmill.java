@@ -25,6 +25,7 @@ public class TileSawmill extends TileMachineBase {
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(20);
@@ -39,7 +40,6 @@ public class TileSawmill extends TileMachineBase {
 
 		super();
 
-		setDefaultSides();
 		inventory = new ItemStack[1 + 2 + 1 + 1];
 	}
 
@@ -47,12 +47,6 @@ public class TileSawmill extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
-	}
-
-	@Override
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 3, 1, 2, 2, 2, 2 };
 	}
 
 	@Override

@@ -27,12 +27,17 @@ public class TEProps {
 
 	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "Slots.png");
 	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "SlotsCB.png");
+	public static final ResourceLocation PATH_ASSEMBLER = new ResourceLocation(PATH_ELEMENTS + "SlotsAssembler.png");
+	public static final ResourceLocation PATH_ASSEMBLER_CB = new ResourceLocation(PATH_ELEMENTS + "SlotsAssemblerCB.png");
 	public static final String PATH_ICON = PATH_GUI + "icons/";
 
 	public static final String TEXTURE_DEFAULT = "Config_";
 	public static final String TEXTURE_CB = "Config_CB_";
 
+	public static boolean colorBlind;
+
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
+	public static ResourceLocation textureGuiAssembler = PATH_ASSEMBLER;
 	public static String textureSelection = TEXTURE_DEFAULT;
 
 	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;

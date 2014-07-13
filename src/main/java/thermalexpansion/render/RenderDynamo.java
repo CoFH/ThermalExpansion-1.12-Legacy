@@ -48,15 +48,15 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 
 	private static void generateModels() {
 
-		double d1 = 2 * RenderHelper.RENDER_OFFSET;
+		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
 
-		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals();
-		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals();
+		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
+		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
 
-		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals();
-		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals();
+		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
 		modelAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 - d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
 		modelAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
@@ -135,9 +135,9 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		TileDynamoBase theTile = (TileDynamoBase) tile;
 
 		RenderUtils.preWorldRender(world, x, y, z);
-		renderCoil(theTile.getFacing(), theTile.isActive(), x, y, z);
-		renderAnimation(theTile.getFacing(), theTile.isActive(), theTile.getType(), theTile.getActiveIcon(), x, y, z);
-		renderBase(theTile.getFacing(), theTile.isActive(), theTile.getType(), x, y, z);
+		renderCoil(theTile.getFacing(), theTile.isActive, x, y, z);
+		renderAnimation(theTile.getFacing(), theTile.isActive, theTile.getType(), theTile.getActiveIcon(), x, y, z);
+		renderBase(theTile.getFacing(), theTile.isActive, theTile.getType(), x, y, z);
 
 		return true;
 	}

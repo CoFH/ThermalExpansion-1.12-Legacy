@@ -22,13 +22,17 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 		return rotateBlock();
 	}
 
-	/* GUI METHODS */
-	@Override
-	public final boolean isActive() {
+	public byte[] getDefaultSides() {
 
-		return isActive;
+		return new byte[] { 0, 0, 0, 0, 0, 0 };
 	}
 
+	public void setDefaultSides() {
+
+		sideCache = getDefaultSides();
+	}
+
+	/* GUI METHODS */
 	public final boolean hasSide(int side) {
 
 		for (int i = 0; i < 6; i++) {
@@ -87,15 +91,15 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 		payload.getByteArray(sideCache);
 
-		if (!isServer) {
-			facing = payload.getByte();
-		} else {
-			payload.getByte();
-		}
 		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;
 			}
+		}
+		if (!isServer) {
+			facing = payload.getByte();
+		} else {
+			payload.getByte();
 		}
 	}
 
@@ -180,7 +184,6 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 		if (!allowYAxisFacing() && side < 2) {
 			return false;
 		}
-		sideCache[side] = 0;
 		facing = (byte) side;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
@@ -241,11 +244,6 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 	@Override
 	public abstract int getNumConfig(int side);
-
-	public void setDefaultSides() {
-
-		sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
-	}
 
 	/* ISidedTexture */
 	@Override

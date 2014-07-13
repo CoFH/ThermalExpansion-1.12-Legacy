@@ -138,16 +138,6 @@ info.thermalexpansion.capacitor4=Use while sneaking to deactivate.
 info.thermalexpansion.capacitor5=Must remain in hotbar.
 info.thermalexpansion.capacitor.potato=Clever! But not rechargeable.
 
-info.thermalexpansion.conduit.energy=Transfers Energy (Redstone Flux).
-info.thermalexpansion.conduit.fluid1=Transfers Fluids.
-info.thermalexpansion.conduit.fluid2=Rate varies depending on fluid.
-info.thermalexpansion.conduit.item=Transfers Items.
-info.thermalexpansion.conduit.itemFast=Transfers Items quickly.
-info.thermalexpansion.conduit.opaque=Contents cannot be seen.
-info.thermalexpansion.conduit.rate=Rate
-info.thermalexpansion.conduit.servo0=Install a Pneumatic Servo to upgrade.
-info.thermalexpansion.conduit.servo1=Configure with an empty hand once upgraded.
-
 info.thermalexpansion.dynamo.generate=Generates Energy (Redstone Flux).
 info.thermalexpansion.dynamo.steam1=Requires water and solid fuel.
 info.thermalexpansion.dynamo.steam2=Steam may be pumped in instead.
@@ -212,52 +202,25 @@ item.thermalexpansion.material.pneumaticServo.name=Pneumatic Servo
 item.thermalexpansion.material.powerCoilGold.name=Redstone Reception Coil
 item.thermalexpansion.material.powerCoilSilver.name=Redstone Transmission Coil
 item.thermalexpansion.material.powerCoilElectrum.name=Redstone Conductance Coil
+item.thermalexpansion.material.lock.name=Signalum Security Lock
 
 itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blocks
 itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Tools
 itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
 
-message.thermalexpansion.conduit.energy0=Network Saturation
-message.thermalexpansion.conduit.energy1=Monitoring for 20 ticks
-message.thermalexpansion.conduit.energy2=Average Distribution
-message.thermalexpansion.conduit.energy3=ticks
-
-message.thermalexpansion.conduit.item0=Mode: Normal
-message.thermalexpansion.conduit.item1=Mode: Dense
-message.thermalexpansion.conduit.item2=Mode: Vacuum
-message.thermalexpansion.conduit.item3=Mode: Round-Robin
-
-message.thermalexpansion.conduit.item.warn0=The Itemduct's stuffed inventory has been cleared!
-message.thermalexpansion.conduit.item.warn1=This Itemduct contains more than 64 stuffed items!
-message.thermalexpansion.conduit.item.warn2=Another hit will dismantle it with item loss! Try to clear it out first!
-
-message.thermalexpansion.conduit.servo0=A Pneumatic Servo must be installed for control.
-message.thermalexpansion.conduit.servo1=The Pneumatic Servo has been installed!
-message.thermalexpansion.conduit.servo2=There is already a Pneumatic Servo installed here!
-
-message.thermalexpansion.lamp0=Mode: Switched; Default: Off
-message.thermalexpansion.lamp1=Mode: Switched; Default: On
-message.thermalexpansion.lamp2=Mode: Scaled (Proportional)
-message.thermalexpansion.lamp3=Mode: Scaled (Inverse)
-message.thermalexpansion.lamp4=Mode: Always Off
-message.thermalexpansion.lamp5=Mode: Always On
+message.thermalexpansion.light0=Mode: Switched; Default: Off
+message.thermalexpansion.light1=Mode: Switched; Default: On
+message.thermalexpansion.light2=Mode: Scaled (Proportional)
+message.thermalexpansion.light3=Mode: Scaled (Inverse)
+message.thermalexpansion.light4=Mode: Always Off
+message.thermalexpansion.light5=Mode: Always On
 
 tile.thermalexpansion.cache.creative.name=Creative Cache
 tile.thermalexpansion.cache.basic.name=Basic Cache
 tile.thermalexpansion.cache.hardened.name=Hardened Cache
 tile.thermalexpansion.cache.reinforced.name=Reinforced Cache
 tile.thermalexpansion.cache.resonant.name=Resonant Cache
-
-tile.thermalexpansion.conduit.energyBasic.name=Leadstone Energy Conduit
-tile.thermalexpansion.conduit.energyHardened.name=Hardened Energy Conduit
-tile.thermalexpansion.conduit.energyReinforced.name=Redstone Energy Conduit
-tile.thermalexpansion.conduit.fluidTrans.name=Fluiduct
-tile.thermalexpansion.conduit.fluidOpaque.name=Fluiduct (Opaque)
-tile.thermalexpansion.conduit.itemTrans.name=Itemduct
-tile.thermalexpansion.conduit.itemOpaque.name=Itemduct (Opaque)
-tile.thermalexpansion.conduit.itemFastTrans.name=Impulse Itemduct
-tile.thermalexpansion.conduit.itemFastOpaque.name=Impulse Itemduct (Opaque)
 
 tile.thermalexpansion.device.workbench.name=Machinist's Workbench
 tile.thermalexpansion.device.tinkerbench.name=Tinker's Workbench
@@ -290,7 +253,8 @@ tile.thermalexpansion.frame.tesseractFull.name=Tesseract Frame (Full)
 
 tile.thermalexpansion.glass.name=Hardened Glass
 
-tile.thermalexpansion.lamp.name=Glowstone Illuminator
+tile.thermalexpansion.light.illuminator.name=Glowstone Illuminator
+tile.thermalexpansion.light.lampBasic.name=Lumium Lamp
 
 tile.thermalexpansion.machine.furnace.name=Redstone Furnace
 tile.thermalexpansion.machine.pulverizer.name=Pulverizer

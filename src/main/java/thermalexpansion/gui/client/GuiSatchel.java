@@ -31,10 +31,8 @@ public class GuiSatchel extends GuiBaseAdv {
 		playerName = inventory.player.getCommandSenderName();
 		storageIndex = ItemSatchel.getStorageIndex(container.getContainerStack());
 		enchanted = ItemSatchel.isEnchanted(container.getContainerStack());
+		secure = SecurityHelper.isSecure(container.getContainerStack());
 
-		if (SecurityHelper.isSecure(container.getContainerStack())) {
-			secure = true;
-		}
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
 		name = container.getInventoryName();
 		allowUserInput = false;
@@ -56,11 +54,6 @@ public class GuiSatchel extends GuiBaseAdv {
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
 		}
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
 	}
 
 	@Override

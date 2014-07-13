@@ -1,36 +1,24 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluid;
 import cofh.gui.element.ElementFluidTank;
-import cofh.gui.element.TabAugment;
-import cofh.gui.element.TabBase;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabEnergy;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.machine.TileCrucible;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.machine.ContainerCrucible;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiCrucible extends GuiBaseAdv {
+public class GuiCrucible extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Crucible.png");
 	static final String INFO = "Turns solid material into fluids!\n\nVery useful for building advanced devices.\n\nKeep away from small children and pets.";
-
-	TileCrucible myTile;
 
 	ElementBase slotInput;
 	ElementBase slotOutput;
@@ -38,14 +26,12 @@ public class GuiCrucible extends GuiBaseAdv {
 	ElementDualScaled progressOverlay;
 	ElementDualScaled speed;
 
-	TabBase redstoneTab;
-	TabBase configTab;
+	public GuiCrucible(InventoryPlayer inventory, TileEntity tile) {
 
-	public GuiCrucible(InventoryPlayer inventory, TileEntity theTile) {
+		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
 
-		super(new ContainerCrucible(inventory, theTile), TEXTURE);
-		myTile = (TileCrucible) theTile;
-		name = myTile.getInventoryName();
+		myInfo = INFO;
+		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override
@@ -62,24 +48,15 @@ public class GuiCrucible extends GuiBaseAdv {
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16)
 				.setTexture(TEX_DROP_RIGHT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 56, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
-
-		addTab(new TabEnergy(this, myTile, false));
-		redstoneTab = addTab(new TabRedstone(this, myTile));
-		configTab = addTab(new TabConfiguration(this, myTile));
-
-		addTab(new TabInfo(this, INFO, 1));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}
 
 	@Override
 	protected void updateElementInformation() {
 
+		super.updateElementInformation();
+
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput.setVisible(myTile.hasSide(2));
-
-		redstoneTab.setVisible(myTile.augmentRSControl);
-		configTab.setVisible(myTile.augmentReconfigSides);
 
 		progressFluid.setFluid(myTile.getTankFluid());
 		progressFluid.setSize(myTile.getScaledProgress(PROGRESS), 16);

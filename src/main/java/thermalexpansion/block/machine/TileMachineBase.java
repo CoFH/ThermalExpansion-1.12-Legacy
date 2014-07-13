@@ -9,6 +9,7 @@ import cofh.render.IconRegistry;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.TimeTracker;
+import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.inventory.ISidedInventory;
@@ -16,6 +17,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.fluids.FluidStack;
 
 import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
@@ -57,6 +59,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		sideConfig = defaultSideConfig[getType()];
 		energyConfig = defaultEnergyConfig[getType()];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 10);
+		setDefaultSides();
 	}
 
 	@Override
@@ -69,6 +72,12 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	public int getLightValue() {
 
 		return isActive ? lightValue[getType()] : 0;
+	}
+
+	@Override
+	public byte[] getDefaultSides() {
+
+		return sideConfig.defaultSides.clone();
 	}
 
 	@Override
@@ -195,6 +204,16 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		return MathHelper.round(scale * power / energyConfig.maxPower);
 	}
 
+	public FluidTankAdv getTank() {
+
+		return null;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return null;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -227,10 +246,10 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		NBTTagList list = nbt.getTagList("Augments", 10);
 		augments = new ItemStack[augments.length + level];
 		augmentStatus = new boolean[augments.length];
+
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);
 			int slot = tag.getInteger("Slot");
-
 			if (slot >= 0 && slot < augments.length) {
 				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
 			}
@@ -355,6 +374,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 				augmentStatus[i] = installAugment(i);
 			}
 		}
+		onInstalled();
 	}
 
 	/* AUGMENT HELPERS */
@@ -425,12 +445,9 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	private void onInstalled() {
 
-		if (!augmentReconfigSides) {
-			setDefaultSides();
-		}
-		if (!augmentRSControl) {
-			this.rsMode = ControlMode.DISABLED;
-		}
+		augmentReconfigSides = true;
+		augmentRSControl = true;
+
 		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
 			processRem = 0;
 			isActive = false;
@@ -438,6 +455,23 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 			tracker.markTime(worldObj);
 		}
 	}
+
+	// private void onInstalled() {
+	//
+	// if (!augmentReconfigSides) {
+	// setDefaultSides();
+	// sideCache[facing] = 0;
+	// }
+	// if (!augmentRSControl) {
+	// this.rsMode = ControlMode.DISABLED;
+	// }
+	// if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
+	// processRem = 0;
+	// isActive = false;
+	// wasActive = true;
+	// tracker.markTime(worldObj);
+	// }
+	// }
 
 	private void resetAugments() {
 
@@ -473,6 +507,23 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	public int getInfoMaxEnergyStored() {
 
 		return energyStorage.getMaxEnergyStored();
+	}
+
+	/* IReconfigurableFacing */
+	@Override
+	public boolean setFacing(int side) {
+
+		if (side < 0 || side > 5) {
+			return false;
+		}
+		if (!allowYAxisFacing() && side < 2) {
+			return false;
+		}
+		sideCache[side] = 0;
+		facing = (byte) side;
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		sendUpdatePacket(Side.CLIENT);
+		return true;
 	}
 
 	/* IReconfigurableSides */

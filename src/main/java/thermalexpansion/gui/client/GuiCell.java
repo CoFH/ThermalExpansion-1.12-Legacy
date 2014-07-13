@@ -6,6 +6,7 @@ import cofh.gui.element.ElementButton;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
+import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
 import cofh.util.StringHelper;
 
@@ -23,9 +24,10 @@ public class GuiCell extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Cell.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Stores Redstone Flux. Hold Shift or Ctrl to fine tune energy control.\n\nWrench while sneaking to dismantle.";
+	static final String INFO = "Stores Redstone Flux.\n\nHold Shift or Ctrl to fine tune energy control.\n\nWrench while sneaking to dismantle.";
 
 	TileCell myTile;
+	String playerName;
 
 	public ElementButton decRecv;
 	public ElementButton incRecv;
@@ -37,6 +39,7 @@ public class GuiCell extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileCell) theTile;
 		name = myTile.getInventoryName();
+		playerName = inventory.player.getDisplayName();
 	}
 
 	@Override
@@ -48,8 +51,11 @@ public class GuiCell extends GuiBaseAdv {
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigCell(this, myTile));
-		addTab(new TabInfo(this, INFO, 1));
+		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
+		if (myTile.enableSecurity() && myTile.isSecured()) {
+			addTab(new TabSecurity(this, myTile, playerName));
+		}
 
 		decRecv = new ElementButton(this, 28, 56, "DecRecv", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incRecv = new ElementButton(this, 44, 56, "IncRecv", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -60,6 +66,16 @@ public class GuiCell extends GuiBaseAdv {
 		addElement(incRecv);
 		addElement(decSend);
 		addElement(incSend);
+	}
+
+	@Override
+	public void updateScreen() {
+
+		super.updateScreen();
+
+		if (!myTile.canAccess()) {
+			this.mc.thePlayer.closeScreen();
+		}
 	}
 
 	@Override

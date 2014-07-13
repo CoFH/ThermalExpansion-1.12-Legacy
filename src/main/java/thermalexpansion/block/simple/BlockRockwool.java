@@ -18,6 +18,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.item.TEItems;
@@ -70,7 +71,9 @@ public class BlockRockwool extends Block implements IInitializer {
 	@Override
 	public boolean initialize() {
 
-		GameRegistry.registerCustomItemStack("rockwool", new ItemStack(this));
+		GameRegistry.registerCustomItemStack("clothRock", new ItemStack(this));
+
+		OreDictionary.registerOre("blockClothRock", new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE));
 
 		return true;
 	}

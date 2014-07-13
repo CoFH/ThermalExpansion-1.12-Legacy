@@ -58,8 +58,8 @@ public class GuiTesseract extends GuiBaseAdv {
 		myTile = (TileTesseract) theTile;
 		name = myTile.getInventoryName();
 		drawInventory = false;
+		playerName = inventory.player.getCommandSenderName();
 
-		playerName = inventory.player.getDisplayName();
 		tempFreq = myTile.frequency;
 	}
 
@@ -68,11 +68,13 @@ public class GuiTesseract extends GuiBaseAdv {
 
 		super.initGui();
 
-		addTab(new TabSecurity(this, myTile, playerName));
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigTesseract(this, myTile, playerName));
 		addTab(new TabInfo(this, INFO));
 		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabOperation));
+		if (myTile.enableSecurity() && myTile.isSecured()) {
+			addTab(new TabSecurity(this, myTile, playerName));
+		}
 
 		tbFreqX = guiLeft + 102 + 4;
 		tbFreqY = guiTop + 26 + 2;
@@ -202,7 +204,7 @@ public class GuiTesseract extends GuiBaseAdv {
 
 		super.updateScreen();
 
-		if (!myTile.canAccess) {
+		if (!myTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
 		tbName.updateCursorCounter();

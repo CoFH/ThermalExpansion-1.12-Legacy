@@ -1,8 +1,6 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementButton;
 import cofh.gui.element.ElementDualScaled;
@@ -10,13 +8,6 @@ import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluid;
 import cofh.gui.element.ElementFluidTank;
 import cofh.gui.element.ElementSimple;
-import cofh.gui.element.TabAugment;
-import cofh.gui.element.TabBase;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabEnergy;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -27,7 +18,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.machine.ContainerTransposer;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiTransposer extends GuiBaseAdv {
+public class GuiTransposer extends GuiMachineBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Transposer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
@@ -46,14 +37,13 @@ public class GuiTransposer extends GuiBaseAdv {
 	ElementDualScaled speed;
 	ElementButton mode;
 
-	TabBase redstoneTab;
-	TabBase configTab;
+	public GuiTransposer(InventoryPlayer inventory, TileEntity tile) {
 
-	public GuiTransposer(InventoryPlayer inventory, TileEntity theTile) {
+		super(new ContainerTransposer(inventory, tile), tile, inventory.player, TEXTURE);
 
-		super(new ContainerTransposer(inventory, theTile), TEXTURE);
-		myTile = (TileTransposer) theTile;
-		name = myTile.getInventoryName();
+		myTile = (TileTransposer) tile;
+		myInfo = INFO;
+		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override
@@ -78,18 +68,12 @@ public class GuiTransposer extends GuiBaseAdv {
 				.setTexture(TEX_DROP_RIGHT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_BUBBLE, 32, 16));
 		mode = (ElementButton) addElement(new ElementButton(this, 116, 49, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
-
-		addTab(new TabEnergy(this, myTile, false));
-		redstoneTab = addTab(new TabRedstone(this, myTile));
-		configTab = addTab(new TabConfiguration(this, myTile));
-
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired));
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 	}
 
 	@Override
 	protected void updateElementInformation() {
+
+		super.updateElementInformation();
 
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput[0].setVisible(myTile.hasSide(4));
@@ -114,9 +98,6 @@ public class GuiTransposer extends GuiBaseAdv {
 		} else {
 			progressFluid.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 19);
 		}
-		redstoneTab.setVisible(myTile.augmentRSControl);
-		configTab.setVisible(myTile.augmentReconfigSides);
-
 		progressOverlay.setVisible(!myTile.reverse);
 		progressOverlay.setQuantity(myTile.getScaledProgress(PROGRESS));
 		progressOverlayRev.setVisible(myTile.reverse);

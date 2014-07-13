@@ -3,6 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
+import cofh.util.RecipeSecure;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,7 +69,7 @@ public class BlockDynamo extends BlockTEBase {
 
 		for (int i = 0; i < Types.values().length; i++) {
 			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
+				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
 	}
@@ -78,8 +79,10 @@ public class BlockDynamo extends BlockTEBase {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 
-		if (tile != null) {
-			tile.rotateBlock();
+		tile.rotateBlock();
+
+		if (stack.stackTagCompound != null) {
+			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -150,6 +153,12 @@ public class BlockDynamo extends BlockTEBase {
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 
+		if (tile != null) {
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+		}
 		return tag;
 	}
 
@@ -201,6 +210,15 @@ public class BlockDynamo extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
 					'I', "ingotElectrum", 'R', Items.redstone }));
 		}
+		GameRegistry.addRecipe(new RecipeSecure(dynamoSteam, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', dynamoSteam }));
+		GameRegistry.addRecipe(new RecipeSecure(dynamoMagmatic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				dynamoMagmatic }));
+		GameRegistry.addRecipe(new RecipeSecure(dynamoCompression, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				dynamoCompression }));
+		GameRegistry.addRecipe(new RecipeSecure(dynamoEnervation, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				dynamoEnervation }));
+		GameRegistry.addRecipe(new RecipeSecure(dynamoReactant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
+				dynamoReactant }));
 		return true;
 	}
 

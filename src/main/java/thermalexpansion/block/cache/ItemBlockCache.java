@@ -1,5 +1,6 @@
 package thermalexpansion.block.cache;
 
+import cofh.item.ItemBlockBase;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
@@ -8,10 +9,9 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockCache extends ItemBlock {
+public class ItemBlockCache extends ItemBlockBase {
 
 	public ItemBlockCache(Block block) {
 
@@ -23,27 +23,9 @@ public class ItemBlockCache extends ItemBlock {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		return StringHelper.localize(getUnlocalizedName(stack));
-	}
-
-	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.cache." + BlockCache.NAMES[stack.getItemDamage()] + ".name";
-	}
-
-	@Override
-	public int getMetadata(int i) {
-
-		return i;
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
 	}
 
 	@Override

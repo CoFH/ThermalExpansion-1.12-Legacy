@@ -12,14 +12,12 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
 import thermalexpansion.gui.client.ender.GuiTesseract;
-import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.item.TEFlorbs;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.render.RenderCache;
 import thermalexpansion.render.RenderCell;
 import thermalexpansion.render.RenderDynamo;
 import thermalexpansion.render.RenderFrame;
-import thermalexpansion.render.RenderItemFlorb;
 import thermalexpansion.render.RenderLight;
 import thermalexpansion.render.RenderSchematic;
 import thermalexpansion.render.RenderSponge;
@@ -27,6 +25,7 @@ import thermalexpansion.render.RenderStrongbox;
 import thermalexpansion.render.RenderTank;
 import thermalexpansion.render.RenderTesseract;
 import thermalexpansion.render.entity.RenderEntityFlorb;
+import thermalexpansion.render.item.RenderItemFlorb;
 
 public class ProxyClient extends Proxy {
 
@@ -35,8 +34,6 @@ public class ProxyClient extends Proxy {
 
 	@Override
 	public void registerRenderInformation() {
-
-		ElementSlotOverlay.enableBorders = TEProps.enableGuiBorders;
 
 		MinecraftForgeClient.registerItemRenderer(TEItems.itemDiagram, rendererComponent);
 		MinecraftForgeClient.registerItemRenderer(TEFlorbs.itemFlorb, rendererFlorb);
@@ -58,6 +55,7 @@ public class ProxyClient extends Proxy {
 			IconRegistry.addIcon("IconSendOnly", "thermalexpansion:icons/Icon_SendOnly", event.map);
 			IconRegistry.addIcon("IconSendRecv", "thermalexpansion:icons/Icon_SendRecv", event.map);
 			IconRegistry.addIcon("IconBlocked", "thermalexpansion:icons/Icon_Blocked", event.map);
+			IconRegistry.addIcon("IconSchematic", "thermalexpansion:diagram/Schematic", event.map);
 			IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:icons/Icon_SlotSchematic", event.map);
 		}
 	}

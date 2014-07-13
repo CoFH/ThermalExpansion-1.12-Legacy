@@ -2,6 +2,10 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.item.ItemBlockBase;
+import cofh.util.EnergyHelper;
+import cofh.util.RSControlHelper;
+import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -9,27 +13,21 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
-public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
+import thermalexpansion.util.ReconfigurableHelper;
+
+public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem {
 
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 
-		container.setTagCompound(new NBTTagCompound());
-		if (container.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
-			container.stackTagCompound.setByteArray("SideCache", TileCellCreative.DEFAULT_SIDES);
-		} else {
-			container.stackTagCompound.setByteArray("SideCache", TileCell.DEFAULT_SIDES);
-		}
-		container.stackTagCompound.setByte("Facing", (byte) 3);
-
-		container.stackTagCompound.setInteger("Energy", energy);
+		ReconfigurableHelper.setFacing(container, 3);
+		ReconfigurableHelper.setSideCache(container, container.getItemDamage() == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
+				: TileCell.DEFAULT_SIDES);
+		RSControlHelper.setControl(container, ControlMode.LOW);
+		EnergyHelper.setDefaultEnergyTag(container, energy);
 		container.stackTagCompound.setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
-		container.stackTagCompound.setInteger("Receive", TileCell.MAX_RECEIVE[container.getItemDamage()]);
-
-		container.stackTagCompound.setByte("rsMode", (byte) ControlMode.LOW.ordinal());
+		container.stackTagCompound.setInteger("Recv", TileCell.MAX_RECEIVE[container.getItemDamage()]);
 
 		return container;
 	}
@@ -44,21 +42,9 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		return StringHelper.localize(getUnlocalizedName(stack));
-	}
-
-	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.cell." + BlockCell.NAMES[stack.getItemDamage()] + ".name";
-	}
-
-	@Override
-	public int getMetadata(int i) {
-
-		return i;
 	}
 
 	@Override
@@ -83,12 +69,6 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 	}
 
 	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return false;
-	}
-
-	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockCell.Types.values()[stack.getItemDamage()]) {
@@ -109,40 +89,25 @@ public class ItemBlockCell extends ItemBlock implements IEnergyContainerItem {
 		if (stack.stackTagCompound == null) {
 			setDefaultTag(stack, 0);
 		}
+		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForInfo());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		int send = stack.stackTagCompound.getInteger("Send");
-
-		byte rsMode = stack.stackTagCompound.getByte("rsMode");
+		SecurityHelper.addAccessInformation(stack, list);
 
 		if (stack.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
-			list.add(StringHelper.localize("info.cofh.send") + ": " + send);
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite") + " RF");
 		} else {
-			int energy = stack.stackTagCompound.getInteger("Energy");
-			int receive = stack.stackTagCompound.getInteger("Receive");
-
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(energy) + " / "
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
 					+ StringHelper.getScaledNumber(TileCell.STORAGE[stack.getItemDamage()]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + send + "/" + receive + " RF/t");
 		}
-		switch (rsMode) {
-		case 0:
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.disabled"));
-			break;
-		case 1:
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.enabled") + ", "
-					+ StringHelper.localize("info.cofh.low"));
-			break;
-		case 2:
-			list.add(StringHelper.localize("info.cofh.signal") + ": " + StringHelper.localize("info.cofh.enabled") + ", "
-					+ StringHelper.localize("info.cofh.high"));
-			break;
-		}
+		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.stackTagCompound.getInteger("Send")
+				+ "/" + stack.stackTagCompound.getInteger("Recv") + " RF/t");
+
+		RSControlHelper.addRSControlInformation(stack, list);
 	}
 
 	/* IEnergyContainerItem */

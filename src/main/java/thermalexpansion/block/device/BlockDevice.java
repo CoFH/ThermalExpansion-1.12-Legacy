@@ -1,8 +1,8 @@
 package thermalexpansion.block.device;
 
-import cofh.api.core.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
+import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -14,7 +14,6 @@ import java.util.List;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -81,33 +80,18 @@ public class BlockDevice extends BlockTEBase {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.stackTagCompound != null) {
-			TileEntity theTile = world.getTileEntity(x, y, z);
-			if (theTile instanceof TileWorkbench) {
-				TileWorkbench tile = (TileWorkbench) theTile;
+			TileEntity aTile = world.getTileEntity(x, y, z);
 
-				if (stack.stackTagCompound.hasKey("Owner")) {
-					tile.setOwnerName(stack.stackTagCompound.getString("Owner"));
-					tile.setAccess(ISecurable.AccessMode.values()[stack.stackTagCompound.getByte("Access")]);
+			if (aTile instanceof TileWorkbench) {
+				TileWorkbench tile = (TileWorkbench) aTile;
+
+				if (stack.stackTagCompound.hasKey("Inventory")) {
 					tile.selectedSchematic = stack.stackTagCompound.getByte("Mode");
 					tile.readInventoryFromNBT(stack.stackTagCompound);
 				}
 			}
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
-
-	@Override
-	public float getBlockHardness(World world, int x, int y, int z) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
-		return tile instanceof ISecurable ? -1 : super.getBlockHardness(world, x, y, z);
-	}
-
-	@Override
-	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
-		return tile instanceof ISecurable ? 1200 : super.getExplosionResistance(entity, world, x, y, z, explosionX, explosionY, explosionZ);
 	}
 
 	@Override
@@ -197,7 +181,7 @@ public class BlockDevice extends BlockTEBase {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setString("Owner", theTile.owner);
+			tag.setString("Owner", theTile.getOwnerName());
 			tag.setByte("Access", (byte) theTile.getAccess().ordinal());
 			tag.setByte("Mode", (byte) theTile.selectedSchematic);
 
@@ -281,6 +265,7 @@ public class BlockDevice extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
+		GameRegistry.addRecipe(new RecipeSecure(workbench, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', workbench }));
 		return true;
 	}
 

@@ -2,6 +2,7 @@ package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.util.EnergyHelper;
+import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -31,8 +32,8 @@ public class TEItems {
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
-		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
+		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
 
@@ -50,13 +51,6 @@ public class TEItems {
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = itemIgniter.addItem(0, "igniter");
 
-		/* Satchel */
-		satchelCreative = itemSatchel.addItem(ItemSatchel.Types.CREATIVE.ordinal(), "satchelCreative", 3);
-		satchelBasic = itemSatchel.addItem(ItemSatchel.Types.BASIC.ordinal(), "satchelBasic", 0);
-		satchelHardened = itemSatchel.addItem(ItemSatchel.Types.HARDENED.ordinal(), "satchelHardened", 0);
-		satchelReinforced = itemSatchel.addItem(ItemSatchel.Types.REINFORCED.ordinal(), "satchelReinforced", 1);
-		satchelResonant = itemSatchel.addItem(ItemSatchel.Types.RESONANT.ordinal(), "satchelResonant", 2);
-
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
 		capacitorPotato = EnergyHelper.setDefaultEnergyTag(itemCapacitor.addItem(ItemCapacitor.Types.POTATO.ordinal(), "capacitorPotato", 0),
@@ -65,6 +59,25 @@ public class TEItems {
 		capacitorHardened = itemCapacitor.addItem(ItemCapacitor.Types.HARDENED.ordinal(), "capacitorHardened", 0);
 		capacitorReinforced = itemCapacitor.addItem(ItemCapacitor.Types.REINFORCED.ordinal(), "capacitorReinforced", 1);
 		capacitorResonant = itemCapacitor.addItem(ItemCapacitor.Types.RESONANT.ordinal(), "capacitorResonant", 2);
+
+		EnergyHelper.setDefaultEnergyTag(capacitorCreative, 0);
+		EnergyHelper.setDefaultEnergyTag(capacitorBasic, 0);
+		EnergyHelper.setDefaultEnergyTag(capacitorHardened, 0);
+		EnergyHelper.setDefaultEnergyTag(capacitorReinforced, 0);
+		EnergyHelper.setDefaultEnergyTag(capacitorResonant, 0);
+
+		/* Satchel */
+		satchelCreative = itemSatchel.addItem(ItemSatchel.Types.CREATIVE.ordinal(), "satchelCreative", 3);
+		satchelBasic = itemSatchel.addItem(ItemSatchel.Types.BASIC.ordinal(), "satchelBasic", 0);
+		satchelHardened = itemSatchel.addItem(ItemSatchel.Types.HARDENED.ordinal(), "satchelHardened", 0);
+		satchelReinforced = itemSatchel.addItem(ItemSatchel.Types.REINFORCED.ordinal(), "satchelReinforced", 1);
+		satchelResonant = itemSatchel.addItem(ItemSatchel.Types.RESONANT.ordinal(), "satchelResonant", 2);
+
+		ItemSatchel.setDefaultInventoryTag(satchelCreative);
+		ItemSatchel.setDefaultInventoryTag(satchelBasic);
+		ItemSatchel.setDefaultInventoryTag(satchelHardened);
+		ItemSatchel.setDefaultInventoryTag(satchelReinforced);
+		ItemSatchel.setDefaultInventoryTag(satchelResonant);
 
 		/* Diagram */
 		diagramSchematic = itemDiagram.addItem(SCHEMATIC_ID, "schematic");
@@ -96,6 +109,7 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', Items.iron_ingot, 'R', Items.redstone, 'X',
 				capacitorBasic, 'G', Items.flint }));
 
+		/* Capacitors */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, Items.redstone, "nuggetLead" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, Items.redstone, "nuggetLead" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', Items.redstone, 'X',
@@ -106,6 +120,22 @@ public class TEItems {
 				capacitorHardened, 'Y', Items.diamond }));
 		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', Items.redstone, 'X',
 				capacitorReinforced, 'Y', TFItems.dustPyrotheum }));
+
+		/* Satchels */
+		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic,
+				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockClothRock", 'Y', Items.leather }));
+		GameRegistry
+				.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
+		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotElectrum", 'X', satchelHardened, 'Y',
+				"nuggetInvar" }));
+		GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
+				"nuggetElectrum" }));
+
+		GameRegistry.addRecipe(new RecipeSecure(satchelBasic, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelBasic }));
+		GameRegistry.addRecipe(new RecipeSecure(satchelHardened, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelHardened }));
+		GameRegistry.addRecipe(new RecipeSecure(satchelReinforced,
+				new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelReinforced }));
+		GameRegistry.addRecipe(new RecipeSecure(satchelResonant, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelResonant }));
 
 		/* Diagrams */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(diagramSchematic, new Object[] { Items.paper, Items.paper, "dyeBlue" }));
@@ -163,11 +193,11 @@ public class TEItems {
 	public static ItemWrench itemWrench;
 	public static ItemMultimeter itemMultimeter;
 	public static ItemIgniter itemIgniter;
-	public static ItemSatchel itemSatchel;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemMaterial;
 
 	public static ItemCapacitor itemCapacitor;
+	public static ItemSatchel itemSatchel;
 
 	public static ItemStack toolWrench;
 	public static ItemStack toolMultimeter;
@@ -176,18 +206,18 @@ public class TEItems {
 
 	public static ItemStack diagramSchematic;
 
-	public static ItemStack satchelBasic;
-	public static ItemStack satchelHardened;
-	public static ItemStack satchelReinforced;
-	public static ItemStack satchelResonant;
-	public static ItemStack satchelCreative;
-
 	public static ItemStack capacitorPotato;
 	public static ItemStack capacitorBasic;
 	public static ItemStack capacitorHardened;
 	public static ItemStack capacitorReinforced;
 	public static ItemStack capacitorResonant;
 	public static ItemStack capacitorCreative;
+
+	public static ItemStack satchelBasic;
+	public static ItemStack satchelHardened;
+	public static ItemStack satchelReinforced;
+	public static ItemStack satchelResonant;
+	public static ItemStack satchelCreative;
 
 	public static ItemStack pneumaticServo;
 	public static ItemStack powerCoilGold;
