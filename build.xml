@@ -13,13 +13,13 @@
 	<!-- Version file -->
 	<property name="verclass.dir" value="${src.dir}/${class.pckg}" />
 	<property name="verclass.name" value="ThermalExpansion.java"/>
-	
+
 	<!-- Forge version -->
-	<property name="mc.version" value="1.7.2"/>
+	<property name="mc.version"  value="1.7.10"/>
 	<property name="forge.major" value="10"/>
-	<property name="forge.minor" value="12"/>
-	<property name="forge.patch" value="1"/>
-	<property name="forge.build" value="1084"/>
+	<property name="forge.minor" value="13"/>
+	<property name="forge.patch" value="0"/>
+	<property name="forge.build" value="1152"/>
 	
 	<!-- Packaging -->
 	<property name="dist.dir" value="${build.dir}/dist"/>
@@ -39,10 +39,6 @@
 	<property name="reobf.cmd" value="${download.dir}/bon.jar"/>
 	<property name="forge.url" value="http://files.minecraftforge.net/maven/net/minecraftforge/forge/${forge.version}/forge-${forge.version}-src.zip"/>
 	
-	<!-- Enforce some paths -->
-	<mkdir dir="${build.dir}"/>
-	<mkdir dir="${download.dir}"/>
-	
 	<!-- Classpaths -->
 	<path id="mcp.classpath">
 		<pathelement location="${forge.jar}"/>
@@ -54,6 +50,8 @@
 		<fileset dir="${build.dir}/.gradle/caches">
 			<include name="modules*/files*/**/*.jar"/>
 			<exclude name="modules*/files*/commons-io/commons-io/1.4/**/*.jar"/>
+			<exclude name="modules*/files*/com.google.guava/guava/14*/**/*.jar"/>
+			<exclude name="modules*/files*/com.google.guava/guava/15*/**/*.jar"/>
 		</fileset>
 	</path>
 	<path id="gson">
@@ -64,6 +62,10 @@
 	
 	<!-- Task skipping -->
 	<target name="properties">
+		<!-- Enforce some paths -->
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${download.dir}"/>
+		<!-- Set properties -->
 		<available property="has.api" file="${src.dir}/${class.pckg}/api"/>
 		<available property="bon.exists" file="${reobf.cmd}"/>
 		<available property="forge.exists" file="${download.dir}/forge-${forge.version}-src.zip"/>
@@ -96,11 +98,14 @@
 	</target>
 
 	<target name="get-dependencies" unless="have.libs">
-		<echo message="Downloading CCL..."/>
-		<get src="http://files.minecraftforge.net/maven/codechicken/CodeChickenLib/1.7.2-1.1.0.73/CodeChickenLib-1.7.2-1.1.0.73-dev.jar" dest="${download.dir}/codechickenlib.jar"/>
+		<delete dir="${lib.dir}/"/>
+		<mkdir dir="${lib.dir}/"/>
+
+		<echo message="Downloading CCL... "/>
+		<get src="http://files.minecraftforge.net/maven/codechicken/CodeChickenLib/1.7.10-1.1.1.88/CodeChickenLib-1.7.10-1.1.1.88-dev.jar" dest="${download.dir}/codechickenlib.jar"/>
 
 		<echo message="Downloading NEI API... "/>
-		<get src="http://www.chickenbones.craftsaddle.org/Files/New_Versions/1.7.2/NotEnoughItems-1.7.2-1.0.1-dev.jar" dest="${download.dir}/NEI.jar"/>
+		<get src="http://chickenbones.net/maven/codechicken/NotEnoughItems/1.7.10-1.0.2.15/NotEnoughItems-1.7.10-1.0.2.15-dev.jar" dest="${download.dir}/NEI.jar"/>
 
 		<echo message="Downloading Buildcraft API.. "/>
 		<get src="https://github.com/BuildCraft/BuildCraft/archive/master.zip" dest="${download.dir}/Buildcraft.zip"/>
@@ -377,7 +382,7 @@
 	
 	<target name="setup-bon" depends="properties" unless="bon.exists">
 		<echo message="Downloading BON..."/>
-		<get src="https://github.com/skyboy/bearded-octo-nemesis/releases/download/1.0/BON.jar" dest="${reobf.cmd}"/>
+		<get src="https://github.com/skyboy/bearded-octo-nemesis/releases/download/1.1/BON.jar" dest="${reobf.cmd}"/>
 	</target>
 	
 	<macrodef name="update-languages">
@@ -498,6 +503,12 @@
 	<target name="rebuild">
 		<delete file="${forge.jar}" failonerror="false"/>
 		<delete dir="${forge.dir}"/>
+		<delete dir="${download.dir}"/>
+		<antcall target="install"/>
+	</target>
+
+	<target name="refresh-deps">
+		<delete dir="${lib.dir}"/>
 		<delete dir="${download.dir}"/>
 		<antcall target="install"/>
 	</target>
