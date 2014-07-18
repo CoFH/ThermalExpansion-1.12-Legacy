@@ -3,7 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
 import cofh.util.EnergyHelper;
-import cofh.util.RSControlHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
 
@@ -20,7 +20,7 @@ public class ItemBlockDynamo extends ItemBlockBase {
 	public static ItemStack setDefaultTag(ItemStack container) {
 
 		ReconfigurableHelper.setFacing(container, 1);
-		RSControlHelper.setControl(container, ControlMode.DISABLED);
+		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
 
 		return container;
@@ -45,33 +45,19 @@ public class ItemBlockDynamo extends ItemBlockBase {
 
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, list);
-		RSControlHelper.addRSControlInformation(stack, list);
+		// RSControlHelper.addRSControlInformation(stack, list);
 
 		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
+		list.add(StringHelper.localize("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[stack.getItemDamage()]));
 
-		switch (BlockDynamo.Types.values()[stack.getItemDamage()]) {
-		case STEAM:
-			list.add(StringHelper.localize("info.thermalexpansion.dynamo.steam1"));
-			list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo.steam2"));
-			break;
-		case MAGMATIC:
-			list.add(StringHelper.localize("info.thermalexpansion.dynamo.magmatic"));
-			break;
-		case COMPRESSION:
-			list.add(StringHelper.localize("info.thermalexpansion.dynamo.compression"));
-			break;
-		case REACTANT:
-			list.add(StringHelper.localize("info.thermalexpansion.dynamo.reactant"));
-			break;
-		case ENERVATION:
-			list.add(StringHelper.localize("info.thermalexpansion.dynamo.enervation"));
-			break;
+		if (stack.getItemDamage() == BlockDynamo.Types.STEAM.ordinal()) {
+			list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo.steam.0"));
 		}
 	}
 

@@ -1,12 +1,12 @@
 package thermalexpansion.block.ender;
 
 import cofh.render.IconRegistry;
-import cofh.util.RecipeSecure;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -28,7 +28,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.TEItems;
+import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockEnder extends BlockTEBase {
 
@@ -136,14 +136,14 @@ public class BlockEnder extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
 		if (tile != null) {
 			tile.removeFromRegistry();
 			tile.inventory = new ItemStack[0];
 		}
-		return super.dismantleBlock(player, getItemStackTag(world, x, y, z), world, x, y, z, returnBlock, false);
+		return super.dismantleBlock(player, getItemStackTag(world, x, y, z), world, x, y, z, returnDrops, false);
 	}
 
 	/* IInitializer */
@@ -166,7 +166,7 @@ public class BlockEnder extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
 					'B', "ingotBronze" }));
 		}
-		GameRegistry.addRecipe(new RecipeSecure(tesseract, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', tesseract }));
+		TECraftingHandler.addSecureRecipe(tesseract);
 		return true;
 	}
 

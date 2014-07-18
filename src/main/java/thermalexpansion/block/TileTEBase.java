@@ -1,5 +1,6 @@
 package thermalexpansion.block;
 
+import cofh.api.tileentity.IPortableData;
 import cofh.block.TileCoFHBase;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -17,7 +18,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 
-public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacketHandler, ITilePacketHandler {
+public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
 	protected String tileName = "";
 
@@ -45,8 +46,11 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return hasGui();
+		if (hasGui()) {
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -167,6 +171,17 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 		}
 	}
 
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+	}
+
 	/* Energy Config Class */
 	public static class EnergyConfig {
 
@@ -240,27 +255,5 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 		public int[] sideTex;
 		public byte[] defaultSides;
 	}
-
-	/* Augment Helpers */
-	public static String DYNAMO_EFFICIENCY = "dynamoEfficiency";
-	public static String DYNAMO_OUTPUT = "dynamoOutput";
-	public static String DYNAMO_THROTTLE = "dynamoThrottle";
-	public static String ENDER_ENERGY = "enderEnergy";
-	public static String ENDER_FLUID = "enderFluid";
-	public static String ENDER_ITEM = "enderItem";
-	public static String GENERAL_AUTO_TRANSFER = "autoTransfer";
-	public static String GENERAL_RECONFIG_SIDES = "reconfigSides";
-	public static String GENERAL_RS_CONTROL = "rsControl";
-	public static String MACHINE_SECONDARY = "machineSecondary";
-	public static String MACHINE_SPEED = "machineSpeed";
-
-	public static byte NUM_DYNAMO_EFFICIENCY = 3;
-	public static byte NUM_DYNAMO_OUTPUT = 3;
-
-	public static byte NUM_MACHINE_SECONDARY = 3;
-	public static byte NUM_MACHINE_SPEED = 3;
-
-	public static final int[] MACHINE_SPEED_PROCESS_MOD = { 1, 2, 4, 8 };
-	public static final int[] MACHINE_SPEED_ENERGY_MOD = { 1, 3, 8, 20 };
 
 }

@@ -1,6 +1,6 @@
 package thermalexpansion.block;
 
-import cofh.api.core.ISecurable;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.util.BlockHelper;
@@ -91,14 +91,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	public boolean openGui(EntityPlayer player) {
 
 		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			return true;
+			if (hasGui()) {
+				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			}
+			return hasGui();
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("chat.cofh.secure2")));
 		}
-		return true;
+		return hasGui();
 	}
 
 	@Override

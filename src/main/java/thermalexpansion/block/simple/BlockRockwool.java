@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -71,7 +70,9 @@ public class BlockRockwool extends Block implements IInitializer {
 	@Override
 	public boolean initialize() {
 
-		GameRegistry.registerCustomItemStack("clothRock", new ItemStack(this));
+		rockWool = new ItemStack(this);
+
+		GameRegistry.registerCustomItemStack("clothRock", rockWool);
 
 		OreDictionary.registerOre("blockClothRock", new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE));
 
@@ -81,7 +82,7 @@ public class BlockRockwool extends Block implements IInitializer {
 	@Override
 	public boolean postInit() {
 
-		FurnaceRecipes.smelting().func_151394_a(TEItems.slag, new ItemStack(this, 1, 8), 0.0F);
+		GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, 8), 0.0F);
 		for (int i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(this, 8, i), new Object[] { "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.dye, 1, 15 - i) });
 		}

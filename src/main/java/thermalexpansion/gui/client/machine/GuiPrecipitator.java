@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
@@ -19,7 +18,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiPrecipitator extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
-	static final String INFO = "Uses Redstone Flux to freeze various fluids!\n\nThe selected item is what you'll get, if there is enough fluid in the tank.\n\nHave a snowball fight.";
 
 	TilePrecipitator myTile;
 
@@ -34,8 +32,6 @@ public class GuiPrecipitator extends GuiMachineBase {
 		super(new ContainerPrecipitator(inventory, tile), tile, inventory.player, TEXTURE);
 
 		myTile = (TilePrecipitator) tile;
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

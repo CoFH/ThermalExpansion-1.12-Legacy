@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementFluid;
@@ -19,7 +18,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiExtruder extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
-	static final String INFO = "Mixes water and lava to make different types of igneous rock.\n\nThe selected item is what you'll get, if there is enough water and lava in the tanks.\n\nMC physics is fun!";
 
 	TileExtruder myTile;
 
@@ -36,8 +34,6 @@ public class GuiExtruder extends GuiMachineBase {
 		super(new ContainerExtruder(inventory, tile), tile, inventory.player, TEXTURE);
 
 		myTile = (TileExtruder) tile;
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

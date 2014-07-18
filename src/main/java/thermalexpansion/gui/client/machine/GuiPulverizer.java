@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
@@ -16,7 +15,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiPulverizer extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Pulverizer.png");
-	static final String INFO = "Smashes things into other things.\n\nUseful for processing ores or converting items.\n\nThis is typically not reversible.";
 
 	ElementBase slotInput;
 	ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
@@ -27,9 +25,6 @@ public class GuiPulverizer extends GuiMachineBase {
 	public GuiPulverizer(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerPulverizer(inventory, tile), tile, inventory.player, TEXTURE);
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

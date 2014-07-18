@@ -18,7 +18,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -262,10 +261,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
-			return 0;
-		}
-		if (resource == null) {
+		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
 			return 0;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -280,7 +276,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
 			return null;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -295,22 +291,10 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+		if (from.ordinal() == facing && !augmentCoilDuct) {
 			return null;
 		}
 		return waterTank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return from.ordinal() != facing;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return from.ordinal() != facing;
 	}
 
 	@Override
@@ -323,7 +307,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
+		return side != facing || augmentCoilDuct ? SLOTS : TEProps.EMPTY_INVENTORY;
 	}
 
 }

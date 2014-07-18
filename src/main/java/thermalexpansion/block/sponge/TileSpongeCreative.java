@@ -1,11 +1,9 @@
 package thermalexpansion.block.sponge;
 
-import cofh.render.IconRegistry;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 
 import thermalexpansion.block.TEBlocks;
@@ -55,13 +53,6 @@ public class TileSpongeCreative extends TileSponge {
 				}
 			}
 		}
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		return IconRegistry.getIcon("Sponge", getType());
 	}
 
 }

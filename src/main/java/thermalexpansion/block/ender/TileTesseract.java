@@ -92,7 +92,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.tesseract.name";
+		return "tile.thermalexpansion.ender.tesseract.name";
 	}
 
 	@Override
@@ -535,8 +535,8 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("chat.cofh.secure2")));
 		}
 		return true;
 	}

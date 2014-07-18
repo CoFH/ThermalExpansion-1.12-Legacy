@@ -1,4 +1,4 @@
-package thermalexpansion.item.tool;
+package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.render.IconRegistry;
@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.entity.projectile.EntityFlorb;
-import thermalexpansion.item.TEFlorbs;
 
 public class ItemFlorb extends ItemBase {
 
@@ -33,6 +32,17 @@ public class ItemFlorb extends ItemBase {
 			container.stackTagCompound.setString("Fluid", fluid.getName());
 		}
 		return container;
+	}
+
+	public static void dropFlorb(Fluid fluid, World worldObj, int x, int y, int z) {
+
+		if (fluid != null) {
+			if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 0), fluid), worldObj, x, y, z);
+			} else {
+				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 1), fluid), worldObj, x, y, z);
+			}
+		}
 	}
 
 	public ItemFlorb() {
@@ -64,23 +74,23 @@ public class ItemFlorb extends ItemBase {
 			}
 		}
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
 		if (stack.stackTagCompound == null) {
 			if (stack.getItemDamage() == 0) {
-				list.add(StringHelper.localize("info.thermalexpansion.florb1"));
+				list.add(StringHelper.localize("info.thermalexpansion.florb.0"));
 			} else {
-				list.add(StringHelper.localize("info.thermalexpansion.florb1a"));
+				list.add(StringHelper.localize("info.thermalexpansion.florb.1"));
 			}
-			list.add(StringHelper.localize("info.thermalexpansion.florb2") + " " + StringHelper.YELLOW + StringHelper.ITALIC
+			list.add(StringHelper.localize("info.thermalexpansion.florb.2") + " " + StringHelper.YELLOW + StringHelper.ITALIC
 					+ StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
-			list.add(StringHelper.localize("info.thermalexpansion.florb3"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.3"));
 		} else {
-			list.add(StringHelper.localize("info.thermalexpansion.florb4"));
-			list.add(StringHelper.localize("info.thermalexpansion.florb5"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.4"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.5"));
 		}
 	}
 
@@ -137,17 +147,6 @@ public class ItemFlorb extends ItemBase {
 		IconRegistry.addIcon("FlorbMagmatic", "thermalexpansion:florb/FlorbMagmatic", ir);
 		IconRegistry.addIcon("FlorbMask", "thermalexpansion:florb/FlorbMask", ir);
 		IconRegistry.addIcon("FlorbOutline", "thermalexpansion:florb/FlorbOutline", ir);
-	}
-
-	public static void dropFlorb(Fluid fluid, World worldObj, int x, int y, int z) {
-
-		if (fluid != null) {
-			if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 0), fluid), worldObj, x, y, z);
-			} else {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 1), fluid), worldObj, x, y, z);
-			}
-		}
 	}
 
 }

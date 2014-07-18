@@ -19,8 +19,8 @@ import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
-import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.SchematicHelper;
 
 public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
@@ -111,7 +111,8 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 		ItemStack schematic = myTile.getStackInSlot(myTile.selectedSchematic);
 
 		if (schematic != null && craftResult.getStackInSlot(0) != null) {
-			ItemStack newSchematic = SchematicHelper.getSchematic(SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
+			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
+					SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(myTile.selectedSchematic, newSchematic);
 		}

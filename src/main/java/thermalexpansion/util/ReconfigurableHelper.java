@@ -14,7 +14,7 @@ public class ReconfigurableHelper {
 
 	}
 
-	/* NBT TAG HELPER */
+	/* NBT TAG HELPERS */
 	public static NBTTagCompound setItemStackTagReconfig(NBTTagCompound tag, TileReconfigurable tile) {
 
 		if (tile == null) {
@@ -26,6 +26,20 @@ public class ReconfigurableHelper {
 		tag.setByte("Facing", (byte) tile.getFacing());
 		tag.setByteArray("SideCache", tile.sideCache);
 		return tag;
+	}
+
+	public static byte getFacingFromNBT(NBTTagCompound tag) {
+
+		return !tag.hasKey("Facing") ? DEFAULT_FACING : tag.getByte("Facing");
+	}
+
+	public static byte[] getSideCacheFromNBT(NBTTagCompound tag, byte[] defaultSides) {
+
+		if (tag == null) {
+			return defaultSides.clone();
+		}
+		byte[] retSides = tag.getByteArray("SideCache");
+		return retSides.length < 6 ? defaultSides.clone() : retSides;
 	}
 
 	/* ITEM HELPERS */

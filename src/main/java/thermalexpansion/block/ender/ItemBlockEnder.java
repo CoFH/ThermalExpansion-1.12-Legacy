@@ -2,7 +2,7 @@ package thermalexpansion.block.ender;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
-import cofh.util.RSControlHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
 
@@ -17,7 +17,7 @@ public class ItemBlockEnder extends ItemBlockBase {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
 
-		RSControlHelper.setControl(container, ControlMode.LOW);
+		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		container.stackTagCompound.setInteger("Frequency", -1);
 		container.stackTagCompound.setByte("ModeItems", (byte) 1);
 		container.stackTagCompound.setByte("ModeFluid", (byte) 1);
@@ -38,7 +38,7 @@ public class ItemBlockEnder extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.tesseract.name";
+		return "tile.thermalexpansion.ender.tesseract.name";
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ItemBlockEnder extends ItemBlockBase {
 		SecurityHelper.addOwnerInformation(stack, list);
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
@@ -78,7 +78,7 @@ public class ItemBlockEnder extends ItemBlockBase {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + MODES[modeFluid]);
 			list.add(StringHelper.localize("info.cofh.energy") + ": " + MODES[modeEnergy]);
 		}
-		RSControlHelper.addRSControlInformation(stack, list);
+		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 
 	public static final String[] MODES = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),

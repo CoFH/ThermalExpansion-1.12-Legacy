@@ -1,4 +1,4 @@
-package thermalexpansion.item;
+package thermalexpansion.util;
 
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
@@ -16,6 +16,9 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import thermalexpansion.item.ItemDiagram;
+import thermalexpansion.item.TEItems;
 
 public class SchematicHelper {
 
@@ -44,9 +47,10 @@ public class SchematicHelper {
 		return nbt;
 	}
 
-	public static ItemStack getSchematic(NBTTagCompound nbt) {
+	public static ItemStack writeNBTToSchematic(ItemStack schematic, NBTTagCompound nbt) {
 
-		ItemStack returnStack = TEItems.diagramSchematic.copy();
+		ItemStack returnStack = schematic.copy();
+		returnStack.setTagCompound(new NBTTagCompound());
 		returnStack.stackTagCompound = nbt;
 		return returnStack;
 	}
@@ -90,15 +94,15 @@ public class SchematicHelper {
 	public static boolean isSchematic(ItemStack stack) {
 
 		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
-				&& stack.getItemDamage() == TEItems.SCHEMATIC_ID;
+				&& stack.getItemDamage() == ItemDiagram.Types.SCHEMATIC.ordinal();
 	}
 
 	/**
 	 * Add schematic information. Validity not checked.
 	 */
-	public static void addSchematicInformation(List list, ItemStack schematic) {
+	public static void addSchematicInformation(ItemStack stack, List<String> list) {
 
-		if (schematic.stackTagCompound == null) {
+		if (stack.stackTagCompound == null) {
 			list.add(StringHelper.getInfoText("info.cofh.blank"));
 			return;
 		}
@@ -107,11 +111,11 @@ public class SchematicHelper {
 		String curName;
 
 		for (int i = 0; i < 9; i++) {
-			if (schematic.stackTagCompound.hasKey("Name" + i)) {
-				if (schematic.stackTagCompound.hasKey("Ore" + i)) {
+			if (stack.stackTagCompound.hasKey("Name" + i)) {
+				if (stack.stackTagCompound.hasKey("Ore" + i)) {
 					hasOre = true;
 					if (StringHelper.isShiftKeyDown()) {
-						curName = schematic.stackTagCompound.getString("Ore" + i);
+						curName = stack.stackTagCompound.getString("Ore" + i);
 						if (aMap.containsKey(curName)) {
 							aMap.put(curName, aMap.get(curName) + 1);
 						} else {
@@ -119,7 +123,7 @@ public class SchematicHelper {
 						}
 					}
 				} else {
-					curName = schematic.stackTagCompound.getString("Name" + i);
+					curName = stack.stackTagCompound.getString("Name" + i);
 					if (aMap.containsKey(curName)) {
 						aMap.put(curName, aMap.get(curName) + 1);
 					} else {
@@ -132,7 +136,7 @@ public class SchematicHelper {
 			list.add(StringHelper.LIGHT_GRAY + entry.getValue() + "x " + entry.getKey());
 		}
 		if (hasOre && StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 	}
 

@@ -11,7 +11,6 @@ import cofh.util.BlockHelper;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
@@ -22,8 +21,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 
 public class Utils {
@@ -211,13 +208,6 @@ public class Utils {
 	public static boolean isPipeTile(TileEntity tile) {
 
 		return tile instanceof IPipeTile;
-	}
-
-	public static void dismantleLog(String playerName, Block block, int bMeta, double x, double y, double z) {
-
-		if (TEProps.enableDismantleLogging) {
-			ThermalExpansion.log.info("Player " + playerName + " dismantled " + " (" + block + ":" + bMeta + ") at (" + x + "," + y + "," + z + ")");
-		}
 	}
 
 }

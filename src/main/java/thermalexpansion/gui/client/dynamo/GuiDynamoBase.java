@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.dynamo;
 
-import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.element.ElementEnergyStored;
@@ -11,6 +10,7 @@ import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -26,7 +26,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 	protected String playerName;
 
 	public String myInfo = "";
-	public String myTutorial = "";
+	public String myTutorial = StringHelper.tutorialTabAugment();
 
 	protected TabBase redstoneTab;
 
@@ -38,7 +38,9 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = player.getCommandSenderName();
 
-		myTutorial = CoFHProps.tutorialTabRedstone;
+		if (myTile.augmentRedstoneControl) {
+			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
+		}
 	}
 
 	@Override
@@ -53,7 +55,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
 			addTab(new TabEnergy(this, myTile, true));
 		}
-		addTab(new TabInfo(this, myInfo));
+		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo")));
 		addTab(new TabTutorial(this, myTutorial));
 
 		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
@@ -77,7 +79,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.updateElementInformation();
 
-		redstoneTab.setVisible(myTile.augmentRSControl);
+		redstoneTab.setVisible(myTile.augmentRedstoneControl);
 	}
 
 }

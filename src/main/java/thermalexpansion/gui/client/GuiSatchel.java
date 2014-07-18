@@ -1,6 +1,6 @@
 package thermalexpansion.gui.client;
 
-import cofh.api.core.ISecurable;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.TabInfo;
@@ -11,7 +11,7 @@ import cofh.util.SecurityHelper;
 import net.minecraft.entity.player.InventoryPlayer;
 
 import thermalexpansion.gui.container.ContainerSatchel;
-import thermalexpansion.item.tool.ItemSatchel;
+import thermalexpansion.item.ItemSatchel;
 
 public class GuiSatchel extends GuiBaseAdv {
 

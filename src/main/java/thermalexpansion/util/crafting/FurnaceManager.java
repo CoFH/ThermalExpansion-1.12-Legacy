@@ -58,10 +58,13 @@ public class FurnaceManager {
 
 		addTERecipe(800, new ItemStack(Blocks.cactus), new ItemStack(Items.dye, 1, 2));
 		addTERecipe(400, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
-		addTERecipe(400, new ItemStack(Items.fish), new ItemStack(Items.cooked_fished));
 		addTERecipe(400, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
 		addTERecipe(400, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
 		addTERecipe(400, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
+
+		for (int i = 0; i < 2; i++) {
+			addTERecipe(400, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
+		}
 	}
 
 	public static void loadRecipes() {
@@ -98,9 +101,6 @@ public class FurnaceManager {
 
 			if (recipeExists(key)) {
 				continue;
-			}
-			if (!ItemHelper.hasOreName(key) || ComparableItemStackSafe.getOreID(key) == -1) {
-				key.setItemDamage(OreDictionary.WILDCARD_VALUE);
 			}
 			output = smeltingList.get(key);
 

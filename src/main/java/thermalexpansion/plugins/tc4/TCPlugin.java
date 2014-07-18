@@ -8,17 +8,10 @@ import thaumcraft.api.ThaumcraftApi;
 import thaumcraft.api.aspects.Aspect;
 import thaumcraft.api.aspects.AspectList;
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.cell.BlockCell;
-import thermalexpansion.block.device.BlockDevice;
-import thermalexpansion.block.dynamo.BlockDynamo;
-import thermalexpansion.block.ender.BlockEnder;
-import thermalexpansion.block.light.BlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.block.simple.BlockRockwool;
-import thermalexpansion.block.strongbox.BlockStrongbox;
-import thermalexpansion.block.tank.BlockTank;
 import thermalexpansion.item.TEEquipment;
 import thermalexpansion.item.TEFlorbs;
 import thermalexpansion.item.TEItems;
@@ -122,7 +115,7 @@ public class TCPlugin {
 		registerStack(BlockStorage.blockEnderium, "11 Metallum, 5 Eldritch");
 
 		registerStack(TFItems.bucketRedstone, "8 Metallum, 10 Potentia, 8 Machina, 4 Ignis, 2 Aqua");
-		registerStack(TFItems.bucketGlowstone, "8 Metallum, 10 Light, 8 Senses, 4 Ignis, 2 Aqua");
+		registerStack(TFItems.bucketGlowstone, "8 Metallum, 10 Lux, 8 Senses, 4 Ignis, 2 Aqua");
 		registerStack(TFItems.bucketEnder, "8 Metallum, 14 Eldritch, 8 Travel, 4 Ignis, 2 Praecantatio, 2 Aqua");
 		registerStack(TFItems.bucketPyrotheum, "8 Metallum, 16 Ignis, 14 Potentia, 2 Praecantatio, 2 Aqua");
 		registerStack(TFItems.bucketCryotheum, "8 Metallum, 16 Gelum, 14 Potentia, 2 Praecantatio, 2 Aqua");
@@ -133,166 +126,54 @@ public class TCPlugin {
 		registerStack(TFItems.dustNiter, "3 Aer, 1 Terra");
 		registerStack(TFItems.crystalCinnabar, "2 Terra, 1 Permutatio, 1 Venenum");
 
-		registerStack(TFItems.dustPyrotheum, "4 Energy, 4 Fire, 1 Magic");
-		registerStack(TFItems.dustCryotheum, "4 Energy, 4 Cold, 1 Magic");
-		registerStack(TFItems.rodBlizz, "4 Cold, 2 Magic");
-		registerStack(TFItems.dustBlizz, "2 Cold, 1 Magic");
+		registerStack(TFItems.dustPyrotheum, "4 Potentia, 4 Ignis, 1 Magic");
+		registerStack(TFItems.dustCryotheum, "4 Potentia, 4 Gelum, 1 Magic");
+		registerStack(TFItems.rodBlizz, "4 Gelum, 2 Magic");
+		registerStack(TFItems.dustBlizz, "2 Gelum, 1 Magic");
 
 		registerStack(TEFlorbs.florb, "1 Earth, 2 Slime, 1 Void");
-		registerStack(TEFlorbs.florbMagmatic, "1 Earth, 1 Fire, 2 Slime, 1 Void");
+		registerStack(TEFlorbs.florbMagmatic, "1 Earth, 1 Ignis, 2 Slime, 1 Void");
 
-		registerStack(TEItems.pneumaticServo, "4 Metal, 2 Mechanism, 1 Energy, 4 Motion");
-		registerStack(TEItems.powerCoilGold, "4 Metal, 2 Mechanism, 2 Energy");
-		registerStack(TEItems.powerCoilSilver, "4 Metal, 2 Mechanism, 2 Energy");
-		registerStack(TEItems.powerCoilElectrum, "4 Metal, 2 Mechanism, 2 Energy");
+		registerStack(TEItems.pneumaticServo, "4 Metallum, 2 Machina, 1 Potentia, 4 Motus");
+		registerStack(TEItems.powerCoilGold, "4 Metallum, 2 Machina, 2 Energy");
+		registerStack(TEItems.powerCoilSilver, "4 Metallum, 2 Machina, 2 Energy");
+		registerStack(TEItems.powerCoilElectrum, "4 Metallum, 2 Machina, 2 Energy");
 		registerStack(TEItems.slag, "2 Terra, 2 Perditio");
 		registerStack(TEItems.slagRich, "2 Terra, 2 Perditio, 2 Lucrum");
 		registerStack(TEItems.sawdust, "1 Arbor, 1 Perditio");
 		registerStack(TEItems.sawdustCompressed, "3 Arbor, 3 Perditio");
 
-		registerStack(BlockRockwool.rockWool, "1 Craft, 2 Cloth, 2 Entropy");
-		registerStack(BlockGlass.glassHardened, "1 Fire, 1 Armor, 1 Crystal");
+		registerStack(BlockRockwool.rockWool, "1 Fabrico, 2 Cloth, 2 Entropy");
+		registerStack(BlockGlass.glassHardened, "1 Ignis, 1 Armor, 1 Vitreus");
 
-		registerStack(TEEquipment.toolInvarShears, new AspectList().add(Aspect.METAL, 4).add(Aspect.HARVEST, 4).add(Aspect.ARMOR, 2));
-		registerStack(TEEquipment.toolInvarFishingRod, new AspectList().add(Aspect.METAL, 1).add(Aspect.WATER, 1).add(Aspect.TOOL, 1));
-		registerStack(TEEquipment.toolInvarSickle, new AspectList().add(Aspect.METAL, 5).add(Aspect.ARMOR, 4).add(Aspect.HARVEST, 4));
-		registerStack(TEEquipment.toolInvarBattleWrench,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.TOOL, 1).add(Aspect.MECHANISM, 1).add(Aspect.WEAPON, 3));
+		registerStack(TEEquipment.toolInvarShears, "4 Metallum, 4 Harvest, 2 Armor");
+		registerStack(TEEquipment.toolInvarFishingRod, "1 Metallum, 1 Aqua, 1 Tool");
+		registerStack(TEEquipment.toolInvarSickle, "5 Metallum, 4 Armor, 4 Harvest");
+		registerStack(TEEquipment.toolInvarBattleWrench, "6 Metallum, 1 Tool, 1 Machina, 3 Weapon");
 
-		registerStack(TEItems.toolWrench, new AspectList().add(Aspect.METAL, 4).add(Aspect.TOOL, 1));
-		registerStack(TEItems.toolMultimeter,
-				new AspectList().add(Aspect.METAL, 4).add(Aspect.ENERGY, 2).add(Aspect.MECHANISM, 3).add(Aspect.SENSES, 2).add(Aspect.TOOL, 2));
-
-		registerStack(BlockFrame.frameMachineBasic, new AspectList().add(Aspect.METAL, 4).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 4));
-		registerStack(
-				BlockMachine.furnace,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.FIRE, 4)
-						.add(Aspect.CRAFT, 2));
-		registerStack(
-				BlockMachine.pulverizer,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.ENTROPY, 4)
-						.add(Aspect.MOTION, 2));
-		registerStack(
-				BlockMachine.sawmill,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.TOOL, 4)
-						.add(Aspect.TREE, 2));
-		registerStack(
-				BlockMachine.smelter,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.FIRE, 4)
-						.add(Aspect.EXCHANGE, 2));
-		registerStack(
-				BlockMachine.crucible,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.FIRE, 4)
-						.add(Aspect.WATER, 2));
-		registerStack(
-				BlockMachine.transposer,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.WATER, 4)
-						.add(Aspect.MOTION, 2));
-		registerStack(BlockMachine.precipitator, new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2)
-				.add(Aspect.COLD, 4).add(Aspect.WATER, 2));
-		registerStack(
-				BlockMachine.extruder,
-				new AspectList().add(Aspect.METAL, 10).add(Aspect.CRYSTAL, 4).add(Aspect.MECHANISM, 6).add(Aspect.MOTION, 2).add(Aspect.ENTROPY, 4)
-						.add(Aspect.WATER, 1).add(Aspect.FIRE, 1));
-		registerStack(BlockMachine.accumulator, new AspectList().add(Aspect.METAL, 10).add(Aspect.CRYSTAL, 4).add(Aspect.MECHANISM, 6).add(Aspect.MOTION, 2)
-				.add(Aspect.WATER, 4).add(Aspect.CRAFT, 1).add(Aspect.VOID, 1));
-		registerStack(
-				BlockMachine.assembler,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.CRAFT, 4)
-						.add(Aspect.MOTION, 2));
-		registerStack(
-				BlockMachine.charger,
-				new AspectList().add(Aspect.METAL, 8).add(Aspect.CRYSTAL, 2).add(Aspect.MECHANISM, 6).add(Aspect.ENERGY, 2).add(Aspect.ENERGY, 4)
-						.add(Aspect.EXCHANGE, 2));
-
-		registerStack(BlockDevice.workbench, new AspectList().add(Aspect.VOID, 4).add(Aspect.METAL, 8).add(Aspect.MIND, 1).add(Aspect.CRAFT, 1));
-		registerStack(
-				BlockDevice.activator,
-				new AspectList().add(Aspect.MOTION, 8).add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 1).add(Aspect.CRYSTAL, 1)
-						.add(Aspect.TOOL, 6).add(Aspect.VOID, 2));
-		registerStack(
-				BlockDevice.breaker,
-				new AspectList().add(Aspect.MOTION, 8).add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 1).add(Aspect.CRYSTAL, 1)
-						.add(Aspect.MINE, 6).add(Aspect.TOOL, 2));
-		registerStack(
-				BlockDevice.nullifier,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 2).add(Aspect.ENERGY, 1).add(Aspect.MOTION, 4).add(Aspect.CRYSTAL, 1)
-						.add(Aspect.FIRE, 3).add(Aspect.VOID, 6));
-
-		registerStack(
-				BlockDynamo.dynamoSteam,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 4).add(Aspect.MOTION, 4).add(Aspect.FIRE, 4)
-						.add(Aspect.WATER, 2));
-		registerStack(BlockDynamo.dynamoMagmatic, new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 4).add(Aspect.MOTION, 4)
-				.add(Aspect.FIRE, 4).add(Aspect.ENTROPY, 2));
-		registerStack(BlockDynamo.dynamoCompression, new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 8).add(Aspect.MOTION, 4)
-				.add(Aspect.WATER, 2));
-		registerStack(BlockDynamo.dynamoReactant, new AspectList().add(Aspect.METAL, 6).add(Aspect.MECHANISM, 4).add(Aspect.ENERGY, 6).add(Aspect.MOTION, 4)
-				.add(Aspect.FIRE, 2).add(Aspect.WATER, 2));
-
-		registerStack(BlockFrame.frameCellBasic,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 5).add(Aspect.MECHANISM, 3));
-		registerStack(BlockFrame.frameCellReinforcedEmpty, new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2)
-				.add(Aspect.CRYSTAL, 6));
-		registerStack(BlockFrame.frameCellReinforcedFull, new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6)
-				.add(Aspect.ENERGY, 20).add(Aspect.MECHANISM, 16).add(Aspect.WATER, 2));
-
-		registerStack(
-				BlockCell.cellBasic,
-				new AspectList().add(Aspect.METAL, 10).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 7).add(Aspect.MECHANISM, 5)
-						.add(Aspect.EXCHANGE, 3));
-		registerStack(
-				BlockCell.cellHardened,
-				new AspectList().add(Aspect.METAL, 16).add(Aspect.ORDER, 2).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 10).add(Aspect.MECHANISM, 5)
-						.add(Aspect.EXCHANGE, 3).add(Aspect.ARMOR, 2));
-		registerStack(
-				BlockCell.cellReinforced,
-				new AspectList().add(Aspect.METAL, 10).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 25)
-						.add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2));
-		registerStack(
-				BlockCell.cellResonant,
-				new AspectList().add(Aspect.METAL, 16).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ENERGY, 25)
-						.add(Aspect.MECHANISM, 20).add(Aspect.WATER, 2).add(Aspect.ORDER, 2).add(Aspect.ELDRITCH, 2));
-
-		registerStack(BlockTank.tankBasic, new AspectList().add(Aspect.VOID, 4).add(Aspect.CRYSTAL, 4).add(Aspect.METAL, 2));
-		registerStack(BlockTank.tankHardened, new AspectList().add(Aspect.VOID, 8).add(Aspect.CRYSTAL, 4).add(Aspect.METAL, 8).add(Aspect.ARMOR, 2));
-		registerStack(BlockTank.tankReinforced,
-				new AspectList().add(Aspect.VOID, 12).add(Aspect.CRYSTAL, 6).add(Aspect.METAL, 8).add(Aspect.ARMOR, 4).add(Aspect.FIRE, 2));
-		registerStack(
-				BlockTank.tankResonant,
-				new AspectList().add(Aspect.VOID, 16).add(Aspect.CRYSTAL, 6).add(Aspect.METAL, 14).add(Aspect.ARMOR, 4).add(Aspect.FIRE, 2)
-						.add(Aspect.ELDRITCH, 2));
-
-		registerStack(BlockStrongbox.strongboxBasic, new AspectList().add(Aspect.VOID, 4).add(Aspect.METAL, 6).add(Aspect.CRYSTAL, 2));
-		registerStack(BlockStrongbox.strongboxHardened, new AspectList().add(Aspect.VOID, 8).add(Aspect.METAL, 12).add(Aspect.CRYSTAL, 2).add(Aspect.ARMOR, 2));
-		registerStack(BlockStrongbox.strongboxReinforced,
-				new AspectList().add(Aspect.VOID, 12).add(Aspect.METAL, 12).add(Aspect.CRYSTAL, 4).add(Aspect.ARMOR, 4).add(Aspect.FIRE, 2));
-		registerStack(BlockStrongbox.strongboxResonant, new AspectList().add(Aspect.VOID, 16).add(Aspect.METAL, 18).add(Aspect.CRYSTAL, 4).add(Aspect.ARMOR, 4)
-				.add(Aspect.FIRE, 2).add(Aspect.ELDRITCH, 2));
-
-		registerStack(BlockFrame.frameTesseractEmpty, new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 2).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6)
-				.add(Aspect.ELDRITCH, 4));
-		registerStack(
-				BlockFrame.frameTesseractFull,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ELDRITCH, 18)
-						.add(Aspect.TRAVEL, 8).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
-		registerStack(
-				BlockEnder.tesseract,
-				new AspectList().add(Aspect.METAL, 6).add(Aspect.FIRE, 6).add(Aspect.ARMOR, 2).add(Aspect.CRYSTAL, 6).add(Aspect.ELDRITCH, 18)
-						.add(Aspect.TRAVEL, 12).add(Aspect.MAGIC, 2).add(Aspect.WATER, 2));
-
-		registerStack(
-				BlockLight.lampBasic,
-				new AspectList().add(Aspect.FIRE, 5).add(Aspect.ARMOR, 1).add(Aspect.CRYSTAL, 2).add(Aspect.ENERGY, 2).add(Aspect.METAL, 2)
-						.add(Aspect.MECHANISM, 1).add(Aspect.LIGHT, 10).add(Aspect.SENSES, 2).add(Aspect.WATER, 2));
+		registerStack(TEItems.toolWrench, "4 Metallum, 1 Tool");
+		registerStack(TEItems.toolMultimeter, "4 Metallum, 2 Potentia, 3 Machina, 2 Senses, 2 Tool");
 
 		registerStack(TEItems.diagramSchematic, "3 Mind");
 
-		registerStack(TEItems.capacitorPotato, "1 Hunger, 1 Earth, 1 Crop, 3 Energy, 1 Mechanism");
-		registerStack(TEItems.capacitorBasic, "4 Metal, 2 Order, 2 Exchange, 6 Energy, 3 Mechanism, 1 Fire");
-		registerStack(TEItems.capacitorHardened, "7 Metal, 2 Order, 2 Exchange, 9 Energy, 3 Mechanism, 1 Fire, 1 Armor");
-		registerStack(TEItems.capacitorReinforced, "10 Metal, 2 Order, 2 Exchange, 12 Energy, 3 Mechanism, 1 Fire, 1 Armor, 4 Crystal");
-		registerStack(TEItems.capacitorResonant, "13 Metal, 2 Order, 2 Exchange, 15 Energy, 3 Mechanism, 1 Fire, 1 Armor, 4 Crystal, 1 Eldritch, 2 Magic");
+		registerStack(TEItems.capacitorPotato, "1 Hunger, 1 Earth, 1 Crop, 3 Potentia, 1 Mechanism");
+		registerStack(TEItems.capacitorBasic, "4 Metallum, 2 Order, 2 Permutatio, 6 Potentia, 3 Machina, 1 Fire");
+		registerStack(TEItems.capacitorHardened, "7 Metallum, 2 Order, 2 Permutatio, 9 Potentia, 3 Machina, 1 Ignis, 1 Armor");
+		registerStack(TEItems.capacitorReinforced, "10 Metallum, 2 Order, 2 Permutatio, 12 Potentia, 3 Machina, 1 Ignis, 1 Armor, 4 Vitreus");
+		registerStack(TEItems.capacitorResonant, "13 Metallum, 2 Order, 2 Permutatio, 15 Potentia, 3 Machina, 1 Ignis, 1 Armor, 4 Vitreus, 1 Eldritch, 2 Magic");
+
+		registerStack(BlockFrame.frameMachineBasic, "4 Metallum, 2 Vitreus, 4 Mechanism");
+		registerStack(BlockMachine.furnace, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Fabrico");
+		registerStack(BlockMachine.pulverizer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Entropy, 2 Motus");
+		registerStack(BlockMachine.sawmill, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Tool, 2 Tree");
+		registerStack(BlockMachine.smelter, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Permutatio");
+		registerStack(BlockMachine.crucible, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Aqua");
+		registerStack(BlockMachine.transposer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Aqua, 2 Motus");
+		registerStack(BlockMachine.precipitator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
+		registerStack(BlockMachine.extruder, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Entropy, 1 Aqua, 1 Fire");
+		registerStack(BlockMachine.accumulator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
+		registerStack(BlockMachine.assembler, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Fabrico, 2 Motus");
+		registerStack(BlockMachine.charger, "8 Metallum, 2 Vitreus, 6 Machina, 6 Potentia, 2 Permutatio");
 
 		ThermalExpansion.log.info("Thaumcraft Plugin Enabled.");
 	}

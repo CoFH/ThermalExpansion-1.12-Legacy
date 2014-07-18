@@ -4,7 +4,6 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
-import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -36,6 +35,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.ReconfigurableHelper;
 import thermalexpansion.util.crafting.PulverizerManager;
+import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalfoundation.item.TFItems;
 
 public class BlockCell extends BlockTEBase {
@@ -76,6 +76,10 @@ public class BlockCell extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (!enable[world.getBlockMetadata(x, y, z)]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		if (stack.stackTagCompound != null) {
 			TileCell tile = (TileCell) world.getTileEntity(x, y, z);
 
@@ -254,14 +258,11 @@ public class BlockCell extends BlockTEBase {
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }));
 		}
-
-		GameRegistry.addRecipe(new RecipeSecure(cellBasic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellBasic }));
-		GameRegistry
-				.addRecipe(new RecipeSecure(cellHardened, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellHardened }));
-		GameRegistry.addRecipe(new RecipeSecure(cellReinforced, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				cellReinforced }));
-		GameRegistry
-				.addRecipe(new RecipeSecure(cellResonant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', cellResonant }));
+		TECraftingHandler.addSecureRecipe(cellCreative);
+		TECraftingHandler.addSecureRecipe(cellBasic);
+		TECraftingHandler.addSecureRecipe(cellHardened);
+		TECraftingHandler.addSecureRecipe(cellReinforced);
+		TECraftingHandler.addSecureRecipe(cellResonant);
 		return true;
 	}
 

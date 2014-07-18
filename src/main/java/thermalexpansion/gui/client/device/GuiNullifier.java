@@ -1,11 +1,11 @@
 package thermalexpansion.gui.client.device;
 
-import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.TabConfiguration;
 import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabTutorial;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -39,7 +39,7 @@ public class GuiNullifier extends GuiBaseAdv {
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfiguration(this, myTile));
 		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n"));
+		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfiguration() + "\n\n"));
 	}
 
 }

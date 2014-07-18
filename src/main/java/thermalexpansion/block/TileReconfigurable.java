@@ -11,6 +11,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import thermalexpansion.util.ReconfigurableHelper;
+
 public abstract class TileReconfigurable extends TileRSControl implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
 
 	protected byte facing = 3;
@@ -49,12 +51,8 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 		super.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
-		sideCache = nbt.getByteArray("SideCache");
-
-		if (sideCache.length == 0) {
-			sideCache = new byte[] { 0, 0, 0, 0, 0, 0 };
-		}
+		facing = ReconfigurableHelper.getFacingFromNBT(nbt);
+		sideCache = ReconfigurableHelper.getSideCacheFromNBT(nbt, getDefaultSides());
 		for (int i = 0; i < 6; i++) {
 			if (sideCache[i] >= getNumConfig(i)) {
 				sideCache[i] = 0;

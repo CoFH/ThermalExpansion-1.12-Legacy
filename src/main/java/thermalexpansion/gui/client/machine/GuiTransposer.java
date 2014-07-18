@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementButton;
 import cofh.gui.element.ElementDualScaled;
@@ -22,7 +21,6 @@ public class GuiTransposer extends GuiMachineBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Transposer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Fills or empties things that hold fluids.\n\nPress the button to change between Fill and Extract.\n\nTypically reversible.";
 
 	TileTransposer myTile;
 
@@ -42,8 +40,6 @@ public class GuiTransposer extends GuiMachineBase {
 		super(new ContainerTransposer(inventory, tile), tile, inventory.player, TEXTURE);
 
 		myTile = (TileTransposer) tile;
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

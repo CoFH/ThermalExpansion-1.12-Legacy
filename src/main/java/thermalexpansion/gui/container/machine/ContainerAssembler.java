@@ -21,9 +21,9 @@ import net.minecraft.tileentity.TileEntity;
 import thermalexpansion.block.machine.TileAssembler;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISchematicContainer;
-import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.util.SchematicHelper;
 
 public class ContainerAssembler extends ContainerTEBase implements ISchematicContainer {
 
@@ -94,7 +94,8 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		ItemStack schematic = myTile.getStackInSlot(0);
 
 		if (schematic != null && resultSlot.getHasStack()) {
-			ItemStack newSchematic = SchematicHelper.getSchematic(SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
+			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
+					SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(0, newSchematic);
 			for (int i = 0; i < 9; i++) {

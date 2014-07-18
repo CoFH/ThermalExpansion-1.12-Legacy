@@ -3,6 +3,7 @@ package thermalexpansion.gui.client.dynamo;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluidTank;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,7 +15,6 @@ import thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 public class GuiDynamoReactant extends GuiDynamoBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoReactant.png");
-	static final String INFO = "Generates Redstone Flux using alchemical reactions.\n\nA solid reactant and a fluid fuel must be provided.\n\nGeneration rate varies according to energy demand.";
 
 	ElementDualScaled duration;
 
@@ -22,7 +22,7 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 		super(new ContainerDynamoReactant(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = INFO;
+		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.reactant.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.reactant.1");
 	}
 
 	@Override

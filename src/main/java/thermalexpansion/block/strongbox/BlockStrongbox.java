@@ -2,10 +2,10 @@ package thermalexpansion.block.strongbox;
 
 import cofh.enchantment.CoFHEnchantment;
 import cofh.util.CoreUtils;
-import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -25,7 +25,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.TileInventory;
-import thermalexpansion.item.TEItems;
+import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockStrongbox extends BlockTEBase {
 
@@ -63,6 +63,10 @@ public class BlockStrongbox extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (!enable[world.getBlockMetadata(x, y, z)]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		if (stack.stackTagCompound != null) {
 			TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
 
@@ -114,7 +118,7 @@ public class BlockStrongbox extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
@@ -122,7 +126,7 @@ public class BlockStrongbox extends BlockTEBase {
 		if (tile instanceof TileInventory) {
 			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
+		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
 	}
 
 	@Override
@@ -173,15 +177,11 @@ public class BlockStrongbox extends BlockTEBase {
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));
 		}
-
-		GameRegistry.addRecipe(new RecipeSecure(strongboxBasic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				strongboxBasic }));
-		GameRegistry.addRecipe(new RecipeSecure(strongboxHardened, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				strongboxHardened }));
-		GameRegistry.addRecipe(new RecipeSecure(strongboxReinforced, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				strongboxReinforced }));
-		GameRegistry.addRecipe(new RecipeSecure(strongboxResonant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				strongboxResonant }));
+		TECraftingHandler.addSecureRecipe(strongboxCreative);
+		TECraftingHandler.addSecureRecipe(strongboxBasic);
+		TECraftingHandler.addSecureRecipe(strongboxHardened);
+		TECraftingHandler.addSecureRecipe(strongboxReinforced);
+		TECraftingHandler.addSecureRecipe(strongboxResonant);
 		return true;
 	}
 

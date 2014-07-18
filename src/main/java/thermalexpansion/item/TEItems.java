@@ -2,23 +2,20 @@ package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.util.EnergyHelper;
-import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.item.tool.ItemCapacitor;
 import thermalexpansion.item.tool.ItemIgniter;
 import thermalexpansion.item.tool.ItemMultimeter;
-import thermalexpansion.item.tool.ItemSatchel;
 import thermalexpansion.item.tool.ItemWrench;
+import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalfoundation.item.TFItems;
 
 public class TEItems {
@@ -29,14 +26,15 @@ public class TEItems {
 
 	public static void preInit() {
 
-		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool");
+		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool", "wrench");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
-		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram").setCreativeTab(ThermalExpansion.tabItems);
+		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
 
+		TEAugments.preInit();
 		TEEquipment.preInit();
 		TEFlorbs.preInit();
 	}
@@ -80,7 +78,8 @@ public class TEItems {
 		ItemSatchel.setDefaultInventoryTag(satchelResonant);
 
 		/* Diagram */
-		diagramSchematic = itemDiagram.addItem(SCHEMATIC_ID, "schematic");
+		diagramSchematic = itemDiagram.addItem(ItemDiagram.Types.SCHEMATIC.ordinal(), "schematic");
+		diagramRedprint = itemDiagram.addItem(ItemDiagram.Types.REDPRINT.ordinal(), "redprint");
 
 		/* Parts */
 		pneumaticServo = itemMaterial.addItem(0, "pneumaticServo");
@@ -96,6 +95,7 @@ public class TEItems {
 		slag = itemMaterial.addItem(514, "slag");
 		slagRich = itemMaterial.addItem(515, "slagRich");
 
+		TEAugments.initialize();
 		TEEquipment.initialize();
 		TEFlorbs.initialize();
 	}
@@ -131,11 +131,11 @@ public class TEItems {
 		GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
 				"nuggetElectrum" }));
 
-		GameRegistry.addRecipe(new RecipeSecure(satchelBasic, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelBasic }));
-		GameRegistry.addRecipe(new RecipeSecure(satchelHardened, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelHardened }));
-		GameRegistry.addRecipe(new RecipeSecure(satchelReinforced,
-				new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelReinforced }));
-		GameRegistry.addRecipe(new RecipeSecure(satchelResonant, new Object[] { " L ", "SXS", " S ", 'L', lock, 'S', "nuggetSignalum", 'X', satchelResonant }));
+		TECraftingHandler.addSecureRecipe(satchelCreative);
+		TECraftingHandler.addSecureRecipe(satchelBasic);
+		TECraftingHandler.addSecureRecipe(satchelHardened);
+		TECraftingHandler.addSecureRecipe(satchelReinforced);
+		TECraftingHandler.addSecureRecipe(satchelResonant);
 
 		/* Diagrams */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(diagramSchematic, new Object[] { Items.paper, Items.paper, "dyeBlue" }));
@@ -175,20 +175,19 @@ public class TEItems {
 		/* Misc Items */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
 				"dustCoal" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(Items.gunpowder, new Object[] { "dustSaltpeter", "dustSulfur", Items.coal }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(Items.gunpowder, new Object[] { "dustSaltpeter", "dustSulfur", new ItemStack(Items.coal, 1, 1) }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
+				"dustCharcoal" }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.paper, 3), new Object[] { "###", '#', "dustWood" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.clay_ball, 2), new Object[] { slag, slag, Blocks.dirt, Items.water_bucket }));
 
-		FurnaceRecipes.smelting().func_151394_a(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
+		GameRegistry.addSmelting(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
 
+		TEAugments.postInit();
 		TEEquipment.postInit();
 		TEFlorbs.postInit();
 	}
-
-	public static final int SCHEMATIC_ID = 0;
 
 	public static ItemWrench itemWrench;
 	public static ItemMultimeter itemMultimeter;
@@ -205,6 +204,7 @@ public class TEItems {
 	public static ItemStack toolIgniter;
 
 	public static ItemStack diagramSchematic;
+	public static ItemStack diagramRedprint;
 
 	public static ItemStack capacitorPotato;
 	public static ItemStack capacitorBasic;

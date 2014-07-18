@@ -1,24 +1,19 @@
 package thermalexpansion.block.simple;
 
-import cofh.util.StringHelper;
+import cofh.item.ItemBlockBase;
+import cofh.util.ItemHelper;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockFrame extends ItemBlock {
+import thermalfoundation.item.TFItems;
+
+public class ItemBlockFrame extends ItemBlockBase {
 
 	public ItemBlockFrame(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		return StringHelper.localize(getUnlocalizedName(stack));
 	}
 
 	@Override
@@ -28,9 +23,39 @@ public class ItemBlockFrame extends ItemBlock {
 	}
 
 	@Override
-	public int getMetadata(int i) {
+	public EnumRarity getRarity(ItemStack stack) {
 
-		return i;
+		switch (BlockFrame.Types.values()[stack.getItemDamage()]) {
+		case MACHINE_ENDERIUM:
+		case TESSERACT_FULL:
+			return EnumRarity.rare;
+		case MACHINE_REINFORCED:
+		case CELL_REINFORCED_FULL:
+			return EnumRarity.uncommon;
+		default:
+			return EnumRarity.common;
+		}
+	}
+
+	@Override
+	public boolean hasContainerItem(ItemStack stack) {
+
+		return stack.getItemDamage() < BlockFrame.Types.MACHINE_ENDERIUM.ordinal();
+	}
+
+	@Override
+	public ItemStack getContainerItem(ItemStack stack) {
+
+		switch (BlockFrame.Types.values()[stack.getItemDamage()]) {
+		case MACHINE_REINFORCED:
+			return ItemHelper.cloneStack(TFItems.gearSignalum, 1);
+		case MACHINE_HARDENED:
+			return ItemHelper.cloneStack(TFItems.gearElectrum, 1);
+		case MACHINE_BASIC:
+			return ItemHelper.cloneStack(TFItems.gearTin, 1);
+		default:
+			return null;
+		}
 	}
 
 }

@@ -3,11 +3,13 @@ package thermalexpansion.block.simple;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.render.IconRegistry;
+import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -26,11 +28,12 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.util.Utils;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.fluid.TFFluids;
@@ -177,7 +180,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		IconRegistry.addIcon("FrameCellReinforcedInner", "thermalexpansion:cell/Cell_Reinforced_Inner", ir);
 		IconRegistry.addIcon("FrameTesseractInner", "thermalexpansion:tesseract/Tesseract_Inner", ir);
 
-		IconRegistry.addIcon("FrameCenter" + 0, "thermalfoundation:storage/Block_Copper", ir);
+		IconRegistry.addIcon("FrameCenter" + 0, "thermalfoundation:storage/Block_Tin", ir);
 		IconRegistry.addIcon("FrameCenter" + 1, "thermalfoundation:storage/Block_Electrum", ir);
 		IconRegistry.addIcon("FrameCenter" + 2, "thermalfoundation:storage/Block_Signalum", ir);
 		IconRegistry.addIcon("FrameCenter" + 3, "thermalfoundation:storage/Block_Enderium", ir);
@@ -190,13 +193,13 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		int metadata = world.getBlockMetadata(x, y, z);
 		ItemStack dropBlock = new ItemStack(this, 1, metadata);
 		world.setBlockToAir(x, y, z);
 
-		if (dropBlock != null && !returnBlock) {
+		if (dropBlock != null && !returnDrops) {
 			float f = 0.3F;
 			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -205,9 +208,11 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 			entity.delayBeforeCanPickup = 10;
 			world.spawnEntityInWorld(entity);
 
-			Utils.dismantleLog(player.getDisplayName(), this, metadata, x, y, z);
+			CoreUtils.dismantleLog(player.getDisplayName(), this, metadata, x, y, z);
 		}
-		return dropBlock;
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(dropBlock);
+		return ret;
 	}
 
 	@Override
@@ -236,14 +241,19 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		frameTesseractEmpty = new ItemStack(this, 1, Types.TESSERACT_EMPTY.ordinal());
 		frameTesseractFull = new ItemStack(this, 1, Types.TESSERACT_FULL.ordinal());
 
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineReinforced);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineEnderium);
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X',
-				"gearCopper" }));
+		GameRegistry
+				.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
 
 		/* Direct Recipes */
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
@@ -254,12 +264,11 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 				"gearEnderium" }));
 
 		/* Tiered Recipes */
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "ingotElectrum", 'X',
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "I I", " X ", "IGI", 'I', "ingotInvar", 'G', "gearElectrum", 'X',
 				frameMachineBasic }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "blockGlassHardened", 'G', "ingotSignalum",
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "I I", " X ", "IGI", 'I', "blockGlassHardened", 'G', "gearSignalum",
 				'X', frameMachineHardened }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineEnderium,
-				new Object[] { " G ", "GXG", " G ", 'G', "ingotEnderium", 'X', frameMachineReinforced }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(frameMachineEnderium, new Object[] { "gearEnderium", frameMachineReinforced }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
 				Blocks.redstone_block }));

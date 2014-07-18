@@ -179,7 +179,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return side != facing ? SLOTS : TEProps.EMPTY_INVENTORY;
+		return side != facing || augmentCoilDuct ? SLOTS : TEProps.EMPTY_INVENTORY;
 	}
 
 }

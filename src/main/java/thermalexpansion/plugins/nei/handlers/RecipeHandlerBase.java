@@ -63,7 +63,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 	@Override
 	public String getRecipeName() {
 
-		return StringHelper.localize("info.thermalexpansion.neihandler." + recipeName);
+		return StringHelper.localize("tile.thermalexpansion.machine." + recipeName + ".name");
 	}
 
 	@Override

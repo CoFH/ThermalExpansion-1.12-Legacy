@@ -1,17 +1,21 @@
 package thermalexpansion.block.machine;
 
+import cofh.CoFHCore;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.item.IAugmentItem;
 import cofh.network.CoFHPacket;
 import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
 import cofh.util.TimeTracker;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,6 +25,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEAugments;
+import thermalexpansion.util.ReconfigurableHelper;
 import thermalexpansion.util.Utils;
 
 public abstract class TileMachineBase extends TileReconfigurable implements IAugmentable, IEnergyInfo, ISidedInventory {
@@ -29,7 +35,8 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
 
-	protected static final int RATE = 100;
+	protected static final int RATE = 500;
+	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
 
 	int processMax;
 	int processRem;
@@ -50,7 +57,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	public boolean augmentAutoTransfer;
 	public boolean augmentReconfigSides;
-	public boolean augmentRSControl;
+	public boolean augmentRedstoneControl;
 
 	public TileMachineBase() {
 
@@ -244,7 +251,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		level = nbt.getByte("Level");
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
-		augments = new ItemStack[augments.length + level];
+		augments = new ItemStack[AUGMENT_COUNT[level]];
 		augmentStatus = new boolean[augments.length];
 
 		for (int i = 0; i < list.tagCount(); i++) {
@@ -277,6 +284,18 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	/* NETWORK METHODS */
 	@Override
+	public CoFHPacket getPacket() {
+
+		CoFHPacket payload = super.getPacket();
+
+		payload.addByte(level);
+		payload.addBool(augmentReconfigSides);
+		payload.addBool(augmentRedstoneControl);
+
+		return payload;
+	}
+
+	@Override
 	public CoFHPacket getGuiPacket() {
 
 		CoFHPacket payload = super.getGuiPacket();
@@ -287,8 +306,9 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(energyMod);
 
-		payload.addBool(augmentRSControl);
 		payload.addBool(augmentReconfigSides);
+		payload.addBool(augmentRedstoneControl);
+
 		return payload;
 	}
 
@@ -302,8 +322,38 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		energyStorage.setEnergyStored(payload.getInt());
 		energyMod = payload.getInt();
 
-		augmentRSControl = payload.getBool();
+		boolean prevReconfig = augmentReconfigSides;
+		boolean prevControl = augmentRedstoneControl;
 		augmentReconfigSides = payload.getBool();
+		augmentRedstoneControl = payload.getBool();
+
+		if (augmentReconfigSides != prevReconfig || augmentRedstoneControl != prevControl) {
+			onInstalled();
+			sendUpdatePacket(Side.SERVER);
+		}
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			byte curLevel = level;
+			level = payload.getByte();
+
+			if (curLevel != level) {
+				augments = new ItemStack[AUGMENT_COUNT[level]];
+				augmentStatus = new boolean[augments.length];
+			}
+			augmentReconfigSides = payload.getBool();
+			augmentRedstoneControl = payload.getBool();
+		} else {
+			payload.getByte();
+			payload.getBool();
+			payload.getBool();
+		}
 	}
 
 	/* IInventory */
@@ -374,24 +424,37 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 				augmentStatus[i] = installAugment(i);
 			}
 		}
-		onInstalled();
+		if (CoFHCore.proxy.isServer()) {
+			onInstalled();
+			sendUpdatePacket(Side.CLIENT);
+		}
 	}
 
 	/* AUGMENT HELPERS */
-	private boolean hasAugment(String type, int level) {
+	private boolean hasAugment(String type, int augLevel) {
 
 		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == level) {
+			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean hasAugmentChain(String type, int level) {
+	private boolean hasDuplicateAugment(String type, int augLevel, int slot) {
+
+		for (int i = 0; i < augments.length; i++) {
+			if (i != slot && Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean hasAugmentChain(String type, int augLevel) {
 
 		boolean preReq = true;
-		for (int i = 1; i < level; i++) {
+		for (int i = 1; i < augLevel; i++) {
 			preReq = preReq && hasAugment(type, i);
 		}
 		return preReq;
@@ -402,42 +465,50 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
 		boolean installed = false;
 
-		if (augmentItem.getAugmentLevel(augments[slot], MACHINE_SECONDARY) > 0) {
-			int level = Math.min(NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], MACHINE_SECONDARY));
-			if (hasAugment(MACHINE_SECONDARY, level)) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY) > 0) {
+			int augLevel = Math.min(TEAugments.NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY));
+
+			if (augLevel > level) {
 				return false;
 			}
-			if (hasAugmentChain(MACHINE_SECONDARY, level)) {
+			if (hasDuplicateAugment(TEAugments.MACHINE_SECONDARY, augLevel, slot)) {
+				return false;
+			}
+			if (hasAugmentChain(TEAugments.MACHINE_SECONDARY, augLevel)) {
 				secondaryChance -= 15;
 				installed = true;
 			} else {
 				return false;
 			}
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], MACHINE_SPEED) > 0) {
-			int level = Math.min(NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], MACHINE_SPEED));
-			if (hasAugment(MACHINE_SPEED, level)) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
+			int augLevel = Math.min(TEAugments.NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED));
+
+			if (augLevel > level) {
 				return false;
 			}
-			if (hasAugmentChain(MACHINE_SPEED, level)) {
+			if (hasDuplicateAugment(TEAugments.MACHINE_SPEED, augLevel, slot)) {
+				return false;
+			}
+			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
 				secondaryChance += 5;
-				processMod = Math.max(processMod, MACHINE_SPEED_PROCESS_MOD[level]);
-				energyMod = Math.max(energyMod, MACHINE_SPEED_ENERGY_MOD[level]);
+				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
+				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
 				installed = true;
 			} else {
 				return false;
 			}
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_AUTO_TRANSFER) > 0) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_TRANSFER) > 0) {
 			augmentAutoTransfer = true;
 			installed = true;
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RECONFIG_SIDES) > 0) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
 			augmentReconfigSides = true;
 			installed = true;
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RS_CONTROL) > 0) {
-			augmentRSControl = true;
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
+			augmentRedstoneControl = true;
 			installed = true;
 		}
 		return installed;
@@ -445,9 +516,13 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 	private void onInstalled() {
 
-		augmentReconfigSides = true;
-		augmentRSControl = true;
-
+		if (!augmentReconfigSides) {
+			setDefaultSides();
+			sideCache[facing] = 0;
+		}
+		if (!augmentRedstoneControl) {
+			this.rsMode = ControlMode.DISABLED;
+		}
 		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
 			processRem = 0;
 			isActive = false;
@@ -455,23 +530,6 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 			tracker.markTime(worldObj);
 		}
 	}
-
-	// private void onInstalled() {
-	//
-	// if (!augmentReconfigSides) {
-	// setDefaultSides();
-	// sideCache[facing] = 0;
-	// }
-	// if (!augmentRSControl) {
-	// this.rsMode = ControlMode.DISABLED;
-	// }
-	// if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
-	// processRem = 0;
-	// isActive = false;
-	// wasActive = true;
-	// tracker.markTime(worldObj);
-	// }
-	// }
 
 	private void resetAugments() {
 
@@ -481,7 +539,7 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 
 		augmentAutoTransfer = false;
 		augmentReconfigSides = false;
-		augmentRSControl = false;
+		augmentRedstoneControl = false;
 	}
 
 	/* IEnergyInfo */
@@ -507,6 +565,46 @@ public abstract class TileMachineBase extends TileReconfigurable implements IAug
 	public int getInfoMaxEnergyStored() {
 
 		return energyStorage.getMaxEnergyStored();
+	}
+
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		if (augmentRedstoneControl) {
+			RedstoneControlHelper.getControlFromNBT(tag);
+		}
+		if (augmentReconfigSides) {
+			int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+			byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+			sideCache[0] = storedSideCache[0];
+			sideCache[1] = storedSideCache[1];
+			sideCache[facing] = 0;
+			sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+			sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+			sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+			for (int i = 0; i < 6; i++) {
+				if (sideCache[i] >= getNumConfig(i)) {
+					sideCache[i] = 0;
+				}
+			}
+		}
+		sendUpdatePacket(Side.CLIENT);
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
 	}
 
 	/* IReconfigurableFacing */

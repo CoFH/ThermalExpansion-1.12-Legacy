@@ -1,6 +1,7 @@
 package thermalexpansion.gui.client.dynamo;
 
 import cofh.gui.element.ElementFluidTank;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -12,13 +13,12 @@ import thermalexpansion.gui.container.ContainerTEBase;
 public class GuiDynamoCompression extends GuiDynamoBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoCompression.png");
-	static final String INFO = "Generates Redstone Flux using fluid fuels.\n\nGeneration rate varies according to energy demand.";
 
 	public GuiDynamoCompression(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = INFO;
+		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.compression.0");
 	}
 
 	@Override

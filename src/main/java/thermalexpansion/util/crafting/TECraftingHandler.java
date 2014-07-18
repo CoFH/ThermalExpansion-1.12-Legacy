@@ -1,6 +1,7 @@
 package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
+import cofh.util.RecipeSecure;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
@@ -18,6 +19,7 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEItems;
 import thermalfoundation.item.TFItems;
 
 public class TECraftingHandler {
@@ -27,6 +29,11 @@ public class TECraftingHandler {
 	public static void initialize() {
 
 		FMLCommonHandler.instance().bus().register(instance);
+	}
+
+	public static void addSecureRecipe(ItemStack stack) {
+
+		GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', stack }));
 	}
 
 	@SubscribeEvent

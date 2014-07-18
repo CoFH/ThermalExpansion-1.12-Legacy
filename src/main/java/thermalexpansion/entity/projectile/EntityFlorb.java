@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.item.tool.ItemFlorb;
+import thermalexpansion.item.ItemFlorb;
 
 public class EntityFlorb extends EntityThrowable {
 

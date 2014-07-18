@@ -13,6 +13,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
@@ -204,12 +205,12 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
 		}
-		info.add(StringHelper.localize("message.thermalexpansion.light" + mode));
+		info.add(new ChatComponentText(StringHelper.localize("message.thermalexpansion.light." + mode)));
 	}
 
 }

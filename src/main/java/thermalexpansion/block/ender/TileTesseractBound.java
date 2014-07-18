@@ -1,6 +1,6 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.core.ISecurable;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -39,7 +39,7 @@ public class TileTesseractBound extends TileRSControl implements ISecurable, ISi
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.tesseract.name";
+		return "tile.thermalexpansion.ender.tesseract.name";
 	}
 
 	@Override

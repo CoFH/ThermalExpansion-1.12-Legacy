@@ -1,7 +1,6 @@
 package thermalexpansion.gui.client.ender;
 
 import cofh.api.transport.RegistryEnderAttuned;
-import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.GuiLimitedTextField;
 import cofh.gui.GuiTextList;
@@ -9,6 +8,7 @@ import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabRedstone;
 import cofh.gui.element.TabSecurity;
 import cofh.gui.element.TabTutorial;
+import cofh.util.StringHelper;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigTesseract(this, myTile, playerName));
 		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabOperation));
+		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabOperation()));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

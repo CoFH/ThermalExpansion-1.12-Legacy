@@ -1,5 +1,6 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.CoFHCore;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
@@ -22,11 +23,13 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
 import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEAugments;
 import thermalexpansion.util.Utils;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
@@ -52,8 +55,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	int energyMod = 1;
 	int fuelMod = 100;
 
-	public boolean augmentRSControl;
-	public boolean augmentThrottle = true;
+	public boolean augmentRedstoneControl;
+	public boolean augmentThrottle;
+	public boolean augmentCoilDuct;
 
 	public TileDynamoBase() {
 
@@ -313,6 +317,8 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(fuelRF);
 
+		payload.addBool(augmentRedstoneControl);
+
 		return payload;
 	}
 
@@ -323,6 +329,14 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		energyStorage.setEnergyStored(payload.getInt());
 		fuelRF = payload.getInt();
+
+		boolean prevControl = augmentRedstoneControl;
+		augmentRedstoneControl = payload.getBool();
+
+		if (augmentRedstoneControl != prevControl) {
+			onInstalled();
+			sendUpdatePacket(Side.SERVER);
+		}
 	}
 
 	/* ITilePacketHandler */
@@ -335,18 +349,6 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			facing = payload.getByte();
 		} else {
 			payload.getByte();
-		}
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			handleGuiPacket(payload);
-			return;
-		default:
 		}
 	}
 
@@ -373,24 +375,37 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 				augmentStatus[i] = installAugment(i);
 			}
 		}
-		onInstalled();
+		if (CoFHCore.proxy.isServer()) {
+			onInstalled();
+			sendUpdatePacket(Side.CLIENT);
+		}
 	}
 
 	/* AUGMENT HELPERS */
-	private boolean hasAugment(String type, int level) {
+	private boolean hasAugment(String type, int augLevel) {
 
 		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == level) {
+			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	private boolean hasAugmentChain(String type, int level) {
+	private boolean hasDuplicateAugment(String type, int augLevel, int slot) {
+
+		for (int i = 0; i < augments.length; i++) {
+			if (i != slot && Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean hasAugmentChain(String type, int augLevel) {
 
 		boolean preReq = true;
-		for (int i = 1; i < level; i++) {
+		for (int i = 1; i < augLevel; i++) {
 			preReq = preReq && hasAugment(type, i);
 		}
 		return preReq;
@@ -401,27 +416,27 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
 		boolean installed = false;
 
-		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_EFFICIENCY) > 0) {
-			if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT) > 0) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY) > 0) {
+			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
 				return false;
 			}
-			int level = Math.min(NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], DYNAMO_EFFICIENCY));
-			if (hasAugment(DYNAMO_EFFICIENCY, level)) {
+			int level = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
+			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, level, slot)) {
 				return false;
 			}
-			if (hasAugmentChain(DYNAMO_EFFICIENCY, level)) {
+			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, level)) {
 				fuelMod += 20;
 				installed = true;
 			} else {
 				return false;
 			}
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT) > 0) {
-			int level = augmentItem.getAugmentLevel(augments[slot], DYNAMO_OUTPUT);
-			if (hasAugment(DYNAMO_OUTPUT, level)) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
+			int level = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
+			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, level, slot)) {
 				return false;
 			}
-			if (hasAugmentChain(DYNAMO_OUTPUT, level)) {
+			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, level)) {
 				energyMod += 1;
 				fuelMod -= 15;
 				installed = true;
@@ -429,15 +444,19 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 				return false;
 			}
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], DYNAMO_THROTTLE) > 0) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_COIL_DUCT) > 0) {
+			augmentCoilDuct = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
 			augmentThrottle = true;
 			installed = true;
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], ENDER_ENERGY) > 0) {
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
 
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], GENERAL_RS_CONTROL) > 0) {
-			augmentRSControl = true;
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
+			augmentRedstoneControl = true;
 			installed = true;
 		}
 		return installed;
@@ -445,7 +464,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	private void onInstalled() {
 
-		if (!augmentRSControl) {
+		if (!augmentRedstoneControl) {
 			this.rsMode = ControlMode.DISABLED;
 		}
 	}
@@ -455,7 +474,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		energyMod = 1;
 		fuelMod = 100;
 
-		augmentRSControl = false;
+		augmentRedstoneControl = false;
 		augmentThrottle = false;
 	}
 
@@ -515,6 +534,17 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return config.maxEnergy;
 	}
 
+	/* IFluidHandler */
+	public boolean canFill(ForgeDirection from, Fluid fluid) {
+
+		return augmentCoilDuct || from.ordinal() != facing;
+	}
+
+	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+
+		return augmentCoilDuct || from.ordinal() != facing;
+	}
+
 	/* IReconfigurableFacing */
 	@Override
 	public int getFacing() {
@@ -560,13 +590,13 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return side != facing;
+		return augmentCoilDuct || side != facing;
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return side != facing;
+		return augmentCoilDuct || side != facing;
 	}
 
 }

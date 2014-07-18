@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
@@ -16,7 +15,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiSawmill extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Sawmill.png");
-	static final String INFO = "Cuts logs into planks and reprocesses wooden things.\n\nVery useful for making the most out of a tree.\n\nWatch your hands.";
 
 	ElementBase slotInput;
 	ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
@@ -27,9 +25,6 @@ public class GuiSawmill extends GuiMachineBase {
 	public GuiSawmill(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerSawmill(inventory, tile), tile, inventory.player, TEXTURE);
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

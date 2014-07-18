@@ -18,7 +18,6 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.item.tool.ItemFlorb;
 import thermalexpansion.util.crafting.TransposerManager;
 
 public class TEFlorbs {

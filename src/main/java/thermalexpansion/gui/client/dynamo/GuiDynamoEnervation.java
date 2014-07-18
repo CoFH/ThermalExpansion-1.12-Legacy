@@ -2,6 +2,7 @@ package thermalexpansion.gui.client.dynamo;
 
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -21,7 +22,7 @@ public class GuiDynamoEnervation extends GuiDynamoBase {
 
 		super(new ContainerDynamoEnervation(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = INFO;
+		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.enervation.0");
 	}
 
 	@Override
@@ -30,7 +31,7 @@ public class GuiDynamoEnervation extends GuiDynamoBase {
 		super.initGui();
 
 		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
-		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLUX, 32, 16));
 	}
 
 	@Override

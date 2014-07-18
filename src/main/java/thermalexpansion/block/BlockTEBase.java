@@ -3,14 +3,17 @@ package thermalexpansion.block;
 import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
-import cofh.api.core.ISecurable;
 import cofh.api.tileentity.IRedstoneControl;
+import cofh.api.tileentity.ISecurable;
 import cofh.block.BlockCoFHBase;
 import cofh.block.TileCoFHBase;
+import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
-import cofh.util.RSControlHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.ServerHelper;
+
+import java.util.ArrayList;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
@@ -100,14 +103,14 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			retTag = SecurityHelper.setItemStackTagSecure(retTag, (ISecurable) tile);
 		}
 		if (tile instanceof IRedstoneControl) {
-			retTag = RSControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
+			retTag = RedstoneControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
 		}
 		return retTag;
 	}
 
 	/* Dismantle Helper */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, NBTTagCompound nbt, World world, int x, int y, int z, boolean returnBlock, boolean simulate) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, NBTTagCompound nbt, World world, int x, int y, int z, boolean returnDrops, boolean simulate) {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 		int bMeta = world.getBlockMetadata(x, y, z);
@@ -121,12 +124,12 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			dropBlock.setTagCompound(nbt);
 		}
 		if (!simulate) {
-			if (tile instanceof TileTEBase) {
-				((TileTEBase) tile).blockDismantled();
+			if (tile instanceof TileCoFHBase) {
+				((TileCoFHBase) tile).blockDismantled();
 			}
 			world.setBlockToAir(x, y, z);
 
-			if (dropBlock != null && !returnBlock) {
+			if (dropBlock != null && !returnDrops) {
 				float f = 0.3F;
 				double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -136,11 +139,13 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 				world.spawnEntityInWorld(item);
 
 				if (player != null) {
-					Utils.dismantleLog(player.getDisplayName(), this, bMeta, x, y, z);
+					CoreUtils.dismantleLog(player.getDisplayName(), this, bMeta, x, y, z);
 				}
 			}
 		}
-		return dropBlock;
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(dropBlock);
+		return ret;
 	}
 
 }

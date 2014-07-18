@@ -4,7 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
 import cofh.util.EnergyHelper;
-import cofh.util.RSControlHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
 
@@ -24,7 +24,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		ReconfigurableHelper.setFacing(container, 3);
 		ReconfigurableHelper.setSideCache(container, container.getItemDamage() == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
 				: TileCell.DEFAULT_SIDES);
-		RSControlHelper.setControl(container, ControlMode.LOW);
+		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		EnergyHelper.setDefaultEnergyTag(container, energy);
 		container.stackTagCompound.setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
 		container.stackTagCompound.setInteger("Recv", TileCell.MAX_RECEIVE[container.getItemDamage()]);
@@ -91,7 +91,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
@@ -107,7 +107,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.stackTagCompound.getInteger("Send")
 				+ "/" + stack.stackTagCompound.getInteger("Recv") + " RF/t");
 
-		RSControlHelper.addRSControlInformation(stack, list);
+		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 
 	/* IEnergyContainerItem */

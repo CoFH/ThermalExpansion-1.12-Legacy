@@ -17,6 +17,8 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -383,16 +385,16 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHa
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid()));
-			info.add(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB");
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
 		} else {
-			info.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
 	}
 

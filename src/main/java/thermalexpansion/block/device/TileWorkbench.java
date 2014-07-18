@@ -1,7 +1,7 @@
 package thermalexpansion.block.device;
 
 import cofh.api.core.ICustomInventory;
-import cofh.api.core.ISecurable;
+import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.network.CoFHPacket;
 import cofh.network.CoFHTileInfoPacket;
@@ -32,7 +32,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
-import thermalexpansion.item.SchematicHelper;
+import thermalexpansion.util.SchematicHelper;
 
 public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture {
 
@@ -321,8 +321,8 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("message.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
+					+ StringHelper.localize("chat.cofh.secure2")));
 		}
 		return true;
 	}

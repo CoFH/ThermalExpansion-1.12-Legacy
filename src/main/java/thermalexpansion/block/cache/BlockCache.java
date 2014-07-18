@@ -11,6 +11,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -224,7 +225,7 @@ public class BlockCache extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
@@ -232,7 +233,7 @@ public class BlockCache extends BlockTEBase {
 		if (tile instanceof TileCache) {
 			((TileCache) tile).inventory = new ItemStack[((TileCache) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
+		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
 	}
 
 	@Override

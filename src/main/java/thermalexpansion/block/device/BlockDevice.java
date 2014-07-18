@@ -2,13 +2,13 @@ package thermalexpansion.block.device;
 
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
-import cofh.util.RecipeSecure;
 import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -33,6 +33,7 @@ import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.strongbox.BlockStrongbox;
 import thermalexpansion.item.TEEquipment;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockDevice extends BlockTEBase {
 
@@ -192,7 +193,7 @@ public class BlockDevice extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
@@ -200,7 +201,7 @@ public class BlockDevice extends BlockTEBase {
 		if (tile instanceof TileWorkbench) {
 			((TileWorkbench) tile).inventory = new ItemStack[((TileWorkbench) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnBlock, false);
+		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
 	}
 
 	/* IInitializer */
@@ -265,7 +266,7 @@ public class BlockDevice extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
 					TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
-		GameRegistry.addRecipe(new RecipeSecure(workbench, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', workbench }));
+		TECraftingHandler.addSecureRecipe(workbench);
 		return true;
 	}
 

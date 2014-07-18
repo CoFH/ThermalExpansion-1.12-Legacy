@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
 
@@ -15,7 +14,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiSmelter extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Smelter.png");
-	static final String INFO = "Smelts metals and things that require high temperatures.\n\nUseful for processing ores and building advanced devices.\n\nWill absolutely not cook food.";
 
 	ElementSlotOverlay[] slotPrimaryInput = new ElementSlotOverlay[2];
 	ElementSlotOverlay[] slotSecondaryInput = new ElementSlotOverlay[2];
@@ -28,9 +26,6 @@ public class GuiSmelter extends GuiMachineBase {
 	public GuiSmelter(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerSmelter(inventory, tile), tile, inventory.player, TEXTURE);
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

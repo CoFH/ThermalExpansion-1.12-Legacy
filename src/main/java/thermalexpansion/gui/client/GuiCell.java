@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client;
 
-import cofh.core.CoFHProps;
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementButton;
 import cofh.gui.element.ElementEnergyStored;
@@ -52,7 +51,7 @@ public class GuiCell extends GuiBaseAdv {
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigCell(this, myTile));
 		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, CoFHProps.tutorialTabRedstone + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
+		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
@@ -150,28 +149,28 @@ public class GuiCell extends GuiBaseAdv {
 
 		if (myTile.energyReceive > 0) {
 			decRecv.setActive();
-			decRecv.setToolTip(StringHelper.localize("info.thermalexpansion.cell.decRecv") + " " + change + "/" + change2);
+			decRecv.setToolTip(StringHelper.localize("info.thermalexpansion.decRecv") + " " + change + "/" + change2);
 		} else {
 			decRecv.setDisabled();
 			decRecv.clearToolTip();
 		}
 		if (myTile.energyReceive < TileCell.MAX_RECEIVE[myTile.type]) {
 			incRecv.setActive();
-			incRecv.setToolTip(StringHelper.localize("info.thermalexpansion.cell.incRecv") + " " + change + "/" + change2);
+			incRecv.setToolTip(StringHelper.localize("info.thermalexpansion.incRecv") + " " + change + "/" + change2);
 		} else {
 			incRecv.setDisabled();
 			incRecv.clearToolTip();
 		}
 		if (myTile.energySend > 0) {
 			decSend.setActive();
-			decSend.setToolTip(StringHelper.localize("info.thermalexpansion.cell.decSend") + " " + change + "/" + change2);
+			decSend.setToolTip(StringHelper.localize("info.thermalexpansion.decSend") + " " + change + "/" + change2);
 		} else {
 			decSend.setDisabled();
 			decSend.clearToolTip();
 		}
 		if (myTile.energySend < TileCell.MAX_SEND[myTile.type]) {
 			incSend.setActive();
-			incSend.setToolTip(StringHelper.localize("info.thermalexpansion.cell.incSend") + " " + change + "/" + change2);
+			incSend.setToolTip(StringHelper.localize("info.thermalexpansion.incSend") + " " + change + "/" + change2);
 		} else {
 			incSend.setDisabled();
 			incSend.clearToolTip();
@@ -181,10 +180,10 @@ public class GuiCell extends GuiBaseAdv {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxIn") + ":",
-				getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxIn"), xSize / 2), 32, 0x404040);
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.cell.maxOut") + ":",
-				xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.cell.maxOut"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxIn") + ":",
+				getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxIn"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxOut") + ":",
+				xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxOut"), xSize / 2), 32, 0x404040);
 
 		String recv = String.format("%-8s", "" + myTile.energyReceive + " RF/t");
 		String send = String.format("%-8s", "" + myTile.energySend + " RF/t");

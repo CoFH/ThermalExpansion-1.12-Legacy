@@ -12,7 +12,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,15 +28,15 @@ public class ItemMultimeter extends ItemBase {
 	}
 
 	@Override
-	public boolean isFull3D() {
-
-		return true;
-	}
-
-	@Override
 	public boolean hasEffect(ItemStack stack) {
 
 		return stack.getItemDamage() != 0;
+	}
+
+	@Override
+	public boolean isFull3D() {
+
+		return true;
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class ItemMultimeter extends ItemBase {
 		player.swingItem();
 
 		Block block = world.getBlock(x, y, z);
-		ArrayList<String> info = new ArrayList<String>();
+		ArrayList<IChatComponent> info = new ArrayList<IChatComponent>();
 
 		if (stack.getItemDamage() == 0) {
 			if (ServerHelper.isClientWorld(world)) {
@@ -60,18 +60,17 @@ public class ItemMultimeter extends ItemBase {
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
 				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(new ChatComponentText(info.get(i)));
+					player.addChatMessage(info.get(i));
 				}
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, false);
+						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, false);
 						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(new ChatComponentText(info.get(i)));
+							player.addChatMessage(info.get(i));
 						}
 					}
-
 				}
 			}
 		} else {
@@ -80,24 +79,23 @@ public class ItemMultimeter extends ItemBase {
 
 			} else if (block instanceof IBlockInfo) {
 				if (ServerHelper.isClientWorld(world)) {
-					info.add("-Client-");
+					// info.add("-Client-");
 				} else {
-					info.add("-Server-");
+					// info.add("-Server-");
 				}
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, true);
 				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(new ChatComponentText(info.get(i)));
+					player.addChatMessage(info.get(i));
 				}
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, player.isSneaking());
+						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, player.isSneaking());
 						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(new ChatComponentText(info.get(i)));
+							player.addChatMessage(info.get(i));
 						}
 					}
-
 				}
 			}
 		}

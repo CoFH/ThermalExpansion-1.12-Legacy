@@ -1,6 +1,6 @@
 package thermalexpansion.gui.container;
 
-import cofh.api.core.ISecurable;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.gui.container.ContainerInventoryItem;
 import cofh.gui.slot.ISlotValidator;
@@ -18,7 +18,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-import thermalexpansion.item.tool.ItemSatchel;
+import thermalexpansion.item.ItemSatchel;
 
 @ChestContainer()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {

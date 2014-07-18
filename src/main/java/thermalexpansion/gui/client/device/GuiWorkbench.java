@@ -18,7 +18,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Workbench.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Crafts things!\n\nA crafting recipe may be written to or read from a schematic.\n\nStores its contents securely.\n\nShift + Right Click on a Schematic to craft it instantly.";
+	static final String INFO = "Crafts things! A crafting recipe may be written to or read from a schematic.\n\nStores its contents securely.\n\nShift + Right Click on a Schematic to craft it instantly.";
 
 	public TileWorkbench myTile;
 	String playerName;
@@ -63,13 +63,13 @@ public class GuiWorkbench extends GuiBaseAdv {
 	protected void updateElementInformation() {
 
 		if (gridNotEmpty()) {
-			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");
+			getSchematic.setToolTip("info.thermalexpansion.gridClear");
 			getSchematic.setSheetX(208);
 			getSchematic.setHoverX(208);
 			getSchematic.setActive();
 		} else {
 			if (hasValidSchematic()) {
-				getSchematic.setToolTip("info.thermalexpansion.workbench.gridSet");
+				getSchematic.setToolTip("info.thermalexpansion.gridSet");
 				getSchematic.setSheetX(192);
 				getSchematic.setHoverX(192);
 				getSchematic.setActive();
@@ -79,13 +79,13 @@ public class GuiWorkbench extends GuiBaseAdv {
 			}
 		}
 		if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
-			setSchematic.setToolTip("info.thermalexpansion.workbench.writeSchematic");
+			setSchematic.setToolTip("info.thermalexpansion.writeSchematic");
 			setSchematic.setActive();
 		} else if (hasSchematic()) {
-			setSchematic.setToolTip("info.thermalexpansion.workbench.noSchematic");
+			setSchematic.setToolTip("info.thermalexpansion.noSchematic");
 			setSchematic.setDisabled();
 		} else {
-			setSchematic.setToolTip("info.thermalexpansion.workbench.noRecipe");
+			setSchematic.setToolTip("info.thermalexpansion.noRecipe");
 			setSchematic.setDisabled();
 		}
 		myTile.createItemClient(false, ((ContainerWorkbench) inventorySlots).myOutput.getStackNoUpdate());
@@ -124,11 +124,11 @@ public class GuiWorkbench extends GuiBaseAdv {
 	public void overlayRecipe() {
 
 		if (!gridNotEmpty()) {
-			getSchematic.setToolTip("info.thermalexpansion.workbench.gridSet");
+			getSchematic.setToolTip("info.thermalexpansion.gridSet");
 			getSchematic.setSheetX(192);
 			getSchematic.setHoverX(192);
 		} else {
-			getSchematic.setToolTip("info.thermalexpansion.workbench.gridClear");
+			getSchematic.setToolTip("info.thermalexpansion.gridClear");
 			getSchematic.setSheetX(208);
 			getSchematic.setHoverX(208);
 		}

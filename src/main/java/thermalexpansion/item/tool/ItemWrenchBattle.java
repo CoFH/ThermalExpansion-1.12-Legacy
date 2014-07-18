@@ -10,14 +10,13 @@ import cofh.util.ServerHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
 
-	public ItemWrenchBattle(Item.ToolMaterial toolMaterial) {
+	public ItemWrenchBattle(ToolMaterial toolMaterial) {
 
 		super(toolMaterial);
 	}

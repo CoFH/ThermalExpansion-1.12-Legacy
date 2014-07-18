@@ -4,11 +4,13 @@ import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
+import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -129,13 +131,13 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
 	/* IDismantleable */
 	@Override
-	public ItemStack dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnBlock) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		int metadata = world.getBlockMetadata(x, y, z);
 		ItemStack dropBlock = new ItemStack(this, 1, metadata);
 		world.setBlockToAir(x, y, z);
 
-		if (dropBlock != null && !returnBlock) {
+		if (dropBlock != null && !returnDrops) {
 			float f = 0.3F;
 			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
@@ -144,9 +146,11 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 			entity.delayBeforeCanPickup = 10;
 			world.spawnEntityInWorld(entity);
 
-			Utils.dismantleLog(player.getDisplayName(), this, metadata, x, y, z);
+			CoreUtils.dismantleLog(player.getDisplayName(), this, metadata, x, y, z);
 		}
-		return dropBlock;
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(dropBlock);
+		return ret;
 	}
 
 	@Override

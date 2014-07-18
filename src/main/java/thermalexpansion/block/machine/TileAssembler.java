@@ -24,7 +24,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiAssembler;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
-import thermalexpansion.item.SchematicHelper;
+import thermalexpansion.util.SchematicHelper;
 
 public class TileAssembler extends TileMachineBase implements IFluidHandler {
 

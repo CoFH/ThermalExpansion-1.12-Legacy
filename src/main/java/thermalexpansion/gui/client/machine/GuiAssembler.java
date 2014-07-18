@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementEnergyStored;
 import cofh.gui.element.ElementFluidTank;
@@ -17,7 +16,6 @@ import thermalexpansion.gui.element.ElementSlotOverlayAssembler;
 public class GuiAssembler extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Assembler.png");
-	static final String INFO = "Crafts recipes saved in Schematics.\n\nUses 20 Redstone Flux per Item.\n\nNo, it won't craft that.";
 
 	ElementSlotOverlayAssembler[] slotInput = new ElementSlotOverlayAssembler[3];
 	ElementBase slotOutput;
@@ -28,9 +26,6 @@ public class GuiAssembler extends GuiMachineBase {
 		super(new ContainerAssembler(inventory, tile), tile, inventory.player, TEXTURE);
 
 		ySize = 205;
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

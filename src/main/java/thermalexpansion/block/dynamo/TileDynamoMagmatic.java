@@ -180,7 +180,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
 			return 0;
 		}
 		if (isValidFuel(resource)) {
@@ -192,7 +192,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from != ForgeDirection.UNKNOWN && from.ordinal() == facing) {
+		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
 			return null;
 		}
 		if (isValidFuel(resource)) {
@@ -204,19 +204,10 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
+		if (from.ordinal() == facing && !augmentCoilDuct) {
+			return null;
+		}
 		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
-
-		return from.ordinal() != facing;
-	}
-
-	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
-
-		return from.ordinal() != facing;
 	}
 
 	@Override

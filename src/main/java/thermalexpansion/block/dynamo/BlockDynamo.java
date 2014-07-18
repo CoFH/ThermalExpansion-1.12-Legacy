@@ -3,7 +3,6 @@ package thermalexpansion.block.dynamo;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
-import cofh.util.RecipeSecure;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -31,6 +30,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockDynamo extends BlockTEBase {
 
@@ -207,18 +207,14 @@ public class BlockDynamo extends BlockTEBase {
 					'I', "ingotBronze", 'R', Items.redstone }));
 		}
 		if (enable[Types.ENERVATION.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
+			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEnervation, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
 					'I', "ingotElectrum", 'R', Items.redstone }));
 		}
-		GameRegistry.addRecipe(new RecipeSecure(dynamoSteam, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', dynamoSteam }));
-		GameRegistry.addRecipe(new RecipeSecure(dynamoMagmatic, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				dynamoMagmatic }));
-		GameRegistry.addRecipe(new RecipeSecure(dynamoCompression, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				dynamoCompression }));
-		GameRegistry.addRecipe(new RecipeSecure(dynamoEnervation, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				dynamoEnervation }));
-		GameRegistry.addRecipe(new RecipeSecure(dynamoReactant, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				dynamoReactant }));
+		TECraftingHandler.addSecureRecipe(dynamoSteam);
+		TECraftingHandler.addSecureRecipe(dynamoMagmatic);
+		TECraftingHandler.addSecureRecipe(dynamoCompression);
+		TECraftingHandler.addSecureRecipe(dynamoEnervation);
+		TECraftingHandler.addSecureRecipe(dynamoReactant);
 		return true;
 	}
 

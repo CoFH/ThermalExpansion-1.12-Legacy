@@ -18,6 +18,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -273,6 +275,8 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		inventory[slot] = stack;
 
+		boolean stackCheck = storedStack == null;
+
 		if (slot == 0) { // insertion!
 			if (inventory[0] == null) {
 				return;
@@ -298,6 +302,9 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			}
 		}
 		updateTrackers();
+		if (stackCheck != (storedStack == null)) {
+			sendUpdatePacket(Side.CLIENT);
+		}
 		markDirty();
 	}
 
@@ -344,7 +351,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return slot == 0 && (storedStack == null || stack != null && ItemHelper.itemsEqualWithMetadata(stack, storedStack, true));
+		return slot == 0 && (storedStack == null || ItemHelper.itemsEqualWithMetadata(stack, storedStack, true));
 	}
 
 	@Override
@@ -373,18 +380,18 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<String> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
 		}
 		if (storedStack != null) {
-			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack));
-			info.add(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]);
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]));
 		} else {
-			info.add(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty"));
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
-		info.add(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked"));
+		info.add(new ChatComponentText(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 	}
 
 	/* Prototype Handler Stuff */

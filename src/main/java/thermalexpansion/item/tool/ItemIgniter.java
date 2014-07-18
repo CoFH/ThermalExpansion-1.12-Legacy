@@ -43,16 +43,19 @@ public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 	}
 
 	@Override
-	public boolean isFull3D() {
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
-		return true;
-	}
-
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		player.swingItem();
-		return false;
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		if (stack.stackTagCompound == null) {
+			EnergyHelper.setDefaultEnergyTag(stack, 0);
+		}
+		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
+		list.add(StringHelper.ORANGE + energyPerUse + " RF " + StringHelper.localize("info.cofh.perUse") + StringHelper.END);
 	}
 
 	@Override
@@ -80,19 +83,22 @@ public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
-		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
-		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
-		}
-		if (stack.stackTagCompound == null) {
-			EnergyHelper.setDefaultEnergyTag(stack, 0);
-		}
-		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
-		list.add(StringHelper.ORANGE + energyPerUse + " RF " + StringHelper.localize("info.cofh.perUse") + StringHelper.END);
+		player.swingItem();
+		return false;
+	}
+
+	@Override
+	public boolean isFull3D() {
+
+		return true;
+	}
+
+	@Override
+	public boolean isDamaged(ItemStack stack) {
+
+		return stack.getItemDamage() != Short.MAX_VALUE;
 	}
 
 	@Override
@@ -108,12 +114,6 @@ public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 	public int getMaxDamage(ItemStack stack) {
 
 		return 1 + maxEnergy;
-	}
-
-	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return stack.getItemDamage() != Short.MAX_VALUE;
 	}
 
 	/* IEnergyContainerItem */

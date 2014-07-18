@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 import thermalexpansion.gui.client.GuiSatchel;
 import thermalexpansion.gui.container.ContainerSatchel;
-import thermalexpansion.item.tool.ItemSatchel;
+import thermalexpansion.item.ItemSatchel;
 
 public class GuiHandler implements IGuiHandler {
 

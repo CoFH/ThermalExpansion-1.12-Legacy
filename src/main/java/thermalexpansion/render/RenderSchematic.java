@@ -10,8 +10,8 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import thermalexpansion.item.SchematicHelper;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.SchematicHelper;
 
 public class RenderSchematic implements IItemRenderer {
 

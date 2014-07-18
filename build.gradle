@@ -22,8 +22,8 @@ group = "thermalexpansion"
 archivesBaseName = "ThermalExpansion"
 
 minecraft {
-    version = "1.7.10-10.13.0.1151"
-    assetDir = "eclipse/assets"
+    version = "1.7.10-10.13.0.1180"
+    runDir = "eclipse/assets"
 }
 
 processResources

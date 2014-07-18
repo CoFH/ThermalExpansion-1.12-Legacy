@@ -14,7 +14,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemArmor;
+import net.minecraft.item.Item.ToolMaterial;
+import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -211,10 +212,11 @@ public class TEEquipment {
 	public static ItemStack toolInvarSickle;
 	public static ItemStack toolInvarBow;
 
-	public static final Item.ToolMaterial TOOL_INVAR = EnumHelper.addToolMaterial("TE_INVAR", 2, 450, 7F, 2, 16);
-	public static final ItemArmor.ArmorMaterial ARMOR_INVAR = EnumHelper.addArmorMaterial("TE_INVAR", 25, new int[] { 2, 7, 5, 2 }, 11);
+	public static final ToolMaterial TOOL_INVAR = EnumHelper.addToolMaterial("TE_INVAR", 2, 450, 7F, 2, 16);
+	public static final ArmorMaterial ARMOR_INVAR = EnumHelper.addArmorMaterial("TE_INVAR", 25, new int[] { 2, 7, 5, 2 }, 11);
 	public static final String[] TEXTURE_INVAR = { TEProps.PATH_ARMOR + "Invar_1.png", TEProps.PATH_ARMOR + "Invar_2.png" };
 
 	public static final String ARMOR = "thermalexpansion.armor.";
 	public static final String TOOL = "thermalexpansion.tool.";
+
 }

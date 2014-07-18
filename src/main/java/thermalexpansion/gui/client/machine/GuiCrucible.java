@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementEnergyStored;
@@ -18,7 +17,6 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiCrucible extends GuiMachineBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Crucible.png");
-	static final String INFO = "Turns solid material into fluids!\n\nVery useful for building advanced devices.\n\nKeep away from small children and pets.";
 
 	ElementBase slotInput;
 	ElementBase slotOutput;
@@ -29,9 +27,6 @@ public class GuiCrucible extends GuiMachineBase {
 	public GuiCrucible(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration + "\n\n" + CoFHProps.tutorialTabFluxRequired;
 	}
 
 	@Override

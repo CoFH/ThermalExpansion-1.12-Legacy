@@ -69,6 +69,10 @@ public class BlockSponge extends BlockTEBase implements IInitializer {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (!enable[world.getBlockMetadata(x, y, z)]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		TileEntity tile = world.getTileEntity(x, y, z);
 
 		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Fluid")) {
@@ -80,6 +84,7 @@ public class BlockSponge extends BlockTEBase implements IInitializer {
 		} else if (tile instanceof TileSponge) {
 			((TileSponge) tile).absorb();
 		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
 
 	@Override

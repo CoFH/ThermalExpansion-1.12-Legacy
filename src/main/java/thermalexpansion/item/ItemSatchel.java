@@ -1,7 +1,7 @@
-package thermalexpansion.item.tool;
+package thermalexpansion.item;
 
-import cofh.api.core.ISecurable.AccessMode;
 import cofh.api.item.IInventoryContainerItem;
+import cofh.api.tileentity.ISecurable.AccessMode;
 import cofh.core.CoFHProps;
 import cofh.enchantment.CoFHEnchantment;
 import cofh.item.ItemBase;
@@ -30,8 +30,6 @@ import thermalexpansion.gui.GuiHandler;
 
 public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
-	IIcon latch[] = new IIcon[3];
-
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
 
 		if (container.stackTagCompound == null) {
@@ -48,6 +46,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		String comment = "Enable this to allow for Satchels to be upgradable to be secure inventories. (Default: true)";
 		enableSecurity = ThermalExpansion.config.get("item.security", "Satchel.Secure", enableSecurity, comment);
 	}
+
+	IIcon latch[] = new IIcon[3];
 
 	public ItemSatchel() {
 
@@ -66,9 +66,23 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	@Override
-	public boolean isFull3D() {
+	public String getUnlocalizedName(ItemStack item) {
 
-		return true;
+		return "item.thermalexpansion.satchel." + NAMES[item.getItemDamage()];
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		SecurityHelper.addOwnerInformation(stack, list);
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		SecurityHelper.addAccessInformation(stack, list);
+		ItemHelper.addInventoryInformation(stack, list);
 	}
 
 	@Override
@@ -86,8 +100,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			if (canPlayerAccess(stack, player.getDisplayName())) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
-				player.addChatMessage(new ChatComponentText(StringHelper.localize("message.cofh.secure1") + " " + SecurityHelper.getOwnerName(stack) + "! "
-						+ StringHelper.localize("message.cofh.secure2")));
+				player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + SecurityHelper.getOwnerName(stack) + "! "
+						+ StringHelper.localize("chat.cofh.secure2")));
 			}
 		}
 		return stack;
@@ -100,17 +114,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public boolean isFull3D() {
 
-		SecurityHelper.addOwnerInformation(stack, list);
-		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
-		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
-		}
-		SecurityHelper.addAccessInformation(stack, list);
-		ItemHelper.addInventoryInformation(stack, list);
+		return true;
 	}
 
 	@Override
@@ -147,6 +153,19 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPrivate");
 	}
 
+	/* HELPERS */
+	public static boolean canPlayerAccess(ItemStack stack, String name) {
+
+		if (!SecurityHelper.isSecure(stack)) {
+			return true;
+		}
+		AccessMode access = SecurityHelper.getAccess(stack);
+		String owner = SecurityHelper.getOwnerName(stack);
+
+		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
+				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
+	}
+
 	public static boolean isEnchanted(ItemStack container) {
 
 		return EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container) > 0;
@@ -165,18 +184,6 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		return getStorageIndex(type, enchant);
 	}
 
-	public static boolean canPlayerAccess(ItemStack stack, String name) {
-
-		if (!SecurityHelper.isSecure(stack)) {
-			return true;
-		}
-		AccessMode access = SecurityHelper.getAccess(stack);
-		String owner = SecurityHelper.getOwnerName(stack);
-
-		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
-				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
-	}
-
 	/* IInventoryContainerItem */
 	@Override
 	public int getSizeInventory(ItemStack container) {
@@ -187,5 +194,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	public static enum Types {
 		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
 	}
+
+	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 
 }

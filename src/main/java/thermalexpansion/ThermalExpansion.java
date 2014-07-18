@@ -1,5 +1,6 @@
 package thermalexpansion;
 
+import cofh.core.CoFHProps;
 import cofh.mod.BaseMod;
 import cofh.network.CoFHPacket;
 import cofh.updater.UpdateManager;
@@ -42,8 +43,8 @@ import thermalexpansion.gui.CreativeTabFlorbs;
 import thermalexpansion.gui.CreativeTabItems;
 import thermalexpansion.gui.CreativeTabTools;
 import thermalexpansion.gui.GuiHandler;
+import thermalexpansion.item.ItemSatchel;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.item.tool.ItemSatchel;
 import thermalexpansion.network.GenericTEPacket;
 import thermalexpansion.network.GenericTEPacket.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
@@ -61,7 +62,8 @@ import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.ThermalFoundation;
 
-@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies)
+@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
+		guiFactory = ThermalExpansion.modGuiFactory)
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -69,6 +71,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final String version = "1.7.10R3.1.0B1";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "http://teamcofh.com/thermalexpansion/version/version.txt";
+	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigFactoryTE";
 
 	@Instance(modId)
 	public static ThermalExpansion instance;
@@ -188,7 +191,7 @@ public class ThermalExpansion extends BaseMod {
 		TileStrongbox.enableSecurity = payload.getBool();
 		ItemSatchel.enableSecurity = payload.getBool();
 
-		log.info(StringHelper.localize("message.cofh.receiveConfig"));
+		log.info("Receiving Server Configuration...");
 	}
 
 	public CoFHPacket getConfigSync() {
@@ -211,7 +214,7 @@ public class ThermalExpansion extends BaseMod {
 		TileStrongbox.configure();
 		ItemSatchel.configure();
 
-		log.info(StringHelper.localize("message.cofh.restoreConfig"));
+		log.info(StringHelper.localize("Restoring Client Configuration..."));
 	}
 
 	/* LOADING FUNCTIONS */
@@ -229,8 +232,7 @@ public class ThermalExpansion extends BaseMod {
 		String category = "general";
 		String comment = null;
 
-		TEProps.enableUpdateNotice = config.get(category, "EnableUpdateNotifications", TEProps.enableUpdateNotice);
-		TEProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", TEProps.enableDismantleLogging);
+		CoFHProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", CoFHProps.enableDismantleLogging);
 		TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
 		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
 		optionColorBlind = config.get(category, "ColorBlindTextures", false);

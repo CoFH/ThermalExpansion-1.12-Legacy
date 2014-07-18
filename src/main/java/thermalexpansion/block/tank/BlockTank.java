@@ -69,6 +69,10 @@ public class BlockTank extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (!enable[world.getBlockMetadata(x, y, z)]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Fluid")) {
 			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
 

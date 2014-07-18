@@ -66,8 +66,6 @@ public class TEProps {
 	public static int[] oreClusterSize = new int[] { 8, 8, 8, 8, 4 };
 
 	public static boolean enableGuiBorders = true;
-	public static boolean enableUpdateNotice = true;
-	public static boolean enableDismantleLogging = false;
 	public static boolean enableAchievements = false;
 	public static boolean enableDebugOutput = false;
 

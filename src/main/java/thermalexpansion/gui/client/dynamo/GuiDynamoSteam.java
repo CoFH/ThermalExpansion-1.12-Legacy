@@ -2,6 +2,7 @@ package thermalexpansion.gui.client.dynamo;
 
 import cofh.gui.element.ElementDualScaled;
 import cofh.gui.element.ElementFluidTank;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -13,7 +14,6 @@ import thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 public class GuiDynamoSteam extends GuiDynamoBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoSteam.png");
-	static final String INFO = "Generates Redstone Flux using Steam.\n\nSolid Fuels and Water can be used to generate Steam.\n\nGeneration rate varies according to energy demand.";
 
 	ElementDualScaled duration;
 
@@ -21,7 +21,7 @@ public class GuiDynamoSteam extends GuiDynamoBase {
 
 		super(new ContainerDynamoSteam(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = INFO;
+		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.steam.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.steam.1");
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.core.CoFHProps;
 import cofh.gui.element.ElementBase;
 import cofh.gui.element.ElementFluidTank;
 
@@ -15,16 +14,12 @@ import thermalexpansion.gui.element.ElementSlotOverlay;
 public class GuiAccumulator extends GuiMachineBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Accumulator.png");
-	static final String INFO = "Extracts water from its surroundings.\n\nPlace in a pool of water to speed this up.\n\nDon't drown.";
 
 	ElementBase slotOutput;
 
 	public GuiAccumulator(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
-
-		myInfo = INFO;
-		myTutorial = CoFHProps.tutorialTabRedstone + "\n\n" + CoFHProps.tutorialTabConfiguration;
 	}
 
 	@Override

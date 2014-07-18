@@ -53,7 +53,7 @@ public class TabSchematic extends TabBase {
 		if (!isFullyOpened()) {
 			return;
 		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.thermalexpansion.schematic"), posXOffset() + 18, posY + 6, headerColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"), posXOffset() + 18, posY + 6, headerColor);
 
 		if (myContainer.canWriteSchematic()) {
 			gui.drawButton("IconAccept", posX() + 77, posY + 60, 1, 0);
@@ -67,7 +67,7 @@ public class TabSchematic extends TabBase {
 	public void addTooltip(List<String> list) {
 
 		if (!isFullyOpened()) {
-			list.add(StringHelper.localize("info.thermalexpansion.schematic"));
+			list.add(StringHelper.localize("item.thermalexpansion.diagram.schematic"));
 		}
 	}
 

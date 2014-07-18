@@ -29,7 +29,7 @@ public class ItemBlockDevice extends ItemBlockBase {
 
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForInfo());
+			list.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
