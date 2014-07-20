@@ -124,7 +124,8 @@ public class TileCharger extends TileMachineBase {
 	protected void processFinish() {
 
 		inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-		inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		if (--inventory[0].stackSize < 1)
+			inventory[0] = null;
 	}
 
 	@Override

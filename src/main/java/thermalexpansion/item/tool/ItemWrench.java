@@ -3,6 +3,8 @@ package thermalexpansion.item.tool;
 import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
+import cofh.api.item.IToolHammer;
+import cofh.asm.relauncher.Strippable;
 import cofh.item.ItemBase;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
@@ -10,6 +12,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +22,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.ThermalExpansion;
 
-public class ItemWrench extends ItemBase implements IToolWrench {
+@Strippable("buildcraft.api.tools.IToolWrench")
+public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 
 	public ItemWrench() {
 
@@ -51,8 +55,6 @@ public class ItemWrench extends ItemBase implements IToolWrench {
 			return true;
 		}
 		if (BlockHelper.canRotate(block)) {
-			int bMeta = world.getBlockMetadata(x, y, z);
-
 			if (player.isSneaking()) {
 				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlockAlt(world, block, x, y, z), 3);
 				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.6F);
@@ -80,6 +82,18 @@ public class ItemWrench extends ItemBase implements IToolWrench {
 		Multimap multimap = HashMultimap.create();
 		multimap.put(SharedMonsterAttributes.attackDamage.getAttributeUnlocalizedName(), new AttributeModifier(field_111210_e, "Tool modifier", 1, 0));
 		return multimap;
+	}
+
+	/* IToolHammer */
+	@Override
+	public boolean isUsable(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+
+		return true;
+	}
+
+	@Override
+	public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+
 	}
 
 	/* IToolWrench */

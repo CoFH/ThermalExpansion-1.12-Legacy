@@ -3,6 +3,8 @@ package thermalexpansion.item.tool;
 import buildcraft.api.tools.IToolWrench;
 
 import cofh.api.block.IDismantleable;
+import cofh.api.item.IToolHammer;
+import cofh.asm.relauncher.Strippable;
 import cofh.item.tool.ItemSwordAdv;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
@@ -14,7 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
+@Strippable("buildcraft.api.tools.IToolWrench")
+public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench, IToolHammer {
 
 	public ItemWrenchBattle(ToolMaterial toolMaterial) {
 
@@ -41,8 +44,6 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
 			return true;
 		}
 		if (BlockHelper.canRotate(block)) {
-			int bMeta = world.getBlockMetadata(x, y, z);
-
 			if (player.isSneaking()) {
 				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlockAlt(world, block, x, y, z), 3);
 				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.6F);
@@ -62,6 +63,18 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench {
 	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
 
 		return true;
+	}
+
+	/* IToolHammer */
+	@Override
+	public boolean isUsable(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+
+		return true;
+	}
+
+	@Override
+	public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+
 	}
 
 	/* IToolWrench */

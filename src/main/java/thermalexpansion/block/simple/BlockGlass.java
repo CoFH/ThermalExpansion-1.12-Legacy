@@ -1,7 +1,5 @@
 package thermalexpansion.block.simple;
 
-import buildcraft.api.tools.IToolWrench;
-
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.util.CoreUtils;
@@ -53,13 +51,11 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-
 		if (player.isSneaking()) {
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world)) {
 					dismantleBlock(player, world, x, y, z, false);
-					((IToolWrench) equipped).wrenchUsed(player, x, y, z);
+					Utils.usedWrench(player, x, y, z);
 				}
 				return true;
 			}
@@ -137,7 +133,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 		ItemStack dropBlock = new ItemStack(this, 1, metadata);
 		world.setBlockToAir(x, y, z);
 
-		if (dropBlock != null && !returnDrops) {
+		if (!returnDrops) {
 			float f = 0.3F;
 			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;

@@ -1,7 +1,5 @@
 package thermalexpansion.block;
 
-import buildcraft.api.tools.IToolWrench;
-
 import cofh.api.block.IDismantleable;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
@@ -19,7 +17,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -56,14 +53,13 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 		if (Utils.isHoldingMultimeter(player, x, y, z)) {
 			return true;
 		}
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 
-		if (player.isSneaking()) {
+		if (false && player.isSneaking()) { // TODO: remove? wrenches actively check this now
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {
 					dismantleBlock(player, world, x, y, z, false);
 				}
-				((IToolWrench) equipped).wrenchUsed(player, x, y, z);
+				Utils.usedWrench(player, x, y, z);
 				return true;
 			}
 			return false;
@@ -77,7 +73,7 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			if (ServerHelper.isServerWorld(world)) {
 				tile.onWrench(player, hitSide);
 			}
-			((IToolWrench) equipped).wrenchUsed(player, x, y, z);
+			Utils.usedWrench(player, x, y, z);
 			return true;
 		}
 		return tile.openGui(player);
@@ -129,7 +125,7 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			}
 			world.setBlockToAir(x, y, z);
 
-			if (dropBlock != null && !returnDrops) {
+			if (!returnDrops) {
 				float f = 0.3F;
 				double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;

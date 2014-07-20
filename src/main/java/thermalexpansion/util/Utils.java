@@ -1,11 +1,10 @@
 package thermalexpansion.util;
 
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.api.transport.IPipeTile;
 
 import cofh.api.item.IAugmentItem;
+import cofh.api.item.IToolHammer;
 import cofh.api.transport.IItemDuct;
 import cofh.util.BlockHelper;
 import cofh.util.InventoryHelper;
@@ -102,14 +101,15 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToAdjacentPipeTile(TileEntity tile, int side, ItemStack stack) {
+	public static int addToPipeTile(TileEntity theTile, int side, ItemStack stack) {
 
-		TileEntity theTile = BlockHelper.getAdjacentTileEntity(tile, side);
-
-		return addToPipeTile(theTile, side, stack);
+		if (bcPipeExists) {
+			return addToPipeTile_do(theTile, side, stack);
+		}
+		return 0;
 	}
 
-	public static int addToPipeTile(TileEntity theTile, int side, ItemStack stack) {
+	private static int addToPipeTile_do(TileEntity theTile, int side, ItemStack stack) {
 
 		if (theTile instanceof IPipeTile) {
 			int used = ((IPipeTile) theTile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
@@ -145,11 +145,6 @@ public class Utils {
 		return false;
 	}
 
-	public static boolean isAdjacentPoweredTile(TileEntity tile, int side) {
-
-		return isPoweredTile(BlockHelper.getAdjacentTileEntity(tile, side), side);
-	}
-
 	public static boolean isHoldingBlock(EntityPlayer player) {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
@@ -159,14 +154,44 @@ public class Utils {
 	public static boolean isHoldingUsableWrench(EntityPlayer player, int x, int y, int z) {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-		return equipped instanceof IToolWrench && ((IToolWrench) equipped).canWrench(player, x, y, z);
+		if (equipped instanceof IToolHammer) {
+			return ((IToolHammer)equipped).isUsable(player.getCurrentEquippedItem(), player, x, y, z);
+		}
+		else if (bcWrenchExists) return canHandleBCWrench(equipped, player, x, y, z);
+		return false;
 	}
 
-	public static boolean isHoldingUsableWrench(EntityPlayer player) {
+	public static void usedWrench(EntityPlayer player, int x, int y, int z) {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-		return equipped instanceof IToolWrench;
+		if (equipped instanceof IToolHammer) {
+			((IToolHammer)equipped).toolUsed(player.getCurrentEquippedItem(), player, x, y, z);
+		}
+		else if (bcWrenchExists) bcWrenchUsed(equipped, player, x, y, z);
 	}
+	
+	//BCHelper{
+	private static boolean bcWrenchExists = false;
+	private static boolean bcPipeExists = false;
+	static {
+		try {
+			Class.forName("buildcraft.api.tools.IToolWrench");
+			bcWrenchExists = true;
+		} catch(Throwable _) {}
+		try {
+			Class.forName("buildcraft.api.transport.IPipeTile");
+			bcPipeExists = true;
+		} catch(Throwable _) {}
+	}
+	private static boolean canHandleBCWrench(Item item, EntityPlayer p, int x, int y, int z)
+	{
+		return item instanceof IToolWrench && ((IToolWrench)item).canWrench(p, x, y, z);
+	}
+	private static void bcWrenchUsed(Item item, EntityPlayer p, int x, int y, int z)
+	{
+		if (item instanceof IToolWrench) ((IToolWrench)item).wrenchUsed(p, x, y, z);
+	}
+	//}
 
 	public static boolean isHoldingMultimeter(EntityPlayer player, int x, int y, int z) {
 
@@ -183,31 +208,13 @@ public class Utils {
 		return ItemHelper.isPlayerHoldingItemStack(TEItems.pneumaticServo, player);
 	}
 
-	public static boolean isPoweredTile(TileEntity tile, int from) {
-
-		if (tile instanceof IPowerReceptor) {
-			PowerReceiver tilePP = ((IPowerReceptor) tile).getPowerReceiver(ForgeDirection.VALID_DIRECTIONS[from ^ 1]);
-			return tilePP != null;
-		}
-		return false;
-	}
-
-	public static boolean isPowerReceptorFromSide(TileEntity tile, ForgeDirection orientation) {
-
-		if (tile instanceof IPowerReceptor) {
-			return ((IPowerReceptor) tile).getPowerReceiver(orientation) != null;
-		}
-		return false;
-	}
-
-	public static boolean isAdjacentPipeTile(TileEntity tile, int from) {
-
-		return BlockHelper.getAdjacentTileEntity(tile, from) instanceof IPipeTile;
-	}
-
 	public static boolean isPipeTile(TileEntity tile) {
+
+		return bcPipeExists && isPipeTile_do(tile);
+	}
+
+	private static boolean isPipeTile_do(TileEntity tile) {
 
 		return tile instanceof IPipeTile;
 	}
-
 }
