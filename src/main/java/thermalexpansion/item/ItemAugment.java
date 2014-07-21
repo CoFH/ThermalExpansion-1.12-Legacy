@@ -19,6 +19,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	public class AugmentEntry {
 
+		public String primaryType = "";
 		public Map<String, Integer> augmentTypeInfo = new THashMap<String, Integer>();
 	}
 
@@ -51,7 +52,8 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-
+		String type = getPrimaryType(stack);
+		list.add(StringHelper.localize("info.thermalexpansion.augment." + type));
 	}
 
 	public void addAugmentData(int number, String augmentType, int augmentLevel) {
@@ -59,7 +61,17 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		if (!augmentMap.containsKey(Integer.valueOf(number))) {
 			augmentMap.put(Integer.valueOf(number), new AugmentEntry());
 		}
+		augmentMap.get(Integer.valueOf(number)).primaryType = augmentType;
 		augmentMap.get(Integer.valueOf(number)).augmentTypeInfo.put(augmentType, augmentLevel);
+	}
+
+	private String getPrimaryType(ItemStack stack) {
+
+		AugmentEntry entry = augmentMap.get(stack.getItemDamage());
+		if (entry == null) {
+			return "";
+		}
+		return entry.primaryType;
 	}
 
 	/* IAugmentItem */

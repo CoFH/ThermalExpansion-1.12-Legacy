@@ -9,7 +9,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -20,12 +19,13 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiNullifier;
 import thermalexpansion.gui.container.device.ContainerNullifier;
 
-public class TileNullifier extends TileAugmentable implements IFluidHandler, ISidedInventory {
+public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 	static final int TYPE = BlockDevice.Types.NULLIFIER.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
@@ -34,17 +34,25 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler, ISi
 
 		defaultSideConfig = new SideConfig();
 		defaultSideConfig.numGroup = 2;
-		defaultSideConfig.slotGroups = new int[][] { {}, {} };
-		defaultSideConfig.allowInsertion = new boolean[] { false, false };
-		defaultSideConfig.allowExtraction = new boolean[] { false, false };
+		defaultSideConfig.slotGroups = new int[][] { {}, {}, {} };
+		defaultSideConfig.allowInsertion = new boolean[] { false, false, false };
+		defaultSideConfig.allowExtraction = new boolean[] { false, false, false };
 		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
+		configure();
 	}
 
-	protected static final int[] SLOTS = { 0 };
+	public static void configure() {
 
+		String comment = "Enable this to allow for Nullifiers to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Nullifier.Secureable", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
+
+	protected static final int[] SLOTS = { 0 };
 	protected static final Fluid renderFluid = FluidRegistry.LAVA;
 
 	public TileNullifier() {
@@ -86,6 +94,12 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler, ISi
 	}
 
 	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
+	}
+
+	@Override
 	public boolean sendRedstoneUpdates() {
 
 		return true;
@@ -118,47 +132,6 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler, ISi
 	@Override
 	public void writeInventoryToNBT(NBTTagCompound nbt) {
 
-	}
-
-	/* IReconfigurableFacing */
-	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
-	}
-
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		sideCache[facing] = 1;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
-	/* IReconfigurableSides */
-	@Override
-	public int getNumConfig(int side) {
-
-		return 2;
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry
-					.getIcon("DeviceFace", getType());
-		} else if (side < 6) {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
-		}
-		return IconRegistry.getIcon("DeviceSide");
 	}
 
 	/* IFluidHandler */
@@ -244,6 +217,47 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler, ISi
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
+	}
+
+	/* IReconfigurableFacing */
+	@Override
+	public boolean allowYAxisFacing() {
+
+		return true;
+	}
+
+	@Override
+	public boolean setFacing(int side) {
+
+		if (side < 0 || side > 5) {
+			return false;
+		}
+		facing = (byte) side;
+		sideCache[facing] = 1;
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		sendUpdatePacket(Side.CLIENT);
+		return true;
+	}
+
+	/* IReconfigurableSides */
+	@Override
+	public int getNumConfig(int side) {
+
+		return 2;
+	}
+
+	/* ISidedTexture */
+	@Override
+	public IIcon getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry
+					.getIcon("DeviceFace", getType());
+		} else if (side < 6) {
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
+					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
+		}
+		return IconRegistry.getIcon("DeviceSide");
 	}
 
 	/* ISidedInventory */

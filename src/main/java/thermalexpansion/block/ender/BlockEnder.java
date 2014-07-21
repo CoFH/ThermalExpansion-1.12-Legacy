@@ -166,7 +166,9 @@ public class BlockEnder extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
 					'B', "ingotBronze" }));
 		}
+
 		TECraftingHandler.addSecureRecipe(tesseract);
+
 		return true;
 	}
 

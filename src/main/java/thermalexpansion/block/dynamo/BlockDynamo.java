@@ -169,6 +169,7 @@ public class BlockDynamo extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
+		TileDynamoBase.configure();
 		TileDynamoSteam.initialize();
 		TileDynamoMagmatic.initialize();
 		TileDynamoCompression.initialize();
@@ -178,11 +179,11 @@ public class BlockDynamo extends BlockTEBase {
 		if (defaultRedstoneControl) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
 		}
-		dynamoSteam = new ItemStack(this, 1, Types.STEAM.ordinal());
-		dynamoMagmatic = new ItemStack(this, 1, Types.MAGMATIC.ordinal());
-		dynamoCompression = new ItemStack(this, 1, Types.COMPRESSION.ordinal());
-		dynamoReactant = new ItemStack(this, 1, Types.REACTANT.ordinal());
-		dynamoEnervation = new ItemStack(this, 1, Types.ENERVATION.ordinal());
+		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.STEAM.ordinal()));
+		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.MAGMATIC.ordinal()));
+		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.COMPRESSION.ordinal()));
+		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.REACTANT.ordinal()));
+		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.ENERVATION.ordinal()));
 
 		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
 		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
@@ -223,6 +224,21 @@ public class BlockDynamo extends BlockTEBase {
 		TECraftingHandler.addSecureRecipe(dynamoReactant);
 
 		return true;
+	}
+
+	public static void refreshItemStacks() {
+
+		dynamoSteam = ItemBlockDynamo.setDefaultTag(dynamoSteam);
+		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(dynamoMagmatic);
+		dynamoCompression = ItemBlockDynamo.setDefaultTag(dynamoCompression);
+		dynamoReactant = ItemBlockDynamo.setDefaultTag(dynamoReactant);
+		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
+
+		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
+		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
+		GameRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
+		GameRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
+		GameRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 	}
 
 	public static enum Types {

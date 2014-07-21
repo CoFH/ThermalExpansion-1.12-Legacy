@@ -168,10 +168,10 @@ public class BlockLight extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
-
+			// GameRegistry.addRecipe(new ShapedOreRecipe(illuminator, new Object[] {}));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
-
+			// GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] {}));
 		}
 		return true;
 	}

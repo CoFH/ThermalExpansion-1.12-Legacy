@@ -44,8 +44,8 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Machinist Workbenches to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("block.security", "Workbench.Secure", enableSecurity, comment);
+		String comment = "Enable this to allow for Workbenches to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Workbench.Secureable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

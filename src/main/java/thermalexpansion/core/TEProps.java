@@ -42,7 +42,6 @@ public class TEProps {
 
 	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
-	public static final int LAVA_MAX_RF = 400000;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
 	public static enum Ores {

@@ -2,7 +2,7 @@ package thermalexpansion.block.strongbox;
 
 import cofh.enchantment.CoFHEnchantment;
 import cofh.util.CoreUtils;
-import cofh.util.RecipeUpgrade;
+import cofh.util.crafting.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;

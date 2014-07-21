@@ -111,9 +111,9 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 		TileEntity tile = world.getTileEntity(x, y, z);
 		int bMeta = world.getBlockMetadata(x, y, z);
 
-		if (tile instanceof TileCoFHBase) {
-			bMeta = ((TileCoFHBase) tile).getType();
-		}
+		// if (tile instanceof TileCoFHBase) {
+		// bMeta = ((TileCoFHBase) tile).getType();
+		// }
 		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
 
 		if (nbt != null) {

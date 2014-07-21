@@ -90,7 +90,11 @@ public class BlockMachine extends BlockTEBase {
 
 		for (int i = 0; i < Types.values().length; i++) {
 			if (enable[i]) {
-				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i)));
+				for (int j = 0; j < 4; j++) {
+					if (creativeTiers[j]) {
+						list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
+					}
+				}
 			}
 		}
 	}
@@ -243,6 +247,7 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
+		TileMachineBase.configure();
 		TileFurnace.initialize();
 		TilePulverizer.initialize();
 		TileSawmill.initialize();
@@ -379,6 +384,33 @@ public class BlockMachine extends BlockTEBase {
 		return true;
 	}
 
+	public static void refreshItemStacks() {
+
+		furnace = ItemBlockMachine.setDefaultTag(furnace);
+		pulverizer = ItemBlockMachine.setDefaultTag(pulverizer);
+		sawmill = ItemBlockMachine.setDefaultTag(sawmill);
+		smelter = ItemBlockMachine.setDefaultTag(smelter);
+		crucible = ItemBlockMachine.setDefaultTag(crucible);
+		transposer = ItemBlockMachine.setDefaultTag(transposer);
+		precipitator = ItemBlockMachine.setDefaultTag(precipitator);
+		extruder = ItemBlockMachine.setDefaultTag(extruder);
+		accumulator = ItemBlockMachine.setDefaultTag(accumulator);
+		assembler = ItemBlockMachine.setDefaultTag(assembler);
+		charger = ItemBlockMachine.setDefaultTag(charger);
+
+		GameRegistry.registerCustomItemStack("furnace", furnace);
+		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);
+		GameRegistry.registerCustomItemStack("sawmill", sawmill);
+		GameRegistry.registerCustomItemStack("smelter", smelter);
+		GameRegistry.registerCustomItemStack("crucible", crucible);
+		GameRegistry.registerCustomItemStack("transposer", transposer);
+		GameRegistry.registerCustomItemStack("precipitator", precipitator);
+		GameRegistry.registerCustomItemStack("extruder", extruder);
+		GameRegistry.registerCustomItemStack("accumulator", accumulator);
+		GameRegistry.registerCustomItemStack("assembler", assembler);
+		GameRegistry.registerCustomItemStack("charger", charger);
+	}
+
 	public static enum Types {
 		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER
 	}
@@ -386,6 +418,7 @@ public class BlockMachine extends BlockTEBase {
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
+	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
 
 	public static boolean defaultAutoTransfer = true;
@@ -410,6 +443,11 @@ public class BlockMachine extends BlockTEBase {
 		defaultAutoTransfer = ThermalExpansion.config.get(category, "Machines.DefaultAugments.AutoTransfer", true);
 		defaultRedstoneControl = ThermalExpansion.config.get(category, "Machines.DefaultAugments.RedstoneControl", true);
 		defaultReconfigSides = ThermalExpansion.config.get(category, "Machines.DefaultAugments.ReconfigSides", true);
+
+		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier0", false);
+		creativeTiers[1] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier1", false);
+		creativeTiers[2] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier2", false);
+		creativeTiers[3] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier3", true);
 	}
 
 	public static ItemStack furnace;

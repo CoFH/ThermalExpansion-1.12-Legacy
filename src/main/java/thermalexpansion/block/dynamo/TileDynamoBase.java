@@ -27,12 +27,21 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEAugments;
 import thermalexpansion.util.Utils;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+
+	public static void configure() {
+
+		String comment = "Enable this to allow for Dynamos to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.All.Secureable", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
 
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Types.values().length];
 
@@ -83,6 +92,12 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	public int getLightValue() {
 
 		return isActive ? 7 : 0;
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
 	}
 
 	@Override

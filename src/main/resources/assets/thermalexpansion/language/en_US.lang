@@ -363,6 +363,7 @@ tile.thermalexpansion.frame.tesseractFull.name=Tesseract Frame (Full)
 
 tile.thermalexpansion.glass.name=Hardened Glass
 
+tile.thermalexpansion.light.name=6-Mode Lighting
 tile.thermalexpansion.light.illuminator.name=Glowstone Illuminator
 tile.thermalexpansion.light.lampBasic.name=Lumium Lamp
 

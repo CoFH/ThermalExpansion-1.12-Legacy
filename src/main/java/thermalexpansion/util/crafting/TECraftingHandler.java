@@ -1,8 +1,8 @@
 package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
-import cofh.util.RecipeSecure;
 import cofh.util.StringHelper;
+import cofh.util.crafting.RecipeSecure;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;

@@ -1,6 +1,6 @@
 package thermalexpansion;
 
-import cofh.core.CoFHProps;
+import cofh.CoFHCore;
 import cofh.mod.BaseMod;
 import cofh.network.CoFHPacket;
 import cofh.updater.UpdateManager;
@@ -35,7 +35,12 @@ import org.apache.logging.log4j.Logger;
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.cell.BlockCell;
 import thermalexpansion.block.cell.TileCell;
+import thermalexpansion.block.device.TileActivator;
+import thermalexpansion.block.device.TileBreaker;
+import thermalexpansion.block.device.TileNullifier;
 import thermalexpansion.block.device.TileWorkbench;
+import thermalexpansion.block.dynamo.TileDynamoBase;
+import thermalexpansion.block.machine.TileMachineBase;
 import thermalexpansion.block.strongbox.TileStrongbox;
 import thermalexpansion.core.Proxy;
 import thermalexpansion.core.TEProps;
@@ -71,7 +76,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R3.1.0B1";
+	public static final String version = "1.7.10R4.0.0B1";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "http://teamcofh.com/thermalexpansion/version/version.txt";
 	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigFactoryTE";
@@ -193,8 +198,19 @@ public class ThermalExpansion extends BaseMod {
 	public void handleConfigSync(CoFHPacket payload) {
 
 		TileCell.enableSecurity = payload.getBool();
+
 		TileWorkbench.enableSecurity = payload.getBool();
+		TileActivator.enableSecurity = payload.getBool();
+		TileBreaker.enableSecurity = payload.getBool();
+		TileNullifier.enableSecurity = payload.getBool();
+
+		TileDynamoBase.enableSecurity = payload.getBool();
+
+		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
+			TileMachineBase.enableSecurity[i] = payload.getBool();
+		}
 		TileStrongbox.enableSecurity = payload.getBool();
+
 		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info("Receiving Server Configuration...");
@@ -205,8 +221,19 @@ public class ThermalExpansion extends BaseMod {
 		CoFHPacket payload = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
 
 		payload.addBool(TileCell.enableSecurity);
+
 		payload.addBool(TileWorkbench.enableSecurity);
+		payload.addBool(TileActivator.enableSecurity);
+		payload.addBool(TileBreaker.enableSecurity);
+		payload.addBool(TileNullifier.enableSecurity);
+
+		payload.addBool(TileDynamoBase.enableSecurity);
+
+		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
+			payload.addBool(TileMachineBase.enableSecurity[i]);
+		}
 		payload.addBool(TileStrongbox.enableSecurity);
+
 		payload.addBool(ItemSatchel.enableSecurity);
 
 		return payload;
@@ -217,6 +244,11 @@ public class ThermalExpansion extends BaseMod {
 
 		TileCell.configure();
 		TileWorkbench.configure();
+		TileActivator.configure();
+		TileBreaker.configure();
+		TileNullifier.configure();
+		TileDynamoBase.configure();
+		TileMachineBase.configure();
 		TileStrongbox.configure();
 		ItemSatchel.configure();
 
@@ -233,19 +265,14 @@ public class ThermalExpansion extends BaseMod {
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
 		boolean optionEnableAchievements = true;
-		int tweakLavaRF = TEProps.lavaRF;
 
 		String category = "general";
 		String comment = null;
 
-		CoFHProps.enableDismantleLogging = config.get(category, "EnableDismantleLogging", CoFHProps.enableDismantleLogging);
 		TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
 		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
-		optionColorBlind = config.get(category, "ColorBlindTextures", false);
-		optionDrawBorders = config.get(category, "DrawGUISlotBorders", true);
-
-		category = "tweak";
-		tweakLavaRF = config.get(category, "LavaRFValue", tweakLavaRF);
+		optionColorBlind = CoFHCore.configClient.get(category, "ColorBlindTextures", false);
+		optionDrawBorders = CoFHCore.configClient.get(category, "DrawGUISlotBorders", true);
 
 		category = "holiday";
 		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
@@ -259,13 +286,6 @@ public class ThermalExpansion extends BaseMod {
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
 		TEProps.enableGuiBorders = optionDrawBorders;
-
-		/* Tweaks */
-		if (tweakLavaRF >= 10000 && tweakLavaRF < TEProps.LAVA_MAX_RF) {
-			TEProps.lavaRF = tweakLavaRF;
-		} else {
-			log.info("'LavaRFValue' config value is out of acceptable range. Using default.");
-		}
 	}
 
 	void cleanConfig(boolean preInit) {

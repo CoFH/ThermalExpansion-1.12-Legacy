@@ -35,7 +35,7 @@ public class TileCell extends TileReconfigurable {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Energy Cells to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("block.security", "Cell.Secure", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Cell.All.Secureable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

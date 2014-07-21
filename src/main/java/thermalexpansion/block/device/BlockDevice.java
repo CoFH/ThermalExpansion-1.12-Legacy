@@ -4,8 +4,8 @@ import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ItemHelper;
-import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
+import cofh.util.crafting.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -190,6 +190,10 @@ public class BlockDevice extends BlockTEBase {
 
 		// Face Textures
 		for (int i = 2; i < Types.values().length; i++) {
+			// TODO: this is very temporary; pump-hiding
+			if (i == Types.PUMP.ordinal()) {
+				continue;
+			}
 			IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]), ir);
 			IconRegistry.addIcon("DeviceActive" + i, "thermalexpansion:device/Device_Active_" + StringHelper.titleCase(NAMES[i]), ir);
 		}
@@ -261,10 +265,10 @@ public class BlockDevice extends BlockTEBase {
 		}
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
-		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
-		breaker = new ItemStack(this, 1, Types.BREAKER.ordinal());
+		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
+		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
-		nullifier = new ItemStack(this, 1, Types.NULLIFIER.ordinal());
+		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
 		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
@@ -310,12 +314,27 @@ public class BlockDevice extends BlockTEBase {
 		}
 		TECraftingHandler.addSecureRecipe(workbench);
 		// TECraftingHandler.addSecureRecipe(lexicon);
-		// TECraftingHandler.addSecureRecipe(activator);
+		TECraftingHandler.addSecureRecipe(activator);
 		TECraftingHandler.addSecureRecipe(breaker);
 		// TECraftingHandler.addSecureRecipe(pump);
 		TECraftingHandler.addSecureRecipe(nullifier);
 
 		return true;
+	}
+
+	public static void refreshItemStacks() {
+
+		// lexicon = ItemBlockDevice.setDefaultTag(lexicon);
+		activator = ItemBlockDevice.setDefaultTag(activator);
+		breaker = ItemBlockDevice.setDefaultTag(breaker);
+		// pump = ItemBlockDevice.setDefaultTag(pump);
+		nullifier = ItemBlockDevice.setDefaultTag(nullifier);
+
+		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
+		GameRegistry.registerCustomItemStack("activator", activator);
+		GameRegistry.registerCustomItemStack("breaker", breaker);
+		// GameRegistry.registerCustomItemStack("pump", pump);
+		GameRegistry.registerCustomItemStack("nullifier", nullifier);
 	}
 
 	public static enum Types {

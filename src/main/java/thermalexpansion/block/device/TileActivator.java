@@ -19,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,21 +28,37 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.block.TileReconfigurable;
+import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiActivator;
 import thermalexpansion.gui.container.device.ContainerActivator;
 
-public class TileActivator extends TileReconfigurable implements ISidedInventory {
+public class TileActivator extends TileAugmentable {
+
+	static final int TYPE = BlockDevice.Types.ACTIVATOR.ordinal();
+	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
 
+		defaultSideConfig = new SideConfig();
+		defaultSideConfig.numGroup = 3;
+		defaultSideConfig.slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		defaultSideConfig.allowInsertion = new boolean[] { false, true, false };
+		defaultSideConfig.allowExtraction = new boolean[] { false, false, true };
+		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig.defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+
 		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
+		configure();
 	}
 
-	public static final int[] SIDE_TEX = new int[] { 0, 1, 4 };
-	public static final int[] SLOTS = { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+	public static void configure() {
+
+		String comment = "Enable this to allow for Activators to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Secureable", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
 
 	public boolean leftClick = false;
 	public byte tickSlot = 0;
@@ -56,8 +71,18 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 
 	public TileActivator() {
 
+		sideConfig = defaultSideConfig;
+
 		inventory = new ItemStack[9];
 
+	}
+
+	@Override
+	public void setDefaultSides() {
+
+		sideCache = getDefaultSides();
+		sideCache[facing] = 0;
+		sideCache[facing ^ 1] = 2;
 	}
 
 	@Override
@@ -69,7 +94,13 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.ACTIVATOR.ordinal();
+		return TYPE;
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
 	}
 
 	@Override
@@ -369,13 +400,6 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 		return new ContainerActivator(inventory, this);
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-		return true;
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -384,10 +408,7 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 
 		actsSneaking = nbt.getBoolean("Sneaking");
 		leftClick = nbt.getBoolean("LeftClick");
-		tickSlot = nbt.getByte("TickSlotB");
-		if (nbt.hasKey("TickSlot")) { // Conversion code, remove in 1.0
-			tickSlot = nbt.getBoolean("TickSlot") ? (byte) 0 : (byte) 1;
-		}
+		tickSlot = nbt.getByte("TickSlot");
 		angle = nbt.getByte("Angle");
 	}
 
@@ -398,7 +419,7 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 
 		nbt.setBoolean("Sneaking", actsSneaking);
 		nbt.setBoolean("LeftClick", leftClick);
-		nbt.setByte("TickSlotB", tickSlot);
+		nbt.setByte("TickSlot", tickSlot);
 		nbt.setByte("Angle", angle);
 	}
 
@@ -432,6 +453,8 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 	@Override
 	protected void handleModePacket(CoFHPacket payload) {
 
+		super.handleModePacket(payload);
+
 		leftClick = payload.getBool();
 		actsSneaking = payload.getBool();
 		tickSlot = payload.getByte();
@@ -464,36 +487,11 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 			return false;
 		}
 		facing = (byte) side;
-		sideCache[facing ^ 1] = 1;
+		sideCache[facing] = 0;
+		sideCache[facing ^ 1] = 2;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
 		return true;
-	}
-
-	/* IReconfigurableSides */
-	@Override
-	public int getNumConfig(int side) {
-
-		return 3;
-	}
-
-	/* ISidedInventory */
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-
-		return sideCache[side] != 0 ? SLOTS : TEProps.EMPTY_INVENTORY;
-	}
-
-	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
-
-		return sideCache[side] == 1;
-	}
-
-	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
-
-		return sideCache[side] == 2;
 	}
 
 	/* ISidedTexture */
@@ -504,7 +502,7 @@ public class TileActivator extends TileReconfigurable implements ISidedInventory
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
 					: IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
+			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}

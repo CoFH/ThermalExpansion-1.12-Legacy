@@ -21,11 +21,16 @@ public class ItemBlockMachine extends ItemBlockBase {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
 
+		return setDefaultTag(container, (byte) 0);
+	}
+
+	public static ItemStack setDefaultTag(ItemStack container, byte level) {
+
 		ReconfigurableHelper.setFacing(container, 3);
 		ReconfigurableHelper.setSideCache(container, TileMachineBase.defaultSideConfig[container.getItemDamage()].defaultSides);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
-		container.stackTagCompound.setByte("Level", (byte) 0);
+		container.stackTagCompound.setByte("Level", level);
 		AugmentHelper.writeAugments(container, BlockMachine.defaultAugments);
 
 		return container;

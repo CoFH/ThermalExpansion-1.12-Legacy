@@ -8,6 +8,7 @@ import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
+import cofh.util.StringHelper;
 import cofh.util.TimeTracker;
 import cpw.mods.fml.relauncher.Side;
 
@@ -17,6 +18,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEAugments;
@@ -27,10 +29,20 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
+	public static boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true };
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24 };
+
+	public static void configure() {
+
+		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
+			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
+			String comment = "Enable this to allow for " + name + "s to be securable. (Default: true)";
+			enableSecurity[i] = ThermalExpansion.config.get("security", "Machine." + name + ".Secureable", enableSecurity[i], comment);
+		}
+	}
 
 	int processMax;
 	int processRem;
@@ -64,6 +76,12 @@ public abstract class TileMachineBase extends TileAugmentable {
 	public int getLightValue() {
 
 		return isActive ? lightValue[getType()] : 0;
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity[getType()];
 	}
 
 	@Override
@@ -271,6 +289,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	@Override
 	protected void handleGuiPacket(CoFHPacket payload) {
+
+		super.handleGuiPacket(payload);
 
 		processMax = payload.getInt();
 		processRem = payload.getInt();

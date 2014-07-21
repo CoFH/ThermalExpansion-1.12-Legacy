@@ -4,7 +4,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
-import cofh.util.RecipeUpgrade;
+import cofh.util.crafting.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

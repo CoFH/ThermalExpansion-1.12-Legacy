@@ -4,9 +4,9 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.util.IIcon;
 
-import thermalexpansion.block.TileReconfigurable;
+import thermalexpansion.block.TileAugmentable;
 
-public class TileLexicon extends TileReconfigurable {
+public class TileLexicon extends TileAugmentable {
 
 	public static void initialize() {
 

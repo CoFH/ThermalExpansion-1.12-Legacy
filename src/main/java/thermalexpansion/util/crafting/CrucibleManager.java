@@ -49,33 +49,32 @@ public class CrucibleManager {
 
 	public static void addDefaultRecipes() {
 
-		boolean recipeNetherrack = ThermalExpansion.config.get("tweak", "Crucible.Netherrack", true);
-		boolean recipeBlazeRod = ThermalExpansion.config.get("tweak", "Crucible.BlazeRod", true);
+		boolean recipeNetherrack = ThermalExpansion.config.get("tweak.crafting", "Crucible.Netherrack", true);
+		boolean recipeBlazeRod = ThermalExpansion.config.get("tweak.crafting", "Crucible.BlazeRod", true);
 
-		int tweakNetherrackRF = ThermalExpansion.config.get("tweak", "Crucible.Netherrack.Energy", TEProps.lavaRF * 6 / 10);
-		int tweakBlazeRodRF = ThermalExpansion.config.get("tweak", "Crucible.BlazeRod.Energy", TEProps.lavaRF / 10);
+		int tweakNetherrackRF = ThermalExpansion.config.get("tweak.crafting", "Crucible.Netherrack.Energy", TEProps.lavaRF * 6 / 10);
+		int tweakBlazeRodRF = ThermalExpansion.config.get("tweak.crafting", "Crucible.BlazeRod.Energy", TEProps.lavaRF / 10);
 
 		if (recipeNetherrack) {
-			if (tweakNetherrackRF >= TEProps.lavaRF / 10 && tweakNetherrackRF <= TEProps.LAVA_MAX_RF) {
+			if (tweakNetherrackRF >= TEProps.lavaRF / 10 && tweakNetherrackRF <= TEProps.lavaRF) {
 				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 			} else {
 				addTERecipe(TEProps.lavaRF * 6 / 10, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 				ThermalExpansion.log.info("'Crucible.Netherrack.Energy' config value is out of acceptable range. Using default.");
+				ThermalExpansion.config.set("tweak.crafting", "Crucible.Netherrack.Energy", TEProps.lavaRF * 6 / 10);
 			}
 		}
 		if (recipeBlazeRod) {
-			if (tweakBlazeRodRF >= TEProps.lavaRF / 20 && tweakBlazeRodRF <= TEProps.LAVA_MAX_RF) {
+			if (tweakBlazeRodRF >= TEProps.lavaRF / 20 && tweakBlazeRodRF <= TEProps.lavaRF) {
 				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 			} else {
 				addTERecipe(TEProps.lavaRF / 10, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 				ThermalExpansion.log.info("'Crucible.BlazeRod.Energy' config value is out of acceptable range. Using default.");
+				ThermalExpansion.config.set("tweak.crafting", "Crucible.BlazeRod.Energy", TEProps.lavaRF / 10);
 			}
 		}
-		int defaultCost = TEProps.lavaRF * 6 / 5;
+		int defaultCost = TEProps.lavaRF * 8 / 5;
 
-		if (defaultCost > TEProps.LAVA_MAX_RF) {
-			defaultCost = TEProps.LAVA_MAX_RF;
-		}
 		addTERecipe(defaultCost, new ItemStack(Blocks.cobblestone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.stone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.obsidian), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));

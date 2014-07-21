@@ -1,12 +1,6 @@
 package thermalexpansion.gui.client.device;
 
-import cofh.gui.GuiBaseAdv;
 import cofh.gui.element.ElementButton;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
-import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -14,13 +8,13 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.device.TileActivator;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.device.ContainerActivator;
 
-public class GuiActivator extends GuiBaseAdv {
+public class GuiActivator extends GuiAugmentableBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Activator.png";
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "It slices! It dices! It pours things, it throws things!\n\nMaybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.\n\nDeceptively versatile!";
+	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Activator.png";
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileActivator myTile;
 
@@ -29,22 +23,19 @@ public class GuiActivator extends GuiBaseAdv {
 	public ElementButton settingSlot;
 	public ElementButton settingAngle;
 
-	public GuiActivator(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiActivator(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerActivator(inventory, theTile), TEXTURE);
-		myTile = (TileActivator) theTile;
-		name = myTile.getInventoryName();
+		super(new ContainerActivator(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.device.activator", 3);
+
+		myTile = (TileActivator) tile;
 	}
 
 	@Override
 	public void initGui() {
 
 		super.initGui();
-
-		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfiguration(this, myTile));
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfiguration()));
 
 		settingClick = new ElementButton(this, 120, 20, "LeftClick", myTile.leftClick ? 176 : 196, 0, myTile.leftClick ? 176 : 196, 20, 20, 20, TEX_PATH)
 				.setToolTip(myTile.leftClick ? "info.thermalexpansion.clickLeft" : "info.thermalexpansion.clickRight");

@@ -28,6 +28,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiBreaker;
@@ -49,7 +50,16 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
+		configure();
 	}
+
+	public static void configure() {
+
+		String comment = "Enable this to allow for Breakers to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Breaker.Secureable", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
 
 	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
@@ -78,6 +88,12 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	public boolean enableSecurity() {
+
+		return enableSecurity;
 	}
 
 	@Override
@@ -251,6 +267,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 			return false;
 		}
 		facing = (byte) side;
+		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);

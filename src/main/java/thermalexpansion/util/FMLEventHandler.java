@@ -6,6 +6,9 @@ import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
+import thermalexpansion.block.device.BlockDevice;
+import thermalexpansion.block.dynamo.BlockDynamo;
+import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.network.GenericTEPacket;
@@ -41,6 +44,10 @@ public class FMLEventHandler {
 		SawmillManager.refreshRecipes();
 		SmelterManager.refreshRecipes();
 		CrucibleManager.refreshRecipes();
+
+		BlockMachine.refreshItemStacks();
+		BlockDevice.refreshItemStacks();
+		BlockDynamo.refreshItemStacks();
 	}
 
 }
