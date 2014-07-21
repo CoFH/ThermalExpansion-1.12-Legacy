@@ -20,24 +20,36 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.block.TileReconfigurable;
+import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiNullifier;
 import thermalexpansion.gui.container.device.ContainerNullifier;
 
-public class TileNullifier extends TileReconfigurable implements IFluidHandler, ISidedInventory {
+public class TileNullifier extends TileAugmentable implements IFluidHandler, ISidedInventory {
+
+	static final int TYPE = BlockDevice.Types.NULLIFIER.ordinal();
+	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
+
+		defaultSideConfig = new SideConfig();
+		defaultSideConfig.numGroup = 2;
+		defaultSideConfig.slotGroups = new int[][] { {}, {} };
+		defaultSideConfig.allowInsertion = new boolean[] { false, false };
+		defaultSideConfig.allowExtraction = new boolean[] { false, false };
+		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
 	}
 
-	protected static final int[] SIDE_TEX = new int[] { 0, 1, 4 };
 	protected static final int[] SLOTS = { 0 };
 
 	protected static final Fluid renderFluid = FluidRegistry.LAVA;
 
 	public TileNullifier() {
+
+		sideConfig = defaultSideConfig;
 
 		inventory = new ItemStack[1];
 	}
@@ -49,6 +61,13 @@ public class TileNullifier extends TileReconfigurable implements IFluidHandler, 
 	}
 
 	@Override
+	public void setDefaultSides() {
+
+		sideCache = getDefaultSides();
+		sideCache[facing] = 1;
+	}
+
+	@Override
 	public String getName() {
 
 		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
@@ -57,7 +76,7 @@ public class TileNullifier extends TileReconfigurable implements IFluidHandler, 
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.NULLIFIER.ordinal();
+		return TYPE;
 	}
 
 	@Override
@@ -116,7 +135,6 @@ public class TileNullifier extends TileReconfigurable implements IFluidHandler, 
 		}
 		facing = (byte) side;
 		sideCache[facing] = 1;
-		// sideCache[facing ^ 1] = 2;
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		sendUpdatePacket(Side.CLIENT);
 		return true;
@@ -137,8 +155,8 @@ public class TileNullifier extends TileReconfigurable implements IFluidHandler, 
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry
 					.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry
-					.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
+					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}

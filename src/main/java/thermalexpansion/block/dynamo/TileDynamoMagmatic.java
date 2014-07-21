@@ -1,6 +1,7 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
+import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import thermalexpansion.gui.container.ContainerTEBase;
 
@@ -28,6 +30,13 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	static final int TYPE = BlockDynamo.Types.MAGMATIC.ordinal();
 
 	public static void initialize() {
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Magmatic.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("block.tweak", "Dynamo.Magmatic.BasePower", maxPower);
+		maxPower /= 10;
+		maxPower *= 10;
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
@@ -44,7 +53,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy <= 10000) {
+		if (fluid == null || energy < 10000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);
@@ -78,7 +87,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public void generate() {
 
 		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy(tank.getFluid()) * fuelMod / 100;
+			fuelRF += getFuelEnergy(tank.getFluid()) * fuelMod / FUEL_MOD;
 			tank.drain(50, true);
 		}
 		int energy = calcEnergy() * energyMod;
@@ -192,7 +201,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct) {
 			return null;
 		}
 		if (isValidFuel(resource)) {
@@ -204,7 +213,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == facing && !augmentCoilDuct) {
+		if (!augmentCoilDuct) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

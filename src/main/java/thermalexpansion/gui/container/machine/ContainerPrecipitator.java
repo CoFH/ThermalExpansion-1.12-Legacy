@@ -14,11 +14,11 @@ public class ContainerPrecipitator extends ContainerTEBase {
 
 	TilePrecipitator myTile;
 
-	public ContainerPrecipitator(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TilePrecipitator) entity;
+		myTile = (TilePrecipitator) tile;
 		addSlotToContainer(new SlotRemoveOnly(myTile, 0, 80, 49));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 

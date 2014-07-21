@@ -68,7 +68,7 @@ public class ReconfigurableHelper {
 		if (stack.stackTagCompound == null) {
 			stack.setTagCompound(new NBTTagCompound());
 		}
-		stack.stackTagCompound.setByteArray("SideCache", sideCache.clone());
+		stack.stackTagCompound.setByteArray("SideCache", sideCache);
 		return true;
 	}
 

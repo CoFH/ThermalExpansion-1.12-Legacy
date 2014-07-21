@@ -9,6 +9,10 @@ import net.minecraft.item.ItemStack;
 
 public class RedprintHelper {
 
+	private RedprintHelper() {
+
+	}
+
 	public static void addRedprintInformation(ItemStack stack, List<String> list) {
 
 		if (stack.stackTagCompound == null) {
@@ -16,9 +20,14 @@ public class RedprintHelper {
 			list.add(StringHelper.getInfoText("info.cofh.blank"));
 			return;
 		}
-		list.add(StringHelper.getActivationText("info.thermalexpansion.diagram.2"));
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
 		list.add(StringHelper.getDeactivationText("info.thermalexpansion.diagram.0"));
-		list.add(StringHelper.getInfoText("info.cofh.hasInfo"));
+		list.add(StringHelper.getActivationText("info.thermalexpansion.diagram.2"));
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 

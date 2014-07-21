@@ -155,9 +155,10 @@ public class Utils {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 		if (equipped instanceof IToolHammer) {
-			return ((IToolHammer)equipped).isUsable(player.getCurrentEquippedItem(), player, x, y, z);
+			return ((IToolHammer) equipped).isUsable(player.getCurrentEquippedItem(), player, x, y, z);
+		} else if (bcWrenchExists) {
+			return canHandleBCWrench(equipped, player, x, y, z);
 		}
-		else if (bcWrenchExists) return canHandleBCWrench(equipped, player, x, y, z);
 		return false;
 	}
 
@@ -165,33 +166,44 @@ public class Utils {
 
 		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
 		if (equipped instanceof IToolHammer) {
-			((IToolHammer)equipped).toolUsed(player.getCurrentEquippedItem(), player, x, y, z);
+			((IToolHammer) equipped).toolUsed(player.getCurrentEquippedItem(), player, x, y, z);
+		} else if (bcWrenchExists) {
+			bcWrenchUsed(equipped, player, x, y, z);
 		}
-		else if (bcWrenchExists) bcWrenchUsed(equipped, player, x, y, z);
 	}
-	
-	//BCHelper{
+
+	// BCHelper{
 	private static boolean bcWrenchExists = false;
 	private static boolean bcPipeExists = false;
+
 	static {
 		try {
 			Class.forName("buildcraft.api.tools.IToolWrench");
 			bcWrenchExists = true;
-		} catch(Throwable _) {}
+		} catch (Throwable t) {
+
+		}
 		try {
 			Class.forName("buildcraft.api.transport.IPipeTile");
 			bcPipeExists = true;
-		} catch(Throwable _) {}
+		} catch (Throwable t) {
+
+		}
 	}
-	private static boolean canHandleBCWrench(Item item, EntityPlayer p, int x, int y, int z)
-	{
-		return item instanceof IToolWrench && ((IToolWrench)item).canWrench(p, x, y, z);
+
+	private static boolean canHandleBCWrench(Item item, EntityPlayer p, int x, int y, int z) {
+
+		return item instanceof IToolWrench && ((IToolWrench) item).canWrench(p, x, y, z);
 	}
-	private static void bcWrenchUsed(Item item, EntityPlayer p, int x, int y, int z)
-	{
-		if (item instanceof IToolWrench) ((IToolWrench)item).wrenchUsed(p, x, y, z);
+
+	private static void bcWrenchUsed(Item item, EntityPlayer p, int x, int y, int z) {
+
+		if (item instanceof IToolWrench) {
+			((IToolWrench) item).wrenchUsed(p, x, y, z);
+		}
 	}
-	//}
+
+	// }
 
 	public static boolean isHoldingMultimeter(EntityPlayer player, int x, int y, int z) {
 
@@ -217,4 +229,5 @@ public class Utils {
 
 		return tile instanceof IPipeTile;
 	}
+
 }

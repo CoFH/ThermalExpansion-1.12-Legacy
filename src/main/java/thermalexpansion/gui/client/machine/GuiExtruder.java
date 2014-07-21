@@ -12,10 +12,11 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.machine.TileExtruder;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerExtruder;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiExtruder extends GuiMachineBase {
+public class GuiExtruder extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
 
@@ -32,6 +33,8 @@ public class GuiExtruder extends GuiMachineBase {
 	public GuiExtruder(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerExtruder(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.extruder", 3);
 
 		myTile = (TileExtruder) tile;
 	}

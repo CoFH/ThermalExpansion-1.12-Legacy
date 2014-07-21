@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.machine.GuiSmelter;
 import thermalexpansion.gui.container.machine.ContainerSmelter;
 import thermalexpansion.util.crafting.SmelterManager;
@@ -27,8 +29,10 @@ public class TileSmelter extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Smelter.BasePower", 40), 10, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Smelter.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(40);
+		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}

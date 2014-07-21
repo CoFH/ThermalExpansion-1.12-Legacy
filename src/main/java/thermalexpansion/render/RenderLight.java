@@ -218,14 +218,11 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		switch (BlockLight.Types.values()[metadata]) {
 		case ILLUMINATOR:
 			renderItemIlluminator(color, item.hasTagCompound(), offset);
+			break;
 		case LAMP_BASIC:
 			renderItemLampBasic(color, false, offset);
+			break;
 		}
-		// CCRenderState.setColour(color);
-		// CCRenderState.startDrawing();
-		// instance.renderFrame(metadata, offset, offset, offset);
-		// CCRenderState.draw();
-
 		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}

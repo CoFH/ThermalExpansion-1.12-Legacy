@@ -11,10 +11,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerCrucible;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiCrucible extends GuiMachineBase {
+public class GuiCrucible extends GuiAugmentableBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Crucible.png");
 
@@ -27,6 +28,8 @@ public class GuiCrucible extends GuiMachineBase {
 	public GuiCrucible(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.crucible", 3);
 	}
 
 	@Override

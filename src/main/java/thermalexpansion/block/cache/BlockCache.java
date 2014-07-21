@@ -50,6 +50,9 @@ public class BlockCache extends BlockTEBase {
 		if (metadata >= Types.values().length) {
 			return null;
 		}
+		if (metadata == Types.CREATIVE.ordinal() && !enable[Types.CREATIVE.ordinal()]) {
+			return null;
+		}
 		return new TileCache(metadata);
 	}
 

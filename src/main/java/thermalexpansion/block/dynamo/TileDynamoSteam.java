@@ -3,6 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.core.CoFHProps;
 import cofh.network.CoFHPacket;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
@@ -34,6 +36,13 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	static final int TYPE = BlockDynamo.Types.STEAM.ordinal();
 
 	public static void initialize() {
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Steam.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("block.tweak", "Dynamo.Steam.BasePower", maxPower);
+		maxPower /= 10;
+		maxPower *= 10;
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
 	}
@@ -144,7 +153,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 			steamTank.drain(energy >> 1, true);
 		} else {
 			if (fuelRF <= 0 && inventory[0] != null) {
-				int energy = getEnergyValue(inventory[0]) * fuelMod / 100;
+				int energy = getEnergyValue(inventory[0]) * fuelMod / FUEL_MOD;
 				fuelRF += energy;
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);
@@ -276,7 +285,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct) {
 			return null;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -291,7 +300,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == facing && !augmentCoilDuct) {
+		if (!augmentCoilDuct) {
 			return null;
 		}
 		return waterTank.drain(maxDrain, doDrain);

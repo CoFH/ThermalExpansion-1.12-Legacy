@@ -17,11 +17,11 @@ public class ContainerFurnace extends ContainerTEBase implements ISlotValidator 
 
 	TileFurnace myTile;
 
-	public ContainerFurnace(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerFurnace(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileFurnace) entity;
+		myTile = (TileFurnace) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
 		addSlotToContainer(new SlotFurnace(inventory.player, myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));

@@ -17,11 +17,11 @@ public class ContainerPulverizer extends ContainerTEBase implements ISlotValidat
 
 	TilePulverizer myTile;
 
-	public ContainerPulverizer(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerPulverizer(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TilePulverizer) entity;
+		myTile = (TilePulverizer) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 134, 26));

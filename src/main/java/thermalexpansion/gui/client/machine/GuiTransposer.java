@@ -14,10 +14,11 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.machine.TileTransposer;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerTransposer;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiTransposer extends GuiMachineBase {
+public class GuiTransposer extends GuiAugmentableBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Transposer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
@@ -38,6 +39,8 @@ public class GuiTransposer extends GuiMachineBase {
 	public GuiTransposer(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTransposer(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.transposer", 3);
 
 		myTile = (TileTransposer) tile;
 	}

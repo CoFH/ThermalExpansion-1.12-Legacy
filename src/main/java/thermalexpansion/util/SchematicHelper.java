@@ -22,6 +22,10 @@ import thermalexpansion.item.TEItems;
 
 public class SchematicHelper {
 
+	private SchematicHelper() {
+
+	}
+
 	/* MUST BE PASSED AN INVENTORY WITH 9 SLOTS! */
 	public static NBTTagCompound getNBTForSchematic(IInventory craftSlots, ItemStack output) {
 
@@ -106,6 +110,7 @@ public class SchematicHelper {
 			list.add(StringHelper.getInfoText("info.cofh.blank"));
 			return;
 		}
+		list.add(StringHelper.getDeactivationText("info.thermalexpansion.diagram.0"));
 		boolean hasOre = false;
 		TMap<String, Integer> aMap = new THashMap<String, Integer>();
 		String curName;

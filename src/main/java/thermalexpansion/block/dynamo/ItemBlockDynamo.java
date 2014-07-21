@@ -13,6 +13,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
+import thermalexpansion.util.AugmentHelper;
 import thermalexpansion.util.ReconfigurableHelper;
 
 public class ItemBlockDynamo extends ItemBlockBase {
@@ -22,6 +23,7 @@ public class ItemBlockDynamo extends ItemBlockBase {
 		ReconfigurableHelper.setFacing(container, 1);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
+		AugmentHelper.writeAugments(container, BlockDynamo.defaultAugments);
 
 		return container;
 	}

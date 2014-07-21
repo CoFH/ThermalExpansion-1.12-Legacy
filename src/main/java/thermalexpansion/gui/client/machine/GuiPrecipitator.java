@@ -12,10 +12,11 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.block.machine.TilePrecipitator;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiPrecipitator extends GuiMachineBase {
+public class GuiPrecipitator extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
 
@@ -30,6 +31,8 @@ public class GuiPrecipitator extends GuiMachineBase {
 	public GuiPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerPrecipitator(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.precipitator", 3);
 
 		myTile = (TilePrecipitator) tile;
 	}

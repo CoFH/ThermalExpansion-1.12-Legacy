@@ -17,11 +17,11 @@ public class ContainerSmelter extends ContainerTEBase implements ISlotValidator 
 
 	TileSmelter myTile;
 
-	public ContainerSmelter(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerSmelter(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileSmelter) entity;
+		myTile = (TileSmelter) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 32, 26));
 		addSlotToContainer(new SlotValidated(this, myTile, 1, 56, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 116, 26));

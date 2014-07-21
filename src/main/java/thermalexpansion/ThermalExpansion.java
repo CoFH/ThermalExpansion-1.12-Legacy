@@ -27,6 +27,7 @@ import java.lang.reflect.Field;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.RecipeSorter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -56,6 +57,8 @@ import thermalexpansion.util.crafting.ExtruderManager;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.PrecipitatorManager;
 import thermalexpansion.util.crafting.PulverizerManager;
+import thermalexpansion.util.crafting.RecipeMachine;
+import thermalexpansion.util.crafting.RecipeMachineUpgrade;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
 import thermalexpansion.util.crafting.TECraftingHandler;
@@ -105,6 +108,9 @@ public class ThermalExpansion extends BaseMod {
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
+
+		RecipeSorter.register("thermalexpansion:machine", RecipeMachine.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
+		RecipeSorter.register("thermalexpansion:machineUpgrade", RecipeMachineUpgrade.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
 
 		cleanConfig(true);
 

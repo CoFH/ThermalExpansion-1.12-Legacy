@@ -11,11 +11,11 @@ public class ContainerActivator extends ContainerTEBase {
 
 	TileActivator myTile;
 
-	public ContainerActivator(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerActivator(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileActivator) entity;
+		myTile = (TileActivator) tile;
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {

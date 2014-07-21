@@ -9,10 +9,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerSawmill;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiSawmill extends GuiMachineBase {
+public class GuiSawmill extends GuiAugmentableBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Sawmill.png");
 
@@ -25,6 +26,8 @@ public class GuiSawmill extends GuiMachineBase {
 	public GuiSawmill(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerSawmill(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.sawmill", 3);
 	}
 
 	@Override

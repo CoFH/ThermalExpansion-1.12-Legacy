@@ -3,6 +3,7 @@ package thermalexpansion.block.dynamo;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -15,7 +16,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -29,6 +29,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEAugments;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TECraftingHandler;
 
@@ -82,6 +83,8 @@ public class BlockDynamo extends BlockTEBase {
 		tile.rotateBlock();
 
 		if (stack.stackTagCompound != null) {
+			tile.readAugmentsFromNBT(stack.stackTagCompound);
+			tile.installAugments();
 			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
@@ -172,6 +175,9 @@ public class BlockDynamo extends BlockTEBase {
 		TileDynamoReactant.initialize();
 		TileDynamoEnervation.initialize();
 
+		if (defaultRedstoneControl) {
+			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
+		}
 		dynamoSteam = new ItemStack(this, 1, Types.STEAM.ordinal());
 		dynamoMagmatic = new ItemStack(this, 1, Types.MAGMATIC.ordinal());
 		dynamoCompression = new ItemStack(this, 1, Types.COMPRESSION.ordinal());
@@ -192,29 +198,30 @@ public class BlockDynamo extends BlockTEBase {
 
 		if (enable[Types.STEAM.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoSteam, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I',
-					"ingotCopper", 'R', Items.redstone }));
+					"ingotCopper", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoMagmatic, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I',
-					"ingotInvar", 'R', Items.redstone }));
+					"ingotInvar", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.COMPRESSION.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCompression, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin",
-					'I', "ingotTin", 'R', Items.redstone }));
+					'I', "ingotTin", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.REACTANT.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze",
-					'I', "ingotBronze", 'R', Items.redstone }));
+					'I', "ingotBronze", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.ENERVATION.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEnervation, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
-					'I', "ingotElectrum", 'R', Items.redstone }));
+					'I', "ingotElectrum", 'R', "dustRedstone" }));
 		}
 		TECraftingHandler.addSecureRecipe(dynamoSteam);
 		TECraftingHandler.addSecureRecipe(dynamoMagmatic);
 		TECraftingHandler.addSecureRecipe(dynamoCompression);
 		TECraftingHandler.addSecureRecipe(dynamoEnervation);
 		TECraftingHandler.addSecureRecipe(dynamoReactant);
+
 		return true;
 	}
 
@@ -224,6 +231,10 @@ public class BlockDynamo extends BlockTEBase {
 
 	public static final String[] NAMES = { "steam", "magmatic", "compression", "reactant", "enervation" };
 	public static boolean[] enable = new boolean[Types.values().length];
+
+	public static ItemStack[] defaultAugments = new ItemStack[4];
+
+	public static boolean defaultRedstoneControl = true;
 
 	static {
 		String category = "block.feature";

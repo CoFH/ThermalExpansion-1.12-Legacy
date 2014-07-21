@@ -46,6 +46,9 @@ public class BlockSponge extends BlockTEBase implements IInitializer {
 		}
 		switch (Types.values()[metadata]) {
 		case CREATIVE:
+			if (!enable[Types.CREATIVE.ordinal()]) {
+				return null;
+			}
 			return new TileSpongeCreative(metadata);
 		case BASIC:
 			return new TileSponge(metadata);

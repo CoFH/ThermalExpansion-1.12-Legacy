@@ -16,7 +16,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -28,8 +27,6 @@ import thermalfoundation.item.TFItems;
 public class SmelterManager {
 
 	public static ItemStack blockSand = new ItemStack(Blocks.sand);
-	public static ItemStack ingotIron = new ItemStack(Items.iron_ingot);
-	public static ItemStack ingotGold = new ItemStack(Items.gold_ingot);
 
 	private static Map<List, RecipeSmelter> recipeMap = new THashMap();
 	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
@@ -112,10 +109,10 @@ public class SmelterManager {
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
 
-		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ingotIron, TFItems.ingotNickel);
-		addDefaultOreDictionaryRecipe("oreGold", "dustGold", ingotGold, null, 10, 75, 25);
-		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", TFItems.ingotCopper, ingotGold);
-		addDefaultOreDictionaryRecipe("oreTin", "dustTin", TFItems.ingotTin, ingotIron);
+		addDefaultOreDictionaryRecipe("oreIron", "dustIron", TFItems.ingotIron, TFItems.ingotNickel);
+		addDefaultOreDictionaryRecipe("oreGold", "dustGold", TFItems.ingotGold, null, 10, 75, 25);
+		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", TFItems.ingotCopper, TFItems.ingotGold);
+		addDefaultOreDictionaryRecipe("oreTin", "dustTin", TFItems.ingotTin, TFItems.ingotIron);
 		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", TFItems.ingotSilver, TFItems.ingotLead);
 		addDefaultOreDictionaryRecipe("oreLead", "dustLead", TFItems.ingotLead, TFItems.ingotSilver);
 		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", TFItems.ingotNickel, TFItems.ingotPlatinum, 15, 75, 25);

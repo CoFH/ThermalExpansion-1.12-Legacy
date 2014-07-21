@@ -14,11 +14,11 @@ public class ContainerDynamoSteam extends ContainerTEBase implements ISlotValida
 
 	TileDynamoSteam myTile;
 
-	public ContainerDynamoSteam(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerDynamoSteam(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileDynamoSteam) entity;
+		myTile = (TileDynamoSteam) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 44, 35));
 	}
 

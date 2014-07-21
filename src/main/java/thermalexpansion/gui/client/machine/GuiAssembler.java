@@ -9,11 +9,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.gui.element.ElementSlotOverlayAssembler;
 
-public class GuiAssembler extends GuiMachineBase {
+public class GuiAssembler extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Assembler.png");
 
@@ -24,6 +25,8 @@ public class GuiAssembler extends GuiMachineBase {
 	public GuiAssembler(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerAssembler(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.assembler", 3);
 
 		ySize = 205;
 	}

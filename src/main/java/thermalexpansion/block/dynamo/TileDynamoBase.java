@@ -34,10 +34,12 @@ import thermalexpansion.util.Utils;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
-	protected static final EnergyConfig defaultConfig = new EnergyConfig();
+	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Types.values().length];
 
 	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
+
+	public static final int FUEL_MOD = 1000;
 
 	int compareTracker;
 	int fuelRF;
@@ -49,11 +51,11 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	EnergyConfig config;
 
 	/* Augment Variables */
-	ItemStack[] augments = new ItemStack[3];
-	boolean[] augmentStatus = new boolean[3];
+	ItemStack[] augments = new ItemStack[4];
+	boolean[] augmentStatus = new boolean[4];
 
 	int energyMod = 1;
-	int fuelMod = 100;
+	int fuelMod = FUEL_MOD;
 
 	public boolean augmentRedstoneControl;
 	public boolean augmentThrottle;
@@ -61,8 +63,8 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	public TileDynamoBase() {
 
-		config = defaultConfig;
-		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 5);
+		config = defaultEnergyConfig[getType()];
+		energyStorage = new EnergyStorage(config.maxEnergy, config.maxPower * 2);
 	}
 
 	@Override
@@ -305,6 +307,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		CoFHPacket payload = super.getPacket();
 
 		payload.addByte(facing);
+		payload.addBool(augmentRedstoneControl);
 
 		return payload;
 	}
@@ -314,6 +317,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		CoFHPacket payload = super.getGuiPacket();
 
+		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(fuelRF);
 
@@ -327,6 +331,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		super.handleGuiPacket(payload);
 
+		energyStorage.setCapacity(payload.getInt());
 		energyStorage.setEnergyStored(payload.getInt());
 		fuelRF = payload.getInt();
 
@@ -347,8 +352,10 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		if (!isServer) {
 			facing = payload.getByte();
+			augmentRedstoneControl = payload.getBool();
 		} else {
 			payload.getByte();
+			payload.getBool();
 		}
 	}
 
@@ -420,25 +427,26 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
 				return false;
 			}
-			int level = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
-			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, level, slot)) {
+			int augLevel = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
+			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, augLevel, slot)) {
 				return false;
 			}
-			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, level)) {
-				fuelMod += 20;
+			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, augLevel)) {
+				fuelMod += TEAugments.DYNAMO_EFFICIENCY_MOD[augLevel];
 				installed = true;
 			} else {
 				return false;
 			}
 		}
 		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
-			int level = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
-			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, level, slot)) {
+			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
+			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, augLevel, slot)) {
 				return false;
 			}
-			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, level)) {
-				energyMod += 1;
-				fuelMod -= 15;
+			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
+				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
+				energyStorage.setCapacity(Math.max(energyStorage.getMaxEnergyStored(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
+				fuelMod -= (350 - 100 * augLevel);
 				installed = true;
 			} else {
 				return false;
@@ -449,8 +457,12 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			installed = true;
 		}
 		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
-			augmentThrottle = true;
-			installed = true;
+			if (hasAugment(TEAugments.GENERAL_REDSTONE_CONTROL, 0)) {
+				augmentThrottle = true;
+				installed = true;
+			} else {
+				return false;
+			}
 		}
 		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
 
@@ -472,7 +484,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	private void resetAugments() {
 
 		energyMod = 1;
-		fuelMod = 100;
+		fuelMod = FUEL_MOD;
 
 		augmentRedstoneControl = false;
 		augmentThrottle = false;
@@ -596,7 +608,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return augmentCoilDuct || side != facing;
+		return augmentCoilDuct;
 	}
 
 }

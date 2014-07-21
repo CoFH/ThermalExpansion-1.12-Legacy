@@ -40,7 +40,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	static {
 		String category = "block.tweak";
-		SIZE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Resonant.Capacity", SIZE[4]), SIZE[4] / 8, SIZE[4] * 1000);
+		SIZE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Resonant.Capacity", SIZE[4]), SIZE[4] / 8, 1000000 * 1000);
 		SIZE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Reinforced.Capacity", SIZE[3]), SIZE[3] / 8, SIZE[4]);
 		SIZE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Hardened.Capacity", SIZE[2]), SIZE[2] / 8, SIZE[3]);
 		SIZE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cache.Basic.Capacity", SIZE[1]), SIZE[1] / 8, SIZE[2]);

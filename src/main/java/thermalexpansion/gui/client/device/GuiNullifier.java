@@ -1,45 +1,22 @@
 package thermalexpansion.gui.client.device;
 
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabTutorial;
-import cofh.util.StringHelper;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.device.TileNullifier;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.device.ContainerNullifier;
 
-public class GuiNullifier extends GuiBaseAdv {
+public class GuiNullifier extends GuiAugmentableBase {
 
-	static final String TEXTURE_PATH = TEProps.PATH_GUI_DEVICE + "Nullifier.png";
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEXTURE_PATH);
-	static final String INFO = "Sends all the things to /dev/null!\n\nIt is a horrible place, even fluid cannot escape.";
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DEVICE + "Nullifier.png");
 
-	TileNullifier myTile;
+	public GuiNullifier(InventoryPlayer inventory, TileEntity tile) {
 
-	public GuiNullifier(InventoryPlayer inventory, TileEntity theTile) {
+		super(new ContainerNullifier(inventory, tile), tile, inventory.player, TEXTURE);
 
-		super(new ContainerNullifier(inventory, theTile), TEXTURE);
-		myTile = (TileNullifier) theTile;
-		name = myTile.getInventoryName();
-		ySize = 148;
-	}
-
-	@Override
-	public void initGui() {
-
-		super.initGui();
-
-		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfiguration(this, myTile));
-		addTab(new TabInfo(this, INFO));
-		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfiguration() + "\n\n"));
+		generateInfo("tab.thermalexpansion.device.nullifier", 2);
 	}
 
 }

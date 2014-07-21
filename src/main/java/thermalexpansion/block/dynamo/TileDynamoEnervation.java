@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.network.CoFHPacket;
 import cofh.util.EnergyHelper;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -15,6 +16,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
@@ -26,6 +28,13 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	static final int TYPE = BlockDynamo.Types.ENERVATION.ordinal();
 
 	public static void initialize() {
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Enervation.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("block.tweak", "Dynamo.Enervation.BasePower", maxPower);
+		maxPower /= 10;
+		maxPower *= 10;
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.DynamoEnervation");
 	}
@@ -94,7 +103,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 				fuelRF += container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
 				currentFuelRF = redstoneRF;
 			} else {
-				energy = getEnergyValue(inventory[0]) * fuelMod / 100;
+				energy = getEnergyValue(inventory[0]) * fuelMod / FUEL_MOD;
 				fuelRF += energy;
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);

@@ -5,6 +5,7 @@ import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.util.FluidHelper;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -23,6 +24,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiTransposer;
 import thermalexpansion.gui.container.machine.ContainerTransposer;
@@ -43,8 +45,10 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Transposer.BasePower", 40), 10, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Transposer.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(40);
+		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}

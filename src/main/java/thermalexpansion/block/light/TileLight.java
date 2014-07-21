@@ -84,6 +84,8 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 		if (wasPowered != isPowered || oldPower != inputPower) {
 			sendUpdatePacket(Side.CLIENT);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		}
 	}
 
@@ -92,7 +94,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 		mode = (byte) (++mode % 6);
 		sendUpdatePacket(Side.CLIENT);
-		player.addChatMessage(new ChatComponentText(StringHelper.localize("message.thermalexpansion.light" + mode)));
+		player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
 		return true;
 	}
 
@@ -203,6 +205,23 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 		nbt.setByte("Signal", inputPower);
 	}
 
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (tag.hasKey("Color")) {
+			setColor(tag.getInteger("Color"));
+		}
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (modified) {
+			tag.setInteger("Color", color);
+		}
+	}
+
 	/* ITileInfo */
 	@Override
 	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
@@ -210,7 +229,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 		if (debug) {
 			return;
 		}
-		info.add(new ChatComponentText(StringHelper.localize("message.thermalexpansion.light." + mode)));
+		info.add(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
 	}
 
 }

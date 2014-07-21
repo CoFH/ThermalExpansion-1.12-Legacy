@@ -23,11 +23,11 @@ public class GuiStrongbox extends GuiBaseAdv {
 	String playerName;
 	int storageIndex;
 
-	public GuiStrongbox(InventoryPlayer inventory, TileEntity entity) {
+	public GuiStrongbox(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerStrongbox(inventory, entity));
+		super(new ContainerStrongbox(inventory, tile));
 
-		myTile = (TileStrongbox) entity;
+		myTile = (TileStrongbox) tile;
 		playerName = inventory.player.getCommandSenderName();
 		storageIndex = myTile.getStorageIndex();
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];

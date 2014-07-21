@@ -13,11 +13,11 @@ public class ContainerCharger extends ContainerTEBase {
 
 	TileCharger myTile;
 
-	public ContainerCharger(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerCharger(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileCharger) entity;
+		myTile = (TileCharger) tile;
 		addSlotToContainer(new SlotEnergy(myTile, 0, 35, 31));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 125, 31));
 	}

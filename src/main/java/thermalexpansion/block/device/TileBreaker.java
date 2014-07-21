@@ -28,24 +28,45 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.block.TileReconfigurable;
+import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiBreaker;
 import thermalexpansion.gui.container.ContainerTEBase;
 
-public class TileBreaker extends TileReconfigurable implements IFluidHandler {
+public class TileBreaker extends TileAugmentable implements IFluidHandler {
+
+	static final int TYPE = BlockDevice.Types.BREAKER.ordinal();
+	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
 
+		defaultSideConfig = new SideConfig();
+		defaultSideConfig.numGroup = 2;
+		defaultSideConfig.slotGroups = new int[][] { {}, {} };
+		defaultSideConfig.allowInsertion = new boolean[] { false, false };
+		defaultSideConfig.allowExtraction = new boolean[] { false, false };
+		defaultSideConfig.sideTex = new int[] { 0, 4 };
+		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
 	}
-
-	public static final int[] SIDE_TEX = new int[] { 0, 4 };
 
 	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
 
 	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+
+	public TileBreaker() {
+
+		sideConfig = defaultSideConfig;
+	}
+
+	@Override
+	public void setDefaultSides() {
+
+		sideCache = getDefaultSides();
+		sideCache[facing ^ 1] = 1;
+	}
 
 	@Override
 	public String getName() {
@@ -56,7 +77,7 @@ public class TileBreaker extends TileReconfigurable implements IFluidHandler {
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.BREAKER.ordinal();
+		return TYPE;
 	}
 
 	@Override
@@ -236,13 +257,6 @@ public class TileBreaker extends TileReconfigurable implements IFluidHandler {
 		return true;
 	}
 
-	/* IReconfigurableSides */
-	@Override
-	public int getNumConfig(int side) {
-
-		return 2;
-	}
-
 	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
@@ -251,8 +265,9 @@ public class TileBreaker extends TileReconfigurable implements IFluidHandler {
 			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
 					: IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, SIDE_TEX[sideCache[side]]);
+			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}
+
 }

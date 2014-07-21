@@ -47,7 +47,7 @@ public class TileCell extends TileReconfigurable {
 
 	static {
 		String category = "block.tweak";
-		STORAGE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Resonant.Storage", STORAGE[4]), STORAGE[4] / 10, STORAGE[4] * 40);
+		STORAGE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Resonant.Storage", STORAGE[4]), STORAGE[4] / 10, 1000000 * 1000);
 		STORAGE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Reinforced.Storage", STORAGE[3]), STORAGE[3] / 10, STORAGE[4]);
 		STORAGE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Hardened.Storage", STORAGE[2]), STORAGE[2] / 10, STORAGE[3]);
 		STORAGE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Basic.Storage", STORAGE[1]), STORAGE[1] / 10, STORAGE[2]);

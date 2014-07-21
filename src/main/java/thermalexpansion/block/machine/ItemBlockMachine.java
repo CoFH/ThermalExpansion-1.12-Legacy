@@ -11,8 +11,10 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
+import thermalexpansion.util.AugmentHelper;
 import thermalexpansion.util.ReconfigurableHelper;
 
 public class ItemBlockMachine extends ItemBlockBase {
@@ -24,6 +26,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
 		container.stackTagCompound.setByte("Level", (byte) 0);
+		AugmentHelper.writeAugments(container, BlockMachine.defaultAugments);
 
 		return container;
 	}
@@ -54,6 +57,19 @@ public class ItemBlockMachine extends ItemBlockBase {
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[stack.getItemDamage()] + ".name";
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+
+		switch (getLevel(stack)) {
+		case 3:
+			return EnumRarity.rare;
+		case 2:
+			return EnumRarity.uncommon;
+		default:
+			return EnumRarity.common;
+		}
 	}
 
 	@Override

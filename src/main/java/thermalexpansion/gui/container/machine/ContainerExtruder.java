@@ -13,11 +13,11 @@ public class ContainerExtruder extends ContainerTEBase {
 
 	TileExtruder myTile;
 
-	public ContainerExtruder(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerExtruder(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileExtruder) entity;
+		myTile = (TileExtruder) tile;
 		addSlotToContainer(new SlotRemoveOnly(myTile, 0, 80, 49));
 
 		/* Custom Inventory */

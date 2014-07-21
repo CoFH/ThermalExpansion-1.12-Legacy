@@ -144,8 +144,8 @@ info.thermalexpansion.capacitor.4=Must remain in hotbar.
 info.thermalexpansion.capacitor.potato=Clever! But not rechargeable.
 
 info.thermalexpansion.diagram.0=Use while sneaking to erase.
-info.thermalexpansion.diagram.1=Use on a compatible device to copy its settings.
-info.thermalexpansion.diagram.2=Use on a compatible device to transfer stored settings.
+info.thermalexpansion.diagram.1=Use on a device to copy its settings.
+info.thermalexpansion.diagram.2=Use on a device to transfer stored settings.
 
 info.thermalexpansion.dynamo.generate=Generates Energy (Redstone Flux).
 info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
@@ -354,7 +354,7 @@ tile.thermalexpansion.ender.tesseract.name=Tesseract
 tile.thermalexpansion.frame.machineBasic.name=Machine Frame (Basic)
 tile.thermalexpansion.frame.machineHardened.name=Machine Frame (Improved)
 tile.thermalexpansion.frame.machineReinforced.name=Machine Frame (Advanced)
-tile.thermalexpansion.frame.machineEnderium.name=Machine Frame (Enderium)
+tile.thermalexpansion.frame.machineResonant.name=Machine Frame (Enderium)
 tile.thermalexpansion.frame.cellBasic.name=Leadstone Energy Cell Frame
 tile.thermalexpansion.frame.cellReinforcedEmpty.name=Redstone Energy Cell Frame (Empty)
 tile.thermalexpansion.frame.cellReinforcedFull.name=Redstone Energy Cell Frame (Full)

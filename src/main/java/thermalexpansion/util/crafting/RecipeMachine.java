@@ -1,4 +1,4 @@
-package thermalexpansion.util;
+package thermalexpansion.util.crafting;
 
 import cofh.util.ItemHelper;
 
@@ -51,7 +51,7 @@ public class RecipeMachine extends ShapedOreRecipe {
 		if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineReinforced)) {
 			return 2;
 		}
-		if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineEnderium)) {
+		if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineResonant)) {
 			return 3;
 		}
 		return 0;

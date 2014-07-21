@@ -9,10 +9,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerFurnace;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiFurnace extends GuiMachineBase {
+public class GuiFurnace extends GuiAugmentableBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Furnace.png");
 
@@ -24,6 +25,8 @@ public class GuiFurnace extends GuiMachineBase {
 	public GuiFurnace(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerFurnace(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.furnace", 3);
 	}
 
 	@Override

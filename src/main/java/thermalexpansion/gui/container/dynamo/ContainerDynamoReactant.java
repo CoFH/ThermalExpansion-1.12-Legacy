@@ -14,11 +14,11 @@ public class ContainerDynamoReactant extends ContainerTEBase implements ISlotVal
 
 	TileDynamoReactant myTile;
 
-	public ContainerDynamoReactant(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerDynamoReactant(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileDynamoReactant) entity;
+		myTile = (TileDynamoReactant) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 44, 35));
 	}
 

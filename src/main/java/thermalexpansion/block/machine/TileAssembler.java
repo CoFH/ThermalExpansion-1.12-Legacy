@@ -3,6 +3,7 @@ package thermalexpansion.block.machine;
 import cofh.network.CoFHPacket;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cofh.util.inventory.InventoryCraftingFalse;
@@ -21,6 +22,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiAssembler;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
@@ -41,8 +43,10 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Assembler.BasePower", 20), 10, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Assembler.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
 	}

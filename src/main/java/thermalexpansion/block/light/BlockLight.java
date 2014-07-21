@@ -132,7 +132,7 @@ public class BlockLight extends BlockTEBase {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		IconRegistry.addIcon("Light0", "thermalexpansion:light/Illuminator_Frame", ir);
-		IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Frame", ir);
+		IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Effect", ir);
 		IconRegistry.addIcon("LightEffect", "thermalexpansion:light/Illuminator_Effect", ir);
 		IconRegistry.addIcon("LightHalo", "thermalexpansion:light/Lamp_Halo", ir);
 	}

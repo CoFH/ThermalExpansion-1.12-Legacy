@@ -50,6 +50,10 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
 
+		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
+		if (myTile.enableSecurity() && myTile.isSecured()) {
+			addTab(new TabSecurity(this, myTile, playerName));
+		}
 		redstoneTab = addTab(new TabRedstone(this, myTile));
 
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
@@ -57,11 +61,6 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		}
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo")));
 		addTab(new TabTutorial(this, myTutorial));
-
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
-		if (myTile.enableSecurity() && myTile.isSecured()) {
-			addTab(new TabSecurity(this, myTile, playerName));
-		}
 	}
 
 	@Override

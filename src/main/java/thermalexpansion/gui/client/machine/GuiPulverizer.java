@@ -9,10 +9,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerPulverizer;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiPulverizer extends GuiMachineBase {
+public class GuiPulverizer extends GuiAugmentableBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Pulverizer.png");
 
@@ -25,6 +26,8 @@ public class GuiPulverizer extends GuiMachineBase {
 	public GuiPulverizer(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerPulverizer(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.pulverizer", 3);
 	}
 
 	@Override

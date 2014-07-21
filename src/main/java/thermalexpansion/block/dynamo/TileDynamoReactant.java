@@ -2,6 +2,7 @@ package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -9,7 +10,6 @@ import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
@@ -33,6 +34,13 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	static final int TYPE = BlockDynamo.Types.REACTANT.ordinal();
 
 	public static void initialize() {
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Reactant.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("block.tweak", "Dynamo.Reactant.BasePower", maxPower);
+		maxPower /= 10;
+		maxPower *= 10;
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
@@ -56,7 +64,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int reactantRF;
 	int currentReactantRF;
-	int reactantMod = 100;
+	int reactantMod = FUEL_MOD;
 
 	public TileDynamoReactant() {
 
@@ -97,7 +105,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		if (reactant == null) {
 			return 0;
 		}
-		return 100;
+		return FUEL_MOD;
 	}
 
 	public static boolean isValidFuel(FluidStack stack) {
@@ -107,7 +115,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy <= 10000) {
+		if (fluid == null || energy < 10000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);
@@ -138,11 +146,11 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		int energy;
 
 		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(tank.getFluid()) * reactantMod / 100 * fuelMod / 100;
+			fuelRF = getFuelEnergy(tank.getFluid()) * reactantMod / FUEL_MOD * fuelMod / FUEL_MOD;
 			tank.drain(50, true);
 		}
 		if (reactantRF <= 0) {
-			energy = getReactantEnergy(inventory[0]) * fuelMod / 100;
+			energy = getReactantEnergy(inventory[0]) * fuelMod / FUEL_MOD;
 			reactantMod = getReactantMod(inventory[0]);
 			reactantRF += energy;
 			currentReactantRF = energy;
@@ -158,21 +166,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	public IIcon getActiveIcon() {
 
 		return renderFluid.getFluid().getIcon();
-	}
-
-	/* ITileInfoPacketHandler */
-	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
-
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
-		case GUI:
-			tank.setFluid(payload.getFluidStack());
-			energyStorage.setEnergyStored(payload.getInt());
-			reactantRF = payload.getInt();
-			currentReactantRF = payload.getInt();
-			return;
-		default:
-		}
 	}
 
 	/* GUI METHODS */
@@ -295,7 +288,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct) {
 			return null;
 		}
 		if (isValidFuel(resource)) {
@@ -307,7 +300,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == facing && !augmentCoilDuct) {
+		if (!augmentCoilDuct) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

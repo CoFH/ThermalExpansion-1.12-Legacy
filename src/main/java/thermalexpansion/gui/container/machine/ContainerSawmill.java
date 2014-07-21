@@ -17,11 +17,11 @@ public class ContainerSawmill extends ContainerTEBase implements ISlotValidator 
 
 	TileSawmill myTile;
 
-	public ContainerSawmill(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerSawmill(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileSawmill) entity;
+		myTile = (TileSawmill) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 134, 26));

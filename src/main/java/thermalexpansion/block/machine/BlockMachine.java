@@ -4,6 +4,7 @@ import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -34,9 +35,10 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.item.TEAugments;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.util.RecipeMachine;
 import thermalexpansion.util.ReconfigurableHelper;
+import thermalexpansion.util.crafting.RecipeMachine;
 import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockMachine extends BlockTEBase {
@@ -253,6 +255,15 @@ public class BlockMachine extends BlockTEBase {
 		TileAssembler.initialize();
 		TileCharger.initialize();
 
+		if (defaultAutoTransfer) {
+			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
+		}
+		if (defaultRedstoneControl) {
+			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
+		}
+		if (defaultReconfigSides) {
+			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
+		}
 		furnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.FURNACE.ordinal()));
 		pulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.PULVERIZER.ordinal()));
 		sawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.SAWMILL.ordinal()));
@@ -291,7 +302,7 @@ public class BlockMachine extends BlockTEBase {
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
 
-		String prefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
+		String prefix = ThermalExpansion.config.get(category, "Machines.UseIngots", false, comment) ? "ingot" : "gear";
 		ArrayList<ItemStack> copperPartList = OreDictionary.getOres(prefix + "Copper");
 
 		for (int i = 0; i < copperPartList.size(); i++) {
@@ -299,7 +310,7 @@ public class BlockMachine extends BlockTEBase {
 		}
 		if (enable[Types.FURNACE.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Items.redstone, 'Y', Blocks.brick_block }));
+					TEItems.powerCoilGold, 'X', "dustRedstone", 'Y', Blocks.brick_block }));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
@@ -341,6 +352,18 @@ public class BlockMachine extends BlockTEBase {
 			GameRegistry.addRecipe(new RecipeMachine(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
 		}
+		TECraftingHandler.addMachineUpgradeRecipes(furnace);
+		TECraftingHandler.addMachineUpgradeRecipes(pulverizer);
+		TECraftingHandler.addMachineUpgradeRecipes(sawmill);
+		TECraftingHandler.addMachineUpgradeRecipes(smelter);
+		TECraftingHandler.addMachineUpgradeRecipes(crucible);
+		TECraftingHandler.addMachineUpgradeRecipes(transposer);
+		TECraftingHandler.addMachineUpgradeRecipes(precipitator);
+		TECraftingHandler.addMachineUpgradeRecipes(extruder);
+		TECraftingHandler.addMachineUpgradeRecipes(accumulator);
+		TECraftingHandler.addMachineUpgradeRecipes(assembler);
+		TECraftingHandler.addMachineUpgradeRecipes(charger);
+
 		TECraftingHandler.addSecureRecipe(furnace);
 		TECraftingHandler.addSecureRecipe(pulverizer);
 		TECraftingHandler.addSecureRecipe(sawmill);
@@ -363,6 +386,11 @@ public class BlockMachine extends BlockTEBase {
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
+	public static ItemStack[] defaultAugments = new ItemStack[3];
+
+	public static boolean defaultAutoTransfer = true;
+	public static boolean defaultRedstoneControl = true;
+	public static boolean defaultReconfigSides = true;
 
 	static {
 		String category = "block.feature";
@@ -377,6 +405,11 @@ public class BlockMachine extends BlockTEBase {
 		enable[Types.ACCUMULATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Accumulator", true);
 		enable[Types.ASSEMBLER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Assembler", true);
 		enable[Types.CHARGER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Charger", true);
+
+		category = "block.tweak";
+		defaultAutoTransfer = ThermalExpansion.config.get(category, "Machines.DefaultAugments.AutoTransfer", true);
+		defaultRedstoneControl = ThermalExpansion.config.get(category, "Machines.DefaultAugments.RedstoneControl", true);
+		defaultReconfigSides = ThermalExpansion.config.get(category, "Machines.DefaultAugments.ReconfigSides", true);
 	}
 
 	public static ItemStack furnace;

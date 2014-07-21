@@ -2,6 +2,8 @@ package thermalexpansion.block.device;
 
 import cofh.api.tileentity.ISidedTexture;
 import cofh.render.IconRegistry;
+import cofh.util.BlockHelper;
+import cofh.util.ItemHelper;
 import cofh.util.RecipeUpgrade;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,9 +32,12 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
+import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.block.strongbox.BlockStrongbox;
+import thermalexpansion.item.TEAugments;
 import thermalexpansion.item.TEEquipment;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.util.ReconfigurableHelper;
 import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockDevice extends BlockTEBase {
@@ -70,9 +75,12 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
+		if (enable[0]) {
+			list.add(new ItemStack(item, 1, 0));
+		}
+		for (int i = 1; i < Types.values().length; i++) {
 			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
+				list.add(ItemBlockDevice.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
 	}
@@ -90,6 +98,23 @@ public class BlockDevice extends BlockTEBase {
 					tile.selectedSchematic = stack.stackTagCompound.getByte("Mode");
 					tile.readInventoryFromNBT(stack.stackTagCompound);
 				}
+			} else if (aTile instanceof TileAugmentable) {
+				TileAugmentable tile = (TileAugmentable) world.getTileEntity(x, y, z);
+
+				tile.readAugmentsFromNBT(stack.stackTagCompound);
+				tile.installAugments();
+				tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
+
+				int facing = BlockHelper.determineXZPlaceFacing(living);
+				int storedFacing = ReconfigurableHelper.getFacing(stack);
+				byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
+
+				tile.sideCache[0] = sideCache[0];
+				tile.sideCache[1] = sideCache[1];
+				tile.sideCache[facing] = 0;
+				tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
+				tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
+				tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 			}
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
@@ -187,6 +212,16 @@ public class BlockDevice extends BlockTEBase {
 			tag.setByte("Mode", (byte) theTile.selectedSchematic);
 
 			theTile.writeInventoryToNBT(tag);
+		} else if (tile instanceof TileAugmentable) {
+			TileAugmentable theTile = (TileAugmentable) world.getTileEntity(x, y, z);
+
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			ReconfigurableHelper.setItemStackTagReconfig(tag, theTile);
+			tag.setInteger("Energy", theTile.getEnergyStored(ForgeDirection.UNKNOWN));
+
+			theTile.writeAugmentsToNBT(tag);
 		}
 		return tag;
 	}
@@ -209,11 +244,21 @@ public class BlockDevice extends BlockTEBase {
 	public boolean initialize() {
 
 		TileWorkbench.initialize();
+		// TileLexicon.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		// TilePump.initialize();
 		TileNullifier.initialize();
 
+		if (defaultAutoTransfer) {
+			// defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
+		}
+		if (defaultRedstoneControl) {
+			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
+		}
+		if (defaultReconfigSides) {
+			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
+		}
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
 		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
@@ -222,8 +267,10 @@ public class BlockDevice extends BlockTEBase {
 		nullifier = new ItemStack(this, 1, Types.NULLIFIER.ordinal());
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
+		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
 		GameRegistry.registerCustomItemStack("activator", activator);
 		GameRegistry.registerCustomItemStack("breaker", breaker);
+		// GameRegistry.registerCustomItemStack("pump", pump);
 		GameRegistry.registerCustomItemStack("nullifier", nullifier);
 
 		return true;
@@ -235,13 +282,8 @@ public class BlockDevice extends BlockTEBase {
 		String category = "tweak.recipe";
 		boolean breakerUseDiamondPickaxe = ThermalExpansion.config.get(category, "Breaker.UseDiamondPickaxe", false);
 
-		ItemStack pickaxe = null;
+		ItemStack pickaxe = breakerUseDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
 
-		if (breakerUseDiamondPickaxe) {
-			pickaxe = new ItemStack(Items.diamond_pickaxe);
-		} else {
-			pickaxe = TEEquipment.toolInvarPickaxe;
-		}
 		if (enable[Types.WORKBENCH.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
 					BlockStrongbox.strongboxBasic, 'X', Items.paper }));
@@ -267,6 +309,12 @@ public class BlockDevice extends BlockTEBase {
 					TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
 		TECraftingHandler.addSecureRecipe(workbench);
+		// TECraftingHandler.addSecureRecipe(lexicon);
+		// TECraftingHandler.addSecureRecipe(activator);
+		TECraftingHandler.addSecureRecipe(breaker);
+		// TECraftingHandler.addSecureRecipe(pump);
+		TECraftingHandler.addSecureRecipe(nullifier);
+
 		return true;
 	}
 
@@ -276,6 +324,11 @@ public class BlockDevice extends BlockTEBase {
 
 	public static String[] NAMES = { "workbench", "lexicon", "activator", "breaker", "pump", "nullifier" };
 	public static boolean[] enable = new boolean[Types.values().length];
+	public static ItemStack[] defaultAugments = new ItemStack[3];
+
+	public static boolean defaultAutoTransfer = true;
+	public static boolean defaultRedstoneControl = true;
+	public static boolean defaultReconfigSides = true;
 
 	static {
 		String category = "block.feature";

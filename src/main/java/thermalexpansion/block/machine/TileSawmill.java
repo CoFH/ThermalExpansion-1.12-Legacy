@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -8,6 +9,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.machine.GuiSawmill;
 import thermalexpansion.gui.container.machine.ContainerSawmill;
 import thermalexpansion.util.crafting.SawmillManager;
@@ -27,8 +29,10 @@ public class TileSawmill extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Sawmill.BasePower", 20), 10, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Sawmill.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
 	}

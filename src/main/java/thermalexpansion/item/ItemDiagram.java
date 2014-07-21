@@ -63,6 +63,16 @@ public class ItemDiagram extends ItemBase {
 	}
 
 	@Override
+	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+
+		if (player.isSneaking()) {
+			stack.setTagCompound(null);
+		}
+		player.swingItem();
+		return stack;
+	}
+
+	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
 		return true;
@@ -73,9 +83,7 @@ public class ItemDiagram extends ItemBase {
 
 		if (player.isSneaking()) {
 			stack.setTagCompound(null);
-			return true;
-		}
-		if (ServerHelper.isServerWorld(world)) {
+		} else if (ServerHelper.isServerWorld(world)) {
 			TileEntity tile = world.getTileEntity(x, y, z);
 
 			if (tile instanceof IPortableData) {

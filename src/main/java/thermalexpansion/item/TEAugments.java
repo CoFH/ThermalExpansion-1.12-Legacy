@@ -1,6 +1,11 @@
 package thermalexpansion.item;
 
+import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
+
+import thermalfoundation.item.TFItems;
 
 public class TEAugments {
 
@@ -19,43 +24,94 @@ public class TEAugments {
 		generalReconfigSides = itemAugment.addItem(16, GENERAL_RECONFIG_SIDES);
 		generalRedstoneControl = itemAugment.addItem(32, GENERAL_REDSTONE_CONTROL);
 
-		itemAugment.addAugmentInfo(0, GENERAL_AUTO_TRANSFER, 1);
-		itemAugment.addAugmentInfo(16, GENERAL_RECONFIG_SIDES, 1);
-		itemAugment.addAugmentInfo(32, GENERAL_REDSTONE_CONTROL, 1);
+		itemAugment.addAugmentData(0, GENERAL_AUTO_TRANSFER, 1);
+		itemAugment.addAugmentData(16, GENERAL_RECONFIG_SIDES, 1);
+		itemAugment.addAugmentData(32, GENERAL_REDSTONE_CONTROL, 1);
 
 		dynamoCoilDuct = itemAugment.addItem(48, DYNAMO_COIL_DUCT);
-		itemAugment.addAugmentInfo(48, DYNAMO_COIL_DUCT, 1);
+		itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);
 
 		for (int i = 0; i < NUM_DYNAMO_EFFICIENCY; i++) {
 			dynamoEfficiency[i] = itemAugment.addItem(64 + i, DYNAMO_EFFICIENCY + i);
-			itemAugment.addAugmentInfo(64 + i, DYNAMO_EFFICIENCY, 1 + i);
+			itemAugment.addAugmentData(64 + i, DYNAMO_EFFICIENCY, 1 + i);
 		}
 		for (int i = 0; i < NUM_DYNAMO_OUTPUT; i++) {
 			dynamoOutput[i] = itemAugment.addItem(80 + i, DYNAMO_OUTPUT + i);
-			itemAugment.addAugmentInfo(80 + i, DYNAMO_OUTPUT, 1 + i);
+			itemAugment.addAugmentData(80 + i, DYNAMO_OUTPUT, 1 + i);
 		}
 		dynamoThrottle = itemAugment.addItem(96, DYNAMO_THROTTLE);
-		itemAugment.addAugmentInfo(96, DYNAMO_THROTTLE, 1);
+		itemAugment.addAugmentData(96, DYNAMO_THROTTLE, 1);
 
 		for (int i = 0; i < NUM_MACHINE_SECONDARY; i++) {
 			machineSecondary[i] = itemAugment.addItem(112 + i, MACHINE_SECONDARY + i);
-			itemAugment.addAugmentInfo(112 + i, MACHINE_SECONDARY, 1 + i);
+			itemAugment.addAugmentData(112 + i, MACHINE_SECONDARY, 1 + i);
 		}
 		for (int i = 0; i < NUM_MACHINE_SPEED; i++) {
-			dynamoOutput[i] = itemAugment.addItem(128 + i, MACHINE_SPEED + i);
-			itemAugment.addAugmentInfo(128 + i, MACHINE_SPEED, 1 + i);
+			machineSpeed[i] = itemAugment.addItem(128 + i, MACHINE_SPEED + i);
+			itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i);
 		}
 	}
 
 	public static void postInit() {
 
+		/* GENERAL */
+		GameRegistry.addRecipe(new ShapedOreRecipe(generalAutoTransfer, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', TEItems.pneumaticServo }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(generalReconfigSides, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', "ingotGold" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(generalRedstoneControl, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', "dustRedstone" }));
+
+		/* DYNAMO */
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCoilDuct, new Object[] { " I ", "IXI", " I ", 'I', "nuggetLead", 'X', "ingotCopper" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoThrottle, new Object[] { " I ", "IXI", "YIY", 'I', "nuggetLead", 'X', "ingotElectrum", 'Y',
+				"dustRedstone" }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotLead", 'X', TEItems.powerCoilSilver,
+				'Y', "ingotTin", 'Y', "dustRedstone" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotLead", 'I', "ingotElectrum", 'X',
+				TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotElectrum", 'X', TEItems.powerCoilSilver,
+				'Y', TFItems.dustCryotheum }));
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
+				TEItems.powerCoilSilver, 'Y', "dustRedstone" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
+				TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotSilver", 'X', TEItems.powerCoilSilver, 'Y',
+				TFItems.dustCryotheum }));
+
+		/* ENDER */
+
+		/* ENERGY */
+
+		/* MACHINE */
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotLead", 'X', TEItems.powerCoilSilver,
+		// 'Y', "ingotTin", 'Y', "dustRedstone" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotLead", 'I', "ingotElectrum", 'X',
+		// TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotElectrum", 'X',
+		// TEItems.powerCoilSilver,
+		// 'Y', TFItems.dustCryotheum }));
+		//
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
+		// TEItems.powerCoilSilver, 'Y', "dustRedstone" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
+		// TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotSilver", 'X', TEItems.powerCoilSilver,
+		// 'Y',
+		// TFItems.dustCryotheum }));
 	}
 
 	public static byte NUM_DYNAMO_EFFICIENCY = 3;
 	public static byte NUM_DYNAMO_OUTPUT = 3;
 
+	public static byte NUM_ENERGY_STORAGE = 3;
+
 	public static byte NUM_MACHINE_SECONDARY = 3;
 	public static byte NUM_MACHINE_SPEED = 3;
+
+	public static final int[] DYNAMO_EFFICIENCY_MOD = { 0, 100, 250, 500 };
+	public static final int[] DYNAMO_OUTPUT_MOD = { 1, 2, 4, 8 };
+
+	public static final int[] ENERGY_STORAGE_MOD = { 1, 2, 4, 8 };
 
 	public static final int[] MACHINE_SPEED_PROCESS_MOD = { 1, 2, 4, 8 };
 	public static final int[] MACHINE_SPEED_ENERGY_MOD = { 1, 3, 8, 20 };
@@ -87,6 +143,8 @@ public class TEAugments {
 	public static String ENDER_ENERGY = "enderEnergy";
 	public static String ENDER_FLUID = "enderFluid";
 	public static String ENDER_ITEM = "enderItem";
+
+	public static String ENERGY_STORAGE = "energyStorage";
 
 	public static String GENERAL_AUTO_TRANSFER = "generalAutoTransfer";
 	public static String GENERAL_RECONFIG_SIDES = "generalReconfigSides";

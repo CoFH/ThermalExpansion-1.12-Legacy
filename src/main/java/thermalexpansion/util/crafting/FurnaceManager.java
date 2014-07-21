@@ -6,10 +6,13 @@ import cofh.util.oredict.OreDictionaryArbiter;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.set.hash.THashSet;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -26,8 +29,19 @@ public class FurnaceManager {
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
+	private static Set<Block> handledBlocks = new THashSet();
+
 	static {
 		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Furnace.AllowRecipeOverwrite", false);
+
+		handledBlocks.add(Blocks.gold_ore);
+		handledBlocks.add(Blocks.iron_ore);
+		handledBlocks.add(Blocks.coal_ore);
+		handledBlocks.add(Blocks.diamond_ore);
+		handledBlocks.add(Blocks.emerald_ore);
+		handledBlocks.add(Blocks.lapis_ore);
+		handledBlocks.add(Blocks.redstone_ore);
+		handledBlocks.add(Blocks.quartz_ore);
 	}
 
 	public static RecipeFurnace getRecipe(ItemStack input) {
@@ -73,15 +87,26 @@ public class FurnaceManager {
 
 		int energy = DEFAULT_ENERGY;
 
-		addOreDictRecipe(energy, "oreCopper", TFItems.ingotCopper);
-		addOreDictRecipe(energy, "oreTin", TFItems.ingotTin);
-		addOreDictRecipe(energy, "oreSilver", TFItems.ingotSilver);
-		addOreDictRecipe(energy, "oreLead", TFItems.ingotLead);
-		addOreDictRecipe(energy, "oreNickel", TFItems.ingotNickel);
-		addOreDictRecipe(energy, "orePlatinum", TFItems.ingotPlatinum);
+		addOreDictRecipe("oreIron", TFItems.ingotIron);
+		addOreDictRecipe("oreGold", TFItems.ingotGold);
+		addOreDictRecipe("oreCopper", TFItems.ingotCopper);
+		addOreDictRecipe("oreTin", TFItems.ingotTin);
+		addOreDictRecipe("oreSilver", TFItems.ingotSilver);
+		addOreDictRecipe("oreLead", TFItems.ingotLead);
+		addOreDictRecipe("oreNickel", TFItems.ingotNickel);
+		addOreDictRecipe("orePlatinum", TFItems.ingotPlatinum);
+
+		addOreDictRecipe("oreCoal", new ItemStack(Items.coal, 1, 0));
+		addOreDictRecipe("oreDiamond", new ItemStack(Items.diamond, 1, 0));
+		addOreDictRecipe("oreEmerald", new ItemStack(Items.emerald, 1, 0));
+		addOreDictRecipe("oreLapis", new ItemStack(Items.dye, 6, 4));
+		addOreDictRecipe("oreRedstone", new ItemStack(Items.redstone, 4, 0));
+		addOreDictRecipe("oreQuartz", new ItemStack(Items.quartz, 1, 0));
 
 		energy = DEFAULT_ENERGY * 10 / 16;
 
+		addOreDictRecipe(energy, "dustIron", TFItems.ingotIron);
+		addOreDictRecipe(energy, "dustGold", TFItems.ingotGold);
 		addOreDictRecipe(energy, "dustCopper", TFItems.ingotCopper);
 		addOreDictRecipe(energy, "dustTin", TFItems.ingotTin);
 		addOreDictRecipe(energy, "dustSilver", TFItems.ingotSilver);
@@ -95,11 +120,13 @@ public class FurnaceManager {
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;
 
+		energy = DEFAULT_ENERGY;
+
 		for (ItemStack key : smeltingList.keySet()) {
-
-			energy = DEFAULT_ENERGY;
-
 			if (recipeExists(key)) {
+				continue;
+			}
+			if (handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
 				continue;
 			}
 			output = smeltingList.get(key);

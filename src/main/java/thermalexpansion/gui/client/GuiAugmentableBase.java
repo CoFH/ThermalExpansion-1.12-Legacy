@@ -1,4 +1,4 @@
-package thermalexpansion.gui.client.machine;
+package thermalexpansion.gui.client;
 
 import cofh.gui.GuiBaseAdv;
 import cofh.gui.container.IAugmentableContainer;
@@ -18,12 +18,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.block.machine.BlockMachine;
-import thermalexpansion.block.machine.TileMachineBase;
+import thermalexpansion.block.TileAugmentable;
 
-public abstract class GuiMachineBase extends GuiBaseAdv {
+public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
-	protected TileMachineBase myTile;
+	protected TileAugmentable myTile;
 	protected String playerName;
 
 	public String myInfo = "";
@@ -32,20 +31,14 @@ public abstract class GuiMachineBase extends GuiBaseAdv {
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
 
-	public GuiMachineBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
+	public GuiAugmentableBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
 		super(container, texture);
 
-		myTile = (TileMachineBase) tile;
+		myTile = (TileAugmentable) tile;
 		name = myTile.getInventoryName();
 		playerName = player.getCommandSenderName();
 
-		String machineName = BlockMachine.NAMES[myTile.getType()];
-
-		myInfo = StringHelper.localize("tab.thermalexpansion.machine." + machineName + "." + 0);
-		for (int i = 1; i < 3; i++) {
-			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.machine." + machineName + "." + i);
-		}
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
 		}
@@ -57,6 +50,14 @@ public abstract class GuiMachineBase extends GuiBaseAdv {
 		}
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
+		}
+	}
+
+	protected void generateInfo(String tileString, int lines) {
+
+		myInfo = StringHelper.localize(tileString + "." + 0);
+		for (int i = 1; i < lines; i++) {
+			myInfo += "\n\n" + StringHelper.localize(tileString + "." + i);
 		}
 	}
 
@@ -75,7 +76,9 @@ public abstract class GuiMachineBase extends GuiBaseAdv {
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
 			addTab(new TabEnergy(this, myTile, false));
 		}
-		addTab(new TabInfo(this, myInfo));
+		if (!myInfo.isEmpty()) {
+			addTab(new TabInfo(this, myInfo));
+		}
 		addTab(new TabTutorial(this, myTutorial));
 	}
 

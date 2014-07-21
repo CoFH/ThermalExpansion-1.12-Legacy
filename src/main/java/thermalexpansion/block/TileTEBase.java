@@ -243,6 +243,19 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 			maxEnergy *= scale;
 			return setParams(maxEnergy / 4800, maxEnergy / 1200, maxEnergy);
 		}
+
+		public boolean setParamsDefault(int maxPower) {
+
+			this.maxPower = maxPower;
+			minPower = maxPower / 10;
+			maxEnergy = maxPower * 500;
+			minPowerLevel = 1 * maxEnergy / 10;
+			maxPowerLevel = 9 * maxEnergy / 10;
+			energyRamp = maxPowerLevel / maxPower;
+
+			return true;
+		}
+
 	}
 
 	/* Side Config Class */

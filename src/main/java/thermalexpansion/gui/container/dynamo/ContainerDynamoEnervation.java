@@ -14,11 +14,11 @@ public class ContainerDynamoEnervation extends ContainerTEBase implements ISlotV
 
 	TileDynamoEnervation myTile;
 
-	public ContainerDynamoEnervation(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerDynamoEnervation(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileDynamoEnervation) entity;
+		myTile = (TileDynamoEnervation) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 44, 35));
 	}
 

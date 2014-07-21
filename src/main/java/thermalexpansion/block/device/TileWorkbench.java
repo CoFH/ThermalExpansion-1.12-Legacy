@@ -114,7 +114,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 								}
 								if (containerStack != null
 										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
-												invCopy, containerStack, 2))) {
+												invCopy, containerStack, 3))) {
 									if (invCopy[j].stackSize <= 0) {
 										invCopy[j] = containerStack;
 										if (containerStack.stackSize <= 0) {

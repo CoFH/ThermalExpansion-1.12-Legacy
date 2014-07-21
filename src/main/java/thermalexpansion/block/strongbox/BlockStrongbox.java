@@ -45,6 +45,9 @@ public class BlockStrongbox extends BlockTEBase {
 			return null;
 		}
 		if (metadata == Types.CREATIVE.ordinal()) {
+			if (!enable[Types.CREATIVE.ordinal()]) {
+				return null;
+			}
 			return new TileStrongboxCreative(metadata);
 		}
 		return new TileStrongbox(metadata);

@@ -6,9 +6,11 @@ import cofh.util.StringHelper;
 
 import gnu.trove.map.hash.THashMap;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import thermalexpansion.ThermalExpansion;
@@ -34,7 +36,25 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		return StringHelper.localize("info.thermalexpansion.augment") + ": " + StringHelper.localize(getUnlocalizedName(stack) + ".name");
 	}
 
-	public void addAugmentInfo(int number, String augmentType, int augmentLevel) {
+	@Override
+	public boolean isFull3D() {
+
+		return true;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+
+	}
+
+	public void addAugmentData(int number, String augmentType, int augmentLevel) {
 
 		if (!augmentMap.containsKey(Integer.valueOf(number))) {
 			augmentMap.put(Integer.valueOf(number), new AugmentEntry());

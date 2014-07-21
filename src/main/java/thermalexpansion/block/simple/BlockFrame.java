@@ -30,7 +30,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
@@ -234,7 +233,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		frameMachineBasic = new ItemStack(this, 1, Types.MACHINE_BASIC.ordinal());
 		frameMachineHardened = new ItemStack(this, 1, Types.MACHINE_HARDENED.ordinal());
 		frameMachineReinforced = new ItemStack(this, 1, Types.MACHINE_REINFORCED.ordinal());
-		frameMachineEnderium = new ItemStack(this, 1, Types.MACHINE_ENDERIUM.ordinal());
+		frameMachineResonant = new ItemStack(this, 1, Types.MACHINE_RESONANT.ordinal());
 		frameCellBasic = new ItemStack(this, 1, Types.CELL_BASIC.ordinal());
 		frameCellReinforcedEmpty = new ItemStack(this, 1, Types.CELL_REINFORCED_EMPTY.ordinal());
 		frameCellReinforcedFull = new ItemStack(this, 1, Types.CELL_REINFORCED_FULL.ordinal());
@@ -244,7 +243,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineReinforced);
-		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineEnderium);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineResonant);
 
 		return true;
 	}
@@ -256,19 +255,21 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 				.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
 
 		/* Direct Recipes */
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
-				"gearElectrum" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
-				'X', "gearSignalum" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineEnderium, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened", 'X',
-				"gearEnderium" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
+		// "gearElectrum" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// 'X', "gearSignalum" }));
+		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineResonant, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// 'X',
+		// "gearEnderium" }));
 
 		/* Tiered Recipes */
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "I I", " X ", "IGI", 'I', "ingotInvar", 'G', "gearElectrum", 'X',
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X',
 				frameMachineBasic }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "I I", " X ", "IGI", 'I', "blockGlassHardened", 'G', "gearSignalum",
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum",
 				'X', frameMachineHardened }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(frameMachineEnderium, new Object[] { "gearEnderium", frameMachineReinforced }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineResonant, new Object[] { "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X',
+				frameMachineReinforced }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
 				Blocks.redstone_block }));
@@ -286,16 +287,16 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	}
 
 	public static enum Types {
-		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_ENDERIUM, CELL_BASIC, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL
+		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL
 	}
 
-	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineEnderium", "cellBasic", "cellReinforcedEmpty",
+	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellReinforcedEmpty",
 			"cellReinforcedFull", "tesseractEmpty", "tesseractFull" };
 
 	public static ItemStack frameMachineBasic;
 	public static ItemStack frameMachineHardened;
 	public static ItemStack frameMachineReinforced;
-	public static ItemStack frameMachineEnderium;
+	public static ItemStack frameMachineResonant;
 	public static ItemStack frameCellBasic;
 	public static ItemStack frameCellReinforcedEmpty;
 	public static ItemStack frameCellReinforcedFull;

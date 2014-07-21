@@ -16,11 +16,11 @@ public class ContainerCrucible extends ContainerTEBase implements ISlotValidator
 
 	TileCrucible myTile;
 
-	public ContainerCrucible(InventoryPlayer inventory, TileEntity entity) {
+	public ContainerCrucible(InventoryPlayer inventory, TileEntity tile) {
 
-		super(inventory, entity);
+		super(inventory, tile);
 
-		myTile = (TileCrucible) entity;
+		myTile = (TileCrucible) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}

@@ -55,6 +55,9 @@ public class BlockCell extends BlockTEBase {
 			return null;
 		}
 		if (metadata == Types.CREATIVE.ordinal()) {
+			if (!enable[Types.CREATIVE.ordinal()]) {
+				return null;
+			}
 			return new TileCellCreative(metadata);
 		}
 		return new TileCell(metadata);

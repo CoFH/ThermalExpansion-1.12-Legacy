@@ -8,10 +8,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerSmelter;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiSmelter extends GuiMachineBase {
+public class GuiSmelter extends GuiAugmentableBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Smelter.png");
 
@@ -26,6 +27,8 @@ public class GuiSmelter extends GuiMachineBase {
 	public GuiSmelter(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerSmelter(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.smelter", 3);
 	}
 
 	@Override

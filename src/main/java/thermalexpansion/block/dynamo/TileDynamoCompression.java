@@ -1,6 +1,7 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.network.CoFHPacket;
+import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import thermalexpansion.gui.container.ContainerTEBase;
 
@@ -28,6 +30,13 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	static final int TYPE = BlockDynamo.Types.COMPRESSION.ordinal();
 
 	public static void initialize() {
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Compression.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("block.tweak", "Dynamo.Compression.BasePower", maxPower);
+		maxPower /= 10;
+		maxPower *= 10;
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
@@ -63,7 +72,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 	public static boolean registerCoolant(Fluid fluid, int cooling) {
 
-		if (fluid == null || cooling <= 10000) {
+		if (fluid == null || cooling < 10000) {
 			return false;
 		}
 		coolants.put(fluid, cooling / 20);
@@ -72,7 +81,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy <= 10000) {
+		if (fluid == null || energy < 10000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);
@@ -101,11 +110,11 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	protected void generate() {
 
 		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(fuelTank.getFluid()) * fuelMod / 100;
+			fuelRF = getFuelEnergy(fuelTank.getFluid()) * fuelMod / FUEL_MOD;
 			fuelTank.drain(50, true);
 		}
 		if (coolantRF <= 0) {
-			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * fuelMod / 100;
+			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * fuelMod / FUEL_MOD;
 			coolantTank.drain(50, true);
 		}
 		int energy = calcEnergy() * energyMod;
@@ -233,7 +242,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct) {
 			return null;
 		}
 		if (isValidFuel(resource)) {
@@ -248,7 +257,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == facing && !augmentCoilDuct) {
+		if (!augmentCoilDuct) {
 			return null;
 		}
 		return fuelTank.drain(maxDrain, doDrain);

@@ -3,6 +3,7 @@ package thermalexpansion.block.machine;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.util.EnergyHelper;
 import cofh.util.ItemHelper;
+import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -12,6 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.machine.GuiCharger;
 import thermalexpansion.gui.container.machine.ContainerCharger;
 
@@ -29,8 +31,10 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Charger.BasePower", 400), 100, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Charger.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(1, 10000, 400000);
+		defaultEnergyConfig[TYPE].setParams(1, maxPower, Math.max(480000, maxPower * 1200));
 
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}
@@ -124,8 +128,9 @@ public class TileCharger extends TileMachineBase {
 	protected void processFinish() {
 
 		inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-		if (--inventory[0].stackSize < 1)
+		if (--inventory[0].stackSize < 1) {
 			inventory[0] = null;
+		}
 	}
 
 	@Override

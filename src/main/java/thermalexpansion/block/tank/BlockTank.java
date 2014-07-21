@@ -51,6 +51,9 @@ public class BlockTank extends BlockTEBase {
 			return null;
 		}
 		if (metadata == Types.CREATIVE.ordinal()) {
+			if (!enable[Types.CREATIVE.ordinal()]) {
+				return null;
+			}
 			return new TileTankCreative(metadata);
 		}
 		return new TileTank(metadata);

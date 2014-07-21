@@ -8,10 +8,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
+import thermalexpansion.gui.client.GuiAugmentableBase;
 import thermalexpansion.gui.container.machine.ContainerCharger;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 
-public class GuiCharger extends GuiMachineBase {
+public class GuiCharger extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Charger.png");
 
@@ -21,6 +22,8 @@ public class GuiCharger extends GuiMachineBase {
 	public GuiCharger(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerCharger(inventory, tile), tile, inventory.player, TEXTURE);
+
+		generateInfo("tab.thermalexpansion.machine.charger", 3);
 	}
 
 	@Override

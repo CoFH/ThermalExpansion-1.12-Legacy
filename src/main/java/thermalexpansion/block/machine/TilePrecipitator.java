@@ -2,6 +2,7 @@ package thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
 import cofh.network.CoFHPacket;
+import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -19,6 +20,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
+import thermalexpansion.ThermalExpansion;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiPrecipitator;
 import thermalexpansion.gui.container.machine.ContainerPrecipitator;
@@ -41,8 +43,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Precipitator.BasePower", 20), 10, 500);
+		ThermalExpansion.config.set("block.tweak", "Machine.Precipitator.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(20);
+		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
 	}

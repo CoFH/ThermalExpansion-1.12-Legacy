@@ -65,7 +65,10 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		SEND, RECV, SENDRECV, BLOCKED
 	}
 
-	private boolean isSending = false;
+	private boolean isSendingEnergy = false;
+	private boolean isSendingFluid = false;
+	private boolean isSendingItems = false;
+
 	int itemTrackerAdjacent;
 	int itemTrackerRemote;
 	int fluidTrackerAdjacent;
@@ -266,7 +269,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return 0;
 		}
 		if (validOutputs != null) {
-			isSending = true;
+			isSendingEnergy = true;
 			IEnderEnergyHandler handler;
 
 			for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
@@ -283,7 +286,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			}
 			energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
 		}
-		isSending = false;
+		isSendingEnergy = false;
 		return startAmount - energy;
 	}
 
@@ -296,7 +299,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return 0;
 		}
 		if (validOutputs != null) {
-			isSending = true;
+			isSendingFluid = true;
 			IEnderFluidHandler handler;
 
 			for (int i = fluidTrackerRemote; i < validOutputs.size() && fluid != null && fluid.amount > 0; i++) {
@@ -313,7 +316,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			}
 			fluidTrackerRemote = incrRemoteTracker(fluidTrackerRemote, validOutputs.size());
 		}
-		isSending = false;
+		isSendingFluid = false;
 		return startAmount - fluid.amount;
 	}
 
@@ -322,7 +325,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getLinkedItemOutputs(this);
 
 		if (validOutputs != null) {
-			isSending = true;
+			isSendingItems = true;
 			IEnderItemHandler handler;
 
 			for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
@@ -343,7 +346,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			inventory[0] = item;
 			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		}
-		isSending = false;
+		isSendingItems = false;
 	}
 
 	/* TRACKER METHODS */
@@ -773,7 +776,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public boolean canReceiveEnergy() {
 
-		return !isSending && modeReceiveEnergy();
+		return !isSendingEnergy && modeReceiveEnergy();
 	}
 
 	@Override
@@ -806,7 +809,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public boolean canReceiveFluid() {
 
-		return !isSending && modeReceiveFluid();
+		return !isSendingFluid && modeReceiveFluid();
 	}
 
 	@Override
@@ -839,7 +842,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public boolean canReceiveItems() {
 
-		return !isSending && modeReceiveItems();
+		return !isSendingItems && modeReceiveItems();
 	}
 
 	@Override

@@ -106,19 +106,19 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolWrench, new Object[] { "I I", " T ", " I ", 'I', Items.iron_ingot, 'T', "ingotTin" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P',
 				powerCoilElectrum, 'G', "gearElectrum" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', Items.iron_ingot, 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', Items.iron_ingot, 'R', "dustRedstone", 'X',
 				capacitorBasic, 'G', Items.flint }));
 
 		/* Capacitors */
-		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, Items.redstone, "nuggetLead" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, Items.redstone, "nuggetLead" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, "dustRedstone", "nuggetLead" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, "dustRedstone", "nuggetLead" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X',
 				"ingotCopper", 'Y', "dustSulfur" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
 				capacitorBasic, 'Y', "ingotTin" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X',
 				capacitorHardened, 'Y', Items.diamond }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', Items.redstone, 'X',
+		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X',
 				capacitorReinforced, 'Y', TFItems.dustPyrotheum }));
 
 		/* Satchels */
@@ -126,7 +126,7 @@ public class TEItems {
 				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockClothRock", 'Y', Items.leather }));
 		GameRegistry
 				.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotElectrum", 'X', satchelHardened, 'Y',
+		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened, 'Y',
 				"nuggetInvar" }));
 		GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
 				"nuggetElectrum" }));
@@ -139,6 +139,7 @@ public class TEItems {
 
 		/* Diagrams */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(diagramSchematic, new Object[] { Items.paper, Items.paper, "dyeBlue" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(diagramRedprint, new Object[] { Items.paper, Items.paper, "dustRedstone" }));
 
 		/* Parts */
 		String category = "tweak.recipe";
@@ -148,27 +149,27 @@ public class TEItems {
 		boolean servosAllowSteel = ThermalExpansion.config.get(category, "PneumaticServo.AllowSteel", false);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo,
-				new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I', "ingotIron" }));
+				new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron" }));
 
 		if (servosAllowSilver) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
 					"ingotSilver" }));
 		}
 		if (servosAllowInvar) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
 					"ingotInvar" }));
 		}
 		if (servosAllowBronze) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
 					"ingotBronze" }));
 		}
 		if (servosAllowSteel) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', Items.redstone, 'G', "blockGlass", 'I',
+			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
 					"ingotSteel" }));
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotGold" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotSilver" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilElectrum, new Object[] { "  R", " G ", "R  ", 'R', Items.redstone, 'G', "ingotElectrum" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotGold" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotSilver" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilElectrum, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotElectrum" }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(lock, new Object[] { " S ", "SBS", "SSS", 'B', "ingotBronze", 'S', "nuggetSignalum" }));
 
