@@ -4,6 +4,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.FluidHelper;
 import cofh.util.ItemHelper;
+import cofh.util.crafting.RecipeAugmentable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,7 +25,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
@@ -179,11 +179,11 @@ public class BlockDynamo extends BlockTEBase {
 		if (defaultRedstoneControl) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
 		}
-		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.STEAM.ordinal()));
-		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.MAGMATIC.ordinal()));
-		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.COMPRESSION.ordinal()));
-		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.REACTANT.ordinal()));
-		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.ENERVATION.ordinal()));
+		dynamoSteam = new ItemStack(this, 1, Types.STEAM.ordinal());
+		dynamoMagmatic = new ItemStack(this, 1, Types.MAGMATIC.ordinal());
+		dynamoCompression = new ItemStack(this, 1, Types.COMPRESSION.ordinal());
+		dynamoReactant = new ItemStack(this, 1, Types.REACTANT.ordinal());
+		dynamoEnervation = new ItemStack(this, 1, Types.ENERVATION.ordinal());
 
 		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
 		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
@@ -198,24 +198,24 @@ public class BlockDynamo extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.STEAM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoSteam, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I',
-					"ingotCopper", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoSteam, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G',
+					"gearCopper", 'I', "ingotCopper", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoMagmatic, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I',
-					"ingotInvar", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoMagmatic, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
+					'G', "gearInvar", 'I', "ingotInvar", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.COMPRESSION.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCompression, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin",
-					'I', "ingotTin", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoCompression, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
+					'G', "gearTin", 'I', "ingotTin", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.REACTANT.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoReactant, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze",
-					'I', "ingotBronze", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoReactant, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
+					'G', "gearBronze", 'I', "ingotBronze", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.ENERVATION.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEnervation, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum",
-					'I', "ingotElectrum", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoEnervation, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
+					'G', "gearElectrum", 'I', "ingotElectrum", 'R', "dustRedstone" }));
 		}
 		TECraftingHandler.addSecureRecipe(dynamoSteam);
 		TECraftingHandler.addSecureRecipe(dynamoMagmatic);
@@ -233,12 +233,6 @@ public class BlockDynamo extends BlockTEBase {
 		dynamoCompression = ItemBlockDynamo.setDefaultTag(dynamoCompression);
 		dynamoReactant = ItemBlockDynamo.setDefaultTag(dynamoReactant);
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
-
-		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
-		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
-		GameRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
-		GameRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
-		GameRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 	}
 
 	public static enum Types {

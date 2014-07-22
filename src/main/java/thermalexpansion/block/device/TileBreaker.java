@@ -269,7 +269,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 		facing = (byte) side;
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}

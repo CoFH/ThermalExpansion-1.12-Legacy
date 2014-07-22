@@ -155,7 +155,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 			sideCache = tempCache.clone();
 			facing++;
 			facing %= 6;
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+			markDirty();
 			sendUpdatePacket(Side.CLIENT);
 			return true;
 		}
@@ -183,7 +183,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 			return false;
 		}
 		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}

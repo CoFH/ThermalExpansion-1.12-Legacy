@@ -1,5 +1,7 @@
 package thermalexpansion.plugins.mfr;
 
+import cofh.util.DamageHelper;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -23,7 +25,7 @@ public class DrinkHandlerCryotheum implements ILiquidDrinkHandler {
 
 		public InternalCryotheumDamage() {
 
-			super(DamageSource.magic.damageType);
+			super(DamageHelper.cryotheum.damageType);
 			this.setDamageBypassesArmor();
 			this.setMagicDamage();
 			this.setDifficultyScaled();

@@ -325,6 +325,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	public boolean rotateBlock() {
 
 		facing = BlockHelper.SIDE_LEFT[facing];
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
@@ -336,7 +337,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			return false;
 		}
 		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}

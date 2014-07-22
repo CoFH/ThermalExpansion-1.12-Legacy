@@ -142,7 +142,7 @@ public class SawmillManager {
 		InventoryCrafting tempCrafting = new InventoryCrafting(tempContainer, 3, 3);
 		ArrayList recipeList = (ArrayList) CraftingManager.getInstance().getRecipeList();
 
-		for (int i = 1; i < 9; i++) {
+		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, null);
 		}
 		ArrayList<ItemStack> registeredOres;
@@ -153,6 +153,7 @@ public class SawmillManager {
 			if (logEntry.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
 				for (int j = 0; j < 16; j++) {
 					ItemStack log = ItemHelper.cloneStack(logEntry, 1);
+					log.setItemDamage(j);
 					tempCrafting.setInventorySlotContents(0, log);
 					ItemStack resultEntry = ItemHelper.findMatchingRecipe(tempCrafting, null);
 

@@ -5,6 +5,7 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
+import cofh.util.crafting.RecipeAugmentable;
 import cofh.util.crafting.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -265,10 +266,10 @@ public class BlockDevice extends BlockTEBase {
 		}
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
-		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
-		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
+		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
+		breaker = new ItemStack(this, 1, Types.BREAKER.ordinal());
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
-		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
+		nullifier = new ItemStack(this, 1, Types.NULLIFIER.ordinal());
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
 		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
@@ -284,7 +285,7 @@ public class BlockDevice extends BlockTEBase {
 	public boolean postInit() {
 
 		String category = "tweak.recipe";
-		boolean breakerUseDiamondPickaxe = ThermalExpansion.config.get(category, "Breaker.UseDiamondPickaxe", false);
+		breakerUseDiamondPickaxe = ThermalExpansion.config.get(category, "Breaker.UseDiamondPickaxe", false);
 
 		ItemStack pickaxe = breakerUseDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
 
@@ -298,19 +299,19 @@ public class BlockDevice extends BlockTEBase {
 
 		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(activator, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
-					TEItems.pneumaticServo, 'X', Blocks.chest }));
+			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin",
+					'P', TEItems.pneumaticServo, 'X', Blocks.chest }));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(breaker, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin", 'P',
-					TEItems.pneumaticServo, 'X', pickaxe }));
+			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin",
+					'P', TEItems.pneumaticServo, 'X', pickaxe }));
 		}
 		if (enable[Types.PUMP.ordinal()]) {
 
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(nullifier, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', "ingotTin", 'P',
-					TEItems.pneumaticServo, 'X', "ingotInvar" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I',
+					"ingotTin", 'P', TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
 		TECraftingHandler.addSecureRecipe(workbench);
 		// TECraftingHandler.addSecureRecipe(lexicon);
@@ -324,17 +325,11 @@ public class BlockDevice extends BlockTEBase {
 
 	public static void refreshItemStacks() {
 
-		// lexicon = ItemBlockDevice.setDefaultTag(lexicon);
+		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
 		activator = ItemBlockDevice.setDefaultTag(activator);
 		breaker = ItemBlockDevice.setDefaultTag(breaker);
-		// pump = ItemBlockDevice.setDefaultTag(pump);
+		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
 		nullifier = ItemBlockDevice.setDefaultTag(nullifier);
-
-		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
-		GameRegistry.registerCustomItemStack("activator", activator);
-		GameRegistry.registerCustomItemStack("breaker", breaker);
-		// GameRegistry.registerCustomItemStack("pump", pump);
-		GameRegistry.registerCustomItemStack("nullifier", nullifier);
 	}
 
 	public static enum Types {
@@ -348,6 +343,8 @@ public class BlockDevice extends BlockTEBase {
 	public static boolean defaultAutoTransfer = true;
 	public static boolean defaultRedstoneControl = true;
 	public static boolean defaultReconfigSides = true;
+
+	public static boolean breakerUseDiamondPickaxe = false;
 
 	static {
 		String category = "block.feature";

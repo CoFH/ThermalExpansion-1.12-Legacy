@@ -283,7 +283,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 			return false;
 		}
 		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}

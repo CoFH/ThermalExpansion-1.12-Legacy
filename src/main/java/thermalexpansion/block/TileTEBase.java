@@ -150,7 +150,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 			payload.getString();
 		}
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		callNeighborTileChange();
 	}
 
 	/* ITileInfoPacketHandler */

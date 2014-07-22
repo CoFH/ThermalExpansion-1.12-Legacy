@@ -120,24 +120,24 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 	public void renderItemIlluminator(int color, boolean modified, double offset) {
 
-		CCRenderState.setColour(color);
 		CCRenderState.startDrawing();
-		instance.renderCenter(0, modified, offset, offset, offset);
+		modelCenter[0].setColour(color);
+		renderCenter(0, modified, offset, offset, offset);
+		modelCenter[0].setColour(0xFFFFFFFF);
 		CCRenderState.draw();
 
-		CCRenderState.setColour(0xFFFFFFFF);
 		CCRenderState.startDrawing();
 		renderFrame(0, offset, offset, offset);
 		CCRenderState.draw();
 	}
 
-	public void renderItemLampBasic(int color, boolean active, double offset) {
+	public void renderItemLampBasic(int color, double offset) {
 
-		CCRenderState.setColour(color);
 		CCRenderState.startDrawing();
-		instance.renderFrame(1, offset, offset, offset);
+		modelFrame[1].setColour(color);
+		renderFrame(1, offset, offset, offset);
+		modelFrame[1].setColour(0xFFFFFFFF);
 		CCRenderState.draw();
-		CCRenderState.setColour(0xFFFFFFFF);
 	}
 
 	/* ISimpleBlockRenderingHandler */
@@ -212,6 +212,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 			color = item.getTagCompound().getInteger("Color");
 			color = (color << 8) + 0xFF;
 		}
+
 		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
 
@@ -220,7 +221,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 			renderItemIlluminator(color, item.hasTagCompound(), offset);
 			break;
 		case LAMP_BASIC:
-			renderItemLampBasic(color, false, offset);
+			renderItemLampBasic(color, offset);
 			break;
 		}
 		RenderUtils.postItemRender();

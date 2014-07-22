@@ -254,6 +254,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
+		markChunkDirty();
 	}
 
 	@Override
@@ -316,6 +317,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
 			owner = name;
+			markChunkDirty();
 			return true;
 		}
 		return false;

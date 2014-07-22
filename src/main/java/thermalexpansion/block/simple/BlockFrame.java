@@ -42,6 +42,16 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 
 	public static int renderPass = 0;
 
+	public static boolean hasCenter(int metadata) {
+
+		return metadata < Types.ILLUMINATOR.ordinal();
+	}
+
+	public static boolean hasFrame(int metadata) {
+
+		return metadata < Types.ILLUMINATOR.ordinal();
+	}
+
 	public BlockFrame() {
 
 		super(Material.iron);
@@ -131,6 +141,8 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		case TESSERACT_EMPTY:
 		case TESSERACT_FULL:
 			return IconRegistry.getIcon("FrameTesseract");
+		case ILLUMINATOR:
+			return IconRegistry.getIcon("FrameIlluminator");
 		default:
 			if (side == 0) {
 				return IconRegistry.getIcon("FrameMachineBottom");
@@ -153,6 +165,8 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		case TESSERACT_EMPTY:
 		case TESSERACT_FULL:
 			return IconRegistry.getIcon("FrameTesseractInner");
+		case ILLUMINATOR:
+			return IconRegistry.getIcon("FrameIlluminatorInner");
 		default:
 			return IconRegistry.getIcon("FrameMachineInner");
 		}
@@ -173,11 +187,13 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		IconRegistry.addIcon("FrameCellBasic", "thermalexpansion:cell/Cell_Basic", ir);
 		IconRegistry.addIcon("FrameCellReinforced", "thermalexpansion:cell/Cell_Reinforced", ir);
 		IconRegistry.addIcon("FrameTesseract", "thermalexpansion:tesseract/Tesseract", ir);
+		IconRegistry.addIcon("FrameIlluminator", "thermalexpansion:light/Illuminator_Frame", ir);
 
 		IconRegistry.addIcon("FrameMachineInner", "thermalexpansion:machine/Machine_Frame_Inner", ir);
 		IconRegistry.addIcon("FrameCellBasicInner", "thermalexpansion:cell/Cell_Basic_Inner", ir);
 		IconRegistry.addIcon("FrameCellReinforcedInner", "thermalexpansion:cell/Cell_Reinforced_Inner", ir);
 		IconRegistry.addIcon("FrameTesseractInner", "thermalexpansion:tesseract/Tesseract_Inner", ir);
+		IconRegistry.addIcon("FrameIlluminatorInner", "thermalexpansion:config/Config_None", ir);
 
 		IconRegistry.addIcon("FrameCenter" + 0, "thermalfoundation:storage/Block_Tin", ir);
 		IconRegistry.addIcon("FrameCenter" + 1, "thermalfoundation:storage/Block_Electrum", ir);
@@ -188,6 +204,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		IconRegistry.addIcon("FrameCenter" + 6, "thermalfoundation:fluid/Fluid_Redstone_Still", ir);
 		IconRegistry.addIcon("FrameCenter" + 7, "thermalexpansion:config/Config_None", ir);
 		IconRegistry.addIcon("FrameCenter" + 8, "thermalfoundation:fluid/Fluid_Ender_Still", ir);
+		IconRegistry.addIcon("FrameCenter" + 9, "thermalexpansion:config/Config_None", ir);
 	}
 
 	/* IDismantleable */
@@ -239,6 +256,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		frameCellReinforcedFull = new ItemStack(this, 1, Types.CELL_REINFORCED_FULL.ordinal());
 		frameTesseractEmpty = new ItemStack(this, 1, Types.TESSERACT_EMPTY.ordinal());
 		frameTesseractFull = new ItemStack(this, 1, Types.TESSERACT_FULL.ordinal());
+		frameIlluminator = new ItemStack(this, 1, Types.ILLUMINATOR.ordinal());
 
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
@@ -283,15 +301,18 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 				Items.diamond }));
 		TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 
+		GameRegistry.addRecipe(new ShapedOreRecipe(frameIlluminator, new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S',
+				"ingotSignalum" }));
+
 		return true;
 	}
 
 	public static enum Types {
-		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL
+		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL, ILLUMINATOR
 	}
 
 	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellReinforcedEmpty",
-			"cellReinforcedFull", "tesseractEmpty", "tesseractFull" };
+			"cellReinforcedFull", "tesseractEmpty", "tesseractFull", "illuminator" };
 
 	public static ItemStack frameMachineBasic;
 	public static ItemStack frameMachineHardened;
@@ -302,5 +323,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	public static ItemStack frameCellReinforcedFull;
 	public static ItemStack frameTesseractEmpty;
 	public static ItemStack frameTesseractFull;
+	public static ItemStack frameIlluminator;
 
 }

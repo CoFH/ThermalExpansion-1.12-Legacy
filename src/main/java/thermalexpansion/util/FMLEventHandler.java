@@ -45,9 +45,9 @@ public class FMLEventHandler {
 		SmelterManager.refreshRecipes();
 		CrucibleManager.refreshRecipes();
 
-		BlockMachine.refreshItemStacks();
 		BlockDevice.refreshItemStacks();
 		BlockDynamo.refreshItemStacks();
+		BlockMachine.refreshItemStacks();
 	}
 
 }

@@ -331,7 +331,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		if (!isActive) {
 			prevSelection = curSelection;
 		}
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	public void setMode(int i) {

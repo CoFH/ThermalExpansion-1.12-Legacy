@@ -547,7 +547,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		if (!isActive) {
 			reverse = reverseFlag;
 		}
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		callNeighborTileChange();
 	}
 
 	public void setMode(boolean mode) {

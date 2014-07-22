@@ -273,7 +273,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (!isActive) {
 			prevSelection = curSelection;
 		}
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 	}
 
 	public void setMode(int i) {

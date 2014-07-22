@@ -72,8 +72,7 @@ public class TEPlugins {
 	public static ArrayList<Plugin> pluginList = new ArrayList();
 
 	static {
-		addPlugin("cc.CCPlugin", "ComputerCraft");
-		addPlugin("forestry.ForestryPlugin", "Forestry");
+		// addPlugin("cc.CCPlugin", "ComputerCraft");
 		addPlugin("mfr.MFRPlugin", "MineFactoryReloaded");
 		addPlugin("tc4.TCPlugin", "Thaumcraft4");
 	}

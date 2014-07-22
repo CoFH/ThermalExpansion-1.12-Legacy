@@ -1,10 +1,10 @@
 package thermalexpansion.util.crafting;
 
+import cofh.util.AugmentHelper;
 import cofh.util.ItemHelper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.block.simple.BlockFrame;
@@ -12,16 +12,19 @@ import thermalexpansion.block.simple.BlockFrame;
 public class RecipeMachine extends ShapedOreRecipe {
 
 	int targetSlot = 4;
+	ItemStack[] augments;
 
-	public RecipeMachine(ItemStack result, Object[] recipe) {
+	public RecipeMachine(ItemStack result, ItemStack[] augments, Object[] recipe) {
 
 		super(result, recipe);
+		this.augments = augments;
 	}
 
-	public RecipeMachine(int upgradeSlot, ItemStack result, Object[] recipe) {
+	public RecipeMachine(int targetSlot, ItemStack result, ItemStack[] augments, Object[] recipe) {
 
 		super(result, recipe);
-		this.targetSlot = upgradeSlot;
+		this.targetSlot = targetSlot;
+		this.augments = augments;
 	}
 
 	@Override
@@ -31,10 +34,7 @@ public class RecipeMachine extends ShapedOreRecipe {
 			return super.getCraftingResult(craftMatrix);
 		}
 		ItemStack retStack = getRecipeOutput().copy();
-
-		if (retStack.stackTagCompound == null) {
-			retStack.setTagCompound(new NBTTagCompound());
-		}
+		AugmentHelper.writeAugments(retStack, augments);
 		retStack.stackTagCompound.setByte("Level", getLevel(craftMatrix.getStackInSlot(targetSlot)));
 
 		return retStack;

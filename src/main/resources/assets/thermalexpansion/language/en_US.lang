@@ -360,6 +360,7 @@ tile.thermalexpansion.frame.cellReinforcedEmpty.name=Redstone Energy Cell Frame 
 tile.thermalexpansion.frame.cellReinforcedFull.name=Redstone Energy Cell Frame (Full)
 tile.thermalexpansion.frame.tesseractEmpty.name=Tesseract Frame (Empty)
 tile.thermalexpansion.frame.tesseractFull.name=Tesseract Frame (Full)
+tile.thermalexpansion.frame.illuminator.name=Illuminator Frame
 
 tile.thermalexpansion.glass.name=Hardened Glass
 

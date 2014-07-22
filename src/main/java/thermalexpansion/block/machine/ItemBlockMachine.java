@@ -2,6 +2,7 @@ package thermalexpansion.block.machine;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
+import cofh.util.AugmentHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
@@ -14,7 +15,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-import thermalexpansion.util.AugmentHelper;
 import thermalexpansion.util.ReconfigurableHelper;
 
 public class ItemBlockMachine extends ItemBlockBase {

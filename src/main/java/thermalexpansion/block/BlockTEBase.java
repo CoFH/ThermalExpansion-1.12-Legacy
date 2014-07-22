@@ -54,7 +54,7 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			return true;
 		}
 
-		if (false && player.isSneaking()) { // TODO: remove? wrenches actively check this now
+		if (player.isSneaking()) { // TODO: remove? wrenches actively check this now
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {
 					dismantleBlock(player, world, x, y, z, false);

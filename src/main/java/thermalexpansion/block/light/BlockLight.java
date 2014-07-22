@@ -23,10 +23,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
+import thermalexpansion.block.simple.BlockFrame;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.fluid.TFFluids;
 
 public class BlockLight extends BlockTEBase {
 
@@ -103,6 +108,12 @@ public class BlockLight extends BlockTEBase {
 	}
 
 	@Override
+	public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+
+		return true;
+	}
+
+	@Override
 	public int getRenderBlockPass() {
 
 		return 1;
@@ -168,10 +179,11 @@ public class BlockLight extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
-			// GameRegistry.addRecipe(new ShapedOreRecipe(illuminator, new Object[] {}));
+			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
-			// GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] {}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'G', "blockGlassHardened", 'L', "dustLumium", 'S',
+					"ingotSignalum" }));
 		}
 		return true;
 	}

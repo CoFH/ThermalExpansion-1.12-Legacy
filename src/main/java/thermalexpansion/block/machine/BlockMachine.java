@@ -269,17 +269,17 @@ public class BlockMachine extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		furnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.FURNACE.ordinal()));
-		pulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.PULVERIZER.ordinal()));
-		sawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.SAWMILL.ordinal()));
-		smelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.SMELTER.ordinal()));
-		crucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CRUCIBLE.ordinal()));
-		transposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.TRANSPOSER.ordinal()));
-		precipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.PRECIPITATOR.ordinal()));
-		extruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.EXTRUDER.ordinal()));
-		accumulator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ACCUMULATOR.ordinal()));
-		assembler = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ASSEMBLER.ordinal()));
-		charger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CHARGER.ordinal()));
+		furnace = new ItemStack(this, 1, Types.FURNACE.ordinal());
+		pulverizer = new ItemStack(this, 1, Types.PULVERIZER.ordinal());
+		sawmill = new ItemStack(this, 1, Types.SAWMILL.ordinal());
+		smelter = new ItemStack(this, 1, Types.SMELTER.ordinal());
+		crucible = new ItemStack(this, 1, Types.CRUCIBLE.ordinal());
+		transposer = new ItemStack(this, 1, Types.TRANSPOSER.ordinal());
+		precipitator = new ItemStack(this, 1, Types.PRECIPITATOR.ordinal());
+		extruder = new ItemStack(this, 1, Types.EXTRUDER.ordinal());
+		accumulator = new ItemStack(this, 1, Types.ACCUMULATOR.ordinal());
+		assembler = new ItemStack(this, 1, Types.ASSEMBLER.ordinal());
+		charger = new ItemStack(this, 1, Types.CHARGER.ordinal());
 
 		GameRegistry.registerCustomItemStack("furnace", furnace);
 		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);
@@ -314,47 +314,47 @@ public class BlockMachine extends BlockTEBase {
 			OreDictionary.registerOre(copperPart, copperPartList.get(i));
 		}
 		if (enable[Types.FURNACE.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(furnace, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(furnace, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', "dustRedstone", 'Y', Blocks.brick_block }));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(pulverizer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
 		}
 		if (enable[Types.SAWMILL.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(sawmill, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(sawmill, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
 		}
 		if (enable[Types.SMELTER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(smelter, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
 		}
 		if (enable[Types.CRUCIBLE.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(crucible, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', Blocks.nether_brick }));
 		}
 		if (enable[Types.TRANSPOSER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(transposer, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(transposer, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.PRECIPITATOR.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(precipitator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
+			GameRegistry.addRecipe(new RecipeMachine(precipitator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart,
+					'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
 		}
 		if (enable[Types.EXTRUDER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(extruder, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.ACCUMULATOR.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(accumulator, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.ASSEMBLER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(assembler, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
 		}
 		if (enable[Types.CHARGER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(charger, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
 		}
 		TECraftingHandler.addMachineUpgradeRecipes(furnace);
@@ -397,18 +397,6 @@ public class BlockMachine extends BlockTEBase {
 		accumulator = ItemBlockMachine.setDefaultTag(accumulator);
 		assembler = ItemBlockMachine.setDefaultTag(assembler);
 		charger = ItemBlockMachine.setDefaultTag(charger);
-
-		GameRegistry.registerCustomItemStack("furnace", furnace);
-		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);
-		GameRegistry.registerCustomItemStack("sawmill", sawmill);
-		GameRegistry.registerCustomItemStack("smelter", smelter);
-		GameRegistry.registerCustomItemStack("crucible", crucible);
-		GameRegistry.registerCustomItemStack("transposer", transposer);
-		GameRegistry.registerCustomItemStack("precipitator", precipitator);
-		GameRegistry.registerCustomItemStack("extruder", extruder);
-		GameRegistry.registerCustomItemStack("accumulator", accumulator);
-		GameRegistry.registerCustomItemStack("assembler", assembler);
-		GameRegistry.registerCustomItemStack("charger", charger);
 	}
 
 	public static enum Types {

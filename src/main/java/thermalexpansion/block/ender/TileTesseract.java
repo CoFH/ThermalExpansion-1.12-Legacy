@@ -166,7 +166,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 			if (inventory[0].stackSize <= 0) {
 				inventory[0] = null;
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+				callNeighborTileChange();
 			}
 		}
 	}
@@ -659,7 +659,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			isActive = frequency == -1 ? false : true;
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+			callNeighborTileChange();
 
 			sendNamesList((EntityPlayerMP) thePlayer);
 			return;
@@ -746,7 +746,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		isActive = true;
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		return true;
 	}
 
@@ -762,7 +762,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		isActive = false;
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		return true;
 	}
 

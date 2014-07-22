@@ -83,9 +83,9 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 		inputPower = (byte) worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
 
 		if (wasPowered != isPowered || oldPower != inputPower) {
+			markDirty();
 			sendUpdatePacket(Side.CLIENT);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 		}
 	}
 

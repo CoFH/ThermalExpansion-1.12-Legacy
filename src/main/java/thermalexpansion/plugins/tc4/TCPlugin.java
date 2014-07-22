@@ -62,7 +62,7 @@ public class TCPlugin {
 		registerStack(TFItems.ingotBronze, "3 Metallum, 1 Fabrico");
 		registerStack(TFItems.ingotSignalum, "3 Metallum, 1 Potentia");
 		registerStack(TFItems.ingotLumium, "3 Metallum, 1 Lux");
-		registerStack(TFItems.ingotEnderium, "3 Metallum, 1 Eldritch");
+		registerStack(TFItems.ingotEnderium, "3 Metallum, 1 Alienis");
 
 		registerStack(TFItems.nuggetCopper, "1 Metallum");
 		registerStack(TFItems.nuggetTin, "1 Metallum");
@@ -90,7 +90,7 @@ public class TCPlugin {
 		registerStack(TFItems.gearBronze, "7 Metallum, 2 Machina, 2 Fabrico");
 		registerStack(TFItems.gearSignalum, "7 Metallum, 2 Machina, 2 Potentia");
 		registerStack(TFItems.gearLumium, "7 Metallum, 2 Machina, 2 Lux");
-		registerStack(TFItems.gearEnderium, "7 Metallum, 2 Machina, 2 Eldritch");
+		registerStack(TFItems.gearEnderium, "7 Metallum, 2 Machina, 2 Alienis");
 
 		registerStack(BlockOre.oreCopper, "2 Metallum, 1 Perditio, 1 Vacuos");
 		registerStack(BlockOre.oreTin, "2 Metallum, 1 Perditio, 1 Lucrum");
@@ -112,11 +112,11 @@ public class TCPlugin {
 		registerStack(BlockStorage.blockBronze, "11 Metallum, 5 Fabrico");
 		registerStack(BlockStorage.blockSignalum, "11 Metallum, 5 Potentia");
 		registerStack(BlockStorage.blockLumium, "11 Metallum, 5 Lux");
-		registerStack(BlockStorage.blockEnderium, "11 Metallum, 5 Eldritch");
+		registerStack(BlockStorage.blockEnderium, "11 Metallum, 5 Alienis");
 
 		registerStack(TFItems.bucketRedstone, "8 Metallum, 10 Potentia, 8 Machina, 4 Ignis, 2 Aqua");
-		registerStack(TFItems.bucketGlowstone, "8 Metallum, 10 Lux, 8 Senses, 4 Ignis, 2 Aqua");
-		registerStack(TFItems.bucketEnder, "8 Metallum, 14 Eldritch, 8 Travel, 4 Ignis, 2 Praecantatio, 2 Aqua");
+		registerStack(TFItems.bucketGlowstone, "8 Metallum, 10 Lux, 8 Sensus, 4 Ignis, 2 Aqua");
+		registerStack(TFItems.bucketEnder, "8 Metallum, 14 Alienis, 8 Iter, 4 Ignis, 2 Praecantatio, 2 Aqua");
 		registerStack(TFItems.bucketPyrotheum, "8 Metallum, 16 Ignis, 14 Potentia, 2 Praecantatio, 2 Aqua");
 		registerStack(TFItems.bucketCryotheum, "8 Metallum, 16 Gelum, 14 Potentia, 2 Praecantatio, 2 Aqua");
 		registerStack(TFItems.bucketMana, "8 Metallum, 16 Praecantatio, 8 Potentia, 8 Perditio, 2 Aqua");
@@ -126,51 +126,53 @@ public class TCPlugin {
 		registerStack(TFItems.dustNiter, "3 Aer, 1 Terra");
 		registerStack(TFItems.crystalCinnabar, "2 Terra, 1 Permutatio, 1 Venenum");
 
-		registerStack(TFItems.dustPyrotheum, "4 Potentia, 4 Ignis, 1 Magic");
-		registerStack(TFItems.dustCryotheum, "4 Potentia, 4 Gelum, 1 Magic");
-		registerStack(TFItems.rodBlizz, "4 Gelum, 2 Magic");
-		registerStack(TFItems.dustBlizz, "2 Gelum, 1 Magic");
+		registerStack(TFItems.dustPyrotheum, "4 Potentia, 4 Ignis, 1 Praecantatio");
+		registerStack(TFItems.dustCryotheum, "4 Potentia, 4 Gelum, 1 Praecantatio");
+		registerStack(TFItems.rodBlizz, "4 Gelum, 2 Praecantatio");
+		registerStack(TFItems.dustBlizz, "2 Gelum, 1 Praecantatio");
 
-		registerStack(TEFlorbs.florb, "1 Earth, 2 Slime, 1 Void");
-		registerStack(TEFlorbs.florbMagmatic, "1 Earth, 1 Ignis, 2 Slime, 1 Void");
+		registerStack(TEFlorbs.florb, "1 Terra, 2 Limus, 1 Vacuos");
+		registerStack(TEFlorbs.florbMagmatic, "1 Terra, 1 Ignis, 2 Limus, 1 Vacuos");
 
 		registerStack(TEItems.pneumaticServo, "4 Metallum, 2 Machina, 1 Potentia, 4 Motus");
-		registerStack(TEItems.powerCoilGold, "4 Metallum, 2 Machina, 2 Energy");
-		registerStack(TEItems.powerCoilSilver, "4 Metallum, 2 Machina, 2 Energy");
-		registerStack(TEItems.powerCoilElectrum, "4 Metallum, 2 Machina, 2 Energy");
+		registerStack(TEItems.powerCoilGold, "4 Metallum, 2 Machina, 2 Potentia");
+		registerStack(TEItems.powerCoilSilver, "4 Metallum, 2 Machina, 2 Potentia");
+		registerStack(TEItems.powerCoilElectrum, "4 Metallum, 2 Machina, 2 Potentia");
 		registerStack(TEItems.slag, "2 Terra, 2 Perditio");
 		registerStack(TEItems.slagRich, "2 Terra, 2 Perditio, 2 Lucrum");
 		registerStack(TEItems.sawdust, "1 Arbor, 1 Perditio");
 		registerStack(TEItems.sawdustCompressed, "3 Arbor, 3 Perditio");
 
-		registerStack(BlockRockwool.rockWool, "1 Fabrico, 2 Cloth, 2 Entropy");
-		registerStack(BlockGlass.glassHardened, "1 Ignis, 1 Armor, 1 Vitreus");
+		registerStack(BlockRockwool.rockWool, "1 Fabrico, 2 Pannus, 2 Perditio");
+		registerStack(BlockGlass.glassHardened, "1 Ignis, 1 Tutamen, 1 Vitreus");
 
-		registerStack(TEEquipment.toolInvarShears, "4 Metallum, 4 Harvest, 2 Armor");
-		registerStack(TEEquipment.toolInvarFishingRod, "1 Metallum, 1 Aqua, 1 Tool");
-		registerStack(TEEquipment.toolInvarSickle, "5 Metallum, 4 Armor, 4 Harvest");
-		registerStack(TEEquipment.toolInvarBattleWrench, "6 Metallum, 1 Tool, 1 Machina, 3 Weapon");
+		registerStack(TEEquipment.toolInvarShears, "4 Metallum, 4 Harvest, 2 Tutamen");
+		registerStack(TEEquipment.toolInvarFishingRod, "1 Metallum, 1 Aqua, 1 Instrumentum");
+		registerStack(TEEquipment.toolInvarSickle, "5 Metallum, 4 Tutamen, 4 Harvest");
+		registerStack(TEEquipment.toolInvarBattleWrench, "6 Metallum, 1 Instrumentum, 1 Machina, 3 Telum");
 
-		registerStack(TEItems.toolWrench, "4 Metallum, 1 Tool");
-		registerStack(TEItems.toolMultimeter, "4 Metallum, 2 Potentia, 3 Machina, 2 Senses, 2 Tool");
+		registerStack(TEItems.toolWrench, "4 Metallum, 1 Instrumentum");
+		registerStack(TEItems.toolMultimeter, "4 Metallum, 2 Potentia, 3 Machina, 2 Sensus, 2 Instrumentum");
 
-		registerStack(TEItems.diagramSchematic, "3 Mind");
+		registerStack(TEItems.diagramSchematic, "3 Cognitio");
+		registerStack(TEItems.diagramRedprint, "3 Cognitio, 1 Potentia");
 
-		registerStack(TEItems.capacitorPotato, "1 Hunger, 1 Earth, 1 Crop, 3 Potentia, 1 Mechanism");
-		registerStack(TEItems.capacitorBasic, "4 Metallum, 2 Order, 2 Permutatio, 6 Potentia, 3 Machina, 1 Fire");
-		registerStack(TEItems.capacitorHardened, "7 Metallum, 2 Order, 2 Permutatio, 9 Potentia, 3 Machina, 1 Ignis, 1 Armor");
-		registerStack(TEItems.capacitorReinforced, "10 Metallum, 2 Order, 2 Permutatio, 12 Potentia, 3 Machina, 1 Ignis, 1 Armor, 4 Vitreus");
-		registerStack(TEItems.capacitorResonant, "13 Metallum, 2 Order, 2 Permutatio, 15 Potentia, 3 Machina, 1 Ignis, 1 Armor, 4 Vitreus, 1 Eldritch, 2 Magic");
+		registerStack(TEItems.capacitorPotato, "1 Fames, 1 Terra, 1 Messis, 3 Potentia, 1 Machina");
+		registerStack(TEItems.capacitorBasic, "4 Metallum, 2 Ordo, 2 Permutatio, 6 Potentia, 3 Machina, 1 Ignis");
+		registerStack(TEItems.capacitorHardened, "7 Metallum, 2 Ordo, 2 Permutatio, 9 Potentia, 3 Machina, 1 Ignis, 1 Tutamen");
+		registerStack(TEItems.capacitorReinforced, "10 Metallum, 2 Ordo, 2 Permutatio, 12 Potentia, 3 Machina, 1 Ignis, 1 Tutamen, 4 Vitreus");
+		registerStack(TEItems.capacitorResonant,
+				"13 Metallum, 2 Ordo, 2 Permutatio, 15 Potentia, 3 Machina, 1 Ignis, 1 Tutamen, 4 Vitreus, 1 Alienis, 2 Praecantatio");
 
-		registerStack(BlockFrame.frameMachineBasic, "4 Metallum, 2 Vitreus, 4 Mechanism");
+		registerStack(BlockFrame.frameMachineBasic, "4 Metallum, 2 Vitreus, 4 Machina");
 		registerStack(BlockMachine.furnace, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Fabrico");
-		registerStack(BlockMachine.pulverizer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Entropy, 2 Motus");
-		registerStack(BlockMachine.sawmill, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Tool, 2 Tree");
+		registerStack(BlockMachine.pulverizer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Perditio, 2 Motus");
+		registerStack(BlockMachine.sawmill, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Instrumentum, 2 Arbor");
 		registerStack(BlockMachine.smelter, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Permutatio");
 		registerStack(BlockMachine.crucible, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Aqua");
 		registerStack(BlockMachine.transposer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Aqua, 2 Motus");
 		registerStack(BlockMachine.precipitator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
-		registerStack(BlockMachine.extruder, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Entropy, 1 Aqua, 1 Fire");
+		registerStack(BlockMachine.extruder, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Perditio, 1 Aqua, 1 Ignis");
 		registerStack(BlockMachine.accumulator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
 		registerStack(BlockMachine.assembler, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Fabrico, 2 Motus");
 		registerStack(BlockMachine.charger, "8 Metallum, 2 Vitreus, 6 Machina, 6 Potentia, 2 Permutatio");

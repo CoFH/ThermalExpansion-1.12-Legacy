@@ -521,7 +521,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 		}
 		sideCache[side] = 0;
 		facing = (byte) side;
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
