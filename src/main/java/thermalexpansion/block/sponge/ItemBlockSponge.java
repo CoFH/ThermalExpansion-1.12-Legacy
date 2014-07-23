@@ -1,5 +1,6 @@
 package thermalexpansion.block.sponge;
 
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -41,7 +42,7 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockSponge.Types.values()[stack.getItemDamage()]) {
+		switch (BlockSponge.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		default:
@@ -88,7 +89,7 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 		} else if (fluid.getFluid().getRarity() == EnumRarity.epic) {
 			color = StringHelper.PINK;
 		}
-		list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName() + StringHelper.LIGHT_GRAY);
+		list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
 		list.add(StringHelper.localize("info.cofh.amount") + ": " + fluid.amount);
 	}
 
@@ -105,7 +106,7 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public int getCapacity(ItemStack container) {
 
-		return TileTank.CAPACITY[container.getItemDamage()];
+		return TileTank.CAPACITY[ItemHelper.getItemDamage(container)];
 	}
 
 	@Override
@@ -127,7 +128,7 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 		}
 		int drained = Math.min(stack.amount, maxDrain);
 
-		if (doDrain && container.getItemDamage() != BlockTank.Types.CREATIVE.ordinal()) {
+		if (doDrain && ItemHelper.getItemDamage(container) != BlockTank.Types.CREATIVE.ordinal()) {
 			if (maxDrain >= stack.amount) {
 				container.stackTagCompound.removeTag("Fluid");
 

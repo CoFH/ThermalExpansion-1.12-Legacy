@@ -1,6 +1,6 @@
 package thermalexpansion.block.machine;
 
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.util.FluidHelper;
@@ -9,9 +9,7 @@ import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -164,13 +162,13 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiCrucible(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerCrucible(inventory, this);
 	}
@@ -213,17 +211,17 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -233,22 +231,22 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public CoFHPacket getFluidPacket() {
+	public PacketCoFHBase getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getFluidPacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
-	protected void handleFluidPacket(CoFHPacket payload) {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
@@ -257,7 +255,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

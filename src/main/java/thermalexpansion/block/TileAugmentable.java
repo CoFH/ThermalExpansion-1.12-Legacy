@@ -1,11 +1,11 @@
 package thermalexpansion.block;
 
-import cofh.CoFHCore;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.item.IAugmentItem;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
+import cofh.util.CoreUtils;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
@@ -116,9 +116,9 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(augmentReconfigSides);
 		payload.addBool(augmentRedstoneControl);
@@ -127,9 +127,9 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(isActive);
 		payload.addInt(energyStorage.getMaxEnergyStored());
@@ -142,7 +142,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		isActive = payload.getBool();
 		energyStorage.setCapacity(payload.getInt());
@@ -161,7 +161,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -197,7 +197,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 				augmentStatus[i] = installAugment(i);
 			}
 		}
-		if (CoFHCore.proxy.isServer()) {
+		if (CoreUtils.isServer()) {
 			onInstalled();
 			sendUpdatePacket(Side.CLIENT);
 		}
@@ -322,8 +322,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 					sideCache[i] = 0;
 				}
 			}
-		}
-		if (augmentRedstoneControl || augmentReconfigSides) {
+			markDirty();
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}

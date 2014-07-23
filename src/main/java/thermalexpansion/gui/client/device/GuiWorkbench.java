@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 import thermalexpansion.block.device.TileWorkbench;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
-import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.network.PacketTEBase;
 
 public class GuiWorkbench extends GuiBaseAdv {
 
@@ -106,7 +106,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (buttonName.equals("Set")) {
 			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
-				GenericTEPacket.sendCreateSchematicPacketToServer();
+				PacketTEBase.sendCreateSchematicPacketToServer();
 				playSound("random.click", 1.0F, 0.8F);
 			}
 		} else if (buttonName.equals("Get")) {

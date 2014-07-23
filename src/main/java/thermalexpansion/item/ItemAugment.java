@@ -2,6 +2,7 @@ package thermalexpansion.item;
 
 import cofh.api.item.IAugmentItem;
 import cofh.item.ItemBase;
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import gnu.trove.map.hash.THashMap;
@@ -67,7 +68,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	private String getPrimaryType(ItemStack stack) {
 
-		AugmentEntry entry = augmentMap.get(stack.getItemDamage());
+		AugmentEntry entry = augmentMap.get(ItemHelper.getItemDamage(stack));
 		if (entry == null) {
 			return "";
 		}
@@ -78,7 +79,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 	@Override
 	public int getAugmentLevel(ItemStack stack, String type) {
 
-		AugmentEntry entry = augmentMap.get(stack.getItemDamage());
+		AugmentEntry entry = augmentMap.get(ItemHelper.getItemDamage(stack));
 		if (!entry.augmentTypeInfo.containsKey(type)) {
 			return 0;
 		}
@@ -88,7 +89,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 	@Override
 	public Set<String> getAugmentTypes(ItemStack stack) {
 
-		return augmentMap.get(stack.getItemDamage()).augmentTypeInfo.keySet();
+		return augmentMap.get(ItemHelper.getItemDamage(stack)).augmentTypeInfo.keySet();
 	}
 
 }

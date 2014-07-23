@@ -2,11 +2,11 @@ package thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
 import cofh.block.TileCoFHBase;
-import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
+import cofh.network.PacketTileInfo;
 import cofh.util.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -57,7 +57,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	public void sendGuiNetworkData(Container container, ICrafting iCrafting) {
 
 		if (iCrafting instanceof EntityPlayer) {
-			CoFHPacket guiPacket = getGuiPacket();
+			PacketCoFHBase guiPacket = getGuiPacket();
 			if (guiPacket != null) {
 				PacketHandler.sendTo(guiPacket, (EntityPlayer) iCrafting);
 			}
@@ -88,43 +88,43 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 		payload.addString(tileName);
 		return payload;
 	}
 
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
+		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
 		payload.addByte(TEProps.PacketID.GUI.ordinal());
 		return payload;
 	}
 
-	public CoFHPacket getFluidPacket() {
+	public PacketCoFHBase getFluidPacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
+		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
 		payload.addByte(TEProps.PacketID.FLUID.ordinal());
 		return payload;
 	}
 
-	public CoFHPacket getModePacket() {
+	public PacketCoFHBase getModePacket() {
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
+		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
 		payload.addByte(TEProps.PacketID.MODE.ordinal());
 		return payload;
 	}
 
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 	}
 
-	protected void handleFluidPacket(CoFHPacket payload) {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 	}
 
-	protected void handleModePacket(CoFHPacket payload) {
+	protected void handleModePacket(PacketCoFHBase payload) {
 
 	}
 
@@ -142,7 +142,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			tileName = payload.getString();
@@ -155,7 +155,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TEProps.PacketID.values()[payload.getByte()]) {
 		case GUI:

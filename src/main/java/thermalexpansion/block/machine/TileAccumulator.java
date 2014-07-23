@@ -7,7 +7,6 @@ import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
@@ -198,13 +197,13 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiAccumulator(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
 	}

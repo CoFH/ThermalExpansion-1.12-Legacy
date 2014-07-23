@@ -1,6 +1,7 @@
 package thermalexpansion.block.simple;
 
 import cofh.item.ItemBlockBase;
+import cofh.util.ItemHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;
@@ -16,13 +17,13 @@ public class ItemBlockFrame extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.frame." + BlockFrame.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.frame." + BlockFrame.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockFrame.Types.values()[stack.getItemDamage()]) {
+		switch (BlockFrame.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case MACHINE_RESONANT:
 		case TESSERACT_FULL:
 			return EnumRarity.rare;

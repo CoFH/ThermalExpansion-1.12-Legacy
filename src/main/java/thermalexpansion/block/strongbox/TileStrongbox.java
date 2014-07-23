@@ -2,7 +2,7 @@ package thermalexpansion.block.strongbox;
 
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
 import cofh.util.ServerHelper;
@@ -12,10 +12,8 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.Iterator;
 import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,7 +36,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 	public static void configure() {
 
 		String comment = "Enable this to allow for Strongboxes to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Strongbox.All.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Strongbox.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -158,13 +156,13 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiStrongbox(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerStrongbox(inventory, this);
 	}
@@ -197,9 +195,9 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte(type);
 		payload.addByte(enchant);
@@ -209,14 +207,14 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
 		return null;
 	}
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

@@ -11,7 +11,7 @@ import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.network.PacketTEBase;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.PulverizerManager;
@@ -33,7 +33,7 @@ public class FMLEventHandler {
 		if (TEProps.enableAchievements) {
 			event.player.addStat(TEAchievements.baseTE, 1);
 		}
-		GenericTEPacket.sendConfigSyncPacketToClient(event.player);
+		PacketTEBase.sendConfigSyncPacketToClient(event.player);
 	}
 
 	@EventHandler

@@ -1,6 +1,6 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -8,9 +8,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -103,13 +101,13 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiDynamoMagmatic(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
 	}
@@ -146,19 +144,9 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
-
-		payload.addFluidStack(tank.getFluid());
-
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addFluidStack(tank.getFluid());
 
@@ -166,7 +154,17 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -175,7 +173,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

@@ -3,9 +3,7 @@ package thermalexpansion.block.machine;
 import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -234,13 +232,13 @@ public class TileSmelter extends TileMachineBase {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiSmelter(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerSmelter(inventory, this);
 	}

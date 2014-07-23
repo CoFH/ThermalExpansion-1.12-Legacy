@@ -5,8 +5,8 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
-import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.network.PacketTEBase;
 
 public abstract class TileRSControl extends TileInventory implements ITilePacketHandler, IEnergyHandler, IRedstoneControl {
 
@@ -32,7 +32,7 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 		isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			GenericTEPacket.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
 			onRedstoneUpdate();
 		}
 	}
@@ -121,9 +121,9 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
@@ -135,7 +135,7 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -204,7 +204,7 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			GenericTEPacket.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 		}

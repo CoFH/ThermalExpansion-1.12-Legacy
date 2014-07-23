@@ -2,17 +2,14 @@ package thermalexpansion.block.machine;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.item.IAugmentItem;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
-import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cofh.util.TimeTracker;
 import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -22,7 +19,6 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEAugments;
-import thermalexpansion.util.ReconfigurableHelper;
 
 public abstract class TileMachineBase extends TileAugmentable {
 
@@ -40,7 +36,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
 			String comment = "Enable this to allow for " + name + "s to be securable. (Default: true)";
-			enableSecurity[i] = ThermalExpansion.config.get("security", "Machine." + name + ".Secureable", enableSecurity[i], comment);
+			enableSecurity[i] = ThermalExpansion.config.get("security", "Machine." + name + ".Securable", enableSecurity[i], comment);
 		}
 	}
 
@@ -265,9 +261,9 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte(level);
 
@@ -275,9 +271,9 @@ public abstract class TileMachineBase extends TileAugmentable {
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addInt(processMax);
 		payload.addInt(processRem);
@@ -288,7 +284,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -300,7 +296,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -475,38 +471,6 @@ public abstract class TileMachineBase extends TileAugmentable {
 	public int getInfoMaxEnergyPerTick() {
 
 		return energyConfig.maxPower * energyMod;
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player.getCommandSenderName())) {
-			return;
-		}
-		if (augmentRedstoneControl) {
-			RedstoneControlHelper.getControlFromNBT(tag);
-		}
-		if (augmentReconfigSides) {
-			int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
-			byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
-
-			sideCache[0] = storedSideCache[0];
-			sideCache[1] = storedSideCache[1];
-			sideCache[facing] = 0;
-			sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
-			sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
-			sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
-
-			for (int i = 0; i < 6; i++) {
-				if (sideCache[i] >= getNumConfig(i)) {
-					sideCache[i] = 0;
-				}
-			}
-		}
-		if (augmentRedstoneControl || augmentReconfigSides) {
-			sendUpdatePacket(Side.CLIENT);
-		}
 	}
 
 	/* IReconfigurableFacing */

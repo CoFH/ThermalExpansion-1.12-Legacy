@@ -4,6 +4,7 @@ import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
 import cofh.util.AugmentHelper;
 import cofh.util.EnergyHelper;
+import cofh.util.ItemHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
@@ -39,7 +40,7 @@ public class ItemBlockDynamo extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[item.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(item)] + ".name";
 	}
 
 	@Override
@@ -56,9 +57,9 @@ public class ItemBlockDynamo extends ItemBlockBase {
 		// RSControlHelper.addRSControlInformation(stack, list);
 
 		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
-		list.add(StringHelper.localize("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[stack.getItemDamage()]));
+		list.add(StringHelper.localize("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(stack)]));
 
-		if (stack.getItemDamage() == BlockDynamo.Types.STEAM.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Types.STEAM.ordinal()) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo.steam.0"));
 		}
 	}

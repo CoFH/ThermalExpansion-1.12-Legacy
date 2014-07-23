@@ -4,6 +4,7 @@ import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
 import cofh.api.tileentity.ITileInfo;
 import cofh.item.ItemBase;
+import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 
 import java.util.ArrayList;
@@ -30,7 +31,7 @@ public class ItemMultimeter extends ItemBase {
 	@Override
 	public boolean hasEffect(ItemStack stack) {
 
-		return stack.getItemDamage() != 0;
+		return ItemHelper.getItemDamage(stack) != 0;
 	}
 
 	@Override
@@ -53,7 +54,7 @@ public class ItemMultimeter extends ItemBase {
 		Block block = world.getBlock(x, y, z);
 		ArrayList<IChatComponent> info = new ArrayList<IChatComponent>();
 
-		if (stack.getItemDamage() == 0) {
+		if (ItemHelper.getItemDamage(stack) == 0) {
 			if (ServerHelper.isClientWorld(world)) {
 				return false;
 			}

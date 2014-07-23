@@ -1,16 +1,14 @@
 package thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.MathHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -139,13 +137,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiPrecipitator(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerPrecipitator(inventory, this);
 	}
@@ -201,18 +199,18 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
@@ -226,9 +224,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	public CoFHPacket getFluidPacket() {
+	public PacketCoFHBase getFluidPacket() {
 
-		CoFHPacket payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
 
@@ -236,9 +234,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	public CoFHPacket getModePacket() {
+	public PacketCoFHBase getModePacket() {
 
-		CoFHPacket payload = super.getModePacket();
+		PacketCoFHBase payload = super.getModePacket();
 
 		payload.addByte(curSelection);
 
@@ -246,7 +244,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -256,7 +254,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void handleFluidPacket(CoFHPacket payload) {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
 
@@ -265,7 +263,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void handleModePacket(CoFHPacket payload) {
+	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -285,7 +283,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

@@ -3,7 +3,7 @@ package thermalexpansion.block;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedTexture;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
 import cpw.mods.fml.relauncher.Side;
 
@@ -71,9 +71,9 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
@@ -83,7 +83,7 @@ public abstract class TileReconfigurable extends TileRSControl implements IRecon
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

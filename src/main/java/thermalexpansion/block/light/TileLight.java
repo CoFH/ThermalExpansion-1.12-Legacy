@@ -1,8 +1,8 @@
 package thermalexpansion.block.light;
 
 import cofh.api.tileentity.ITileInfo;
-import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -146,9 +146,9 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(modified);
 		payload.addInt(color);
@@ -162,7 +162,7 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -209,6 +209,8 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
+		mode = tag.getByte("Mode");
+
 		if (tag.hasKey("Color")) {
 			setColor(tag.getInteger("Color"));
 		}
@@ -216,6 +218,8 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setByte("Mode", mode);
 
 		if (modified) {
 			tag.setInteger("Color", color);

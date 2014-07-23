@@ -150,7 +150,7 @@ public class SawmillManager {
 		for (int i = 0; i < registeredOres.size(); i++) {
 			ItemStack logEntry = registeredOres.get(i);
 
-			if (logEntry.getItemDamage() == OreDictionary.WILDCARD_VALUE) {
+			if (ItemHelper.getItemDamage(logEntry) == OreDictionary.WILDCARD_VALUE) {
 				for (int j = 0; j < 16; j++) {
 					ItemStack log = ItemHelper.cloneStack(logEntry, 1);
 					log.setItemDamage(j);

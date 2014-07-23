@@ -1,8 +1,8 @@
 package thermalexpansion.block.sponge;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.network.CoFHPacket;
 import cofh.network.ITilePacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.util.FluidHelper;
 import cofh.util.ServerHelper;
@@ -199,9 +199,9 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(full);
 		payload.addFluidStack(fluid);
@@ -211,7 +211,7 @@ public class TileSponge extends TileTEBase implements ITilePacketHandler, ISided
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

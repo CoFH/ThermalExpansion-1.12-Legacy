@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
 import cofh.util.EnergyHelper;
+import cofh.util.ItemHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
@@ -22,7 +23,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 
 		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, container.getItemDamage() == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
+		ReconfigurableHelper.setSideCache(container, ItemHelper.getItemDamage(container) == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
 				: TileCell.DEFAULT_SIDES);
 		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		EnergyHelper.setDefaultEnergyTag(container, energy);
@@ -44,34 +45,34 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.cell." + BlockCell.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.cell." + BlockCell.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return 1 + TileCell.STORAGE[stack.getItemDamage()];
+			return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
 		}
-		return 1 + TileCell.STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
+		return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return 1 + TileCell.STORAGE[stack.getItemDamage()];
+		return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
 	}
 
 	@Override
 	public boolean isDamaged(ItemStack stack) {
 
-		return stack.getItemDamage() != BlockCell.Types.CREATIVE.ordinal();
+		return ItemHelper.getItemDamage(stack) != BlockCell.Types.CREATIVE.ordinal();
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockCell.Types.values()[stack.getItemDamage()]) {
+		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		case RESONANT:
@@ -98,11 +99,11 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		if (stack.getItemDamage() == BlockCell.Types.CREATIVE.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == BlockCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite") + " RF");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(TileCell.STORAGE[stack.getItemDamage()]) + " RF");
+					+ StringHelper.getScaledNumber(TileCell.STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
 		}
 		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.stackTagCompound.getInteger("Send")
 				+ "/" + stack.stackTagCompound.getInteger("Recv") + " RF/t");
@@ -118,9 +119,10 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(TileCell.STORAGE[container.getItemDamage()] - stored, TileCell.MAX_RECEIVE[container.getItemDamage()]));
+		int metadata = ItemHelper.getItemDamage(container);
+		int receive = Math.min(maxReceive, Math.min(TileCell.STORAGE[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
 
-		if (!simulate && container.getItemDamage() != BlockCell.Types.CREATIVE.ordinal()) {
+		if (!simulate && metadata != BlockCell.Types.CREATIVE.ordinal()) {
 			stored += receive;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -134,9 +136,10 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 			setDefaultTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[container.getItemDamage()]));
+		int metadata = ItemHelper.getItemDamage(container);
+		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[metadata]));
 
-		if (!simulate && container.getItemDamage() != BlockCell.Types.CREATIVE.ordinal()) {
+		if (!simulate && metadata != BlockCell.Types.CREATIVE.ordinal()) {
 			stored -= extract;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -155,7 +158,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileCell.STORAGE[container.getItemDamage()];
+		return TileCell.STORAGE[ItemHelper.getItemDamage(container)];
 	}
 
 }

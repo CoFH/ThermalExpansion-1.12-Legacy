@@ -3,18 +3,15 @@ package thermalexpansion.block.device;
 import cofh.api.core.ICustomInventory;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
-import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
+import cofh.network.PacketTileInfo;
 import cofh.render.IconRegistry;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
 import cofh.util.oredict.OreDictionaryArbiter;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -23,13 +20,11 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 import thermalexpansion.core.TEProps;
-import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.util.SchematicHelper;
@@ -45,7 +40,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public static void configure() {
 
 		String comment = "Enable this to allow for Workbenches to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Workbench.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Workbench.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -219,7 +214,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		for (int i = 0; i < 9; i++) {
 			craftingGrid[i] = null;
 		}
-		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
+		PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.CLEAR_GRID.ordinal()));
 	}
 
 	public void setCraftingGrid() {
@@ -227,7 +222,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		for (int i = 0; i < 9; i++) {
 			craftingGrid[i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 		}
-		PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
+		PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.SET_GRID.ordinal()));
 	}
 
 	public void setCurrentSchematicSlot(int slotIndex) {
@@ -237,9 +232,9 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte((byte) access.ordinal());
 		payload.addByte(selectedSchematic);
@@ -248,9 +243,15 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		return payload;
 	}
 
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		return null;
+	}
+
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -266,7 +267,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		int type = payload.getByte();
 
@@ -302,49 +303,21 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiWorkbench(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerWorkbench(inventory, this);
 	}
 
 	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		if (canPlayerAccess(player.getDisplayName())) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("chat.cofh.secure2")));
-		}
-		return true;
-	}
-
-	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
 	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		int access = 0;
-		if (canPlayerAccess(((EntityPlayer) player).getDisplayName())) {
-			access = 1;
-		}
-		player.sendProgressBarUpdate(container, 0, access);
+		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getDisplayName()) ? 1 : 0);
 	}
 
 	/* NBT METHODS */

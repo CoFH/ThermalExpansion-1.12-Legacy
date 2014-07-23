@@ -6,9 +6,7 @@ import cofh.util.FluidHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
@@ -47,7 +45,7 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Nullifiers to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Nullifier.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Nullifier.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -112,13 +110,13 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiNullifier(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerNullifier(inventory, this);
 	}

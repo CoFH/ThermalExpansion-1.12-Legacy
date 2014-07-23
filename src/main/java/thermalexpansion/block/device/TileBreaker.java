@@ -13,9 +13,7 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -56,7 +54,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Breakers to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Breaker.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Breaker.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -174,13 +172,13 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiBreaker(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
 	}

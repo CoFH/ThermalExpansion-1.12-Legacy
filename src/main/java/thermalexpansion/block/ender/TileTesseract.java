@@ -5,14 +5,15 @@ import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
 import cofh.api.transport.RegistryEnderAttuned;
-import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
 import cofh.network.ITileInfoPacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
+import cofh.network.PacketTileInfo;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
 import cofh.util.FluidHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -21,7 +22,6 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 import java.util.Map;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -227,7 +227,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void addEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
+			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
 					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
@@ -235,7 +235,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	public void removeEntry(int theFreq, String freqName) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
+			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
 					.addString(access.isPublic() ? "_public_" : owner.toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
@@ -254,7 +254,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			frequency = theFreq;
-			PacketHandler.sendToServer(CoFHTileInfoPacket.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
+			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.TILE_INFO.ordinal()).addByte(modeItem).addByte(modeFluid)
 					.addByte(modeEnergy).addByte(access.ordinal()).addInt(theFreq));
 		}
 	}
@@ -513,13 +513,13 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiTesseract(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTesseract(inventory, this);
 	}
@@ -593,9 +593,9 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte(modeEnergy);
 		payload.addByte(modeFluid);
@@ -606,14 +606,14 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
 		return null;
 	}
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -627,7 +627,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 	/* ITileInfoPacketHandler */
 	@Override
-	public void handleTileInfoPacket(CoFHPacket payload, boolean isServer, EntityPlayer thePlayer) {
+	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (PacketInfoID.values()[payload.getByte()]) {
 		case NAME_LIST:
@@ -674,7 +674,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		String lookupName = access.isPublic() ? "_Public_" : owner;
 		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
 
-		CoFHPacket payload = CoFHTileInfoPacket.newPacket(this);
+		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
 		if (curList != null) {
 			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
 			payload.addInt(curList.size());
@@ -723,7 +723,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 
 	/* IEnderAttuned */
 	@Override
-	public String getOwnerString() {
+	public String getChannelString() {
 
 		return access.isPublic() ? "_public_" : owner;
 	}
@@ -939,7 +939,36 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		return TEProps.EMPTY_TANK_INFO;
 	}
 
-	/* ISecureable */
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.getControlFromNBT(tag);
+
+		frequency = tag.getInteger("Frequency");
+		modeItem = tag.getByte("ModeItems");
+		modeFluid = tag.getByte("ModeFluid");
+		modeEnergy = tag.getByte("ModeEnergy");
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+
+		tag.setInteger("Frequency", frequency);
+		tag.setByte("ModeItems", modeItem);
+		tag.setByte("ModeFluid", modeFluid);
+		tag.setByte("ModeEnergy", modeEnergy);
+	}
+
+	/* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 

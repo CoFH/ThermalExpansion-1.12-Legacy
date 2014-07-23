@@ -1,5 +1,6 @@
 package thermalexpansion.block.plate;
 
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import net.minecraft.block.Block;
@@ -24,7 +25,7 @@ public class ItemBlockPlate extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.plate." + BlockPlate.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.plate." + BlockPlate.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override

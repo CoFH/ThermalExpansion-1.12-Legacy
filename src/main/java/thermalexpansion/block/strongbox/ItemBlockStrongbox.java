@@ -30,13 +30,13 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.strongbox." + BlockStrongbox.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.strongbox." + BlockStrongbox.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockStrongbox.Types.values()[stack.getItemDamage()]) {
+		switch (BlockStrongbox.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		case RESONANT:
@@ -66,6 +66,12 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	public int getItemEnchantability() {
 
 		return 10;
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
 	}
 
 	public static int getStorageIndex(int type, int enchant) {

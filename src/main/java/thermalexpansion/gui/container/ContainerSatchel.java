@@ -19,6 +19,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
 import thermalexpansion.item.ItemSatchel;
+import thermalexpansion.network.PacketTEBase;
 
 @ChestContainer()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
@@ -82,6 +83,10 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		if (SecurityHelper.setAccess(getContainerStack(), access)) {
 			onSlotChanged();
+
+			if (CoreUtils.isClient()) {
+				PacketTEBase.sendSecurityPacketToServer(this);
+			}
 			return true;
 		}
 		return false;

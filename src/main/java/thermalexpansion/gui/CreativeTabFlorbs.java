@@ -1,6 +1,7 @@
 package thermalexpansion.gui;
 
 import cofh.CoFHCore;
+import cofh.util.CoreUtils;
 import cofh.util.MathHelper;
 import cofh.util.TimeTracker;
 import cpw.mods.fml.relauncher.Side;
@@ -46,9 +47,9 @@ public class CreativeTabFlorbs extends CreativeTabs {
 
 	private void updateIcon() {
 
-		World world = CoFHCore.proxy.getWorld();
+		World world = CoFHCore.proxy.getClientWorld();
 
-		if (CoFHCore.proxy.isClient() && iconTracker.hasDelayPassed(world, 80)) {
+		if (CoreUtils.isClient() && iconTracker.hasDelayPassed(world, 80)) {
 			int next = MathHelper.RANDOM.nextInt(TEFlorbs.florbList.size() - 1);
 			iconIndex = next >= iconIndex ? next + 1 : next;
 			iconTracker.markTime(world);

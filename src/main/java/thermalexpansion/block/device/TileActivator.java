@@ -2,7 +2,7 @@ package thermalexpansion.block.device;
 
 import cofh.core.CoFHProps;
 import cofh.entity.CoFHFakePlayer;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.MathHelper;
@@ -13,12 +13,10 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -55,7 +53,7 @@ public class TileActivator extends TileAugmentable {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Activators to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -389,13 +387,13 @@ public class TileActivator extends TileAugmentable {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiActivator(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerActivator(inventory, this);
 	}
@@ -425,22 +423,9 @@ public class TileActivator extends TileAugmentable {
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
-
-		payload.addBool(leftClick);
-		payload.addBool(actsSneaking);
-		payload.addByte(tickSlot);
-		payload.addByte(angle);
-
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getModePacket() {
-
-		CoFHPacket payload = super.getModePacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(leftClick);
 		payload.addBool(actsSneaking);
@@ -451,7 +436,20 @@ public class TileActivator extends TileAugmentable {
 	}
 
 	@Override
-	protected void handleModePacket(CoFHPacket payload) {
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(leftClick);
+		payload.addBool(actsSneaking);
+		payload.addByte(tickSlot);
+		payload.addByte(angle);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -463,7 +461,7 @@ public class TileActivator extends TileAugmentable {
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

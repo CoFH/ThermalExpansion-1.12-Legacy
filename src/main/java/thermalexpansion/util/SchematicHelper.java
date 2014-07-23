@@ -98,7 +98,7 @@ public class SchematicHelper {
 	public static boolean isSchematic(ItemStack stack) {
 
 		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
-				&& stack.getItemDamage() == ItemDiagram.Types.SCHEMATIC.ordinal();
+				&& ItemHelper.getItemDamage(stack) == ItemDiagram.Types.SCHEMATIC.ordinal();
 	}
 
 	/**

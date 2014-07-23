@@ -43,8 +43,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Satchels to be secureable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Satchel.All.Secureable", enableSecurity, comment);
+		String comment = "Enable this to allow for Satchels to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Satchel.All.Securable", enableSecurity, comment);
 	}
 
 	IIcon latch[] = new IIcon[3];
@@ -115,6 +115,12 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	@Override
 	public boolean isFull3D() {
+
+		return false;
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
 
 		return true;
 	}

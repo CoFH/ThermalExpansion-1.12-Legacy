@@ -25,13 +25,13 @@ public class ItemBlockCache extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.cache." + BlockCache.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.cache." + BlockCache.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockCache.Types.values()[stack.getItemDamage()]) {
+		switch (BlockCache.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		case RESONANT:
@@ -52,6 +52,7 @@ public class ItemBlockCache extends ItemBlockBase {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		list.add(StringHelper.localize("info.cofh.capacity") + ":" + TileCache.SIZE[ItemHelper.getItemDamage(stack)]);
 		if (stack.stackTagCompound == null) {
 			list.add(StringHelper.localize("info.cofh.empty"));
 			return;
@@ -70,5 +71,4 @@ public class ItemBlockCache extends ItemBlockBase {
 			list.add("    " + StringHelper.BRIGHT_GREEN + stored.stackSize + " " + StringHelper.getItemName(stored));
 		}
 	}
-
 }

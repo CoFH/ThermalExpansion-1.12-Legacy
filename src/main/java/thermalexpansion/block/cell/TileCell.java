@@ -2,7 +2,7 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
@@ -11,9 +11,7 @@ import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -35,7 +33,7 @@ public class TileCell extends TileReconfigurable {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Energy Cells to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Cell.All.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Cell.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -232,13 +230,13 @@ public class TileCell extends TileReconfigurable {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiCell(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
 	}
@@ -272,21 +270,9 @@ public class TileCell extends TileReconfigurable {
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
-
-		payload.addInt(energySend);
-		payload.addInt(energyReceive);
-		payload.addInt(energyStorage.getEnergyStored());
-
-		return payload;
-	}
-
-	@Override
-	public CoFHPacket getGuiPacket() {
-
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addInt(energySend);
 		payload.addInt(energyReceive);
@@ -296,9 +282,21 @@ public class TileCell extends TileReconfigurable {
 	}
 
 	@Override
-	public CoFHPacket getModePacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getModePacket();
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(energySend);
+		payload.addInt(energyReceive);
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
 
 		payload.addInt(MathHelper.clampI(energySend, 0, MAX_SEND[getType()]));
 		payload.addInt(MathHelper.clampI(energyReceive, 0, MAX_RECEIVE[getType()]));
@@ -307,7 +305,7 @@ public class TileCell extends TileReconfigurable {
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -317,7 +315,7 @@ public class TileCell extends TileReconfigurable {
 	}
 
 	@Override
-	protected void handleModePacket(CoFHPacket payload) {
+	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
 
@@ -327,7 +325,7 @@ public class TileCell extends TileReconfigurable {
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

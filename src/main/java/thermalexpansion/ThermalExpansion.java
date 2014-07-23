@@ -2,7 +2,7 @@ package thermalexpansion;
 
 import cofh.CoFHCore;
 import cofh.mod.BaseMod;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.updater.UpdateManager;
 import cofh.util.ConfigHandler;
 import cofh.util.StringHelper;
@@ -51,8 +51,8 @@ import thermalexpansion.gui.CreativeTabTools;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.item.ItemSatchel;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.network.GenericTEPacket;
-import thermalexpansion.network.GenericTEPacket.PacketTypes;
+import thermalexpansion.network.PacketTEBase;
+import thermalexpansion.network.PacketTEBase.PacketTypes;
 import thermalexpansion.plugins.TEPlugins;
 import thermalexpansion.util.FMLEventHandler;
 import thermalexpansion.util.FuelHandler;
@@ -143,7 +143,7 @@ public class ThermalExpansion extends BaseMod {
 		/* Register Handlers */
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
-		GenericTEPacket.initialize();
+		PacketTEBase.initialize();
 
 		try {
 			Field eBus = FMLModContainer.class.getDeclaredField("eventBus");
@@ -195,7 +195,7 @@ public class ThermalExpansion extends BaseMod {
 		IMCHandler.instance.handleIMC(theIMC);
 	}
 
-	public void handleConfigSync(CoFHPacket payload) {
+	public void handleConfigSync(PacketCoFHBase payload) {
 
 		TileCell.enableSecurity = payload.getBool();
 
@@ -216,9 +216,9 @@ public class ThermalExpansion extends BaseMod {
 		log.info("Receiving Server Configuration...");
 	}
 
-	public CoFHPacket getConfigSync() {
+	public PacketCoFHBase getConfigSync() {
 
-		CoFHPacket payload = GenericTEPacket.getPacket(PacketTypes.CONFIG_SYNC);
+		PacketCoFHBase payload = PacketTEBase.getPacket(PacketTypes.CONFIG_SYNC);
 
 		payload.addBool(TileCell.enableSecurity);
 

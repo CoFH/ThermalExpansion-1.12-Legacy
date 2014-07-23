@@ -2,7 +2,9 @@ package thermalexpansion.network;
 
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.network.CoFHPacket;
+import cofh.api.tileentity.ISecurable;
+import cofh.api.tileentity.ISecurable.AccessMode;
+import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,15 +13,15 @@ import net.minecraft.world.World;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.container.ISchematicContainer;
 
-public class GenericTEPacket extends CoFHPacket {
+public class PacketTEBase extends PacketCoFHBase {
 
 	public static void initialize() {
 
-		PacketHandler.instance.registerPacket(GenericTEPacket.class);
+		PacketHandler.instance.registerPacket(PacketTEBase.class);
 	}
 
 	public enum PacketTypes {
-		WRITE_SCHEM, RS_POWER_UPDATE, RS_CONFIG_UPDATE, CONFIG_SYNC
+		RS_POWER_UPDATE, RS_CONFIG_UPDATE, SECURITY_UPDATE, WRITE_SCHEM, CONFIG_SYNC
 	}
 
 	@Override
@@ -39,6 +41,10 @@ public class GenericTEPacket extends CoFHPacket {
 				rs = (IRedstoneControl) player.worldObj.getTileEntity(coords[0], coords[1], coords[2]);
 				rs.setControl(ControlMode.values()[getByte()]);
 				return;
+			case SECURITY_UPDATE:
+				if (player.openContainer instanceof ISecurable) {
+					((ISecurable) player.openContainer).setAccess(AccessMode.values()[getByte()]);
+				}
 			case WRITE_SCHEM:
 				if (player.openContainer instanceof ISchematicContainer) {
 					((ISchematicContainer) player.openContainer).writeSchematic();
@@ -66,6 +72,11 @@ public class GenericTEPacket extends CoFHPacket {
 		PacketHandler.sendToServer(getPacket(PacketTypes.RS_CONFIG_UPDATE).addCoords(x, y, z).addByte(rs.getControl().ordinal()));
 	}
 
+	public static void sendSecurityPacketToServer(ISecurable securable) {
+
+		PacketHandler.sendToServer(getPacket(PacketTypes.SECURITY_UPDATE).addByte(securable.getAccess().ordinal()));
+	}
+
 	public static void sendCreateSchematicPacketToServer() {
 
 		PacketHandler.sendToServer(getPacket(PacketTypes.WRITE_SCHEM));
@@ -76,9 +87,9 @@ public class GenericTEPacket extends CoFHPacket {
 		PacketHandler.sendTo(ThermalExpansion.instance.getConfigSync(), player);
 	}
 
-	public static CoFHPacket getPacket(PacketTypes theType) {
+	public static PacketCoFHBase getPacket(PacketTypes theType) {
 
-		return new GenericTEPacket().addByte(theType.ordinal());
+		return new PacketTEBase().addByte(theType.ordinal());
 	}
 
 }

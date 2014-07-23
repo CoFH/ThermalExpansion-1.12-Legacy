@@ -1,6 +1,6 @@
 package thermalexpansion.block.machine;
 
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.InventoryHelper;
 import cofh.util.ItemHelper;
 import cofh.util.MathHelper;
@@ -9,9 +9,7 @@ import cofh.util.fluid.FluidTankAdv;
 import cofh.util.inventory.InventoryCraftingFalse;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -263,13 +261,13 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	/* GUI METHODS */
 	@Override
-	public GuiContainer getGuiClient(InventoryPlayer inventory) {
+	public Object getGuiClient(InventoryPlayer inventory) {
 
 		return new GuiAssembler(inventory, this);
 	}
 
 	@Override
-	public Container getGuiServer(InventoryPlayer inventory) {
+	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerAssembler(inventory, this);
 	}
@@ -307,15 +305,15 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 		payload.addFluidStack(getTankFluid());
 		return payload;
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 		tank.setFluid(payload.getFluidStack());

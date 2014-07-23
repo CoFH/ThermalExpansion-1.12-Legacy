@@ -4,6 +4,7 @@ import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.item.ItemBlockBase;
 import cofh.util.AugmentHelper;
 import cofh.util.EnergyHelper;
+import cofh.util.ItemHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.SecurityHelper;
 import cofh.util.StringHelper;
@@ -61,7 +62,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
@@ -90,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 		SecurityHelper.addAccessInformation(stack, list);
 		// RSControlHelper.addRSControlInformation(stack, list);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[stack.getItemDamage()]));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)]));
 	}
 
 	public final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };

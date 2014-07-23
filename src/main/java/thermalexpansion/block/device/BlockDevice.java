@@ -266,10 +266,10 @@ public class BlockDevice extends BlockTEBase {
 		}
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
-		activator = new ItemStack(this, 1, Types.ACTIVATOR.ordinal());
-		breaker = new ItemStack(this, 1, Types.BREAKER.ordinal());
+		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
+		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
-		nullifier = new ItemStack(this, 1, Types.NULLIFIER.ordinal());
+		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
 		// GameRegistry.registerCustomItemStack("lexicon", lexicon);

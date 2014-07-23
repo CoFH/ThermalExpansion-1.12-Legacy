@@ -10,7 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -133,11 +132,6 @@ public class BlockDynamo extends BlockTEBase {
 	}
 
 	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random random) {
-
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
@@ -179,11 +173,11 @@ public class BlockDynamo extends BlockTEBase {
 		if (defaultRedstoneControl) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
 		}
-		dynamoSteam = new ItemStack(this, 1, Types.STEAM.ordinal());
-		dynamoMagmatic = new ItemStack(this, 1, Types.MAGMATIC.ordinal());
-		dynamoCompression = new ItemStack(this, 1, Types.COMPRESSION.ordinal());
-		dynamoReactant = new ItemStack(this, 1, Types.REACTANT.ordinal());
-		dynamoEnervation = new ItemStack(this, 1, Types.ENERVATION.ordinal());
+		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.STEAM.ordinal()));
+		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.MAGMATIC.ordinal()));
+		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.COMPRESSION.ordinal()));
+		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.REACTANT.ordinal()));
+		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.ENERVATION.ordinal()));
 
 		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
 		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);

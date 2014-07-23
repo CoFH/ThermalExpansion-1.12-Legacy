@@ -67,7 +67,7 @@ public class TileTesseractBound extends TileRSControl implements ISecurable, ISi
 		return false;
 	}
 
-	/* ISecureable */
+	/* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 

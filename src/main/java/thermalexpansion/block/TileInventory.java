@@ -2,7 +2,7 @@ package thermalexpansion.block;
 
 import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
@@ -180,9 +180,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte((byte) access.ordinal());
 		payload.addString(owner);
@@ -192,7 +192,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -297,7 +297,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
-	/* ISecureable */
+	/* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 

@@ -4,6 +4,7 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.item.ItemBase;
 import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -43,7 +44,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 
-		return "item.thermalexpansion.capacitor." + NAMES[item.getItemDamage()];
+		return "item.thermalexpansion.capacitor." + NAMES[ItemHelper.getItemDamage(item)];
 	}
 
 	@Override
@@ -58,14 +59,14 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		if (stack.getItemDamage() == Types.CREATIVE.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
-			list.add(StringHelper.localize("info.cofh.send") + ": " + SEND[stack.getItemDamage()] + " RF/t");
+			list.add(StringHelper.localize("info.cofh.send") + ": " + SEND[ItemHelper.getItemDamage(stack)] + " RF/t");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(STORAGE[stack.getItemDamage()]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[stack.getItemDamage()] + "/"
-					+ RECEIVE[stack.getItemDamage()] + " RF/t");
+					+ StringHelper.getScaledNumber(STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
+					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		}
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
@@ -76,7 +77,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));
 			list.add(StringHelper.getActivationText("info.thermalexpansion.capacitor.1"));
 		}
-		if (stack.getItemDamage() == Types.POTATO.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == Types.POTATO.ordinal()) {
 			list.add(StringHelper.getFlavorText("info.thermalexpansion.capacitor.potato"));
 		}
 	}
@@ -89,7 +90,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		}
 		InventoryPlayer playerInv = ((EntityPlayer) entity).inventory;
 		IEnergyContainerItem containerItem;
-		int toSend = Math.min(getEnergyStored(stack), SEND[stack.getItemDamage()]);
+		int toSend = Math.min(getEnergyStored(stack), SEND[ItemHelper.getItemDamage(stack)]);
 
 		if (EnergyHelper.isEnergyContainerItem(playerInv.getCurrentItem())) {
 			containerItem = (IEnergyContainerItem) playerInv.mainInventory[playerInv.currentItem].getItem();
@@ -143,36 +144,37 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public boolean isDamaged(ItemStack stack) {
 
-		return stack.getItemDamage() != Types.CREATIVE.ordinal();
+		return ItemHelper.getItemDamage(stack) != Types.CREATIVE.ordinal();
 	}
 
 	@Override
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return 1 + STORAGE[stack.getItemDamage()];
+			return 1 + STORAGE[ItemHelper.getItemDamage(stack)];
 		}
-		return 1 + STORAGE[stack.getItemDamage()] - stack.stackTagCompound.getInteger("Energy");
+		return 1 + STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return 1 + STORAGE[stack.getItemDamage()];
+		return 1 + STORAGE[ItemHelper.getItemDamage(stack)];
 	}
 
 	/* IEnergyContainerItem */
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-		if (container.getItemDamage() <= Types.POTATO.ordinal()) {
+		int metadata = ItemHelper.getItemDamage(container);
+		if (metadata <= Types.POTATO.ordinal()) {
 			return 0;
 		}
 		if (container.stackTagCompound == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(STORAGE[container.getItemDamage()] - stored, RECEIVE[container.getItemDamage()]));
+		int receive = Math.min(maxReceive, Math.min(STORAGE[metadata] - stored, RECEIVE[metadata]));
 
 		if (!simulate) {
 			stored += receive;
@@ -188,7 +190,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int extract = Math.min(maxExtract, Math.min(stored, SEND[container.getItemDamage()]));
+		int extract = Math.min(maxExtract, Math.min(stored, SEND[ItemHelper.getItemDamage(container)]));
 
 		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored -= extract;

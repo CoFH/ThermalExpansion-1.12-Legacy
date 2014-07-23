@@ -269,17 +269,17 @@ public class BlockMachine extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		furnace = new ItemStack(this, 1, Types.FURNACE.ordinal());
-		pulverizer = new ItemStack(this, 1, Types.PULVERIZER.ordinal());
-		sawmill = new ItemStack(this, 1, Types.SAWMILL.ordinal());
-		smelter = new ItemStack(this, 1, Types.SMELTER.ordinal());
-		crucible = new ItemStack(this, 1, Types.CRUCIBLE.ordinal());
-		transposer = new ItemStack(this, 1, Types.TRANSPOSER.ordinal());
-		precipitator = new ItemStack(this, 1, Types.PRECIPITATOR.ordinal());
-		extruder = new ItemStack(this, 1, Types.EXTRUDER.ordinal());
-		accumulator = new ItemStack(this, 1, Types.ACCUMULATOR.ordinal());
-		assembler = new ItemStack(this, 1, Types.ASSEMBLER.ordinal());
-		charger = new ItemStack(this, 1, Types.CHARGER.ordinal());
+		furnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.FURNACE.ordinal()));
+		pulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.PULVERIZER.ordinal()));
+		sawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.SAWMILL.ordinal()));
+		smelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.SMELTER.ordinal()));
+		crucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CRUCIBLE.ordinal()));
+		transposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.TRANSPOSER.ordinal()));
+		precipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.PRECIPITATOR.ordinal()));
+		extruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.EXTRUDER.ordinal()));
+		accumulator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ACCUMULATOR.ordinal()));
+		assembler = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ASSEMBLER.ordinal()));
+		charger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CHARGER.ordinal()));
 
 		GameRegistry.registerCustomItemStack("furnace", furnace);
 		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);

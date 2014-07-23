@@ -38,7 +38,7 @@ public class ItemBlockDevice extends ItemBlockBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.device." + BlockDevice.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
@@ -52,7 +52,7 @@ public class ItemBlockDevice extends ItemBlockBase {
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, list);
-		if (stack.getItemDamage() == BlockDevice.Types.WORKBENCH.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == BlockDevice.Types.WORKBENCH.ordinal()) {
 			ItemHelper.addInventoryInformation(stack, list, 0, 20);
 		}
 	}

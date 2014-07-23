@@ -4,9 +4,9 @@ import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.IRecipeHandler;
 import cofh.gui.GuiBase;
-import cofh.network.CoFHPacket;
-import cofh.network.CoFHTileInfoPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
+import cofh.network.PacketTileInfo;
 
 import java.util.List;
 
@@ -39,7 +39,7 @@ public class NEIRecipeOverlayHandler implements IOverlayHandler {
 				Slot curSlot = (Slot) curObj;
 				curSlot.putStack(null);
 			}
-			CoFHPacket payload = CoFHTileInfoPacket.newPacket(((GuiWorkbench) firstGui).myTile);
+			PacketCoFHBase payload = PacketTileInfo.newPacket(((GuiWorkbench) firstGui).myTile);
 			payload.addByte(TileWorkbench.PacketInfoID.NEI_SUP.ordinal());
 			boolean foundSlots = false;
 			List<PositionedStack> item = recipe.getIngredientStacks(recipeIndex);

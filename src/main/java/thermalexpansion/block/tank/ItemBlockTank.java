@@ -1,6 +1,7 @@
 package thermalexpansion.block.tank;
 
 import cofh.item.ItemBlockBase;
+import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 
 import java.util.List;
@@ -27,13 +28,13 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.tank." + BlockTank.NAMES[stack.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.tank." + BlockTank.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockTank.Types.values()[stack.getItemDamage()]) {
+		switch (BlockTank.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.epic;
 		case RESONANT:
@@ -57,10 +58,10 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Fluid")) {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
-			if (stack.getItemDamage() == BlockTank.Types.CREATIVE.ordinal()) {
+			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
 				list.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
 			} else {
-				list.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[stack.getItemDamage()] + " mB");
+				list.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[ItemHelper.getItemDamage(stack)] + " mB");
 			}
 			return;
 		}
@@ -76,20 +77,20 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 			} else if (fluid.getFluid().getRarity() == EnumRarity.epic) {
 				color = StringHelper.PINK;
 			}
-			list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName() + StringHelper.LIGHT_GRAY);
+			list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
 
-			if (stack.getItemDamage() == BlockTank.Types.CREATIVE.ordinal()) {
+			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
 				list.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
 			} else {
-				list.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[stack.getItemDamage()] + " mB");
+				list.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[ItemHelper.getItemDamage(stack)] + " mB");
 			}
 		} else {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
-			if (stack.getItemDamage() == BlockTank.Types.CREATIVE.ordinal()) {
+			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
 				list.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
 			} else {
-				list.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[stack.getItemDamage()] + " mB");
+				list.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[ItemHelper.getItemDamage(stack)] + " mB");
 			}
 		}
 	}
@@ -107,7 +108,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public int getCapacity(ItemStack container) {
 
-		return TileTank.CAPACITY[container.getItemDamage()];
+		return TileTank.CAPACITY[ItemHelper.getItemDamage(container)];
 	}
 
 	@Override
@@ -178,7 +179,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		}
 		int drained = Math.min(stack.amount, maxDrain);
 
-		if (doDrain && container.getItemDamage() != BlockTank.Types.CREATIVE.ordinal()) {
+		if (doDrain && ItemHelper.getItemDamage(container) != BlockTank.Types.CREATIVE.ordinal()) {
 			if (maxDrain >= stack.amount) {
 				container.stackTagCompound.removeTag("Fluid");
 

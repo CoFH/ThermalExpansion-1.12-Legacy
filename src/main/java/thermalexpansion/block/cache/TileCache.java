@@ -3,7 +3,7 @@ package thermalexpansion.block.cache;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
-import cofh.network.CoFHPacket;
+import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.ItemHelper;
@@ -188,9 +188,9 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 		payload.addByte(type);
 		payload.addByte(facing);
 		payload.addBool(locked);
@@ -204,7 +204,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 

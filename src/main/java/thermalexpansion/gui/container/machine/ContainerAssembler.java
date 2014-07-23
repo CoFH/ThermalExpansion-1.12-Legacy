@@ -1,12 +1,12 @@
 package thermalexpansion.gui.container.machine;
 
-import cofh.CoFHCore;
 import cofh.gui.container.ContainerFalse;
 import cofh.gui.slot.SlotCraftingLocked;
 import cofh.gui.slot.SlotEnergy;
 import cofh.gui.slot.SlotFalseCopy;
 import cofh.gui.slot.SlotRemoveOnly;
 import cofh.gui.slot.SlotSpecificItem;
+import cofh.util.CoreUtils;
 import cofh.util.ItemHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,7 +22,7 @@ import thermalexpansion.block.machine.TileAssembler;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.item.TEItems;
-import thermalexpansion.network.GenericTEPacket;
+import thermalexpansion.network.PacketTEBase;
 import thermalexpansion.util.SchematicHelper;
 
 public class ContainerAssembler extends ContainerTEBase implements ISchematicContainer {
@@ -71,9 +71,9 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 	@Override
 	public ItemStack slotClick(int slot, int x, int y, EntityPlayer player) {
 
-		if (slot == resultSlot.slotNumber && resultSlot.getHasStack() && CoFHCore.proxy.isClient()) {
+		if (slot == resultSlot.slotNumber && resultSlot.getHasStack() && CoreUtils.isClient()) {
 			if (SchematicHelper.isSchematic(myTile.getStackInSlot(0))) {
-				GenericTEPacket.sendCreateSchematicPacketToServer();
+				PacketTEBase.sendCreateSchematicPacketToServer();
 				writeSchematic();
 			}
 		}

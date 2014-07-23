@@ -1,7 +1,7 @@
 package thermalexpansion.render;
 
-import cofh.CoFHCore;
 import cofh.render.RenderUtils;
+import cofh.util.CoreUtils;
 import cofh.util.StringHelper;
 
 import net.minecraft.client.Minecraft;
@@ -23,7 +23,7 @@ public class RenderSchematic implements IItemRenderer {
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 
 		if (StringHelper.isShiftKeyDown() && type == ItemRenderType.INVENTORY) {
-			currentItem = SchematicHelper.getOutput(item, CoFHCore.proxy.getClientPlayer().worldObj);
+			currentItem = SchematicHelper.getOutput(item, CoreUtils.getClientPlayer().worldObj);
 			if (currentItem != null && !currentItem.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())) {
 				return true;
 			}

@@ -3,6 +3,7 @@ package thermalexpansion.item;
 import cofh.item.ItemBase;
 import cofh.render.IconRegistry;
 import cofh.util.CoreUtils;
+import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 
@@ -80,7 +81,7 @@ public class ItemFlorb extends ItemBase {
 			return;
 		}
 		if (stack.stackTagCompound == null) {
-			if (stack.getItemDamage() == 0) {
+			if (ItemHelper.getItemDamage(stack) == 0) {
 				list.add(StringHelper.localize("info.thermalexpansion.florb.0"));
 			} else {
 				list.add(StringHelper.localize("info.thermalexpansion.florb.1"));

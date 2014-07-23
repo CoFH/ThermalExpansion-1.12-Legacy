@@ -2,6 +2,7 @@ package thermalexpansion.item;
 
 import cofh.api.tileentity.IPortableData;
 import cofh.item.ItemBase;
+import cofh.util.ItemHelper;
 import cofh.util.ServerHelper;
 import cofh.util.StringHelper;
 
@@ -31,7 +32,7 @@ public class ItemDiagram extends ItemBase {
 
 		String baseName = StringHelper.localize(getUnlocalizedName(stack) + ".name");
 
-		if (stack.getItemDamage() == Types.SCHEMATIC.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			return baseName + SchematicHelper.getOutputName(stack);
 		}
 		return baseName + RedprintHelper.getName(stack);
@@ -40,7 +41,7 @@ public class ItemDiagram extends ItemBase {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		if (stack.getItemDamage() == Types.SCHEMATIC.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			return SchematicHelper.getOutputName(stack).isEmpty() ? EnumRarity.common : EnumRarity.uncommon;
 		}
 		return RedprintHelper.getName(stack).isEmpty() ? EnumRarity.common : EnumRarity.uncommon;
@@ -49,7 +50,7 @@ public class ItemDiagram extends ItemBase {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
-		if (stack.getItemDamage() == Types.SCHEMATIC.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			SchematicHelper.addSchematicInformation(stack, list);
 		} else {
 			RedprintHelper.addRedprintInformation(stack, list);

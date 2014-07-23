@@ -1,16 +1,17 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.CoFHCore;
 import cofh.api.core.IAugmentable;
 import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.network.CoFHPacket;
 import cofh.network.ITileInfoPacketHandler;
+import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
+import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
@@ -38,7 +39,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	public static void configure() {
 
 		String comment = "Enable this to allow for Dynamos to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.All.Secureable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -317,9 +318,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	/* NETWORK METHODS */
 	@Override
-	public CoFHPacket getPacket() {
+	public PacketCoFHBase getPacket() {
 
-		CoFHPacket payload = super.getPacket();
+		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte(facing);
 		payload.addBool(augmentRedstoneControl);
@@ -328,9 +329,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	}
 
 	@Override
-	public CoFHPacket getGuiPacket() {
+	public PacketCoFHBase getGuiPacket() {
 
-		CoFHPacket payload = super.getGuiPacket();
+		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
@@ -342,7 +343,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	}
 
 	@Override
-	protected void handleGuiPacket(CoFHPacket payload) {
+	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
@@ -361,7 +362,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	/* ITilePacketHandler */
 	@Override
-	public void handleTilePacket(CoFHPacket payload, boolean isServer) {
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
@@ -397,14 +398,14 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 				augmentStatus[i] = installAugment(i);
 			}
 		}
-		if (CoFHCore.proxy.isServer()) {
+		if (CoreUtils.isServer()) {
 			onInstalled();
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}
 
 	/* AUGMENT HELPERS */
-	private boolean hasAugment(String type, int augLevel) {
+	protected boolean hasAugment(String type, int augLevel) {
 
 		for (int i = 0; i < augments.length; i++) {
 			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
@@ -414,7 +415,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return false;
 	}
 
-	private boolean hasDuplicateAugment(String type, int augLevel, int slot) {
+	protected boolean hasDuplicateAugment(String type, int augLevel, int slot) {
 
 		for (int i = 0; i < augments.length; i++) {
 			if (i != slot && Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
@@ -424,7 +425,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return false;
 	}
 
-	private boolean hasAugmentChain(String type, int augLevel) {
+	protected boolean hasAugmentChain(String type, int augLevel) {
 
 		boolean preReq = true;
 		for (int i = 1; i < augLevel; i++) {
@@ -433,7 +434,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return preReq;
 	}
 
-	private boolean installAugment(int slot) {
+	protected boolean installAugment(int slot) {
 
 		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
 		boolean installed = false;
@@ -489,14 +490,14 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return installed;
 	}
 
-	private void onInstalled() {
+	protected void onInstalled() {
 
 		if (!augmentRedstoneControl) {
 			this.rsMode = ControlMode.DISABLED;
 		}
 	}
 
-	private void resetAugments() {
+	protected void resetAugments() {
 
 		energyMod = 1;
 		fuelMod = FUEL_MOD;
@@ -572,6 +573,27 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		return augmentCoilDuct || from.ordinal() != facing;
 	}
 
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		if (augmentRedstoneControl) {
+			RedstoneControlHelper.getControlFromNBT(tag);
+		}
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+	}
+
 	/* IReconfigurableFacing */
 	@Override
 	public int getFacing() {
@@ -592,8 +614,8 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		for (int i = facing + 1; i < facing + 6; i++) {
 			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
 				facing = (byte) (i % 6);
-				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 				updateAdjacentHandlers();
+				markDirty();
 				sendUpdatePacket(Side.CLIENT);
 				return true;
 			}
