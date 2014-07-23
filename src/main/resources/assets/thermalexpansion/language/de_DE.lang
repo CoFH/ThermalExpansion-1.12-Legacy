@@ -1,0 +1,342 @@
+#de_DE
+
+achievement.thermalexpansion.base=Wilkommen zu Thermal Expansion!
+achievement.thermalexpansion.base.desc=Und so beginnt es.
+achievement.thermalexpansion.machineFrame=Eingerahmt!
+achievement.thermalexpansion.machineFrame.desc=Du wirst wahrscheinlich eine Menge davon machen.
+
+achievement.thermalexpansion.furnace=Kohle ist was für Trottel
+achievement.thermalexpansion.furnace.desc=Schmelze Dinge mit Stil!
+achievement.thermalexpansion.pulverizer=MACHINE SMASH!
+achievement.thermalexpansion.pulverizer.desc=Mikriges Erz.
+achievement.thermalexpansion.sawmill=Hasse Bäume, Liebe Holz
+achievement.thermalexpansion.sawmill.desc=Wie Bäume kloppen, nur besser.
+achievement.thermalexpansion.smelter=Zwei Barren Rein, Ein Barren Raus
+achievement.thermalexpansion.smelter.desc=Absolut nicht für Essen.
+achievement.thermalexpansion.crucible=Schmelze Alles
+achievement.thermalexpansion.crucible.desc=Ja, es kann Lava machen. Du Monster.
+achievement.thermalexpansion.transposer=(Fast) Gratis Nachfüllen
+achievement.thermalexpansion.transposer.desc=Eimer per Hand zu füllen, ist harte Arbeit.
+achievement.thermalexpansion.precipitator=Schneeballschlacht!
+achievement.thermalexpansion.precipitator.desc=Wird keinen Gelben Schnee machen.
+achievement.thermalexpansion.extruder=Dieses Ding Rockt!
+achievement.thermalexpansion.extruder.desc=Es Obsidiant auch!
+achievement.thermalexpansion.accumulator=Wasser, Überall Wasser
+achievement.thermalexpansion.accumulator.desc=Nein, es funktioniert nicht mit Lava. Du Monster.
+achievement.thermalexpansion.assembler=Ein Boshafter Zyklus
+achievement.thermalexpansion.assembler.desc=Nein, das wird es nicht herstellen.
+achievement.thermalexpansion.charger=What The Flux?
+achievement.thermalexpansion.charger.desc=Flux kennt keine Grenzen. Also pass auf deine Hände auf.
+
+achievement.thermalexpansion.wrench=Sieht aus wie ein Nagel!
+achievement.thermalexpansion.wrench.desc=Jedes Werkeug ist ein Hammer, wenn du *wirklich* einen Brauchst.
+achievement.thermalexpansion.multimeter=B.S.E.E.
+achievement.thermalexpansion.multimeter.desc=Es gibt keine Unfälle, nur Zufälle.
+achievement.thermalexpansion.florb=Ich kann das werfen?!
+achievement.thermalexpansion.florb.desc=Beinhaltet eine Flüssigkeit. Du kannst ihn werfen.
+achievement.thermalexpansion.florbMagmatic=Siehe die Welt brennen
+achievement.thermalexpansion.florbMagmatic.desc=Florb. Ja, er hält Lava. Du Monster.
+
+achievement.thermalexpansion.potatoBattery=Halbfertige Idee!
+achievement.thermalexpansion.potatoBattery.desc=Po-Tay-To
+
+achievement.thermalexpansion.fluidRedstone=Redstone-Revolution!
+achievement.thermalexpansion.fluidRedstone.desc=Oben ist noch immer oben, unten ist noch immer unten. Und das hier ist noch immer spitze.
+achievement.thermalexpansion.fluidGlowstone=Es Fließt nach oben?!
+achievement.thermalexpansion.fluidGlowstone.desc=Also das ist, wie diese Formationen vorkommen! Jetzt macht alles einen Unsinn!
+achievement.thermalexpansion.fluidEnder=Wibbly-Wobbly, Timey-Wimey.
+achievement.thermalexpansion.fluidEnder.desc=Das Ende ist Eigentlich nur der Anfang.
+achievement.thermalexpansion.fluidPyrotheum=OH GOTT WARUM?!
+achievement.thermalexpansion.fluidPyrotheum.desc=Das ist eigentlich schlimmer als Lava. Du Monster.
+achievement.thermalexpansion.fluidCryotheum=Der Winter kommt
+achievement.thermalexpansion.fluidCryotheum.desc=Dies ist auch schlimmer als Lava, nur kalt. Du Yeti.
+achievement.thermalexpansion.fluidCoal=Liquifaktion ist die Rettung!
+achievement.thermalexpansion.fluidCoal.desc=Dies kann *vielleicht* nicht gut für die Umwelt sein.
+
+death.attack.pyrotheum=%1$s verwechelte Pyrotheum mit Wasser!
+death.attack.pyrotheum.player=%1$s wurde lebendig verbrannt, während er vor %2$s floh!
+death.attack.cryotheum=%1$s fror zu Tode!
+death.attack.cryotheum.player=%1$s fror zu Tode, während er vor %2$s floh!
+death.attack.mana=%1$s wurde von rohem Mana zerfetzt!
+death.attack.mana.player=%1$s floss in einen anderen Daseinszustand, während er vor %2$s floh!
+death.attack.blizz=%1$s fand einen frostigen Tod!
+
+entity.Blizz.name=Blizz
+
+info.thermalexpansion.schematic=Schema
+
+info.thermalexpansion.modeItem=Item-Modus
+info.thermalexpansion.modeFluid=Flüssigkeitsmodus
+info.thermalexpansion.modeEnergy=Energiemodus
+info.thermalexpansion.modeBlocked=Blockiert
+info.thermalexpansion.modeSend=Nur Senden
+info.thermalexpansion.modeRecv=Nur Empfangen
+info.thermalexpansion.modeSendRecv=Senden/Empfangen
+
+info.thermalexpansion.neihandler.furnace=Redstone-Ofen
+info.thermalexpansion.neihandler.pulverizer=Pulverisierer
+info.thermalexpansion.neihandler.sawmill=Sägewerk
+info.thermalexpansion.neihandler.smelter=Inductionsschmelzer
+info.thermalexpansion.neihandler.crucible=Magmatiegel
+info.thermalexpansion.neihandler.transposer=Flüssigtransposer
+
+info.thermalexpansion.activator.clickLeft=Linksklick
+info.thermalexpansion.activator.clickRight=Rechtsklick
+info.thermalexpansion.activator.sneakOn=Schleichen
+info.thermalexpansion.activator.sneakOff=Nicht Schleichen
+info.thermalexpansion.activator.slotsFirst=Nur der erste Slot
+info.thermalexpansion.activator.slotsRR=RoundRobin-Itemnutzung
+info.thermalexpansion.activator.slotsRand=Nutze Items willkürlich
+info.thermalexpansion.activator.angleLow=Ziel Niedrig
+info.thermalexpansion.activator.angleLevel=Ziel-Level
+info.thermalexpansion.activator.angleHigh=Ziel Hoch
+
+info.thermalexpansion.cell.decRecv=Reduziere RF-Input um
+info.thermalexpansion.cell.decSend=Reduziere RF-Output um
+info.thermalexpansion.cell.incRecv=Erhöhe RF-Input um
+info.thermalexpansion.cell.incSend=Erhöhe RF Output um
+info.thermalexpansion.cell.maxIn=Max Input
+info.thermalexpansion.cell.maxOut=Max Output
+
+info.thermalexpansion.fluidfilter=Flüssigkeitsfilter
+
+info.thermalexpansion.itemhud.stuffed=Verstopfende Items
+
+info.thermalexpansion.itemfilter0=Item-Filter: Unten
+info.thermalexpansion.itemfilter1=Item-Filter: Oben
+info.thermalexpansion.itemfilter2=Item-Filter: Nord
+info.thermalexpansion.itemfilter3=Item-Filter: Süd
+info.thermalexpansion.itemfilter4=Item-Filter: West
+info.thermalexpansion.itemfilter5=Item-Filter: Ost
+
+info.thermalexpansion.itemfilter.listBlack=Blacklist
+info.thermalexpansion.itemfilter.listWhite=Whitelist
+info.thermalexpansion.itemfilter.metadataOn=Nutze Metadata
+info.thermalexpansion.itemfilter.metadataOff=Ignoriere Metadata
+info.thermalexpansion.itemfilter.oreDictOn=Nutze Ore Dictionary
+info.thermalexpansion.itemfilter.oreDictOff=Ignoriere Ore Dictionary
+info.thermalexpansion.itemfilter.nbtOn=Nutze NBT
+info.thermalexpansion.itemfilter.nbtOff=Ignoriere NBT
+info.thermalexpansion.itemfilter.incSend=Erhöhe Sende-Stapelgröße um
+info.thermalexpansion.itemfilter.decSend=Verringere Sende-Stapelgröße um
+info.thermalexpansion.itemfilter.maxSend=Stapelgröße
+
+info.thermalexpansion.transposer.toggleEmpty=Schalte: Leeren
+info.thermalexpansion.transposer.toggleFill=Schalte: Füllen
+info.thermalexpansion.transposer.toggleWait=Geschaltet
+
+info.thermalexpansion.workbench.gridClear=Leere Werkgitter
+info.thermalexpansion.workbench.gridSet=Stelle Werkgitter von Schema ein
+info.thermalexpansion.workbench.noRecipe=Kein Rezept
+info.thermalexpansion.workbench.writeSchematic=Beschreibe Schema
+
+info.thermalexpansion.capacitor1=Aktiviere, um getragenes Item aufzuladen.
+info.thermalexpansion.capacitor2=Nutze beim Schleichen, um zu aktivieren.
+info.thermalexpansion.capacitor3=Lädt getragene Items.
+info.thermalexpansion.capacitor4=Nutze beim Schleichen, um zu deaktivieren.
+info.thermalexpansion.capacitor5=Muss in der Hotbar bleiben.
+info.thermalexpansion.capacitor.potato=Clever! Aber nicht wiederaufladbar.
+
+info.thermalexpansion.conduit.energy=Transferiert Energie (Redstone Flux).
+info.thermalexpansion.conduit.fluid1=Transferiert Flüssigkeit.
+info.thermalexpansion.conduit.fluid2=Rate variiert je nach Flüssigkeit.
+info.thermalexpansion.conduit.item=Transferiert Items.
+info.thermalexpansion.conduit.itemFast=Transferiert Items schnell.
+info.thermalexpansion.conduit.opaque=Inhalt kann nicht gesehen werden.
+info.thermalexpansion.conduit.rate=Rate
+info.thermalexpansion.conduit.servo0=Installiere einen Pneumatischen Servo zum Upgraden.
+info.thermalexpansion.conduit.servo1=Konfiguriere mit leerer Hand, sobald geupgraded.
+
+info.thermalexpansion.dynamo.generate=Generiert Energie (Redstone Flux).
+info.thermalexpansion.dynamo.steam1=Benötigt Wasser und festen Brennstoff.
+info.thermalexpansion.dynamo.steam2=Dampf kann stattdessen auch hineingepumpt werden.
+info.thermalexpansion.dynamo.magmatic=Benötigt heiße Flüssigkeiten.
+info.thermalexpansion.dynamo.compression=Benötigt flüssigen Brennstoff und Kühlmittel.
+info.thermalexpansion.dynamo.reactant=Benötigt flüssigen Treibstoff und festen Reaktanten.
+
+info.thermalexpansion.florb1=Hält 1000 mB der meisten Flüssigkeiten.
+info.thermalexpansion.florb1a=Hält 1000 mB der meisten heißen Flüssigkeiten.
+info.thermalexpansion.florb2=Fülle mit einem
+info.thermalexpansion.florb3=Ja, du kannst ihn werfen.
+info.thermalexpansion.florb4=Diese Flüssigkeit ist leichter als Luft.
+info.thermalexpansion.florb5=Der Florb wird weiter fliegen.
+
+item.thermalexpansion.tool.invarSword.name=Invarschwert
+item.thermalexpansion.tool.invarShovel.name=Invarschaufel
+item.thermalexpansion.tool.invarPickaxe.name=Invarspitzhacke
+item.thermalexpansion.tool.invarAxe.name=Invaraxt
+item.thermalexpansion.tool.invarHoe.name=Invarhacke
+item.thermalexpansion.tool.invarShears.name=Invarschere
+item.thermalexpansion.tool.invarFishingRod.name=Invarangelrute
+item.thermalexpansion.tool.invarSickle.name=Invarsichel
+item.thermalexpansion.tool.invarBattleWrench.name=Invar-Kampfschraubenschlüssel
+
+item.thermalexpansion.tool.wrench.name=Sichelhammer
+item.thermalexpansion.tool.multimeter.name=Multimeter
+item.thermalexpansion.tool.debugger.name=Debugger
+
+item.thermalexpansion.armor.invarHelmet.name=Invarhelm
+item.thermalexpansion.armor.invarPlate.name=Invarbrustpanzer
+item.thermalexpansion.armor.invarLegs.name=Invarbeinschutz
+item.thermalexpansion.armor.invarBoots.name=Invarstiefel
+
+item.thermalexpansion.capacitor.capacitorPotato.name=Knolliger Fluxkompensator
+item.thermalexpansion.capacitor.capacitorBasic.name=Fluxkompensator
+item.thermalexpansion.capacitor.capacitorHardened.name=Gehärteter Fluxkompensator
+item.thermalexpansion.capacitor.capacitorReinforced.name=Redstone-Fluxkompensator
+item.thermalexpansion.capacitor.capacitorResonant.name=Resonanter Fluxkompensator
+item.thermalexpansion.capacitor.capacitorCreative.name=Kreativer Fluxkompensator
+
+item.thermalexpansion.diagram.schematic=Schema
+
+item.thermalexpansion.florb.florb.name=Florb
+item.thermalexpansion.florb.florbMagmatic.name=Magmatischer Florb
+
+item.thermalexpansion.component.machineFrame.name=Maschinenrahmen
+item.thermalexpansion.component.cellBasicFrame.name=Leadstone-Energiezellenrahmen
+item.thermalexpansion.component.cellReinforcedFrameEmpty.name=Redstone-Energiezellenrahmen(Leer)
+item.thermalexpansion.component.cellReinforcedFrameFull.name=Redstone-Energiezellenrahmen (Voll)
+item.thermalexpansion.component.energyConduitEmpty.name=Redstone-Energieleitung (Leer)
+item.thermalexpansion.component.tesseractFrameEmpty.name=Tesseraktrahmen (Leer)
+item.thermalexpansion.component.tesseractFrameFull.name=Tesseraktrahmen (Voll)
+item.thermalexpansion.component.lampFrame.name=Illuminatorrahmen
+
+item.thermalexpansion.material.woodchips.name=Holzspäne
+item.thermalexpansion.material.dustWood.name=Sägemehl
+item.thermalexpansion.material.dustWoodCompressed.name=Gepresstes Sägemehl
+item.thermalexpansion.material.slag.name=Schlacke
+item.thermalexpansion.material.slagRich.name=Reiche Schlacke
+item.thermalexpansion.material.dustPyrotheum.name=Pyrotheumstaub
+item.thermalexpansion.material.dustCryotheum.name=Kryotheumstaub
+
+item.thermalexpansion.material.pneumaticServo.name=Pneumatischer Servo
+item.thermalexpansion.material.powerCoilGold.name=Redstone-Rezeptionsspule
+item.thermalexpansion.material.powerCoilSilver.name=Redstone-Transmissionsspule
+item.thermalexpansion.material.powerCoilElectrum.name=Redstone-Leitspule
+
+itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blöcke
+itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Werkzeug
+itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
+itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
+
+message.thermalexpansion.conduit.energy0=Netzwerksättigung
+message.thermalexpansion.conduit.energy1=Überwache für 20 ticks
+message.thermalexpansion.conduit.energy2=Durchschnittliche Verteilung
+message.thermalexpansion.conduit.energy3=ticks
+
+message.thermalexpansion.conduit.item0=Modus: Normal
+message.thermalexpansion.conduit.item1=Modus: Dicht
+message.thermalexpansion.conduit.item2=Modus: Vakuum
+message.thermalexpansion.conduit.item3=Modus: Round-Robin
+
+message.thermalexpansion.conduit.item.warn0=Das verstopfte Inventar des Itemdukts wurde geleert!
+message.thermalexpansion.conduit.item.warn1=Dieses Itemdukt enthält mehr als 64 gestopfte Items!
+message.thermalexpansion.conduit.item.warn2=Ein weiterer Klick wird es zerlegen, mit Itemverlust! Versuche zuerst, es zu leeren!
+
+message.thermalexpansion.conduit.servo0=Ein Pneumatischer Servo muss für Kontrolle installiert sein.
+message.thermalexpansion.conduit.servo1=Der Pneumatische Servo wurde installiert!
+message.thermalexpansion.conduit.servo2=Hier ist bereits ein Pneumatischer Servo installiert!
+
+message.thermalexpansion.lamp0=Modus: Wechselnd; Standard: Aus
+message.thermalexpansion.lamp1=Modus: Wechselnd; Standard: An
+message.thermalexpansion.lamp2=Modus: Skaliert (Proportional)
+message.thermalexpansion.lamp3=Modus: Skaliert (Invertiert)
+message.thermalexpansion.lamp4=Modus: Immer Aus
+message.thermalexpansion.lamp5=Modus: Immer An
+
+tile.thermalexpansion.conduit.energyBasic.name=Leadstone-Energieleitung
+tile.thermalexpansion.conduit.energyHardened.name=Gehärtete Energieleitung
+tile.thermalexpansion.conduit.energyReinforced.name=Redstone-Energieleitung
+tile.thermalexpansion.conduit.fluidTrans.name=Fluidukt
+tile.thermalexpansion.conduit.fluidOpaque.name=Fluidukt (Opak)
+tile.thermalexpansion.conduit.itemTrans.name=Itemdukt
+tile.thermalexpansion.conduit.itemOpaque.name=Itemdukt (Opak)
+tile.thermalexpansion.conduit.itemFastTrans.name=Impuls-Itemdukt
+tile.thermalexpansion.conduit.itemFastOpaque.name=Impuls-Itemdukt (Opak)
+
+tile.thermalexpansion.device.workbench.name=Maschinistenwerkbank
+tile.thermalexpansion.device.tinkerbench.name=Tüftelwerkbank
+tile.thermalexpansion.device.activator.name=Autonomer Aktivator
+tile.thermalexpansion.device.breaker.name=Terrainzerschlager
+tile.thermalexpansion.device.nullifier.name=Nullifzierer
+tile.thermalexpansion.device.lexicon.name=Forge-Lexikon
+
+tile.thermalexpansion.dynamo.steam.name=Dampfdynamo
+tile.thermalexpansion.dynamo.magmatic.name=Magmatischer Dynamo
+tile.thermalexpansion.dynamo.compression.name=Kompressionsdynamo
+tile.thermalexpansion.dynamo.reactant.name=Reaktantendynamo
+
+tile.thermalexpansion.cell.creative.name=Kreative Energiezelle
+tile.thermalexpansion.cell.basic.name=Leadstone-Energiezelle
+tile.thermalexpansion.cell.hardened.name=Gehärtete Energiezelle
+tile.thermalexpansion.cell.reinforced.name=Redstone-Energiezelle
+tile.thermalexpansion.cell.resonant.name=Resonante Energiezelle
+
+tile.thermalexpansion.glass.name=Gehärtetes Glas
+
+tile.thermalexpansion.lamp.name=Glowstone-Illuminator
+
+tile.thermalexpansion.machine.furnace.name=Redstone-Ofen
+tile.thermalexpansion.machine.pulverizer.name=Pulverisierer
+tile.thermalexpansion.machine.sawmill.name=Sägewerk
+tile.thermalexpansion.machine.smelter.name=Inductionsschmelzer
+tile.thermalexpansion.machine.crucible.name=Magmatiegel
+tile.thermalexpansion.machine.transposer.name=Flüssigtransposer
+tile.thermalexpansion.machine.precipitator.name=Glacialpräkipitator
+tile.thermalexpansion.machine.extruder.name=Eruptivextrudierer
+tile.thermalexpansion.machine.accumulator.name=Aqueöser Akkumulator
+tile.thermalexpansion.machine.assembler.name=Zyklischer Assembler
+tile.thermalexpansion.machine.charger.name=Energetischer Infundierer
+
+tile.thermalexpansion.ore.copper.name=Kupfererz
+tile.thermalexpansion.ore.tin.name=Zinnerz
+tile.thermalexpansion.ore.silver.name=Silbererz
+tile.thermalexpansion.ore.lead.name=Bleierz
+tile.thermalexpansion.ore.nickel.name=Ferröses Erz
+tile.thermalexpansion.ore.platinum.name=Schillerndes Erz
+
+tile.thermalexpansion.plate.signal.name=Signalplatte
+tile.thermalexpansion.plate.impulse.name=Impulsplatte
+tile.thermalexpansion.plate.translocate.name=Translokationsplatte
+
+tile.thermalexpansion.rockwool.black.name=Schwarze Steinwolle
+tile.thermalexpansion.rockwool.red.name=Rote Steinwolle
+tile.thermalexpansion.rockwool.green.name=Grüne Steinwolle
+tile.thermalexpansion.rockwool.brown.name=Braune Steinwolle
+tile.thermalexpansion.rockwool.blue.name=Blaue Steinwolle
+tile.thermalexpansion.rockwool.purple.name=Violette Steinwolle
+tile.thermalexpansion.rockwool.cyan.name=Türkise Steinwolle
+tile.thermalexpansion.rockwool.silver.name=Hellgraue Steinwolle
+tile.thermalexpansion.rockwool.gray.name=Graue Steinwolle
+tile.thermalexpansion.rockwool.pink.name=Pinke Steinwolle
+tile.thermalexpansion.rockwool.lime.name=Hellgrüne Steinwolle
+tile.thermalexpansion.rockwool.yellow.name=Gelbe Steinwolle
+tile.thermalexpansion.rockwool.lightBlue.name=Hellblaue Steinwolle
+tile.thermalexpansion.rockwool.magenta.name=Magentafarbene Steinwolle
+tile.thermalexpansion.rockwool.orange.name=Orange Steinwolle
+tile.thermalexpansion.rockwool.white.name=Weiße Steinwolle
+
+tile.thermalexpansion.storage.copper.name=Kupferblock
+tile.thermalexpansion.storage.tin.name=Zinnblock
+tile.thermalexpansion.storage.silver.name=Silberblock
+tile.thermalexpansion.storage.lead.name=Bleiblock
+tile.thermalexpansion.storage.nickel.name=Ferröser Block
+tile.thermalexpansion.storage.platinum.name=Schillernder Block
+tile.thermalexpansion.storage.electrum.name=Elektrumblock
+tile.thermalexpansion.storage.invar.name=Invarblock
+tile.thermalexpansion.storage.bronze.name=Bastler-Legierungsblock
+tile.thermalexpansion.storage.enderium.name=Enderiumblock
+
+tile.thermalexpansion.strongbox.creative.name=Kreativer Tresor
+tile.thermalexpansion.strongbox.basic.name=Tresor
+tile.thermalexpansion.strongbox.hardened.name=Gehärteter Tresor
+tile.thermalexpansion.strongbox.reinforced.name=Verstärkter Tresor
+tile.thermalexpansion.strongbox.resonant.name=Resonanter Tresor
+
+tile.thermalexpansion.tank.creative.name=Kreativer Tragbarer Tank
+tile.thermalexpansion.tank.basic.name=Tragbarer Tank
+tile.thermalexpansion.tank.hardened.name=Gehärteter Tragbarer Tank
+tile.thermalexpansion.tank.reinforced.name=Verstärkter Tragbarer Tank
+tile.thermalexpansion.tank.resonant.name=Resonanter Tragbarer Tank
+
+tile.thermalexpansion.tesseract.name=Tesserakt

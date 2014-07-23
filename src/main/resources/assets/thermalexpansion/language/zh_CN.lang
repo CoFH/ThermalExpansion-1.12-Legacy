@@ -1,0 +1,301 @@
+#zh_CN
+
+achievement.thermalexpansion.base=欢迎使用热能扩展!
+achievement.thermalexpansion.base.desc=就这样开始我们的旅途吧.
+achievement.thermalexpansion.machineFrame=框架!
+achievement.thermalexpansion.machineFrame.desc=你也许得制造很多这玩意儿.
+
+achievement.thermalexpansion.furnace=蠢货才用煤炭!
+achievement.thermalexpansion.furnace.desc=高大上地烧东西!
+achievement.thermalexpansion.pulverizer=机械粉碎者!
+achievement.thermalexpansion.pulverizer.desc=孱弱的矿石.
+achievement.thermalexpansion.sawmill=讨厌树, 热爱原木.
+achievement.thermalexpansion.sawmill.desc=喜欢伐木, 但求更好.
+achievement.thermalexpansion.smelter=两个锭进入, 一个锭出来
+achievement.thermalexpansion.smelter.desc=非常肯定不能用来烤吃的.
+achievement.thermalexpansion.crucible=熔炼万物
+achievement.thermalexpansion.crucible.desc=是的,它能做岩浆.你这怪物.
+achievement.thermalexpansion.transposer=(基本上能够)自由填充
+achievement.thermalexpansion.transposer.desc=手动装桶太累人.
+achievement.thermalexpansion.iceGen=打雪仗!
+achievement.thermalexpansion.iceGen.desc=造不出黄雪.
+achievement.thermalexpansion.extruder=嘿这是石头!
+achievement.thermalexpansion.extruder.desc=还有黑曜石呢!
+achievement.thermalexpansion.accumulator=水,无处不水
+achievement.thermalexpansion.accumulator.desc=不, 岩浆可不行. 你这怪物.
+achievement.thermalexpansion.assembler=恶性循环
+achievement.thermalexpansion.assembler.desc=不, 它不能那样子合成东西.
+achievement.thermalexpansion.charger=什么是RF?
+achievement.thermalexpansion.charger.desc=RF没有界限. 所以看你的手.
+
+achievement.thermalexpansion.wrench=看着像指甲!
+achievement.thermalexpansion.wrench.desc=如果你*真*需要任何工具的话, 试试这柄锤子.
+achievement.thermalexpansion.multimeter=B.S.E.E.
+achievement.thermalexpansion.multimeter.desc=毫无意外, 唯有侥幸.
+achievement.thermalexpansion.florb=我能扔这个吗?!
+achievement.thermalexpansion.florb.desc=它装着流体. 你扔扔看呗.
+achievement.thermalexpansion.florbMagmatic=看世界熊熊燃烧.
+achievement.thermalexpansion.florbMagmatic=流体球. 是的, 它装着岩浆. 你这怪物.
+
+achievement.thermalexpansion.potatoBattery=考虑不周的念头!
+achievement.thermalexpansion.potatoBattery.desc=马那个铃那个薯
+
+achievement.thermalexpansion.fluidRedstone=红石革命!
+achievement.thermalexpansion.fluidRedstone.desc=世界虽未颠倒, 但已不同.
+achievement.thermalexpansion.fluidGlowstone=它流走了?!
+achievement.thermalexpansion.fluidGlowstone.desc=因此这些形态转换就是这样发生的. 现在一切已毫无意义.
+achievement.thermalexpansion.fluidEnder=千丝万缕, 摇摇晃晃, 乱七八糟, 随风飘荡.
+achievement.thermalexpansion.fluidEnder.desc=末地实际上才是开始.
+achievement.thermalexpansion.fluidPyrotheum=噢上帝啊为什么呢?!
+achievement.thermalexpansion.fluidPyrotheum.desc=这比岩浆还要糟. 你这怪物.
+achievement.thermalexpansion.fluidCryotheum=凛冬将至
+achievement.thermalexpansion.fluidCryotheum.desc=这依然比岩浆糟. 你这雪怪.
+achievement.thermalexpansion.fluidCoal=液化就是救赎!
+achievement.thermalexpansion.fluidCoal.desc=这*可能*对环境不好!
+
+info.thermalexpansion.schematic=图纸
+
+info.thermalexpansion.modeItem=物品模式
+info.thermalexpansion.modeFluid=流体模式
+info.thermalexpansion.modeEnergy=能量模式
+info.thermalexpansion.modeBlocked=已阻塞
+info.thermalexpansion.modeSend=仅发送
+info.thermalexpansion.modeRecv=仅接收
+info.thermalexpansion.modeSendRecv=发生/接收
+
+info.thermalexpansion.neihandler.furnace=红石炉
+info.thermalexpansion.neihandler.pulverizer=磨粉机
+info.thermalexpansion.neihandler.sawmill=锯木机
+info.thermalexpansion.neihandler.smelter=感应炉
+info.thermalexpansion.neihandler.crucible=熔岩炉
+info.thermalexpansion.neihandler.transposer=流体转置器
+
+info.thermalexpansion.activator.clickLeft=左击
+info.thermalexpansion.activator.clickRight=右击
+info.thermalexpansion.activator.sneakOn=潜行
+info.thermalexpansion.activator.sneakOff=未潜行
+#info.thermalexpansion.activator.slotsFirst
+info.thermalexpansion.activator.slotsRR=循环赛式使用物品
+info.thermalexpansion.activator.slotsRand=随机使用物品
+info.thermalexpansion.activator.angleLow=朝下瞄准
+info.thermalexpansion.activator.angleLevel=水平瞄准
+info.thermalexpansion.activator.angleHigh=向上瞄准
+
+info.thermalexpansion.cell.decRecv=减少RF输入通过
+info.thermalexpansion.cell.decSend=减少RF输出通过
+info.thermalexpansion.cell.incRecv=增加RF输入通过
+info.thermalexpansion.cell.incSend=增加RF输入通过
+info.thermalexpansion.cell.maxIn=最大输入
+info.thermalexpansion.cell.maxOut=最大输出
+
+info.thermalexpansion.fluidfilter=流体过滤
+
+info.thermalexpansion.itemhud.stuffed=管道内物品
+
+info.thermalexpansion.itemfilter0=物品过滤: 下方
+info.thermalexpansion.itemfilter1=物品过滤: 上方
+info.thermalexpansion.itemfilter2=物品过滤: 北方
+info.thermalexpansion.itemfilter3=物品过滤: 南方
+info.thermalexpansion.itemfilter4=物品过滤: 西方
+info.thermalexpansion.itemfilter5=物品过滤: 东方
+
+info.thermalexpansion.itemfilter.listBlack=黑名单
+info.thermalexpansion.itemfilter.listWhite=白名单
+info.thermalexpansion.itemfilter.metadataOn=使用Meta数据
+info.thermalexpansion.itemfilter.metadataOff=忽略Meta数据
+info.thermalexpansion.itemfilter.oreDictOn=使用矿物辞典
+info.thermalexpansion.itemfilter.oreDictOff=忽略矿物辞典
+info.thermalexpansion.itemfilter.nbtOn=使用NBT
+info.thermalexpansion.itemfilter.nbtOff=忽略NBT
+info.thermalexpansion.itemfilter.incSend=增加发送物品堆栈大小
+info.thermalexpansion.itemfilter.decSend=减少发送物品堆栈大小
+info.thermalexpansion.itemfilter.maxSend=堆栈大小
+
+info.thermalexpansion.transposer.toggleEmpty=激活: 空置
+info.thermalexpansion.transposer.toggleFill=激活:填充
+info.thermalexpansion.transposer.toggleWait=已激活
+
+info.thermalexpansion.workbench.gridClear=清空合成网格
+info.thermalexpansion.workbench.gridSet=根据图纸设置合成网格
+info.thermalexpansion.workbench.writeTrue=写入图纸
+info.thermalexpansion.workbench.writeFalse=无合成表
+
+info.thermalexpansion.capacitor1=激活来为持有物品充能.
+info.thermalexpansion.capacitor2=按住潜行(shift)键右击以使用即可激活.
+info.thermalexpansion.capacitor3=为持有物品充能.
+info.thermalexpansion.capacitor4=按住潜行(shift)键再次右击即可取消激活.
+info.thermalexpansion.capacitor5=必须放在快捷栏内.
+info.thermalexpansion.capacitor.potato=机智的马铃薯君,可惜不能再次充能.
+
+info.thermalexpansion.dynamo.generate=产能(RF)
+info.thermalexpansion.dynamo.steam1=需要水以及固态燃料.
+info.thermalexpansion.dynamo.steam2=需要泵入蒸汽以替代.
+info.thermalexpansion.dynamo.magmatic=需要灼热流体.
+info.thermalexpansion.dynamo.compression=需要流体燃料以及冷却.
+info.thermalexpansion.dynamo.reactant=需要流体燃料以及固体反应物.
+
+info.thermalexpansion.florb1=可容纳1000 mB大多数类型流体.
+info.thermalexpansion.florb1a=可容纳1000 mB大多数类型流体.
+info.thermalexpansion.florb2=填充以
+info.thermalexpansion.florb3=是的,你可以扔掉它.
+info.thermalexpansion.florb4=这种流体比空气还轻.
+info.thermalexpansion.florb5=这个流体球会跑很远.
+
+item.thermalexpansion.tool.invarSword.name=因瓦合金剑
+item.thermalexpansion.tool.invarShovel.name=因瓦合金铲
+item.thermalexpansion.tool.invarPickaxe.name=因瓦合金镐
+item.thermalexpansion.tool.invarAxe.name=因瓦合金斧
+item.thermalexpansion.tool.invarHoe.name=因瓦合金锄
+item.thermalexpansion.tool.invarShears.name=因瓦合金剪刀
+item.thermalexpansion.tool.invarFishingRod.name=因瓦合金钓鱼竿
+item.thermalexpansion.tool.invarSickle.name=因瓦合金镰刀
+item.thermalexpansion.tool.invarBattleWrench.name=因瓦合金战锤
+
+item.thermalexpansion.tool.wrench.name=新月锤
+item.thermalexpansion.tool.multimeter.name=万用表
+item.thermalexpansion.tool.debugger.name=调试器
+
+item.thermalexpansion.armor.invarHelmet.name=因瓦合金头盔
+item.thermalexpansion.armor.invarPlate.name=因瓦合金胸甲
+item.thermalexpansion.armor.invarLegs.name=因瓦合金护腿
+item.thermalexpansion.armor.invarBoots.name=因瓦合金靴子
+
+item.thermalexpansion.bucket.bucketRedstone.name=不稳定熔融红石桶
+item.thermalexpansion.bucket.bucketGlowstone.name=充能熔融荧石桶
+item.thermalexpansion.bucket.bucketEnder.name=谐振熔融末影珍珠桶
+item.thermalexpansion.bucket.bucketPyrotheum.name=烈焰之炽焱桶
+item.thermalexpansion.bucket.bucketCryotheum.name=极寒之凛冰桶
+item.thermalexpansion.bucket.bucketCoal.name=液态煤炭桶
+
+item.thermalexpansion.capacitor.capacitorPotato.name=马铃薯RF容器
+item.thermalexpansion.capacitor.capacitorBasic.name=基础RF容器
+item.thermalexpansion.capacitor.capacitorHardened.name=硬化RF容器
+item.thermalexpansion.capacitor.capacitorReinforced.name=强化RF容器
+item.thermalexpansion.capacitor.capacitorResonant.name=谐振RF容器
+item.thermalexpansion.capacitor.capacitorCreative.name=创造RF容器
+
+item.thermalexpansion.diagram.schematic=图纸
+
+item.thermalexpansion.florb.florb.name=流体球
+item.thermalexpansion.florb.florbMagmatic.name=熔岩流体球
+
+item.thermalexpansion.component.machineFrame.name=机器框架
+item.thermalexpansion.component.cellBasicFrame.name=能量元件框架
+item.thermalexpansion.component.cellReinforcedFrameEmpty.name=红石能量元件框架(空)
+item.thermalexpansion.component.cellReinforcedFrameFull.name=红石能量元件框架(满)
+item.thermalexpansion.component.energyConduitEmpty.name=红石能量导管(空)
+item.thermalexpansion.component.tesseractFrameEmpty.name=超立方体框架(空)
+item.thermalexpansion.component.tesseractFrameFull.name=超立方体框架(满)
+item.thermalexpansion.component.lampFrame.name=灯具框架
+
+item.thermalexpansion.material.woodchips.name=木片
+item.thermalexpansion.material.dustWood.name=锯末
+item.thermalexpansion.material.dustWoodCompressed.name=压缩锯末
+item.thermalexpansion.material.slag.name=矿渣
+item.thermalexpansion.material.slagRich.name=富集矿渣
+item.thermalexpansion.material.dustPyrotheum.name=炽焱粉
+item.thermalexpansion.material.dustCryotheum.name=凛冰粉
+
+item.thermalexpansion.material.pneumaticServo.name=气动伺服器
+item.thermalexpansion.material.powerCoilGold.name=红石接收线圈
+item.thermalexpansion.material.powerCoilSilver.name=红石传输线圈
+item.thermalexpansion.material.powerCoilElectrum.name=红石传导线圈
+
+itemGroup.thermalexpansion.creativeTabBlocks=热能扩展|方块
+itemGroup.thermalexpansion.creativeTabTools=热能扩展|工具
+itemGroup.thermalexpansion.creativeTabItems=热能扩展|物品
+itemGroup.thermalexpansion.creativeTabFlorbs=热能扩展|流体球
+ 
+message.thermalexpansion.lamp0=模式: 已切换; 默认: 关闭
+message.thermalexpansion.lamp1=模式: 已切换; 默认: 开启
+message.thermalexpansion.lamp2=模式: 同比缩放
+message.thermalexpansion.lamp3=模式: 反比缩放
+message.thermalexpansion.lamp4=模式: 常关
+message.thermalexpansion.lamp5=模式: 常开
+
+tile.thermalexpansion.device.workbench.name=机械师工作台
+tile.thermalexpansion.device.tinkerbench.name=巧匠工作台
+tile.thermalexpansion.device.activator.name=自动执行器
+tile.thermalexpansion.device.breaker.name=方块采掘机
+tile.thermalexpansion.device.nullifier.name=焚毁炉
+tile.thermalexpansion.device.lexicon.name=矿物辞典
+
+tile.thermalexpansion.dynamo.steam.name=蒸汽能源炉
+tile.thermalexpansion.dynamo.magmatic.name=热力能源炉
+tile.thermalexpansion.dynamo.compression.name=压缩能源炉
+tile.thermalexpansion.dynamo.reactant.name=反应能源炉
+
+tile.thermalexpansion.cell.creative.name=创造能量单元
+tile.thermalexpansion.cell.basic.name=能量单元
+tile.thermalexpansion.cell.hardened.name=硬化能量单元
+tile.thermalexpansion.cell.reinforced.name=强化红石能量单元
+tile.thermalexpansion.cell.resonant.name=谐振能量单元
+
+tile.thermalexpansion.glass.name=强化玻璃
+
+tile.thermalexpansion.lamp.name=荧石灯
+
+tile.thermalexpansion.machine.furnace.name=红石炉
+tile.thermalexpansion.machine.pulverizer.name=磨粉机
+tile.thermalexpansion.machine.sawmill.name=锯木机
+tile.thermalexpansion.machine.smelter.name=感应炉
+tile.thermalexpansion.machine.crucible.name=熔岩炉
+tile.thermalexpansion.machine.transposer.name=流体转置机
+tile.thermalexpansion.machine.iceGen.name=冷冻机
+tile.thermalexpansion.machine.extruder.name=造石机
+tile.thermalexpansion.machine.accumulator.name=蓄水器
+tile.thermalexpansion.machine.assembler.name=循环装配台
+tile.thermalexpansion.machine.charger.name=能量灌注机
+
+tile.thermalexpansion.ore.copper.name=铜矿石
+tile.thermalexpansion.ore.tin.name=锡矿石
+tile.thermalexpansion.ore.silver.name=银矿石
+tile.thermalexpansion.ore.lead.name=铅矿石
+tile.thermalexpansion.ore.nickel.name=镍矿石
+tile.thermalexpansion.ore.platinum.name=铂矿石
+
+tile.thermalexpansion.plate.signal.name=信号压力盘
+tile.thermalexpansion.plate.impulse.name=脉冲压力盘
+tile.thermalexpansion.plate.translocate.name=转位压力盘
+
+tile.thermalexpansion.rockwool.black.name=黑色石棉
+tile.thermalexpansion.rockwool.red.name=红色石棉
+tile.thermalexpansion.rockwool.green.name=绿色石棉
+tile.thermalexpansion.rockwool.brown.name=棕色石棉
+tile.thermalexpansion.rockwool.blue.name=蓝色石棉
+tile.thermalexpansion.rockwool.purple.name=紫色石棉
+tile.thermalexpansion.rockwool.cyan.name=青色石棉
+tile.thermalexpansion.rockwool.silver.name=浅灰色石棉
+tile.thermalexpansion.rockwool.gray.name=灰色石棉
+tile.thermalexpansion.rockwool.pink.name=粉红色石棉
+tile.thermalexpansion.rockwool.lime.name=柠檬色石棉
+tile.thermalexpansion.rockwool.yellow.name=黄色石棉
+tile.thermalexpansion.rockwool.lightBlue.name=浅蓝色石棉
+tile.thermalexpansion.rockwool.magenta.name=品红色石棉
+tile.thermalexpansion.rockwool.orange.name=橙色石棉
+tile.thermalexpansion.rockwool.white.name=白色石棉
+
+tile.thermalexpansion.storage.copper.name=铜块
+tile.thermalexpansion.storage.tin.name=锡块
+tile.thermalexpansion.storage.silver.name=银块
+tile.thermalexpansion.storage.lead.name=铅块
+tile.thermalexpansion.storage.nickel.name=镍块
+tile.thermalexpansion.storage.platinum.name=铂块
+tile.thermalexpansion.storage.electrum.name=琥珀金块
+tile.thermalexpansion.storage.invar.name=因瓦合金块
+tile.thermalexpansion.storage.bronze.name
+tile.thermalexpansion.storage.enderium.name=末影块
+
+tile.thermalexpansion.strongbox.creative.name=创造保险箱
+tile.thermalexpansion.strongbox.basic.name=保险箱
+tile.thermalexpansion.strongbox.hardened.name=硬化保险箱
+tile.thermalexpansion.strongbox.reinforced.name=强化保险箱
+tile.thermalexpansion.strongbox.resonant.name=谐振保险箱
+
+tile.thermalexpansion.tank.creative.name=创造便携储罐
+tile.thermalexpansion.tank.basic.name=便携储罐
+tile.thermalexpansion.tank.hardened.name=硬化便携储罐
+tile.thermalexpansion.tank.reinforced.name=强化便携储罐
+tile.thermalexpansion.tank.resonant.name=谐振便携储罐
+
+tile.thermalexpansion.tesseract.name=超立方体
