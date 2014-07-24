@@ -5,6 +5,8 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
+import cofh.asm.relauncher.Strippable;
+import cofh.asm.relauncher.CoFHSide;
 import cofh.audio.ISoundSource;
 import cofh.audio.SoundTile;
 import cofh.network.PacketCoFHBase;
@@ -12,6 +14,7 @@ import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
 import cofh.util.SoundHelper;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
@@ -19,6 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.network.PacketTEBase;
 
+@Strippable(value="cofh.api.audio.ISoundSource", side=CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IEnergyHandler, IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
@@ -229,6 +233,7 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 
 	/* ISoundSource */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public ISound getSound() {
 
 		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);

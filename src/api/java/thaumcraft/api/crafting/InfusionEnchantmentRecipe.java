@@ -105,7 +105,7 @@ public class InfusionEnchantmentRecipe {
 			t1 = true;
 			int od = OreDictionary.getOreID(stack0);
 			if (od != -1) {
-				ItemStack[] ores = OreDictionary.getOres(od).toArray(new ItemStack[] {});
+				ItemStack[] ores = OreDictionary.getOres((Integer)od).toArray(new ItemStack[] {});
 				if (ThaumcraftApiHelper.containsMatch(false, new ItemStack[] { stack1 }, ores)) {
 					return true;
 				}
