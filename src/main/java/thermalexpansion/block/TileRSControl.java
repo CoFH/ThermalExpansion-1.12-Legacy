@@ -5,18 +5,21 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
-import cofh.network.ITilePacketHandler;
+import cofh.audio.ISoundSource;
+import cofh.audio.SoundTile;
 import cofh.network.PacketCoFHBase;
 import cofh.util.EnergyHelper;
 import cofh.util.ServerHelper;
+import cofh.util.SoundHelper;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.network.PacketTEBase;
 
-public abstract class TileRSControl extends TileInventory implements ITilePacketHandler, IEnergyHandler, IRedstoneControl {
+public abstract class TileRSControl extends TileInventory implements IEnergyHandler, IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
 	protected boolean isPowered;
@@ -143,8 +146,16 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 		rsMode = ControlMode.values()[payload.getByte()];
 
 		if (!isServer) {
+			boolean prevActive = isActive;
+
 			isActive = payload.getBool();
 			energyStorage.setEnergyStored(payload.getInt());
+
+			if (isActive && !prevActive) {
+				if (getSoundName() != null && !getSoundName().isEmpty()) {
+					SoundHelper.playSound(getSound());
+				}
+			}
 		} else {
 			payload.getBool();
 			payload.getInt();
@@ -214,6 +225,24 @@ public abstract class TileRSControl extends TileInventory implements ITilePacket
 	public final ControlMode getControl() {
 
 		return rsMode;
+	}
+
+	/* ISoundSource */
+	@Override
+	public ISound getSound() {
+
+		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);
+	}
+
+	public String getSoundName() {
+
+		return "";
+	}
+
+	@Override
+	public boolean shouldPlaySound() {
+
+		return !tileEntityInvalid && isActive;
 	}
 
 }

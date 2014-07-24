@@ -24,6 +24,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
+	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
 	public static boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true };
 
@@ -375,7 +376,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 				return false;
 			}
 			if (hasAugmentChain(TEAugments.MACHINE_SECONDARY, augLevel)) {
-				secondaryChance -= 15;
+				secondaryChance -= TEAugments.MACHINE_SECONDARY_MOD[augLevel];
 				installed = true;
 			} else {
 				return false;
@@ -391,7 +392,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 				return false;
 			}
 			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
-				secondaryChance += 5;
+				secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel];
 				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
 				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
 				installed = true;
@@ -506,6 +507,12 @@ public abstract class TileMachineBase extends TileAugmentable {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
 		return IconRegistry.getIcon("MachineSide");
+	}
+
+	@Override
+	public String getSoundName() {
+
+		return sounds[getType()];
 	}
 
 }

@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.util.CoreUtils;
 import cofh.util.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -31,6 +32,8 @@ public class TileFurnace extends TileMachineBase {
 		ThermalExpansion.config.set("block.tweak", "Machine.Furnace.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
+
+		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineFurnace");
 
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
 	}

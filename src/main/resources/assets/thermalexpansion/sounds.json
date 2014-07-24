@@ -1,0 +1,65 @@
+{
+    "blockMachineFurnace": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/furnace",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachinePulverizer": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/pulverizer",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachineSawmill": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/sawmill",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachineSmelter": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/smelter",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachineCrucible": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/crucible",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachineTransposer": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/transposer",
+                "stream": false
+            }
+        ]
+    },
+    "blockMachineAccumulator": {
+        "category": "ambient",
+        "sounds": [
+            {
+                "name": "blocks/machine/accumulator",
+                "stream": false
+            }
+        ]
+    }
+}

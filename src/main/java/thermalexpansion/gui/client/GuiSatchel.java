@@ -7,6 +7,7 @@ import cofh.gui.element.TabInfo;
 import cofh.gui.element.TabSecurity;
 import cofh.util.MathHelper;
 import cofh.util.SecurityHelper;
+import cofh.util.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 
@@ -15,14 +16,11 @@ import thermalexpansion.item.ItemSatchel;
 
 public class GuiSatchel extends GuiBaseAdv {
 
-	static final String INFO = "It's a satchel. Will not store some objects.\n\nNo refunds.";
-	static final String INFO_ENCHANT = "\n\nCan be enchanted to hold more items!";
-	static final String INFO_CREATIVE = "Only holds one thing...kind of.";
-
 	boolean enchanted;
 	boolean secure;
 	String playerName;
 	int storageIndex;
+	String myInfo = "";
 
 	public GuiSatchel(InventoryPlayer inventory, ContainerSatchel container) {
 
@@ -47,10 +45,15 @@ public class GuiSatchel extends GuiBaseAdv {
 		super.initGui();
 
 		if (storageIndex == ItemSatchel.Types.CREATIVE.ordinal()) {
-			addTab(new TabInfo(this, INFO_CREATIVE));
+			myInfo = StringHelper.localize("tab.thermalexpansion.satchel.creative");
 		} else {
-			addTab(new TabInfo(this, enchanted ? INFO : INFO + INFO_ENCHANT));
+			myInfo = StringHelper.localize("tab.thermalexpansion.satchel.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.satchel.1");
+
+			if (!enchanted) {
+				myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
+			}
 		}
+		addTab(new TabInfo(this, myInfo));
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
 		}

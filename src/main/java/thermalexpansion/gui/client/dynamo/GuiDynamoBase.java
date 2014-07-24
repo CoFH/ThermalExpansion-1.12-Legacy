@@ -59,7 +59,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
 			addTab(new TabEnergy(this, myTile, true));
 		}
-		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo")));
+		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 		addTab(new TabTutorial(this, myTutorial));
 	}
 

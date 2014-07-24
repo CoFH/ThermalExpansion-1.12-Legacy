@@ -37,7 +37,7 @@ public class ItemMultimeter extends ItemBase {
 	@Override
 	public boolean isFull3D() {
 
-		return true;
+		return false;
 	}
 
 	@Override

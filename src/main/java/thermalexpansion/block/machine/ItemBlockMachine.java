@@ -94,6 +94,6 @@ public class ItemBlockMachine extends ItemBlockBase {
 		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)]));
 	}
 
-	public final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };
+	public static final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };
 
 }

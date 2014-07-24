@@ -106,7 +106,7 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		loadLang();
+		// loadLang();
 
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
 		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/ThermalExpansion.cfg")));

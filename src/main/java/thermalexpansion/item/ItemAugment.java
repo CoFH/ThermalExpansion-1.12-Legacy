@@ -15,12 +15,14 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.machine.ItemBlockMachine;
 
 public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	public class AugmentEntry {
 
 		public String primaryType = "";
+		public int primaryLevel = 0;
 		public Map<String, Integer> augmentTypeInfo = new THashMap<String, Integer>();
 	}
 
@@ -55,15 +57,54 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		}
 		String type = getPrimaryType(stack);
 		list.add(StringHelper.localize("info.thermalexpansion.augment." + type));
+
+		int level = getPrimaryLevel(stack);
+		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] + StringHelper.END);
+
+		if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
+			list.add(StringHelper.BRIGHT_GREEN + "-" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
+		} else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
+			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
+			list.add(StringHelper.RED + "+" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
+		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_SUM[level] + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
+			addMachineInfo(list, level);
+		} else if (type.equals(TEAugments.MACHINE_SPEED)) {
+			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
+			list.add(StringHelper.RED + "x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.energyConsumed") + StringHelper.END);
+			list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_SUM[level] + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
+			addMachineInfo(list, level);
+		}
+		if (level > 1) {
+			list.add(StringHelper.localize("info.thermalexpansion.augment.levels.0"));
+			list.add(StringHelper.localize("info.thermalexpansion.augment.levels.1"));
+		}
+	}
+
+	private void addMachineInfo(List list, int level) {
+
+		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + StringHelper.getRarity(level)
+				+ StringHelper.localize("info.thermalexpansion." + ItemBlockMachine.NAMES[level]) + " " + StringHelper.LIGHT_GRAY
+				+ StringHelper.localize("info.thermalexpansion.augment.machine.1"));
 	}
 
 	public void addAugmentData(int number, String augmentType, int augmentLevel) {
 
-		if (!augmentMap.containsKey(Integer.valueOf(number))) {
-			augmentMap.put(Integer.valueOf(number), new AugmentEntry());
+		int index = Integer.valueOf(number);
+
+		if (!augmentMap.containsKey(index)) {
+			augmentMap.put(index, new AugmentEntry());
+			augmentMap.get(index).primaryType = augmentType;
+			augmentMap.get(index).primaryLevel = augmentLevel;
 		}
-		augmentMap.get(Integer.valueOf(number)).primaryType = augmentType;
-		augmentMap.get(Integer.valueOf(number)).augmentTypeInfo.put(augmentType, augmentLevel);
+		augmentMap.get(index).augmentTypeInfo.put(augmentType, augmentLevel);
 	}
 
 	private String getPrimaryType(ItemStack stack) {
@@ -73,6 +114,15 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			return "";
 		}
 		return entry.primaryType;
+	}
+
+	private int getPrimaryLevel(ItemStack stack) {
+
+		AugmentEntry entry = augmentMap.get(ItemHelper.getItemDamage(stack));
+		if (entry == null) {
+			return 0;
+		}
+		return entry.primaryLevel;
 	}
 
 	/* IAugmentItem */

@@ -34,17 +34,13 @@ public class RecipeMachineUpgrade extends ShapedOreRecipe {
 		if (machine == null) {
 			return super.getCraftingResult(craftMatrix);
 		}
-		ItemStack newMachine = ItemHelper.copyTag(getRecipeOutput().copy(), machine);
-		newMachine.setItemDamage(ItemHelper.getItemDamage(machine));
-
-		if (newMachine.stackTagCompound == null) {
-			ItemBlockMachine.setDefaultTag(newMachine);
-		}
 		byte machineLevel = ItemBlockMachine.getLevel(machine);
 
-		if (level <= machineLevel) {
+		if (level != machineLevel + 1) {
 			return null;
 		}
+		ItemStack newMachine = ItemHelper.copyTag(getRecipeOutput().copy(), machine);
+		newMachine.setItemDamage(ItemHelper.getItemDamage(machine));
 		newMachine.stackTagCompound.setByte("Level", level);
 
 		return newMachine;

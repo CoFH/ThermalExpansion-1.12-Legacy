@@ -3,6 +3,7 @@ package thermalexpansion.block.machine;
 import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
+import cofh.util.CoreUtils;
 import cofh.util.FluidHelper;
 import cofh.util.ItemHelper;
 import cofh.util.MathHelper;
@@ -47,6 +48,8 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		ThermalExpansion.config.set("block.tweak", "Machine.Transposer.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
+
+		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}
