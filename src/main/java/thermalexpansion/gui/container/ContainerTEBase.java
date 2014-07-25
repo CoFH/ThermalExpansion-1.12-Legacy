@@ -5,7 +5,9 @@ import cofh.block.TileCoFHBase;
 import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.slot.SlotAugment;
 import cofh.gui.slot.SlotFalseCopy;
+import cofh.util.AugmentHelper;
 import cofh.util.ItemHelper;
+import cofh.util.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,12 +17,16 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
+import thermalexpansion.network.PacketTEBase;
+
 public class ContainerTEBase extends Container implements IAugmentableContainer {
 
 	TileCoFHBase baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];
+
+	protected boolean augmentLock = true;
 
 	public ContainerTEBase() {
 
@@ -100,7 +106,8 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 		ItemStack stack = null;
 		Slot slot = (Slot) inventorySlots.get(slotIndex);
 
-		int invPlayer = augmentSlots.length + 27;
+		int invAugment = augmentSlots.length;
+		int invPlayer = invAugment + 27;
 		int invFull = invPlayer + 9;
 		int invTile = invFull + (baseTile == null ? 0 : baseTile.getInvSlotCount());
 
@@ -108,22 +115,20 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 			ItemStack stackInSlot = slot.getStack();
 			stack = stackInSlot.copy();
 
-			if (slotIndex >= invFull) {
-				if (!this.mergeItemStack(stackInSlot, 0, invFull, true)) {
+			if (slotIndex < invAugment) {
+				if (!this.mergeItemStack(stackInSlot, invAugment, invFull, true)) {
 					return null;
 				}
-			} else {
-				if (!this.mergeItemStack(stackInSlot, invFull, invTile, true)) {
-					if (slotIndex >= invPlayer) {
-						if (!this.mergeItemStack(stackInSlot, 0, invPlayer, true)) {
-							return null;
-						}
-					} else {
-						if (!this.mergeItemStack(stackInSlot, invPlayer, invFull, false)) {
-							return null;
-						}
+			} else if (slotIndex < invFull) {
+				if (!augmentLock && invAugment > 0 && AugmentHelper.isAugmentItem(stackInSlot)) {
+					if (!this.mergeItemStack(stackInSlot, 0, invAugment, false)) {
+						return null;
 					}
+				} else if (!this.mergeItemStack(stackInSlot, invFull, invTile, false)) {
+					return null;
 				}
+			} else if (!this.mergeItemStack(stackInSlot, invAugment, invFull, true)) {
+				return null;
 			}
 			if (stackInSlot.stackSize <= 0) {
 				slot.putStack((ItemStack) null);
@@ -133,7 +138,6 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 			if (stackInSlot.stackSize == stack.stackSize) {
 				return null;
 			}
-			slot.onPickupFromSlot(player, stackInSlot);
 		}
 		return stack;
 	}
@@ -155,16 +159,16 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 	}
 
 	@Override
-	protected boolean mergeItemStack(ItemStack stack, int slotMin, int slotMax, boolean reverse) {
+	protected boolean mergeItemStack(ItemStack stack, int slotMin, int slotMax, boolean ascending) {
 
 		boolean slotFound = false;
-		int k = reverse ? slotMax - 1 : slotMin;
+		int k = ascending ? slotMax - 1 : slotMin;
 
 		Slot slot;
 		ItemStack stackInSlot;
 
 		if (stack.isStackable()) {
-			while (stack.stackSize > 0 && (!reverse && k < slotMax || reverse && k >= slotMin)) {
+			while (stack.stackSize > 0 && (!ascending && k < slotMax || ascending && k >= slotMin)) {
 				slot = (Slot) this.inventorySlots.get(k);
 				stackInSlot = slot.getStack();
 
@@ -184,13 +188,13 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 						slotFound = true;
 					}
 				}
-				k += reverse ? -1 : 1;
+				k += ascending ? -1 : 1;
 			}
 		}
 		if (stack.stackSize > 0) {
-			k = reverse ? slotMax - 1 : slotMin;
+			k = ascending ? slotMax - 1 : slotMin;
 
-			while (!reverse && k < slotMax || reverse && k >= slotMin) {
+			while (!ascending && k < slotMax || ascending && k >= slotMin) {
 				slot = (Slot) this.inventorySlots.get(k);
 				stackInSlot = slot.getStack();
 
@@ -204,13 +208,23 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 					}
 					break;
 				}
-				k += reverse ? -1 : 1;
+				k += ascending ? -1 : 1;
 			}
 		}
 		return slotFound;
 	}
 
 	/* IAugmentableContainer */
+	@Override
+	public void setAugmentLock(boolean lock) {
+
+		augmentLock = lock;
+
+		if (ServerHelper.isClientWorld(baseTile.getWorldObj())) {
+			PacketTEBase.sendTabAugmentPacketToServer(lock);
+		}
+	}
+
 	@Override
 	public Slot[] getAugmentSlots() {
 

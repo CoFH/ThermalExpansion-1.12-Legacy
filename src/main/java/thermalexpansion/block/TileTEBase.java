@@ -173,6 +173,12 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	/* IPortableData */
 	@Override
+	public String getDataType() {
+
+		return getName();
+	}
+
+	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
 	}

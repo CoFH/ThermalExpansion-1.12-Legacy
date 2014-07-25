@@ -94,10 +94,10 @@ public class ItemDiagram extends ItemBase {
 					if (stack.stackTagCompound.hasNoTags()) {
 						stack.setTagCompound(null);
 					} else {
-						stack.stackTagCompound.setString("Name", ((IPortableData) tile).getName());
+						stack.stackTagCompound.setString("Type", ((IPortableData) tile).getDataType());
 					}
 				} else {
-					if (stack.stackTagCompound.getString("Name").equals(((IPortableData) tile).getName())) {
+					if (stack.stackTagCompound.getString("Type").equals(((IPortableData) tile).getDataType())) {
 						((IPortableData) tile).readPortableData(player, stack.stackTagCompound);
 					}
 				}

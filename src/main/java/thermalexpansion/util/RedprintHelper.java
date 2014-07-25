@@ -33,7 +33,7 @@ public class RedprintHelper {
 
 	public static boolean hasName(ItemStack stack) {
 
-		return stack.stackTagCompound == null ? false : stack.stackTagCompound.hasKey("Name");
+		return stack.stackTagCompound == null ? false : stack.stackTagCompound.hasKey("Type");
 	}
 
 	public static String getName(ItemStack stack) {
@@ -41,7 +41,7 @@ public class RedprintHelper {
 		if (stack.stackTagCompound == null) {
 			return "";
 		}
-		return ": " + StringHelper.localize(stack.stackTagCompound.getString("Name"));
+		return ": " + StringHelper.localize(stack.stackTagCompound.getString("Type"));
 	}
 
 }

@@ -2,6 +2,7 @@ package thermalexpansion.item;
 
 import cofh.item.ItemBase;
 import cofh.util.EnergyHelper;
+import cofh.util.ItemHelper;
 import cofh.util.crafting.RecipeUpgrade;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -122,8 +123,9 @@ public class TEItems {
 				capacitorReinforced, 'Y', TFItems.dustPyrotheum }));
 
 		/* Satchels */
+		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic,
-				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockClothRock", 'Y', Items.leather }));
+				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
 		GameRegistry
 				.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
 		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened, 'Y',
@@ -179,6 +181,7 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
 				"dustCharcoal" }));
 
+		ItemHelper.addGearRecipe(new ItemStack(Items.paper, 2), "dustWood", new ItemStack(Items.water_bucket));
 		GameRegistry.addRecipe(new ShapedOreRecipe(new ItemStack(Items.paper, 3), new Object[] { "###", '#', "dustWood" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.clay_ball, 2), new Object[] { slag, slag, Blocks.dirt, Items.water_bucket }));

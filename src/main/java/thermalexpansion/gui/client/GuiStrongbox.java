@@ -43,7 +43,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.creative");
 		} else {
-			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.strongbox.1");
+			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.0");
 
 			if (myTile.enchant <= 0) {
 				myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");

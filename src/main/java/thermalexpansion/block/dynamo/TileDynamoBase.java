@@ -575,6 +575,12 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	/* IPortableData */
 	@Override
+	public String getDataType() {
+
+		return "tile.thermalexpansion.dynamo";
+	}
+
+	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
 		if (!canPlayerAccess(player.getCommandSenderName())) {

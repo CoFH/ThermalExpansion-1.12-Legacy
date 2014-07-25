@@ -106,7 +106,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (buttonName.equals("Set")) {
 			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
-				PacketTEBase.sendCreateSchematicPacketToServer();
+				PacketTEBase.sendTabSchematicPacketToServer();
 				playSound("random.click", 1.0F, 0.8F);
 			}
 		} else if (buttonName.equals("Get")) {

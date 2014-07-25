@@ -1,10 +1,12 @@
 package thermalexpansion;
 
 import cofh.CoFHCore;
+import cofh.core.CoFHProps;
 import cofh.mod.BaseMod;
 import cofh.network.PacketCoFHBase;
 import cofh.updater.UpdateManager;
 import cofh.util.ConfigHandler;
+import cofh.util.CoreUtils;
 import cofh.util.StringHelper;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
@@ -96,6 +98,9 @@ public class ThermalExpansion extends BaseMod {
 	public static final CreativeTabs tabItems = new CreativeTabItems();
 	public static final CreativeTabs tabTools = new CreativeTabTools();
 	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
+
+	public static File worldGen;
+	public static final String worldGenInternal = "assets/thermalexpansion/world/ThermalExpansion.json";
 
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
@@ -258,6 +263,16 @@ public class ThermalExpansion extends BaseMod {
 	/* LOADING FUNCTIONS */
 	void loadWorldGeneration() {
 
+		worldGen = new File(CoFHProps.configDir, "/cofh/world/ThermalExpansion.json");
+
+		if (!worldGen.exists()) {
+			try {
+				worldGen.createNewFile();
+				CoreUtils.copyFileUsingStream(worldGenInternal, worldGen);
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+		}
 	}
 
 	void configOptions() {

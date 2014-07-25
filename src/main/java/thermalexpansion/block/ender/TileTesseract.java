@@ -952,6 +952,9 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		modeItem = tag.getByte("ModeItems");
 		modeFluid = tag.getByte("ModeFluid");
 		modeEnergy = tag.getByte("ModeEnergy");
+
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
 	}
 
 	@Override

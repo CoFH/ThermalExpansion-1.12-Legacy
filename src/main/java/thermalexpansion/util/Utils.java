@@ -205,7 +205,7 @@ public class Utils {
 
 	// }
 
-	public static boolean isHoldingMultimeter(EntityPlayer player, int x, int y, int z) {
+	public static boolean isHoldingMultimeter(EntityPlayer player) {
 
 		return ItemHelper.isPlayerHoldingItemStack(TEItems.toolMultimeter, player);
 	}

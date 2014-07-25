@@ -156,12 +156,6 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
-
-		return true;
-	}
-
-	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 
 		return true;
@@ -237,7 +231,6 @@ public class BlockMachine extends BlockTEBase {
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
 			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
-
 			tile.writeAugmentsToNBT(tag);
 		}
 		return tag;

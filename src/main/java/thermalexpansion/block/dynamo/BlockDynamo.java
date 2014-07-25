@@ -155,6 +155,7 @@ public class BlockDynamo extends BlockTEBase {
 				tag = new NBTTagCompound();
 			}
 			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tile.writeAugmentsToNBT(tag);
 		}
 		return tag;
 	}

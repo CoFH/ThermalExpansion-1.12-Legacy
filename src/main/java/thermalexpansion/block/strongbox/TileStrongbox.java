@@ -122,7 +122,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 
 	public int getStorageIndex() {
 
-		return type > 0 ? 2 * type + enchant : 0;
+		return type > 0 ? Math.min(2 * type + enchant, CoFHProps.STORAGE_SIZE.length - 1) : 0;
 	}
 
 	public void createInventory() {
@@ -176,7 +176,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 		facing = nbt.getByte("Facing");
 
 		if (type > 0) {
-			inventory = new ItemStack[CoFHProps.STORAGE_SIZE[2 * type + enchant]];
+			inventory = new ItemStack[CoFHProps.STORAGE_SIZE[getStorageIndex()]];
 		} else {
 			inventory = new ItemStack[1];
 		}
@@ -219,11 +219,13 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 		super.handleTilePacket(payload, isServer);
 
 		type = payload.getByte();
+
+		byte prevEnchant = enchant;
 		enchant = payload.getByte();
 
 		if (!isServer) {
 			facing = payload.getByte();
-			if (inventory.length <= 0) {
+			if (enchant != prevEnchant || inventory.length <= 0) {
 				createInventory();
 			}
 		} else {
@@ -290,7 +292,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return access.isPublic() ? CoFHProps.SLOTS[type] : TEProps.EMPTY_INVENTORY;
+		return access.isPublic() ? CoFHProps.SLOTS[getStorageIndex()] : TEProps.EMPTY_INVENTORY;
 	}
 
 	@Override

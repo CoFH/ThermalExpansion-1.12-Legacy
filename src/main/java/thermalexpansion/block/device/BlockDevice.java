@@ -240,6 +240,15 @@ public class BlockDevice extends BlockTEBase {
 		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile instanceof TileWorkbench) {
 			((TileWorkbench) tile).inventory = new ItemStack[((TileWorkbench) tile).inventory.length];
+		} else if (tile instanceof TileAugmentable) {
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			TileAugmentable theTile = (TileAugmentable) tile;
+
+			ReconfigurableHelper.setItemStackTagReconfig(tag, theTile);
+			tag.setInteger("Energy", theTile.getEnergyStored(ForgeDirection.UNKNOWN));
+			theTile.writeAugmentsToNBT(tag);
 		}
 		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
 	}

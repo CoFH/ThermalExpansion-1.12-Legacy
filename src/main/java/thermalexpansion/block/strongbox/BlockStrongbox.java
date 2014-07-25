@@ -175,7 +175,8 @@ public class BlockStrongbox extends BlockTEBase {
 					"ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced, new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "glassHardened" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced,
+					new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "blockGlassHardened" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));

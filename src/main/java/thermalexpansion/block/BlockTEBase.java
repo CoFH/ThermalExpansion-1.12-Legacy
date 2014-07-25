@@ -50,10 +50,12 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
-		if (Utils.isHoldingMultimeter(player, x, y, z)) {
+		if (Utils.isHoldingDebugger(player)) {
 			return true;
 		}
-
+		if (Utils.isHoldingMultimeter(player)) {
+			return true;
+		}
 		if (player.isSneaking()) { // TODO: remove? wrenches actively check this now
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {
@@ -111,9 +113,6 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 		TileEntity tile = world.getTileEntity(x, y, z);
 		int bMeta = world.getBlockMetadata(x, y, z);
 
-		// if (tile instanceof TileCoFHBase) {
-		// bMeta = ((TileCoFHBase) tile).getType();
-		// }
 		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
 
 		if (nbt != null) {

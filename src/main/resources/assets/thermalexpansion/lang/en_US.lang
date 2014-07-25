@@ -328,7 +328,7 @@ tab.thermalexpansion.satchel.creative=Only holds one thing...kind of.
 
 tab.thermalexpansion.storage.enchant=Can be enchanted to hold more items!
 
-tab.thermalexpansion.strongbox=It's a box! It stores things. Well, most things.
+tab.thermalexpansion.strongbox.0=It's a box! It stores things. Well, most things.
 tab.thermalexpansion.strongbox.creative=Holds unlimited amounts of a single thing!
 
 #Blocks
@@ -338,6 +338,7 @@ tile.thermalexpansion.cache.hardened.name=Hardened Cache
 tile.thermalexpansion.cache.reinforced.name=Reinforced Cache
 tile.thermalexpansion.cache.resonant.name=Resonant Cache
 
+tile.thermalexpansion.cell=Energy Cell
 tile.thermalexpansion.cell.creative.name=Creative Energy Cell
 tile.thermalexpansion.cell.basic.name=Leadstone Energy Cell
 tile.thermalexpansion.cell.hardened.name=Hardened Energy Cell
@@ -350,6 +351,7 @@ tile.thermalexpansion.device.activator.name=Autonomous Activator
 tile.thermalexpansion.device.breaker.name=Terrain Smasher
 tile.thermalexpansion.device.nullifier.name=Nullifier
 
+tile.thermalexpansion.dynamo=Dynamo
 tile.thermalexpansion.dynamo.steam.name=Steam Dynamo
 tile.thermalexpansion.dynamo.magmatic.name=Magmatic Dynamo
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo

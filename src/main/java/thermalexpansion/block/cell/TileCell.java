@@ -7,10 +7,12 @@ import cofh.render.IconRegistry;
 import cofh.util.BlockHelper;
 import cofh.util.EnergyHelper;
 import cofh.util.MathHelper;
+import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -21,6 +23,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileReconfigurable;
 import thermalexpansion.gui.client.GuiCell;
 import thermalexpansion.gui.container.ContainerTEBase;
+import thermalexpansion.util.ReconfigurableHelper;
 
 public class TileCell extends TileReconfigurable {
 
@@ -364,6 +367,56 @@ public class TileCell extends TileReconfigurable {
 			return false;
 		}
 		return sideCache[from.ordinal()] > 0;
+	}
+
+	/* IPortableData */
+	@Override
+	public String getDataType() {
+
+		return "tile.thermalexpansion.cell";
+	}
+
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.getControlFromNBT(tag);
+
+		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+		sideCache[0] = storedSideCache[0];
+		sideCache[1] = storedSideCache[1];
+		sideCache[facing] = storedSideCache[storedFacing];
+		sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+		sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+		sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+		energySend = (tag.getInteger("Send") * MAX_SEND[getType()]) / 1000;
+		energyReceive = (tag.getInteger("Recv") * MAX_RECEIVE[getType()]) / 1000;
+
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+
+		tag.setInteger("Send", (energySend * 1000) / MAX_SEND[getType()]);
+		tag.setInteger("Recv", energyReceive * 1000 / MAX_RECEIVE[getType()]);
 	}
 
 	/* IReconfigurableFacing */

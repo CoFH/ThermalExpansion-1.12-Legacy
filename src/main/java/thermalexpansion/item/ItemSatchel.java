@@ -179,7 +179,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static int getStorageIndex(int type, int enchant) {
 
-		return type > 0 ? type + enchant : 0;
+		return type > 0 ? Math.min(type + enchant, CoFHProps.STORAGE_SIZE.length - 1) : 0;
 	}
 
 	public static int getStorageIndex(ItemStack container) {

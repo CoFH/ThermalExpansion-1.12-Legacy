@@ -4,6 +4,7 @@ import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISecurable.AccessMode;
+import cofh.gui.container.IAugmentableContainer;
 import cofh.network.PacketCoFHBase;
 import cofh.network.PacketHandler;
 
@@ -21,7 +22,7 @@ public class PacketTEBase extends PacketCoFHBase {
 	}
 
 	public enum PacketTypes {
-		RS_POWER_UPDATE, RS_CONFIG_UPDATE, SECURITY_UPDATE, WRITE_SCHEM, CONFIG_SYNC
+		RS_POWER_UPDATE, RS_CONFIG_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, TAB_SCHEMATIC, CONFIG_SYNC
 	}
 
 	@Override
@@ -45,7 +46,13 @@ public class PacketTEBase extends PacketCoFHBase {
 				if (player.openContainer instanceof ISecurable) {
 					((ISecurable) player.openContainer).setAccess(AccessMode.values()[getByte()]);
 				}
-			case WRITE_SCHEM:
+				return;
+			case TAB_AUGMENT:
+				if (player.openContainer instanceof IAugmentableContainer) {
+					((IAugmentableContainer) player.openContainer).setAugmentLock(getBool());
+				}
+				return;
+			case TAB_SCHEMATIC:
 				if (player.openContainer instanceof ISchematicContainer) {
 					((ISchematicContainer) player.openContainer).writeSchematic();
 				}
@@ -77,9 +84,14 @@ public class PacketTEBase extends PacketCoFHBase {
 		PacketHandler.sendToServer(getPacket(PacketTypes.SECURITY_UPDATE).addByte(securable.getAccess().ordinal()));
 	}
 
-	public static void sendCreateSchematicPacketToServer() {
+	public static void sendTabAugmentPacketToServer(boolean lock) {
 
-		PacketHandler.sendToServer(getPacket(PacketTypes.WRITE_SCHEM));
+		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_AUGMENT).addBool(lock));
+	}
+
+	public static void sendTabSchematicPacketToServer() {
+
+		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_SCHEMATIC));
 	}
 
 	public static void sendConfigSyncPacketToClient(EntityPlayer player) {

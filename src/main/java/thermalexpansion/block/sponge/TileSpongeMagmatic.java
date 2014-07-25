@@ -62,6 +62,8 @@ public class TileSpongeMagmatic extends TileSponge {
 								bucketCounter++;
 								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
 							}
+						} else if (query.isAir(worldObj, i, j, k)) {
+							worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
 						}
 					} else if (query.isAir(worldObj, i, j, k) || query.getMaterial().isLiquid()) {
 						worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);

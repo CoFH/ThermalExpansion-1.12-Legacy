@@ -231,7 +231,7 @@ public class BlockTank extends BlockTEBase {
 					"blockGlass" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "glassHardened", 'X', tankHardened }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "blockGlassHardened", 'X', tankHardened }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', tankReinforced }));

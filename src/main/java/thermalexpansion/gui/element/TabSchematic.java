@@ -148,7 +148,7 @@ public class TabSchematic extends TabBase {
 	private boolean writeSchematic() {
 
 		if (myContainer.canWriteSchematic()) {
-			PacketTEBase.sendCreateSchematicPacketToServer();
+			PacketTEBase.sendTabSchematicPacketToServer();
 			myContainer.writeSchematic();
 			return true;
 		}

@@ -73,7 +73,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 
 		if (slot == resultSlot.slotNumber && resultSlot.getHasStack() && CoreUtils.isClient()) {
 			if (SchematicHelper.isSchematic(myTile.getStackInSlot(0))) {
-				PacketTEBase.sendCreateSchematicPacketToServer();
+				PacketTEBase.sendTabSchematicPacketToServer();
 				writeSchematic();
 			}
 		}
