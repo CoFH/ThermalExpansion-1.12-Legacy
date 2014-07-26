@@ -44,10 +44,6 @@ public class TEProps {
 	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
-	public static enum Ores {
-		COPPER, TIN, SILVER, LEAD, NICKEL
-	}
-
 	public static enum PacketID {
 		GUI, FLUID, MODE
 	}
@@ -58,11 +54,6 @@ public class TEProps {
 
 	public static int[] EMPTY_INVENTORY = new int[] {};
 	public static FluidTankInfo[] EMPTY_TANK_INFO = new FluidTankInfo[] {};
-
-	public static int[] oreMinY = new int[] { 40, 20, 5, 10, 5 };
-	public static int[] oreMaxY = new int[] { 75, 55, 30, 35, 20 };
-	public static int[] oreNumCluster = new int[] { 10, 8, 3, 4, 2 };
-	public static int[] oreClusterSize = new int[] { 8, 8, 8, 8, 4 };
 
 	public static boolean enableGuiBorders = true;
 	public static boolean enableAchievements = false;

@@ -72,6 +72,7 @@ public class PulverizerManager {
 			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 15);
 		}
 		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 10);
+		addRecipe(2400, new ItemStack(Items.coal, 1, 1), TFItems.dustCharcoal);
 		addRecipe(4000, new ItemStack(Blocks.obsidian), ItemHelper.cloneStack(TFItems.dustObsidian, 4));
 
 		if (recipeNetherrack) {
@@ -120,11 +121,6 @@ public class PulverizerManager {
 		if (recipeBlizzRod) {
 			addTERecipe(1600, TFItems.rodBlizz, ItemHelper.cloneStack(TFItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
 		}
-	}
-
-	public static void loadRecipes() {
-
-		addDefaultRecipes();
 
 		int energy = 4000;
 
@@ -150,11 +146,10 @@ public class PulverizerManager {
 		addIngotNameToDustRecipe(energy, "ingotElectrum", TFItems.dustElectrum);
 		addIngotNameToDustRecipe(energy, "ingotInvar", TFItems.dustInvar);
 		addIngotNameToDustRecipe(energy, "ingotBronze", TFItems.dustBronze);
+	}
 
-		/* CROSSMOD SUPPORT */
-		if (ItemHelper.oreNameExists("dustCharcoal")) {
-			addRecipe(1600, new ItemStack(Items.coal, 1, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustCharcoal").get(0), 1));
-		}
+	public static void loadRecipes() {
+
 		if (ItemHelper.oreNameExists("dustEnderPearl")) {
 			addRecipe(1600, new ItemStack(Items.ender_pearl), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl").get(0), 1));
 		}
@@ -201,7 +196,7 @@ public class PulverizerManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	protected static boolean addTERecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (input == null || primaryOutput == null || energy <= 0) {
 			return false;

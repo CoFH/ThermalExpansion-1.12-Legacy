@@ -11,6 +11,7 @@ import cofh.gui.element.ElementSimple;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.machine.TileTransposer;
 import thermalexpansion.core.TEProps;
@@ -83,7 +84,7 @@ public class GuiTransposer extends GuiAugmentableBase {
 
 		progressBackgroundRev.setVisible(myTile.reverse);
 		progressFluid.setFluid(myTile.getTankFluid());
-		progressFluid.setSize(myTile.getScaledProgress(PROGRESS), 16);
+		progressFluid.setSize(myTile.getEnergyStored(ForgeDirection.UNKNOWN) > 0 ? myTile.getScaledProgress(PROGRESS) : 0, 16);
 
 		if (!myTile.hasSide(4)) {
 			slotOutput[1].slotRender = 2;
@@ -98,10 +99,10 @@ public class GuiTransposer extends GuiAugmentableBase {
 			progressFluid.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 19);
 		}
 		progressOverlay.setVisible(!myTile.reverse);
-		progressOverlay.setQuantity(myTile.getScaledProgress(PROGRESS));
+		progressOverlay.setQuantity(myTile.getEnergyStored(ForgeDirection.UNKNOWN) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
 		progressOverlayRev.setVisible(myTile.reverse);
-		progressOverlayRev.setQuantity(myTile.getScaledProgress(PROGRESS));
-		speed.setQuantity(myTile.getScaledSpeed(SPEED));
+		progressOverlayRev.setQuantity(myTile.getEnergyStored(ForgeDirection.UNKNOWN) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
+		speed.setQuantity(myTile.getEnergyStored(ForgeDirection.UNKNOWN) > 0 ? myTile.getScaledSpeed(SPEED) : 0);
 
 		if (myTile.reverse) {
 			if (!myTile.reverseFlag) {

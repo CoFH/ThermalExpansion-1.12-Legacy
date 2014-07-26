@@ -91,8 +91,6 @@ public class TransposerManager {
 
 	public static void loadRecipes() {
 
-		addDefaultRecipes();
-
 		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(TFItems.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200),
 				false);
 

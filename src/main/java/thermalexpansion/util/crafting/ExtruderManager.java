@@ -30,7 +30,6 @@ public class ExtruderManager {
 
 	public static void loadRecipes() {
 
-		addDefaultRecipes();
 	}
 
 	/* RECIPE CLASS */

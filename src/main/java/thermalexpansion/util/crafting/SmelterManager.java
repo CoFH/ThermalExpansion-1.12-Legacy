@@ -96,15 +96,7 @@ public class SmelterManager {
 
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 40);
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
-	}
 
-	public static void loadRecipes() {
-
-		addDefaultRecipes();
-
-		boolean steelRecipe = ThermalExpansion.config.get("tweak.crafting", "Smelter.Steel.Enable", true);
-
-		/* BLOCKS */
 		ItemStack blockGlass = new ItemStack(TEBlocks.blockGlass, 2, 0);
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
@@ -133,14 +125,23 @@ public class SmelterManager {
 		addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
 		addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
 
-		/* CROSSMOD SUPPORT */
+		addBlastOreRecipe("mithril");
+		addBlastOreRecipe("enderium");
+	}
+
+	public static void loadRecipes() {
+
+		boolean steelRecipe = ThermalExpansion.config.get("tweak.crafting", "Smelter.Steel.Enable", true);
+
 		if (ItemHelper.oreNameExists("ingotSteel") && steelRecipe) {
-			addAlloyRecipe(8000, "dustCoal", 2, "dustSteel", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
-			addAlloyRecipe(8000, "dustCoal", 2, "dustIron", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
-			addAlloyRecipe(8000, "dustCoal", 2, "ingotIron", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
-			addAlloyRecipe(8000, "charcoal", 4, "dustSteel", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
-			addAlloyRecipe(8000, "charcoal", 4, "dustIron", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
-			addAlloyRecipe(8000, "charcoal", 4, "ingotIron", 1, ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1));
+			ItemStack ingotSteel = ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1);
+
+			addAlloyRecipe(8000, "dustCoal", 2, "dustSteel", 1, ingotSteel);
+			addAlloyRecipe(8000, "dustCoal", 2, "dustIron", 1, ingotSteel);
+			addAlloyRecipe(8000, "dustCoal", 2, "ingotIron", 1, ingotSteel);
+			addAlloyRecipe(8000, "charcoal", 4, "dustSteel", 1, ingotSteel);
+			addAlloyRecipe(8000, "charcoal", 4, "dustIron", 1, ingotSteel);
+			addAlloyRecipe(8000, "charcoal", 4, "ingotIron", 1, ingotSteel);
 		}
 		String[] oreNameList = OreDictionary.getOreNames();
 		String oreName = "";
@@ -187,7 +188,7 @@ public class SmelterManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
+	protected static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
 			int secondaryChance) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0) {

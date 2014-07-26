@@ -34,6 +34,7 @@ public class FMLEventHandler {
 			event.player.addStat(TEAchievements.baseTE, 1);
 		}
 		PacketTEBase.sendConfigSyncPacketToClient(event.player);
+		handleIdMappingEvent(null);
 	}
 
 	@EventHandler

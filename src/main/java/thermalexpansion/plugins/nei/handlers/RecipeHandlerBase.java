@@ -331,7 +331,10 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			if (!inputOreName.equals("Unknown")) {
 				inputOrePosition++;
 				inputOrePosition %= inputList.size();
+
+				int stackSize = input.item.stackSize;
 				input.item = inputList.get(inputOrePosition);
+				input.item.stackSize = stackSize;
 				if (inputList.get(inputOrePosition).getItemDamage() != OreDictionary.WILDCARD_VALUE) {
 					input.item.setItemDamage(inputList.get(inputOrePosition).getItemDamage());
 				}
@@ -343,7 +346,10 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			if (!secondaryInputOreName.equals("Unknown")) {
 				secondaryOrePosition++;
 				secondaryOrePosition %= secondaryList.size();
+
+				int stackSize = secondaryInput.item.stackSize;
 				secondaryInput.item = secondaryList.get(secondaryOrePosition);
+				secondaryInput.item.stackSize = stackSize;
 				if (secondaryList.get(secondaryOrePosition).getItemDamage() != OreDictionary.WILDCARD_VALUE) {
 					secondaryInput.item.setItemDamage(secondaryList.get(secondaryOrePosition).getItemDamage());
 				}

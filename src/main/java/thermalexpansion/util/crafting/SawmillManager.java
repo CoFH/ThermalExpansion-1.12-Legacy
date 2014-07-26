@@ -72,8 +72,6 @@ public class SawmillManager {
 
 	public static void loadRecipes() {
 
-		addDefaultRecipes();
-
 		addAllLogs();
 
 		if (ItemHelper.oreNameExists("woodRubber")) {

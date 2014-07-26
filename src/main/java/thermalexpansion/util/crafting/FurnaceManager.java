@@ -79,11 +79,6 @@ public class FurnaceManager {
 		for (int i = 0; i < 2; i++) {
 			addTERecipe(400, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
 		}
-	}
-
-	public static void loadRecipes() {
-
-		addDefaultRecipes();
 
 		int energy = DEFAULT_ENERGY;
 
@@ -117,10 +112,14 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "dustInvar", TFItems.ingotInvar);
 		addOreDictRecipe(energy, "dustBronze", TFItems.ingotBronze);
 
+	}
+
+	public static void loadRecipes() {
+
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;
 
-		energy = DEFAULT_ENERGY;
+		int energy = DEFAULT_ENERGY;
 
 		for (ItemStack key : smeltingList.keySet()) {
 			if (recipeExists(key)) {

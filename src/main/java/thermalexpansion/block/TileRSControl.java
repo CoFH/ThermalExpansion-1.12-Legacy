@@ -5,8 +5,8 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
-import cofh.asm.relauncher.Strippable;
 import cofh.asm.relauncher.CoFHSide;
+import cofh.asm.relauncher.Strippable;
 import cofh.audio.ISoundSource;
 import cofh.audio.SoundTile;
 import cofh.network.PacketCoFHBase;
@@ -22,7 +22,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.network.PacketTEBase;
 
-@Strippable(value="cofh.api.audio.ISoundSource", side=CoFHSide.SERVER)
+@Strippable(value = "cofh.api.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IEnergyHandler, IRedstoneControl, ISoundSource {
 
 	public boolean isActive;

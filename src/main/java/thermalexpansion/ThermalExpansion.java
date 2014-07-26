@@ -8,10 +8,6 @@ import cofh.updater.UpdateManager;
 import cofh.util.ConfigHandler;
 import cofh.util.CoreUtils;
 import cofh.util.StringHelper;
-import com.google.common.eventbus.EventBus;
-import com.google.common.eventbus.Subscribe;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLModContainer;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -24,7 +20,6 @@ import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 import java.io.File;
-import java.lang.reflect.Field;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -81,7 +76,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final String version = "1.7.10R4.0.0B1";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "http://teamcofh.com/thermalexpansion/version/version.txt";
-	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigFactoryTE";
+	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance(modId)
 	public static ThermalExpansion instance;
@@ -150,16 +145,14 @@ public class ThermalExpansion extends BaseMod {
 		MinecraftForge.EVENT_BUS.register(proxy);
 		PacketTEBase.initialize();
 
-		try {
-			Field eBus = FMLModContainer.class.getDeclaredField("eventBus");
-			eBus.setAccessible(true);
-			EventBus FMLbus = (EventBus) eBus.get(FMLCommonHandler.instance().findContainerFor(this));
-			FMLbus.register(this);
-		} catch (Throwable t) {
-			if (TEProps.enableDebugOutput) {
-				t.printStackTrace();
-			}
-		}
+		FurnaceManager.addDefaultRecipes();
+		PulverizerManager.addDefaultRecipes();
+		SawmillManager.addDefaultRecipes();
+		SmelterManager.addDefaultRecipes();
+		CrucibleManager.addDefaultRecipes();
+		TransposerManager.addDefaultRecipes();
+		PrecipitatorManager.addDefaultRecipes();
+		ExtruderManager.addDefaultRecipes();
 	}
 
 	@EventHandler
@@ -173,7 +166,7 @@ public class ThermalExpansion extends BaseMod {
 		proxy.registerRenderInformation();
 	}
 
-	@Subscribe
+	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 
 		TECraftingHandler.loadRecipes();
@@ -307,6 +300,11 @@ public class ThermalExpansion extends BaseMod {
 
 		if (preInit) {
 
+		}
+		String prefix = "config.thermalexpansion.";
+		String[] categoryNames = config.getCategoryNames().toArray(new String[config.getCategoryNames().size()]);
+		for (int i = 0; i < categoryNames.length; i++) {
+			config.getCategory(categoryNames[i]).setLanguageKey(prefix + categoryNames[i]).setRequiresMcRestart(true);
 		}
 	}
 

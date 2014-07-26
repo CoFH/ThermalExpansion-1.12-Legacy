@@ -50,7 +50,6 @@ public class PrecipitatorManager {
 
 	public static void loadRecipes() {
 
-		addDefaultRecipes();
 	}
 
 	/* RECIPE CLASS */

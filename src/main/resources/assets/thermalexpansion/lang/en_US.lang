@@ -64,6 +64,18 @@ chat.thermalexpansion.light.3=Mode: Scaled (Inverse)
 chat.thermalexpansion.light.4=Mode: Always Off
 chat.thermalexpansion.light.5=Mode: Always On
 
+config.thermalexpansion.block=Blocks
+config.thermalexpansion.block.feature=Enable/Disable
+config.thermalexpansion.block.tweak=Behavior
+config.thermalexpansion.item=Items
+config.thermalexpansion.item.feature=Enable/Disable
+config.thermalexpansion.plugins=Plugins
+config.thermalexpansion.plugins.tweak=Options
+config.thermalexpansion.security=Security
+config.thermalexpansion.tweak=Tweaks
+config.thermalexpansion.tweak.crafting=Crafting Handlers
+config.thermalexpansion.tweak.recipe=Recipes
+
 #Cell
 info.thermalexpansion.decRecv=Decrease RF Input by
 info.thermalexpansion.decSend=Decrease RF Output by

@@ -93,7 +93,6 @@ public class CrucibleManager {
 
 	public static void loadRecipes() {
 
-		addDefaultRecipes();
 	}
 
 	public static void refreshRecipes() {

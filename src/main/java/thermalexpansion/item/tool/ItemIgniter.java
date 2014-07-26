@@ -10,11 +10,15 @@ import cofh.util.StringHelper;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockTNT;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
@@ -72,7 +76,21 @@ public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 			world.playSoundEffect(coords[0] + 0.5D, coords[1] + 0.5D, coords[2] + 0.5D, "fire.ignite", 1.0F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
 
 			if (ServerHelper.isServerWorld(world)) {
-				world.setBlock(coords[0], coords[1], coords[2], Blocks.fire);
+				Block hitBlock = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
+				if (hitBlock == Blocks.tnt) {
+					world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+					((BlockTNT) hitBlock).func_150114_a(world, pos.blockX, pos.blockY, pos.blockZ, 1, player);
+				} else {
+					AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(pos);
+					List<EntityCreeper> list = world.getEntitiesWithinAABB(EntityCreeper.class, axisalignedbb);
+					if (!list.isEmpty()) {
+						for (int i = 0; i < list.size(); i++) {
+							list.get(i).func_146079_cb();
+						}
+					} else {
+						world.setBlock(coords[0], coords[1], coords[2], Blocks.fire);
+					}
+				}
 			}
 			if (!player.capabilities.isCreativeMode) {
 				extractEnergy(stack, energyPerUse, false);
