@@ -281,7 +281,9 @@
 			</copy>
 			<update-languages/>
 			<jar destfile="${dist.dir}/${build.name}${build.full}@{build}.jar"
-				compress="true" level="9" basedir="${classes.dir}"/>
+				compress="true" level="9" basedir="${classes.dir}">
+				<zipfileset src="${lib.dir}/MineFactoryReloaded.jar"/>
+			</jar>
 		</sequential>
 	</macrodef>
 
