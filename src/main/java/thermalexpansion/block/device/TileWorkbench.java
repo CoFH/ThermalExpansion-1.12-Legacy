@@ -1,6 +1,7 @@
 package thermalexpansion.block.device;
 
 import cofh.api.core.ICustomInventory;
+import cofh.api.inventory.IInventoryRetainer;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.network.PacketCoFHBase;
@@ -29,7 +30,7 @@ import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.util.SchematicHelper;
 
-public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture {
+public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture, IInventoryRetainer {
 
 	public static void initialize() {
 

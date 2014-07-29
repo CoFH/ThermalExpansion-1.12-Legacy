@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.CoFHCore;
 import cofh.core.CoFHProps;
 import cofh.util.CoreUtils;
 import cofh.util.FluidHelper;
@@ -44,6 +45,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		defaultEnergyConfig[TYPE].setParamsPower(0);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineAccumulator");
+		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Accumulator", true);
 
 		GameRegistry.registerTileEntity(TileAccumulator.class, "thermalexpansion.Accumulator");
 	}

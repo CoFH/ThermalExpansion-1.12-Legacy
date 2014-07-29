@@ -1,10 +1,10 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.api.core.IAugmentable;
-import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.item.IAugmentItem;
+import cofh.api.tileentity.IAugmentable;
+import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.network.ITileInfoPacketHandler;
 import cofh.network.PacketCoFHBase;

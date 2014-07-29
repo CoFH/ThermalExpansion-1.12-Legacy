@@ -5,6 +5,7 @@ import codechicken.nei.api.IConfigureNEI;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.device.GuiWorkbench;
+import thermalexpansion.item.TEItems;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerCrucible;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerFurnace;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerPulverizer;
@@ -39,6 +40,8 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 		API.registerUsageHandler(RecipeHandlerTransposer.instance);
 
 		API.registerGuiOverlayHandler(GuiWorkbench.class, new NEIRecipeOverlayHandler(), "crafting");
+
+		API.hideItem(TEItems.satchelCreative);
 	}
 
 	@Override

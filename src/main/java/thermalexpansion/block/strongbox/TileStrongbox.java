@@ -1,5 +1,6 @@
 package thermalexpansion.block.strongbox;
 
+import cofh.api.inventory.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
 import cofh.network.PacketCoFHBase;
@@ -25,7 +26,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
-public class TileStrongbox extends TileInventory implements IReconfigurableFacing, ISidedInventory {
+public class TileStrongbox extends TileInventory implements IReconfigurableFacing, ISidedInventory, IInventoryRetainer {
 
 	public static void initialize() {
 

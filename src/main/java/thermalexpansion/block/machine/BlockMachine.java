@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -296,16 +297,18 @@ public class BlockMachine extends BlockTEBase {
 
 		String category = "tweak.recipe";
 		String comment = "If enabled, Machines use ingots instead of gears in their default recipes.";
-
+		String iPrefix = ThermalExpansion.config.get(category, "Machines.UseIngots", false, comment) ? "ingot" : "gear";
+		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
+				"Signalum", "Lumium", "Enderium")) {
+			String prefix = "thermalexpansion:machine";
+			ArrayList<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
+			for (int i = 0; i < partList.size(); i++) {
+				OreDictionary.registerOre(prefix + entry, partList.get(i));
+			}
+		}
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
 
-		String prefix = ThermalExpansion.config.get(category, "Machines.UseIngots", false, comment) ? "ingot" : "gear";
-		ArrayList<ItemStack> copperPartList = OreDictionary.getOres(prefix + "Copper");
-
-		for (int i = 0; i < copperPartList.size(); i++) {
-			OreDictionary.registerOre(copperPart, copperPartList.get(i));
-		}
 		if (enable[Types.FURNACE.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(furnace, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', "dustRedstone", 'Y', Blocks.brick_block }));
@@ -357,10 +360,10 @@ public class BlockMachine extends BlockTEBase {
 		TECraftingHandler.addMachineUpgradeRecipes(crucible);
 		TECraftingHandler.addMachineUpgradeRecipes(transposer);
 		TECraftingHandler.addMachineUpgradeRecipes(precipitator);
-		TECraftingHandler.addMachineUpgradeRecipes(extruder);
-		TECraftingHandler.addMachineUpgradeRecipes(accumulator);
+		// TECraftingHandler.addMachineUpgradeRecipes(extruder);
+		// TECraftingHandler.addMachineUpgradeRecipes(accumulator);
 		TECraftingHandler.addMachineUpgradeRecipes(assembler);
-		TECraftingHandler.addMachineUpgradeRecipes(charger);
+		// TECraftingHandler.addMachineUpgradeRecipes(charger);
 
 		TECraftingHandler.addSecureRecipe(furnace);
 		TECraftingHandler.addSecureRecipe(pulverizer);

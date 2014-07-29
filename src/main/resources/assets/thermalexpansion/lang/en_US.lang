@@ -373,9 +373,9 @@ tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo
 tile.thermalexpansion.ender.tesseract.name=Tesseract
 
 tile.thermalexpansion.frame.machineBasic.name=Machine Frame (Basic)
-tile.thermalexpansion.frame.machineHardened.name=Machine Frame (Improved)
-tile.thermalexpansion.frame.machineReinforced.name=Machine Frame (Advanced)
-tile.thermalexpansion.frame.machineResonant.name=Machine Frame (Enderium)
+tile.thermalexpansion.frame.machineHardened.name=Machine Frame (Hardened)
+tile.thermalexpansion.frame.machineReinforced.name=Machine Frame (Reinforced)
+tile.thermalexpansion.frame.machineResonant.name=Machine Frame (Resonant)
 tile.thermalexpansion.frame.cellBasic.name=Leadstone Energy Cell Frame
 tile.thermalexpansion.frame.cellReinforcedEmpty.name=Redstone Energy Cell Frame (Empty)
 tile.thermalexpansion.frame.cellReinforcedFull.name=Redstone Energy Cell Frame (Full)

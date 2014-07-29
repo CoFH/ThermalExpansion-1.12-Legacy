@@ -1,8 +1,8 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.core.IEnergyInfo;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.tileentity.IEnergyInfo;
 import cofh.util.fluid.FluidTankAdv;
 
 import net.minecraft.entity.player.InventoryPlayer;

@@ -1,6 +1,6 @@
 package thermalexpansion.gui.container;
 
-import cofh.api.core.IAugmentable;
+import cofh.api.tileentity.IAugmentable;
 import cofh.block.TileCoFHBase;
 import cofh.gui.container.IAugmentableContainer;
 import cofh.gui.slot.SlotAugment;

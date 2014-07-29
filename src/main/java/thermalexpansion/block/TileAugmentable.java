@@ -1,8 +1,8 @@
 package thermalexpansion.block;
 
-import cofh.api.core.IAugmentable;
-import cofh.api.core.IEnergyInfo;
 import cofh.api.item.IAugmentItem;
+import cofh.api.tileentity.IAugmentable;
+import cofh.api.tileentity.IEnergyInfo;
 import cofh.network.PacketCoFHBase;
 import cofh.util.BlockHelper;
 import cofh.util.CoreUtils;

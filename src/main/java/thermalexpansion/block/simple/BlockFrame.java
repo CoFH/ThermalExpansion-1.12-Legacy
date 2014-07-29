@@ -258,6 +258,17 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		frameTesseractFull = new ItemStack(this, 1, Types.TESSERACT_FULL.ordinal());
 		frameIlluminator = new ItemStack(this, 1, Types.ILLUMINATOR.ordinal());
 
+		GameRegistry.registerCustomItemStack("frameMachineBasic", frameMachineBasic);
+		GameRegistry.registerCustomItemStack("frameMachineHardened", frameMachineHardened);
+		GameRegistry.registerCustomItemStack("frameMachineReinforced", frameMachineReinforced);
+		GameRegistry.registerCustomItemStack("frameMachineResonant", frameMachineResonant);
+		GameRegistry.registerCustomItemStack("frameCellBasic", frameCellBasic);
+		GameRegistry.registerCustomItemStack("frameCellReinforcedEmpty", frameCellReinforcedEmpty);
+		GameRegistry.registerCustomItemStack("frameCellReinforcedFull", frameCellReinforcedFull);
+		GameRegistry.registerCustomItemStack("frameTesseractEmpty", frameTesseractEmpty);
+		GameRegistry.registerCustomItemStack("frameTesseractFull", frameTesseractFull);
+		GameRegistry.registerCustomItemStack("frameIlluminator", frameIlluminator);
+
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
 		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineReinforced);

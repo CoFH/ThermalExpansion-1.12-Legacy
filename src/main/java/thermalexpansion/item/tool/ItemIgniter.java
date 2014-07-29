@@ -87,7 +87,7 @@ public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 						for (int i = 0; i < list.size(); i++) {
 							list.get(i).func_146079_cb();
 						}
-					} else {
+					} else if (world.getBlock(coords[0], coords[1], coords[2]).isAir(world, coords[0], coords[1], coords[2])) {
 						world.setBlock(coords[0], coords[1], coords[2], Blocks.fire);
 					}
 				}

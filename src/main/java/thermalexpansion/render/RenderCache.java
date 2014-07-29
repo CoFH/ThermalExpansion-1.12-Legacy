@@ -8,6 +8,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 
+import org.lwjgl.opengl.GL11;
+
 import thermalexpansion.block.cache.TileCache;
 
 public class RenderCache extends TileEntitySpecialRenderer implements IItemRenderer {
@@ -30,7 +32,9 @@ public class RenderCache extends TileEntitySpecialRenderer implements IItemRende
 		if (tile.storedStack == null) {
 			return;
 		}
+		GL11.glPushMatrix();
 		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.facing, x, y, z);
+		GL11.glPopMatrix();
 	}
 
 	/* IItemRenderer */

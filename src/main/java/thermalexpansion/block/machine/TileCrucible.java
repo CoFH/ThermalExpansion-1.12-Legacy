@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.CoFHCore;
 import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
@@ -48,6 +49,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		defaultEnergyConfig[TYPE].setParams(maxPower / 10, maxPower, Math.max(480000, maxPower * 1200));
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
+		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Crucible", true);
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}

@@ -1,5 +1,6 @@
 package thermalexpansion.block.machine;
 
+import cofh.CoFHCore;
 import cofh.network.PacketCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
@@ -50,6 +51,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
+		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Transposer", true);
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}

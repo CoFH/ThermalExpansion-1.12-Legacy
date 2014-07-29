@@ -60,7 +60,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
+		// TODO: Creative Satchel
+		for (int i = 1; i < Types.values().length; i++) {
 			list.add(setDefaultInventoryTag(new ItemStack(item, 1, i)));
 		}
 	}
