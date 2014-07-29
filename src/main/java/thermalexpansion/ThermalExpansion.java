@@ -75,7 +75,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.7.10R4.0.0B1";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
-	public static final String releaseURL = "https://github.com/CoFH/ThermalExpansion/VERSION";
+	public static final String releaseURL = "http://github.com/CoFH/ThermalExpansion/blob/master/VERSION";
 	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance(modId)
@@ -95,7 +95,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
 
 	public static File worldGen;
-	public static final String worldGenInternal = "assets/thermalexpansion/world/ThermalExpansion.json";
+	public static final String worldGenInternal = "assets/thermalexpansion/world/ThermalExpansion-Ores.json";
 
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
@@ -256,7 +256,12 @@ public class ThermalExpansion extends BaseMod {
 	/* LOADING FUNCTIONS */
 	void loadWorldGeneration() {
 
-		worldGen = new File(CoFHProps.configDir, "/cofh/world/ThermalExpansion.json");
+		if (!config
+				.get("world", "GenerateDefaultFiles", true,
+						"If enabled, Thermal Expansion will create default world generation files - if it cannot find existing ones. Only disable this if you know what you are doing.")) {
+			return;
+		}
+		worldGen = new File(CoFHProps.configDir, "/cofh/world/ThermalExpansion-Ores.json");
 
 		if (!worldGen.exists()) {
 			try {

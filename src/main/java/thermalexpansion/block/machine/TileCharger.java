@@ -189,4 +189,17 @@ public class TileCharger extends TileMachineBase {
 		nbt.setInteger("Tracker", outputTracker);
 	}
 
+	/* IEnergyInfo */
+	@Override
+	public int getInfoEnergyPerTick() {
+
+		return calcEnergy();
+	}
+
+	@Override
+	public int getInfoMaxEnergyPerTick() {
+
+		return energyConfig.maxPower;
+	}
+
 }

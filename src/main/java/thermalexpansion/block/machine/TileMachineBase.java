@@ -31,6 +31,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
+	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24 };
 
 	public static void configure() {
@@ -59,7 +60,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 		super();
 
 		sideConfig = defaultSideConfig[getType()];
-		energyConfig = defaultEnergyConfig[getType()];
+		energyConfig = defaultEnergyConfig[getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * ENERGY_TRANSFER[level]);
 		setDefaultSides();
 	}
@@ -226,6 +227,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
 
 		level = nbt.getByte("Level");
+		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
+		energyStorage.setCapacity(energyConfig.maxEnergy);
 		energyStorage.setMaxTransfer(energyConfig.maxPower * ENERGY_TRANSFER[level]);
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
@@ -309,6 +312,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 			if (curLevel != level) {
 				augments = new ItemStack[AUGMENT_COUNT[level]];
 				augmentStatus = new boolean[augments.length];
+				energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
+				energyStorage.setCapacity(energyConfig.maxEnergy);
 			}
 		} else {
 			payload.getByte();
