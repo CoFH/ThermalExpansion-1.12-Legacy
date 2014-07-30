@@ -1,11 +1,11 @@
 package thermalexpansion.render;
 
-import codechicken.lib.render.CCModel;
-import codechicken.lib.render.CCRenderState;
 import cofh.block.BlockCoFHBase;
 import cofh.render.IconRegistry;
 import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
+import cofh.repack.codechicken.lib.render.CCModel;
+import cofh.repack.codechicken.lib.render.CCRenderState;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

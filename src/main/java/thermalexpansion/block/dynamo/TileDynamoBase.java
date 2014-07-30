@@ -225,7 +225,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			return;
 		}
 		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
-				Math.min(config.maxPower * 2, energyStorage.getEnergyStored()), false));
+				Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {

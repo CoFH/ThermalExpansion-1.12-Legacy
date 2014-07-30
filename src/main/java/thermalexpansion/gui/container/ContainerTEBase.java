@@ -43,20 +43,19 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 			baseTile = (TileCoFHBase) tile;
 		}
 		/* Augment Slots */
+		addAugmentSlots();
+
+		/* Player Inventory */
+		addPlayerInventory(inventory);
+	}
+
+	protected void addAugmentSlots() {
+
 		if (baseTile instanceof IAugmentable) {
 			augmentSlots = new Slot[((IAugmentable) baseTile).getAugmentSlots().length];
 			for (int i = 0; i < augmentSlots.length; i++) {
 				augmentSlots[i] = addSlotToContainer(new SlotAugment((IAugmentable) baseTile, null, i, 0, 0));
 			}
-		}
-		/* Player Inventory */
-		for (int i = 0; i < 3; i++) {
-			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-			}
-		}
-		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 142));
 		}
 	}
 
@@ -102,6 +101,8 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
+
+		System.out.println(slotIndex);
 
 		ItemStack stack = null;
 		Slot slot = (Slot) inventorySlots.get(slotIndex);

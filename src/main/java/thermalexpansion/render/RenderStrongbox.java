@@ -1,8 +1,8 @@
 package thermalexpansion.render;
 
-import codechicken.lib.render.CCRenderState;
 import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
+import cofh.repack.codechicken.lib.render.CCRenderState;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

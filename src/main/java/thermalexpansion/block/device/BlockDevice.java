@@ -298,6 +298,8 @@ public class BlockDevice extends BlockTEBase {
 
 		ItemStack pickaxe = breakerUseDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
 
+		String tinPart = "thermalexpansion:machineTin";
+
 		if (enable[Types.WORKBENCH.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
 					BlockStrongbox.strongboxBasic, 'X', Items.paper }));
@@ -308,19 +310,19 @@ public class BlockDevice extends BlockTEBase {
 
 		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin",
-					'P', TEItems.pneumaticServo, 'X', Blocks.chest }));
+			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',
+					TEItems.pneumaticServo, 'X', Blocks.chest }));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', "ingotTin",
-					'P', TEItems.pneumaticServo, 'X', pickaxe }));
+			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',
+					TEItems.pneumaticServo, 'X', pickaxe }));
 		}
 		if (enable[Types.PUMP.ordinal()]) {
 
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I',
-					"ingotTin", 'P', TEItems.pneumaticServo, 'X', "ingotInvar" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', tinPart,
+					'P', TEItems.pneumaticServo, 'X', "ingotInvar" }));
 		}
 		TECraftingHandler.addSecureRecipe(workbench);
 		// TECraftingHandler.addSecureRecipe(lexicon);

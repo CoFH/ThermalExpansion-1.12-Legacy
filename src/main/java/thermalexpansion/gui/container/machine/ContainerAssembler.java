@@ -36,10 +36,9 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 
 	public ContainerAssembler(InventoryPlayer inventory, TileEntity tile) {
 
-		super(tile);
+		super(inventory, tile);
 
 		myTile = (TileAssembler) tile;
-		addPlayerSlotsToContainer(inventory, 8, 123);
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 74 + i * 18));
@@ -56,15 +55,16 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		resultSlot = addSlotToContainer(new SlotCraftingLocked(inventory.player, craftMatrix, craftResult, 0, 0, 0));
 	}
 
-	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int xOffset, int yOffset) {
+	@Override
+	protected void addPlayerInventory(InventoryPlayer inventory) {
 
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 9; j++) {
-				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, xOffset + j * 18, yOffset + i * 18));
+				addSlotToContainer(new Slot(inventory, j + i * 9 + 9, 8 + j * 18, 123 + i * 18));
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new Slot(inventory, i, xOffset + i * 18, yOffset + 58));
+			addSlotToContainer(new Slot(inventory, i, 8 + i * 18, 181));
 		}
 	}
 

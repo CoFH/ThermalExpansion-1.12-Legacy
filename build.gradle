@@ -17,7 +17,7 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10R3.1.0"
+version = "1.7.10R4.0.0"
 group = "thermalexpansion"
 archivesBaseName = "ThermalExpansion"
 

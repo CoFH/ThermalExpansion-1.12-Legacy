@@ -126,7 +126,9 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			storedStack = null;
 			sendUpdatePacket(Side.CLIENT);
 		} else {
-			storedStack.stackSize = 0;
+			if (storedStack != null) {
+				storedStack.stackSize = 0;
+			}
 		}
 		inventory[0] = null;
 		inventory[1] = null;

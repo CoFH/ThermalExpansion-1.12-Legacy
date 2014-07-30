@@ -51,7 +51,6 @@ public class TEFlorbs {
 		parseFlorbs();
 
 		configFlorbs.cleanUp(true, false);
-
 	}
 
 	public static void parseFlorbs() {
@@ -59,24 +58,31 @@ public class TEFlorbs {
 		ItemStack florbStack = ItemHelper.cloneStack(florb, 4);
 		ItemStack florbMagmaticStack = ItemHelper.cloneStack(florbMagmatic, 4);
 
+		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
+			if (fluid.canBePlacedInWorld()) {
+				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 0), fluid));
+				} else {
+					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 1), fluid));
+				}
+				if (!enableFlorbs) {
+					continue;
+				}
+				if (configFlorbs.get("whitelist", fluid.getName(), true)) {
+					if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+						TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+					} else {
+						TransposerManager.addFillRecipe(1600, florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
+					}
+				}
+			}
+		}
 		if (!enableFlorbs) {
 			return;
 		}
 		GameRegistry.addRecipe(new ShapelessOreRecipe(florbStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball", Items.blaze_powder }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, Items.magma_cream }));
-
-		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
-			if (fluid.canBePlacedInWorld() && configFlorbs.get("whitelist", fluid.getName(), true)) {
-				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 0), fluid));
-					TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
-				} else {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 1), fluid));
-					TransposerManager.addFillRecipe(1600, florbMagmatic, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
-				}
-			}
-		}
 	}
 
 	public static ItemFlorb itemFlorb;

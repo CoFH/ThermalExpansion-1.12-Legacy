@@ -1,12 +1,12 @@
 package thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
-import codechicken.lib.render.CCModel;
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Translation;
 import cofh.render.RenderHelper;
 import cofh.render.RenderUtils;
+import cofh.repack.codechicken.lib.lighting.LightModel;
+import cofh.repack.codechicken.lib.render.CCModel;
+import cofh.repack.codechicken.lib.render.CCRenderState;
+import cofh.repack.codechicken.lib.vec.Cuboid6;
+import cofh.repack.codechicken.lib.vec.Translation;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
