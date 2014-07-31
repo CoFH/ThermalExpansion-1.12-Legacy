@@ -3,7 +3,10 @@ package thermalexpansion.plugins.nei;
 import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 
+import net.minecraft.item.ItemStack;
+
 import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TEBlocks;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.item.TEItems;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerCrucible;
@@ -40,6 +43,10 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 		API.registerUsageHandler(RecipeHandlerTransposer.instance);
 
 		API.registerGuiOverlayHandler(GuiWorkbench.class, new NEIRecipeOverlayHandler(), "crafting");
+
+		API.hideItem(new ItemStack(TEBlocks.blockAirBarrier));
+		API.hideItem(new ItemStack(TEBlocks.blockAirLight));
+		API.hideItem(new ItemStack(TEBlocks.blockAirSignal));
 
 		API.hideItem(TEItems.satchelCreative);
 	}

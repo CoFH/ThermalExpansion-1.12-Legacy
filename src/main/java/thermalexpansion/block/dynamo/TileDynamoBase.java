@@ -509,6 +509,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		energyMod = 1;
 		fuelMod = FUEL_MOD;
+		energyStorage.setMaxTransfer(config.maxPower * 2);
 
 		augmentRedstoneControl = false;
 		augmentThrottle = false;
