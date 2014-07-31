@@ -102,8 +102,6 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
 
-		System.out.println(slotIndex);
-
 		ItemStack stack = null;
 		Slot slot = (Slot) inventorySlots.get(slotIndex);
 

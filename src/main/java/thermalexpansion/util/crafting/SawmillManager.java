@@ -3,7 +3,6 @@ package thermalexpansion.util.crafting;
 import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStack;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
@@ -88,7 +87,7 @@ public class SawmillManager {
 
 	public static void refreshRecipes() {
 
-		TMap<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap(recipeMap.size());
 		RecipeSawmill tempRecipe;
 
 		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {

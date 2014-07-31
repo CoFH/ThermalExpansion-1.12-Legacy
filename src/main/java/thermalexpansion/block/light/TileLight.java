@@ -85,7 +85,6 @@ public class TileLight extends TileTEBase implements ITilePacketHandler, ITileIn
 		if (wasPowered != isPowered || oldPower != inputPower) {
 			markDirty();
 			sendUpdatePacket(Side.CLIENT);
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 	}
 

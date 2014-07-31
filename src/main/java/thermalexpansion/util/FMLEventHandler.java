@@ -17,6 +17,7 @@ import thermalexpansion.util.crafting.FurnaceManager;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
+import thermalexpansion.util.crafting.TransposerManager;
 
 public class FMLEventHandler {
 
@@ -45,6 +46,7 @@ public class FMLEventHandler {
 		SawmillManager.refreshRecipes();
 		SmelterManager.refreshRecipes();
 		CrucibleManager.refreshRecipes();
+		TransposerManager.refreshRecipes();
 
 		BlockDevice.refreshItemStacks();
 		BlockDynamo.refreshItemStacks();

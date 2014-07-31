@@ -196,12 +196,13 @@ public class TileSmelter extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[2] != null && inventory[3] != null) {
+		if (inventory[2] != null || inventory[3] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
 					if (transferItem(2, 4, side)) {
+
 						if (!transferItem(3, 4, side)) {
 							transferItem(2, 4, side);
 						}

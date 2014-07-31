@@ -32,6 +32,10 @@ public class ExtruderManager {
 
 	}
 
+	public static void refreshRecipes() {
+
+	}
+
 	/* RECIPE CLASS */
 	public static class RecipeExtruder {
 

@@ -13,6 +13,7 @@ import cofh.util.CoreUtils;
 import cofh.util.EnergyHelper;
 import cofh.util.RedstoneControlHelper;
 import cofh.util.ServerHelper;
+import cofh.util.TimeTracker;
 import cofh.util.fluid.FluidTankAdv;
 import cpw.mods.fml.relauncher.Side;
 
@@ -54,11 +55,13 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	int compareTracker;
 	int fuelRF;
 	byte facing = 1;
+	boolean wasActive;
 
 	boolean cached = false;
 	IEnergyHandler adjacentHandler = null;
 
-	EnergyConfig config;
+	protected EnergyConfig config;
+	protected TimeTracker tracker = new TimeTracker();
 
 	/* Augment Variables */
 	ItemStack[] augments = new ItemStack[4];
@@ -133,33 +136,38 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		}
 		boolean curActive = isActive;
 
-		if (redstoneControlOrDisable()) {
-			if (isActive) {
-				if (canGenerate()) {
-					generate();
-					transferEnergy(facing);
-				} else {
-					isActive = false;
-				}
-			} else if (canGenerate()) {
-				isActive = true;
+		if (isActive) {
+			if (redstoneControlOrDisable() && canGenerate()) {
 				generate();
 				transferEnergy(facing);
 			} else {
-				attenuate();
+				isActive = false;
+				wasActive = true;
+				tracker.markTime(worldObj);
 			}
-			if (timeCheck()) {
-				int curScale = getScaledEnergyStored(15);
-				if (curScale != compareTracker) {
-					compareTracker = curScale;
-					callNeighborTileChange();
-				}
-			}
+		} else if (redstoneControlOrDisable() && canGenerate()) {
+			isActive = true;
+			generate();
+			transferEnergy(facing);
 		} else {
-			isActive = false;
 			attenuate();
 		}
-		if (curActive != isActive) {
+		if (timeCheck()) {
+			int curScale = getScaledEnergyStored(15);
+			if (curScale != compareTracker) {
+				compareTracker = curScale;
+				callNeighborTileChange();
+			}
+		}
+		updateIfChanged(curActive);
+	}
+
+	protected void updateIfChanged(boolean curActive) {
+
+		if (curActive != isActive && isActive == true) {
+			sendUpdatePacket(Side.CLIENT);
+		} else if (tracker.hasDelayPassed(worldObj, 100) && wasActive) {
+			wasActive = false;
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}

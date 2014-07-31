@@ -4,7 +4,6 @@ import cofh.util.ItemHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
@@ -168,7 +167,7 @@ public class SmelterManager {
 
 	public static void refreshRecipes() {
 
-		TMap<List, RecipeSmelter> tempMap = new THashMap(recipeMap.size());
+		Map<List, RecipeSmelter> tempMap = new THashMap(recipeMap.size());
 		Set<ComparableItemStackSafe> tempSet = new THashSet();
 		RecipeSmelter tempRecipe;
 

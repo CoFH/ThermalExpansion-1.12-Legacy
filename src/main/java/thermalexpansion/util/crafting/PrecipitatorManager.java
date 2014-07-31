@@ -52,6 +52,10 @@ public class PrecipitatorManager {
 
 	}
 
+	public static void refreshRecipes() {
+
+	}
+
 	/* RECIPE CLASS */
 	public static class RecipePrecipitator {
 

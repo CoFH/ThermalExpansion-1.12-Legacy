@@ -5,7 +5,6 @@ import cofh.util.MathHelper;
 import cofh.util.StringHelper;
 import cofh.util.inventory.ComparableItemStack;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
@@ -184,7 +183,7 @@ public class PulverizerManager {
 
 	public static void refreshRecipes() {
 
-		TMap<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap(recipeMap.size());
 		RecipePulverizer tempRecipe;
 
 		for (Entry<ComparableItemStackPulverizer, RecipePulverizer> entry : recipeMap.entrySet()) {

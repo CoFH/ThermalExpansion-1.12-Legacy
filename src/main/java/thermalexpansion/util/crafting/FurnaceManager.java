@@ -4,7 +4,6 @@ import cofh.util.ItemHelper;
 import cofh.util.inventory.ComparableItemStackSafe;
 import cofh.util.oredict.OreDictionaryArbiter;
 
-import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
@@ -140,7 +139,7 @@ public class FurnaceManager {
 
 	public static void refreshRecipes() {
 
-		TMap<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap(recipeMap.size());
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeFurnace> entry : recipeMap.entrySet()) {
