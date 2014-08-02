@@ -127,8 +127,9 @@ info.thermalexpansion.resonant=Resonant
 
 info.thermalexpansion.augment=Augment
 info.thermalexpansion.augment.energyProduced=Energy Produced
-info.thermalexpansion.augment.energyConsumed=Energy Consumed
+info.thermalexpansion.augment.energyUsed=Energy Used
 info.thermalexpansion.augment.fuelConsumed=Fuel Consumed
+info.thermalexpansion.augment.fuelEnergy=Base Fuel Energy
 info.thermalexpansion.augment.levels.0=Requires previous levels to be installed.
 info.thermalexpansion.augment.levels.1=Highest Level Augment is used.
 info.thermalexpansion.augment.machine.0=Requires a

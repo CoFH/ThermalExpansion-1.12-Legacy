@@ -62,13 +62,14 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] + StringHelper.END);
 
 		if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
-			list.add(StringHelper.BRIGHT_GREEN + "-" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 		} else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
-			list.add(StringHelper.RED + "+" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
+			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelUsed") + StringHelper.END);
+			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
 			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_SUM[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
@@ -77,7 +78,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
 			list.add(StringHelper.RED + "x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.energyConsumed") + StringHelper.END);
+					+ StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
 			list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_SUM[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
