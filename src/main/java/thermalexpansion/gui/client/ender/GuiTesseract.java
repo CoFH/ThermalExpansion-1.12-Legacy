@@ -185,9 +185,9 @@ public class GuiTesseract extends GuiBaseAdv {
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
 		if (myTile.frequency == -1) {
-			fontRendererObj.drawString("Device Inactive", 8, 28, 0x404040);
+			fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.inactive"), 8, 28, 0x404040);
 		} else {
-			fontRendererObj.drawString("Frequency: " + myTile.frequency, 8, 28, 0x404040);
+			fontRendererObj.drawString(StringHelper.localize("info.cofh.frequency") + ": " + myTile.frequency, 8, 28, 0x404040);
 		}
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

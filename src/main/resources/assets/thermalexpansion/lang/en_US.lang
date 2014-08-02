@@ -104,6 +104,7 @@ info.thermalexpansion.sneakOff=Not Sneaking
 info.thermalexpansion.sneakOn=Sneaking
 
 #Tesseract
+info.thermalexpansion.inactive=Inactive
 info.thermalexpansion.modeBlocked=Blocked
 info.thermalexpansion.modeEnergy=Energy Mode
 info.thermalexpansion.modeFluid=Fluid Mode

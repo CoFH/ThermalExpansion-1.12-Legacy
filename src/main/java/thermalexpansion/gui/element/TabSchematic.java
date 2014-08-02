@@ -67,7 +67,7 @@ public class TabSchematic extends TabBase {
 	public void addTooltip(List<String> list) {
 
 		if (!isFullyOpened()) {
-			list.add(StringHelper.localize("item.thermalexpansion.diagram.schematic"));
+			list.add(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"));
 		}
 	}
 
@@ -92,7 +92,7 @@ public class TabSchematic extends TabBase {
 				writeSchematic();
 			}
 		} else {
-			gui.mouseClicked(1);
+			gui.mouseClicked(mouseButton);
 		}
 		return true;
 	}

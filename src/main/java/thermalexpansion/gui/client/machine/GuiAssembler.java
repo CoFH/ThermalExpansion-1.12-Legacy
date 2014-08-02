@@ -10,9 +10,11 @@ import net.minecraft.util.ResourceLocation;
 
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.GuiAugmentableBase;
+import thermalexpansion.gui.container.ISchematicContainer;
 import thermalexpansion.gui.container.machine.ContainerAssembler;
 import thermalexpansion.gui.element.ElementSlotOverlay;
 import thermalexpansion.gui.element.ElementSlotOverlayAssembler;
+import thermalexpansion.gui.element.TabSchematic;
 
 public class GuiAssembler extends GuiAugmentableBase {
 
@@ -35,6 +37,8 @@ public class GuiAssembler extends GuiAugmentableBase {
 	public void initGui() {
 
 		super.initGui();
+
+		addTab(new TabSchematic(this, (ISchematicContainer) inventorySlots));
 
 		slotInput[0] = (ElementSlotOverlayAssembler) addElement(new ElementSlotOverlayAssembler(this, 8, 74).setSlotInfo(0, 4));
 		slotInput[1] = (ElementSlotOverlayAssembler) addElement(new ElementSlotOverlayAssembler(this, 8, 74).setSlotInfo(4, 0));
