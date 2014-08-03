@@ -67,7 +67,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		} else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
-			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelUsed") + StringHelper.END);
+			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
 			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {

@@ -73,6 +73,8 @@ public class TEEquipment {
 		GameRegistry.registerItem(itemShovelInvar, "tool.shovelInvar");
 		GameRegistry.registerItem(itemPickaxeInvar, "tool.pickaxeInvar");
 		GameRegistry.registerItem(itemAxeInvar, "tool.axeInvar");
+		GameRegistry.registerItem(itemHoeInvar, "tool.hoeInvar");
+		GameRegistry.registerItem(itemShearsInvar, "tool.shearsInvar");
 		GameRegistry.registerItem(itemFishingRodInvar, "tool.fishingRodInvar");
 		GameRegistry.registerItem(itemSickleInvar, "tool.sickleInvar");
 		GameRegistry.registerItem(itemBowInvar, "tool.bowInvar");

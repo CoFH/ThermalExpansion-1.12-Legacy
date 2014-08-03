@@ -111,8 +111,8 @@ public class TEAugments {
 	public static final int[] DYNAMO_EFFICIENCY_MOD = { 0, 100, 250, 500 };
 	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 100, 350, 850 };
 	public static final int[] DYNAMO_OUTPUT_MOD = { 1, 2, 4, 8 };
-	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_MOD = { 0, 200, 150, 100 };
-	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_SUM = { 0, 200, 350, 450 };
+	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_MOD = { 0, 150, 100, 50 };
+	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_SUM = { 0, 150, 250, 300 };
 
 	public static final int[] ENERGY_STORAGE_MOD = { 1, 2, 4, 8 };
 

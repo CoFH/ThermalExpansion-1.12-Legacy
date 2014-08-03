@@ -78,7 +78,10 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 			Utils.usedWrench(player, x, y, z);
 			return true;
 		}
-		return tile.openGui(player);
+		if (ServerHelper.isServerWorld(world)) {
+			return tile.openGui(player);
+		}
+		return true;
 	}
 
 	@Override

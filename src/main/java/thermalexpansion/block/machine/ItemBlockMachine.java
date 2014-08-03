@@ -56,7 +56,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize("info.thermalexpansion." + NAMES[getLevel(stack)]) + " " + StringHelper.localize(getUnlocalizedName(stack));
+		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion." + NAMES[getLevel(stack)]) + ")";
 	}
 
 	@Override

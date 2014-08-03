@@ -470,7 +470,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
 				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
 				energyStorage.setMaxTransfer(Math.max(energyStorage.getMaxExtract(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
-				fuelMod -= (350 - 100 * augLevel);
+				fuelMod -= TEAugments.DYNAMO_OUTPUT_EFFICIENCY_MOD[augLevel];
 				installed = true;
 			} else {
 				return false;
