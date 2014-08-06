@@ -1,14 +1,14 @@
 package thermalexpansion.block.tank;
 
 import cofh.api.tileentity.ITileInfo;
-import cofh.network.ITilePacketHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

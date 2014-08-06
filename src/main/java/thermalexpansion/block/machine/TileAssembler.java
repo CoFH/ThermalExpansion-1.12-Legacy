@@ -1,12 +1,12 @@
 package thermalexpansion.block.machine;
 
-import cofh.network.PacketCoFHBase;
-import cofh.util.InventoryHelper;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cofh.util.fluid.FluidTankAdv;
-import cofh.util.inventory.InventoryCraftingFalse;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.inventory.InventoryCraftingFalse;
+import cofh.lib.util.helpers.InventoryHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;

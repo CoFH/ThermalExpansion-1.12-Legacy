@@ -1,8 +1,8 @@
 package thermalexpansion.render.item;
 
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
+import cofh.core.render.IconRegistry;
+import cofh.core.render.RenderUtils;
+import cofh.lib.render.RenderHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;

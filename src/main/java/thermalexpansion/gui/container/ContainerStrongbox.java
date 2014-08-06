@@ -1,9 +1,9 @@
 package thermalexpansion.gui.container;
 
 import cofh.api.item.IInventoryContainerItem;
-import cofh.gui.slot.ISlotValidator;
-import cofh.gui.slot.SlotValidated;
-import cofh.util.MathHelper;
+import cofh.lib.gui.slot.ISlotValidator;
+import cofh.lib.gui.slot.SlotValidated;
+import cofh.lib.util.helpers.MathHelper;
 
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;

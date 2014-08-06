@@ -1,7 +1,7 @@
 package thermalexpansion.block.sponge;
 
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;

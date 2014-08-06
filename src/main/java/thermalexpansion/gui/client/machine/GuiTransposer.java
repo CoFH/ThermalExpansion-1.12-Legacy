@@ -1,12 +1,12 @@
 package thermalexpansion.gui.client.machine;
 
-import cofh.gui.element.ElementBase;
-import cofh.gui.element.ElementButton;
-import cofh.gui.element.ElementDualScaled;
-import cofh.gui.element.ElementEnergyStored;
-import cofh.gui.element.ElementFluid;
-import cofh.gui.element.ElementFluidTank;
-import cofh.gui.element.ElementSimple;
+import cofh.lib.gui.element.ElementBase;
+import cofh.lib.gui.element.ElementButton;
+import cofh.lib.gui.element.ElementDualScaled;
+import cofh.lib.gui.element.ElementEnergyStored;
+import cofh.lib.gui.element.ElementFluid;
+import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.gui.element.ElementSimple;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;

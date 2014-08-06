@@ -2,12 +2,12 @@ package thermalexpansion;
 
 import cofh.CoFHCore;
 import cofh.core.CoFHProps;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.ConfigHandler;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.mod.BaseMod;
-import cofh.network.PacketCoFHBase;
-import cofh.updater.UpdateManager;
-import cofh.util.ConfigHandler;
-import cofh.util.CoreUtils;
-import cofh.util.StringHelper;
+import cofh.mod.updater.UpdateManager;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -73,7 +73,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.0B2";
+	public static final String version = "1.7.10R4.0.0B3";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/ThermalExpansion/master/VERSION";
 	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigTEFactory";

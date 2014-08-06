@@ -1,6 +1,6 @@
 package thermalexpansion.block.strongbox;
 
-import cofh.util.ItemHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.item.ItemStack;

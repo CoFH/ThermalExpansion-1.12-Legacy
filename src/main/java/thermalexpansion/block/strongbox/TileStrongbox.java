@@ -3,10 +3,10 @@ package thermalexpansion.block.strongbox;
 import cofh.api.inventory.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
-import cofh.network.PacketCoFHBase;
-import cofh.util.BlockHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

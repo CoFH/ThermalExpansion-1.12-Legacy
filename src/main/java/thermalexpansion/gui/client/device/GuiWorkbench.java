@@ -1,9 +1,9 @@
 package thermalexpansion.gui.client.device;
 
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.element.ElementButton;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabSecurity;
+import cofh.core.gui.GuiBaseAdv;
+import cofh.core.gui.element.TabInfo;
+import cofh.core.gui.element.TabSecurity;
+import cofh.lib.gui.element.ElementButton;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;

@@ -1,6 +1,6 @@
 package thermalexpansion.gui.slot;
 
-import cofh.gui.slot.SlotSpecificItem;
+import cofh.lib.gui.slot.SlotSpecificItem;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

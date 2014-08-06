@@ -1,16 +1,16 @@
 package thermalexpansion.gui.client;
 
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.container.IAugmentableContainer;
-import cofh.gui.element.TabAugment;
-import cofh.gui.element.TabBase;
-import cofh.gui.element.TabConfiguration;
-import cofh.gui.element.TabEnergy;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabRedstone;
-import cofh.gui.element.TabSecurity;
-import cofh.gui.element.TabTutorial;
-import cofh.util.StringHelper;
+import cofh.core.gui.GuiBaseAdv;
+import cofh.core.gui.element.TabAugment;
+import cofh.core.gui.element.TabConfiguration;
+import cofh.core.gui.element.TabEnergy;
+import cofh.core.gui.element.TabInfo;
+import cofh.core.gui.element.TabRedstone;
+import cofh.core.gui.element.TabSecurity;
+import cofh.core.gui.element.TabTutorial;
+import cofh.lib.gui.container.IAugmentableContainer;
+import cofh.lib.gui.element.TabBase;
+import cofh.lib.util.helpers.StringHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

@@ -1,10 +1,10 @@
 package thermalexpansion.block.light;
 
 import cofh.api.tileentity.ITileInfo;
-import cofh.network.ITilePacketHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
+import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

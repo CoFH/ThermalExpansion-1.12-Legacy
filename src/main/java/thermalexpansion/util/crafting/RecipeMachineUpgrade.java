@@ -1,6 +1,6 @@
 package thermalexpansion.util.crafting;
 
-import cofh.util.ItemHelper;
+import cofh.lib.util.helpers.ItemHelper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

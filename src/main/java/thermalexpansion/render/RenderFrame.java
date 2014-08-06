@@ -1,7 +1,7 @@
 package thermalexpansion.render;
 
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
+import cofh.core.render.RenderUtils;
+import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.lighting.LightModel;
 import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;

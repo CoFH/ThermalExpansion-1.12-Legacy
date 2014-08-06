@@ -1,7 +1,7 @@
 package thermalexpansion.render;
 
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.render.RenderHelper;
 
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;

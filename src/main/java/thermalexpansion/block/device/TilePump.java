@@ -1,8 +1,8 @@
 package thermalexpansion.block.device;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.util.ServerHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;

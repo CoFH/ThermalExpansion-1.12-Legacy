@@ -1,11 +1,11 @@
 package thermalexpansion.block.tank;
 
-import cofh.render.IconRegistry;
-import cofh.util.CoreUtils;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.crafting.RecipeUpgrade;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

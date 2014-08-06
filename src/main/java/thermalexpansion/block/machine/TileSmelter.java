@@ -1,8 +1,8 @@
 package thermalexpansion.block.machine;
 
 import cofh.CoFHCore;
-import cofh.util.CoreUtils;
-import cofh.util.MathHelper;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -166,10 +166,15 @@ public class TileSmelter extends TileMachineBase {
 			}
 		}
 		if (secondaryItem != null) {
-			if (worldObj.rand.nextInt(secondaryChance) < recipe.getSecondaryOutputChance()) {
+			int recipeChance = recipe.getSecondaryOutputChance();
+			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[4] == null) {
 					inventory[4] = secondaryItem;
 				} else {
+					inventory[4].stackSize += secondaryItem.stackSize;
+				}
+				if (secondaryChance < recipeChance && inventory[4].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
+						&& worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 					inventory[4].stackSize += secondaryItem.stackSize;
 				}
 			}

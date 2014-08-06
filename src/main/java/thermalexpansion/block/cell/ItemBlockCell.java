@@ -2,12 +2,12 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.item.ItemBlockBase;
-import cofh.util.EnergyHelper;
-import cofh.util.ItemHelper;
-import cofh.util.RedstoneControlHelper;
-import cofh.util.SecurityHelper;
-import cofh.util.StringHelper;
+import cofh.core.item.ItemBlockBase;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

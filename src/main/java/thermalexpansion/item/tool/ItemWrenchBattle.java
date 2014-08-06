@@ -5,9 +5,9 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Strippable;
-import cofh.item.tool.ItemSwordAdv;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
+import cofh.core.item.tool.ItemSwordAdv;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;

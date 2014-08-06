@@ -1,13 +1,13 @@
 package thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
-import cofh.block.TileCoFHBase;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.ITilePacketHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.network.PacketHandler;
-import cofh.network.PacketTileInfo;
-import cofh.util.ServerHelper;
+import cofh.core.block.TileCoFHBase;
+import cofh.core.network.ITileInfoPacketHandler;
+import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketHandler;
+import cofh.core.network.PacketTileInfo;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;

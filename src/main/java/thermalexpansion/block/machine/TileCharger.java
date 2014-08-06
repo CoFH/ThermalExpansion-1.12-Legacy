@@ -1,10 +1,10 @@
 package thermalexpansion.block.machine;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.util.EnergyHelper;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;

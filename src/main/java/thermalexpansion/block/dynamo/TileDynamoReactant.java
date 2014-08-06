@@ -1,9 +1,9 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.network.PacketCoFHBase;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.TMap;

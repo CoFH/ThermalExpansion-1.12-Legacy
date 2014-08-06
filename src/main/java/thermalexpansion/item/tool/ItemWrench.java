@@ -5,9 +5,9 @@ import buildcraft.api.tools.IToolWrench;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Strippable;
-import cofh.item.ItemBase;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
+import cofh.core.item.ItemBase;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 

@@ -3,9 +3,9 @@ package thermalexpansion.item.tool;
 import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
 import cofh.api.tileentity.ITileInfo;
-import cofh.item.ItemBase;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
+import cofh.core.item.ItemBase;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import java.util.ArrayList;
 

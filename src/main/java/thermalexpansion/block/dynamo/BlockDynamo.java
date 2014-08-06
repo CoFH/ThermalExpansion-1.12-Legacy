@@ -1,10 +1,10 @@
 package thermalexpansion.block.dynamo;
 
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.crafting.RecipeAugmentable;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.crafting.RecipeAugmentable;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

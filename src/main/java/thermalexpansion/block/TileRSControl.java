@@ -7,12 +7,12 @@ import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
 import cofh.asm.relauncher.Strippable;
-import cofh.audio.ISoundSource;
-import cofh.audio.SoundTile;
-import cofh.network.PacketCoFHBase;
-import cofh.util.EnergyHelper;
-import cofh.util.ServerHelper;
-import cofh.util.SoundHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.audio.ISoundSource;
+import cofh.lib.audio.SoundTile;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.SoundHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

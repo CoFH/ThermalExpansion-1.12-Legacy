@@ -1,12 +1,12 @@
 package thermalexpansion.block.device;
 
 import cofh.core.CoFHProps;
-import cofh.entity.CoFHFakePlayer;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.InventoryHelper;
-import cofh.util.ServerHelper;
+import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.InventoryHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

@@ -1,6 +1,6 @@
 package thermalexpansion.gui.slot;
 
-import cofh.util.ServerHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

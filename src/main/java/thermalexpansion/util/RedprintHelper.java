@@ -1,7 +1,7 @@
 package thermalexpansion.util;
 
-import cofh.util.RedstoneControlHelper;
-import cofh.util.StringHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

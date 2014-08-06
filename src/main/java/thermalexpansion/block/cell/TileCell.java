@@ -2,13 +2,13 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.EnergyHelper;
-import cofh.util.MathHelper;
-import cofh.util.RedstoneControlHelper;
-import cofh.util.ServerHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

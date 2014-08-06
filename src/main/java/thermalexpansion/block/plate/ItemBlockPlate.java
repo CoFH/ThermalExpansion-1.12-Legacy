@@ -1,7 +1,7 @@
 package thermalexpansion.block.plate;
 
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;

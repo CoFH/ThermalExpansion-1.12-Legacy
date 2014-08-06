@@ -2,9 +2,9 @@ package thermalexpansion.block.simple;
 
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -1,8 +1,8 @@
 package thermalexpansion.block.device;
 
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.util.FluidHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.FluidHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

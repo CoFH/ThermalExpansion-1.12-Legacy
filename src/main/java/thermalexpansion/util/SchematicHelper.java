@@ -1,9 +1,9 @@
 package thermalexpansion.util;
 
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.inventory.InventoryCraftingFalse;
-import cofh.util.oredict.OreDictionaryArbiter;
+import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.lib.inventory.InventoryCraftingFalse;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;

@@ -1,10 +1,10 @@
 package thermalexpansion.block.cell;
 
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.crafting.RecipeUpgrade;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

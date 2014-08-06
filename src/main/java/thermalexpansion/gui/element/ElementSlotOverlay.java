@@ -1,8 +1,8 @@
 package thermalexpansion.gui.element;
 
-import cofh.gui.GuiBase;
-import cofh.gui.element.ElementBase;
-import cofh.render.RenderHelper;
+import cofh.lib.gui.GuiBase;
+import cofh.lib.gui.element.ElementBase;
+import cofh.lib.render.RenderHelper;
 
 import thermalexpansion.core.TEProps;
 

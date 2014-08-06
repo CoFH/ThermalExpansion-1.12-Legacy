@@ -1,7 +1,7 @@
 package thermalexpansion.gui;
 
-import cofh.block.TileCoFHBase;
-import cofh.util.ItemHelper;
+import cofh.core.block.TileCoFHBase;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 import net.minecraft.entity.player.EntityPlayer;

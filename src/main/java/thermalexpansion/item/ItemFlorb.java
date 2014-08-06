@@ -1,11 +1,11 @@
 package thermalexpansion.item;
 
-import cofh.item.ItemBase;
-import cofh.render.IconRegistry;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
+import cofh.core.item.ItemBase;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

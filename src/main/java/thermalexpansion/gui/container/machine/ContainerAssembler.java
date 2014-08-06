@@ -1,13 +1,13 @@
 package thermalexpansion.gui.container.machine;
 
-import cofh.gui.container.ContainerFalse;
-import cofh.gui.slot.SlotCraftingLocked;
-import cofh.gui.slot.SlotEnergy;
-import cofh.gui.slot.SlotFalseCopy;
-import cofh.gui.slot.SlotRemoveOnly;
-import cofh.gui.slot.SlotSpecificItem;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
+import cofh.core.util.CoreUtils;
+import cofh.lib.gui.container.ContainerFalse;
+import cofh.lib.gui.slot.SlotCraftingLocked;
+import cofh.lib.gui.slot.SlotEnergy;
+import cofh.lib.gui.slot.SlotFalseCopy;
+import cofh.lib.gui.slot.SlotRemoveOnly;
+import cofh.lib.gui.slot.SlotSpecificItem;
+import cofh.lib.util.helpers.ItemHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

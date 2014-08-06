@@ -1,12 +1,12 @@
 package thermalexpansion.block.cache;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.render.IconRegistry;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cofh.util.crafting.RecipeUpgrade;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -98,18 +98,8 @@ public class BlockCache extends BlockTEBase {
 		}
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 
-		if (ItemHelper.isPlayerHoldingNothing(player)) {
-			if (player.isSneaking()) {
-				tile.toggleLock();
-				return true;
-			}
-			if (tile.getStoredItemType() != null) {
-				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-					if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
-						player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
-					}
-				}
-			}
+		if (ItemHelper.isPlayerHoldingNothing(player) && player.isSneaking()) {
+			tile.toggleLock();
 			return true;
 		}
 		ItemStack heldStack = player.getCurrentEquippedItem();

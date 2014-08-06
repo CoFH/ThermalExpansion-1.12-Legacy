@@ -1,8 +1,8 @@
 package thermalexpansion.item;
 
 import cofh.core.CoFHProps;
-import cofh.util.ConfigHandler;
-import cofh.util.ItemHelper;
+import cofh.core.util.ConfigHandler;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.io.File;

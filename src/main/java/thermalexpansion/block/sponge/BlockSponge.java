@@ -2,7 +2,7 @@ package thermalexpansion.block.sponge;
 
 import cofh.api.core.IInitializer;
 import cofh.api.tileentity.ISidedTexture;
-import cofh.render.IconRegistry;
+import cofh.core.render.IconRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

@@ -1,7 +1,7 @@
 package thermalexpansion.block.cell;
 
-import cofh.render.IconRegistry;
-import cofh.util.ServerHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;

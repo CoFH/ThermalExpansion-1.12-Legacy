@@ -1,8 +1,8 @@
 package thermalexpansion.util.crafting;
 
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
-import cofh.util.inventory.ComparableItemStackSafe;
+import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;

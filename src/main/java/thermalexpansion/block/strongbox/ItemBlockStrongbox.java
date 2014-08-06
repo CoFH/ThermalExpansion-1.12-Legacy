@@ -2,11 +2,11 @@ package thermalexpansion.block.strongbox;
 
 import cofh.api.item.IInventoryContainerItem;
 import cofh.core.CoFHProps;
-import cofh.enchantment.CoFHEnchantment;
-import cofh.item.ItemBlockBase;
-import cofh.util.ItemHelper;
-import cofh.util.SecurityHelper;
-import cofh.util.StringHelper;
+import cofh.core.enchantment.CoFHEnchantment;
+import cofh.core.item.ItemBlockBase;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

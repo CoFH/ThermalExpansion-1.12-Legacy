@@ -1,10 +1,10 @@
 package thermalexpansion.gui.container.device;
 
-import cofh.gui.container.CustomInventoryWrapper;
-import cofh.gui.slot.SlotFalseCopy;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
-import cofh.util.inventory.InventoryCraftingCustom;
+import cofh.lib.gui.container.CustomInventoryWrapper;
+import cofh.lib.gui.slot.SlotFalseCopy;
+import cofh.lib.inventory.InventoryCraftingCustom;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

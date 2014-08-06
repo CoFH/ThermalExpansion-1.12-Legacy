@@ -6,9 +6,9 @@ import buildcraft.api.transport.IPipeTile;
 import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
 import cofh.api.transport.IItemDuct;
-import cofh.util.BlockHelper;
-import cofh.util.InventoryHelper;
-import cofh.util.ItemHelper;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.InventoryHelper;
+import cofh.lib.util.helpers.ItemHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

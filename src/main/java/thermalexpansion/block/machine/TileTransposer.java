@@ -1,15 +1,15 @@
 package thermalexpansion.block.machine;
 
 import cofh.CoFHCore;
-import cofh.network.PacketCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.util.CoreUtils;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -222,7 +222,8 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[0]);
 			ItemStack output = recipe.getOutput();
 
-			if (worldObj.rand.nextInt(secondaryChance) < recipe.getChance()) {
+			int recipeChance = recipe.getChance();
+			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[1] == null) {
 					inventory[1] = output;
 				} else {

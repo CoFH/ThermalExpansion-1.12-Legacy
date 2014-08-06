@@ -1,8 +1,8 @@
 package thermalexpansion.render;
 
-import cofh.render.RenderUtils;
-import cofh.util.CoreUtils;
-import cofh.util.StringHelper;
+import cofh.core.render.RenderUtils;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.StringHelper;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;

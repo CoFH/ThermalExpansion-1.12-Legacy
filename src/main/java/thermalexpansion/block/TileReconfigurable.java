@@ -3,8 +3,8 @@ package thermalexpansion.block;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedTexture;
-import cofh.network.PacketCoFHBase;
-import cofh.util.BlockHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.BlockHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;

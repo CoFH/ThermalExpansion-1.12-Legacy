@@ -1,8 +1,8 @@
 package thermalexpansion.block.tank;
 
-import cofh.item.ItemBlockBase;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.core.item.ItemBlockBase;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

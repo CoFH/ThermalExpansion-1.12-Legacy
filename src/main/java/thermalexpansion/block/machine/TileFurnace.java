@@ -1,8 +1,8 @@
 package thermalexpansion.block.machine;
 
 import cofh.CoFHCore;
-import cofh.util.CoreUtils;
-import cofh.util.MathHelper;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;

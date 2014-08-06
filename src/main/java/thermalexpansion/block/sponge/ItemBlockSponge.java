@@ -1,7 +1,7 @@
 package thermalexpansion.block.sponge;
 
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

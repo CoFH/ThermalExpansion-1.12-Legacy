@@ -1,7 +1,7 @@
 package thermalexpansion.util;
 
 import cofh.core.CoFHProps;
-import cofh.util.ConfigHandler;
+import cofh.core.util.ConfigHandler;
 
 import java.io.File;
 import java.util.Locale;

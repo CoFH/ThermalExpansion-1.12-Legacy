@@ -1,6 +1,6 @@
 package thermalexpansion.plugins.mfr;
 
-import cofh.util.CoreUtils;
+import cofh.core.util.CoreUtils;
 
 import java.util.ArrayList;
 

@@ -1,7 +1,7 @@
 package thermalexpansion.plugins.mfr;
 
-import cofh.util.CoreUtils;
-import cofh.util.ServerHelper;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Items;

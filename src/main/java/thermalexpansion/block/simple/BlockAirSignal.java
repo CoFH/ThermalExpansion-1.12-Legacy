@@ -1,6 +1,6 @@
 package thermalexpansion.block.simple;
 
-import cofh.block.BlockCoFHBase;
+import cofh.core.block.BlockCoFHBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -1,7 +1,7 @@
 package thermalexpansion.block.simple;
 
-import cofh.item.ItemBlockBase;
-import cofh.util.ItemHelper;
+import cofh.core.item.ItemBlockBase;
+import cofh.lib.util.helpers.ItemHelper;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;

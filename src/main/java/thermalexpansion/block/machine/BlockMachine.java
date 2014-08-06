@@ -1,11 +1,11 @@
 package thermalexpansion.block.machine;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.FluidHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

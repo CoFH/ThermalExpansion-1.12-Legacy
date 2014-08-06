@@ -1,6 +1,6 @@
 package thermalexpansion.plugins.mfr;
 
-import cofh.util.DamageHelper;
+import cofh.lib.util.helpers.DamageHelper;
 
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.nbt.NBTTagCompound;

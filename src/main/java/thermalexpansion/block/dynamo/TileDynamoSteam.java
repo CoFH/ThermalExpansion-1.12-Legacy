@@ -1,10 +1,10 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.core.CoFHProps;
-import cofh.network.PacketCoFHBase;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.material.Material;
@@ -95,7 +95,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	FluidTankAdv waterTank = new FluidTankAdv(MAX_FLUID);
 
 	int currentFuelRF = getEnergyValue(coal);
-	int steamAmount = 40;
+	int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
 
 	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
 
@@ -103,9 +103,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 		super();
 		inventory = new ItemStack[1];
-
-		steamAmount = config.maxPower / 2;
-		steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
 	}
 
 	@Override
@@ -145,7 +142,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public void generate() {
 
-		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount) {
+		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount * energyMod) {
 			int energy = calcEnergy() * energyMod;
 			energyStorage.modifyEnergyStored(energy);
 			steamTank.drain(energy >> 1, true);
@@ -156,11 +153,20 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 				currentFuelRF = energy;
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);
 			}
+			if (fuelRF > 0) {
+				int filled = steamTank.fill(steam, true);
+				fuelRF -= filled << 1;
+				if (timeCheck()) {
+					waterTank.drain(filled, true);
+				}
+			}
 			if (steamTank.getFluidAmount() > STEAM_MIN) {
 				int energy = Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy());
+				energy *= energyMod;
 				energyStorage.modifyEnergyStored(energy);
 				steamTank.drain(energy >> 1, true);
 			}
+			return;
 		}
 		if (fuelRF > 0) {
 			int filled = steamTank.fill(steam, true);
@@ -221,7 +227,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		if (currentFuelRF <= 0) {
 			currentFuelRF = coalRF;
 		}
-		steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+		steam.amount = steamAmount * energyMod;
 	}
 
 	@Override
@@ -257,11 +263,26 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		waterTank.setFluid(payload.getFluidStack());
 	}
 
+	/* AUGMENT HELPERS */
+	@Override
+	protected void onInstalled() {
+
+		super.onInstalled();
+		steam.amount = steamAmount * energyMod;
+	}
+
+	@Override
+	protected void resetAugments() {
+
+		super.resetAugments();
+		steam.amount = steamAmount;
+	}
+
 	/* IEnergyInfo */
 	@Override
 	public int getInfoEnergyPerTick() {
 
-		return steamTank.getFluidAmount() > STEAM_MIN ? Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy()) : 0;
+		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() * energyMod : 0;
 	}
 
 	/* IFluidHandler */

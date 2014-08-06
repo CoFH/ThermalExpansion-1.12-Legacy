@@ -1,13 +1,13 @@
 package thermalexpansion.gui.container;
 
 import cofh.api.tileentity.IAugmentable;
-import cofh.block.TileCoFHBase;
-import cofh.gui.container.IAugmentableContainer;
-import cofh.gui.slot.SlotAugment;
-import cofh.gui.slot.SlotFalseCopy;
-import cofh.util.AugmentHelper;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
+import cofh.core.block.TileCoFHBase;
+import cofh.core.gui.slot.SlotAugment;
+import cofh.lib.gui.container.IAugmentableContainer;
+import cofh.lib.gui.slot.SlotFalseCopy;
+import cofh.lib.util.helpers.AugmentHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -1,9 +1,9 @@
 package thermalexpansion.util.crafting;
 
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.StringHelper;
-import cofh.util.inventory.ComparableItemStack;
+import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -158,10 +158,14 @@ public class PulverizerManager {
 		if (ItemHelper.oreNameExists("oreSulfur")) {
 			addRecipe(2400, OreDictionary.getOres("oreSulfur").get(0), ItemHelper.cloneStack(TFItems.dustSulfur, 6));
 		}
+
 		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
 			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2),
 					OreDictionary.getOres("dustCertusQuartz").get(0), 10);
 			addRecipe(1600, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
+		}
+		if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
+			addRecipe(1600, OreDictionary.getOres("crystalFluix").get(0), OreDictionary.getOres("dustFluix").get(0));
 		}
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
 			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));

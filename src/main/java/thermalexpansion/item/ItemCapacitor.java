@@ -1,11 +1,11 @@
 package thermalexpansion.item;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.item.ItemBase;
-import cofh.util.CoreUtils;
-import cofh.util.EnergyHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.core.item.ItemBase;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

@@ -3,14 +3,14 @@ package thermalexpansion.item;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.api.tileentity.ISecurable.AccessMode;
 import cofh.core.CoFHProps;
-import cofh.enchantment.CoFHEnchantment;
-import cofh.item.ItemBase;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.SecurityHelper;
-import cofh.util.ServerHelper;
-import cofh.util.SocialRegistry;
-import cofh.util.StringHelper;
+import cofh.core.enchantment.CoFHEnchantment;
+import cofh.core.item.ItemBase;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.SocialRegistry;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

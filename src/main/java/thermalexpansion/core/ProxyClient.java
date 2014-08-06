@@ -1,8 +1,8 @@
 package thermalexpansion.core;
 
-import cofh.render.IconRegistry;
-import cofh.render.ItemRenderRegistry;
-import cofh.render.RenderItemModular;
+import cofh.core.render.IconRegistry;
+import cofh.core.render.ItemRenderRegistry;
+import cofh.core.render.RenderItemModular;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

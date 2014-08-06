@@ -1,6 +1,6 @@
 package thermalexpansion.render;
 
-import cofh.render.RenderUtils;
+import cofh.core.render.RenderUtils;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;

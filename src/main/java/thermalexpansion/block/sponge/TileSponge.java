@@ -1,11 +1,11 @@
 package thermalexpansion.block.sponge;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.network.ITilePacketHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
+import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 

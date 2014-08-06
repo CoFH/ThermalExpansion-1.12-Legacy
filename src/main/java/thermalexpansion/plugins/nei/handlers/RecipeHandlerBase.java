@@ -10,9 +10,9 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cofh.render.RenderHelper;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.awt.Point;
 import java.awt.Rectangle;

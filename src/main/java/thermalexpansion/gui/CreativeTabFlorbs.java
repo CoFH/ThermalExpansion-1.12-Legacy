@@ -1,9 +1,9 @@
 package thermalexpansion.gui;
 
 import cofh.CoFHCore;
-import cofh.util.CoreUtils;
-import cofh.util.MathHelper;
-import cofh.util.TimeTracker;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.TimeTracker;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

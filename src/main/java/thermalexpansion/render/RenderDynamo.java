@@ -1,8 +1,8 @@
 package thermalexpansion.render;
 
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
+import cofh.core.render.IconRegistry;
+import cofh.core.render.RenderUtils;
+import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;
 import cofh.repack.codechicken.lib.vec.Translation;

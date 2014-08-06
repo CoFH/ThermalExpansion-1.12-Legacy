@@ -1,11 +1,11 @@
 package thermalexpansion.gui.element;
 
-import cofh.gui.GuiBase;
-import cofh.gui.element.TabBase;
-import cofh.gui.element.TabConfiguration;
-import cofh.render.RenderHelper;
-import cofh.util.BlockHelper;
-import cofh.util.StringHelper;
+import cofh.core.gui.element.TabConfiguration;
+import cofh.lib.gui.GuiBase;
+import cofh.lib.gui.element.TabBase;
+import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 

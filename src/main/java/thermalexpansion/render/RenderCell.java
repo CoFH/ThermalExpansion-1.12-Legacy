@@ -1,10 +1,10 @@
 package thermalexpansion.render;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.block.BlockCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
-import cofh.render.RenderUtils;
+import cofh.core.block.BlockCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.core.render.RenderUtils;
+import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.lighting.LightModel;
 import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;

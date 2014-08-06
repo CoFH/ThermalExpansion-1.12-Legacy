@@ -1,7 +1,7 @@
 package thermalexpansion.gui.container.machine;
 
-import cofh.gui.slot.SlotCustomInventory;
-import cofh.gui.slot.SlotRemoveOnly;
+import cofh.lib.gui.slot.SlotCustomInventory;
+import cofh.lib.gui.slot.SlotRemoveOnly;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;

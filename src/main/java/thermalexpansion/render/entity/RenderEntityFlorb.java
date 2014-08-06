@@ -1,7 +1,7 @@
 package thermalexpansion.render.entity;
 
-import cofh.render.IconRegistry;
-import cofh.render.RenderHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.render.RenderHelper;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
 import net.minecraft.client.renderer.Tessellator;

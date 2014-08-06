@@ -1,9 +1,9 @@
 package thermalexpansion.block.light;
 
-import cofh.render.IconRegistry;
-import cofh.util.ColorHelper;
-import cofh.util.ItemHelper;
-import cofh.util.ServerHelper;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.ColorHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

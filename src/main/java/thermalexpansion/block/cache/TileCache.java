@@ -3,12 +3,12 @@ package thermalexpansion.block.cache;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
-import cofh.network.PacketCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.util.BlockHelper;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
-import cofh.util.StringHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -230,7 +230,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	@Override
 	public ItemStack getStoredItemType() {
 
-		return storedStack;
+		return ItemHelper.cloneStack(storedStack, getStoredCount());
 	}
 
 	@Override
@@ -253,7 +253,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	@Override
 	public void setStoredItemType(ItemStack stack, int amount) {
 
-		if (stack == null || amount <= 0) {
+		if (stack == null) {
 			clearInventory();
 		} else {
 			storedStack = ItemHelper.cloneStack(stack, Math.min(amount, getMaxStoredCount()));
@@ -404,34 +404,34 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 				+ (inventory[1] == null ? 0 : inventory[1].stackSize);
 	}
 
-	public ItemStack insertItem(ForgeDirection from, ItemStack item, boolean simulate) {
+	public ItemStack insertItem(ForgeDirection from, ItemStack stack, boolean simulate) {
 
-		if (item == null) {
+		if (stack == null) {
 			return null;
 		}
 		if (storedStack == null) {
 			if (!simulate) {
-				setStoredItemType(item, item.stackSize);
+				setStoredItemType(stack, stack.stackSize);
 			}
 			return null;
 		}
 		if (getStoredCount() == SIZE[type]) {
-			return item;
+			return stack;
 		}
-		if (ItemHelper.itemsEqualWithMetadata(item, storedStack, true)) {
-			if (getStoredCount() + item.stackSize > SIZE[type]) {
-				ItemStack retStack = ItemHelper.cloneStack(item, SIZE[type] - getStoredCount());
+		if (ItemHelper.itemsEqualWithMetadata(stack, storedStack, true)) {
+			if (getStoredCount() + stack.stackSize > SIZE[type]) {
+				ItemStack retStack = ItemHelper.cloneStack(stack, SIZE[type] - getStoredCount());
 				if (!simulate) {
 					setStoredItemCount(SIZE[type]);
 				}
 				return retStack;
 			}
 			if (!simulate) {
-				setStoredItemCount(getStoredCount() + item.stackSize);
+				setStoredItemCount(getStoredCount() + stack.stackSize);
 			}
 			return null;
 		}
-		return item;
+		return stack;
 	}
 
 	public ItemStack extractItem(ForgeDirection from, int maxExtract, boolean simulate) {

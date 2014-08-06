@@ -6,15 +6,14 @@ import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.network.ITileInfoPacketHandler;
-import cofh.network.PacketCoFHBase;
-import cofh.util.BlockHelper;
-import cofh.util.CoreUtils;
-import cofh.util.EnergyHelper;
-import cofh.util.RedstoneControlHelper;
-import cofh.util.ServerHelper;
-import cofh.util.TimeTracker;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.network.ITileInfoPacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.TimeTracker;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -406,7 +405,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 				augmentStatus[i] = installAugment(i);
 			}
 		}
-		if (CoreUtils.isServer()) {
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
 			onInstalled();
 			sendUpdatePacket(Side.CLIENT);
 		}

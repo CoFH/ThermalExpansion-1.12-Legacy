@@ -2,10 +2,10 @@ package thermalexpansion.block.machine;
 
 import cofh.CoFHCore;
 import cofh.core.CoFHProps;
-import cofh.util.CoreUtils;
-import cofh.util.FluidHelper;
-import cofh.util.ServerHelper;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -68,7 +68,6 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 			ThermalExpansion.log.info("'Accumulator.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
-		ThermalExpansion.config.removeProperty("tweak", "Accumulator.PassiveGen");
 		passiveGen = ThermalExpansion.config.get("tweak", "Accumulator.PassiveGen", false);
 	}
 

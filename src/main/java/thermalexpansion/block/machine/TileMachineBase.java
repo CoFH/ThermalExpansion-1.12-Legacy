@@ -2,12 +2,12 @@ package thermalexpansion.block.machine;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.item.IAugmentItem;
-import cofh.network.PacketCoFHBase;
-import cofh.render.IconRegistry;
-import cofh.util.MathHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
-import cofh.util.TimeTracker;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.render.IconRegistry;
+import cofh.lib.util.TimeTracker;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.item.ItemStack;

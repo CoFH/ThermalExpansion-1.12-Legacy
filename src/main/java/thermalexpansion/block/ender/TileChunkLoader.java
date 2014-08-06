@@ -3,7 +3,7 @@ package thermalexpansion.block.ender;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.IEnergyInfo;
-import cofh.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankAdv;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;

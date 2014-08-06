@@ -3,10 +3,10 @@ package thermalexpansion.plugins.nei;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.IRecipeHandler;
-import cofh.gui.GuiBase;
-import cofh.network.PacketCoFHBase;
-import cofh.network.PacketHandler;
-import cofh.network.PacketTileInfo;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketHandler;
+import cofh.core.network.PacketTileInfo;
+import cofh.lib.gui.GuiBase;
 
 import java.util.List;
 

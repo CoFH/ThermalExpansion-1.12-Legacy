@@ -1,11 +1,11 @@
 package thermalexpansion.gui.client;
 
 import cofh.core.CoFHProps;
-import cofh.gui.GuiBaseAdv;
-import cofh.gui.element.TabInfo;
-import cofh.gui.element.TabSecurity;
-import cofh.util.MathHelper;
-import cofh.util.StringHelper;
+import cofh.core.gui.GuiBaseAdv;
+import cofh.core.gui.element.TabInfo;
+import cofh.core.gui.element.TabSecurity;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;

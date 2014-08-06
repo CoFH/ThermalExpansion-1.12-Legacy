@@ -2,10 +2,10 @@ package thermalexpansion.block;
 
 import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
-import cofh.network.PacketCoFHBase;
-import cofh.util.BlockHelper;
-import cofh.util.ServerHelper;
-import cofh.util.StringHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;

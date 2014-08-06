@@ -3,13 +3,13 @@ package thermalexpansion.block;
 import cofh.api.block.IDismantleable;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
-import cofh.block.BlockCoFHBase;
-import cofh.block.TileCoFHBase;
-import cofh.util.CoreUtils;
-import cofh.util.ItemHelper;
-import cofh.util.RedstoneControlHelper;
-import cofh.util.SecurityHelper;
-import cofh.util.ServerHelper;
+import cofh.core.block.BlockCoFHBase;
+import cofh.core.block.TileCoFHBase;
+import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.ServerHelper;
 
 import java.util.ArrayList;
 

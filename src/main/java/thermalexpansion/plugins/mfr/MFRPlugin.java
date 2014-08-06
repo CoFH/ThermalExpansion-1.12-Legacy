@@ -1,6 +1,6 @@
 package thermalexpansion.plugins.mfr;
 
-import cofh.util.MathHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.Loader;
 
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;

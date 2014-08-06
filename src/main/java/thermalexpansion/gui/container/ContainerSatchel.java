@@ -2,14 +2,14 @@ package thermalexpansion.gui.container;
 
 import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
-import cofh.gui.container.ContainerInventoryItem;
-import cofh.gui.slot.ISlotValidator;
-import cofh.gui.slot.SlotValidated;
-import cofh.gui.slot.SlotViewOnly;
-import cofh.util.CoreUtils;
-import cofh.util.MathHelper;
-import cofh.util.SecurityHelper;
-import cofh.util.SocialRegistry;
+import cofh.core.util.CoreUtils;
+import cofh.core.util.SocialRegistry;
+import cofh.lib.gui.container.ContainerInventoryItem;
+import cofh.lib.gui.slot.ISlotValidator;
+import cofh.lib.gui.slot.SlotValidated;
+import cofh.lib.gui.slot.SlotViewOnly;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;

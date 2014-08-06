@@ -1,6 +1,6 @@
 package thermalexpansion.block.plate;
 
-import cofh.network.ITilePacketHandler;
+import cofh.core.network.ITilePacketHandler;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;

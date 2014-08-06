@@ -1,10 +1,10 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.network.PacketCoFHBase;
-import cofh.util.EnergyHelper;
-import cofh.util.ItemHelper;
-import cofh.util.MathHelper;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;

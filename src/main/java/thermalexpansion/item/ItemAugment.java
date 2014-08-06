@@ -1,9 +1,9 @@
 package thermalexpansion.item;
 
 import cofh.api.item.IAugmentItem;
-import cofh.item.ItemBase;
-import cofh.util.ItemHelper;
-import cofh.util.StringHelper;
+import cofh.core.item.ItemBase;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 
 import gnu.trove.map.hash.THashMap;
 
