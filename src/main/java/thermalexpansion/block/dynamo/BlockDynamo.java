@@ -123,11 +123,12 @@ public class BlockDynamo extends BlockTEBase {
 	@Override
 	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
 
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
-
-		if (tile == null) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		if (!(te instanceof TileDynamoBase)) {
 			return false;
 		}
+
+		TileDynamoBase tile = (TileDynamoBase) te;
 		return tile.facing == BlockHelper.SIDE_OPPOSITE[side.ordinal()];
 	}
 
