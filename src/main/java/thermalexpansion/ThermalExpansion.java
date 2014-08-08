@@ -13,6 +13,7 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -169,6 +170,8 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void loadComplete(FMLLoadCompleteEvent event) {
 
+		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
+
 		TECraftingHandler.loadRecipes();
 		FurnaceManager.loadRecipes();
 		PulverizerManager.loadRecipes();
@@ -190,7 +193,7 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void handleIMC(IMCEvent theIMC) {
 
-		IMCHandler.instance.handleIMC(theIMC);
+		IMCHandler.instance.handleIMC(theIMC.getMessages());
 	}
 
 	public void handleConfigSync(PacketCoFHBase payload) {
@@ -277,7 +280,7 @@ public class ThermalExpansion extends BaseMod {
 
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
-		boolean optionEnableAchievements = true;
+		// boolean optionEnableAchievements = true;
 
 		String category = "general";
 		String comment = null;

@@ -1,8 +1,8 @@
 package thermalexpansion.util;
 
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCMessage;
 
+import java.util.List;
 import java.util.Locale;
 
 import net.minecraft.item.ItemStack;
@@ -21,10 +21,10 @@ public class IMCHandler {
 
 	public static IMCHandler instance = new IMCHandler();
 
-	public void handleIMC(IMCEvent theIMC) {
+	public void handleIMC(List<IMCMessage> messages) {
 
 		NBTTagCompound theNBT;
-		for (IMCMessage theMessage : theIMC.getMessages()) {
+		for (IMCMessage theMessage : messages) {
 			try {
 				if (theMessage.isNBTMessage()) {
 					theNBT = theMessage.getNBTValue();
