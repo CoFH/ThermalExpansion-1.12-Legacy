@@ -92,9 +92,11 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		IEnergyContainerItem containerItem;
 		int toSend = Math.min(getEnergyStored(stack), SEND[ItemHelper.getItemDamage(stack)]);
 
-		if (EnergyHelper.isEnergyContainerItem(playerInv.getCurrentItem())) {
-			containerItem = (IEnergyContainerItem) playerInv.mainInventory[playerInv.currentItem].getItem();
-			extractEnergy(stack, containerItem.receiveEnergy(playerInv.mainInventory[playerInv.currentItem], toSend, false), false);
+		ItemStack currentItem = playerInv.getCurrentItem();
+
+		if (EnergyHelper.isEnergyContainerItem(currentItem)) {
+			containerItem = (IEnergyContainerItem) currentItem.getItem();
+			extractEnergy(stack, containerItem.receiveEnergy(currentItem, toSend, false), false);
 		}
 	}
 

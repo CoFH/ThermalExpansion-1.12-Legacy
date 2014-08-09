@@ -79,24 +79,24 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInventory(IInventory theTile, int from, ItemStack stack) {
+	public static int addToInventory(IInventory tile, int from, ItemStack stack) {
 
-		if (!InventoryHelper.isInsertion(theTile)) {
+		if (!InventoryHelper.isInsertion(tile)) {
 			return stack.stackSize;
 		}
-		stack = InventoryHelper.addToInsertion(theTile, from, stack);
+		stack = InventoryHelper.addToInsertion(tile, from, stack);
 
 		return stack == null ? 0 : stack.stackSize;
 	}
 
 	public static int canAddToInventory(int xCoord, int yCoord, int zCoord, World worldObj, int from, ItemStack stack) {
 
-		TileEntity theTile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
 
-		if (!InventoryHelper.isInventory(theTile)) {
+		if (!InventoryHelper.isInventory(tile)) {
 			return stack.stackSize;
 		}
-		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) theTile, stack, from ^ 1);
+		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from ^ 1);
 
 		return stack == null ? 0 : stack.stackSize;
 	}
@@ -109,10 +109,10 @@ public class Utils {
 		return 0;
 	}
 
-	private static int addToPipeTile_do(TileEntity theTile, int side, ItemStack stack) {
+	private static int addToPipeTile_do(TileEntity tile, int side, ItemStack stack) {
 
-		if (theTile instanceof IPipeTile) {
-			int used = ((IPipeTile) theTile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
+		if (tile instanceof IPipeTile) {
+			int used = ((IPipeTile) tile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
 			return used;
 		}
 		return 0;
@@ -126,9 +126,9 @@ public class Utils {
 
 	public static boolean isAdjacentInventory(int x, int y, int z, World worldObj, int side) {
 
-		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
 
-		return isInventory(theTile, side);
+		return isInventory(tile, side);
 	}
 
 	public static boolean isInventory(TileEntity tile, int side) {

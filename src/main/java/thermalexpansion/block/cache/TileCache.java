@@ -418,7 +418,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 		if (getStoredCount() == SIZE[type]) {
 			return stack;
 		}
-		if (ItemHelper.itemsEqualWithMetadata(stack, storedStack, true)) {
+		if (ItemHelper.itemsIdentical(stack, storedStack)) {
 			if (getStoredCount() + stack.stackSize > SIZE[type]) {
 				ItemStack retStack = ItemHelper.cloneStack(stack, SIZE[type] - getStoredCount());
 				if (!simulate) {

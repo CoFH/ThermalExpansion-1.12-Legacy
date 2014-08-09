@@ -280,7 +280,6 @@ public class ThermalExpansion extends BaseMod {
 
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
-		// boolean optionEnableAchievements = true;
 
 		String category = "general";
 		String comment = null;
