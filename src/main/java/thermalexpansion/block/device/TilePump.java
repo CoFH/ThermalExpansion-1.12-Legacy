@@ -3,6 +3,7 @@ package thermalexpansion.block.device;
 import cofh.api.energy.EnergyStorage;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ServerHelper;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -13,16 +14,38 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import thermalexpansion.block.TileReconfigurable;
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TileAugmentable;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.machine.GuiTransposer;
 import thermalexpansion.gui.container.machine.ContainerTransposer;
 
-public class TilePump extends TileReconfigurable implements IFluidHandler {
+public class TilePump extends TileAugmentable implements IFluidHandler {
+
+	static final int TYPE = BlockDevice.Types.PUMP.ordinal();
+	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
 
+		defaultSideConfig = new SideConfig();
+		defaultSideConfig.numGroup = 2;
+		defaultSideConfig.slotGroups = new int[][] { {}, {} };
+		defaultSideConfig.allowInsertion = new boolean[] { false, false };
+		defaultSideConfig.allowExtraction = new boolean[] { false, false };
+		defaultSideConfig.sideTex = new int[] { 0, 4 };
+		defaultSideConfig.defaultSides = new byte[] { 0, 0, 1, 1, 1, 1 };
+
+		GameRegistry.registerTileEntity(TilePump.class, "thermalexpansion.Pump");
+		configure();
 	}
+
+	public static void configure() {
+
+		String comment = "Enable this to allow for Pumps to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Device.Pump.Securable", enableSecurity, comment);
+	}
+
+	public static boolean enableSecurity = true;
 
 	int outputTracker;
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
@@ -31,6 +54,7 @@ public class TilePump extends TileReconfigurable implements IFluidHandler {
 
 	public TilePump() {
 
+		sideConfig = defaultSideConfig;
 		sideCache = new byte[] { 0, 0, 1, 1, 1, 1 };
 		energyStorage = new EnergyStorage(0);
 	}
@@ -80,11 +104,13 @@ public class TilePump extends TileReconfigurable implements IFluidHandler {
 		return new ContainerTransposer(inventory, this);
 	}
 
+	@Override
 	public FluidTankAdv getTank() {
 
 		return tank;
 	}
 
+	@Override
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();

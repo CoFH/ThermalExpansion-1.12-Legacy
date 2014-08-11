@@ -25,7 +25,7 @@ public class RecipeHandlerCrucible extends RecipeHandlerBase {
 	public RecipeHandlerCrucible() {
 
 		super();
-		this.maxEnergy = 400000;
+		this.maxEnergy = 400 * 1200;
 	}
 
 	@Override
