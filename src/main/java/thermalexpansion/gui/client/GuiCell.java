@@ -38,7 +38,7 @@ public class GuiCell extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileCell) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getDisplayName();
+		playerName = inventory.player.getCommandSenderName();
 	}
 
 	@Override

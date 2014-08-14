@@ -547,7 +547,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getDisplayName()) ? 1 : 0);
+		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getCommandSenderName()) ? 1 : 0);
 	}
 
 	/* NBT METHODS */

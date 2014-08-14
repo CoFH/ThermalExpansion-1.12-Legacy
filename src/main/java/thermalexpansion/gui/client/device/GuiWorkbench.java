@@ -31,7 +31,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 		super(new ContainerWorkbench(inventory, theTile), TEXTURE);
 		myTile = (TileWorkbench) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getDisplayName();
+		playerName = inventory.player.getCommandSenderName();
 		ySize = 210;
 	}
 

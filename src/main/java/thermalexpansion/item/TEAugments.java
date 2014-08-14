@@ -109,7 +109,7 @@ public class TEAugments {
 	public static byte NUM_MACHINE_SPEED = 3;
 
 	public static final int[] DYNAMO_EFFICIENCY_MOD = { 0, 100, 250, 500 };
-	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 100, 350, 850 };
+	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 100, 350, 750 };
 	public static final int[] DYNAMO_OUTPUT_MOD = { 1, 2, 4, 8 };
 	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_MOD = { 0, 150, 100, 50 };
 	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_SUM = { 0, 150, 250, 300 };

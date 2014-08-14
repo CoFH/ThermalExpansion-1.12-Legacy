@@ -73,7 +73,7 @@ public class CrucibleManager {
 				ThermalExpansion.config.set("tweak.crafting", "Crucible.BlazeRod.Energy", TEProps.lavaRF / 10);
 			}
 		}
-		int defaultCost = TEProps.lavaRF * 9 / 5;
+		int defaultCost = TEProps.lavaRF * 8 / 5;
 
 		addTERecipe(defaultCost, new ItemStack(Blocks.cobblestone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.stone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));

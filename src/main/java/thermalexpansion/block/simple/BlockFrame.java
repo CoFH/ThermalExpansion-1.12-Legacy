@@ -224,7 +224,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 			entity.delayBeforeCanPickup = 10;
 			world.spawnEntityInWorld(entity);
 
-			CoreUtils.dismantleLog(player.getDisplayName(), this, metadata, x, y, z);
+			CoreUtils.dismantleLog(player.getCommandSenderName(), this, metadata, x, y, z);
 		}
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ret.add(dropBlock);

@@ -87,7 +87,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		if (fuelRF > 0) {
 			return true;
 		}
-		return getEnergyValue(inventory[0]) >= config.maxPower;
+		return getEnergyValue(inventory[0]) > 0;
 	}
 
 	@Override
@@ -107,7 +107,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 				inventory[0] = ItemHelper.consumeItem(inventory[0]);
 			}
 		}
-		energy = calcEnergy() * energyMod;
+		energy = Math.min(fuelRF, calcEnergy() * energyMod);
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 	}
@@ -180,6 +180,13 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		super.handleGuiPacket(payload);
 
 		currentFuelRF = payload.getInt();
+	}
+
+	/* IEnergyInfo */
+	@Override
+	public int getInfoEnergyPerTick() {
+
+		return Math.min(getEnergyValue(inventory[0]), calcEnergy() * energyMod);
 	}
 
 	/* ISidedInventory */

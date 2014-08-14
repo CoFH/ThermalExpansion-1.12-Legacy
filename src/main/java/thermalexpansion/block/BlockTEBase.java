@@ -137,7 +137,7 @@ public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleabl
 				world.spawnEntityInWorld(item);
 
 				if (player != null) {
-					CoreUtils.dismantleLog(player.getDisplayName(), this, bMeta, x, y, z);
+					CoreUtils.dismantleLog(player.getCommandSenderName(), this, bMeta, x, y, z);
 				}
 			}
 		}

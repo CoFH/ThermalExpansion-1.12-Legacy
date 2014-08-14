@@ -94,11 +94,11 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		}
 		if (SecurityHelper.isSecure(stack)) {
 			if (SecurityHelper.getOwnerName(stack).isEmpty()) {
-				SecurityHelper.setOwnerName(stack, player.getDisplayName());
+				SecurityHelper.setOwnerName(stack, player.getCommandSenderName());
 			}
 		}
 		if (ServerHelper.isServerWorld(world)) {
-			if (canPlayerAccess(stack, player.getDisplayName())) {
+			if (canPlayerAccess(stack, player.getCommandSenderName())) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
 				player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + SecurityHelper.getOwnerName(stack) + "! "
