@@ -122,7 +122,7 @@ info.thermalexpansion.creative=Criativo
 info.thermalexpansion.basic=Básico
 info.thermalexpansion.hardened=Endurecido
 info.thermalexpansion.reinforced=Reforçado
-info.thermalexpansion.resonant=Ressoante
+info.thermalexpansion.resonant=Ressonante
 
 info.thermalexpansion.augment=Aumento
 info.thermalexpansion.augment.energyProduced=Energia produzida
@@ -226,7 +226,7 @@ item.thermalexpansion.capacitor.potato.name=Capacitor de Flux Tuberoso
 item.thermalexpansion.capacitor.basic.name=Capacitor de Flux de Leadstone
 item.thermalexpansion.capacitor.hardened.name=Capacitor de Flux Endurecido
 item.thermalexpansion.capacitor.reinforced.name=Capacitor de Flux de Redstone
-item.thermalexpansion.capacitor.resonant.name=Capacitor de Flux Ressoante
+item.thermalexpansion.capacitor.resonant.name=Capacitor de Flux Ressonante
 
 item.thermalexpansion.diagram.schematic.name=Esquema
 item.thermalexpansion.diagram.redprint.name=Planta Vermelha
@@ -249,7 +249,7 @@ item.thermalexpansion.satchel.creative.name=Sacola Criativa
 item.thermalexpansion.satchel.basic.name=Sacola
 item.thermalexpansion.satchel.hardened.name=Sacola Endurecida
 item.thermalexpansion.satchel.reinforced.name=Sacola Reforçada
-item.thermalexpansion.satchel.resonant.name=Sacola Ressoante
+item.thermalexpansion.satchel.resonant.name=Sacola Ressonante
 
 item.thermalexpansion.tool.invarBattleWrench.name=Chave Inglesa de Batalha de Invar
 item.thermalexpansion.tool.invarSword.name=Espada de Invar
@@ -348,14 +348,14 @@ tile.thermalexpansion.cache.creative.name=Estoque Creative
 tile.thermalexpansion.cache.basic.name=Estoque Básico
 tile.thermalexpansion.cache.hardened.name=Estoque Endurecido
 tile.thermalexpansion.cache.reinforced.name=Estoque Reforçado
-tile.thermalexpansion.cache.resonant.name=Estoque Ressoante
+tile.thermalexpansion.cache.resonant.name=Estoque Ressonante
 
 tile.thermalexpansion.cell=Célula de Energia
 tile.thermalexpansion.cell.creative.name=Célula de Energia Criativa
 tile.thermalexpansion.cell.basic.name=Célula de Energia de Leadstone
 tile.thermalexpansion.cell.hardened.name=Célula de Energia Endurecida
 tile.thermalexpansion.cell.reinforced.name=Célula de Energia de Redstone
-tile.thermalexpansion.cell.resonant.name=Célula de Energia Ressoante
+tile.thermalexpansion.cell.resonant.name=Célula de Energia Ressonante
 
 tile.thermalexpansion.device.workbench.name=Mesa de Trabalho do Maquinista
 tile.thermalexpansion.device.lexicon.name=Forja de Lexicon
@@ -375,7 +375,7 @@ tile.thermalexpansion.ender.tesseract.name=Tesseract
 tile.thermalexpansion.frame.machineBasic.name=Estrutura de Máquina (Básica)
 tile.thermalexpansion.frame.machineHardened.name=Estrutura de Máquina (Endurecida)
 tile.thermalexpansion.frame.machineReinforced.name=Estrutura de Máquina (Reforçada)
-tile.thermalexpansion.frame.machineResonant.name=Estrutura de Máquina (Ressoante)
+tile.thermalexpansion.frame.machineResonant.name=Estrutura de Máquina (Ressonante)
 tile.thermalexpansion.frame.cellBasic.name=Estrutura da Célula de Energia de Leadstone
 tile.thermalexpansion.frame.cellReinforcedEmpty.name=Estrutura da Célula de Energia de Redstone (Vazia)
 tile.thermalexpansion.frame.cellReinforcedFull.name=Estrutura da Célula de Energia de Redstone (Cheia)
@@ -426,10 +426,10 @@ tile.thermalexpansion.strongbox.creative.name=Caixa Forte Criativa
 tile.thermalexpansion.strongbox.basic.name=Caixa Forte
 tile.thermalexpansion.strongbox.hardened.name=Caixa Forte Endurecida
 tile.thermalexpansion.strongbox.reinforced.name=Caixa Forte Reforçada
-tile.thermalexpansion.strongbox.resonant.name=Caixa Forte Ressoante
+tile.thermalexpansion.strongbox.resonant.name=Caixa Forte Ressonante
 
 tile.thermalexpansion.tank.creative.name=Tanque Portátil Criativo
 tile.thermalexpansion.tank.basic.name=Tanque Portátil
 tile.thermalexpansion.tank.hardened.name=Tanque Portátil Endurecido
 tile.thermalexpansion.tank.reinforced.name=Tanque Portátil Reforçado
-tile.thermalexpansion.tank.resonant.name=Tanque Portátil Ressoante
+tile.thermalexpansion.tank.resonant.name=Tanque Portátil Ressonante

@@ -22,7 +22,7 @@ group = "thermalexpansion"
 archivesBaseName = "ThermalExpansion"
 
 minecraft {
-    version = "1.7.10-10.13.0.1180"
+    version = "1.7.10-10.13.0.1205"
     runDir = "eclipse/assets"
 }
 

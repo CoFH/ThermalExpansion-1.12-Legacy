@@ -19,7 +19,7 @@
 	<property name="forge.major" value="10"/>
 	<property name="forge.minor" value="13"/>
 	<property name="forge.patch" value="0"/>
-	<property name="forge.build" value="1197"/>
+	<property name="forge.build" value="1205"/>
 	
 	<!-- Packaging -->
 	<property name="dist.dir" value="${build.dir}/dist"/>
