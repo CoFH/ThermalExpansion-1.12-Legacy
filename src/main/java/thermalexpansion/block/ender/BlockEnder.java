@@ -1,6 +1,9 @@
 package thermalexpansion.block.ender;
 
 import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -11,6 +14,7 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.command.ICommandSender;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,21 +59,47 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
-		if (ServerHelper.isServerWorld(world) && stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
+		TileEntity aTile = world.getTileEntity(x, y, z);
+
+		if (aTile instanceof TileTesseract) {
 			TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
-			tile.removeFromRegistry();
 
-			tile.modeItem = stack.stackTagCompound.getByte("ModeItems");
-			tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");
-			tile.modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
+			tile.setInvName(ItemHelper.getNameFromItemStack(stack));
 
-			tile.frequency = stack.stackTagCompound.getInteger("Frequency");
-			tile.isActive = tile.frequency != -1;
+			if (SecurityHelper.isSecure(stack)) {
+				String stackOwner = SecurityHelper.getOwnerName(stack);
 
-			tile.addToRegistry();
-			tile.sendDescPacket();
+				if (!stackOwner.isEmpty()) {
+					tile.setOwnerName(stackOwner);
+				} else if (living instanceof ICommandSender) {
+					tile.setOwnerName(living.getCommandSenderName());
+				}
+				tile.setAccessQuick(SecurityHelper.getAccess(stack));
+			}
+			if (RedstoneControlHelper.hasRSControl(stack)) {
+				tile.setControl(RedstoneControlHelper.getControl(stack));
+			}
+			tile.onNeighborBlockChange();
+
+			if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
+				if (ServerHelper.isServerWorld(world)) {
+					tile.removeFromRegistry();
+				}
+				tile.modeItem = stack.stackTagCompound.getByte("ModeItems");
+				tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");
+				tile.modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
+
+				tile.frequency = stack.stackTagCompound.getInteger("Frequency");
+				tile.isActive = tile.frequency != -1;
+
+				if (ServerHelper.isServerWorld(world)) {
+					tile.addToRegistry();
+					tile.sendDescPacket();
+				}
+			}
+		} else {
+			super.onBlockPlacedBy(world, x, y, z, living, stack);
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
 
 	@Override
@@ -82,7 +112,7 @@ public class BlockEnder extends BlockTEBase {
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 
-		return TEProps.renderIdTesseract;
+		return TEProps.renderIdEnder;
 	}
 
 	@Override

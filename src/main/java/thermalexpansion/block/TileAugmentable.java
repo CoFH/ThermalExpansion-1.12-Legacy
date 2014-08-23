@@ -304,7 +304,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 			return;
 		}
 		if (augmentRedstoneControl) {
-			RedstoneControlHelper.getControlFromNBT(tag);
+			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
 		}
 		if (augmentReconfigSides) {
 			int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);

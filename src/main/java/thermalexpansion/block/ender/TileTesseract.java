@@ -984,6 +984,11 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		return true;
 	}
 
+	public void setAccessQuick(AccessMode access) {
+
+		this.access = access;
+	}
+
 	/* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {

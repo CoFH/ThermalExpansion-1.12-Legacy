@@ -41,7 +41,7 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 	static CCModel modelFrame = CCModel.quadModel(48);
 
 	static {
-		TEProps.renderIdTesseract = RenderingRegistry.getNextAvailableRenderId();
+		TEProps.renderIdEnder = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
 
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTesseract), instance);
@@ -125,7 +125,7 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 	@Override
 	public int getRenderId() {
 
-		return TEProps.renderIdTesseract;
+		return TEProps.renderIdEnder;
 	}
 
 	/* IItemRenderer */

@@ -66,6 +66,6 @@ public class TEProps {
 	public static int renderIdLight = -1;
 	public static int renderIdPlate = -1;
 	public static int renderIdTank = -1;
-	public static int renderIdTesseract = -1;
+	public static int renderIdEnder = -1;
 
 }
