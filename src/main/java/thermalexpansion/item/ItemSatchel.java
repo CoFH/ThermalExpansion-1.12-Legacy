@@ -39,6 +39,11 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		return container;
 	}
 
+	public static boolean needsTag(ItemStack container) {
+
+		return container.stackTagCompound == null ? true : !container.stackTagCompound.hasKey("Accessible");
+	}
+
 	public static boolean enableSecurity = true;
 
 	public static void configure() {
@@ -91,6 +96,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 		if (CoreUtils.isFakePlayer(player)) {
 			return stack;
+		}
+		if (needsTag(stack)) {
+			setDefaultInventoryTag(stack);
 		}
 		if (SecurityHelper.isSecure(stack)) {
 			if (SecurityHelper.getOwnerName(stack).isEmpty()) {

@@ -471,6 +471,35 @@ public class TileActivator extends TileAugmentable {
 		angle = payload.getByte();
 	}
 
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.readPortableData(player, tag);
+
+		actsSneaking = tag.getBoolean("Sneaking");
+		leftClick = tag.getBoolean("LeftClick");
+		tickSlot = tag.getByte("TickSlot");
+		angle = tag.getByte("Angle");
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.writePortableData(player, tag);
+
+		tag.setBoolean("Sneaking", actsSneaking);
+		tag.setBoolean("LeftClick", leftClick);
+		tag.setByte("TickSlot", tickSlot);
+		tag.setByte("Angle", angle);
+	}
+
 	/* IReconfigurableFacing */
 	@Override
 	public boolean allowYAxisFacing() {

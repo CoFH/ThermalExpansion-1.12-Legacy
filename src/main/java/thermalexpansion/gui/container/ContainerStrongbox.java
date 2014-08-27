@@ -4,9 +4,17 @@ import cofh.api.item.IInventoryContainerItem;
 import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.util.helpers.MathHelper;
+import cpw.mods.fml.common.Optional;
+
+import gnu.trove.map.hash.THashMap;
 
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
+
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -83,10 +91,26 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		return myTile;
 	}
 
+	/* Inventory Tweaks */
+	@Optional.Method(modid = "inventorytweaks")
 	@RowSizeCallback
 	public int getRowSize() {
 
 		return rowSize;
+	}
+
+	@ContainerSectionCallback
+	@Optional.Method(modid = "inventorytweaks")
+	public Map<ContainerSection, List<Slot>> getContainerSections() {
+
+		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();
+
+		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
+		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
+		slotRefs.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(27, 36));
+		slotRefs.put(ContainerSection.CHEST, inventorySlots.subList(36, inventorySlots.size()));
+
+		return slotRefs;
 	}
 
 	/* ISlotValidator */

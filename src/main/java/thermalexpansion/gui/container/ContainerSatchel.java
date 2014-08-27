@@ -10,9 +10,17 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.gui.slot.SlotViewOnly;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.SecurityHelper;
+import cpw.mods.fml.common.Optional;
+
+import gnu.trove.map.hash.THashMap;
 
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
+import invtweaks.api.container.ContainerSection;
+import invtweaks.api.container.ContainerSectionCallback;
+
+import java.util.List;
+import java.util.Map;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -71,10 +79,26 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		}
 	}
 
+	/* Inventory Tweaks */
+	@Optional.Method(modid = "inventorytweaks")
 	@RowSizeCallback
 	public int getRowSize() {
 
 		return rowSize;
+	}
+
+	@ContainerSectionCallback
+	@Optional.Method(modid = "inventorytweaks")
+	public Map<ContainerSection, List<Slot>> getContainerSections() {
+
+		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();
+
+		slotRefs.put(ContainerSection.INVENTORY, inventorySlots.subList(0, 36));
+		slotRefs.put(ContainerSection.INVENTORY_NOT_HOTBAR, inventorySlots.subList(0, 27));
+		slotRefs.put(ContainerSection.INVENTORY_HOTBAR, inventorySlots.subList(27, 36));
+		slotRefs.put(ContainerSection.CHEST, inventorySlots.subList(36, inventorySlots.size()));
+
+		return slotRefs;
 	}
 
 	/* ISecurable */

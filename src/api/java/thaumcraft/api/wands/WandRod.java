@@ -160,6 +160,14 @@ public class WandRod {
 		this.glow = hasGlow;
 	}
 
+	/**
+	 * The research a player needs to have finished to be able to craft a wand with this rod.
+	 */
+	public String getResearch() {
+
+		return "ROD_" + getTag();
+	}
+
 	// Some examples:
 	// WandRod WAND_ROD_WOOD = new WandRod("wood",25,new ItemStack(Item.stick),1);
 	// WandRod WAND_ROD_BLAZE = new WandRod("blaze",100,new ItemStack(Item.blazeRod),7,new WandRodBlazeOnUpdate());
