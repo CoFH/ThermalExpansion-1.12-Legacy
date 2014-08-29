@@ -8,13 +8,17 @@ import cofh.asm.relauncher.Strippable;
 import cofh.core.item.tool.ItemSwordAdv;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 @Strippable("buildcraft.api.tools.IToolWrench")
 public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench, IToolHammer {
@@ -38,6 +42,13 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench, ITool
 
 		Block block = world.getBlock(x, y, z);
 
+		if (block == null) {
+			return false;
+		}
+		PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, hitSide, world);
+		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY || event.useBlock == Result.DENY || event.useItem == Result.DENY) {
+			return false;
+		}
 		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
 				&& ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
 			((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);

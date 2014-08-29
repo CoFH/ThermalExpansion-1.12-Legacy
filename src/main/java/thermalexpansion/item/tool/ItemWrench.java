@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -18,7 +19,10 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import thermalexpansion.ThermalExpansion;
 
@@ -49,6 +53,13 @@ public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 
 		Block block = world.getBlock(x, y, z);
 
+		if (block == null) {
+			return false;
+		}
+		PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, hitSide, world);
+		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY || event.useBlock == Result.DENY || event.useItem == Result.DENY) {
+			return false;
+		}
 		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
 				&& ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
 			((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);

@@ -77,11 +77,11 @@ public class PulverizerManager {
 		if (recipeNetherrack) {
 			addTERecipe(3200, new ItemStack(Blocks.netherrack), new ItemStack(Blocks.gravel), TFItems.dustSulfur, 10);
 		}
-		addRecipe(2400, new ItemStack(Blocks.coal_ore), new ItemStack(Items.coal, 2, 0));
+		addRecipe(2400, new ItemStack(Blocks.coal_ore), new ItemStack(Items.coal, 3, 0), TFItems.dustCoal, 25);
 		addRecipe(2400, new ItemStack(Blocks.diamond_ore), new ItemStack(Items.diamond, 2, 0));
 		addRecipe(2400, new ItemStack(Blocks.emerald_ore), new ItemStack(Items.emerald, 2, 0));
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
-		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 8, 4));
+		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 9, 4));
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, chanceCinnabar);
 		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 10);
 
@@ -90,7 +90,6 @@ public class PulverizerManager {
 		}
 		addRecipe(2400, new ItemStack(Blocks.quartz_stairs), new ItemStack(Items.quartz, 6));
 		addRecipe(1600, new ItemStack(Blocks.log), ItemHelper.cloneStack(TEItems.sawdust, 2));
-		// addRecipe(1600, new ItemStack(Blocks.log2), ItemHelper.cloneStack(TEItems.sawdust, 2));
 
 		addRecipe(1600, new ItemStack(Blocks.red_flower), new ItemStack(Items.dye, 4, 1));
 		addRecipe(1600, new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 4, 11));
