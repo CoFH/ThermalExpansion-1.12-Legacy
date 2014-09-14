@@ -199,7 +199,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			container.stackTagCompound.setInteger("Energy", stored);
 
 			if (stored == 0 && container.getItemDamage() == Types.POTATO.ordinal()) {
-				container = new ItemStack(Items.baked_potato);
+				container.func_150996_a(Items.baked_potato);
 			}
 		}
 		return extract;
