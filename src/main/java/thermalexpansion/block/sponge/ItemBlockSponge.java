@@ -24,6 +24,8 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
+		setMaxStackSize(1);
+		setNoRepair();
 	}
 
 	@Override

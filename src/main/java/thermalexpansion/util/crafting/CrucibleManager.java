@@ -78,7 +78,7 @@ public class CrucibleManager {
 		addTERecipe(defaultCost, new ItemStack(Blocks.cobblestone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.stone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.obsidian), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(800, new ItemStack(Items.snowball, 4), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
+		addTERecipe(200, new ItemStack(Items.snowball), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 8));
 		addTERecipe(800, new ItemStack(Blocks.snow), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
 		addTERecipe(1600, new ItemStack(Blocks.ice), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(TFFluids.fluidRedstone, 100));

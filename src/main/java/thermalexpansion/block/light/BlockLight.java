@@ -168,9 +168,11 @@ public class BlockLight extends BlockTEBase {
 
 		illuminator = new ItemStack(this, 1, 0);
 		lampBasic = new ItemStack(this, 1, 1);
+		lampBasicAlt = new ItemStack(this, 1, 2);
 
 		GameRegistry.registerCustomItemStack("illuminator", illuminator);
 		GameRegistry.registerCustomItemStack("lampBasic", lampBasic);
+		GameRegistry.registerCustomItemStack("lampBasicAlt", lampBasicAlt);
 
 		return true;
 	}
@@ -184,24 +186,28 @@ public class BlockLight extends BlockTEBase {
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'G', "blockGlassHardened", 'L', "dustLumium", 'S',
 					"ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " S ", "GLG", " L ", 'G', "blockGlassHardened", 'L', "dustLumium", 'S',
+					"ingotSignalum" }));
 		}
 		return true;
 	}
 
 	public static enum Types {
-		ILLUMINATOR, LAMP_BASIC
+		ILLUMINATOR, LAMP_BASIC, LAMP_BASIC_ALT// , ILLUMINATOR_DIM, LAMP_HALO_DIM, LAMP_BASIC_DIM
 	}
 
-	public static final String[] NAMES = { "illuminator", "lampBasic" };
+	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
 		String category = "block.feature";
 		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Light.Illuminator", true);
 		enable[Types.LAMP_BASIC.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
+		enable[Types.LAMP_BASIC_ALT.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
 	}
 
 	public static ItemStack illuminator;
 	public static ItemStack lampBasic;
+	public static ItemStack lampBasicAlt;
 
 }

@@ -595,7 +595,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 			return;
 		}
 		if (augmentRedstoneControl) {
-			RedstoneControlHelper.getControlFromNBT(tag);
+			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
 		}
 	}
 

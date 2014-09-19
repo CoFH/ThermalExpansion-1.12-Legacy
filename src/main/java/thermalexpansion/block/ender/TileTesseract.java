@@ -946,7 +946,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		RedstoneControlHelper.getControlFromNBT(tag);
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
 
 		frequency = tag.getInteger("Frequency");
 		modeItem = tag.getByte("ModeItems");
@@ -993,6 +993,9 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
+		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
+			return TEProps.EMPTY_INVENTORY;
+		}
 		return SLOTS;
 	}
 

@@ -32,6 +32,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
+import thermalexpansion.util.Utils;
 
 public class BlockCache extends BlockTEBase {
 
@@ -91,15 +92,25 @@ public class BlockCache extends BlockTEBase {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
 		if (super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ)) {
-			return true;
-		}
-		if (ServerHelper.isClientWorld(world)) {
-			return true;
+
+			if (Utils.isHoldingDebugger(player) || Utils.isHoldingMultimeter(player) || Utils.isHoldingUsableWrench(player, x, y, z)) {
+				return true;
+			}
 		}
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 
-		if (ItemHelper.isPlayerHoldingNothing(player) && player.isSneaking()) {
-			tile.toggleLock();
+		if (ItemHelper.isPlayerHoldingNothing(player)) {
+			if (player.isSneaking()) {
+				tile.toggleLock();
+				return true;
+			}
+			if (tile.getStoredItemType() != null) {
+				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+					if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+						player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+					}
+				}
+			}
 			return true;
 		}
 		ItemStack heldStack = player.getCurrentEquippedItem();
@@ -108,7 +119,7 @@ public class BlockCache extends BlockTEBase {
 		if (!player.capabilities.isCreativeMode && ret != heldStack) {
 			player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
 		}
-		return true;
+		return false;
 	}
 
 	@Override

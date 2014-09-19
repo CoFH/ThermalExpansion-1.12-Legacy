@@ -172,7 +172,7 @@ public class Utils {
 		}
 	}
 
-	// BCHelper{
+	// BCHelper {
 	private static boolean bcWrenchExists = false;
 	private static boolean bcPipeExists = false;
 
@@ -181,13 +181,13 @@ public class Utils {
 			Class.forName("buildcraft.api.tools.IToolWrench");
 			bcWrenchExists = true;
 		} catch (Throwable t) {
-
+			// pokemon !
 		}
 		try {
 			Class.forName("buildcraft.api.transport.IPipeTile");
 			bcPipeExists = true;
 		} catch (Throwable t) {
-
+			// pokemon!
 		}
 	}
 

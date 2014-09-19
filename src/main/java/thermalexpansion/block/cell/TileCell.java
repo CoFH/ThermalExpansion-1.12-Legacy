@@ -382,7 +382,7 @@ public class TileCell extends TileReconfigurable {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		RedstoneControlHelper.getControlFromNBT(tag);
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
 
 		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
 		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());

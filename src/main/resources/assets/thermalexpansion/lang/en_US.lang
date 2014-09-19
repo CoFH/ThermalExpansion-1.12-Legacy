@@ -75,6 +75,7 @@ config.thermalexpansion.security=Security
 config.thermalexpansion.tweak=Tweaks
 config.thermalexpansion.tweak.crafting=Crafting Handlers
 config.thermalexpansion.tweak.recipe=Recipes
+config.thermalexpansion.tweak.sound=Sound
 
 #Cell
 info.thermalexpansion.decRecv=Decrease RF Input by
@@ -389,7 +390,8 @@ tile.thermalexpansion.glass.name=Hardened Glass
 
 tile.thermalexpansion.light.name=6-Mode Lighting
 tile.thermalexpansion.light.illuminator.name=Glowstone Illuminator
-tile.thermalexpansion.light.lampBasic.name=Lumium Lamp
+tile.thermalexpansion.light.lampBasic.name=Radiant Lumium Lamp
+tile.thermalexpansion.light.lampBasicAlt.name=Lumium Lamp
 
 tile.thermalexpansion.machine.furnace.name=Redstone Furnace
 tile.thermalexpansion.machine.pulverizer.name=Pulverizer

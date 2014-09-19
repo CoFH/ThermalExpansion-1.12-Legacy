@@ -103,7 +103,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		return true;
 	}
 
-	public boolean renderWorldLampBasic(int color, boolean active, double x, double y, double z) {
+	public boolean renderWorldLampHalo(int color, boolean active, double x, double y, double z) {
 
 		if (BlockCoFHBase.renderPass == 0) {
 			modelFrame[1].setColour(color);
@@ -116,6 +116,17 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 			modelHalo[1].setColour(0xFFFFFFFF);
 		}
 		return active;
+	}
+
+	public boolean renderWorldLampBasic(int color, boolean active, double x, double y, double z) {
+
+		if (BlockCoFHBase.renderPass == 0) {
+			modelFrame[1].setColour(color);
+			renderFrame(1, x, y, z);
+			modelFrame[1].setColour(0xFFFFFFFF);
+			return true;
+		}
+		return BlockCoFHBase.renderPass == 0;
 	}
 
 	public void renderItemIlluminator(int color, boolean modified, double offset) {
@@ -166,6 +177,8 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		case ILLUMINATOR:
 			return renderWorldIlluminator(color, modified, x, y, z);
 		case LAMP_BASIC:
+			return renderWorldLampHalo(color, active, x, y, z);
+		case LAMP_BASIC_ALT:
 			return renderWorldLampBasic(color, active, x, y, z);
 		default:
 			return false;
@@ -221,6 +234,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 			renderItemIlluminator(color, item.hasTagCompound(), offset);
 			break;
 		case LAMP_BASIC:
+		case LAMP_BASIC_ALT:
 			renderItemLampBasic(color, offset);
 			break;
 		}

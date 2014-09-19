@@ -198,20 +198,18 @@ public class ThermalExpansion extends BaseMod {
 
 	public void handleConfigSync(PacketCoFHBase payload) {
 
-		TileCell.enableSecurity = payload.getBool();
+		FMLEventHandler.instance.handleIdMappingEvent(null);
 
+		TileCell.enableSecurity = payload.getBool();
 		TileWorkbench.enableSecurity = payload.getBool();
 		TileActivator.enableSecurity = payload.getBool();
 		TileBreaker.enableSecurity = payload.getBool();
 		TileNullifier.enableSecurity = payload.getBool();
-
 		TileDynamoBase.enableSecurity = payload.getBool();
-
 		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
 			TileMachineBase.enableSecurity[i] = payload.getBool();
 		}
 		TileStrongbox.enableSecurity = payload.getBool();
-
 		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info("Receiving Server Configuration...");
@@ -252,6 +250,8 @@ public class ThermalExpansion extends BaseMod {
 		TileMachineBase.configure();
 		TileStrongbox.configure();
 		ItemSatchel.configure();
+
+		FMLEventHandler.instance.handleIdMappingEvent(null);
 
 		log.info(StringHelper.localize("Restoring Client Configuration..."));
 	}
