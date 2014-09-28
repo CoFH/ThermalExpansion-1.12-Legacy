@@ -18,8 +18,8 @@
 	<property name="mc.version"  value="1.7.10"/>
 	<property name="forge.major" value="10"/>
 	<property name="forge.minor" value="13"/>
-	<property name="forge.patch" value="0"/>
-	<property name="forge.build" value="1205"/>
+	<property name="forge.patch" value="1"/>
+	<property name="forge.build" value="1217"/>
 	
 	<!-- Packaging -->
 	<property name="dist.dir" value="${build.dir}/dist"/>
@@ -52,6 +52,7 @@
 			<exclude name="modules*/files*/commons-io/commons-io/1.4/**/*.jar"/>
 			<exclude name="modules*/files*/com.google.guava/guava/14*/**/*.jar"/>
 			<exclude name="modules*/files*/com.google.guava/guava/15*/**/*.jar"/>
+			<exclude name="modules*/files*/org.ow2.asm/asm-debug-all/4*/**/*.jar"/>
 		</fileset>
 	</path>
 	<path id="gson">
