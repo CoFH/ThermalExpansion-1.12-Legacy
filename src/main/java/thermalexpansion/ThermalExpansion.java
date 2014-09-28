@@ -145,6 +145,10 @@ public class ThermalExpansion extends BaseMod {
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
 		PacketTEBase.initialize();
+	}
+
+	@EventHandler
+	public void postInit(FMLPostInitializationEvent event) {
 
 		FurnaceManager.addDefaultRecipes();
 		PulverizerManager.addDefaultRecipes();
@@ -154,10 +158,6 @@ public class ThermalExpansion extends BaseMod {
 		TransposerManager.addDefaultRecipes();
 		PrecipitatorManager.addDefaultRecipes();
 		ExtruderManager.addDefaultRecipes();
-	}
-
-	@EventHandler
-	public void postInit(FMLPostInitializationEvent event) {
 
 		TEItems.postInit();
 		TEBlocks.postInit();
