@@ -292,14 +292,6 @@ public class BlockMachine extends BlockTEBase {
 		GameRegistry.registerCustomItemStack("assembler", assembler);
 		GameRegistry.registerCustomItemStack("charger", charger);
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
-		ItemStack[] machineFrames = new ItemStack[4];
-
 		String category = "tweak.recipe";
 		String comment = "If enabled, Machines use ingots instead of gears in their default recipes.";
 		String iPrefix = ThermalExpansion.config.get(category, "Machines.UseIngots", false, comment) ? "ingot" : "gear";
@@ -311,6 +303,15 @@ public class BlockMachine extends BlockTEBase {
 				OreDictionary.registerOre(prefix + entry, partList.get(i));
 			}
 		}
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
+
+		//ItemStack[] machineFrames = new ItemStack[4];
+
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
 
@@ -319,8 +320,11 @@ public class BlockMachine extends BlockTEBase {
 					TEItems.powerCoilGold, 'X', "dustRedstone", 'Y', Blocks.brick_block }));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
+			String category = "tweak.recipe";
+			String comment = "If enabled, The pulverizer will use diamonds instead of flint.";
+			Item component = ThermalExpansion.config.get(category, "Pulverizer.AddDiamonds", false, comment) ? Items.diamond : Items.flint;
 			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
-					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Items.flint }));
+					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', component }));
 		}
 		if (enable[Types.SAWMILL.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(sawmill, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
