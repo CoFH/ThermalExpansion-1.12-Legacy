@@ -512,6 +512,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		augmentRedstoneControl = false;
 		augmentThrottle = false;
+		augmentCoilDuct = false;
 	}
 
 	/* IEnergyHandler */
@@ -624,7 +625,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	@Override
 	public boolean rotateBlock() {
 
-		int[] coords;
+		//int[] coords;
 		for (int i = facing + 1; i < facing + 6; i++) {
 			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
 				facing = (byte) (i % 6);
