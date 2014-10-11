@@ -43,7 +43,7 @@ public class TEBlocks {
 
 	}
 
-	public static ArrayList<IInitializer> blockList = new ArrayList();
+	public static ArrayList<IInitializer> blockList = new ArrayList<IInitializer>();
 
 	public static void preInit() {
 

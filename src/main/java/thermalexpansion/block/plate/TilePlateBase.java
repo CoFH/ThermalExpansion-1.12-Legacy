@@ -1,13 +1,13 @@
 package thermalexpansion.block.plate;
 
-import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 
 import thermalexpansion.block.TileTEBase;
 
-public abstract class TilePlateBase extends TileTEBase implements ITilePacketHandler {
+public abstract class TilePlateBase extends TileTEBase {
 
 	byte alignment;
 	byte direction;
@@ -29,6 +29,33 @@ public abstract class TilePlateBase extends TileTEBase implements ITilePacketHan
 	public int getAlignment() {
 
 		return alignment;
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addByte(alignment);
+		payload.addByte(direction);
+
+		return payload;
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+
+			alignment = payload.getByte();
+			direction = payload.getByte();
+		} else {
+
+		}
 	}
 
 	/* NBT METHODS */

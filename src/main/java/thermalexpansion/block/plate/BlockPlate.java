@@ -15,6 +15,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -114,11 +115,11 @@ public class BlockPlate extends BlockTEBase {
 		return TEProps.renderIdPlate;
 	}
 
-	// @Override
-	// public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-	//
-	// return AxisAlignedBB.getAABBPool().getAABB(x, y, z, x + 1, y + 0.0625, z + 1);
-	// }
+	@Override
+	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
+
+		return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 0.0625, z + 1);
+	}
 
 	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1) {

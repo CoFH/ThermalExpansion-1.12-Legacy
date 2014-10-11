@@ -5,8 +5,7 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,8 +38,8 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
 
-	static TMap fuels = new THashMap<Fluid, Integer>();
-	static TMap coolants = new THashMap<Fluid, Integer>();
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
 
 	FluidTankAdv fuelTank = new FluidTankAdv(MAX_FLUID);
 	FluidTankAdv coolantTank = new FluidTankAdv(MAX_FLUID);
@@ -50,12 +49,12 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 	public static int getCoolantEnergy(FluidStack stack) {
 
-		return stack == null ? 0 : (Integer) coolants.get(stack.getFluid());
+		return stack == null ? 0 : coolants.get(stack.getFluid());
 	}
 
 	public static int getFuelEnergy(FluidStack stack) {
 
-		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
+		return stack == null ? 0 : fuels.get(stack.getFluid());
 	}
 
 	public static boolean isValidCoolant(FluidStack stack) {

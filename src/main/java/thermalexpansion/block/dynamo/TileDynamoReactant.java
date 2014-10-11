@@ -6,8 +6,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
@@ -55,7 +54,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	static ItemStack ghastTear = new ItemStack(Items.ghast_tear, 1, 0);
 	static ItemStack netherStar = new ItemStack(Items.nether_star, 1, 0);
 
-	static TMap fuels = new THashMap<Fluid, Integer>();
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
 
 	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
 
@@ -72,7 +71,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	public static int getFuelEnergy(FluidStack stack) {
 
-		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
+		return stack == null ? 0 : fuels.get(stack.getFluid());
 	}
 
 	public static int getReactantEnergy(ItemStack reactant) {

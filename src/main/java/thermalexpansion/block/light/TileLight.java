@@ -1,7 +1,6 @@
 package thermalexpansion.block.light;
 
 import cofh.api.tileentity.ITileInfo;
-import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -18,7 +17,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
 
-public class TileLight extends TileTEBase implements ITilePacketHandler, ITileInfo {
+public class TileLight extends TileTEBase implements ITileInfo {
 
 	public static void initialize() {
 

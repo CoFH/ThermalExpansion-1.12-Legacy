@@ -133,7 +133,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 				return false;
 			}
 			int result = inventory[1].stackSize + output.stackSize;
-			return inventory[1].stackSize + output.stackSize <= output.getMaxStackSize();
+			return result <= output.getMaxStackSize();
 		} else {
 			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[0]);
 

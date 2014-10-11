@@ -5,8 +5,7 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import gnu.trove.map.TMap;
-import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -39,7 +38,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
-	static TMap fuels = new THashMap<Fluid, Integer>();
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
 
 	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
@@ -60,7 +59,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	public static int getFuelEnergy(FluidStack stack) {
 
-		return stack == null ? 0 : (Integer) fuels.get(stack.getFluid());
+		return stack == null ? 0 : fuels.get(stack.getFluid());
 	}
 
 	@Override
