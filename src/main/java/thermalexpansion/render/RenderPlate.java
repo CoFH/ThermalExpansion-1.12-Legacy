@@ -58,12 +58,12 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public void render(int alignment, int direction, int type, double x, double y, double z) {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		side_model[alignment].render(4, 4, trans, RenderUtils.getIconTransformation(texture_fluid[type]), null);
-		side_model[alignment].render(4, 4, trans, RenderUtils.getIconTransformation(texture_frame[direction]), null);
-		side_model[alignment].render(0, 4, trans, RenderUtils.getIconTransformation(texture_frame[6]), null);
+		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type]));
+		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));
+		side_model[alignment].render(0, 4, trans, RenderUtils.getIconTransformation(texture_frame[6]));
 
 		for (int i = 8; i < 24; i += 4) {
-			side_model[alignment].render(i, 4, trans, RenderUtils.getIconTransformation(texture_frame[6]), null);
+			side_model[alignment].render(i, i + 4, trans, RenderUtils.getIconTransformation(texture_frame[6]));
 		}
 	}
 
@@ -90,7 +90,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		TilePlateBase theTile = (TilePlateBase) tile;
 
 		RenderUtils.preWorldRender(world, x, y, z);
-		// render(theTile.getAlignment(), theTile.getFacing(), theTile.getType(), x, y, z);
+		render(theTile.getAlignment(), theTile.getFacing(), theTile.getType(), x, y, z);
 		return true;
 	}
 

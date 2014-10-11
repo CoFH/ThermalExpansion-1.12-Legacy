@@ -1,7 +1,8 @@
 package thermalexpansion.block.plate;
 
-import net.minecraft.entity.Entity;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.entity.Entity;
 
 public class TilePlateTranslocate extends TilePlateBase {
 
@@ -19,13 +20,13 @@ public class TilePlateTranslocate extends TilePlateBase {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(Entity theEntity) {
+	public void onEntityCollidedWithBlock(Entity entity) {
 
 		double x = 0;
 		double y = 0;
 		double z = 0;
 
-		switch (alignment) {
+		switch (direction) {
 		case 0:
 			y = -distance;
 			break;
@@ -45,7 +46,7 @@ public class TilePlateTranslocate extends TilePlateBase {
 			x = distance;
 			break;
 		}
-		theEntity.setPosition(xCoord + x, yCoord + y + theEntity.height, zCoord + z);
+		entity.setPosition(entity.posX + x, entity.posY + y, entity.posZ + z);
 		// theEntity.setPositionAndRotation(par1, par3, par5, par7, par8)
 	}
 

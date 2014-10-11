@@ -19,6 +19,7 @@ import thermalexpansion.render.RenderCell;
 import thermalexpansion.render.RenderDynamo;
 import thermalexpansion.render.RenderFrame;
 import thermalexpansion.render.RenderLight;
+import thermalexpansion.render.RenderPlate;
 import thermalexpansion.render.RenderSchematic;
 import thermalexpansion.render.RenderSponge;
 import thermalexpansion.render.RenderStrongbox;
@@ -69,6 +70,7 @@ public class ProxyClient extends Proxy {
 		RenderCell.initialize();
 		RenderDynamo.initialize();
 		RenderFrame.initialize();
+		RenderPlate.initialize();
 		RenderLight.initialize();
 		RenderSponge.initialize();
 		RenderStrongbox.initialize();

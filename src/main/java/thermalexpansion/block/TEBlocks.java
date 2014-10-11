@@ -21,6 +21,8 @@ import thermalexpansion.block.light.BlockLight;
 import thermalexpansion.block.light.ItemBlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.machine.ItemBlockMachine;
+import thermalexpansion.block.plate.BlockPlate;
+import thermalexpansion.block.plate.ItemBlockPlate;
 import thermalexpansion.block.simple.BlockAirBarrier;
 import thermalexpansion.block.simple.BlockAirLight;
 import thermalexpansion.block.simple.BlockAirSignal;
@@ -59,7 +61,7 @@ public class TEBlocks {
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
 		blockTesseract = addBlock(new BlockEnder());
-		// blockPlate = addBlock(new BlockPlate());
+		blockPlate = addBlock(new BlockPlate());
 		blockLight = addBlock(new BlockLight());
 		blockFrame = addBlock(new BlockFrame());
 		blockGlass = addBlock(new BlockGlass());
@@ -78,16 +80,16 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
 		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
-		// GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
+		GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
 		GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
 		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
 		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
 		GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
 		GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
 
-		GameRegistry.registerBlock(blockAirSignal, "AirSignal");
-		GameRegistry.registerBlock(blockAirLight, "AirLight");
-		GameRegistry.registerBlock(blockAirBarrier, "AirBarrier");
+		GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
+		GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
+		GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
 
 		for (IInitializer initializer : blockList) {
 			initializer.initialize();
@@ -116,6 +118,7 @@ public class TEBlocks {
 	public static Block blockStrongbox;
 	public static Block blockCache;
 	public static Block blockTesseract;
+	public static Block blockPlate;
 	public static Block blockLight;
 	public static Block blockFrame;
 	public static Block blockGlass;

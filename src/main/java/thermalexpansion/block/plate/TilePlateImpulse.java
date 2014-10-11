@@ -1,7 +1,8 @@
 package thermalexpansion.block.plate;
 
-import net.minecraft.entity.Entity;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import net.minecraft.entity.Entity;
 
 public class TilePlateImpulse extends TilePlateBase {
 
@@ -23,8 +24,9 @@ public class TilePlateImpulse extends TilePlateBase {
 		double y = 0;
 		double z = 0;
 
-		switch (alignment) {
+		switch (direction) {
 		case 0:
+			y = -3;
 			break;
 		case 1:
 			y = 3;
@@ -47,7 +49,6 @@ public class TilePlateImpulse extends TilePlateBase {
 			break;
 		}
 		accelerateEntity(theEntity, x, y, z);
-		System.out.println(theEntity.motionY);
 	}
 
 	protected void accelerateEntity(Entity theEntity, double x, double y, double z) {

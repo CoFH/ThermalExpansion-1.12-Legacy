@@ -1,34 +1,20 @@
 package thermalexpansion.block.simple;
 
-import cofh.core.block.BlockCoFHBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockAirLight extends Block {
+public class BlockAirLight extends BlockAirBase {
 
 	public BlockAirLight() {
 
-		super(Material.air);
-		disableStats();
-		setBlockTextureName("glowstone");
-		setBlockBounds(0, 0, 0, 0, 0, 0);
-	}
-
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World world, int x, int y, int z) {
-
-		return null;
+		super(materialBarrier);
 	}
 
 	@Override
@@ -37,39 +23,20 @@ public class BlockAirLight extends Block {
 		return world.getBlockMetadata(x, y, z);
 	}
 
-	@Override
-	public int getRenderType() {
-
-		return -1;
-	}
-
-	@Override
-	public boolean isOpaqueCube() {
-
-		return false;
-	}
-
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return false;
-	}
-
+	@SideOnly(Side.CLIENT)
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-	}
-
-	@Override
-	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune) {
-
-		return BlockCoFHBase.NO_DROP;
+		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5 + rand.nextGaussian() * 0.6,
+				y + 0.5 + rand.nextGaussian() * 0.55,
+				z + 0.5 + rand.nextGaussian() * 0.55,
+				0, 0, 0, Minecraft.getMinecraft().effectRenderer) {
+			@Override
+			public void moveEntity(double x, double y, double z) {}
+		};
+		spark.setColour(0xFFFF66);
+		spark.setFadeColour(0xFFFFAA);
+		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 	}
 
 }

@@ -31,6 +31,11 @@ public abstract class TilePlateBase extends TileTEBase {
 		return alignment;
 	}
 
+	public int getFacing() {
+
+		return direction;
+	}
+
 	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getPacket() {

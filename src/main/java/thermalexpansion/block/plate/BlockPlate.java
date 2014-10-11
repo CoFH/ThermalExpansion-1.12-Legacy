@@ -15,11 +15,12 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
@@ -44,14 +45,39 @@ public class BlockPlate extends BlockTEBase {
 		}
 		switch (Types.values()[metadata]) {
 		case SIGNAL:
-			// return new TilePlateSignal();
+			return new TilePlateSignal();
 		case IMPULSE:
-			// return new TilePlateImpulse();
+			return new TilePlateImpulse();
 		case TRANSLOCATE:
-			// return new TilePlateTranslocate();
+			return new TilePlateTranslocate();
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis_fd) {
+
+		boolean r = false;
+		l: {
+			if (world.isRemote) {
+				break l;
+			}
+			TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
+			if (tile == null) {
+				break l;
+			}
+			int axis = axis_fd.ordinal();
+			if (axis == tile.alignment || (axis^1) == tile.alignment) {
+				tile.direction = (byte) ((tile.direction + 1) % 6);
+				r = true;
+			} else {
+				// TODO: rotate to next valid alignment
+			}
+		}
+		if (r)
+			world.markBlockForUpdate(x, y, z);
+		return r;
 	}
 
 	@Override
@@ -68,6 +94,42 @@ public class BlockPlate extends BlockTEBase {
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
+		if (tile == null) {
+			return;
+		}
+
+		int facing = 0;
+		{ // this block applies to placing the plate on the top or bottom faces of a block
+			facing = (int)(living.rotationPitch / -70f);
+			switch (facing) {
+			case 0:
+				facing = MathHelper.floor_double((living.rotationYaw * 4F) / 360F + 0.5D) & 3;
+				switch (facing) {
+				case 0:
+					facing = 1;
+					break;
+				case 1:
+					facing = 2;
+					break;
+				case 2:
+					facing = 0;
+					break;
+				case 3:
+					facing = 3;
+					break;
+				}
+				facing += 2;
+				break;
+			case -1:
+				facing = 0;
+				break;
+			case 1:
+			default:
+				break;
+			}
+		}
+		tile.direction = (byte)facing;
 	}
 
 	@Override
@@ -116,12 +178,6 @@ public class BlockPlate extends BlockTEBase {
 	}
 
 	@Override
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-
-		return AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 0.0625, z + 1);
-	}
-
-	@Override
 	public MovingObjectPosition collisionRayTrace(World world, int x, int y, int z, Vec3 vec3d, Vec3 vec3d1) {
 
 		setBlockBoundsBasedOnState(world, x, y, z);
@@ -145,9 +201,9 @@ public class BlockPlate extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		// TilePlateSignal.initialize();
-		// TilePlateImpulse.initialize();
-		// TilePlateTranslocate.initialize();
+		TilePlateSignal.initialize();
+		TilePlateImpulse.initialize();
+		TilePlateTranslocate.initialize();
 
 		signalPlate = new ItemStack(this, 1, Types.SIGNAL.ordinal());
 		impulsePlate = new ItemStack(this, 1, Types.IMPULSE.ordinal());
