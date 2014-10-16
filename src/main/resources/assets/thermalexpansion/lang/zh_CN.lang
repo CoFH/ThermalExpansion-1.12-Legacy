@@ -125,10 +125,10 @@ info.thermalexpansion.hardened=硬化
 info.thermalexpansion.reinforced=强化
 info.thermalexpansion.resonant=谐振
 
-info.thermalexpansion.augment=扩展
+info.thermalexpansion.augment=扩展组件
 info.thermalexpansion.augment.energyProduced=能量生产
 info.thermalexpansion.augment.energyUsed=能量消耗
-info.thermalexpansion.augment.fuelUsed=燃料消耗
+info.thermalexpansion.augment.fuelConsumed=燃料消耗
 info.thermalexpansion.augment.fuelEnergy=基础燃料能量
 info.thermalexpansion.augment.levels.0=需要先安装低级版本.
 info.thermalexpansion.augment.levels.1=已是最高级扩展.

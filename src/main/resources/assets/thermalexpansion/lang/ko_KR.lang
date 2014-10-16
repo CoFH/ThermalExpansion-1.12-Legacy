@@ -389,7 +389,7 @@ tile.thermalexpansion.frame.illuminator.name=조명기 틀
 
 tile.thermalexpansion.glass.name=강화 유리
 
-#tile.thermalexpansion.light.name=6-Mode Lighting
+tile.thermalexpansion.light.name=6-발광 모드
 tile.thermalexpansion.light.illuminator.name=발광석 조명기
 tile.thermalexpansion.light.lampBasic.name=루미움 램프
 
