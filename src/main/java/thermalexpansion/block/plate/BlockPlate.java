@@ -133,6 +133,12 @@ public class BlockPlate extends BlockTEBase {
 	}
 
 	@Override
+	public void onEntityWalking(World world, int x, int y, int z, Entity entity) {
+
+		// onEntityCollidedWithBlock(world, x, y, z, entity);
+	}
+
+	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 
 		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);

@@ -22,7 +22,6 @@ import thermalexpansion.block.light.ItemBlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.machine.ItemBlockMachine;
 import thermalexpansion.block.plate.BlockPlate;
-import thermalexpansion.block.plate.ItemBlockPlate;
 import thermalexpansion.block.simple.BlockAirBarrier;
 import thermalexpansion.block.simple.BlockAirLight;
 import thermalexpansion.block.simple.BlockAirSignal;
@@ -80,7 +79,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
 		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
-		GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
+		//GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
 		GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
 		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
 		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");

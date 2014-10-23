@@ -52,12 +52,13 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 
 		GL11.glPushMatrix();
 		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glTranslated(x, y + 1.0, z + 1.0F);
+		GL11.glTranslated(x, y + 1.0, z + 1.0);
 		GL11.glScalef(1.0F, -1F, -1F);
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		GL11.glRotatef(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
 		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
 		model.render(access);
+		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
 		GL11.glPopMatrix();
 	}
 
@@ -66,12 +67,11 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 
 		CCRenderState.reset();
 		CCRenderState.pullLightmap();
-		CCRenderState.useNormals = true;
+		CCRenderState.setDynamic();
 
 		TileStrongbox strongbox = (TileStrongbox) entity;
 		model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
 		render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
-		CCRenderState.useNormals = false;
 	}
 
 	/* IItemRenderer */
