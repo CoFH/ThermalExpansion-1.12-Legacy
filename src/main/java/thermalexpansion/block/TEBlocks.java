@@ -21,7 +21,6 @@ import thermalexpansion.block.light.BlockLight;
 import thermalexpansion.block.light.ItemBlockLight;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.machine.ItemBlockMachine;
-import thermalexpansion.block.plate.BlockPlate;
 import thermalexpansion.block.simple.BlockAirBarrier;
 import thermalexpansion.block.simple.BlockAirLight;
 import thermalexpansion.block.simple.BlockAirSignal;
@@ -60,7 +59,7 @@ public class TEBlocks {
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
 		blockTesseract = addBlock(new BlockEnder());
-		blockPlate = addBlock(new BlockPlate());
+		//blockPlate = addBlock(new BlockPlate());
 		blockLight = addBlock(new BlockLight());
 		blockFrame = addBlock(new BlockFrame());
 		blockGlass = addBlock(new BlockGlass());

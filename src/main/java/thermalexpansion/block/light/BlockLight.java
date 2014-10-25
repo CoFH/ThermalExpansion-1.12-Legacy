@@ -184,10 +184,20 @@ public class BlockLight extends BlockTEBase {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'G', "blockGlassHardened", 'L', "dustLumium", 'S',
-					"ingotSignalum" }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " S ", "GLG", " L ", 'G', "blockGlassHardened", 'L', "dustLumium", 'S',
-					"ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] {
+					" L ",
+					"GLG",
+					" S ",
+					'L', "ingotLumium",
+					'G', "blockGlassHardened",
+					'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] {
+					" L ",
+					"GLG",
+					" S ",
+					'L', "dustLumium",
+					'G', "blockGlassHardened",
+					'S', "ingotSignalum" }));
 		}
 		return true;
 	}
