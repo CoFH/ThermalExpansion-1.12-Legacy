@@ -119,7 +119,7 @@ public class BlockCache extends BlockTEBase {
 		if (!player.capabilities.isCreativeMode && ret != heldStack) {
 			player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
 		}
-		return false;
+		return true;
 	}
 
 	@Override
