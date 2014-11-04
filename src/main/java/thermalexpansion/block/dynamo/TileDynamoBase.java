@@ -660,7 +660,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return augmentCoilDuct;
+		return augmentCoilDuct || side != facing;
 	}
 
 }
