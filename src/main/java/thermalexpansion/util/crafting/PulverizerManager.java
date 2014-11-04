@@ -63,7 +63,7 @@ public class PulverizerManager {
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 10);
-		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint));
+		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 10);
 		addRecipe(3200, new ItemStack(Blocks.glass), new ItemStack(Blocks.sand));
 		addRecipe(800, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 2));
 
