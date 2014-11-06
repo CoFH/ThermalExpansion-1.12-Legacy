@@ -94,6 +94,12 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
+	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
+	{
+		return true;
+	}
+
+	@Override
 	public boolean isOpaqueCube() {
 
 		return false;
