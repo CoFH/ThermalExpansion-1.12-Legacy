@@ -391,9 +391,8 @@
 	<macrodef name="update-languages">
 		<sequential>
 			<script language="javascript"><![CDATA[
-				importPackage(java.io);
-				var path = "/assets/" + project.getProperty("build.name").toLowerCase() + "/language/";
-				var languages = new File(project.getProperty("resources.dir") + path);
+				var path = "/assets/cofh/language/";
+				var languages = new java.io.File(project.getProperty("resources.dir") + path);
 				if (languages.exists() && languages.isDirectory()) {
 					var out = "";
 					for each(var i in languages.list()) {
@@ -402,7 +401,7 @@
 						}
 					}
 					if (out.length > 0) {
-						var os = new PrintWriter(project.getProperty("classes.dir") + path + ".languages");
+						var os = new java.io.PrintWriter(project.getProperty("classes.dir") + path + ".languages");
 						os.write("["+out.substring(0, out.length - 2)+"]");
 						os.flush();
 						os.close();
@@ -428,11 +427,9 @@
 		<local name="grep.out"/><local name="mfrv"/><local name="mcv"/>
 		<!-- Read version out of file -->
 		<script language="javascript"><![CDATA[
-			importClass(java.io.File);
-			importClass(java.util.Scanner);
 			
-			var mainClass = new File(project.getProperty("verclass.dir"), project.getProperty("verclass.name"));
-			mainClass = new Scanner(mainClass, "UTF-8").useDelimiter("\\Z");
+			var mainClass = new java.io.File(project.getProperty("verclass.dir"), project.getProperty("verclass.name"));
+			mainClass = new java.util.Scanner(mainClass, "UTF-8").useDelimiter("\\Z");
 			var text = mainClass.next();
 			mainClass.close();
 			
@@ -443,10 +440,6 @@
 		
 		<!-- Split mod&mc version, update mcmod -->
 		<script language="javascript" classpathref="gson"><![CDATA[
-			importPackage(Packages.com.google.gson);
-			importPackage(Packages.com.google.gson.stream);
-			importPackage(java.io);
-			importClass(java.util.Scanner);
 			
 			versionlist = project.getProperty("grep.out").split('R');
 
@@ -464,11 +457,11 @@
 													 mfrversion.indexOf("RC") > 0 ? "beta" : "release"));
 			
 			// open file and parse JSON structure
-			var file = new File(project.getProperty("resources.dir") + "/mcmod.info");
+			var file = new java.io.File(project.getProperty("resources.dir") + "/mcmod.info");
 			if (file.exists())
 			{
-				var mcmod = new Scanner(file, "UTF-8").useDelimiter("\\Z");
-				var data = new JsonParser().parse(mcmod.next()).getAsJsonArray();
+				var mcmod = new java.util.Scanner(file, "UTF-8").useDelimiter("\\Z");
+				var data = new com.google.gson.JsonParser().parse(mcmod.next()).getAsJsonArray();
 				mcmod.close();
 				
 				// update all version elements
@@ -479,9 +472,9 @@
 				}
 				
 				// write file back, pretty-printed
-				var output = new JsonWriter(new FileWriter(file));
+				var output = new com.google.gson.stream.JsonWriter(new java.io.FileWriter(file));
 				output.setIndent("    ");
-				new Gson().toJson(data, output);
+				new com.google.gson.Gson().toJson(data, output);
 				output.close();
 			}
 		]]></script>
