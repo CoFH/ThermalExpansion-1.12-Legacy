@@ -441,12 +441,10 @@
 		<!-- Split mod&mc version, update mcmod -->
 		<script language="javascript" classpathref="gson"><![CDATA[
 			
-			versionlist = project.getProperty("grep.out").split('R');
+			versionlist = project.getProperty("grep.out");
 
-			mcversion = versionlist[0];
-			mfrversion = versionlist[1];
-			if (versionlist.length > 2)
-				mfrversion = versionlist[1]+"R"+versionlist[2];
+			mcversion = versionlist.substring(0, versionlist.indexOf('R'));
+			mfrversion = versionlist.substring(versionlist.indexOf('R') + 1);
 			
 			project.setProperty("mfrv", mfrversion);
 			project.setProperty("mcv", mcversion);

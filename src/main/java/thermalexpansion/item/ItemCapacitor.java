@@ -153,15 +153,15 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return 1 + STORAGE[ItemHelper.getItemDamage(stack)];
+			return STORAGE[ItemHelper.getItemDamage(stack)];
 		}
-		return 1 + STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return 1 + STORAGE[ItemHelper.getItemDamage(stack)];
+		return STORAGE[ItemHelper.getItemDamage(stack)];
 	}
 
 	/* IEnergyContainerItem */

@@ -52,15 +52,15 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
+			return TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
 		}
-		return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return TileCell.STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return 1 + TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
+		return TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
 	}
 
 	@Override
