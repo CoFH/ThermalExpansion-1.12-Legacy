@@ -188,6 +188,7 @@ public class BlockLight extends BlockTEBase {
 	public boolean initialize() {
 
 		TileLight.initialize();
+		TileLightFalse.initialize();
 
 		illuminator = new ItemStack(this, 1, 0);
 		lampBasic = new ItemStack(this, 1, 1);
@@ -259,7 +260,8 @@ public class BlockLight extends BlockTEBase {
 		public final boolean dim = name().endsWith("_DIM");
 	}
 
-	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt" };
+	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt",
+		"illuminatorDim", "lampDim", "lampDimAlt" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {

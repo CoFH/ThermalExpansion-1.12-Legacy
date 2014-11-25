@@ -171,7 +171,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 		int color = theTile.getColorMultiplier();
 		boolean modified = theTile.modified;
-		boolean active = theTile.getLightValue() > 0;
+		boolean active = theTile.getInternalLight() > 0;
 
 		switch (BlockLight.Types.values()[bMeta]) {
 		case ILLUMINATOR:

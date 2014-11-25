@@ -134,7 +134,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (ServerHelper.isServerWorld(worldObj)) {
 			return false;
 		}
-		int colorMod = 10 + getLightValue() / 3;
+		int colorMod = 10 + getInternalLight() / 3;
 		int red = (color >> 16 & 0xFF) * colorMod / 15;
 		int green = (color >> 8 & 0xFF) * colorMod / 15;
 		int blue = (color & 0xFF) * colorMod / 15;
