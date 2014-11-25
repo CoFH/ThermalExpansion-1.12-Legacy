@@ -392,6 +392,9 @@ tile.thermalexpansion.light.name=6-Mode Lighting
 tile.thermalexpansion.light.illuminator.name=Glowstone Illuminator
 tile.thermalexpansion.light.lampBasic.name=Radiant Lumium Lamp
 tile.thermalexpansion.light.lampBasicAlt.name=Lumium Lamp
+tile.thermalexpansion.light.illuminatorDim.name=Dimmed Glowstone Illuminator
+tile.thermalexpansion.light.lampDim.name=Dimmed Radiant Lumium Lamp
+tile.thermalexpansion.light.lampDimAlt.name=Dimmed Lumium Lamp
 
 tile.thermalexpansion.machine.furnace.name=Redstone Furnace
 tile.thermalexpansion.machine.pulverizer.name=Pulverizer
