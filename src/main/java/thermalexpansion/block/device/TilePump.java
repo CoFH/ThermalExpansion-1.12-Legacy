@@ -122,7 +122,7 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker2");
+		outputTracker = nbt.getInteger("Tracker");
 		reverse = nbt.getBoolean("Rev");
 		tank.readFromNBT(nbt);
 	}
