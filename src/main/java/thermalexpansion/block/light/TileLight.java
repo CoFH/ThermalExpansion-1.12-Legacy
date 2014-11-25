@@ -55,6 +55,11 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	@Override
 	public int getLightValue() {
 
+		return getInternalLight();
+	}
+
+	public int getInternalLight() {
+
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return lightValue;
 		}
@@ -114,6 +119,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 	public boolean setColor(int color) {
 
+		if (color == this.color) {
+			return false;
+		}
 		this.modified = true;
 		this.color = color;
 		setRenderColor();
@@ -151,7 +159,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		payload.addBool(modified);
 		payload.addInt(color);
 		payload.addByte(mode);
-		payload.addByte(getLightValue());
+		payload.addByte(getInternalLight());
 		payload.addBool(isPowered);
 		payload.addByte(inputPower);
 

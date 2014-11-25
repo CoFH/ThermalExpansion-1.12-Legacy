@@ -47,6 +47,10 @@ public class BlockLight extends BlockTEBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
+		Types type = Types.values()[metadata];
+		if (type.dim) {
+			return new TileLightFalse();
+		}
 		return new TileLight();
 	}
 
@@ -75,6 +79,17 @@ public class BlockLight extends BlockTEBase {
 	@Override
 	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
 
+	}
+
+	@Override
+	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int color) {
+
+		TileLight theTile = (TileLight) world.getTileEntity(x, y, z);
+
+		if (ServerHelper.isServerWorld(world)) {
+			return theTile.setColor(ColorHelper.getDyeColor(15 - color));
+		}
+		return false;
 	}
 
 	@Override
@@ -114,15 +129,23 @@ public class BlockLight extends BlockTEBase {
 	}
 
 	@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdLight;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getMixedBrightnessForBlock(IBlockAccess world, int x, int y, int z) {
+
+		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
+		return world.getLightBrightnessForSkyBlocks(x, y, z, tile.getInternalLight());
+	}
+
+	@Override
+	public int getRenderBlockPass() {
+
+		return 1;
 	}
 
 	@Override
@@ -169,10 +192,16 @@ public class BlockLight extends BlockTEBase {
 		illuminator = new ItemStack(this, 1, 0);
 		lampBasic = new ItemStack(this, 1, 1);
 		lampBasicAlt = new ItemStack(this, 1, 2);
+		illuminatorDim = new ItemStack(this, 1, 3);
+		lampDim = new ItemStack(this, 1, 4);
+		lampDimAlt = new ItemStack(this, 1, 5);
 
 		GameRegistry.registerCustomItemStack("illuminator", illuminator);
 		GameRegistry.registerCustomItemStack("lampBasic", lampBasic);
 		GameRegistry.registerCustomItemStack("lampBasicAlt", lampBasicAlt);
+		GameRegistry.registerCustomItemStack("illuminatorDim", illuminatorDim);
+		GameRegistry.registerCustomItemStack("lampDim", lampDim);
+		GameRegistry.registerCustomItemStack("lampDimAlt", lampDimAlt);
 
 		return true;
 	}
@@ -183,7 +212,7 @@ public class BlockLight extends BlockTEBase {
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
-		if (enable[Types.LAMP_BASIC.ordinal()]) {
+		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] {
 					" L ",
 					"GLG",
@@ -191,6 +220,8 @@ public class BlockLight extends BlockTEBase {
 					'L', "ingotLumium",
 					'G', "blockGlassHardened",
 					'S', "ingotSignalum" }));
+		}
+		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] {
 					" L ",
 					"GLG",
@@ -199,11 +230,33 @@ public class BlockLight extends BlockTEBase {
 					'G', "blockGlassHardened",
 					'S', "ingotSignalum" }));
 		}
+		if (enable[Types.ILLUMINATOR_DIM.ordinal()]) {
+			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminatorDim, new FluidStack(TFFluids.fluidMana, 1000), false);
+		}
+		if (enable[Types.LAMP_HALO_DIM.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampDim, new Object[] {
+					" L ",
+					"GLG",
+					" S ",
+					'L', "ingotMithril",
+					'G', "blockGlassHardened",
+					'S', "ingotSignalum" }));
+		}
+		if (enable[Types.LAMP_BASIC_DIM.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampDimAlt, new Object[] {
+					" L ",
+					"GLG",
+					" S ",
+					'L', "dustMithril",
+					'G', "blockGlassHardened",
+					'S', "ingotSignalum" }));
+		}
 		return true;
 	}
 
 	public static enum Types {
-		ILLUMINATOR, LAMP_BASIC, LAMP_BASIC_ALT// , ILLUMINATOR_DIM, LAMP_HALO_DIM, LAMP_BASIC_DIM
+		ILLUMINATOR, LAMP_HALO, LAMP_BASIC, ILLUMINATOR_DIM, LAMP_HALO_DIM, LAMP_BASIC_DIM;
+		public final boolean dim = name().endsWith("_DIM");
 	}
 
 	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt" };
@@ -212,12 +265,19 @@ public class BlockLight extends BlockTEBase {
 	static {
 		String category = "block.feature";
 		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Light.Illuminator", true);
+		enable[Types.LAMP_HALO.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
 		enable[Types.LAMP_BASIC.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
-		enable[Types.LAMP_BASIC_ALT.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
+		boolean dim = ThermalExpansion.config.get(category, "Light.DimVariants", true);
+		enable[Types.ILLUMINATOR_DIM.ordinal()] = dim && enable[Types.ILLUMINATOR.ordinal()];
+		enable[Types.LAMP_HALO_DIM.ordinal()] = dim && enable[Types.LAMP_HALO.ordinal()];
+		enable[Types.LAMP_BASIC_DIM.ordinal()] = dim && enable[Types.LAMP_BASIC.ordinal()];
 	}
 
 	public static ItemStack illuminator;
 	public static ItemStack lampBasic;
 	public static ItemStack lampBasicAlt;
+	public static ItemStack illuminatorDim;
+	public static ItemStack lampDim;
+	public static ItemStack lampDimAlt;
 
 }
