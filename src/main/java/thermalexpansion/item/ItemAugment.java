@@ -5,10 +5,10 @@ import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 
-import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TIntObjectHashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,10 +23,10 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 		public String primaryType = "";
 		public int primaryLevel = 0;
-		public Map<String, Integer> augmentTypeInfo = new THashMap<String, Integer>();
+		public TObjectIntHashMap<String> augmentTypeInfo = new TObjectIntHashMap<String>();
 	}
 
-	Map<Integer, AugmentEntry> augmentMap = new THashMap<Integer, AugmentEntry>();
+	TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<AugmentEntry>();
 
 	public ItemAugment() {
 
@@ -89,6 +89,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		}
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addMachineInfo(List list, int level) {
 
 		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + StringHelper.getRarity(level)
@@ -98,7 +99,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	public void addAugmentData(int number, String augmentType, int augmentLevel) {
 
-		int index = Integer.valueOf(number);
+		int index = number;
 
 		if (!augmentMap.containsKey(index)) {
 			augmentMap.put(index, new AugmentEntry());
