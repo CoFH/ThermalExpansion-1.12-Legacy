@@ -100,7 +100,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		SecurityHelper.addAccessInformation(stack, list);
 
 		if (ItemHelper.getItemDamage(stack) == BlockCell.Types.CREATIVE.ordinal()) {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite") + " RF");
+			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
 					+ StringHelper.getScaledNumber(TileCell.STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");

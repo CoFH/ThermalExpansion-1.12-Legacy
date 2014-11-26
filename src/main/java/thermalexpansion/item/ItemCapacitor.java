@@ -60,14 +60,13 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			return;
 		}
 		if (ItemHelper.getItemDamage(stack) == Types.CREATIVE.ordinal()) {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.localize("info.cofh.infinite"));
-			list.add(StringHelper.localize("info.cofh.send") + ": " + SEND[ItemHelper.getItemDamage(stack)] + " RF/t");
+			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
 					+ StringHelper.getScaledNumber(STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
-					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		}
+		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
+					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));
@@ -178,7 +177,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		int stored = container.stackTagCompound.getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(STORAGE[metadata] - stored, RECEIVE[metadata]));
 
-		if (!simulate) {
+		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored += receive;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -242,8 +241,8 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
 
-	public static final int[] SEND = { 10000, 80, 80, 400, 2000, 10000 };
-	public static final int[] RECEIVE = { 0, 0, 80, 400, 2000, 10000 };
-	public static final int[] STORAGE = { 10000, 16000, 80000, 400000, 2000000, 10000000 };
+	public static final int[] SEND = { 20000, 80, 80, 400, 2000, 10000 };
+	public static final int[] RECEIVE = { 20000, 0, 80, 400, 2000, 10000 };
+	public static final int[] STORAGE = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
 
 }
