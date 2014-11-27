@@ -13,7 +13,7 @@ import net.minecraft.util.IIcon;
 
 import thermalexpansion.util.ReconfigurableHelper;
 
-public abstract class TileReconfigurable extends TileRSControl implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
+public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
 
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };

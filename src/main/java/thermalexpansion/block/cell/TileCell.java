@@ -2,6 +2,7 @@ package thermalexpansion.block.cell;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
@@ -25,7 +26,7 @@ import thermalexpansion.gui.client.GuiCell;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalexpansion.util.ReconfigurableHelper;
 
-public class TileCell extends TileReconfigurable {
+public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public static void initialize() {
 
@@ -77,7 +78,7 @@ public class TileCell extends TileReconfigurable {
 	byte outputTracker;
 
 	boolean cached = false;
-	IEnergyHandler[] adjacentHandlers = new IEnergyHandler[6];
+	IEnergyReceiver[] adjacentHandlers = new IEnergyReceiver[6];
 
 	public int energyReceive;
 	public int energySend;
@@ -206,8 +207,8 @@ public class TileCell extends TileReconfigurable {
 		for (int i = 0; i < 6; i++) {
 			TileEntity tile = BlockHelper.getAdjacentTileEntity(this, i);
 
-			if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
-				adjacentHandlers[i] = (IEnergyHandler) tile;
+			if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
+				adjacentHandlers[i] = (IEnergyReceiver) tile;
 			} else {
 				adjacentHandlers[i] = null;
 			}
@@ -224,8 +225,8 @@ public class TileCell extends TileReconfigurable {
 
 		TileEntity tile = worldObj.getTileEntity(x, y, z);
 
-		if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
-			adjacentHandlers[side] = (IEnergyHandler) tile;
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
+			adjacentHandlers[side] = (IEnergyReceiver) tile;
 		} else {
 			adjacentHandlers[side] = null;
 		}

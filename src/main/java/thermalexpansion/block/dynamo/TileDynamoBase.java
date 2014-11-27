@@ -1,12 +1,13 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyProvider;
+import cofh.api.energy.IEnergyReceiver;
+import cofh.api.energy.IEnergyStorage;
 import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.TimeTracker;
@@ -34,7 +35,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEAugments;
 import thermalexpansion.util.Utils;
 
-public abstract class TileDynamoBase extends TileRSControl implements ITileInfoPacketHandler, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileRSControl implements IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	public static void configure() {
 
@@ -57,8 +58,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 	boolean wasActive;
 
 	boolean cached = false;
-	IEnergyHandler adjacentHandler = null;
+	IEnergyReceiver adjacentHandler = null;
 
+	protected EnergyStorage energyStorage = new EnergyStorage(0);
 	protected EnergyConfig config;
 	protected TimeTracker tracker = new TimeTracker();
 
@@ -122,6 +124,22 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		super.onNeighborTileChange(tileX, tileY, tileZ);
 		updateAdjacentHandlers();
+	}
+
+	public final void setEnergyStored(int quantity) {
+
+		energyStorage.setEnergyStored(quantity);
+	}
+
+	/* GUI METHODS */
+	public IEnergyStorage getEnergyStorage() {
+
+		return energyStorage;
+	}
+
+	public int getScaledEnergyStored(int scale) {
+
+		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
 	@Override
@@ -242,8 +260,8 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 		}
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, facing);
 
-		if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[facing ^ 1])) {
-			adjacentHandler = (IEnergyHandler) tile;
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[facing ^ 1])) {
+			adjacentHandler = (IEnergyReceiver) tile;
 		} else {
 			adjacentHandler = null;
 		}
@@ -517,12 +535,6 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 	/* IEnergyHandler */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-
-		return 0;
-	}
-
-	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
 		return 0;
@@ -627,7 +639,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITileInfoP
 
 		//int[] coords;
 		for (int i = facing + 1; i < facing + 6; i++) {
-			if (EnergyHelper.isAdjacentEnergyHandlerFromSide(this, i % 6)) {
+			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
 				facing = (byte) (i % 6);
 				updateAdjacentHandlers();
 				markDirty();

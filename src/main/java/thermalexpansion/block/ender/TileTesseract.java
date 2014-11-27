@@ -1,11 +1,10 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.energy.IEnergyHandler;
+import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
 import cofh.api.transport.RegistryEnderAttuned;
-import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -47,7 +46,7 @@ import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSControl implements ITileInfoPacketHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
+public class TileTesseract extends TileRSControl implements IEnergyReceiver, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
 		ISidedInventory {
 
 	public static void initialize() {
@@ -77,7 +76,7 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 	int energyTrackerRemote;
 
 	boolean cached = false;
-	IEnergyHandler[] adjacentEnergyHandlers = new IEnergyHandler[6];
+	IEnergyReceiver[] adjacentEnergyHandlers = new IEnergyReceiver[6];
 	IFluidHandler[] adjacentFluidHandlers = new IFluidHandler[6];
 
 	public int frequency = -1;
@@ -187,8 +186,8 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			} else {
 				adjacentFluidHandlers[i] = null;
 			}
-			if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
-				adjacentEnergyHandlers[i] = (IEnergyHandler) tile;
+			if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
+				adjacentEnergyHandlers[i] = (IEnergyReceiver) tile;
 			} else {
 				adjacentEnergyHandlers[i] = null;
 			}
@@ -212,8 +211,8 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 		} else {
 			adjacentFluidHandlers[side] = null;
 		}
-		if (EnergyHelper.isEnergyHandlerFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
-			adjacentEnergyHandlers[side] = (IEnergyHandler) tile;
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
+			adjacentEnergyHandlers[side] = (IEnergyReceiver) tile;
 		} else {
 			adjacentEnergyHandlers[side] = null;
 		}
@@ -873,12 +872,6 @@ public class TileTesseract extends TileRSControl implements ITileInfoPacketHandl
 			return 0;
 		}
 		return sendEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-
-		return 0;
 	}
 
 	@Override

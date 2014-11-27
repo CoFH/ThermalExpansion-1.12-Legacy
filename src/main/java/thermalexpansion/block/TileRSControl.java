@@ -1,16 +1,11 @@
 package thermalexpansion.block;
 
-import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.energy.IEnergyStorage;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
 import cofh.lib.audio.SoundTile;
-import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -18,19 +13,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.network.PacketTEBase;
 
 @Strippable(value = "cofh.api.audio.ISoundSource", side = CoFHSide.SERVER)
-public abstract class TileRSControl extends TileInventory implements IEnergyHandler, IRedstoneControl, ISoundSource {
+public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
 	protected ControlMode rsMode = ControlMode.DISABLED;
-	protected EnergyStorage energyStorage = new EnergyStorage(0);
 
 	@Override
 	public void onNeighborBlockChange() {
@@ -44,16 +37,6 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 		}
 	}
 
-	public int getChargeSlot() {
-
-		return inventory.length - 1;
-	}
-
-	public boolean hasChargeSlot() {
-
-		return true;
-	}
-
 	protected boolean sendRedstoneUpdates() {
 
 		return false;
@@ -64,38 +47,8 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
 	}
 
-	protected void chargeEnergy() {
-
-		int chargeSlot = getChargeSlot();
-
-		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
-			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false),
-					false);
-			if (inventory[chargeSlot].stackSize <= 0) {
-				inventory[chargeSlot] = null;
-			}
-		}
-	}
-
 	public void onRedstoneUpdate() {
 
-	}
-
-	public final void setEnergyStored(int quantity) {
-
-		energyStorage.setEnergyStored(quantity);
-	}
-
-	/* GUI METHODS */
-	public IEnergyStorage getEnergyStorage() {
-
-		return energyStorage;
-	}
-
-	public int getScaledEnergyStored(int scale) {
-
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
 	/* NBT METHODS */
@@ -105,7 +58,6 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 		super.readFromNBT(nbt);
 
 		isActive = nbt.getBoolean("Active");
-		energyStorage.readFromNBT(nbt);
 		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
 		isPowered = rsTag.getBoolean("Power");
@@ -118,7 +70,6 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("Active", isActive);
-		energyStorage.writeToNBT(nbt);
 		NBTTagCompound rsTag = new NBTTagCompound();
 
 		rsTag.setBoolean("Power", isPowered);
@@ -135,7 +86,6 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
 		payload.addBool(isActive);
-		payload.addInt(energyStorage.getEnergyStored());
 
 		return payload;
 	}
@@ -153,7 +103,6 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 			boolean prevActive = isActive;
 
 			isActive = payload.getBool();
-			energyStorage.setEnergyStored(payload.getInt());
 
 			if (isActive && !prevActive) {
 				if (getSoundName() != null && !getSoundName().isEmpty()) {
@@ -162,39 +111,7 @@ public abstract class TileRSControl extends TileInventory implements IEnergyHand
 			}
 		} else {
 			payload.getBool();
-			payload.getInt();
 		}
-	}
-
-	/* IEnergyHandler */
-	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-
-		return energyStorage.receiveEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-
-		return 0;
-	}
-
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getEnergyStored();
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getMaxEnergyStored();
-	}
-
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-
-		return energyStorage.getMaxEnergyStored() > 0;
 	}
 
 	/* IRedstoneControl */
