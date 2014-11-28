@@ -9,7 +9,7 @@ public class TEPlugins {
 
 	static class Plugin {
 
-		public Class pluginClass = null;
+		public Class<?> pluginClass = null;
 		public String pluginPath;
 
 		public Plugin(String pluginPath) {
@@ -69,12 +69,13 @@ public class TEPlugins {
 		}
 	}
 
-	public static ArrayList<Plugin> pluginList = new ArrayList();
+	public static ArrayList<Plugin> pluginList = new ArrayList<Plugin>();
 
 	static {
 		// addPlugin("cc.CCPlugin", "ComputerCraft");
 		addPlugin("mfr.MFRPlugin", "MineFactoryReloaded");
 		addPlugin("tc4.TCPlugin", "Thaumcraft4");
+		addPlugin("tcon.TConPlugin", "TConstruct");
 	}
 
 	public static void preInit() {
