@@ -41,32 +41,35 @@ public class TilePlateSignal extends TilePlateBase {
 		if (collided > 0) {
 			markChunkDirty();
 			if (--collided == 0) {
-				int x = 0, y = 0, z = 0;
-				switch (direction) {
-				case 0:
-					y = -distance;
-					break;
-				case 1:
-					y = distance;
-					break;
-				case 2:
-					z = -distance;
-					break;
-				case 3:
-					z = distance;
-					break;
-				case 4:
-					x = -distance;
-					break;
-				case 5:
-					x = distance;
-					break;
-				}
+
+				int[] v = getVector(distance);
+				int x = v[0], y = v[1], z = v[2];
+
 				if (worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z).equals(TEBlocks.blockAirSignal)) {
 					worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, Blocks.air, 0, 3);
 				}
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
+		}
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(Entity theEntity) {
+
+		if (collided > 0) {
+			collided = activationTime;
+			return;
+		}
+
+		int[] v = getVector(distance);
+		int x = v[0], y = v[1], z = v[2];
+
+		if (worldObj.isAirBlock(xCoord + x, yCoord + y, zCoord + z)) {
+			if (worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, TEBlocks.blockAirSignal, intensity, 3)) {
+				markChunkDirty();
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			collided = activationTime;
 		}
 	}
 
@@ -120,46 +123,6 @@ public class TilePlateSignal extends TilePlateBase {
 			activationTime = payload.getByte();
 		} else {
 
-		}
-	}
-
-	@Override
-	public void onEntityCollidedWithBlock(Entity theEntity) {
-
-		if (collided > 0) {
-			collided = activationTime;
-			return;
-		}
-		int x = 0;
-		int y = 0;
-		int z = 0;
-
-		switch (direction) {
-		case 0:
-			y = -distance;
-			break;
-		case 1:
-			y = distance;
-			break;
-		case 2:
-			z = -distance;
-			break;
-		case 3:
-			z = distance;
-			break;
-		case 4:
-			x = -distance;
-			break;
-		case 5:
-			x = distance;
-			break;
-		}
-		if (worldObj.isAirBlock(xCoord + x, yCoord + y, zCoord + z)) {
-			if (worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, TEBlocks.blockAirSignal, intensity, 3)) {
-				markChunkDirty();
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
-			collided = activationTime;
 		}
 	}
 

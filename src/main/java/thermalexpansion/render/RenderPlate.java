@@ -52,12 +52,15 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		double d = RenderHelper.RENDER_OFFSET;
 		side_model[0] = CCModel.quadModel(24).generateBlock(0, d, d, d, 1 - d, 0.0625 - d, 1 - d).computeNormals()
 				.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
-		CCModel.generateSidedModels(side_model, 0, Vector3.zero);
+		CCModel.generateSidedModels(side_model, 0, new Vector3(0.5, 0.5, 0.5));
 	}
 
 	public void render(int alignment, int direction, int type, double x, double y, double z) {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
+		int off = alignment > 1 & direction >> 1 == alignment >> 1 ? 1 : 0;
+		int s = (alignment & 1) ^ 1;
+		direction ^= s & off;
 		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type]));
 		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));
 		side_model[alignment].render(0, 4, trans, RenderUtils.getIconTransformation(texture_frame[6]));

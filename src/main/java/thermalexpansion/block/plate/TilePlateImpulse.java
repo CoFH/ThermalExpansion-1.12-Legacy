@@ -32,23 +32,24 @@ public class TilePlateImpulse extends TilePlateBase {
 			y = 3;
 			break;
 		case 2:
-			z = -5;
+			z = -3;
 			y = 1;
 			break;
 		case 3:
-			z = 5;
+			z = 3;
 			y = 1;
 			break;
 		case 4:
-			x = -5;
+			x = -3;
 			y = 1;
 			break;
 		case 5:
-			x = 5;
+			x = 3;
 			y = 1;
 			break;
 		}
-		accelerateEntity(theEntity, x, y, z);
+		double[] v = fixVector(x, y, z);
+		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
 
 	protected void accelerateEntity(Entity theEntity, double x, double y, double z) {

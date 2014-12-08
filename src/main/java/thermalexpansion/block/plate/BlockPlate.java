@@ -11,11 +11,9 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -88,48 +86,6 @@ public class BlockPlate extends BlockTEBase {
 				list.add(new ItemStack(item, 1, i));
 			}
 		}
-	}
-
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
-		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
-		if (tile == null) {
-			return;
-		}
-
-		int facing = 0;
-		{ // this block applies to placing the plate on the top or bottom faces of a block
-			facing = (int)(living.rotationPitch / -70f);
-			switch (facing) {
-			case 0:
-				facing = MathHelper.floor_double((living.rotationYaw * 4F) / 360F + 0.5D) & 3;
-				switch (facing) {
-				case 0:
-					facing = 1;
-					break;
-				case 1:
-					facing = 2;
-					break;
-				case 2:
-					facing = 0;
-					break;
-				case 3:
-					facing = 3;
-					break;
-				}
-				facing += 2;
-				break;
-			case -1:
-				facing = 0;
-				break;
-			case 1:
-			default:
-				break;
-			}
-		}
-		tile.direction = (byte)facing;
 	}
 
 	@Override
