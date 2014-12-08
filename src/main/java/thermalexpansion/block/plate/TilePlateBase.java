@@ -67,7 +67,7 @@ public abstract class TilePlateBase extends TileTEBase implements ITileInfo {
 
 		if (x * x + y * y < degreeCenter * degreeCenter) {
 
-			direction = 0;
+			direction = 1;
 
 		} else {
 
