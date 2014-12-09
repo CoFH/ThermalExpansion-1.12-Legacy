@@ -22,6 +22,17 @@ public class TilePlateSignal extends TilePlateBase {
 	byte collided = 0;
 
 	@Override
+	public void blockBroken() {
+		removeSignal();
+		super.blockBroken();
+	}
+
+	@Override
+	public void rotated() {
+		removeSignal();
+	}
+
+	@Override
 	public int getType() {
 
 		return BlockPlate.Types.SIGNAL.ordinal();
@@ -35,21 +46,24 @@ public class TilePlateSignal extends TilePlateBase {
 		return true;
 	}
 
+	private void removeSignal() {
+
+		int[] v = getVector(distance);
+		int x = v[0], y = v[1], z = v[2];
+
+		if (worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z).equals(TEBlocks.blockAirSignal)) {
+			worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, Blocks.air, 0, 3);
+		}
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
 	@Override
 	public void updateEntity() {
 
 		if (collided > 0) {
 			markChunkDirty();
-			if (--collided == 0) {
-
-				int[] v = getVector(distance);
-				int x = v[0], y = v[1], z = v[2];
-
-				if (worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z).equals(TEBlocks.blockAirSignal)) {
-					worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, Blocks.air, 0, 3);
-				}
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
+			if (--collided == 0)
+				removeSignal();
 		}
 	}
 

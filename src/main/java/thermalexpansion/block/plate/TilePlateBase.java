@@ -33,6 +33,10 @@ public abstract class TilePlateBase extends TileTEBase implements ITileInfo {
 
 	public abstract void onEntityCollidedWithBlock(Entity theEntity);
 
+	public void rotated() {
+
+	}
+
 	public int getAlignment() {
 
 		return alignment;

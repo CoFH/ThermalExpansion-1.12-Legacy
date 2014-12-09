@@ -65,8 +65,9 @@ public class BlockPlate extends BlockTEBase {
 			if (tile == null) {
 				break l;
 			}
+			tile.rotated();
 			int axis = axis_fd.ordinal();
-			if (axis == tile.alignment || (axis^1) == tile.alignment) {
+			if ((axis >> 1) == (tile.alignment >> 1)) {
 				tile.direction = (byte) ((tile.direction + 1) % 6);
 				r = true;
 			} else {
