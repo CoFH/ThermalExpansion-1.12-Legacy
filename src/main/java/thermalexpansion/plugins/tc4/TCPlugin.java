@@ -1,12 +1,7 @@
 package thermalexpansion.plugins.tc4;
 
-import cpw.mods.fml.common.Loader;
+import static cofh.api.modhelpers.ThaumcraftHelper.parseAspects;
 
-import net.minecraft.item.ItemStack;
-
-import thaumcraft.api.ThaumcraftApi;
-import thaumcraft.api.aspects.Aspect;
-import thaumcraft.api.aspects.AspectList;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.simple.BlockFrame;
@@ -29,184 +24,152 @@ public class TCPlugin {
 
 	}
 
-	public static void postInit() {
+	public static void postInit() throws Throwable {
 
-		if (!Loader.isModLoaded("Thaumcraft")) {
-			return;
-		}
-		registerStack(TFItems.dustCoal, "2 Ignis, 1 Potentia, 1 Perditio");
-		registerStack(TFItems.dustObsidian, "2 Ignis, 1 Tenebrae, 1 Perditio");
-		registerStack(TFItems.dustCopper, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustTin, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustSilver, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustLead, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustNickel, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustPlatinum, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustMithril, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustElectrum, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustInvar, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustBronze, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustSignalum, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustLumium, "1 Metallum, 1 Perditio");
-		registerStack(TFItems.dustEnderium, "1 Metallum, 1 Perditio");
+		parseAspects(TFItems.dustCoal, "2 ignis, 1 potentia, 1 perditio");
+		parseAspects(TFItems.dustObsidian, "2 ignis, 1 tenebrae, 1 perditio");
+		parseAspects(TFItems.dustCopper, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustTin, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustSilver, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustLead, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustNickel, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustPlatinum, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustMithril, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustElectrum, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustInvar, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustBronze, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustSignalum, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustLumium, "1 metallum, 1 perditio");
+		parseAspects(TFItems.dustEnderium, "1 metallum, 1 perditio");
 
-		registerStack(TFItems.ingotCopper, "3 Metallum, 1 Vacuos");
-		registerStack(TFItems.ingotTin, "3 Metallum, 1 Lucrum");
-		registerStack(TFItems.ingotSilver, "3 Metallum, 1 Lucrum");
-		registerStack(TFItems.ingotLead, "3 Metallum, 1 Tutamen");
-		registerStack(TFItems.ingotNickel, "3 Metallum, 1 Vacuos");
-		registerStack(TFItems.ingotPlatinum, "3 Metallum, 1 Lucrum");
-		registerStack(TFItems.ingotMithril, "3 Metallum, 1 Praecantatio");
-		registerStack(TFItems.ingotElectrum, "3 Metallum, 1 Lucrum");
-		registerStack(TFItems.ingotInvar, "3 Metallum, 1 Tutamen");
-		registerStack(TFItems.ingotBronze, "3 Metallum, 1 Fabrico");
-		registerStack(TFItems.ingotSignalum, "3 Metallum, 1 Potentia");
-		registerStack(TFItems.ingotLumium, "3 Metallum, 1 Lux");
-		registerStack(TFItems.ingotEnderium, "3 Metallum, 1 Alienis");
+		parseAspects(TFItems.ingotCopper, "3 metallum, 1 vacuos");
+		parseAspects(TFItems.ingotTin, "3 metallum, 1 lucrum");
+		parseAspects(TFItems.ingotSilver, "3 metallum, 1 lucrum");
+		parseAspects(TFItems.ingotLead, "3 metallum, 1 tutamen");
+		parseAspects(TFItems.ingotNickel, "3 metallum, 1 vacuos");
+		parseAspects(TFItems.ingotPlatinum, "3 metallum, 1 lucrum");
+		parseAspects(TFItems.ingotMithril, "3 metallum, 1 praecantatio");
+		parseAspects(TFItems.ingotElectrum, "3 metallum, 1 lucrum");
+		parseAspects(TFItems.ingotInvar, "3 metallum, 1 tutamen");
+		parseAspects(TFItems.ingotBronze, "3 metallum, 1 fabrico");
+		parseAspects(TFItems.ingotSignalum, "3 metallum, 1 potentia");
+		parseAspects(TFItems.ingotLumium, "3 metallum, 1 lux");
+		parseAspects(TFItems.ingotEnderium, "3 metallum, 1 alienis");
 
-		registerStack(TFItems.nuggetCopper, "1 Metallum");
-		registerStack(TFItems.nuggetTin, "1 Metallum");
-		registerStack(TFItems.nuggetSilver, "1 Metallum");
-		registerStack(TFItems.nuggetLead, "1 Metallum");
-		registerStack(TFItems.nuggetNickel, "1 Metallum");
-		registerStack(TFItems.nuggetPlatinum, "1 Metallum");
-		registerStack(TFItems.nuggetMithril, "1 Metallum");
-		registerStack(TFItems.nuggetElectrum, "1 Metallum");
-		registerStack(TFItems.nuggetInvar, "1 Metallum");
-		registerStack(TFItems.nuggetBronze, "1 Metallum");
-		registerStack(TFItems.nuggetSignalum, "1 Metallum");
-		registerStack(TFItems.nuggetLumium, "1 Metallum");
-		registerStack(TFItems.nuggetEnderium, "1 Metallum");
+		parseAspects(TFItems.nuggetCopper, "1 metallum");
+		parseAspects(TFItems.nuggetTin, "1 metallum");
+		parseAspects(TFItems.nuggetSilver, "1 metallum");
+		parseAspects(TFItems.nuggetLead, "1 metallum");
+		parseAspects(TFItems.nuggetNickel, "1 metallum");
+		parseAspects(TFItems.nuggetPlatinum, "1 metallum");
+		parseAspects(TFItems.nuggetMithril, "1 metallum");
+		parseAspects(TFItems.nuggetElectrum, "1 metallum");
+		parseAspects(TFItems.nuggetInvar, "1 metallum");
+		parseAspects(TFItems.nuggetBronze, "1 metallum");
+		parseAspects(TFItems.nuggetSignalum, "1 metallum");
+		parseAspects(TFItems.nuggetLumium, "1 metallum");
+		parseAspects(TFItems.nuggetEnderium, "1 metallum");
 
-		registerStack(TFItems.gearCopper, "7 Metallum, 2 Machina, 2 Permutatio");
-		registerStack(TFItems.gearTin, "7 Metallum, 2 Machina, 2 Vitreus");
-		registerStack(TFItems.gearSilver, "7 Metallum, 2 Machina, 2 Vitreus");
-		registerStack(TFItems.gearLead, "7 Metallum, 2 Machina, 2 Tutamen");
-		registerStack(TFItems.gearNickel, "7 Metallum, 2 Machina, 2 Permutatio");
-		registerStack(TFItems.gearPlatinum, "7 Metallum, 2 Machina, 2 Vitreus");
-		registerStack(TFItems.gearMithril, "7 Metallum, 2 Machina, 2 Praecantatio");
-		registerStack(TFItems.gearElectrum, "7 Metallum, 2 Machina, 2 Lucrum");
-		registerStack(TFItems.gearInvar, "7 Metallum, 2 Machina, 2 Tutamen");
-		registerStack(TFItems.gearBronze, "7 Metallum, 2 Machina, 2 Fabrico");
-		registerStack(TFItems.gearSignalum, "7 Metallum, 2 Machina, 2 Potentia");
-		registerStack(TFItems.gearLumium, "7 Metallum, 2 Machina, 2 Lux");
-		registerStack(TFItems.gearEnderium, "7 Metallum, 2 Machina, 2 Alienis");
+		parseAspects(TFItems.gearCopper, "7 metallum, 2 machina, 2 permutatio");
+		parseAspects(TFItems.gearTin, "7 metallum, 2 machina, 2 vitreus");
+		parseAspects(TFItems.gearSilver, "7 metallum, 2 machina, 2 vitreus");
+		parseAspects(TFItems.gearLead, "7 metallum, 2 machina, 2 tutamen");
+		parseAspects(TFItems.gearNickel, "7 metallum, 2 machina, 2 permutatio");
+		parseAspects(TFItems.gearPlatinum, "7 metallum, 2 machina, 2 vitreus");
+		parseAspects(TFItems.gearMithril, "7 metallum, 2 machina, 2 praecantatio");
+		parseAspects(TFItems.gearElectrum, "7 metallum, 2 machina, 2 lucrum");
+		parseAspects(TFItems.gearInvar, "7 metallum, 2 machina, 2 tutamen");
+		parseAspects(TFItems.gearBronze, "7 metallum, 2 machina, 2 fabrico");
+		parseAspects(TFItems.gearSignalum, "7 metallum, 2 machina, 2 potentia");
+		parseAspects(TFItems.gearLumium, "7 metallum, 2 machina, 2 lux");
+		parseAspects(TFItems.gearEnderium, "7 metallum, 2 machina, 2 alienis");
 
-		registerStack(BlockOre.oreCopper, "2 Metallum, 1 Perditio, 1 Vacuos");
-		registerStack(BlockOre.oreTin, "2 Metallum, 1 Perditio, 1 Lucrum");
-		registerStack(BlockOre.oreSilver, "2 Metallum, 1 Perditio, 1 Lucrum");
-		registerStack(BlockOre.oreLead, "2 Metallum, 1 Perditio, 1 Tutamen");
-		registerStack(BlockOre.oreNickel, "2 Metallum, 1 Perditio, 1 Vacuos");
-		registerStack(BlockOre.orePlatinum, "2 Metallum, 1 Perditio, 1 Lucrum");
-		registerStack(BlockOre.oreMithril, "2 Metallum, 1 Perditio, 1 Praecantatio");
+		parseAspects(BlockOre.oreCopper, "2 metallum, 1 perditio, 1 vacuos");
+		parseAspects(BlockOre.oreTin, "2 metallum, 1 perditio, 1 lucrum");
+		parseAspects(BlockOre.oreSilver, "2 metallum, 1 perditio, 1 lucrum");
+		parseAspects(BlockOre.oreLead, "2 metallum, 1 perditio, 1 tutamen");
+		parseAspects(BlockOre.oreNickel, "2 metallum, 1 perditio, 1 vacuos");
+		parseAspects(BlockOre.orePlatinum, "2 metallum, 1 perditio, 1 lucrum");
+		parseAspects(BlockOre.oreMithril, "2 metallum, 1 perditio, 1 praecantatio");
 
-		registerStack(BlockStorage.blockCopper, "11 Metallum, 5 Vacuos");
-		registerStack(BlockStorage.blockTin, "11 Metallum, 5 Lucrum");
-		registerStack(BlockStorage.blockSilver, "11 Metallum, 5 Lucrum");
-		registerStack(BlockStorage.blockLead, "11 Metallum, 5 Tutamen");
-		registerStack(BlockStorage.blockNickel, "11 Metallum, 5 Vacuos");
-		registerStack(BlockStorage.blockPlatinum, "11 Metallum, 5 Lucrum");
-		registerStack(BlockStorage.blockMithril, "11 Metallum, 5 Praecantatio");
-		registerStack(BlockStorage.blockElectrum, "11 Metallum, 5 Lucrum");
-		registerStack(BlockStorage.blockInvar, "11 Metallum, 5 Tutamen");
-		registerStack(BlockStorage.blockBronze, "11 Metallum, 5 Fabrico");
-		registerStack(BlockStorage.blockSignalum, "11 Metallum, 5 Potentia");
-		registerStack(BlockStorage.blockLumium, "11 Metallum, 5 Lux");
-		registerStack(BlockStorage.blockEnderium, "11 Metallum, 5 Alienis");
+		parseAspects(BlockStorage.blockCopper, "11 metallum, 5 vacuos");
+		parseAspects(BlockStorage.blockTin, "11 metallum, 5 lucrum");
+		parseAspects(BlockStorage.blockSilver, "11 metallum, 5 lucrum");
+		parseAspects(BlockStorage.blockLead, "11 metallum, 5 tutamen");
+		parseAspects(BlockStorage.blockNickel, "11 metallum, 5 vacuos");
+		parseAspects(BlockStorage.blockPlatinum, "11 metallum, 5 lucrum");
+		parseAspects(BlockStorage.blockMithril, "11 metallum, 5 praecantatio");
+		parseAspects(BlockStorage.blockElectrum, "11 metallum, 5 lucrum");
+		parseAspects(BlockStorage.blockInvar, "11 metallum, 5 tutamen");
+		parseAspects(BlockStorage.blockBronze, "11 metallum, 5 fabrico");
+		parseAspects(BlockStorage.blockSignalum, "11 metallum, 5 potentia");
+		parseAspects(BlockStorage.blockLumium, "11 metallum, 5 lux");
+		parseAspects(BlockStorage.blockEnderium, "11 metallum, 5 alienis");
 
-		registerStack(TFItems.bucketRedstone, "8 Metallum, 10 Potentia, 8 Machina, 4 Ignis, 2 Aqua");
-		registerStack(TFItems.bucketGlowstone, "8 Metallum, 10 Lux, 8 Sensus, 4 Ignis, 2 Aqua");
-		registerStack(TFItems.bucketEnder, "8 Metallum, 14 Alienis, 8 Iter, 4 Ignis, 2 Praecantatio, 2 Aqua");
-		registerStack(TFItems.bucketPyrotheum, "8 Metallum, 16 Ignis, 14 Potentia, 2 Praecantatio, 2 Aqua");
-		registerStack(TFItems.bucketCryotheum, "8 Metallum, 16 Gelum, 14 Potentia, 2 Praecantatio, 2 Aqua");
-		registerStack(TFItems.bucketMana, "8 Metallum, 16 Praecantatio, 8 Potentia, 8 Perditio, 2 Aqua");
-		registerStack(TFItems.bucketCoal, "8 Metallum, 14 Ignis, 2 Potentia, 2 Vacuos, 2 Aqua");
+		parseAspects(TFItems.bucketRedstone, "8 metallum, 10 potentia, 8 machina, 4 ignis, 2 aqua");
+		parseAspects(TFItems.bucketGlowstone, "8 metallum, 10 lux, 8 sensus, 4 ignis, 2 aqua");
+		parseAspects(TFItems.bucketEnder, "8 metallum, 14 alienis, 8 iter, 4 ignis, 2 praecantatio, 2 aqua");
+		parseAspects(TFItems.bucketPyrotheum, "8 metallum, 16 ignis, 14 potentia, 2 praecantatio, 2 aqua");
+		parseAspects(TFItems.bucketCryotheum, "8 metallum, 16 gelum, 14 potentia, 2 praecantatio, 2 aqua");
+		parseAspects(TFItems.bucketMana, "8 metallum, 16 praecantatio, 8 potentia, 8 perditio, 2 aqua");
+		parseAspects(TFItems.bucketCoal, "8 metallum, 14 ignis, 2 potentia, 2 vacuos, 2 aqua");
 
-		registerStack(TFItems.dustSulfur, "3 Ignis, 1 Terra");
-		registerStack(TFItems.dustNiter, "3 Aer, 1 Terra");
-		registerStack(TFItems.crystalCinnabar, "2 Terra, 1 Permutatio, 1 Venenum");
+		parseAspects(TFItems.dustSulfur, "3 ignis, 1 terra");
+		parseAspects(TFItems.dustNiter, "3 aer, 1 terra");
+		parseAspects(TFItems.crystalCinnabar, "2 terra, 1 permutatio, 1 venenum");
 
-		registerStack(TFItems.dustPyrotheum, "4 Potentia, 4 Ignis, 1 Praecantatio");
-		registerStack(TFItems.dustCryotheum, "4 Potentia, 4 Gelum, 1 Praecantatio");
-		registerStack(TFItems.rodBlizz, "4 Gelum, 2 Praecantatio");
-		registerStack(TFItems.dustBlizz, "2 Gelum, 1 Praecantatio");
+		parseAspects(TFItems.dustPyrotheum, "4 potentia, 4 ignis, 1 praecantatio");
+		parseAspects(TFItems.dustCryotheum, "4 potentia, 4 gelum, 1 praecantatio");
+		parseAspects(TFItems.rodBlizz, "4 gelum, 2 praecantatio");
+		parseAspects(TFItems.dustBlizz, "2 gelum, 1 praecantatio");
 
-		registerStack(TEFlorbs.florb, "1 Terra, 2 Limus, 1 Vacuos");
-		registerStack(TEFlorbs.florbMagmatic, "1 Terra, 1 Ignis, 2 Limus, 1 Vacuos");
+		parseAspects(TEFlorbs.florb, "1 terra, 2 limus, 1 vacuos");
+		parseAspects(TEFlorbs.florbMagmatic, "1 terra, 1 ignis, 2 limus, 1 vacuos");
 
-		registerStack(TEItems.pneumaticServo, "4 Metallum, 2 Machina, 1 Potentia, 4 Motus");
-		registerStack(TEItems.powerCoilGold, "4 Metallum, 2 Machina, 2 Potentia");
-		registerStack(TEItems.powerCoilSilver, "4 Metallum, 2 Machina, 2 Potentia");
-		registerStack(TEItems.powerCoilElectrum, "4 Metallum, 2 Machina, 2 Potentia");
-		registerStack(TEItems.slag, "2 Terra, 2 Perditio");
-		registerStack(TEItems.slagRich, "2 Terra, 2 Perditio, 2 Lucrum");
-		registerStack(TEItems.sawdust, "1 Arbor, 1 Perditio");
-		registerStack(TEItems.sawdustCompressed, "3 Arbor, 3 Perditio");
+		parseAspects(TEItems.pneumaticServo, "4 metallum, 2 machina, 1 potentia, 4 motus");
+		parseAspects(TEItems.powerCoilGold, "4 metallum, 2 machina, 2 potentia");
+		parseAspects(TEItems.powerCoilSilver, "4 metallum, 2 machina, 2 potentia");
+		parseAspects(TEItems.powerCoilElectrum, "4 metallum, 2 machina, 2 potentia");
+		parseAspects(TEItems.slag, "2 terra, 2 perditio");
+		parseAspects(TEItems.slagRich, "2 terra, 2 perditio, 2 lucrum");
+		parseAspects(TEItems.sawdust, "1 arbor, 1 perditio");
+		parseAspects(TEItems.sawdustCompressed, "3 arbor, 3 perditio");
 
-		registerStack(BlockRockwool.rockWool, "1 Fabrico, 2 Pannus, 2 Perditio");
-		registerStack(BlockGlass.glassHardened, "1 Ignis, 1 Tutamen, 1 Vitreus");
+		parseAspects(BlockRockwool.rockWool, "1 fabrico, 2 pannus, 2 perditio");
+		parseAspects(BlockGlass.glassHardened, "1 ignis, 1 tutamen, 1 vitreus");
 
-		registerStack(TEEquipment.toolInvarShears, "4 Metallum, 4 Harvest, 2 Tutamen");
-		registerStack(TEEquipment.toolInvarFishingRod, "1 Metallum, 1 Aqua, 1 Instrumentum");
-		registerStack(TEEquipment.toolInvarSickle, "5 Metallum, 4 Tutamen, 4 Harvest");
-		registerStack(TEEquipment.toolInvarBattleWrench, "6 Metallum, 1 Instrumentum, 1 Machina, 3 Telum");
+		parseAspects(TEEquipment.toolInvarShears, "4 metallum, 4 harvest, 2 tutamen");
+		parseAspects(TEEquipment.toolInvarFishingRod, "1 metallum, 1 aqua, 1 instrumentum");
+		parseAspects(TEEquipment.toolInvarSickle, "5 metallum, 4 tutamen, 4 harvest");
+		parseAspects(TEEquipment.toolInvarBattleWrench, "6 metallum, 1 instrumentum, 1 machina, 3 telum");
 
-		registerStack(TEItems.toolWrench, "4 Metallum, 1 Instrumentum");
-		registerStack(TEItems.toolMultimeter, "4 Metallum, 2 Potentia, 3 Machina, 2 Sensus, 2 Instrumentum");
+		parseAspects(TEItems.toolWrench, "4 metallum, 1 instrumentum");
+		parseAspects(TEItems.toolMultimeter, "4 metallum, 2 potentia, 3 machina, 2 sensus, 2 instrumentum");
 
-		registerStack(TEItems.diagramSchematic, "3 Cognitio");
-		registerStack(TEItems.diagramRedprint, "3 Cognitio, 1 Potentia");
+		parseAspects(TEItems.diagramSchematic, "3 cognitio");
+		parseAspects(TEItems.diagramRedprint, "3 cognitio, 1 potentia");
 
-		registerStack(TEItems.capacitorPotato, "1 Fames, 1 Terra, 1 Messis, 3 Potentia, 1 Machina");
-		registerStack(TEItems.capacitorBasic, "4 Metallum, 2 Ordo, 2 Permutatio, 6 Potentia, 3 Machina, 1 Ignis");
-		registerStack(TEItems.capacitorHardened, "7 Metallum, 2 Ordo, 2 Permutatio, 9 Potentia, 3 Machina, 1 Ignis, 1 Tutamen");
-		registerStack(TEItems.capacitorReinforced, "10 Metallum, 2 Ordo, 2 Permutatio, 12 Potentia, 3 Machina, 1 Ignis, 1 Tutamen, 4 Vitreus");
-		registerStack(TEItems.capacitorResonant,
-				"13 Metallum, 2 Ordo, 2 Permutatio, 15 Potentia, 3 Machina, 1 Ignis, 1 Tutamen, 4 Vitreus, 1 Alienis, 2 Praecantatio");
+		parseAspects(TEItems.capacitorPotato, "1 fames, 1 terra, 1 messis, 3 potentia, 1 machina");
+		parseAspects(TEItems.capacitorBasic, "4 metallum, 2 ordo, 2 permutatio, 6 potentia, 3 machina, 1 ignis");
+		parseAspects(TEItems.capacitorHardened, "7 metallum, 2 ordo, 2 permutatio, 9 potentia, 3 machina, 1 ignis, 1 tutamen");
+		parseAspects(TEItems.capacitorReinforced, "10 metallum, 2 ordo, 2 permutatio, 12 potentia, 3 machina, 1 ignis, 1 tutamen, 4 vitreus");
+		parseAspects(TEItems.capacitorResonant,
+				"13 metallum, 2 ordo, 2 permutatio, 15 potentia, 3 machina, 1 ignis, 1 tutamen, 4 vitreus, 1 alienis, 2 praecantatio");
 
-		registerStack(BlockFrame.frameMachineBasic, "4 Metallum, 2 Vitreus, 4 Machina");
-		registerStack(BlockMachine.furnace, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Fabrico");
-		registerStack(BlockMachine.pulverizer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Perditio, 2 Motus");
-		registerStack(BlockMachine.sawmill, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Instrumentum, 2 Arbor");
-		registerStack(BlockMachine.smelter, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Permutatio");
-		registerStack(BlockMachine.crucible, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Ignis, 2 Aqua");
-		registerStack(BlockMachine.transposer, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Aqua, 2 Motus");
-		registerStack(BlockMachine.precipitator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
-		registerStack(BlockMachine.extruder, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Perditio, 1 Aqua, 1 Ignis");
-		registerStack(BlockMachine.accumulator, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Gelum, 2 Aqua");
-		registerStack(BlockMachine.assembler, "8 Metallum, 2 Vitreus, 6 Machina, 2 Potentia, 4 Fabrico, 2 Motus");
-		registerStack(BlockMachine.charger, "8 Metallum, 2 Vitreus, 6 Machina, 6 Potentia, 2 Permutatio");
+		parseAspects(BlockFrame.frameMachineBasic, "4 metallum, 2 vitreus, 4 machina");
+		parseAspects(BlockMachine.furnace, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 ignis, 2 fabrico");
+		parseAspects(BlockMachine.pulverizer, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 perditio, 2 motus");
+		parseAspects(BlockMachine.sawmill, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 instrumentum, 2 arbor");
+		parseAspects(BlockMachine.smelter, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 ignis, 2 permutatio");
+		parseAspects(BlockMachine.crucible, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 ignis, 2 aqua");
+		parseAspects(BlockMachine.transposer, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 aqua, 2 motus");
+		parseAspects(BlockMachine.precipitator, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 gelum, 2 aqua");
+		parseAspects(BlockMachine.extruder, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 perditio, 1 aqua, 1 ignis");
+		parseAspects(BlockMachine.accumulator, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 gelum, 2 aqua");
+		parseAspects(BlockMachine.assembler, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 fabrico, 2 motus");
+		parseAspects(BlockMachine.charger, "8 metallum, 2 vitreus, 6 machina, 6 potentia, 2 permutatio");
 
 		ThermalExpansion.log.info("Thaumcraft Plugin Enabled.");
-	}
-
-	public static void registerStack(ItemStack stack, String aspects) {
-
-		registerStack(stack, parseAspects(aspects));
-	}
-
-	public static void registerStack(ItemStack stack, AspectList aspects) {
-
-		if (stack != null) {
-			ThaumcraftApi.registerObjectTag(stack, aspects);
-		}
-	}
-
-	private static AspectList parseAspects(String aspects) {
-
-		AspectList aspectList = new AspectList();
-		String[] list = aspects.split(",");
-
-		for (int i = 0; i < list.length; i++) {
-			String[] entry = list[i].trim().split(" ");
-			entry[1] = entry[1].toLowerCase();
-			Aspect aspect = Aspect.getAspect(entry[1]);
-
-			if (aspect != null) {
-				aspectList.add(aspect, Integer.parseInt(entry[0]));
-			}
-		}
-		return aspectList;
 	}
 
 }
