@@ -94,10 +94,10 @@ public class RenderEntityBlorb extends Render {
 		float f6 = 0.25F;
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		tessellator.addVertexWithUV(0.0F - f5, 0.0F - f6, 0.0D, icon.getMinU(), maxV);
-		tessellator.addVertexWithUV(f4 - f5, 0.0F - f6, 0.0D, maxU, maxV);
+		tessellator.addVertexWithUV(0f - f5, 0f - f6, 0.0D, minU, maxV);
+		tessellator.addVertexWithUV(f4 - f5, 0f - f6, 0.0D, maxU, maxV);
 		tessellator.addVertexWithUV(f4 - f5, f4 - f6, 0.0D, maxU, minV);
-		tessellator.addVertexWithUV(0.0F - f5, f4 - f6, 0.0D, icon.getMinU(), minV);
+		tessellator.addVertexWithUV(0f - f5, f4 - f6, 0.0D, minU, minV);
 		tessellator.draw();
 	}
 

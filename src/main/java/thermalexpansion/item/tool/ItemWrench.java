@@ -74,7 +74,7 @@ public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.8F);
 			}
 			return ServerHelper.isServerWorld(world);
-		} else if (!player.isSneaking() && block != null && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(hitSide))) {
+		} else if (!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(hitSide))) {
 			player.swingItem();
 			return ServerHelper.isServerWorld(world);
 		}
@@ -88,6 +88,7 @@ public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 	}
 
 	@Override
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Multimap getItemAttributeModifiers() {
 
 		Multimap multimap = HashMultimap.create();

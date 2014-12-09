@@ -16,7 +16,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.OreDictionary;
 
 import thermalexpansion.ThermalExpansion;
@@ -24,8 +23,8 @@ import thermalexpansion.item.TEItems;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap();
-	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
+	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
+	//private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
 	static {
@@ -87,7 +86,7 @@ public class SawmillManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>(recipeMap.size());
 		RecipeSawmill tempRecipe;
 
 		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {
@@ -137,7 +136,6 @@ public class SawmillManager {
 
 		};
 		InventoryCrafting tempCrafting = new InventoryCrafting(tempContainer, 3, 3);
-		ArrayList recipeList = (ArrayList) CraftingManager.getInstance().getRecipeList();
 
 		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, null);

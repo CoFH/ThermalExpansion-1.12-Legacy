@@ -24,7 +24,7 @@ import thermalfoundation.item.TFItems;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap();
+	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
@@ -97,7 +97,7 @@ public class CrucibleManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>(recipeMap.size());
 		RecipeCrucible tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeCrucible> entry : recipeMap.entrySet()) {

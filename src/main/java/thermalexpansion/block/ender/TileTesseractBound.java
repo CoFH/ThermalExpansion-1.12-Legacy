@@ -1,6 +1,5 @@
 package thermalexpansion.block.ender;
 
-import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -11,7 +10,7 @@ import net.minecraft.item.ItemStack;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
 
-public class TileTesseractBound extends TileRSControl implements ISecurable, ISidedInventory {
+public class TileTesseractBound extends TileRSControl implements ISidedInventory {
 
 	public static void initialize() {
 

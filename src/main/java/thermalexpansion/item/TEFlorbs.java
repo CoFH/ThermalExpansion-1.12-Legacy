@@ -89,7 +89,7 @@ public class TEFlorbs {
 
 	public static ItemStack florb;
 	public static ItemStack florbMagmatic;
-	public static ArrayList<ItemStack> florbList = new ArrayList();
+	public static ArrayList<ItemStack> florbList = new ArrayList<ItemStack>();
 
 	public static boolean enableFlorbs = true;
 	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.version);

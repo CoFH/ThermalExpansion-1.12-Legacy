@@ -10,9 +10,11 @@ import net.minecraftforge.fluids.FluidStack;
 
 import thermalexpansion.ThermalExpansion;
 
-public class ExtruderManager {
+public class ExtruderManager { // TODO
 
-	private static Map<List, RecipeExtruder> recipeMap = new THashMap();
+	@SuppressWarnings("rawtypes")
+	private static Map<List, RecipeExtruder> recipeMap = new THashMap<List, RecipeExtruder>();
+	@SuppressWarnings("unused")
 	private static boolean allowOverwrite = false;
 
 	static {

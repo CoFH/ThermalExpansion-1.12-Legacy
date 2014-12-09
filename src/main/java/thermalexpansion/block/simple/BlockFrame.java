@@ -215,7 +215,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		ItemStack dropBlock = new ItemStack(this, 1, metadata);
 		world.setBlockToAir(x, y, z);
 
-		if (dropBlock != null && !returnDrops) {
+		if (!returnDrops) {
 			float f = 0.3F;
 			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;

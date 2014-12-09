@@ -23,7 +23,7 @@ import thermalfoundation.item.TFItems;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap();
+	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>();
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
@@ -186,7 +186,7 @@ public class PulverizerManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>(recipeMap.size());
 		RecipePulverizer tempRecipe;
 
 		for (Entry<ComparableItemStackPulverizer, RecipePulverizer> entry : recipeMap.entrySet()) {

@@ -27,9 +27,9 @@ import thermalfoundation.item.TFItems;
 
 public class TransposerManager {
 
-	private static Map<List, RecipeTransposer> recipeMapFill = new THashMap();
-	private static Map<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new THashMap();
-	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
+	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<List<Integer>, RecipeTransposer>();
+	private static Map<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStackSafe, RecipeTransposer>();
+	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
 	private static ComparableItemStack query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
@@ -106,12 +106,12 @@ public class TransposerManager {
 
 	public static void refreshRecipes() {
 
-		Map<List, RecipeTransposer> tempFillMap = new THashMap(recipeMapFill.size());
-		Map<ComparableItemStackSafe, RecipeTransposer> tempExtractMap = new THashMap(recipeMapExtraction.size());
-		Set<ComparableItemStackSafe> tempSet = new THashSet();
+		Map<List<Integer>, RecipeTransposer> tempFillMap = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
+		Map<ComparableItemStackSafe, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStackSafe, RecipeTransposer>(recipeMapExtraction.size());
+		Set<ComparableItemStackSafe> tempSet = new THashSet<ComparableItemStackSafe>();
 		RecipeTransposer tempRecipe;
 
-		for (Entry<List, RecipeTransposer> entry : recipeMapFill.entrySet()) {
+		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackSafe inputStack = new ComparableItemStackSafe(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();

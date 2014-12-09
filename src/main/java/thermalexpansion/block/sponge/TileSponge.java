@@ -1,7 +1,6 @@
 package thermalexpansion.block.sponge;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.FluidHelper;
@@ -19,7 +18,7 @@ import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.TileTEBase;
 import thermalexpansion.core.TEProps;
 
-public class TileSponge extends TileTEBase implements ITilePacketHandler, ISidedTexture {
+public class TileSponge extends TileTEBase implements ISidedTexture {
 
 	public static void initialize() {
 

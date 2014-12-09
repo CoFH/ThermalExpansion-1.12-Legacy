@@ -4,7 +4,6 @@ import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
-import net.minecraftforge.fluids.Fluid;
 
 import thermalexpansion.block.TEBlocks;
 
@@ -40,9 +39,9 @@ public class TileSpongeCreative extends TileSponge {
 			return;
 		}
 		Block query;
-		int queryMeta;
-		Fluid queryFluid;
-		int bucketCounter = 0;
+		//int queryMeta;
+		//Fluid queryFluid;
+		//int bucketCounter = 0;
 		for (int i = xCoord - 1; i <= xCoord + 1; i++) {
 			for (int j = yCoord - 1; j <= yCoord + 1; j++) {
 				for (int k = zCoord - 1; k <= zCoord + 1; k++) {

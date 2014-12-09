@@ -27,8 +27,8 @@ public class SmelterManager {
 
 	public static ItemStack blockSand = new ItemStack(Blocks.sand);
 
-	private static Map<List, RecipeSmelter> recipeMap = new THashMap();
-	private static Set<ComparableItemStackSafe> validationSet = new THashSet();
+	private static Map<List<ComparableItemStackSafe>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSafe>, RecipeSmelter>();
+	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
@@ -167,11 +167,11 @@ public class SmelterManager {
 
 	public static void refreshRecipes() {
 
-		Map<List, RecipeSmelter> tempMap = new THashMap(recipeMap.size());
-		Set<ComparableItemStackSafe> tempSet = new THashSet();
+		Map<List<ComparableItemStackSafe>, RecipeSmelter> tempMap = new THashMap<List<ComparableItemStackSafe>, RecipeSmelter>(recipeMap.size());
+		Set<ComparableItemStackSafe> tempSet = new THashSet<ComparableItemStackSafe>();
 		RecipeSmelter tempRecipe;
 
-		for (Entry<List, RecipeSmelter> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackSafe>, RecipeSmelter> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackSafe primary = new ComparableItemStackSafe(tempRecipe.primaryInput);
 			ComparableItemStackSafe secondary = new ComparableItemStackSafe(tempRecipe.secondaryInput);

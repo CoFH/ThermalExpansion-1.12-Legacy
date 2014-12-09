@@ -1,6 +1,5 @@
 package thermalexpansion.block.sponge;
 
-import cofh.api.core.IInitializer;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,7 +27,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 
-public class BlockSponge extends BlockTEBase implements IInitializer {
+public class BlockSponge extends BlockTEBase {
 
 	public BlockSponge() {
 

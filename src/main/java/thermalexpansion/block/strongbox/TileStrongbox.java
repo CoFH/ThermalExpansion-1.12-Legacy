@@ -139,12 +139,12 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 		if (numUsingPlayers != 0 && (worldObj.getTotalWorldTime() + xCoord + yCoord + zCoord) % 200 == 0) {
 			numUsingPlayers = 0;
 			float dist = 5.0F;
-			List nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+			List<EntityPlayer> nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
 					AxisAlignedBB.getBoundingBox(xCoord - dist, yCoord - dist, zCoord - dist, xCoord + 1 + dist, yCoord + 1 + dist, zCoord + 1 + dist));
-			Iterator anIt = nearbyEntities.iterator();
+			Iterator<EntityPlayer> anIt = nearbyEntities.iterator();
 
 			while (anIt.hasNext()) {
-				EntityPlayer player = (EntityPlayer) anIt.next();
+				EntityPlayer player = anIt.next();
 				if (player.openContainer instanceof ContainerStrongbox) {
 					TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
 					if (box == this) {

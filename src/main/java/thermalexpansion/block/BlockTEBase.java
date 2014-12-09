@@ -1,6 +1,5 @@
 package thermalexpansion.block;
 
-import cofh.api.block.IDismantleable;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.block.BlockCoFHBase;
@@ -31,7 +30,7 @@ import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.simple.BlockGlass;
 import thermalexpansion.util.Utils;
 
-public abstract class BlockTEBase extends BlockCoFHBase implements IDismantleable {
+public abstract class BlockTEBase extends BlockCoFHBase {
 
 	public BlockTEBase(Material material) {
 

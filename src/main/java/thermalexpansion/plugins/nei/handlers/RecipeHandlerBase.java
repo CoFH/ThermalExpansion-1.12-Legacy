@@ -1,7 +1,6 @@
 package thermalexpansion.plugins.nei.handlers;
 
-import static codechicken.lib.gui.GuiDraw.changeTexture;
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.lib.gui.GuiDraw;
 import codechicken.nei.NEIClientConfig;
@@ -31,7 +30,7 @@ import thermalexpansion.core.TEProps;
 
 public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
-	Class containerClass;
+	Class<? extends GuiContainer> containerClass;
 	String recipeName;
 	static final String TEXTURE = TEProps.PATH_GUI + "NEIHandler.png";
 	int[] trCoords = new int[4];

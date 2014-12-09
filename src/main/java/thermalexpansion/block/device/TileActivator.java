@@ -292,13 +292,13 @@ public class TileActivator extends TileAugmentable {
 			}
 		} else {
 			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
-			List entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
+			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
 
 			if (entities.size() == 0) {
 
 				return false;
 			}
-			thePlayer.attackTargetEntityWithCurrentItem((Entity) entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0));
+			thePlayer.attackTargetEntityWithCurrentItem(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0));
 		}
 		return true;
 	}
@@ -307,10 +307,10 @@ public class TileActivator extends TileAugmentable {
 
 		if (thePlayer.itemInUse == null) {
 			if (!simRightClick2(thePlayer, deployingStack, blockX, blockY, blockZ, side) && deployingStack != null) {
-				List entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
+				List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
 
 				if (entities.size() > 0
-						&& thePlayer.interactWith((Entity) entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
+						&& thePlayer.interactWith(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
 					return;
 				}
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);

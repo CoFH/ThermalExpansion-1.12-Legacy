@@ -1,7 +1,6 @@
 package thermalexpansion.block.tank;
 
 import cofh.api.tileentity.ITileInfo;
-import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.BlockHelper;
@@ -29,7 +28,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileTEBase;
 
-public class TileTank extends TileTEBase implements IFluidHandler, ITilePacketHandler, ITileInfo {
+public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 
 	public static void initialize() {
 

@@ -23,12 +23,12 @@ import thermalfoundation.item.TFItems;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap();
+	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackSafe, RecipeFurnace>();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
-	private static Set<Block> handledBlocks = new THashSet();
+	private static Set<Block> handledBlocks = new THashSet<Block>();
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Furnace.AllowRecipeOverwrite", false);
@@ -139,7 +139,7 @@ public class FurnaceManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap<ComparableItemStackSafe, RecipeFurnace> (recipeMap.size());
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeFurnace> entry : recipeMap.entrySet()) {
