@@ -9,8 +9,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class BlockAirSignal extends BlockAirBase {
+import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
+import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+
+public class BlockAirSignal extends BlockAirBase implements IRedNetOutputNode {
 
 	public BlockAirSignal() {
 
@@ -43,6 +47,24 @@ public class BlockAirSignal extends BlockAirBase {
 		spark.setFadeColour(0x660000);
 		spark.setTwinkle(true);
 		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+	}
+
+	@Override
+	public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
+
+		return RedNetConnectionType.PlateSingle;
+	}
+
+	@Override
+	public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side) {
+
+		return null;
+	}
+
+	@Override
+	public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
+
+		return isProvidingWeakPower(world, x, y, z, side.ordinal());
 	}
 
 }
