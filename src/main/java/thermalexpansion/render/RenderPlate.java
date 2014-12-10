@@ -58,8 +58,12 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public void render(int alignment, int direction, int type, double x, double y, double z) {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		int off = alignment > 1 & direction >> 1 == alignment >> 1 ? 1 : 0;
-		int s = (alignment & 1) ^ 1;
+		int flip = alignment == 1 ? ((direction >> 1) & 1) ^ 1 : 1;
+		// top plates need north/south inverted specially (otherwise flip would always be 1)
+		int off = (alignment > 1 & (direction >> 1 == alignment >> 1)) ? 1 : flip ^ 1;
+		// if the alignment and direction are the same class and not up/down, invert. apply special case from above
+		int s = (alignment & 1) ^ flip;
+		// if the alignment needs inversion
 		direction ^= s & off;
 		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type]));
 		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));

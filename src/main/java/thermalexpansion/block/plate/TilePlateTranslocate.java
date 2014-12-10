@@ -1,8 +1,10 @@
 package thermalexpansion.block.plate;
 
+import cofh.core.util.CoreUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 
 public class TilePlateTranslocate extends TilePlateBase {
 
@@ -23,13 +25,23 @@ public class TilePlateTranslocate extends TilePlateBase {
 	public void onEntityCollidedWithBlock(Entity entity) {
 
 
-		double[] v = getVector((double)distance);
-		double x = entity.posX;//MathHelper.floor_double(entity.posX); // because minecraft is stupid on the client (where it matters)
-		double y = entity.posY;//MathHelper.floor_double(entity.posY); // the player's x/y/z pos is their eyes, and attempting to move
-		double z = entity.posZ;//MathHelper.floor_double(entity.posZ); // them to x/y/zCoord tries to put them in the ground. so round
-		//entity.setPosition(x + v[0] + .5, y + v[1] + .125, z + v[2] + .5);
-		entity.setPosition(x + v[0], y + v[1], z + v[2]);
-		// theEntity.setPositionAndRotation(par1, par3, par5, par7, par8)
+		int[] v = getVector(distance);
+		double x = xCoord + v[0] + .5;
+		double y = yCoord + v[1] + .125;
+		double z = zCoord + v[2] + .5;
+
+		int x2 = xCoord + v[0];
+		int y2 = yCoord + v[1];
+		int z2 = zCoord + v[2];
+
+		if (!worldObj.getBlock(x2, y2, z2).getMaterial().isSolid()) {
+			if (entity instanceof EntityLivingBase) {
+				CoreUtils.teleportEntityTo((EntityLivingBase) entity, x, y, z);
+			} else {
+				entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
+				entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 1.0F, 1.0F);
+			}
+		}
 	}
 
 }

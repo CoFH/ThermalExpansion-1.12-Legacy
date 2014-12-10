@@ -14,6 +14,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
@@ -102,7 +103,42 @@ public class BlockPlate extends BlockTEBase {
 		if (tile == null) {
 			return;
 		}
+
+		AxisAlignedBB bb = entity.getBoundingBox();
+		if (bb == null) bb = entity.boundingBox;
+		if (!bb.intersectsWith(getCollisionBlockBounds(tile, x, y, z))) {
+			return;
+		}
 		tile.onEntityCollidedWithBlock(entity);
+	}
+
+	public AxisAlignedBB getCollisionBlockBounds(TilePlateBase theTile, int x, int y, int z) {
+
+		float A =  1 / 16f;
+		float B = 15 / 16f;
+		AxisAlignedBB bb = null;
+		switch (theTile.alignment) {
+		case 0:
+			bb = AxisAlignedBB.getBoundingBox(A, 0, A, B,  2 / 16f, B).offset(x, y, z);
+			break;
+		case 1:
+			bb = AxisAlignedBB.getBoundingBox(A, 14 / 16f, A, B, 1, B).offset(x, y, z);
+			break;
+		case 2:
+			bb = AxisAlignedBB.getBoundingBox(A, A, 0, B, B,  2 / 16f).offset(x, y, z);
+			break;
+		case 3:
+			bb = AxisAlignedBB.getBoundingBox(A, A, 14 / 16f, B, B, 1).offset(x, y, z);
+			break;
+		case 4:
+			bb = AxisAlignedBB.getBoundingBox(0, A, A,  2 / 16f, B, B).offset(x, y, z);
+			break;
+		case 5:
+			bb = AxisAlignedBB.getBoundingBox(14 / 16f, A, A, 1, B, B).offset(x, y, z);
+			break;
+		default:
+		}
+		return bb;
 	}
 
 	@Override
@@ -112,22 +148,22 @@ public class BlockPlate extends BlockTEBase {
 		if (theTile != null) {
 			switch (theTile.alignment) {
 			case 0:
-				setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
+				setBlockBounds(0, 0, 0, 1, 1 / 16f, 1);
 				return;
 			case 1:
-				setBlockBounds(0, 0.9375F, 0, 1, 1, 1);
+				setBlockBounds(0, 15 / 16f, 0, 1, 1, 1);
 				return;
 			case 2:
-				setBlockBounds(0, 0, 0, 1, 1, 0.0625F);
+				setBlockBounds(0, 0, 0, 1, 1, 1 / 16f);
 				return;
 			case 3:
-				setBlockBounds(0, 0, 0.9375F, 1, 1, 1);
+				setBlockBounds(0, 0, 15 / 16f, 1, 1, 1);
 				return;
 			case 4:
-				setBlockBounds(0, 0, 0, 0.0625F, 1, 1);
+				setBlockBounds(0, 0, 0, 1 / 16f, 1, 1);
 				return;
 			case 5:
-				setBlockBounds(0.9375F, 0, 0, 1, 1, 1);
+				setBlockBounds(15 / 16f, 0, 0, 1, 1, 1);
 				return;
 			default:
 			}
