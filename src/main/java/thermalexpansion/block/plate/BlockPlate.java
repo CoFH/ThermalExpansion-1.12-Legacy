@@ -20,10 +20,14 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.crafting.TransposerManager;
+import thermalfoundation.fluid.TFFluids;
 
 public class BlockPlate extends BlockTEBase {
 
@@ -222,6 +226,27 @@ public class BlockPlate extends BlockTEBase {
 
 	@Override
 	public boolean postInit() {
+
+		GameRegistry.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
+				"SGS",
+				"I I",
+				"SIS",
+				'S', "ingotSignalum",
+				'G', "blockGlassHardened",
+				'I', "ingotInvar",
+		}));
+
+		if (enable[Types.SIGNAL.ordinal()]) {
+			TransposerManager.addTEFillRecipe(2000, plateFrame, signalPlate, new FluidStack(TFFluids.fluidRedstone, 1000), true);
+		}
+
+		if (enable[Types.IMPULSE.ordinal()]) {
+			TransposerManager.addTEFillRecipe(2000, plateFrame, impulsePlate, new FluidStack(TFFluids.fluidGlowstone, 1000), true);
+		}
+
+		if (enable[Types.TRANSLOCATE.ordinal()]) {
+			TransposerManager.addTEFillRecipe(2000, plateFrame, translocatePlate, new FluidStack(TFFluids.fluidEnder, 1000), true);
+		}
 
 		return true;
 	}
