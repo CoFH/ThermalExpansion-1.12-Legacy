@@ -2,6 +2,7 @@ package thermalexpansion.render;
 
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
+import cofh.core.render.RenderUtils.ScaledIconTransformation;
 import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.lighting.LightModel;
 import cofh.repack.codechicken.lib.render.CCModel;
@@ -50,8 +51,10 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	private static void generateModels() {
 
 		double d = RenderHelper.RENDER_OFFSET;
-		side_model[0] = CCModel.quadModel(24).generateBlock(0, d, d, d, 1 - d, 0.0625 - d, 1 - d).computeNormals()
-				.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+		side_model[0] = CCModel.quadModel(48).generateBlock(0, 0, 0, 0, 1, 1./16, 1);
+		CCModel temp = CCModel.quadModel(24).generateBlock(0, d, d, d, 1 - d, 1./16 - d, 1 - d);
+		CCModel.generateBackface(temp, 0, side_model[0], 24, 24);
+		side_model[0].computeNormals().computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
 		CCModel.generateSidedModels(side_model, 0, new Vector3(0.5, 0.5, 0.5));
 	}
 
@@ -65,12 +68,19 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		int s = (alignment & 1) ^ flip;
 		// if the alignment needs inversion
 		direction ^= s & off;
-		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type]));
-		side_model[alignment].render(4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));
-		side_model[alignment].render(0, 4, trans, RenderUtils.getIconTransformation(texture_frame[6]));
+
+		CCModel model = side_model[alignment];
+		if (type > 0) {
+			model.render(4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type - 1]));
+		}
+		model.render(4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));
+		ScaledIconTransformation transform = RenderUtils.getIconTransformation(texture_frame[6]);
+		model.render(0, 4, trans, transform);
+		model.render(24, 28, trans, transform);
 
 		for (int i = 8; i < 24; i += 4) {
-			side_model[alignment].render(i, i + 4, trans, RenderUtils.getIconTransformation(texture_frame[6]));
+			model.render(i, i + 4, trans, transform);
+			model.render(24 + i, 24 + i + 4, trans, transform);
 		}
 	}
 
@@ -81,7 +91,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
-		render(0, 2, metadata % 3, 0, 0, 0);
+		render(0, 2, metadata, 0, 0, 0);
 		CCRenderState.draw();
 
 		RenderUtils.postItemRender();

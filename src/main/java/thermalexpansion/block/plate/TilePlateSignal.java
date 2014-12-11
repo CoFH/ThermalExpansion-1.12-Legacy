@@ -4,6 +4,7 @@ import cofh.core.network.PacketCoFHBase;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
@@ -14,6 +15,11 @@ public class TilePlateSignal extends TilePlateBase {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TilePlateSignal.class, "cofh.thermalexpansion.PlateSignal");
+	}
+
+	public TilePlateSignal() {
+
+		super(BlockPlate.Types.SIGNAL);
 	}
 
 	byte distance = 16;
@@ -30,12 +36,6 @@ public class TilePlateSignal extends TilePlateBase {
 	@Override
 	public void rotated() {
 		removeSignal();
-	}
-
-	@Override
-	public int getType() {
-
-		return BlockPlate.Types.SIGNAL.ordinal();
 	}
 
 	@Override
@@ -70,9 +70,13 @@ public class TilePlateSignal extends TilePlateBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
+		if (worldObj.isRemote || !(theEntity instanceof EntityLivingBase))
+			return;
+
 		if (collided > 0) {
 			collided = activationTime;
-			return;
+			if (worldObj.getTotalWorldTime() % 10 != 0)
+				return;
 		}
 
 		int[] v = getVector(distance);

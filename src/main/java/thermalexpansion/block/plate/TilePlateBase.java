@@ -2,22 +2,50 @@ package thermalexpansion.block.plate;
 
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
+import thermalexpansion.block.plate.BlockPlate.Types;
 
-public abstract class TilePlateBase extends TileTEBase implements ITileInfo {
+public class TilePlateBase extends TileTEBase implements ITileInfo {
+
+	public static void initialize() {
+
+		GameRegistry.registerTileEntity(TilePlateBase.class, "cofh.thermalexpansion.PlateFrame");
+	}
+
+	protected TilePlateBase(Types type) {
+
+		this.type = (byte) type.ordinal();
+	}
+
+	public TilePlateBase() {
+
+		this(Types.FRAME);
+		if (getClass() != TilePlateBase.class)
+			throw new IllegalArgumentException();
+	}
 
 	byte alignment;
 	byte direction;
+	private final byte type;
+
+	@Override
+	public int getType() {
+
+		return type;
+	}
 
 	@Override
 	public boolean canUpdate() {
@@ -31,7 +59,9 @@ public abstract class TilePlateBase extends TileTEBase implements ITileInfo {
 		return "tile.thermalexpansion.plate." + BlockPlate.NAMES[getType()] + ".name";
 	}
 
-	public abstract void onEntityCollidedWithBlock(Entity theEntity);
+	public void onEntityCollidedWithBlock(Entity theEntity) {
+
+	}
 
 	public void rotated() {
 
@@ -218,6 +248,12 @@ public abstract class TilePlateBase extends TileTEBase implements ITileInfo {
 		} else {
 
 		}
+	}
+
+	@Override
+	public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+
+		return oldBlock != newBlock || newMeta != type;
 	}
 
 	/* NBT METHODS */

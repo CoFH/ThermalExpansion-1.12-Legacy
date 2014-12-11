@@ -43,6 +43,8 @@ public class BlockPlate extends BlockTEBase {
 			return null;
 		}
 		switch (Types.values()[metadata]) {
+		case FRAME:
+			return new TilePlateBase();
 		case SIGNAL:
 			return new TilePlateSignal();
 		case IMPULSE:
@@ -200,14 +202,17 @@ public class BlockPlate extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
+		TilePlateBase.initialize();
 		TilePlateSignal.initialize();
 		TilePlateImpulse.initialize();
 		TilePlateTranslocate.initialize();
 
+		plateFrame = new ItemStack(this, 1, Types.FRAME.ordinal());
 		signalPlate = new ItemStack(this, 1, Types.SIGNAL.ordinal());
 		impulsePlate = new ItemStack(this, 1, Types.IMPULSE.ordinal());
 		translocatePlate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
 
+		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
 		GameRegistry.registerCustomItemStack("plateSignal", signalPlate);
 		GameRegistry.registerCustomItemStack("plateImpulse", impulsePlate);
 		GameRegistry.registerCustomItemStack("plateTranslocate", translocatePlate);
@@ -222,19 +227,21 @@ public class BlockPlate extends BlockTEBase {
 	}
 
 	public static enum Types {
-		SIGNAL, IMPULSE, TRANSLOCATE
+		FRAME, SIGNAL, IMPULSE, TRANSLOCATE
 	}
 
-	public static final String[] NAMES = { "signal", "impulse", "translocate" };
+	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
 		String category = "block.feature";
+		enable[Types.FRAME.ordinal()] = true;
 		enable[Types.SIGNAL.ordinal()] = ThermalExpansion.config.get(category, "Plate.Signal", true);
 		enable[Types.IMPULSE.ordinal()] = ThermalExpansion.config.get(category, "Plate.Impulse", true);
 		enable[Types.TRANSLOCATE.ordinal()] = ThermalExpansion.config.get(category, "Plate.Translocate", true);
 	}
 
+	public static ItemStack plateFrame;
 	public static ItemStack signalPlate;
 	public static ItemStack impulsePlate;
 	public static ItemStack translocatePlate;

@@ -11,10 +11,9 @@ public class TilePlateImpulse extends TilePlateBase {
 		GameRegistry.registerTileEntity(TilePlateImpulse.class, "cofh.thermalexpansion.PlateImpulse");
 	}
 
-	@Override
-	public int getType() {
+	public TilePlateImpulse() {
 
-		return BlockPlate.Types.IMPULSE.ordinal();
+		super(BlockPlate.Types.IMPULSE);
 	}
 
 	@Override

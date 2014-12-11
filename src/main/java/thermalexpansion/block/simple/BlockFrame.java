@@ -319,7 +319,9 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	}
 
 	public static enum Types {
-		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL, ILLUMINATOR
+		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC,
+		CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, TESSERACT_EMPTY, TESSERACT_FULL,
+		ILLUMINATOR
 	}
 
 	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellReinforcedEmpty",
