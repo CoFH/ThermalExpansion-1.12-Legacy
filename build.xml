@@ -247,8 +247,8 @@
 		<delete>
 			<fileset dir="${dist.dir}">
 				<exclude name="${build.name}${build.full}${build.number}.jar"/>
-				<exclude name="${build.name}${build.full}dev-${build.number}.jar"/>
-				<exclude name="${build.name}-API${build.full}${build.number}.zip"/>
+				<exclude name="${build.name}${build.full}${build.number}-dev.jar"/>
+				<exclude name="${build.name}${build.full}${build.number}-API.zip"/>
 			</fileset>
 		</delete>
 	</target>
@@ -287,7 +287,7 @@
 		
 		<!-- Dev jar -->
 		<echo message="Building jar..."/>
-		<local name="build"/><property name="build" value="dev-${build.number}"/>
+		<local name="build"/><property name="build" value="${build.number}-dev"/>
 		<install-lite build="${build}"/>
 
 		<!-- Reobf -->
@@ -317,7 +317,7 @@
 		<copy todir="${apiclasses.dir}/${class.pckg}/api">
 			<fileset dir="${src.dir}/${class.pckg}/api"/>
 		</copy>
-		<zip destfile="${dist.dir}/${build.name}-API${build.full}${build.number}.zip" basedir="${apiclasses.dir}"/>
+		<zip destfile="${dist.dir}/${build.name}${build.full}${build.number}-API.zip" basedir="${apiclasses.dir}"/>
 	</target>
 
 	<target name="setup-forge" depends="download-forge" unless="forge.already.installed">
