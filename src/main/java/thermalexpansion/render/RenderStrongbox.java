@@ -50,16 +50,17 @@ public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemR
 
 		RenderHelper.bindTexture(texture[metadata]);
 
-		GL11.glPushMatrix();
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		GL11.glTranslated(x, y + 1.0, z + 1.0);
-		GL11.glScalef(1.0F, -1F, -1F);
-		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		model.render(access);
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
+        GL11.glPushMatrix();
+        boolean fixNormals = !GL11.glIsEnabled(GL12.GL_RESCALE_NORMAL);
+        if (fixNormals) GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+        GL11.glTranslated(x, y + 1.0, z + 1.0);
+        GL11.glScalef(1.0F, -1F, -1F);
+        GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+        GL11.glRotatef(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
+        GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+        model.render(access);
+        if (fixNormals) GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+        GL11.glPopMatrix();
 	}
 
 	@Override
