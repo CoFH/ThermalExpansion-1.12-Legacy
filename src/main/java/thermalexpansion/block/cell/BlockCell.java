@@ -2,7 +2,6 @@ package thermalexpansion.block.cell;
 
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.core.util.crafting.RecipeUpgradeOveride;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;

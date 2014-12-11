@@ -14,6 +14,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
@@ -69,14 +70,14 @@ public class FurnaceManager {
 
 	public static void addDefaultRecipes() {
 
-		addTERecipe(800, new ItemStack(Blocks.cactus), new ItemStack(Items.dye, 1, 2));
-		addTERecipe(400, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
-		addTERecipe(400, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
-		addTERecipe(400, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
-		addTERecipe(400, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.cactus), new ItemStack(Items.dye, 1, 2));
+		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
+		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
+		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
+		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
 
 		for (int i = 0; i < 2; i++) {
-			addTERecipe(400, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
+			addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
 		}
 
 		int energy = DEFAULT_ENERGY;
@@ -118,16 +119,20 @@ public class FurnaceManager {
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;
 
-		int energy = DEFAULT_ENERGY;
 
 		for (ItemStack key : smeltingList.keySet()) {
-			if (recipeExists(key)) {
+			if (key == null || recipeExists(key)) {
 				continue;
 			}
 			if (handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
 				continue;
 			}
+			int energy = DEFAULT_ENERGY;
+			if (key.getItem() instanceof ItemFood) {
+				energy /= 4;
+			}
 			output = smeltingList.get(key);
+
 
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 10 / 16, key, output, false);
