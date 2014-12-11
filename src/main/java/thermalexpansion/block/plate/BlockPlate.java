@@ -1,6 +1,7 @@
 package thermalexpansion.block.plate;
 
 import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -227,7 +228,7 @@ public class BlockPlate extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
+		ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
 				"SGS",
 				"I I",
 				"SIS",

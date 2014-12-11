@@ -41,7 +41,7 @@ public class TilePlateTranslocate extends TilePlateBase {
 			if (entity instanceof EntityLivingBase) {
 				if (worldObj.isRemote)
 					return;
-				CoreUtils.teleportEntityTo((EntityLivingBase) entity, x, y, z);
+				CoreUtils.teleportEntityTo((EntityLivingBase) entity, x, y, z, true);
 			} else {
 				entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
 				entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 0.5F, 1.0F);
