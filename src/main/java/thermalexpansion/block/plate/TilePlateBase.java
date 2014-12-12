@@ -148,6 +148,36 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		return fixVector(x, y, z);
 	}
 
+	protected int[] getVector(int x, int y, int z) {
+
+		int t;
+		switch (direction) {
+		case 0:
+			y = -x;
+			x = 0;
+			z = 0;
+			break;
+		case 1:
+			y = x;
+			x = 0;
+			z = 0;
+			break;
+		case 2:
+			x = -x;
+			z = -z;
+		case 3:
+			t = x;
+			x = z;
+			z = t;
+			break;
+		case 4:
+			x = -x;
+			z = -z;
+		case 5:
+		}
+		return fixVector(x, y, z);
+	}
+
 	protected int[] fixVector(int x, int y, int z) {
 
 		int[] a = {x, y, z};
@@ -191,6 +221,36 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		case 2:
 			x = distance;
 			break;
+		}
+		return fixVector(x, y, z);
+	}
+
+	protected double[] getVector(double x, double y, double z) {
+
+		double t;
+		switch (direction) {
+		case 0:
+			y = -x;
+			x = 0;
+			z = 0;
+			break;
+		case 1:
+			y = x;
+			x = 0;
+			z = 0;
+			break;
+		case 2:
+			x = -x;
+			z = -z;
+		case 3:
+			t = x;
+			x = z;
+			z = t;
+			break;
+		case 4:
+			x = -x;
+			z = -z;
+		case 5:
 		}
 		return fixVector(x, y, z);
 	}

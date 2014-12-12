@@ -19,35 +19,7 @@ public class TilePlateImpulse extends TilePlateBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		double x = 0;
-		double y = 0;
-		double z = 0;
-
-		switch (direction) {
-		case 0:
-			y = -3;
-			break;
-		case 1:
-			y = 3;
-			break;
-		case 2:
-			z = -3;
-			y = 1;
-			break;
-		case 3:
-			z = 3;
-			y = 1;
-			break;
-		case 4:
-			x = -3;
-			y = 1;
-			break;
-		case 5:
-			x = 3;
-			y = 1;
-			break;
-		}
-		double[] v = fixVector(x, y, z);
+		int[] v = getVector(3, 1, 0);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
 
