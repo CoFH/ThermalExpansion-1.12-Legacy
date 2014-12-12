@@ -54,8 +54,10 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		side_model[0] = CCModel.quadModel(48).generateBlock(0, 0, 0, 0, 1, 1./16, 1);
 		CCModel temp = CCModel.quadModel(24).generateBlock(0, d, d, d, 1 - d, 1./16 - d, 1 - d);
 		CCModel.generateBackface(temp, 0, side_model[0], 24, 24);
-		side_model[0].computeNormals().computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+		side_model[0].shrinkUVs(RenderHelper.RENDER_OFFSET);
 		CCModel.generateSidedModels(side_model, 0, new Vector3(0.5, 0.5, 0.5));
+		for (int i = side_model.length; i --> 0; )
+			side_model[i].computeNormals().computeLighting(LightModel.standardLightModel);
 	}
 
 	public void render(int alignment, int direction, int type, double x, double y, double z) {
