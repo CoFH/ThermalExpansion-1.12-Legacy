@@ -124,14 +124,13 @@ public class FurnaceManager {
 			if (key == null || recipeExists(key)) {
 				continue;
 			}
-			if (handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
+			output = smeltingList.get(key);
+			if (output == null || handledBlocks.contains(Block.getBlockFromItem(key.getItem()))) {
 				continue;
 			}
 			int energy = DEFAULT_ENERGY;
-			if (key.getItem() instanceof ItemFood) {
-				energy /= 4;
-			}
-			output = smeltingList.get(key);
+			if (key.getItem() instanceof ItemFood) energy /= 2;
+			if (output.getItem() instanceof ItemFood) energy /= 2;
 
 
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
