@@ -240,7 +240,7 @@
 	</sequential></macrodef>
 	
 	<!-- Building process -->
-	<target name="install" depends="build">
+	<target name="install" depends="upload">
 		<!-- Cleanup -->
 		<delete dir="${apiclasses.dir}"/>
 		<delete dir="${classes.dir}"/>
@@ -371,6 +371,129 @@
 		<get src="https://github.com/skyboy/bearded-octo-nemesis/releases/download/1.1/BON.jar" dest="${reobf.cmd}"/>
 	</target>
 	
+	<target name="upload" depends="build" if="CF_API_TOKEN">
+		<echo message="Uploading to CurseForge..."/><local name="fileout"/>
+		<script language="javascript" classpathref="gson"><![CDATA[
+			
+			var token = project.getProperty("CF_API_TOKEN");
+			var modid = project.getProperty("CF_MOD_ID");
+			var gameVersion = null;
+			var parser = new com.google.gson.JsonParser();
+			var path = project.getProperty("dist.dir");
+			var file = new java.lang.StringBuilder(path).append("/").append(project.getProperty("build.name"));
+			file.append(project.getProperty("build.full")).append(project.getProperty("build.number"));
+			var fileMain = new java.lang.StringBuilder(file).append(".jar");
+			var fileDev = new java.lang.StringBuilder(file).append("-dev.jar");
+			var fileApi = new java.lang.StringBuilder(file).append("-API.zip");
+			
+			// version ids
+			var version = project.getProperty("mcv");
+			var t = new java.lang.StringBuilder("https://minecraft.curseforge.com/api/game/versions?token=");
+			t.append(token);
+			var con = new java.net.URL(t.toString()).openConnection();
+			con = new java.io.InputStreamReader(con.getInputStream());
+		
+			var data = parser.parse(con).getAsJsonArray();
+			
+			for (var i = 0, e = data.size(); i < e; ++i) {
+				var element = data.get(i).getAsJsonObject();
+				if (version.equals(element.get("name").getAsString())) {
+					gameVersion = element.get("id").getAsString();
+					break;
+				}
+			}
+			if (gameVersion == null) throw "Unable to find game version " + version + "!";
+			
+			var httpConn;
+			function sendFile(requestURL, uploadFile, metadata) {
+				var LINE_FEED = "\r\n";
+				var boundary = "===" + java.lang.System.currentTimeMillis() + "===";
+				         
+		        var url = new java.net.URL(requestURL);
+		        httpConn = url.openConnection();
+		        httpConn.setUseCaches(false);
+		        httpConn.setDoOutput(true);
+		        httpConn.setDoInput(true);
+				var t = new java.lang.StringBuilder("multipart/form-data; boundary=").append(boundary);
+		        httpConn.setRequestProperty("Content-Type",  t.toString());
+				httpConn.setRequestProperty("X-Api-Token", token);
+		        var outputStream = httpConn.getOutputStream();
+		        var writer = new java.io.PrintWriter(new java.io.OutputStreamWriter(outputStream, "UTF-8"), true);
+				
+				writer.append("--").append(boundary).append(LINE_FEED);
+		        writer.append("Content-Disposition: form-data; name=\"metadata\"").append(LINE_FEED);
+		        writer.append("Content-Type: text/plain; charset=UTF-8").append(LINE_FEED);
+		        writer.append(LINE_FEED);
+		        writer.append(metadata).append(LINE_FEED);
+		        writer.flush();
+				
+		        var fileName = uploadFile.getName();
+		        writer.append("--").append(boundary).append(LINE_FEED);
+		        writer.append("Content-Disposition: form-data; name=\"file\"; filename=\"").append(fileName).append("\"");
+				writer.append(LINE_FEED);
+		        writer.append("Content-Type: application/octet-stream").append(LINE_FEED);
+		        writer.append("Content-Transfer-Encoding: binary").append(LINE_FEED);
+		        writer.append(LINE_FEED);
+		        writer.flush();
+		 
+		        var inputStream = new java.io.FileInputStream(uploadFile);
+		        var buffer = java.lang.reflect.Array.newInstance(java.lang.Byte.TYPE, 4096);
+		        var bytesRead = -1;
+		        while ((bytesRead = inputStream.read(buffer)) != -1) {
+		            outputStream.write(buffer, 0, bytesRead);
+		        }
+		        outputStream.flush();
+		        inputStream.close();
+		         
+		        writer.append(LINE_FEED);
+		        writer.flush();
+		        writer.append(LINE_FEED).flush();
+		        writer.append("--").append(boundary).append("--").append(LINE_FEED);
+		        writer.close();
+			
+				return httpConn.getInputStream();
+			}
+			
+			// main file
+			var t = new java.lang.StringBuilder("https://minecraft.curseforge.com/api/projects/");
+			path = t.append(modid).append("/upload-file").toString();
+			
+			t = new java.lang.StringBuilder("{changelog:").append('"",');
+			t.append("releaseType:\"alpha\",").append("gameVersions:[");
+			t.append(gameVersion).append("]}");
+			try {
+				con = new java.io.InputStreamReader(sendFile(path, file = new java.io.File(fileMain), t.toString()));
+			
+				var data = parser.parse(con).getAsJsonObject();
+				
+				fileMain = data.get("id").getAsString();
+				t = new java.lang.StringBuilder("Uploaded to CurseForge! File ID: ");
+				t.append(fileMain);
+				project.setProperty("fileout", t.toString());
+	
+				t = new java.lang.StringBuilder("{changelog:").append('"",');
+				t.append("releaseType:\"alpha\",").append("gameVersions:[");
+				t.append(gameVersion).append("],").append("parentFileID:");
+				t.append(fileMain).append("}");
+				
+				sendFile(path, file = new java.io.File(fileDev), t.toString());
+				file = new java.io.File(fileApi);
+				if (file.exists()) sendFile(path, file, t.toString());
+			} catch(_) {
+				t = new java.lang.StringBuilder("Error uploading ").append(file.getName());
+				t.append(" to CurseForge! ").append(httpConn.getResponseCode()).append(": ");
+				t.append(httpConn.getResponseMessage());
+				if (fileMain == null) {
+					project.setProperty("fileout", t.toString());
+				} else {
+					java.lang.System.err.println(t.toString());
+				}
+			}
+			
+		]]></script>
+		<echo message="${fileout}"/>
+	</target>
+	
 	<macrodef name="update-languages">
 		<sequential>
 			<script language="javascript"><![CDATA[
@@ -407,7 +530,7 @@
 	</target>
 
 	<target name="get-version" depends="verify-version,setup-forge" unless="build.full">
-		<local name="grep.out"/><local name="mfrv"/><local name="mcv"/>
+		<local name="grep.out"/><local name="mfrv"/>
 		<!-- Read version out of file -->
 		<script language="javascript"><![CDATA[
 			
