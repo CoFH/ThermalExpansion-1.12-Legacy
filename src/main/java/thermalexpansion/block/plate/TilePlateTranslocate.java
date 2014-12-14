@@ -3,6 +3,7 @@ package thermalexpansion.block.plate;
 import cofh.core.util.CoreUtils;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 
@@ -27,7 +28,7 @@ public class TilePlateTranslocate extends TilePlateBase {
 		double x = xCoord + v[0] + .5;
 		double y = yCoord + v[1] + .125;
 		double z = zCoord + v[2] + .5;
-		if (entity.getBoundingBox() == null) {
+		if (!(entity instanceof EntityLivingBase) && entity.getBoundingBox() == null) {
 			x = entity.posX + v[0];
 			y = entity.posY + v[1];
 			z = entity.posZ + v[2];
@@ -37,7 +38,8 @@ public class TilePlateTranslocate extends TilePlateBase {
 		int y2 = yCoord + v[1];
 		int z2 = zCoord + v[2];
 
-		if (!worldObj.getBlock(x2, y2, z2).getMaterial().isSolid()) {
+		Block block = worldObj.getBlock(x2, y2, z2);
+		if (!(block.isOpaqueCube() || block.getMaterial().isSolid())) {
 			if (entity instanceof EntityLivingBase) {
 				if (worldObj.isRemote)
 					return;

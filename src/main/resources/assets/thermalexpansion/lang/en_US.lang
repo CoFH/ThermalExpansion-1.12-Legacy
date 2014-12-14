@@ -408,6 +408,11 @@ tile.thermalexpansion.machine.accumulator.name=Aqueous Accumulator
 tile.thermalexpansion.machine.assembler.name=Cyclic Assembler
 tile.thermalexpansion.machine.charger.name=Energetic Infuser
 
+tile.thermalexpansion.plate.frame.name=Plate
+tile.thermalexpansion.plate.impulse.name=Impluse Plate
+tile.thermalexpansion.plate.signal.name=Redstone Plate
+tile.thermalexpansion.plate.translocate.name=Translocation Plate
+
 tile.thermalexpansion.rockwool.black.name=Black Rockwool
 tile.thermalexpansion.rockwool.red.name=Red Rockwool
 tile.thermalexpansion.rockwool.green.name=Green Rockwool

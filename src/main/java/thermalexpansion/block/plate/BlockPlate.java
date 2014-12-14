@@ -8,6 +8,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
 
+import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -32,9 +33,26 @@ import thermalfoundation.fluid.TFFluids;
 
 public class BlockPlate extends BlockTEBase {
 
+	private static class PlateMaterial extends Material {
+
+		public PlateMaterial(MapColor color) {
+
+			super(color);
+			this.setRequiresTool();
+		}
+
+		@Override
+		public boolean isSolid() {
+
+			return false;
+		}
+	}
+
+	public static final Material material = new PlateMaterial(MapColor.ironColor);
+
 	public BlockPlate() {
 
-		super(Material.iron);
+		super(material);
 		setBlockBounds(0, 0, 0, 1, 0.0625F, 1);
 		setHardness(15.0F);
 		setResistance(25.0F);
