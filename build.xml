@@ -472,8 +472,7 @@
 				project.setProperty("fileout", t.toString());
 	
 				t = new java.lang.StringBuilder("{changelog:").append('"",');
-				t.append("releaseType:\"alpha\",").append("gameVersions:[");
-				t.append(gameVersion).append("],").append("parentFileID:");
+				t.append("releaseType:\"alpha\",").append("parentFileID:");
 				t.append(fileMain).append("}");
 				
 				sendFile(path, file = new java.io.File(fileDev), t.toString());
