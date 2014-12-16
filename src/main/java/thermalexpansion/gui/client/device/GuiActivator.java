@@ -1,6 +1,7 @@
 package thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
+import cofh.lib.gui.element.ElementEnergyStored;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -36,6 +37,8 @@ public class GuiActivator extends GuiAugmentableBase {
 	public void initGui() {
 
 		super.initGui();
+
+		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 
 		settingClick = new ElementButton(this, 120, 20, "LeftClick", myTile.leftClick ? 176 : 196, 0, myTile.leftClick ? 176 : 196, 20, 20, 20, TEX_PATH)
 				.setToolTip(myTile.leftClick ? "info.thermalexpansion.clickLeft" : "info.thermalexpansion.clickRight");

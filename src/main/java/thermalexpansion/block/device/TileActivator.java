@@ -1,10 +1,12 @@
 package thermalexpansion.block.device;
 
+import cofh.api.energy.EnergyStorage;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -35,6 +37,10 @@ public class TileActivator extends TileAugmentable {
 
 	static final int TYPE = BlockDevice.Types.ACTIVATOR.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
+	static EnergyConfig energyConfig = new EnergyConfig();
+	static int ACTIVATION_ENERGY;
+
+	static int MAX_SLOT = 9;
 
 	public static void initialize() {
 
@@ -54,6 +60,14 @@ public class TileActivator extends TileAugmentable {
 
 		String comment = "Enable this to allow for Activators to be securable. (Default: true)";
 		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Securable", enableSecurity, comment);
+
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Device.Activator.BasePower", 20), 0, 500);
+		ThermalExpansion.config.set("block.tweak", "Device.Activator.BasePower", maxPower);
+		energyConfig.setParamsPower(maxPower);
+
+		maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Device.Activator.ActivationPower", 20), 0, 500);
+		ThermalExpansion.config.set("block.tweak", "Device.Activator.ActivationPower", maxPower);
+		ACTIVATION_ENERGY = maxPower;
 	}
 
 	public static boolean enableSecurity = true;
@@ -71,7 +85,8 @@ public class TileActivator extends TileAugmentable {
 
 		sideConfig = defaultSideConfig;
 
-		inventory = new ItemStack[9];
+		inventory = new ItemStack[10];
+		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower);
 
 	}
 
@@ -125,24 +140,51 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public void updateEntity() {
 
-		if (ServerHelper.isServerWorld(worldObj)) {
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+
+		if (hasEnergy(ACTIVATION_ENERGY)) {
+			if (!isActive)
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			isActive = true;
+
 			if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 				doDeploy();
 			} else if (!needsWorld) {
+
 				if (leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) {
-					int tickSlot = getNextStackIndex();
-					myFakePlayer.theItemInWorldManager.updateBlockRemoving();
-					if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
-						simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
+
+					if (drainEnergy(ACTIVATION_ENERGY)) {
+						int tickSlot = getNextStackIndex();
+						myFakePlayer.theItemInWorldManager.updateBlockRemoving();
+						if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
+							simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
+						}
 					}
 				} else if (!leftClick && myFakePlayer.itemInUse != null) {
-					myFakePlayer.tickItemInUse(getStackInSlot(getNextStackIndex()));
+
+					if (drainEnergy(ACTIVATION_ENERGY)) {
+						int slot = getNextStackIndex();
+						myFakePlayer.inventory.currentItem = slot;
+						myFakePlayer.tickItemInUse(getStackInSlot(slot));
+						checkItemsUpdated();
+					}
 				}
 			}
+		} else {
+			if (isActive)
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			isActive = false;
 		}
+		chargeEnergy();
 	}
 
 	public void doDeploy() {
+
+		if (!drainEnergy(ACTIVATION_ENERGY)) {
+			return;
+		}
 
 		int tickSlot = getNextStackIndex();
 		ItemStack theStack = getStackInSlot(tickSlot);
@@ -162,11 +204,18 @@ public class TileActivator extends TileAugmentable {
 
 	public void checkItemsUpdated() {
 
-		for (int i = 0; i < getSizeInventory(); i++) {
-			setInventorySlotContents(i, myFakePlayer.inventory.mainInventory[i]);
+		ItemStack[] pInventory = myFakePlayer.inventory.mainInventory;
+		int i = 0;
+		for (; i < MAX_SLOT; i++) {
+			setInventorySlotContents(i, pInventory[i]);
 			if (inventory[i] != null && inventory[i].stackSize <= 0) {
 				inventory[i] = null;
+				pInventory[i] = null;
 			}
+		}
+		for (int e = pInventory.length; i < e; i++) {
+			if (InventoryHelper.addItemStackToInventory(inventory, pInventory[i], 0, getChargeSlot() - 1))
+				pInventory[i] = null;
 		}
 	}
 
@@ -190,7 +239,7 @@ public class TileActivator extends TileAugmentable {
 
 		int i = -1;
 
-		for (int k = 0; k < getSizeInventory(); k++) {
+		for (int k = 0; k < MAX_SLOT; k++) {
 			if (getStackInSlot(k) != null && MathHelper.RANDOM.nextInt(2) == 0) {
 				i = k;
 			}
@@ -201,9 +250,9 @@ public class TileActivator extends TileAugmentable {
 	public int incrementTracker() {
 
 		slotTracker++;
-		slotTracker %= getSizeInventory();
+		slotTracker %= MAX_SLOT;
 
-		for (int k = slotTracker; k < getSizeInventory(); k++) {
+		for (int k = slotTracker; k < MAX_SLOT; k++) {
 			if (this.inventory[k] != null) {
 				slotTracker = k;
 				return slotTracker;
@@ -226,7 +275,7 @@ public class TileActivator extends TileAugmentable {
 			needsWorld = false;
 		}
 		myFakePlayer.inventory.mainInventory = new ItemStack[36];
-		for (int i = 0; i < getSizeInventory(); i++) {
+		for (int i = 0; i < MAX_SLOT; i++) {
 			myFakePlayer.inventory.mainInventory[i] = getStackInSlot(i);
 		}
 		double x = xCoord + 0.5D;
@@ -526,7 +575,7 @@ public class TileActivator extends TileAugmentable {
 	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : isActive && redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
 					: IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);

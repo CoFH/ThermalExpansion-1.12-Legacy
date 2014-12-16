@@ -24,6 +24,16 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		return true;
 	}
 
+	protected boolean hasEnergy(int energy) {
+
+		return energyStorage.getEnergyStored() >= energy;
+	}
+
+	protected boolean drainEnergy(int energy) {
+
+		return hasEnergy(energy) && energyStorage.extractEnergy(energy, false) == energy;
+	}
+
 	protected void chargeEnergy() {
 
 		int chargeSlot = getChargeSlot();
