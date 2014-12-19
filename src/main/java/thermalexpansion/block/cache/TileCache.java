@@ -1,5 +1,6 @@
 package thermalexpansion.block.cache;
 
+import cofh.api.inventory.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
@@ -28,7 +29,7 @@ import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
 
-public class TileCache extends TileInventory implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, ISidedTexture, ITileInfo {
+public class TileCache extends TileInventory implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, IInventoryRetainer, ISidedTexture, ITileInfo {
 
 	public static void initialize() {
 
