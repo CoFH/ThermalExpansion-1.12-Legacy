@@ -58,6 +58,10 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	byte facing = 1;
 	boolean wasActive;
 
+	public boolean augmentRedstoneControl;
+	public boolean augmentThrottle;
+	public boolean augmentCoilDuct;
+
 	boolean cached = false;
 	IEnergyReceiver adjacentHandler = null;
 
@@ -71,10 +75,6 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 	int energyMod = 1;
 	int fuelMod = FUEL_MOD;
-
-	public boolean augmentRedstoneControl;
-	public boolean augmentThrottle;
-	public boolean augmentCoilDuct;
 
 	public TileDynamoBase() {
 

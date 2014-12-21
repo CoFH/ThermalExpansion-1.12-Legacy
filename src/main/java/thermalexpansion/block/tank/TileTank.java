@@ -51,12 +51,12 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	int lastDisplayLevel;
 	FluidTankAdv tank;
 
+	public byte mode;
+	public byte type;
+
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 	IFluidHandler adjacentHandlers[] = new IFluidHandler[2];
-
-	public byte mode;
-	public byte type;
 
 	public TileTank() {
 

@@ -27,12 +27,12 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	// 0 = OFF DEFAULT, 1 = ON DEFAULT, 2 = OFF SCALED, 3 = ON SCALED, 4 = OFF, 5 = ON
 	public boolean modified;
 	byte mode;
+	public boolean isPowered;
+	public byte inputPower;
+
 	int lightValue;
 	int color = 0xFFFFFF;
 	int renderColor = 0xAAAAAAFF;
-
-	public boolean isPowered;
-	public byte inputPower;
 
 	@Override
 	public boolean canUpdate() {

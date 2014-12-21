@@ -53,8 +53,8 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	public byte type = 1;
 	public byte facing = 3;
 
-	public int maxCacheStackSize;
 	public boolean locked;
+	public int maxCacheStackSize;
 	public ItemStack storedStack;
 
 	public TileCache() {

@@ -77,8 +77,8 @@ public class TileActivator extends TileAugmentable {
 	public boolean actsSneaking = false;
 	public byte angle = 1;
 
-	CoFHFakePlayer myFakePlayer;
 	boolean needsWorld = true;
+	CoFHFakePlayer myFakePlayer;
 	int slotTracker = 0;
 
 	public TileActivator() {
