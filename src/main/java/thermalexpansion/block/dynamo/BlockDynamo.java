@@ -5,6 +5,9 @@ import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.repack.codechicken.lib.vec.Cuboid6;
+import cofh.repack.codechicken.lib.vec.Rotation;
+import cofh.repack.codechicken.lib.vec.Vector3;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -14,12 +17,14 @@ import java.util.List;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -33,6 +38,22 @@ import thermalexpansion.item.TEItems;
 import thermalexpansion.util.crafting.TECraftingHandler;
 
 public class BlockDynamo extends BlockTEBase {
+
+	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
+	static {
+		Cuboid6 bb = new Cuboid6(0, 0, 0, 1, 10 / 16., 1);
+		Vector3 p = new Vector3(0.5, 0.5, 0.5);
+		boundingBox[1] = bb.toAABB();
+		boundingBox[0] = bb.apply(Rotation.sideRotations[1].at(p)).toAABB();
+		for (int i = 2; i < 6; ++i)
+			boundingBox[i] = bb.copy().apply(Rotation.sideRotations[i].at(p)).toAABB();
+
+		bb = new Cuboid6(.25, .5, .25, .75, 1, .75);
+		boundingBox[1 + 6] = bb.toAABB();
+		boundingBox[0 + 6] = bb.apply(Rotation.sideRotations[1].at(p)).toAABB();
+		for (int i = 2; i < 6; ++i)
+			boundingBox[i + 6] = bb.copy().apply(Rotation.sideRotations[i].at(p)).toAABB();
+	}
 
 	public BlockDynamo() {
 
@@ -62,6 +83,22 @@ public class BlockDynamo extends BlockTEBase {
 		default:
 			return null;
 		}
+	}
+
+	@Override
+	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB bb, List list, Entity entity) {
+
+		int facing = ((TileDynamoBase) world.getTileEntity(x, y, z)).facing;
+
+		AxisAlignedBB base, coil;
+		base = boundingBox[facing].copy().offset(x, y, z);
+		coil = boundingBox[facing + 6].copy().offset(x, y, z);
+
+		if (coil.intersectsWith(bb))
+			list.add(coil);
+
+		if (base.intersectsWith(bb))
+			list.add(base);
 	}
 
 	@Override

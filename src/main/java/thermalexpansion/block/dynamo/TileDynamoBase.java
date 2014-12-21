@@ -17,6 +17,7 @@ import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -294,7 +295,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		installAugments();
 		energyStorage.readFromNBT(nbt);
 
-		facing = nbt.getByte("Facing");
+		facing = (byte) (nbt.getByte("Facing") % 6);
 		isActive = nbt.getBoolean("Active");
 		fuelRF = nbt.getInteger("Fuel");
 	}
@@ -637,17 +638,28 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public boolean rotateBlock() {
 
-		//int[] coords;
-		for (int i = facing + 1; i < facing + 6; i++) {
+		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord)).size() != 0) {
+			return false;
+		}
+
+		byte oldFacing = facing;
+		for (int i = facing + 1, e = facing + 6; i < e; i++) {
 			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
 				facing = (byte) (i % 6);
-				updateAdjacentHandlers();
-				markDirty();
-				sendUpdatePacket(Side.CLIENT);
+				if (facing != oldFacing) {
+					updateAdjacentHandlers();
+					markDirty();
+					sendUpdatePacket(Side.CLIENT);
+				}
 				return true;
 			}
 		}
-		return false;
+
+		facing = (byte) ((facing + 1) % 6);
+		updateAdjacentHandlers();
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
+		return true;
 	}
 
 	@Override
