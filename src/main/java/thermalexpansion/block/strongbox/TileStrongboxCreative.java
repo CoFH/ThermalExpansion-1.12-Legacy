@@ -29,6 +29,12 @@ public class TileStrongboxCreative extends TileStrongbox {
 	}
 
 	@Override
+	public ItemStack getStackInSlot(int slot) {
+
+		return ItemHelper.cloneStack(inventory[slot]);
+	}
+
+	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
 		if (stack == null) {
