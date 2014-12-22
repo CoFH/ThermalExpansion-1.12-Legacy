@@ -9,6 +9,7 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cpw.mods.fml.common.eventhandler.Event;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -25,7 +26,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.ForgeEventFactory;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileAugmentable;
@@ -148,30 +152,32 @@ public class TileActivator extends TileAugmentable {
 			if (!isActive)
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			isActive = true;
+			boolean work = false;
 
 			if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
-				doDeploy();
+				work = doDeploy();
 			} else if (!needsWorld) {
 
 				if (leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) {
 
-					if (drainEnergy(ACTIVATION_ENERGY)) {
-						int tickSlot = getNextStackIndex();
-						myFakePlayer.theItemInWorldManager.updateBlockRemoving();
-						if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
-							simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
-						}
+					work = true;
+					int tickSlot = getNextStackIndex();
+					myFakePlayer.theItemInWorldManager.updateBlockRemoving();
+					if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
+						work = simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
 					}
 				} else if (!leftClick && myFakePlayer.itemInUse != null) {
 
-					if (drainEnergy(ACTIVATION_ENERGY)) {
-						int slot = getNextStackIndex();
-						myFakePlayer.inventory.currentItem = slot;
-						myFakePlayer.tickItemInUse(getStackInSlot(slot));
-						checkItemsUpdated();
-					}
+					work = true;
+					int slot = getNextStackIndex();
+					myFakePlayer.inventory.currentItem = slot;
+					myFakePlayer.tickItemInUse(getStackInSlot(slot));
+					checkItemsUpdated();
 				}
 			}
+
+			if (work) drainEnergy(ACTIVATION_ENERGY);
+
 		} else {
 			if (isActive)
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -180,26 +186,24 @@ public class TileActivator extends TileAugmentable {
 		chargeEnergy();
 	}
 
-	public void doDeploy() {
-
-		if (!drainEnergy(ACTIVATION_ENERGY)) {
-			return;
-		}
+	public boolean doDeploy() {
 
 		int tickSlot = getNextStackIndex();
 		ItemStack theStack = getStackInSlot(tickSlot);
 		updateFakePlayer(tickSlot);
 
+		boolean r = false;
 		if (leftClick) {
-			simLeftClick(myFakePlayer, theStack, facing);
+			r = simLeftClick(myFakePlayer, theStack, facing);
 		} else {
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
-			simRightClick(myFakePlayer, theStack, coords[0], coords[1], coords[2], 1);
+			r = simRightClick(myFakePlayer, theStack, coords[0], coords[1], coords[2], 1);
 		}
 		if (theStack != null && theStack.stackSize <= 0) {
 			setInventorySlotContents(tickSlot, null);
 		}
 		checkItemsUpdated();
+		return r;
 	}
 
 	public void checkItemsUpdated() {
@@ -352,7 +356,7 @@ public class TileActivator extends TileAugmentable {
 		return true;
 	}
 
-	public void simRightClick(EntityPlayer thePlayer, ItemStack deployingStack, int blockX, int blockY, int blockZ, int side) {
+	public boolean simRightClick(EntityPlayer thePlayer, ItemStack deployingStack, int blockX, int blockY, int blockZ, int side) {
 
 		if (thePlayer.itemInUse == null) {
 			if (!simRightClick2(thePlayer, deployingStack, blockX, blockY, blockZ, side) && deployingStack != null) {
@@ -360,12 +364,16 @@ public class TileActivator extends TileAugmentable {
 
 				if (entities.size() > 0
 						&& thePlayer.interactWith(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
-					return;
+					return true;
 				}
+				PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thePlayer, Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj);
+	            if (event.useItem != Event.Result.DENY)
+	            	return false;
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
 				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result.stackSize <= 0 ? null : result);
 			}
 		}
+		return false;
 	}
 
 	public boolean simRightClick2(EntityPlayer thePlayer, ItemStack deployingStack, int blockX, int blockY, int blockZ, int side) {
@@ -383,6 +391,11 @@ public class TileActivator extends TileAugmentable {
 				blockY += 1;
 			}
 		}
+
+		PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thePlayer, Action.RIGHT_CLICK_BLOCK, blockX, blockY, blockZ, side, worldObj);
+        if (event.isCanceled())
+        	return false;
+
 		Block block = worldObj.getBlock(blockX, blockY, blockZ);
 
 		boolean isAir = block.isAir(worldObj, blockX, blockY, blockZ);
