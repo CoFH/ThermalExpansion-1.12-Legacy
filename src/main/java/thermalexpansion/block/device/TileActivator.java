@@ -370,7 +370,7 @@ public class TileActivator extends TileAugmentable {
 	            if (event.useItem != Event.Result.DENY)
 	            	return false;
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
-				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result.stackSize <= 0 ? null : result);
+				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result == null || result.stackSize <= 0 ? null : result);
 			}
 		}
 		return false;
