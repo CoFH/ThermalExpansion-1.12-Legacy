@@ -28,6 +28,10 @@ public class TConPlugin {
 		tag.setInteger("Attack", 2);
 		tag.setFloat("HandleModifier", 1.4f);
 		tag.setInteger("Reinforced", 1);
+		tag.setFloat("Bow_ProjectileSpeed", 4.7f);
+		tag.setInteger("Bow_DrawSpeed", 47);
+		tag.setFloat("Projectile_Mass", 3f);
+		tag.setFloat("Projectile_Fragility", 0.7f);
 		tag.setString("Style", EnumChatFormatting.GRAY.toString());
 		tag.setInteger("Color", 0xFFDCE1DE);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterial", tag);
