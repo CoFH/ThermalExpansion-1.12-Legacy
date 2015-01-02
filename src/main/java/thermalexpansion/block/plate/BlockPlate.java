@@ -129,8 +129,7 @@ public class BlockPlate extends BlockTEBase {
 			return;
 		}
 
-		AxisAlignedBB bb = entity.getBoundingBox();
-		if (bb == null) bb = entity.boundingBox;
+		AxisAlignedBB bb = entity.boundingBox;
 		if (!bb.intersectsWith(getCollisionBlockBounds(tile, x, y, z))) {
 			return;
 		}
