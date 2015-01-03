@@ -4,6 +4,7 @@ import cofh.lib.util.helpers.ItemHelper;
 
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagByte;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 import thermalexpansion.block.machine.ItemBlockMachine;
@@ -46,4 +47,10 @@ public class RecipeMachineUpgrade extends ShapedOreRecipe {
 		return newMachine;
 	}
 
+	public static ItemStack getMachineLevel(ItemStack stack, int level) {
+
+		ItemStack newMachine = stack.copy();
+		newMachine.setTagInfo("Level", new NBTTagByte((byte)level));
+		return newMachine;
+	}
 }
