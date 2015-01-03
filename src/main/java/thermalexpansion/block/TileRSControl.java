@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 
 import thermalexpansion.network.PacketTEBase;
 
-@Strippable(value = "cofh.api.audio.ISoundSource", side = CoFHSide.SERVER)
+@Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
