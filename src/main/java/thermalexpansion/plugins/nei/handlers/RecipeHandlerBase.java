@@ -9,6 +9,7 @@ import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
 import codechicken.nei.recipe.TemplateRecipeHandler;
+import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -298,6 +299,8 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 		ArrayList<ItemStack> inputList = null;
 		String secondaryInputOreName = "Unknown";
 		ArrayList<ItemStack> secondaryList = null;
+		boolean cycleInput = true;
+		boolean cycleSecondary = true;
 
 		int inputOrePosition = 0;
 		int secondaryOrePosition = 0;
@@ -315,6 +318,8 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 				if (!inputOreName.equals("Unknown")) {
 					inputList = OreDictionary.getOres(inputOreName);
 				}
+
+				cycleInput &= ComparableItemStackSafe.getOreID(inputOreName) != -1;
 			}
 			if (secondaryInput != null) {
 				secondaryInputOreName = ItemHelper.getOreName(secondaryInput.item);
@@ -322,12 +327,14 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 				if (!secondaryInputOreName.equals("Unknown")) {
 					secondaryList = OreDictionary.getOres(secondaryInputOreName);
 				}
+
+				cycleSecondary &= ComparableItemStackSafe.getOreID(secondaryInputOreName) != -1;
 			}
 		}
 
 		protected void incrementPrimary() {
 
-			if (!inputOreName.equals("Unknown")) {
+			if (cycleInput && !inputOreName.equals("Unknown")) {
 				inputOrePosition++;
 				inputOrePosition %= inputList.size();
 
@@ -342,7 +349,7 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
 		protected void incrementSecondary() {
 
-			if (!secondaryInputOreName.equals("Unknown")) {
+			if (cycleSecondary && !secondaryInputOreName.equals("Unknown")) {
 				secondaryOrePosition++;
 				secondaryOrePosition %= secondaryList.size();
 

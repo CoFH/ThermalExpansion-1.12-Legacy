@@ -1,7 +1,6 @@
 package thermalexpansion.plugins.nei.handlers;
 
-import static codechicken.lib.gui.GuiDraw.drawString;
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -10,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import thermalexpansion.gui.client.machine.GuiPulverizer;
 import thermalexpansion.util.crafting.PulverizerManager;
+import thermalexpansion.util.crafting.PulverizerManager.ComparableItemStackPulverizer;
 import thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
 public class RecipeHandlerPulverizer extends RecipeHandlerBase {
@@ -132,6 +132,8 @@ public class RecipeHandlerPulverizer extends RecipeHandlerBase {
 				secondaryOutputChance = recipe.getSecondaryOutputChance();
 			}
 			setOres();
+			cycleInput = ComparableItemStackPulverizer.getOreID(inputOreName) != -1;
+			cycleSecondary = ComparableItemStackPulverizer.getOreID(secondaryInputOreName) != -1;
 		}
 	}
 

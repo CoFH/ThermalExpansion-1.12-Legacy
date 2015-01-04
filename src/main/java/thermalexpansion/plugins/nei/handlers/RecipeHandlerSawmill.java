@@ -1,7 +1,6 @@
 package thermalexpansion.plugins.nei.handlers;
 
-import static codechicken.lib.gui.GuiDraw.drawString;
-import static codechicken.lib.gui.GuiDraw.drawTexturedModalRect;
+import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -10,6 +9,7 @@ import net.minecraft.item.ItemStack;
 
 import thermalexpansion.gui.client.machine.GuiSawmill;
 import thermalexpansion.util.crafting.SawmillManager;
+import thermalexpansion.util.crafting.SawmillManager.ComparableItemStackSawmill;
 import thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 
 public class RecipeHandlerSawmill extends RecipeHandlerBase {
@@ -132,6 +132,8 @@ public class RecipeHandlerSawmill extends RecipeHandlerBase {
 				secondaryOutputChance = recipe.getSecondaryOutputChance();
 			}
 			setOres();
+			cycleInput = ComparableItemStackSawmill.getOreID(inputOreName) != -1;
+			cycleSecondary = ComparableItemStackSawmill.getOreID(secondaryInputOreName) != -1;
 		}
 	}
 
