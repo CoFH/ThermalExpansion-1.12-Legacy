@@ -1,0 +1,4 @@
+
+[submodule "src/main/resources/assets/thermalexpansion/lang"]
+	path = src/main/resources/assets/thermalexpansion/lang
+	url = https://github.com/CoFH/ThermalExpansion-Localization.git
