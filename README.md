@@ -23,23 +23,18 @@ Contribution to this repository means that you are granting us rights over the c
 So, why is this here? Well, the rights are reserved, but what that really means is that we choose what to do with the rights. So here you go.
 
 #### You CAN
--Fork and modify the code.
-
--Submit Pull Requests to this repository.
-
--Copy portions of this code for use in other projects.
-
--Write your own code that uses this code as a dependency. (addon mods!)
+- Fork and modify the code.
+- Submit Pull Requests to this repository.
+- Copy portions of this code for use in other projects.
+- Write your own code that uses this code as a dependency. (addon mods!)
 
 #### You CANNOT
--Redistribute this in its entirety as source or compiled code.
-
--Create or distribute code which contains 50% or more Functionally Equivalent Statements* from this repository.
+- Redistribute this in its entirety as source or compiled code.
+- Create or distribute code which contains 50% or more Functionally Equivalent Statements* from this repository.
 
 #### You MUST
--Maintain a visible repository of your code which is inspired by, derived from, or copied from this code. Basically, if you use it, pay it forward. You keep rights to your OWN code, but you still must make your source visible.
-
--Not be a jerk**. Seriously, if you're a jerk, you can't use this code. That's part of the agreement.
+- Maintain a visible repository of your code which is inspired by, derived from, or copied from this code. Basically, if you use it, pay it forward. You keep rights to your OWN code, but you still must make your source visible.
+- Not be a jerk**. Seriously, if you're a jerk, you can't use this code. That's part of the agreement.
 
 #### Notes, License & Copyright
 
