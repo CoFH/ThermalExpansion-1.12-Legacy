@@ -3,6 +3,7 @@ package thermalexpansion.render;
 import cofh.core.block.BlockCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
+import cofh.core.render.ShaderHelper;
 import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.lighting.LightModel;
 import cofh.repack.codechicken.lib.render.CCModel;
@@ -13,7 +14,6 @@ import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.Item;
@@ -23,9 +23,7 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
-
 import org.lwjgl.opengl.GL11;
-
 import thermalexpansion.block.TEBlocks;
 import thermalexpansion.block.ender.TileTesseract;
 import thermalexpansion.core.TEProps;
@@ -43,6 +41,9 @@ public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRende
 	static {
 		TEProps.renderIdEnder = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(instance);
+
+        if (ShaderHelper.useShaders())
+            RenderTesseractStarfield.register();
 
 		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTesseract), instance);
 
