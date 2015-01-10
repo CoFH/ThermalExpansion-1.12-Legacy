@@ -444,8 +444,7 @@
 		        }
 		        outputStream.flush();
 		        inputStream.close();
-		         
-		        writer.append(LINE_FEED);
+		        
 		        writer.flush();
 		        writer.append(LINE_FEED).flush();
 		        writer.append("--").append(boundary).append("--").append(LINE_FEED);
