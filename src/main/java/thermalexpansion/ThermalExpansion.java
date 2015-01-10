@@ -78,7 +78,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.7.10R4.0.0B8";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
-	public static final String releaseURL = "https://raw.github.com/CoFH/ThermalExpansion/master/VERSION";
+	public static final String releaseURL = "https://raw.github.com/CoFH/VERSION/master/ThermalExpansion";
 	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance(modId)
