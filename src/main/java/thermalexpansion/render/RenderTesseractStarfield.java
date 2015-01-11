@@ -25,7 +25,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
 
-		if (!((TileTesseract) tile).isActive) {
+		if (!((TileTesseract) tile).isActive || ShaderStarfield.starfieldShader == 0) {
 			return;
 		}
 
