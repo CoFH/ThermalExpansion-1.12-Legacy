@@ -100,7 +100,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
 					+ StringHelper.localize("chat.cofh.secure2")));
 		}
-		return hasGui();
+		return false;
 	}
 
 	@Override

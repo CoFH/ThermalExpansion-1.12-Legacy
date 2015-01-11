@@ -1,5 +1,6 @@
 package thermalexpansion.block.plate;
 
+import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -13,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +34,7 @@ import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.fluid.TFFluids;
 
-public class BlockPlate extends BlockTEBase {
+public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 	private static class PlateMaterial extends Material {
 
@@ -58,6 +60,13 @@ public class BlockPlate extends BlockTEBase {
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setBlockName("thermalexpansion.plate");
+		basicGui = false;
+	}
+
+	@Override
+	public boolean openConfigGui(IBlockAccess world, int x, int y, int z, ForgeDirection side, EntityPlayer player) {
+
+		return ((TilePlateBase)world.getTileEntity(x, y, z)).openGui(player);
 	}
 
 	@Override

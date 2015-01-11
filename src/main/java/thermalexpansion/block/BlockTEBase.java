@@ -32,6 +32,8 @@ import thermalexpansion.util.Utils;
 
 public abstract class BlockTEBase extends BlockCoFHBase {
 
+	protected boolean basicGui = true;
+
 	public BlockTEBase(Material material) {
 
 		super(material);
@@ -85,7 +87,7 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 			Utils.usedWrench(player, x, y, z);
 			return true;
 		}
-		if (ServerHelper.isServerWorld(world)) {
+		if (basicGui && ServerHelper.isServerWorld(world)) {
 			return tile.openGui(player);
 		}
 		return true;

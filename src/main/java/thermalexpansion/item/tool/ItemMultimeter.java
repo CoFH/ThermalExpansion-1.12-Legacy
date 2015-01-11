@@ -1,5 +1,6 @@
 package thermalexpansion.item.tool;
 
+import cofh.api.block.IBlockConfigGui;
 import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
 import cofh.api.tileentity.ITileInfo;
@@ -58,6 +59,10 @@ public class ItemMultimeter extends ItemBase {
 		if (ItemHelper.getItemDamage(stack) == 0) {
 			if (ServerHelper.isClientWorld(world)) {
 				return false;
+			}
+			if (player.isSneaking() && block instanceof IBlockConfigGui) {
+				if (((IBlockConfigGui)block).openConfigGui(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player))
+					return true;
 			}
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
