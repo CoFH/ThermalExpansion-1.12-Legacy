@@ -310,7 +310,7 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		//ItemStack[] machineFrames = new ItemStack[4];
+		// ItemStack[] machineFrames = new ItemStack[4];
 
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
@@ -409,7 +409,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-			"assembler", "charger" };
+		"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];

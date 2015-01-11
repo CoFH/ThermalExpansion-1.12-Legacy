@@ -40,9 +40,8 @@ public class BlockAirSignal extends BlockAirBase implements IRedNetOutputNode {
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5, y + 0.5, z + 0.5,
-				rand.nextGaussian() / 10, rand.nextDouble() / 6, rand.nextGaussian() / 10,
-				Minecraft.getMinecraft().effectRenderer);
+		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5, y + 0.5, z + 0.5, rand.nextGaussian() / 10, rand.nextDouble() / 6,
+				rand.nextGaussian() / 10, Minecraft.getMinecraft().effectRenderer);
 		spark.setColour(0xFF0000);
 		spark.setFadeColour(0x660000);
 		spark.setTwinkle(true);

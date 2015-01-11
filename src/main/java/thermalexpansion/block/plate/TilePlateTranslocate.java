@@ -41,8 +41,9 @@ public class TilePlateTranslocate extends TilePlateBase {
 		Block block = worldObj.getBlock(x2, y2, z2);
 		if (!(block.isOpaqueCube() || block.getMaterial().isSolid())) {
 			if (entity instanceof EntityLivingBase) {
-				if (worldObj.isRemote)
+				if (worldObj.isRemote) {
 					return;
+				}
 				CoreUtils.teleportEntityTo((EntityLivingBase) entity, x, y, z, true);
 			} else {
 				entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);

@@ -38,12 +38,13 @@ public class ItemBlockPlate extends ItemBlock {
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ, int metadata) {
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
+			int metadata) {
 
 		if (super.placeBlockAt(stack, player, world, x, y, z, side, hitX, hitY, hitZ, metadata)) {
 			TileEntity te = world.getTileEntity(x, y, z);
 			if (te instanceof TilePlateBase) {
-				((TilePlateBase)te).setAlignment(side ^ 1, hitX - 0.5f, hitY - 0.5f, hitZ - 0.5f);
+				((TilePlateBase) te).setAlignment(side ^ 1, hitX - 0.5f, hitY - 0.5f, hitZ - 0.5f);
 			}
 			return true;
 		}

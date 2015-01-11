@@ -66,7 +66,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 					+ StringHelper.getScaledNumber(STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
 		}
 		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
-					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
+				+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));

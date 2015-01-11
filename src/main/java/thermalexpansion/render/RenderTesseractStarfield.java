@@ -4,38 +4,45 @@ import cofh.core.render.ShaderHelper;
 import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.render.CCRenderState;
 import cpw.mods.fml.client.registry.ClientRegistry;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
+
 import thermalexpansion.block.ender.TileTesseract;
 import thermalfoundation.render.shader.ShaderStarfield;
 
 public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
-    public static RenderTesseractStarfield instance = new RenderTesseractStarfield();
 
-    public static void register() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileTesseract.class, RenderTesseractStarfield.instance);
-    }
+	public static RenderTesseractStarfield instance = new RenderTesseractStarfield();
 
-    @Override
-    public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
-        if (!((TileTesseract) tile).isActive)
-            return;
+	public static void register() {
 
-        GL11.glPushMatrix();
+		ClientRegistry.bindTileEntitySpecialRenderer(TileTesseract.class, RenderTesseractStarfield.instance);
+	}
 
-        CCRenderState.changeTexture(ShaderStarfield.starsTexture);
+	@Override
+	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float f) {
 
-        GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
-        GL11.glScaled(1 + RenderHelper.RENDER_OFFSET, 1 + RenderHelper.RENDER_OFFSET, 1 + RenderHelper.RENDER_OFFSET);
-        ShaderStarfield.alpha = 0;
+		if (!((TileTesseract) tile).isActive) {
+			return;
+		}
 
-        ShaderHelper.useShader(ShaderStarfield.starfieldShader, ShaderStarfield.callback);
-        CCRenderState.startDrawing();
-        RenderTesseract.instance.renderCenter(0, (TileTesseract) tile, -0.5, -0.5, -0.5);
-        CCRenderState.draw();
-        ShaderHelper.releaseShader();
+		GL11.glPushMatrix();
 
-        GL11.glPopMatrix();
-    }
+		CCRenderState.changeTexture(ShaderStarfield.starsTexture);
+
+		GL11.glTranslated(x + 0.5, y + 0.5, z + 0.5);
+		GL11.glScaled(1 + RenderHelper.RENDER_OFFSET, 1 + RenderHelper.RENDER_OFFSET, 1 + RenderHelper.RENDER_OFFSET);
+		ShaderStarfield.alpha = 0;
+
+		ShaderHelper.useShader(ShaderStarfield.starfieldShader, ShaderStarfield.callback);
+		CCRenderState.startDrawing();
+		RenderTesseract.instance.renderCenter(0, (TileTesseract) tile, -0.5, -0.5, -0.5);
+		CCRenderState.draw();
+		ShaderHelper.releaseShader();
+
+		GL11.glPopMatrix();
+	}
 }

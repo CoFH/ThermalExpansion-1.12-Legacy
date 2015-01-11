@@ -82,7 +82,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
-		//InventoryCrafting craftMatrixTemp = new InventoryCrafting(new ContainerFalse(), 3, 3);
+		// InventoryCrafting craftMatrixTemp = new InventoryCrafting(new ContainerFalse(), 3, 3);
 		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorldObj()));
 	}
 

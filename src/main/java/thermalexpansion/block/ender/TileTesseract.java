@@ -47,7 +47,7 @@ import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSControl implements IEnergyReceiver, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-		ISidedInventory {
+ISidedInventory {
 
 	public static void initialize() {
 

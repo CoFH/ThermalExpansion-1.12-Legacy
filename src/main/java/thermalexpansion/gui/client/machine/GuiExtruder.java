@@ -85,7 +85,7 @@ public class GuiExtruder extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mButton) {
+	protected void mouseClicked(int mX, int mY, int mouseButton) {
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {
@@ -96,7 +96,7 @@ public class GuiExtruder extends GuiAugmentableBase {
 				myTile.setMode(2);
 			}
 		} else {
-			super.mouseClicked(mX, mY, mButton);
+			super.mouseClicked(mX, mY, mouseButton);
 		}
 	}
 

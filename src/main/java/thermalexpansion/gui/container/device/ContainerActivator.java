@@ -25,8 +25,9 @@ public class ContainerActivator extends ContainerTEBase {
 			}
 		}
 		Slot slot = new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53);
-		if (myTile.getEnergyStorage().getMaxEnergyStored() > 0 || slot.getStack() != null)
+		if (myTile.getEnergyStorage().getMaxEnergyStored() > 0 || slot.getStack() != null) {
 			addSlotToContainer(slot);
+		}
 	}
 
 }

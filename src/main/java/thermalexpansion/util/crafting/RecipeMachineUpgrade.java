@@ -50,7 +50,7 @@ public class RecipeMachineUpgrade extends ShapedOreRecipe {
 	public static ItemStack getMachineLevel(ItemStack stack, int level) {
 
 		ItemStack newMachine = stack.copy();
-		newMachine.setTagInfo("Level", new NBTTagByte((byte)level));
+		newMachine.setTagInfo("Level", new NBTTagByte((byte) level));
 		return newMachine;
 	}
 }

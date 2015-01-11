@@ -28,10 +28,10 @@ public class GuiCell extends GuiBaseAdv {
 	TileCell myTile;
 	String playerName;
 
-	public ElementButton decRecv;
-	public ElementButton incRecv;
-	public ElementButton decSend;
-	public ElementButton incSend;
+	ElementButton decRecv;
+	ElementButton incRecv;
+	ElementButton decSend;
+	ElementButton incSend;
 
 	public GuiCell(InventoryPlayer inventory, TileEntity theTile) {
 

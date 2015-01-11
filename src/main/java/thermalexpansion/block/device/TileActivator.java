@@ -149,8 +149,9 @@ public class TileActivator extends TileAugmentable {
 		}
 
 		if (hasEnergy(ACTIVATION_ENERGY)) {
-			if (!isActive)
+			if (!isActive) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
 			isActive = true;
 			boolean work = false;
 
@@ -176,11 +177,14 @@ public class TileActivator extends TileAugmentable {
 				}
 			}
 
-			if (work) drainEnergy(ACTIVATION_ENERGY);
+			if (work) {
+				drainEnergy(ACTIVATION_ENERGY);
+			}
 
 		} else {
-			if (isActive)
+			if (isActive) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
 			isActive = false;
 		}
 		chargeEnergy();
@@ -218,8 +222,9 @@ public class TileActivator extends TileAugmentable {
 			}
 		}
 		for (int e = pInventory.length; i < e; i++) {
-			if (InventoryHelper.addItemStackToInventory(inventory, pInventory[i], 0, getChargeSlot() - 1))
+			if (InventoryHelper.addItemStackToInventory(inventory, pInventory[i], 0, getChargeSlot() - 1)) {
 				pInventory[i] = null;
+			}
 		}
 	}
 
@@ -362,13 +367,13 @@ public class TileActivator extends TileAugmentable {
 			if (!simRightClick2(thePlayer, deployingStack, blockX, blockY, blockZ, side) && deployingStack != null) {
 				List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
 
-				if (entities.size() > 0
-						&& thePlayer.interactWith(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
+				if (entities.size() > 0 && thePlayer.interactWith(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0))) {
 					return true;
 				}
 				PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thePlayer, Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj);
-	            if (event.useItem != Event.Result.DENY)
-	            	return false;
+				if (event.useItem != Event.Result.DENY) {
+					return false;
+				}
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
 				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result == null || result.stackSize <= 0 ? null : result);
 			}
@@ -393,8 +398,9 @@ public class TileActivator extends TileAugmentable {
 		}
 
 		PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thePlayer, Action.RIGHT_CLICK_BLOCK, blockX, blockY, blockZ, side, worldObj);
-        if (event.isCanceled())
-        	return false;
+		if (event.isCanceled()) {
+			return false;
+		}
 
 		Block block = worldObj.getBlock(blockX, blockY, blockZ);
 
@@ -588,8 +594,8 @@ public class TileActivator extends TileAugmentable {
 	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : isActive && redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
-					: IconRegistry.getIcon("DeviceFace", getType());
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : isActive && redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive",
+					getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}

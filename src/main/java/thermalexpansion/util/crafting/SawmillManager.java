@@ -24,7 +24,7 @@ import thermalexpansion.item.TEItems;
 public class SawmillManager {
 
 	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
-	//private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
+	// private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
 	static {

@@ -28,6 +28,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.BlockTEBase;
 import thermalexpansion.core.TEProps;
+import thermalexpansion.util.crafting.TECraftingHandler;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.fluid.TFFluids;
 
@@ -100,8 +101,9 @@ public class BlockPlate extends BlockTEBase {
 				// TODO: rotate to next valid alignment
 			}
 		}
-		if (r)
+		if (r) {
 			world.markBlockForUpdate(x, y, z);
+		}
 		return r;
 	}
 
@@ -138,24 +140,24 @@ public class BlockPlate extends BlockTEBase {
 
 	public AxisAlignedBB getCollisionBlockBounds(TilePlateBase theTile, int x, int y, int z) {
 
-		float A =  1 / 16f;
+		float A = 1 / 16f;
 		float B = 15 / 16f;
 		AxisAlignedBB bb = null;
 		switch (theTile.alignment) {
 		case 0:
-			bb = AxisAlignedBB.getBoundingBox(A, 0, A, B,  2 / 16f, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, 0, A, B, 2 / 16f, B).offset(x, y, z);
 			break;
 		case 1:
 			bb = AxisAlignedBB.getBoundingBox(A, 14 / 16f, A, B, 1, B).offset(x, y, z);
 			break;
 		case 2:
-			bb = AxisAlignedBB.getBoundingBox(A, A, 0, B, B,  2 / 16f).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, A, 0, B, B, 2 / 16f).offset(x, y, z);
 			break;
 		case 3:
 			bb = AxisAlignedBB.getBoundingBox(A, A, 14 / 16f, B, B, 1).offset(x, y, z);
 			break;
 		case 4:
-			bb = AxisAlignedBB.getBoundingBox(0, A, A,  2 / 16f, B, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(0, A, A, 2 / 16f, B, B).offset(x, y, z);
 			break;
 		case 5:
 			bb = AxisAlignedBB.getBoundingBox(14 / 16f, A, A, 1, B, B).offset(x, y, z);
@@ -230,14 +232,14 @@ public class BlockPlate extends BlockTEBase {
 		TilePlateTranslocate.initialize();
 
 		plateFrame = new ItemStack(this, 1, Types.FRAME.ordinal());
-		signalPlate = new ItemStack(this, 1, Types.SIGNAL.ordinal());
-		impulsePlate = new ItemStack(this, 1, Types.IMPULSE.ordinal());
-		translocatePlate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
+		plateSignal = new ItemStack(this, 1, Types.SIGNAL.ordinal());
+		plateImpulse = new ItemStack(this, 1, Types.IMPULSE.ordinal());
+		plateTranslocate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
 
 		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
-		GameRegistry.registerCustomItemStack("plateSignal", signalPlate);
-		GameRegistry.registerCustomItemStack("plateImpulse", impulsePlate);
-		GameRegistry.registerCustomItemStack("plateTranslocate", translocatePlate);
+		GameRegistry.registerCustomItemStack("plateSignal", plateSignal);
+		GameRegistry.registerCustomItemStack("plateImpulse", plateImpulse);
+		GameRegistry.registerCustomItemStack("plateTranslocate", plateTranslocate);
 
 		return true;
 	}
@@ -245,26 +247,24 @@ public class BlockPlate extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
-				"SGS",
-				"I I",
-				"SIS",
-				'S', "ingotSignalum",
-				'G', "blockGlassHardened",
-				'I', "ingotInvar",
-		}));
+		ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] { "SGS", "I I", "SIS", 'S', "ingotSignalum", 'G', "blockGlassHardened", 'I',
+				"ingotInvar", }));
 
 		if (enable[Types.SIGNAL.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, plateFrame, signalPlate, new FluidStack(TFFluids.fluidRedstone, 1000), true);
+			TransposerManager.addTEFillRecipe(2000, plateFrame, plateSignal, new FluidStack(TFFluids.fluidRedstone, 1000), false);
 		}
 
 		if (enable[Types.IMPULSE.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, plateFrame, impulsePlate, new FluidStack(TFFluids.fluidGlowstone, 1000), true);
+			TransposerManager.addTEFillRecipe(2000, plateFrame, plateImpulse, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 
 		if (enable[Types.TRANSLOCATE.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, plateFrame, translocatePlate, new FluidStack(TFFluids.fluidEnder, 1000), true);
+			TransposerManager.addTEFillRecipe(2000, plateFrame, plateTranslocate, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
+
+		TECraftingHandler.addSecureRecipe(plateSignal);
+		TECraftingHandler.addSecureRecipe(plateImpulse);
+		TECraftingHandler.addSecureRecipe(plateTranslocate);
 
 		return true;
 	}
@@ -285,8 +285,8 @@ public class BlockPlate extends BlockTEBase {
 	}
 
 	public static ItemStack plateFrame;
-	public static ItemStack signalPlate;
-	public static ItemStack impulsePlate;
-	public static ItemStack translocatePlate;
+	public static ItemStack plateSignal;
+	public static ItemStack plateImpulse;
+	public static ItemStack plateTranslocate;
 
 }

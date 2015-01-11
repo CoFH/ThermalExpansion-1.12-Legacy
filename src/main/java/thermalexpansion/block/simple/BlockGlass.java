@@ -94,8 +94,8 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
-	public boolean canPlaceTorchOnTop(World world, int x, int y, int z)
-	{
+	public boolean canPlaceTorchOnTop(World world, int x, int y, int z) {
+
 		return true;
 	}
 

@@ -1,10 +1,13 @@
 package thermalexpansion.block.plate;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
@@ -14,6 +17,18 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 		GameRegistry.registerTileEntity(TilePlateImpulse.class, "cofh.thermalexpansion.PlateImpulse");
 	}
 
+	public static final double MIN_INTENSITY = 0;
+	public static final double MAX_INTENSITY = 10;
+
+	public static final double MIN_ANGLE = 0;
+	public static final double MAX_ANGLE = Math.PI / 3;
+
+	public double intensity;
+	public double angle;
+
+	double intensityX;
+	double intensityY;
+
 	public TilePlateImpulse() {
 
 		super(BlockPlate.Types.IMPULSE);
@@ -22,7 +37,7 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		int[] v = getVector(3, 1, 0);
+		double[] v = getVector(50, 2, 0D);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
 
@@ -49,31 +64,46 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 		theEntity.motionZ = Double.longBitsToDouble(tv) + z;
 
 		/**
-		 * Truth table:
-		 * x = -5; motionX = -5;
-		 * sign(x)                 = 1000 0000 0000 0000
-		 * sign(motionX)           = 1000 0000 0000 0000
-		 * xSign ^ motionXSign     = 0000 0000 0000 0000
-		 * ~(xSign ^ motionXSign)  = 1111 1111 1111 1111
-		 * combinedSign >> 63      = 1111 1111 1111 1111
-		 * *****
-		 * x = 5; motionX = 5;
-		 * sign(x)                 = 0000 0000 0000 0000
-		 * sign(motionX)           = 0000 0000 0000 0000
-		 * xSign ^ motionXSign     = 0000 0000 0000 0000
-		 * ~(xSign ^ motionXSign)  = 1111 1111 1111 1111
-		 * combinedSign >> 63      = 1111 1111 1111 1111
-		 * *****
-		 * x = -5; motionX = 5;
-		 * sign(x)                 = 1000 0000 0000 0000
-		 * sign(motionX)           = 0000 0000 0000 0000
-		 * xSign ^ motionXSign     = 1000 0000 0000 0000
-		 * ~(xSign ^ motionXSign)  = 0111 1111 1111 1111
-		 * combinedSign >> 63      = 0000 0000 0000 0000
+		 * Truth table: x = -5; motionX = -5; sign(x) = 1000 0000 0000 0000 sign(motionX) = 1000 0000 0000 0000 xSign ^ motionXSign = 0000 0000 0000 0000
+		 * ~(xSign ^ motionXSign) = 1111 1111 1111 1111 combinedSign >> 63 = 1111 1111 1111 1111 ***** x = 5; motionX = 5; sign(x) = 0000 0000 0000 0000
+		 * sign(motionX) = 0000 0000 0000 0000 xSign ^ motionXSign = 0000 0000 0000 0000 ~(xSign ^ motionXSign) = 1111 1111 1111 1111 combinedSign >> 63 = 1111
+		 * 1111 1111 1111 ***** x = -5; motionX = 5; sign(x) = 1000 0000 0000 0000 sign(motionX) = 0000 0000 0000 0000 xSign ^ motionXSign = 1000 0000 0000 0000
+		 * ~(xSign ^ motionXSign) = 0111 1111 1111 1111 combinedSign >> 63 = 0000 0000 0000 0000
 		 */
 	}
 
-	//@Override
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		direction = tag.getByte("Dir");
+
+		intensity = tag.getDouble("Int");
+		angle = tag.getDouble("Angle");
+
+		intensityX = intensity * Math.cos(angle);
+		intensityY = intensity * Math.sin(angle);
+
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		tag.setByte("Dir", direction);
+
+		tag.setDouble("Int", intensity);
+		tag.setDouble("Angle", angle);
+	}
+
+	// @Override
 	public ItemStack insertItem(ForgeDirection from, ItemStack item) {
 
 		if (from.ordinal() >> 1 == alignment >> 1)

@@ -214,54 +214,34 @@ public class BlockLight extends BlockTEBase {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] {
-					" L ",
-					"GLG",
-					" S ",
-					'L', "ingotLumium",
-					'G', "blockGlassHardened",
-					'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
+					"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] {
-					" L ",
-					"GLG",
-					" S ",
-					'L', "dustLumium",
-					'G', "blockGlassHardened",
-					'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
+					"ingotSignalum" }));
 		}
 		if (enable[Types.ILLUMINATOR_DIM.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminatorDim, new FluidStack(TFFluids.fluidMana, 1000), false);
 		}
 		if (enable[Types.LAMP_HALO_DIM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampDim, new Object[] {
-					" L ",
-					"GLG",
-					" S ",
-					'L', "ingotMithril",
-					'G', "blockGlassHardened",
-					'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampDim, new Object[] { " L ", "GLG", " S ", 'L', "ingotMithril", 'G', "blockGlassHardened", 'S',
+					"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC_DIM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampDimAlt, new Object[] {
-					" L ",
-					"GLG",
-					" S ",
-					'L', "dustMithril",
-					'G', "blockGlassHardened",
-					'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(lampDimAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustMithril", 'G', "blockGlassHardened", 'S',
+					"ingotSignalum" }));
 		}
 		return true;
 	}
 
 	public static enum Types {
 		ILLUMINATOR, LAMP_HALO, LAMP_BASIC, ILLUMINATOR_DIM, LAMP_HALO_DIM, LAMP_BASIC_DIM;
+
 		public final boolean dim = name().endsWith("_DIM");
 	}
 
-	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt",
-		"illuminatorDim", "lampDim", "lampDimAlt" };
+	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt", "illuminatorDim", "lampDim", "lampDimAlt" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {

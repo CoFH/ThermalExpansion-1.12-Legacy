@@ -119,7 +119,6 @@ public class FurnaceManager {
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
 		ItemStack output;
 
-
 		for (ItemStack key : smeltingList.keySet()) {
 			if (key == null || recipeExists(key)) {
 				continue;
@@ -129,9 +128,12 @@ public class FurnaceManager {
 				continue;
 			}
 			int energy = DEFAULT_ENERGY;
-			if (key.getItem() instanceof ItemFood) energy /= 2;
-			if (output.getItem() instanceof ItemFood) energy /= 2;
-
+			if (key.getItem() instanceof ItemFood) {
+				energy /= 2;
+			}
+			if (output.getItem() instanceof ItemFood) {
+				energy /= 2;
+			}
 
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 10 / 16, key, output, false);
@@ -143,7 +145,7 @@ public class FurnaceManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap<ComparableItemStackSafe, RecipeFurnace> (recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap<ComparableItemStackSafe, RecipeFurnace>(recipeMap.size());
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeFurnace> entry : recipeMap.entrySet()) {

@@ -22,7 +22,7 @@ public interface IPipeTile {
 
 	/**
 	 * Offers an ItemStack for addition to the pipe. Will be rejected if the pipe doesn't accept items from that side.
-	 * 
+	 *
 	 * @param stack
 	 *            ItemStack offered for addition. Do not manipulate this!
 	 * @param doAdd
@@ -35,7 +35,7 @@ public interface IPipeTile {
 
 	/**
 	 * True if the pipe is connected to the block/pipe in the specific direction
-	 * 
+	 *
 	 * @param with
 	 * @return true if connect
 	 */
@@ -43,7 +43,7 @@ public interface IPipeTile {
 
 	/**
 	 * True if the pipe has a powered wire of the specified color.
-	 * 
+	 *
 	 * @param wire
 	 * @return true if powered
 	 */

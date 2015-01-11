@@ -15,31 +15,41 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import thermalexpansion.block.TileTEBase;
+import thermalexpansion.ThermalExpansion;
+import thermalexpansion.block.TileInventory;
 import thermalexpansion.block.plate.BlockPlate.Types;
 
-public class TilePlateBase extends TileTEBase implements ITileInfo {
+public class TilePlateBase extends TileInventory implements ITileInfo {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TilePlateBase.class, "cofh.thermalexpansion.PlateFrame");
 	}
 
-	protected TilePlateBase(Types type) {
+	public static void configure() {
 
-		this.type = (byte) type.ordinal();
+		String comment = "Enable this to allow for Plates to be securable. (Default: true)";
+		enableSecurity = ThermalExpansion.config.get("security", "Plate.All.Securable", enableSecurity, comment);
 	}
 
-	public TilePlateBase() {
-
-		this(Types.FRAME);
-		if (getClass() != TilePlateBase.class)
-			throw new IllegalArgumentException();
-	}
+	public static boolean enableSecurity = true;
 
 	byte alignment;
 	byte direction;
 	private final byte type;
+
+	public TilePlateBase() {
+
+		this(Types.FRAME);
+		if (getClass() != TilePlateBase.class) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	protected TilePlateBase(Types type) {
+
+		this.type = (byte) type.ordinal();
+	}
 
 	@Override
 	public int getType() {
@@ -77,6 +87,15 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		return direction;
 	}
 
+	public boolean setFacing(int facing) {
+
+		if (facing != direction && facing >= 0 && facing < 6) {
+			direction = (byte) facing;
+			return true;
+		}
+		return false;
+	}
+
 	void setAlignment(int side, float hitX, float hitY, float hitZ) {
 
 		alignment = (byte) side;
@@ -100,12 +119,9 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		float degreeCenter = 0.32f / 2;
 
 		if (x * x + y * y < degreeCenter * degreeCenter) {
-
 			direction = 1;
-
 		} else {
-
-			int a = (int) ((Math.atan2(x,  y) + Math.PI) * 4 / Math.PI);
+			int a = (int) ((Math.atan2(x, y) + Math.PI) * 4 / Math.PI);
 			a = ++a & 7;
 			switch (a >> 1) {
 			case 0:
@@ -123,17 +139,16 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 				break;
 			}
 		}
-
 		return;
 	}
 
 	/* HELPERS */
-
 	protected int[] getVector(int distance) {
 
 		int x = 0, y = 0, z = 0;
-		if ((direction & 1) == 0)
+		if ((direction & 1) == 0) {
 			distance = -distance;
+		}
 		switch (direction >> 1) {
 		case 0:
 			y = distance;
@@ -180,7 +195,7 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 
 	protected int[] fixVector(int x, int y, int z) {
 
-		int[] a = {x, y, z};
+		int[] a = { x, y, z };
 		int t;
 		switch (alignment) {
 		case 0:
@@ -209,8 +224,9 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 	protected double[] getVector(double distance) {
 
 		double x = 0, y = 0, z = 0;
-		if ((direction & 1) == 0)
+		if ((direction & 1) == 0) {
 			distance = -distance;
+		}
 		switch (direction >> 1) {
 		case 0:
 			y = distance;
@@ -257,7 +273,7 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 
 	protected double[] fixVector(double x, double y, double z) {
 
-		double[] a = {x, y, z};
+		double[] a = { x, y, z };
 		double t;
 		switch (alignment) {
 		case 0:
@@ -283,39 +299,6 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		return a;
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte(alignment);
-		payload.addByte(direction);
-
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-
-			alignment = payload.getByte();
-			direction = payload.getByte();
-		} else {
-
-		}
-	}
-
-	@Override
-	public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
-
-		return oldBlock != newBlock || newMeta != type;
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -335,8 +318,67 @@ public class TilePlateBase extends TileTEBase implements ITileInfo {
 		nbt.setByte("Dir", direction);
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addByte(alignment);
+		payload.addByte(direction);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(direction);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		byte newDir = payload.getByte();
+
+		if (newDir != direction) {
+			rotated();
+			direction = newDir;
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			alignment = payload.getByte();
+			direction = payload.getByte();
+		} else {
+			payload.getByte();
+			payload.getByte();
+		}
+	}
+
+	@Override
+	public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+
+		return oldBlock != newBlock || newMeta != type;
+	}
+
+	/* ITileInfo */
 	@Override
 	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+
 		info.add(new ChatComponentText("Alignment: " + alignment + ":" + ForgeDirection.getOrientation(alignment)));
 		info.add(new ChatComponentText("Direction: " + direction + ":" + ForgeDirection.getOrientation(direction)));
 	}

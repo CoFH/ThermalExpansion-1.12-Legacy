@@ -1,14 +1,20 @@
 package thermalexpansion.block.plate;
 
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
 import thermalexpansion.block.TEBlocks;
+import thermalexpansion.gui.client.plate.GuiPlateSignal;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TilePlateSignal extends TilePlateBase {
 
@@ -17,24 +23,33 @@ public class TilePlateSignal extends TilePlateBase {
 		GameRegistry.registerTileEntity(TilePlateSignal.class, "cofh.thermalexpansion.PlateSignal");
 	}
 
+	public static final byte MIN_DISTANCE = 0;
+	public static final byte MAX_DISTANCE = 16;
+	public static final byte MIN_INTENSITY = 0;
+	public static final byte MAX_INTENSITY = 15;
+	public static final byte MIN_DURATION = 2;
+	public static final byte MAX_DURATION = 40;
+
+	public byte distance = 16;
+	public byte intensity = 15;
+	public byte duration = 20;
+	byte collided = 0;
+
 	public TilePlateSignal() {
 
 		super(BlockPlate.Types.SIGNAL);
 	}
 
-	byte distance = 16;
-	byte intensity = 15;
-	byte activationTime = 15;
-	byte collided = 0;
-
 	@Override
 	public void blockBroken() {
+
 		removeSignal();
 		super.blockBroken();
 	}
 
 	@Override
 	public void rotated() {
+
 		removeSignal();
 	}
 
@@ -62,21 +77,24 @@ public class TilePlateSignal extends TilePlateBase {
 
 		if (collided > 0) {
 			markChunkDirty();
-			if (--collided == 0)
+			if (--collided == 0) {
 				removeSignal();
+			}
 		}
 	}
 
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		if (worldObj.isRemote || !(theEntity instanceof EntityLivingBase))
+		if (worldObj.isRemote || !(theEntity instanceof EntityLivingBase)) {
 			return;
+		}
 
 		if (collided > 0) {
-			collided = activationTime;
-			if (worldObj.getTotalWorldTime() % 10 != 0)
+			collided = duration;
+			if (worldObj.getTotalWorldTime() % 10 != 0) {
 				return;
+			}
 		}
 
 		int[] v = getVector(distance);
@@ -87,8 +105,44 @@ public class TilePlateSignal extends TilePlateBase {
 				markChunkDirty();
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
-			collided = activationTime;
+			collided = duration;
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPlateSignal(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		distance = nbt.getByte("Dist");
+		intensity = nbt.getByte("Int");
+		duration = nbt.getByte("Time");
+		collided = nbt.getByte("Col");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setByte("Dist", distance);
+		nbt.setByte("Int", intensity);
+		nbt.setByte("Time", duration);
+		nbt.setByte("Col", collided);
 	}
 
 	/* NETWORK METHODS */
@@ -99,7 +153,7 @@ public class TilePlateSignal extends TilePlateBase {
 
 		payload.addByte(distance);
 		payload.addByte(intensity);
-		payload.addByte(activationTime);
+		payload.addByte(duration);
 		payload.addByte(collided);
 
 		return payload;
@@ -112,7 +166,19 @@ public class TilePlateSignal extends TilePlateBase {
 
 		payload.addByte(distance);
 		payload.addByte(intensity);
-		payload.addByte(activationTime);
+		payload.addByte(duration);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
+		payload.addByte(MathHelper.clampI(intensity, MIN_INTENSITY, MAX_INTENSITY));
+		payload.addByte(MathHelper.clampI(duration, MIN_DURATION, MAX_DURATION));
 
 		return payload;
 	}
@@ -124,8 +190,22 @@ public class TilePlateSignal extends TilePlateBase {
 
 		distance = payload.getByte();
 		intensity = payload.getByte();
-		activationTime = payload.getByte();
-		collided = payload.getByte();
+		duration = payload.getByte();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		byte newDist = payload.getByte();
+
+		if (newDist != distance) {
+			removeSignal();
+			distance = newDist;
+		}
+		intensity = payload.getByte();
+		duration = payload.getByte();
 	}
 
 	/* ITilePacketHandler */
@@ -135,36 +215,44 @@ public class TilePlateSignal extends TilePlateBase {
 		super.handleTilePacket(payload, isServer);
 
 		if (!isServer) {
-
 			distance = payload.getByte();
 			intensity = payload.getByte();
-			activationTime = payload.getByte();
+			duration = payload.getByte();
 		} else {
-
+			payload.getByte();
+			payload.getByte();
+			payload.getByte();
 		}
 	}
 
-	/* NBT METHODS */
+	/* IPortableData */
 	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		super.readFromNBT(nbt);
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		direction = tag.getByte("Dir");
 
-		distance = nbt.getByte("Dist");
-		intensity = nbt.getByte("Int");
-		activationTime = nbt.getByte("Act");
-		collided = nbt.getByte("Col");
+		distance = tag.getByte("Dist");
+		intensity = tag.getByte("Int");
+		duration = tag.getByte("Time");
+
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		super.writeToNBT(nbt);
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		tag.setByte("Dir", direction);
 
-		nbt.setByte("Dist", distance);
-		nbt.setByte("Int", intensity);
-		nbt.setByte("Act", activationTime);
-		nbt.setByte("Col", collided);
+		tag.setByte("Dist", distance);
+		tag.setByte("Int", intensity);
+		tag.setByte("Time", duration);
 	}
 
 }
