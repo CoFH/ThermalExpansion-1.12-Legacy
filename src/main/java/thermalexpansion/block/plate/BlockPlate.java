@@ -219,6 +219,12 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	@Override
+	protected AxisAlignedBB getStatelessBoundingBox(World world, int x, int y, int z) {
+
+		return null;
+	}
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
