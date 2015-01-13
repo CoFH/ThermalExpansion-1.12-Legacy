@@ -55,6 +55,19 @@ public class TEPlugins {
 			}
 		}
 
+		public void loadComplete() {
+
+			try {
+				if (pluginClass != null) {
+					pluginClass.getMethod("loadComplete", new Class[0]).invoke(null, new Object[0]);
+				}
+			} catch (Throwable t) {
+				if (TEProps.enableDebugOutput) {
+					t.printStackTrace();
+				}
+			}
+		}
+
 		public void registerRenderInformation() {
 
 			try {
@@ -98,6 +111,13 @@ public class TEPlugins {
 
 		for (int i = 0; i < pluginList.size(); i++) {
 			pluginList.get(i).postInit();
+		}
+	}
+
+	public static void loadComplete() {
+
+		for (int i = 0; i < pluginList.size(); i++) {
+			pluginList.get(i).loadComplete();
 		}
 	}
 

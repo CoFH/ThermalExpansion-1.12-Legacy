@@ -185,6 +185,8 @@ public class ThermalExpansion extends BaseMod {
 
 		FuelHandler.parseFuels();
 
+		TEPlugins.loadComplete();
+
 		cleanConfig(false);
 		config.cleanUp(false, true);
 

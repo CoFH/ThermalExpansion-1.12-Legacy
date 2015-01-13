@@ -2,6 +2,8 @@ package thermalexpansion.plugins.tc4;
 
 import static cofh.api.modhelpers.ThaumcraftHelper.parseAspects;
 
+import cofh.asm.relauncher.Strippable;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.block.simple.BlockFrame;
@@ -24,7 +26,12 @@ public class TCPlugin {
 
 	}
 
-	public static void postInit() throws Throwable {
+	public static void postInit(){
+
+	}
+
+	@Strippable("api:Thaumcraft|API")
+	public static void loadComplete() throws Throwable {
 
 		parseAspects(TFItems.dustCoal, "2 ignis, 1 potentia, 1 perditio");
 		parseAspects(TFItems.dustObsidian, "2 ignis, 1 tenebrae, 1 perditio");
