@@ -17,13 +17,18 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLInterModComms;
 import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
 import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
+import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.io.File;
+import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.oredict.RecipeSorter;
@@ -315,6 +320,31 @@ public class ThermalExpansion extends BaseMod {
 		String[] categoryNames = config.getCategoryNames().toArray(new String[config.getCategoryNames().size()]);
 		for (int i = 0; i < categoryNames.length; i++) {
 			config.getCategory(categoryNames[i]).setLanguageKey(prefix + categoryNames[i]).setRequiresMcRestart(true);
+		}
+	}
+
+	@EventHandler
+	@SuppressWarnings("deprecation")
+	public void missingMappings(FMLMissingMappingsEvent e) {
+
+		List<MissingMapping> list = e.get();
+		if (list.size() > 0) for (MissingMapping mapping : list) {
+
+			String name = mapping.name;
+			if (name.indexOf(':') >= 0)
+				name = name.substring(name.indexOf(':') + 1);
+			switch (mapping.type) {
+			case ITEM:
+				log.error(name);
+				if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0)
+					break;
+				Item item = GameRegistry.findItem("ThermalFoundation", name);
+				if (item != null) {
+					mapping.remap(item);
+				} else
+					mapping.warn();
+			default: break;
+			}
 		}
 	}
 
