@@ -335,7 +335,6 @@ public class ThermalExpansion extends BaseMod {
 				name = name.substring(name.indexOf(':') + 1);
 			switch (mapping.type) {
 			case ITEM:
-				log.error(name);
 				if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0)
 					break;
 				Item item = GameRegistry.findItem("ThermalFoundation", name);
