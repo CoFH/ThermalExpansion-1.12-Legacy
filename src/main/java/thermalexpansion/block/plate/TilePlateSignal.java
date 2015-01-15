@@ -13,8 +13,8 @@ import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
 import thermalexpansion.block.TEBlocks;
-import thermalexpansion.gui.client.plate.GuiPlateSignal;
 import thermalexpansion.gui.container.ContainerTEBase;
+//import thermalexpansion.gui.client.plate.GuiPlateSignal;
 
 public class TilePlateSignal extends TilePlateBase {
 
@@ -113,7 +113,7 @@ public class TilePlateSignal extends TilePlateBase {
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiPlateSignal(inventory, this);
+		return null;//new GuiPlateSignal(inventory, this);
 	}
 
 	@Override
