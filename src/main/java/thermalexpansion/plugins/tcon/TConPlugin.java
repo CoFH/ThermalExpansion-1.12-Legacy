@@ -51,7 +51,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotInvar, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
 		tag = new NBTTagCompound();
 		tag.setInteger("Id", 1021);
@@ -81,7 +81,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotNickel, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
 		tag = new NBTTagCompound();
 		tag.setInteger("Id", 1022);
@@ -111,7 +111,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotLead, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
 		tag = new NBTTagCompound();
 		tag.setInteger("Id", 1023);
@@ -140,7 +140,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotSilver, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
 		tag = new NBTTagCompound();
 		tag.setInteger("Id", 1024);
@@ -170,7 +170,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotPlatinum, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
 		tag = new NBTTagCompound();
 		tag.setInteger("Id", 1025);
@@ -201,7 +201,7 @@ public class TConPlugin {
 		tag.setTag("Item", cloneStack(TFItems.ingotElectrum, 1).writeToNBT(new NBTTagCompound()));
 		//tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
-		FMLInterModComms.sendMessage("TConstruct", "addPartBuilderMaterial", tag);
+		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 	}
 
 	public static void postInit() {
