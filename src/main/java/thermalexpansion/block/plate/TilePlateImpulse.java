@@ -37,7 +37,7 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		double[] v = getVector(50, 2, 0D);
+		double[] v = getVector(3, 1, 0D);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
 
