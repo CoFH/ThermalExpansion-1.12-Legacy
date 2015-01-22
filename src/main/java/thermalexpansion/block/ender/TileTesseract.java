@@ -1,5 +1,6 @@
 package thermalexpansion.block.ender;
 
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
@@ -46,7 +47,7 @@ import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
-public class TileTesseract extends TileRSControl implements IEnergyReceiver, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
+public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
 ISidedInventory {
 
 	public static void initialize() {
@@ -872,6 +873,12 @@ ISidedInventory {
 			return 0;
 		}
 		return sendEnergy(maxReceive, simulate);
+	}
+
+	@Override
+	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+
+		return 0;
 	}
 
 	@Override

@@ -148,7 +148,7 @@ public class TConPlugin {
 		tag.setString("localizationString", "material.thermalexpansion.platinum");
 		tag.setInteger("Durability", 1050);
 		tag.setInteger("MiningSpeed", 1400);
-		tag.setInteger("HarvestLevel", 3);
+		tag.setInteger("HarvestLevel", 4);
 		tag.setInteger("Attack", 5);
 		tag.setFloat("HandleModifier", 1.5f);
 		tag.setInteger("Reinforced", 2);
