@@ -20,6 +20,7 @@ import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEItems;
+import thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import thermalfoundation.item.TFItems;
 
 public class TECraftingHandler {
@@ -33,35 +34,35 @@ public class TECraftingHandler {
 
 	public static void addMachineUpgradeRecipes(ItemStack stack) {
 
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(1, stack, new Object[] {
-				"IGI",
-				" X ",
-				"I I",
-				'I', "ingotInvar",
-				'G', "gearElectrum",
-				'X', RecipeMachineUpgrade.getMachineLevel(stack, 0)
-		}));
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(2, stack, new Object[] {
-				"IGI",
-				" X ",
-				"I I",
-				'I', "blockGlassHardened",
-				'G', "gearSignalum",
-				'X', RecipeMachineUpgrade.getMachineLevel(stack, 1)
-		}));
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(3, stack, new Object[] {
-				"IGI",
-				" X ",
-				"I I",
-				'I', "ingotSilver",
-				'G', "gearEnderium",
-				'X', RecipeMachineUpgrade.getMachineLevel(stack, 2)
-		}));
+		GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(1, stack, new Object[]{
+                "IGI",
+                " X ",
+                "I I",
+                'I', "ingotInvar",
+                'G', "gearElectrum",
+                'X', RecipeMachineUpgrade.getMachineLevel(stack, 0)
+        })));
+        GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(2, stack, new Object[]{
+                "IGI",
+                " X ",
+                "I I",
+                'I', "blockGlassHardened",
+                'G', "gearSignalum",
+                'X', RecipeMachineUpgrade.getMachineLevel(stack, 1)
+        })));
+        GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(3, stack, new Object[]{
+                "IGI",
+                " X ",
+                "I I",
+                'I', "ingotSilver",
+                'G', "gearEnderium",
+                'X', RecipeMachineUpgrade.getMachineLevel(stack, 2)
+        })));
 	}
 
 	public static void addSecureRecipe(ItemStack stack) {
 
-		GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', stack }));
+        GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeSecure(stack, new Object[]{" L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', stack})));
 	}
 
 	@SubscribeEvent
