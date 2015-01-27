@@ -51,7 +51,7 @@ public class GuiTransposer extends GuiAugmentableBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 80, 19).setSlotInfo(0, 0, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(0, 0, 2));
 		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
 		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(1, 1, 1));
 		slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));

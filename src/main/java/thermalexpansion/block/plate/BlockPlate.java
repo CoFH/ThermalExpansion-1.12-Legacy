@@ -66,7 +66,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public boolean openConfigGui(IBlockAccess world, int x, int y, int z, ForgeDirection side, EntityPlayer player) {
 
-		return ((TilePlateBase)world.getTileEntity(x, y, z)).openGui(player);
+		return ((TilePlateBase) world.getTileEntity(x, y, z)).openGui(player);
 	}
 
 	@Override

@@ -25,8 +25,8 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 
 		API.registerNEIGuiHandler(NEIGuiHandler.instance);
 
-        API.registerRecipeHandler(RecipeHandlerUpgradeCrafting.instance);
-        API.registerUsageHandler(RecipeHandlerUpgradeCrafting.instance);
+		API.registerRecipeHandler(RecipeHandlerUpgradeCrafting.instance);
+		API.registerUsageHandler(RecipeHandlerUpgradeCrafting.instance);
 
 		API.registerRecipeHandler(RecipeHandlerFurnace.instance);
 		API.registerUsageHandler(RecipeHandlerFurnace.instance);

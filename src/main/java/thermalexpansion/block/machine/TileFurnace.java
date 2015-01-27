@@ -68,9 +68,6 @@ public class TileFurnace extends TileMachineBase {
 		}
 		ItemStack output = recipe.getOutput();
 
-		if (output == null) {
-			return false;
-		}
 		if (inventory[1] == null) {
 			return true;
 		}
@@ -97,13 +94,15 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		ItemStack output = FurnaceManager.getRecipe(inventory[0]).getOutput();
+		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
+		ItemStack output = recipe.getOutput();
+
 		if (inventory[1] == null) {
 			inventory[1] = output;
 		} else {
 			inventory[1].stackSize += output.stackSize;
 		}
-		inventory[0].stackSize--;
+		inventory[0].stackSize -= recipe.getInput().stackSize;
 
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;

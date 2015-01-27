@@ -172,7 +172,7 @@ public class BlockStrongbox extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y',
-			"ingotTin" }));
+					"ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced,

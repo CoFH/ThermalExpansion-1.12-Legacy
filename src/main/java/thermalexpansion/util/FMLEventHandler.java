@@ -5,15 +5,17 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-
 import thermalexpansion.block.device.BlockDevice;
 import thermalexpansion.block.dynamo.BlockDynamo;
 import thermalexpansion.block.machine.BlockMachine;
 import thermalexpansion.core.TEAchievements;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.network.PacketTEBase;
+import thermalexpansion.util.crafting.ChargerManager;
 import thermalexpansion.util.crafting.CrucibleManager;
+import thermalexpansion.util.crafting.ExtruderManager;
 import thermalexpansion.util.crafting.FurnaceManager;
+import thermalexpansion.util.crafting.PrecipitatorManager;
 import thermalexpansion.util.crafting.PulverizerManager;
 import thermalexpansion.util.crafting.SawmillManager;
 import thermalexpansion.util.crafting.SmelterManager;
@@ -47,6 +49,9 @@ public class FMLEventHandler {
 		SmelterManager.refreshRecipes();
 		CrucibleManager.refreshRecipes();
 		TransposerManager.refreshRecipes();
+		PrecipitatorManager.refreshRecipes();
+		ExtruderManager.refreshRecipes();
+		ChargerManager.refreshRecipes();
 
 		BlockDevice.refreshItemStacks();
 		BlockDynamo.refreshItemStacks();

@@ -1,6 +1,7 @@
 package thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.ElementBase;
+import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -18,6 +19,7 @@ public class GuiCharger extends GuiAugmentableBase {
 
 	ElementBase slotInput;
 	ElementBase slotOutput;
+	ElementDualScaled progress;
 
 	public GuiCharger(InventoryPlayer inventory, TileEntity tile) {
 
@@ -31,10 +33,11 @@ public class GuiCharger extends GuiAugmentableBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 35, 31).setSlotInfo(0, 0, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 121, 27).setSlotInfo(3, 1, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 44, 35).setSlotInfo(0, 0, 2));
+		slotOutput = addElement(new ElementSlotOverlay(this, 121, 31).setSlotInfo(3, 1, 2));
 
-		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
+		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 80, 53).setSize(16, 16).setTexture(TEX_FLUX, 32, 16));
 	}
 
 	@Override
@@ -45,6 +48,7 @@ public class GuiCharger extends GuiAugmentableBase {
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput.setVisible(myTile.hasSide(2));
 
+		progress.setQuantity(myTile.getScaledProgress(SPEED));
 	}
 
 }

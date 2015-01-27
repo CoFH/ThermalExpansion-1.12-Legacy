@@ -152,7 +152,7 @@ public class TileSawmill extends TileMachineBase {
 				}
 			}
 		}
-		inventory[0].stackSize--;
+		inventory[0].stackSize -= recipe.getInput().stackSize;
 
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;

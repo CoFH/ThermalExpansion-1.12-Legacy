@@ -28,7 +28,7 @@ public class TileTankCreative extends TileTank {
 		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
 			return;
 		}
-		adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1], new FluidStack(tank.getFluid(), FluidContainerRegistry.BUCKET_VOLUME), true);
+		adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1], new FluidStack(tank.getFluid(), FluidContainerRegistry.BUCKET_VOLUME * 64), true);
 	}
 
 	/* IFluidHandler */

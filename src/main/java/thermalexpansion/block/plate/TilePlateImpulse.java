@@ -106,8 +106,9 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 	// @Override
 	public ItemStack insertItem(ForgeDirection from, ItemStack item) {
 
-		if (from.ordinal() >> 1 == alignment >> 1)
+		if (from.ordinal() >> 1 == alignment >> 1) {
 			return item;
+		}
 
 		double v[] = fixVector(0, -0.25, 0);
 		EntityItem ent = new EntityItem(worldObj, xCoord + .5, yCoord + .5, zCoord + .5, item);

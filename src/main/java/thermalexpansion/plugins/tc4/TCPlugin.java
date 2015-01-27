@@ -26,7 +26,7 @@ public class TCPlugin {
 
 	}
 
-	public static void postInit(){
+	public static void postInit() {
 
 	}
 

@@ -21,7 +21,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
-		setMaxStackSize(1);
+		// setMaxStackSize(1);
 		setNoRepair();
 	}
 

@@ -23,8 +23,9 @@ public class ContainerTransposer extends ContainerTEBase implements ISlotValidat
 		super(inventory, tile);
 
 		myTile = (TileTransposer) tile;
-		addSlotToContainer(new SlotValidated(this, myTile, 0, 80, 19));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 80, 49));
+		addSlotToContainer(new SlotValidated(this, myTile, 0, 44, 19));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 80, 19));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 80, 49));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
 

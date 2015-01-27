@@ -61,6 +61,7 @@ import thermalexpansion.plugins.TEPlugins;
 import thermalexpansion.util.FMLEventHandler;
 import thermalexpansion.util.FuelHandler;
 import thermalexpansion.util.IMCHandler;
+import thermalexpansion.util.crafting.ChargerManager;
 import thermalexpansion.util.crafting.CrucibleManager;
 import thermalexpansion.util.crafting.ExtruderManager;
 import thermalexpansion.util.crafting.FurnaceManager;
@@ -75,12 +76,12 @@ import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.ThermalFoundation;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.0B8";
+	public static final String version = "1.7.10R4.0.0B9";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/VERSION/master/ThermalExpansion";
 	public static final String modGuiFactory = "thermalexpansion.gui.GuiConfigTEFactory";
@@ -164,6 +165,7 @@ public class ThermalExpansion extends BaseMod {
 		TransposerManager.addDefaultRecipes();
 		PrecipitatorManager.addDefaultRecipes();
 		ExtruderManager.addDefaultRecipes();
+		ChargerManager.addDefaultRecipes();
 
 		TEItems.postInit();
 		TEBlocks.postInit();
@@ -187,6 +189,7 @@ public class ThermalExpansion extends BaseMod {
 		TransposerManager.loadRecipes();
 		PrecipitatorManager.loadRecipes();
 		ExtruderManager.loadRecipes();
+		ChargerManager.loadRecipes();
 
 		FuelHandler.parseFuels();
 
@@ -328,21 +331,27 @@ public class ThermalExpansion extends BaseMod {
 	public void missingMappings(FMLMissingMappingsEvent e) {
 
 		List<MissingMapping> list = e.get();
-		if (list.size() > 0) for (MissingMapping mapping : list) {
+		if (list.size() > 0) {
+			for (MissingMapping mapping : list) {
 
-			String name = mapping.name;
-			if (name.indexOf(':') >= 0)
-				name = name.substring(name.indexOf(':') + 1);
-			switch (mapping.type) {
-			case ITEM:
-				if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0)
+				String name = mapping.name;
+				if (name.indexOf(':') >= 0) {
+					name = name.substring(name.indexOf(':') + 1);
+				}
+				switch (mapping.type) {
+				case ITEM:
+					if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0) {
+						break;
+					}
+					Item item = GameRegistry.findItem("ThermalFoundation", name);
+					if (item != null) {
+						mapping.remap(item);
+					} else {
+						mapping.warn();
+					}
+				default:
 					break;
-				Item item = GameRegistry.findItem("ThermalFoundation", name);
-				if (item != null) {
-					mapping.remap(item);
-				} else
-					mapping.warn();
-			default: break;
+				}
 			}
 		}
 	}

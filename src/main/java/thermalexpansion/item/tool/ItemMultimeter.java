@@ -61,16 +61,19 @@ public class ItemMultimeter extends ItemBase {
 				return false;
 			}
 			if (player.isSneaking() && block instanceof IBlockConfigGui) {
-				if (((IBlockConfigGui)block).openConfigGui(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player))
+				if (((IBlockConfigGui) block).openConfigGui(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player)) {
 					return true;
+				}
 			}
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
+
 				for (int i = 0; i < info.size(); i++) {
 					player.addChatMessage(info.get(i));
 				}
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
+
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, false);
@@ -83,7 +86,6 @@ public class ItemMultimeter extends ItemBase {
 		} else {
 			if (player.isSneaking() && block instanceof IBlockDebug) {
 				((IBlockDebug) (block)).debugBlock(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player);
-
 			} else if (block instanceof IBlockInfo) {
 				if (ServerHelper.isClientWorld(world)) {
 					info.add(new ChatComponentText("-Client-"));
@@ -96,6 +98,7 @@ public class ItemMultimeter extends ItemBase {
 				}
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
+
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, player.isSneaking());

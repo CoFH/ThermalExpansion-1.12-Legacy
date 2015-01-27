@@ -119,12 +119,6 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		return false;
-	}
-
-	@Override
 	public boolean hasEffect(ItemStack stack) {
 
 		return isActive(stack);
@@ -146,6 +140,12 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public boolean isDamaged(ItemStack stack) {
 
 		return ItemHelper.getItemDamage(stack) != Types.CREATIVE.ordinal();
+	}
+
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+
+		return false;
 	}
 
 	@Override

@@ -83,14 +83,8 @@ public class TEEquipment {
 
 		/* Tools */
 		if (enableBattleWrench) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] {
-					"I I",
-					" G ",
-					" W ",
-					'I', "ingotInvar",
-					'G', "gearInvar",
-					'W', TEItems.toolWrench
-			}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
+					TEItems.toolWrench }));
 		}
 	}
 

@@ -49,7 +49,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1020);
 		tag.setTag("Item", cloneStack(TFItems.ingotInvar, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
@@ -79,7 +79,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1021);
 		tag.setTag("Item", cloneStack(TFItems.ingotNickel, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
@@ -109,7 +109,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1022);
 		tag.setTag("Item", cloneStack(TFItems.ingotLead, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
@@ -138,7 +138,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1023);
 		tag.setTag("Item", cloneStack(TFItems.ingotSilver, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
@@ -168,7 +168,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1024);
 		tag.setTag("Item", cloneStack(TFItems.ingotPlatinum, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 
@@ -199,7 +199,7 @@ public class TConPlugin {
 		tag = new NBTTagCompound();
 		tag.setInteger("MaterialId", 1025);
 		tag.setTag("Item", cloneStack(TFItems.ingotElectrum, 1).writeToNBT(new NBTTagCompound()));
-		//tag.setTag("Shard", );
+		// tag.setTag("Shard", );
 		tag.setInteger("Value", 2);
 		FMLInterModComms.sendMessage("TConstruct", "addMaterialItem", tag);
 	}

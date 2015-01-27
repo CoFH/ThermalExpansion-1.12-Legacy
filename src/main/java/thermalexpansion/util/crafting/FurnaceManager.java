@@ -134,7 +134,6 @@ public class FurnaceManager {
 			if (output.getItem() instanceof ItemFood) {
 				energy /= 2;
 			}
-
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 10 / 16, key, output, false);
 			} else {
@@ -223,7 +222,6 @@ public class FurnaceManager {
 
 			return energy;
 		}
-
 	}
 
 }

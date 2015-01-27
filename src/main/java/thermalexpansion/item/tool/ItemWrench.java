@@ -8,9 +8,12 @@ import cofh.asm.relauncher.Strippable;
 import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -34,6 +37,14 @@ public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 		super("thermalexpansion");
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.0"));
+		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.1"));
+		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.2"));
 	}
 
 	@Override

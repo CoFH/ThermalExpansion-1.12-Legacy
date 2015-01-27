@@ -2,6 +2,7 @@ package thermalexpansion.block.ender;
 
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
+import cofh.api.inventory.IInventoryConnection;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
@@ -48,7 +49,7 @@ import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-ISidedInventory {
+IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
@@ -987,6 +988,13 @@ ISidedInventory {
 	public void setAccessQuick(AccessMode access) {
 
 		this.access = access;
+	}
+
+	/* IInventoryConnection */
+	@Override
+	public ConnectionType canConnectInventory(ForgeDirection from) {
+
+		return ConnectionType.FORCE;
 	}
 
 	/* ISidedInventory */

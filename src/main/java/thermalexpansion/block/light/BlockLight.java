@@ -215,22 +215,22 @@ public class BlockLight extends BlockTEBase {
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		if (enable[Types.ILLUMINATOR_DIM.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminatorDim, new FluidStack(TFFluids.fluidMana, 1000), false);
 		}
 		if (enable[Types.LAMP_HALO_DIM.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampDim, new Object[] { " L ", "GLG", " S ", 'L', "ingotMithril", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC_DIM.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampDimAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustMithril", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		return true;
 	}

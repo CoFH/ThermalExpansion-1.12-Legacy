@@ -8,7 +8,10 @@ import cofh.asm.relauncher.Strippable;
 import cofh.core.item.tool.ItemSwordAdv;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.eventhandler.Event.Result;
+
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
@@ -26,6 +29,12 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolWrench, ITool
 	public ItemWrenchBattle(ToolMaterial toolMaterial) {
 
 		super(toolMaterial);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.battleWrench"));
 	}
 
 	@Override
