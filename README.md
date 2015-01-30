@@ -8,7 +8,7 @@ That is indeed the case. All rights reserved, as far as the code is concerned.
 
 Art and sound assets are released under the Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0), a summary of which can be found at: https://creativecommons.org/licenses/by-sa/4.0/
 
-©2012-2014 Cult of the Full Hub / Team CoFH / CoFH
+©2012-2015 Cult of the Full Hub / Team CoFH / CoFH
 
 #### Homepage
 
@@ -48,4 +48,4 @@ Don't be a jerk.
 
 See LICENSE-CODE.txt and LICENSE-ART.txt for license information.
 
-©2012-2014 Cult of the Full Hub / Team CoFH / CoFH
+©2012-2015 Cult of the Full Hub / Team CoFH / CoFH
