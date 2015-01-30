@@ -19,7 +19,7 @@ import thermalfoundation.fluid.TFFluids;
 
 public class GuiPlateSignalSlider extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_PLATE + "Signal.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final String INFO = "Emits a redstone signal at another location upon contact.\n\nSignal parameters can be configured.\n\nWrench while sneaking to dismantle.";
 
@@ -42,7 +42,6 @@ public class GuiPlateSignalSlider extends GuiBaseAdv {
 		myTile = (TilePlateSignal) theTile;
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
-
 	}
 
 	@Override

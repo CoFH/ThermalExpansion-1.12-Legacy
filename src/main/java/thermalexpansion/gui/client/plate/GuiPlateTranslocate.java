@@ -3,38 +3,41 @@ package thermalexpansion.gui.client.plate;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
+import cofh.core.render.IconRegistry;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementFluid;
+import cofh.lib.gui.element.ElementIcon;
 import cofh.lib.gui.element.ElementSimpleToolTip;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-import thermalexpansion.block.plate.TilePlateSignal;
+import thermalexpansion.block.plate.TilePlateTranslocate;
 import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.container.ContainerTEBase;
 import thermalfoundation.fluid.TFFluids;
 
 public class GuiPlateTranslocate extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_PLATE + "Signal.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final String INFO = "Translocates objects that touch it upon contact.\n\nDistance may be configured.\n\nWrench while sneaking to dismantle.";
 
-	TilePlateSignal myTile;
+	TilePlateTranslocate myTile;
 	String playerName;
 
 	ElementButton decDistance;
 	ElementButton incDistance;
 
+	ElementIcon plateTop;
+
 	public GuiPlateTranslocate(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
-		myTile = (TilePlateSignal) theTile;
+		myTile = (TilePlateTranslocate) theTile;
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
-
 	}
 
 	@Override
@@ -48,8 +51,6 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		}
 
 		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("Dist").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
-		addElement(new ElementSimpleToolTip(this, 49, 20).setToolTip("Strength").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
-		addElement(new ElementSimpleToolTip(this, 85, 20).setToolTip("Pants").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidEnder).setSize(16, 16));
 
@@ -58,6 +59,9 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 
 		addElement(decDistance);
 		addElement(incDistance);
+
+		plateTop = new ElementIcon(this, 134, 32, IconRegistry.getIcon("PlateTop", myTile.getFacing()));
+		addElement(plateTop);
 	}
 
 	@Override
@@ -77,8 +81,6 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		float pitch = 0.7F;
 
 		byte curDistance = myTile.distance;
-		byte curIntensity = myTile.intensity;
-		byte curDuration = myTile.duration;
 
 		if (buttonName.equalsIgnoreCase("decDistance")) {
 			myTile.distance -= change;
@@ -86,41 +88,28 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		} else if (buttonName.equalsIgnoreCase("incDistance")) {
 			myTile.distance += change;
 			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("decIntensity")) {
-			myTile.intensity -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("incIntensity")) {
-			myTile.intensity += change;
-			pitch += 0.1F;
-		} else if (buttonName.equalsIgnoreCase("decDuration")) {
-			myTile.duration -= change;
-			pitch -= 0.1F;
-		} else if (buttonName.equalsIgnoreCase("incDuration")) {
-			myTile.duration += change;
-			pitch += 0.1F;
 		}
 		playSound("random.click", 1.0F, pitch);
 
 		myTile.sendModePacket();
 
 		myTile.distance = curDistance;
-		myTile.intensity = curIntensity;
-		myTile.duration = curDuration;
 	}
 
 	@Override
 	protected void updateElementInformation() {
 
-		if (myTile.distance > TilePlateSignal.MIN_DISTANCE) {
+		if (myTile.distance > TilePlateTranslocate.MIN_DISTANCE) {
 			decDistance.setActive();
 		} else {
 			decDistance.setDisabled();
 		}
-		if (myTile.distance < TilePlateSignal.MAX_DISTANCE) {
+		if (myTile.distance < TilePlateTranslocate.MAX_DISTANCE) {
 			incDistance.setActive();
 		} else {
 			incDistance.setDisabled();
 		}
+		plateTop.setIcon(IconRegistry.getIcon("PlateTop", myTile.getFacing()));
 	}
 
 	@Override
@@ -143,14 +132,18 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 
 		if (134 <= mouseX && mouseX < 150 && 32 <= mouseY && mouseY < 48) {
 			int facing = myTile.getFacing();
+			float pitch = 0.7F;
 
 			if (mouseButton == 1) {
 				facing += 5;
+				pitch -= 0.1F;
 			} else {
 				facing++;
+				pitch += 0.1F;
 			}
 			facing %= 6;
 			if (myTile.setFacing(facing)) {
+				playSound("random.click", 1.0F, pitch);
 				myTile.sendModePacket();
 			}
 		} else {

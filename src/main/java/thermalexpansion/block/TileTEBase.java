@@ -126,6 +126,7 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 
 	protected void handleModePacket(PacketCoFHBase payload) {
 
+		markChunkDirty();
 	}
 
 	public void sendFluidPacket() {

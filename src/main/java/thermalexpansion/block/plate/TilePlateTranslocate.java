@@ -1,11 +1,20 @@
 package thermalexpansion.block.plate;
 
+import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+
+import thermalexpansion.gui.client.plate.GuiPlateTranslocate;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TilePlateTranslocate extends TilePlateBase {
 
@@ -14,12 +23,15 @@ public class TilePlateTranslocate extends TilePlateBase {
 		GameRegistry.registerTileEntity(TilePlateTranslocate.class, "cofh.thermalexpansion.PlateTranslocate");
 	}
 
+	public static final byte MIN_DISTANCE = 0;
+	public static final byte MAX_DISTANCE = 16;
+
 	public TilePlateTranslocate() {
 
 		super(BlockPlate.Types.TRANSLOCATE);
 	}
 
-	byte distance = 16;
+	public byte distance = 16;
 
 	@Override
 	public void onEntityCollidedWithBlock(Entity entity) {
@@ -50,6 +62,126 @@ public class TilePlateTranslocate extends TilePlateBase {
 				entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 0.5F, 1.0F);
 			}
 		}
+	}
+
+	/* GUI METHODS */
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPlateTranslocate(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		distance = nbt.getByte("Dist");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setByte("Dist", distance);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addByte(distance);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addByte(distance);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		distance = payload.getByte();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		byte newDist = payload.getByte();
+
+		if (newDist != distance) {
+			distance = newDist;
+		}
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			distance = payload.getByte();
+		} else {
+			payload.getByte();
+		}
+	}
+
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		direction = tag.getByte("Dir");
+
+		distance = tag.getByte("Dist");
+
+		markDirty();
+		sendUpdatePacket(Side.CLIENT);
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		tag.setByte("Dir", direction);
+
+		tag.setByte("Dist", distance);
 	}
 
 }

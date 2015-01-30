@@ -1,30 +1,35 @@
 package thermalexpansion.block.plate;
 
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
+import thermalexpansion.gui.client.plate.GuiPlateImpulse;
+import thermalexpansion.gui.container.ContainerTEBase;
+
+public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TilePlateImpulse.class, "cofh.thermalexpansion.PlateImpulse");
 	}
 
-	public static final double MIN_INTENSITY = 0;
-	public static final double MAX_INTENSITY = 10;
+	public static final int MIN_INTENSITY = 0;
+	public static final int MAX_INTENSITY = 100;
+	public static final int MIN_ANGLE = 0;
+	public static final int MAX_ANGLE = 900;
 
-	public static final double MIN_ANGLE = 0;
-	public static final double MAX_ANGLE = Math.PI / 3;
-
-	public double intensity;
-	public double angle;
+	public int intensity = 10;
+	public int angle;
 
 	double intensityX;
 	double intensityY;
@@ -32,12 +37,13 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 	public TilePlateImpulse() {
 
 		super(BlockPlate.Types.IMPULSE);
+		updateForce();
 	}
 
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		double[] v = getVector(3, 1, 0D);
+		double[] v = getVector(intensityX, intensityY, 0D);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
 
@@ -72,6 +78,118 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 		 */
 	}
 
+	private void updateForce() {
+
+		double fAngle = angle * Math.PI / 1800D;
+		intensityX = Math.cos(fAngle) * intensity / 10D;
+		intensityY = Math.sin(fAngle) * intensity / 10D;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPlateImpulse(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
+
+	/* NBT METHODS */
+	@Override
+	public void readFromNBT(NBTTagCompound nbt) {
+
+		super.readFromNBT(nbt);
+
+		intensity = nbt.getInteger("Int");
+		angle = nbt.getInteger("Angle");
+
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		nbt.setInteger("Int", intensity);
+		nbt.setInteger("Angle", angle);
+
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addInt(intensity);
+		payload.addInt(angle);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(intensity);
+		payload.addInt(angle);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addInt(MathHelper.clampI(intensity, MIN_INTENSITY, MAX_INTENSITY));
+		payload.addInt(MathHelper.clampI(angle, MIN_ANGLE, MAX_ANGLE));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		intensity = payload.getInt();
+		angle = payload.getInt();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		intensity = payload.getInt();
+		angle = payload.getInt();
+
+		updateForce();
+		sendDescPacket();
+	}
+
+	/* ITilePacketHandler */
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			intensity = payload.getInt();
+			angle = payload.getInt();
+			updateForce();
+		} else {
+			payload.getInt();
+			payload.getInt();
+		}
+	}
+
 	/* IPortableData */
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
@@ -81,11 +199,10 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 		}
 		direction = tag.getByte("Dir");
 
-		intensity = tag.getDouble("Int");
-		angle = tag.getDouble("Angle");
+		intensity = tag.getInteger("Int");
+		angle = tag.getInteger("Angle");
 
-		intensityX = intensity * Math.cos(angle);
-		intensityY = intensity * Math.sin(angle);
+		updateForce();
 
 		markDirty();
 		sendUpdatePacket(Side.CLIENT);
@@ -99,8 +216,8 @@ public class TilePlateImpulse extends TilePlateBase {// implements IItemDuct {
 		}
 		tag.setByte("Dir", direction);
 
-		tag.setDouble("Int", intensity);
-		tag.setDouble("Angle", angle);
+		tag.setInteger("Int", intensity);
+		tag.setInteger("Angle", angle);
 	}
 
 	// @Override

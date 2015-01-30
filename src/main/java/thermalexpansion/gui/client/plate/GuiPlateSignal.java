@@ -3,11 +3,13 @@ package thermalexpansion.gui.client.plate;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
+import cofh.core.render.IconRegistry;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementFluid;
+import cofh.lib.gui.element.ElementIcon;
 import cofh.lib.gui.element.ElementSimpleToolTip;
-import cofh.lib.gui.element.listbox.SliderHorizontal;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -19,7 +21,7 @@ import thermalfoundation.fluid.TFFluids;
 
 public class GuiPlateSignal extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_PLATE + "Signal.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final String INFO = "Emits a redstone signal at another location upon contact.\n\nSignal parameters can be configured.\n\nWrench while sneaking to dismantle.";
 
@@ -33,13 +35,14 @@ public class GuiPlateSignal extends GuiBaseAdv {
 	ElementButton decDuration;
 	ElementButton incDuration;
 
+	ElementIcon plateTop;
+
 	public GuiPlateSignal(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TilePlateSignal) theTile;
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
-
 	}
 
 	@Override
@@ -58,16 +61,6 @@ public class GuiPlateSignal extends GuiBaseAdv {
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidRedstone).setSize(16, 16));
 
-		SliderHorizontal slider = new SliderHorizontal(this, 10, 56, 30, 16, 16) {
-
-			@Override
-			public void onValueChanged(int value) {
-
-			}
-		};
-
-		addElement(slider);
-
 		decDistance = new ElementButton(this, 10, 56, "decDistance", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incDistance = new ElementButton(this, 26, 56, "incDistance", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		decIntensity = new ElementButton(this, 46, 56, "decIntensity", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -81,6 +74,9 @@ public class GuiPlateSignal extends GuiBaseAdv {
 		addElement(incIntensity);
 		addElement(decDuration);
 		addElement(incDuration);
+
+		plateTop = new ElementIcon(this, 134, 32, IconRegistry.getIcon("PlateTop", myTile.getFacing()));
+		addElement(plateTop);
 	}
 
 	@Override
@@ -103,6 +99,14 @@ public class GuiPlateSignal extends GuiBaseAdv {
 		byte curIntensity = myTile.intensity;
 		byte curDuration = myTile.duration;
 
+		if (GuiScreen.isShiftKeyDown()) {
+			change = 10;
+			pitch = 0.9F;
+			if (mouseButton == 1) {
+				change = 5;
+				pitch = 0.8F;
+			}
+		}
 		if (buttonName.equalsIgnoreCase("decDistance")) {
 			myTile.distance -= change;
 			pitch -= 0.1F;
@@ -164,6 +168,7 @@ public class GuiPlateSignal extends GuiBaseAdv {
 		} else {
 			incDuration.setDisabled();
 		}
+		plateTop.setIcon(IconRegistry.getIcon("PlateTop", myTile.getFacing()));
 	}
 
 	@Override
@@ -198,14 +203,18 @@ public class GuiPlateSignal extends GuiBaseAdv {
 
 		if (134 <= mouseX && mouseX < 150 && 32 <= mouseY && mouseY < 48) {
 			int facing = myTile.getFacing();
+			float pitch = 0.7F;
 
 			if (mouseButton == 1) {
 				facing += 5;
+				pitch -= 0.1F;
 			} else {
 				facing++;
+				pitch += 0.1F;
 			}
 			facing %= 6;
 			if (myTile.setFacing(facing)) {
+				playSound("random.click", 1.0F, pitch);
 				myTile.sendModePacket();
 			}
 		} else {
