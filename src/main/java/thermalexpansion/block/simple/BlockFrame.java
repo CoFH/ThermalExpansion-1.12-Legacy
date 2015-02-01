@@ -305,11 +305,11 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellReinforcedEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G',
-				"blockGlassHardened", 'X', Items.diamond }));
+				"blockGlassHardened", 'X', "gemDiamond" }));
 		TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameTesseractEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened",
-				'X', Items.diamond }));
+				'X', "gemDiamond" }));
 		TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(frameIlluminator, new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S',
