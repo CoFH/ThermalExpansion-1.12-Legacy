@@ -12,6 +12,7 @@ import java.util.List;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -162,6 +163,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		payload.addByte(mode);
 		payload.addByte(getInternalLight());
 		payload.addBool(isPowered);
+		payload.addBool(dim);
 		payload.addByte(inputPower);
 
 		return payload;
@@ -180,6 +182,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 			mode = payload.getByte();
 			lightValue = payload.getByte();
 			isPowered = payload.getBool();
+			dim = payload.getBool();
 			inputPower = payload.getByte();
 			setRenderColor();
 		}
@@ -246,9 +249,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
-			return;
+			info.add(new ChatComponentText("Dim: " + dim));
 		}
-		info.add(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
+		info.add(new ChatComponentTranslation("chat.thermalexpansion.light." + mode));
 	}
 
 }

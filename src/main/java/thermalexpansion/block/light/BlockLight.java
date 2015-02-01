@@ -20,8 +20,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -44,13 +42,6 @@ public class BlockLight extends BlockTEBase {
 		setResistance(150.0F);
 		setStepSound(soundTypeGlass);
 		setBlockName("thermalexpansion.light");
-	}
-
-	@Override
-	public void getBlockInfo(IBlockAccess world, int x, int y, int z, ForgeDirection side,
-			EntityPlayer player, List<IChatComponent> info, boolean debug) {
-
-		info.add(new ChatComponentText("" + world.getTileEntity(x, y, z)));
 	}
 
 	@Override

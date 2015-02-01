@@ -2,6 +2,8 @@ package thermalexpansion.block.light;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.nbt.NBTTagCompound;
+
 public class TileLightFalse extends TileLight {
 
 	public static void initialize() {
@@ -19,8 +21,12 @@ public class TileLightFalse extends TileLight {
 
 		int m = worldObj.getBlockMetadata(xCoord, yCoord, zCoord);
 		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, m & 3, 2);
+		dim = true;
+		NBTTagCompound tag = new NBTTagCompound();
+		writeToNBT(tag);
+		invalidate();
 		TileLight tile = (TileLight)worldObj.getTileEntity(xCoord, yCoord, zCoord);
-		tile.dim = true;
+		tile.readFromNBT(tag);
 		worldObj.func_147451_t(xCoord, yCoord, zCoord);
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
