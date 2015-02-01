@@ -105,7 +105,6 @@ public class GuiCell extends GuiBaseAdv {
 				pitch = 0.6F;
 			}
 		}
-
 		int curReceive = myTile.energyReceive;
 		int curSend = myTile.energySend;
 

@@ -8,6 +8,7 @@ import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.TimeTracker;
@@ -16,7 +17,6 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,10 +29,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
-
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.item.TEAugments;
 import thermalexpansion.util.Utils;
 
@@ -672,7 +670,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return TEProps.EMPTY_INVENTORY;
+		return CoFHProps.EMPTY_INVENTORY;
 	}
 
 	@Override

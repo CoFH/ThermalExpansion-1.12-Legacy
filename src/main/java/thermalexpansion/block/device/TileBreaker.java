@@ -248,7 +248,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
-		return TEProps.EMPTY_TANK_INFO;
+		return CoFHProps.EMPTY_TANK_INFO;
 	}
 
 	/* IReconfigurableFacing */

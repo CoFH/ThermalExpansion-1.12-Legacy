@@ -7,6 +7,7 @@ import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
 import cofh.api.transport.RegistryEnderAttuned;
+import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -19,10 +20,8 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-
 import java.util.List;
 import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -39,10 +38,8 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.GuiHandler;
 import thermalexpansion.gui.client.ender.GuiTesseract;
 import thermalexpansion.gui.container.ender.ContainerTesseract;
@@ -937,7 +934,7 @@ IInventoryConnection, ISidedInventory {
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
-		return TEProps.EMPTY_TANK_INFO;
+		return CoFHProps.EMPTY_TANK_INFO;
 	}
 
 	/* IPortableData */
@@ -1002,7 +999,7 @@ IInventoryConnection, ISidedInventory {
 	public int[] getAccessibleSlotsFromSide(int side) {
 
 		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
-			return TEProps.EMPTY_INVENTORY;
+			return CoFHProps.EMPTY_INVENTORY;
 		}
 		return SLOTS;
 	}

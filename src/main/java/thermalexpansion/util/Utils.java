@@ -181,7 +181,7 @@ public class Utils {
 			Class.forName("buildcraft.api.tools.IToolWrench");
 			bcWrenchExists = true;
 		} catch (Throwable t) {
-			// pokemon !
+			// pokemon!
 		}
 		try {
 			Class.forName("buildcraft.api.transport.IPipeTile");

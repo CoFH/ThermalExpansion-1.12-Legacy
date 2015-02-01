@@ -2,7 +2,6 @@ package thermalexpansion.core;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 public class TEProps {
 
@@ -49,9 +48,6 @@ public class TEProps {
 	public static boolean holidayChristmas = true;
 
 	public static int lavaRF = 200000;
-
-	public static int[] EMPTY_INVENTORY = new int[] {};
-	public static FluidTankInfo[] EMPTY_TANK_INFO = new FluidTankInfo[] {};
 
 	public static boolean enableGuiBorders = true;
 	public static boolean enableAchievements = false;

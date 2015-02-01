@@ -9,20 +9,16 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
-
 import java.util.Iterator;
 import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
-
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.GuiStrongbox;
 import thermalexpansion.gui.container.ContainerStrongbox;
 
@@ -293,7 +289,7 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return access.isPublic() ? CoFHProps.SLOTS[getStorageIndex()] : TEProps.EMPTY_INVENTORY;
+		return access.isPublic() ? CoFHProps.SLOTS[getStorageIndex()] : CoFHProps.EMPTY_INVENTORY;
 	}
 
 	@Override

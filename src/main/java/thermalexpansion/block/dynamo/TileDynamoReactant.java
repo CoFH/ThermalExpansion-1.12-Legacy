@@ -1,13 +1,12 @@
 package thermalexpansion.block.dynamo;
 
+import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import gnu.trove.map.hash.TObjectIntHashMap;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -20,9 +19,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 
@@ -313,7 +310,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : TEProps.EMPTY_INVENTORY;
+		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 }

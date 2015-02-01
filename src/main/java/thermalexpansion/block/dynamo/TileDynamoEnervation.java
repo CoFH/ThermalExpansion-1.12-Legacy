@@ -1,21 +1,19 @@
 package thermalexpansion.block.dynamo;
 
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
-
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import thermalexpansion.util.FuelHandler;
@@ -193,7 +191,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : TEProps.EMPTY_INVENTORY;
+		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 }

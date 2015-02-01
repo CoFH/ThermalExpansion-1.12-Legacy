@@ -4,6 +4,7 @@ import cofh.api.core.ICustomInventory;
 import cofh.api.inventory.IInventoryRetainer;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
+import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -12,7 +13,6 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -22,10 +22,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
-
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileInventory;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.device.GuiWorkbench;
 import thermalexpansion.gui.container.device.ContainerWorkbench;
 import thermalexpansion.util.SchematicHelper;
@@ -393,7 +391,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return TEProps.EMPTY_INVENTORY;
+		return CoFHProps.EMPTY_INVENTORY;
 	}
 
 	@Override

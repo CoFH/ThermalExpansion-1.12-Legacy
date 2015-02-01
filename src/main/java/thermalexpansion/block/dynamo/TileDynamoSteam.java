@@ -6,7 +6,6 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -21,9 +20,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
 import thermalexpansion.ThermalExpansion;
-import thermalexpansion.core.TEProps;
 import thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import thermalexpansion.util.FuelHandler;
@@ -335,7 +332,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : TEProps.EMPTY_INVENTORY;
+		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 }
