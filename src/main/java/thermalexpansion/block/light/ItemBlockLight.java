@@ -25,13 +25,14 @@ public class ItemBlockLight extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.light." + BlockLight.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
+		return "tile.thermalexpansion.light." +
+				BlockLight.NAMES[ItemHelper.getItemDamage(stack) % BlockLight.Types.values().length] + ".name";
 	}
 
 	@Override
 	public int getMetadata(int i) {
 
-		return i;
+		return i % BlockLight.Types.values().length;
 	}
 
 }

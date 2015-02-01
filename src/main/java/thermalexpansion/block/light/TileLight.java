@@ -29,6 +29,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	byte mode;
 	public boolean isPowered;
 	public byte inputPower;
+	boolean dim;
 
 	int lightValue;
 	int color = 0xFFFFFF;
@@ -55,7 +56,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	@Override
 	public int getLightValue() {
 
-		return getInternalLight();
+		return dim ? 0 : getInternalLight();
 	}
 
 	public int getInternalLight() {
@@ -196,6 +197,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		isPowered = nbt.getBoolean("Powered");
 		inputPower = nbt.getByte("Signal");
+
+		dim = nbt.getBoolean("Dim");
 	}
 
 	@Override
@@ -209,6 +212,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		nbt.setBoolean("Powered", isPowered);
 		nbt.setByte("Signal", inputPower);
+
+		nbt.setBoolean("Dim", dim);
 	}
 
 	/* IPortableData */
@@ -216,6 +221,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
 		mode = tag.getByte("Mode");
+
+		dim = tag.getBoolean("Dim");
 
 		if (tag.hasKey("Color")) {
 			setColor(tag.getInteger("Color"));
@@ -226,6 +233,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setByte("Mode", mode);
+
+		tag.setBoolean("Dim", dim);
 
 		if (modified) {
 			tag.setInteger("Color", color);

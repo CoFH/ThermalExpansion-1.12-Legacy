@@ -173,15 +173,12 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		boolean modified = theTile.modified;
 		boolean active = theTile.getInternalLight() > 0;
 
-		switch (BlockLight.Types.values()[bMeta]) {
+		switch (BlockLight.Types.getType(bMeta)) {
 		case ILLUMINATOR:
-		case ILLUMINATOR_DIM:
 			return renderWorldIlluminator(color, modified, x, y, z);
 		case LAMP_HALO:
-		case LAMP_HALO_DIM:
 			return renderWorldLampHalo(color, active, x, y, z);
 		case LAMP_BASIC:
-		case LAMP_BASIC_DIM:
 			return renderWorldLampBasic(color, active, x, y, z);
 		}
 		return false;
@@ -231,15 +228,12 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
 
-		switch (BlockLight.Types.values()[metadata]) {
+		switch (BlockLight.Types.getType(metadata)) {
 		case ILLUMINATOR:
-		case ILLUMINATOR_DIM:
 			renderItemIlluminator(color, item.hasTagCompound(), offset);
 			break;
 		case LAMP_HALO:
 		case LAMP_BASIC:
-		case LAMP_HALO_DIM:
-		case LAMP_BASIC_DIM:
 			renderItemLampBasic(color, offset);
 			break;
 		}

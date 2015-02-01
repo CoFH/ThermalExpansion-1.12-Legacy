@@ -20,6 +20,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IChatComponent;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -45,12 +47,15 @@ public class BlockLight extends BlockTEBase {
 	}
 
 	@Override
+	public void getBlockInfo(IBlockAccess world, int x, int y, int z, ForgeDirection side,
+			EntityPlayer player, List<IChatComponent> info, boolean debug) {
+
+		info.add(new ChatComponentText("" + world.getTileEntity(x, y, z)));
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		Types type = Types.values()[metadata];
-		if (type.dim) {
-			return new TileLightFalse();
-		}
 		return new TileLight();
 	}
 
@@ -70,8 +75,10 @@ public class BlockLight extends BlockTEBase {
 		if (stack.stackTagCompound != null) {
 			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 
-			tile.modified = true;
-			tile.setColor(stack.stackTagCompound.getInteger("Color"));
+			if (stack.stackTagCompound.hasKey("Color")) {
+				tile.setColor(stack.stackTagCompound.getInteger("Color"));
+			}
+			tile.dim = stack.stackTagCompound.getBoolean("Dim");
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -176,11 +183,13 @@ public class BlockLight extends BlockTEBase {
 
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
+		tag = new NBTTagCompound();
 		if (tile != null && tile.modified) {
-			tag = new NBTTagCompound();
 			tag.setInteger("Color", tile.color);
 		}
-		return tag;
+		if (tile.dim)
+			tag.setBoolean("Dim", tile.dim);
+		return tag.hasNoTags() ? null : tag;
 	}
 
 	/* IInitializer */
@@ -193,16 +202,10 @@ public class BlockLight extends BlockTEBase {
 		illuminator = new ItemStack(this, 1, 0);
 		lampBasic = new ItemStack(this, 1, 1);
 		lampBasicAlt = new ItemStack(this, 1, 2);
-		illuminatorDim = new ItemStack(this, 1, 3);
-		lampDim = new ItemStack(this, 1, 4);
-		lampDimAlt = new ItemStack(this, 1, 5);
 
 		GameRegistry.registerCustomItemStack("illuminator", illuminator);
 		GameRegistry.registerCustomItemStack("lampBasic", lampBasic);
 		GameRegistry.registerCustomItemStack("lampBasicAlt", lampBasicAlt);
-		GameRegistry.registerCustomItemStack("illuminatorDim", illuminatorDim);
-		GameRegistry.registerCustomItemStack("lampDim", lampDim);
-		GameRegistry.registerCustomItemStack("lampDimAlt", lampDimAlt);
 
 		return true;
 	}
@@ -221,27 +224,20 @@ public class BlockLight extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
 			"ingotSignalum" }));
 		}
-		if (enable[Types.ILLUMINATOR_DIM.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminatorDim, new FluidStack(TFFluids.fluidMana, 1000), false);
-		}
-		if (enable[Types.LAMP_HALO_DIM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampDim, new Object[] { " L ", "GLG", " S ", 'L', "ingotMithril", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
-		}
-		if (enable[Types.LAMP_BASIC_DIM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampDimAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustMithril", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
-		}
 		return true;
 	}
 
 	public static enum Types {
-		ILLUMINATOR, LAMP_HALO, LAMP_BASIC, ILLUMINATOR_DIM, LAMP_HALO_DIM, LAMP_BASIC_DIM;
+		ILLUMINATOR, LAMP_HALO, LAMP_BASIC;
 
-		public final boolean dim = name().endsWith("_DIM");
+		public static Types getType(int meta) {
+
+			Types[] types = values();
+			return types[meta % types.length];
+		}
 	}
 
-	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt", "illuminatorDim", "lampDim", "lampDimAlt" };
+	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -249,17 +245,10 @@ public class BlockLight extends BlockTEBase {
 		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Light.Illuminator", true);
 		enable[Types.LAMP_HALO.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
 		enable[Types.LAMP_BASIC.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
-		boolean dim = ThermalExpansion.config.get(category, "Light.DimVariants", true);
-		enable[Types.ILLUMINATOR_DIM.ordinal()] = dim && enable[Types.ILLUMINATOR.ordinal()];
-		enable[Types.LAMP_HALO_DIM.ordinal()] = dim && enable[Types.LAMP_HALO.ordinal()];
-		enable[Types.LAMP_BASIC_DIM.ordinal()] = dim && enable[Types.LAMP_BASIC.ordinal()];
 	}
 
 	public static ItemStack illuminator;
 	public static ItemStack lampBasic;
 	public static ItemStack lampBasicAlt;
-	public static ItemStack illuminatorDim;
-	public static ItemStack lampDim;
-	public static ItemStack lampDimAlt;
 
 }
