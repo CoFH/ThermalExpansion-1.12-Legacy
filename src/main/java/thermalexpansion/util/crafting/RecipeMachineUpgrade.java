@@ -53,4 +53,5 @@ public class RecipeMachineUpgrade extends ShapedOreRecipe {
 		newMachine.setTagInfo("Level", new NBTTagByte((byte) level));
 		return newMachine;
 	}
+
 }

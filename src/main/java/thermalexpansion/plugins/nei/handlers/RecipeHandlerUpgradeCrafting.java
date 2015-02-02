@@ -33,11 +33,9 @@ public class RecipeHandlerUpgradeCrafting extends ShapedRecipeHandler {
 				} else if (irecipe instanceof ShapedOreRecipe) {
 					recipe = forgeShapedRecipe((ShapedOreRecipe) irecipe);
 				}
-
 				if (recipe == null) {
 					continue;
 				}
-
 				recipe.computeVisuals();
 				arecipes.add(recipe);
 			}
@@ -63,11 +61,9 @@ public class RecipeHandlerUpgradeCrafting extends ShapedRecipeHandler {
 				} else if (irecipe instanceof ShapedOreRecipe) {
 					recipe = forgeShapedRecipe((ShapedOreRecipe) irecipe);
 				}
-
 				if (recipe == null) {
 					continue;
 				}
-
 				recipe.computeVisuals();
 				arecipes.add(recipe);
 			}
@@ -90,11 +86,9 @@ public class RecipeHandlerUpgradeCrafting extends ShapedRecipeHandler {
 			} else if (irecipe instanceof ShapedOreRecipe) {
 				recipe = forgeShapedRecipe((ShapedOreRecipe) irecipe);
 			}
-
 			if (recipe == null || !recipe.contains(recipe.ingredients, ingredient.getItem())) {
 				continue;
 			}
-
 			recipe.computeVisuals();
 			if (recipe.contains(recipe.ingredients, ingredient)) {
 				recipe.setIngredientPermutation(recipe.ingredients, ingredient);
@@ -108,4 +102,5 @@ public class RecipeHandlerUpgradeCrafting extends ShapedRecipeHandler {
 
 		return StringHelper.localize("recipe.thermalexpansion.upgrade");
 	}
+
 }
