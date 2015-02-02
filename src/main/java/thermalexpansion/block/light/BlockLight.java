@@ -1,5 +1,6 @@
 package thermalexpansion.block.light;
 
+import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -33,7 +34,7 @@ import thermalexpansion.core.TEProps;
 import thermalexpansion.util.crafting.TransposerManager;
 import thermalfoundation.fluid.TFFluids;
 
-public class BlockLight extends BlockTEBase {
+public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 	public BlockLight() {
 
@@ -42,12 +43,19 @@ public class BlockLight extends BlockTEBase {
 		setResistance(150.0F);
 		setStepSound(soundTypeGlass);
 		setBlockName("thermalexpansion.light");
+		basicGui = false;
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		return new TileLight();
+	}
+
+	@Override
+	public boolean openConfigGui(IBlockAccess world, int x, int y, int z, ForgeDirection side, EntityPlayer player) {
+
+		return ((TileLight) world.getTileEntity(x, y, z)).openGui(player);
 	}
 
 	@Override

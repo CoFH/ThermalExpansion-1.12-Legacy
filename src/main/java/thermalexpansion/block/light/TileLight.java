@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
@@ -17,6 +18,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 
 import thermalexpansion.block.TileTEBase;
+import thermalexpansion.gui.client.light.GuiLight;
+import thermalexpansion.gui.container.ContainerTEBase;
 
 public class TileLight extends TileTEBase implements ITileInfo {
 
@@ -26,15 +29,34 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	}
 
 	// 0 = OFF DEFAULT, 1 = ON DEFAULT, 2 = OFF SCALED, 3 = ON SCALED, 4 = OFF, 5 = ON
+	public byte mode;
 	public boolean modified;
-	byte mode;
 	public boolean isPowered;
 	public byte inputPower;
-	boolean dim;
+	public boolean dim;
 
 	int lightValue;
 	int color = 0xFFFFFF;
 	int renderColor = 0xAAAAAAFF;
+
+	/* GUI METHODS */
+	@Override
+	public boolean hasGui() {
+
+		return true;
+	}
+
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiLight(getGuiServer(inventory), this);
+	}
+
+	@Override
+	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this);
+	}
 
 	@Override
 	public boolean canUpdate() {
@@ -145,13 +167,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		return true;
 	}
 
-	/* GUI METHODS */
-	@Override
-	public boolean hasGui() {
-
-		return false;
-	}
-
 	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getPacket() {
@@ -159,12 +174,12 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(modified);
-		payload.addInt(color);
+		if (modified)
+			payload.addInt(color);
 		payload.addByte(mode);
-		payload.addByte(getInternalLight());
-		payload.addBool(isPowered);
 		payload.addBool(dim);
-		payload.addByte(inputPower);
+		if (ServerHelper.isServerWorld(worldObj))
+			payload.addByte(getInternalLight());
 
 		return payload;
 	}
@@ -175,16 +190,13 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		super.handleTilePacket(payload, isServer);
 
-		modified = payload.getBool();
-		color = payload.getInt();
-
+		if (payload.getBool())
+			setColor(payload.getInt());
+		mode = payload.getByte();
+		dim = payload.getBool();
 		if (!isServer) {
-			mode = payload.getByte();
 			lightValue = payload.getByte();
-			isPowered = payload.getBool();
-			dim = payload.getBool();
-			inputPower = payload.getByte();
-			setRenderColor();
+			worldObj.func_147451_t(xCoord, yCoord, zCoord);
 		}
 	}
 
@@ -230,6 +242,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (tag.hasKey("Color")) {
 			setColor(tag.getInteger("Color"));
 		}
+
+		worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		sendUpdatePacket(Side.CLIENT);
 	}
 
 	@Override
