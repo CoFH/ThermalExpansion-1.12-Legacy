@@ -107,7 +107,9 @@ public class GuiLight extends GuiBaseAdv {
 	protected void updateElementInformation() {
 
 		int x = !myTile.dim ? 190 : 176;
-		dimButton.setDisabledX(x).setHoverX(x).setSheetX(x);
+		dimButton.setDisabledX(x);
+		dimButton.setHoverX(x);
+		dimButton.setSheetX(x);
 	}
 
 }
