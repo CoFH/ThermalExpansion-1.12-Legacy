@@ -36,7 +36,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public boolean dim;
 
 	int lightValue;
-	int color = 0xFFFFFF;
+	public int color = 0xFFFFFF;
 	int renderColor = 0xAAAAAAFF;
 
 	/* GUI METHODS */
