@@ -379,8 +379,10 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	@Override
 	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
 
-		info.add(new ChatComponentText("Alignment: " + alignment + ":" + ForgeDirection.getOrientation(alignment)));
-		info.add(new ChatComponentText("Direction: " + direction + ":" + ForgeDirection.getOrientation(direction)));
+		if (debug) {
+			info.add(new ChatComponentText("Alignment: " + alignment + ":" + ForgeDirection.getOrientation(alignment)));
+			info.add(new ChatComponentText("Direction: " + direction + ":" + ForgeDirection.getOrientation(direction)));
+		}
 	}
 
 }
