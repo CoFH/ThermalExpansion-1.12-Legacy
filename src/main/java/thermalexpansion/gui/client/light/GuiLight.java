@@ -28,10 +28,10 @@ public class GuiLight extends GuiBaseAdv {
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final ResourceLocation SLIDER = new ResourceLocation(TEProps.PATH_GUI + "/elements/Slider_Light.png");
 
-	private static int getValue(char[] text) {
+	private static int getValue(char[] text, int end) {
 
 		int v = 0;
-		for (int i = 0; i-- > 0;) {
+		for (int i = 0; i < end; ++i) {
 			if (text[i] >= '0') {
 				v = v * 10 + (text[i] - '0');
 			}
@@ -122,13 +122,13 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onFocusLost() {
 
-				sliderR.setValue(getValue(text));
+				sliderR.setValue(getValue(text, textLength));
 			}
 
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255) {
+				if (getValue(text, textLength) > 255) {
 					setText("255");
 				}
 			}
@@ -175,13 +175,13 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onFocusLost() {
 
-				sliderG.setValue(getValue(text));
+				sliderG.setValue(getValue(text, textLength));
 			}
 
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255) {
+				if (getValue(text, textLength) > 255) {
 					setText("255");
 				}
 			}
@@ -228,13 +228,13 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onFocusLost() {
 
-				sliderB.setValue(getValue(text));
+				sliderB.setValue(getValue(text, textLength));
 			}
 
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255) {
+				if (getValue(text, textLength) > 255) {
 					setText("255");
 				}
 			}
