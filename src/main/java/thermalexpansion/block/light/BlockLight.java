@@ -186,8 +186,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		if (tile != null && tile.modified) {
 			tag.setInteger("Color", tile.color);
 		}
-		if (tile.dim)
+		if (tile.dim) {
 			tag.setBoolean("Dim", tile.dim);
+		}
 		return tag.hasNoTags() ? null : tag;
 	}
 
@@ -217,11 +218,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
+					"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
+					"ingotSignalum" }));
 		}
 		return true;
 	}

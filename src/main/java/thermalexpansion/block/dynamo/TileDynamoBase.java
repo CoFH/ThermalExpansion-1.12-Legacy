@@ -17,6 +17,7 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -29,6 +30,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
 import thermalexpansion.item.TEAugments;

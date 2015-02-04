@@ -250,8 +250,8 @@ public class BlockCell extends BlockTEBase {
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgradeOveride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic })
-			.addOverideInteger("Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addOverideInteger("Recv", TileCell.MAX_RECEIVE[1],
-					TileCell.MAX_RECEIVE[2]));
+					.addOverideInteger("Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addOverideInteger("Recv", TileCell.MAX_RECEIVE[1],
+							TileCell.MAX_RECEIVE[2]));
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic,
 					'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum }));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
@@ -262,8 +262,8 @@ public class BlockCell extends BlockTEBase {
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgradeOveride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
-			.addOverideInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addOverideInteger("Recv", TileCell.MAX_RECEIVE[3],
-					TileCell.MAX_RECEIVE[4]));
+					.addOverideInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addOverideInteger("Recv", TileCell.MAX_RECEIVE[3],
+							TileCell.MAX_RECEIVE[4]));
 		}
 		TECraftingHandler.addSecureRecipe(cellCreative);
 		TECraftingHandler.addSecureRecipe(cellBasic);

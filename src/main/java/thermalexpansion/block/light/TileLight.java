@@ -174,12 +174,14 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(modified);
-		if (modified)
+		if (modified) {
 			payload.addInt(color);
+		}
 		payload.addByte(mode);
 		payload.addBool(dim);
-		if (ServerHelper.isServerWorld(worldObj))
+		if (ServerHelper.isServerWorld(worldObj)) {
 			payload.addByte(getInternalLight());
+		}
 
 		return payload;
 	}
@@ -190,8 +192,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (payload.getBool())
+		if (payload.getBool()) {
 			setColor(payload.getInt());
+		}
 		mode = payload.getByte();
 		dim = payload.getBool();
 		if (!isServer) {

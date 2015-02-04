@@ -7,12 +7,14 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;

@@ -20,8 +20,10 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -38,6 +40,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.block.TileRSControl;
 import thermalexpansion.gui.GuiHandler;
@@ -46,7 +49,7 @@ import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-IInventoryConnection, ISidedInventory {
+		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 

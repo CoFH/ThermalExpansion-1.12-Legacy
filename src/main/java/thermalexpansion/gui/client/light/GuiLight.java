@@ -21,7 +21,6 @@ import org.lwjgl.opengl.GL11;
 import thermalexpansion.block.light.TileLight;
 import thermalexpansion.core.TEProps;
 
-
 public class GuiLight extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Light.png";
@@ -32,9 +31,11 @@ public class GuiLight extends GuiBaseAdv {
 	private static int getValue(char[] text) {
 
 		int v = 0;
-		for (int i = 0; i --> 0; )
-			if (text[i] >= '0')
+		for (int i = 0; i-- > 0;) {
+			if (text[i] >= '0') {
 				v = v * 10 + (text[i] - '0');
+			}
+		}
 		return v;
 	}
 
@@ -58,7 +59,7 @@ public class GuiLight extends GuiBaseAdv {
 
 		super.initGui();
 
-		GuiColor tileColor = new GuiColor((byte)255, myTile.color);
+		GuiColor tileColor = new GuiColor((byte) 255, myTile.color);
 		int type = myTile.getBlockMetadata();
 		IIcon icon;
 		switch (type) {
@@ -84,6 +85,7 @@ public class GuiLight extends GuiBaseAdv {
 		addElement(new ElementIcon(this, 5, 5, icon));
 
 		addElement(new SliderHorizontal(this, 6 + 16 + 5, 6 + 10, 70, 12, 5) {
+
 			@Override
 			public void onValueChanged(int value) {
 
@@ -104,12 +106,12 @@ public class GuiLight extends GuiBaseAdv {
 		dimButton = new ElementButton(this, 6 + 16 + 5 + 70 + 5, 5 + 10, "Dim", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH);
 		addElement(dimButton);
 
-
 		final ElementTextField textR;
 		final ElementTextField textG;
 		final ElementTextField textB;
 
 		addElement(textR = new ElementTextFieldLimited(this, 6 + 13 + 55 * 0, 6 + 55, 24, 10, (short) 4) {
+
 			@Override
 			protected boolean onEnter() {
 
@@ -126,12 +128,14 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255)
+				if (getValue(text) > 255) {
 					setText("255");
+				}
 			}
 		}.setFilter("0123456789", true).setText("0"));
 
 		addElement(sliderR = new SliderHorizontal(this, 6 + 55 * 0, 6 + 40, 50, 12, 255) {
+
 			@Override
 			protected void drawSlider(int mx, int my, int sliderX, int sliderY) {
 
@@ -160,6 +164,7 @@ public class GuiLight extends GuiBaseAdv {
 		}.setValue(tileColor.getIntR()).setSliderSize(2, 12));
 
 		addElement(textG = new ElementTextFieldLimited(this, 6 + 13 + 55 * 1, 6 + 55, 24, 10, (short) 4) {
+
 			@Override
 			protected boolean onEnter() {
 
@@ -176,12 +181,14 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255)
+				if (getValue(text) > 255) {
 					setText("255");
+				}
 			}
 		}.setFilter("0123456789", true).setText("0"));
 
 		addElement(sliderG = new SliderHorizontal(this, 6 + 55 * 1, 6 + 40, 50, 12, 255) {
+
 			@Override
 			protected void drawSlider(int mx, int my, int sliderX, int sliderY) {
 
@@ -210,6 +217,7 @@ public class GuiLight extends GuiBaseAdv {
 		}.setValue(tileColor.getIntG()).setSliderSize(2, 12));
 
 		addElement(textB = new ElementTextFieldLimited(this, 6 + 13 + 55 * 2, 6 + 55, 24, 10, (short) 4) {
+
 			@Override
 			protected boolean onEnter() {
 
@@ -226,12 +234,14 @@ public class GuiLight extends GuiBaseAdv {
 			@Override
 			protected void onCharacterEntered(boolean success) {
 
-				if (getValue(text) > 255)
+				if (getValue(text) > 255) {
 					setText("255");
+				}
 			}
 		}.setFilter("0123456789", true).setText("0"));
 
 		addElement(sliderB = new SliderHorizontal(this, 6 + 55 * 2, 6 + 40, 50, 12, 255) {
+
 			@Override
 			protected void drawSlider(int mx, int my, int sliderX, int sliderY) {
 

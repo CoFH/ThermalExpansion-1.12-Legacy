@@ -38,15 +38,15 @@ public class NEIRecipeWrapper implements IRecipe {
 	}
 
 	@Override
-	public boolean matches(InventoryCrafting p_77569_1_, World p_77569_2_) {
+	public boolean matches(InventoryCrafting inv, World world) {
 
-		return recipe.matches(p_77569_1_, p_77569_2_);
+		return recipe.matches(inv, world);
 	}
 
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting p_77572_1_) {
+	public ItemStack getCraftingResult(InventoryCrafting inv) {
 
-		return recipe.getCraftingResult(p_77572_1_);
+		return recipe.getCraftingResult(inv);
 	}
 
 	@Override
@@ -60,4 +60,5 @@ public class NEIRecipeWrapper implements IRecipe {
 
 		return recipe.getRecipeOutput();
 	}
+
 }

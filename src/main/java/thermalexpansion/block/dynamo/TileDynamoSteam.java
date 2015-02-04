@@ -6,6 +6,7 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -20,6 +21,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+
 import thermalexpansion.ThermalExpansion;
 import thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;

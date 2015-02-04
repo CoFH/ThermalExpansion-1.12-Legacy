@@ -15,7 +15,7 @@ import thermalexpansion.plugins.nei.handlers.RecipeHandlerPulverizer;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerSawmill;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerSmelter;
 import thermalexpansion.plugins.nei.handlers.RecipeHandlerTransposer;
-import thermalexpansion.plugins.nei.handlers.RecipeHandlerUpgradeCrafting;
+import thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingUpgrade;
 
 public class NEIThermalExpansionConfig implements IConfigureNEI {
 
@@ -25,8 +25,8 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 
 		API.registerNEIGuiHandler(NEIGuiHandler.instance);
 
-		API.registerRecipeHandler(RecipeHandlerUpgradeCrafting.instance);
-		API.registerUsageHandler(RecipeHandlerUpgradeCrafting.instance);
+		API.registerRecipeHandler(RecipeHandlerCraftingUpgrade.instance);
+		API.registerUsageHandler(RecipeHandlerCraftingUpgrade.instance);
 
 		API.registerRecipeHandler(RecipeHandlerFurnace.instance);
 		API.registerUsageHandler(RecipeHandlerFurnace.instance);

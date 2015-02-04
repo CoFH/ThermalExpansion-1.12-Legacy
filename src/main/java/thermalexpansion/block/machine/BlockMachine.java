@@ -344,7 +344,7 @@ public class BlockMachine extends BlockTEBase {
 		}
 		if (enable[Types.PRECIPITATOR.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(precipitator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart,
-					'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', Blocks.snow }));
+					'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', "ingotInvar" }));
 		}
 		if (enable[Types.EXTRUDER.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',

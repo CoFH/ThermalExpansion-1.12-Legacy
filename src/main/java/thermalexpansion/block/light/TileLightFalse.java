@@ -25,7 +25,7 @@ public class TileLightFalse extends TileLight {
 		NBTTagCompound tag = new NBTTagCompound();
 		writeToNBT(tag);
 		invalidate();
-		TileLight tile = (TileLight)worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		TileLight tile = (TileLight) worldObj.getTileEntity(xCoord, yCoord, zCoord);
 		tile.readFromNBT(tag);
 		worldObj.func_147451_t(xCoord, yCoord, zCoord);
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

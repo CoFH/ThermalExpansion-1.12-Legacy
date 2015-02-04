@@ -12,9 +12,9 @@ import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.item.crafting.ShapedRecipes;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-public class RecipeHandlerUpgradeCrafting extends ShapedRecipeHandler {
+public class RecipeHandlerCraftingUpgrade extends ShapedRecipeHandler {
 
-	public static RecipeHandlerUpgradeCrafting instance = new RecipeHandlerUpgradeCrafting();
+	public static RecipeHandlerCraftingUpgrade instance = new RecipeHandlerCraftingUpgrade();
 
 	@SuppressWarnings("unchecked")
 	@Override
