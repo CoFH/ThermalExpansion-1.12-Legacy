@@ -49,7 +49,7 @@ import thermalexpansion.gui.container.ender.ContainerTesseract;
 import thermalexpansion.util.Utils;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-		IInventoryConnection, ISidedInventory {
+IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
@@ -539,8 +539,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("chat.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure.1") + " " + owner + "! "
+					+ StringHelper.localize("chat.cofh.secure.2")));
 		}
 		return true;
 	}

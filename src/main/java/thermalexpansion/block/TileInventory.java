@@ -97,8 +97,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 			return hasGui();
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure1") + " " + owner + "! "
-					+ StringHelper.localize("chat.cofh.secure2")));
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure.1") + " " + owner + "! "
+					+ StringHelper.localize("chat.cofh.secure.2")));
 		}
 		return false;
 	}
