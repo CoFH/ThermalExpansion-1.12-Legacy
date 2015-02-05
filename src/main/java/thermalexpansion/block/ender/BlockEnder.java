@@ -11,6 +11,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -67,10 +68,10 @@ public class BlockEnder extends BlockTEBase {
 			tile.setInvName(ItemHelper.getNameFromItemStack(stack));
 
 			if (SecurityHelper.isSecure(stack)) {
-				String stackOwner = SecurityHelper.getOwnerName(stack);
+				UUID stackOwner = SecurityHelper.getOwner(stack);
 
-				if (!stackOwner.isEmpty()) {
-					tile.setOwnerName(stackOwner);
+				if (0 != stackOwner.variant()) {
+					tile.setOwner(stackOwner);
 				} else if (living instanceof ICommandSender) {
 					tile.setOwnerName(living.getCommandSenderName());
 				}

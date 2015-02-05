@@ -13,6 +13,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -21,6 +22,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -101,8 +103,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			setDefaultInventoryTag(stack);
 		}
 		if (SecurityHelper.isSecure(stack)) {
-			if (SecurityHelper.getOwnerName(stack).isEmpty()) {
-				SecurityHelper.setOwnerName(stack, player.getCommandSenderName());
+			if (SecurityHelper.getOwner(stack).variant() == 0) {
+				SecurityHelper.setOwner(stack, player.getGameProfile());
 			}
 		}
 		if (ServerHelper.isServerWorld(world)) {
@@ -175,10 +177,16 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			return true;
 		}
 		AccessMode access = SecurityHelper.getAccess(stack);
-		String owner = SecurityHelper.getOwnerName(stack);
+		UUID ownerID = SecurityHelper.getOwner(stack);
+		if (access.isPublic() || ownerID.variant() == 0 || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+			return true;
 
-		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
-				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
+		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
+		if (ownerID.equals(otherID))
+			return true;
+
+		String owner = SecurityHelper.getOwnerName(stack);
+		return access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
 	}
 
 	public static boolean isEnchanted(ItemStack container) {

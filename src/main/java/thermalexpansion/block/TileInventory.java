@@ -4,9 +4,13 @@ import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
+
+import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -15,6 +19,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 
@@ -24,7 +29,7 @@ import thermalexpansion.util.Utils;
 
 public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
 
-	protected String owner = CoFHProps.DEFAULT_OWNER;
+	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
 	protected AccessMode access = AccessMode.PUBLIC;
 	protected boolean canAccess = true;
 
@@ -37,7 +42,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	public boolean isSecured() {
 
-		return !owner.equals(CoFHProps.DEFAULT_OWNER);
+		return 0 != owner.getId().variant();
 	}
 
 	public boolean enableSecurity() {
@@ -128,7 +133,12 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		super.readFromNBT(nbt);
 
 		access = AccessMode.values()[nbt.getByte("Access")];
-		owner = nbt.getString("Owner");
+
+        if (nbt.hasKey("OwnerUUID", 8)) {
+            setOwner(UUID.fromString(nbt.getString("OwnerUUID")));
+        } else {
+            setOwnerName(nbt.getString("Owner"));
+        }
 
 		if (!enableSecurity()) {
 			access = AccessMode.PUBLIC;
@@ -142,7 +152,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("Owner", owner);
+		nbt.setString("OwnerUUID", owner.getId().toString());
 
 		writeInventoryToNBT(nbt);
 	}
@@ -185,7 +195,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte((byte) access.ordinal());
-		payload.addString(owner);
+		payload.addString(owner.getId().toString());
 
 		return payload;
 	}
@@ -199,7 +209,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 
 		if (!isServer) {
-			owner = payload.getString();
+			setOwner(UUID.fromString(payload.getString()));
 		} else {
 			payload.getString();
 		}
@@ -315,8 +325,14 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwnerName(String name) {
 
-		if (owner.equals(CoFHProps.DEFAULT_OWNER)) {
-			owner = name;
+		return setOwner(UUID.fromString(PreYggdrasilConverter.func_152719_a(name)));
+	}
+
+	@Override
+	public boolean setOwner(UUID uuid) {
+
+		if (owner.getId().variant() == 0) {
+			owner = SecurityHelper.getProfile(uuid);
 			markChunkDirty();
 			return true;
 		}
@@ -324,9 +340,25 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
+	public UUID getOwner() {
+
+		return owner.getId();
+	}
+
+	@Override
 	public String getOwnerName() {
 
-		return owner;
+		String name = owner.getName();
+		if (name == null) {
+			new Thread("CoFH User Loader") {
+				@Override
+				public void run() {
+					owner = SecurityHelper.getProfile(owner.getId());
+				}
+			}.start();
+			return StringHelper.localize("info.cofh.anotherplayer");
+		}
+		return name;
 	}
 
 }
