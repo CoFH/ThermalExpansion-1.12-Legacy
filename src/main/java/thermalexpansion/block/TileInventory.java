@@ -134,10 +134,12 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		access = AccessMode.values()[nbt.getByte("Access")];
 
-        if (nbt.hasKey("OwnerUUID", 8)) {
-            setOwner(UUID.fromString(nbt.getString("OwnerUUID")));
+		String uuid = nbt.getString("OwnerUUID");
+		String name = nbt.getString("Owner");
+        if (uuid != null) {
+            setOwner(new GameProfile(UUID.fromString(uuid), name));
         } else {
-            setOwnerName(nbt.getString("Owner"));
+            setOwnerName(name);
         }
 
 		if (!enableSecurity()) {
@@ -153,6 +155,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		nbt.setByte("Access", (byte) access.ordinal());
 		nbt.setString("OwnerUUID", owner.getId().toString());
+		nbt.setString("Owner", owner.getName());
 
 		writeInventoryToNBT(nbt);
 	}
@@ -195,7 +198,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte((byte) access.ordinal());
-		payload.addString(owner.getId().toString());
+		payload.addUUID(owner.getId());
+		payload.addString(owner.getName());
 
 		return payload;
 	}
@@ -209,8 +213,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 
 		if (!isServer) {
-			setOwner(UUID.fromString(payload.getString()));
+			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 		} else {
+			payload.getUUID();
 			payload.getString();
 		}
 	}
@@ -332,7 +337,23 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	public boolean setOwner(UUID uuid) {
 
 		if (owner.getId().variant() == 0) {
-			owner = SecurityHelper.getProfile(uuid);
+			owner = SecurityHelper.getProfile(uuid, null);
+			markChunkDirty();
+			return true;
+		}
+		return false;
+	}
+
+	public boolean setOwner(GameProfile profile) {
+
+		if (owner.getId().variant() == 0) {
+			owner = profile;
+			new Thread("CoFH User Loader") {
+				@Override
+				public void run() {
+					owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
+				}
+			}.start();
 			markChunkDirty();
 			return true;
 		}
@@ -350,12 +371,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		String name = owner.getName();
 		if (name == null) {
-			new Thread("CoFH User Loader") {
-				@Override
-				public void run() {
-					owner = SecurityHelper.getProfile(owner.getId());
-				}
-			}.start();
 			return StringHelper.localize("info.cofh.anotherplayer");
 		}
 		return name;

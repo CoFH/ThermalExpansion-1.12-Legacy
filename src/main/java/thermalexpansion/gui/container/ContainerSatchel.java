@@ -21,6 +21,7 @@ import invtweaks.api.container.ContainerSectionCallback;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -117,16 +118,6 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@Override
-	public boolean setOwnerName(String name) {
-
-		if (SecurityHelper.setOwnerName(getContainerStack(), name)) {
-			onSlotChanged();
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	public AccessMode getAccess() {
 
 		return SecurityHelper.getAccess(getContainerStack());
@@ -139,6 +130,12 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@Override
+	public UUID getOwner() {
+
+		return SecurityHelper.getOwner(getContainerStack());
+	}
+
+	@Override
 	public boolean canPlayerAccess(String name) {
 
 		AccessMode access = getAccess();
@@ -146,6 +143,18 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 
 		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
 				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
+	}
+
+	@Override
+	public boolean setOwnerName(String name) {
+
+		throw new UnsupportedOperationException();
+	}
+
+	@Override
+	public boolean setOwner(UUID name) {
+
+		throw new UnsupportedOperationException();
 	}
 
 	/* ISlotValidator */
