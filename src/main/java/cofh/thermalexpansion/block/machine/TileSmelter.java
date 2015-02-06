@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.CoFHCore;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -13,7 +12,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-
 
 public class TileSmelter extends TileMachineBase {
 
@@ -35,7 +33,6 @@ public class TileSmelter extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineSmelter");
-		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Smelter", true);
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}

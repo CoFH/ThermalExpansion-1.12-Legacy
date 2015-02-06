@@ -9,8 +9,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.util.FuelHandler;
+import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -25,8 +25,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-
-import thermalfoundation.fluid.TFFluids;
 
 public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 

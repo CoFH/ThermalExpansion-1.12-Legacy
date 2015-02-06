@@ -3,13 +3,11 @@ package cofh.thermalexpansion.item;
 import cofh.core.item.ItemArmorAdv;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
+import cofh.thermalfoundation.item.Equipment;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import thermalfoundation.item.Equipment;
 
 public class TEEquipment {
 

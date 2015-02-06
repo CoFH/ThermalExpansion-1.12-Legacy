@@ -10,12 +10,10 @@ import cofh.lib.gui.element.listbox.SliderHorizontal;
 import cofh.thermalexpansion.block.plate.TilePlateSignal;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-
+import cofh.thermalfoundation.fluid.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import thermalfoundation.fluid.TFFluids;
 
 public class GuiPlateSignalSlider extends GuiBaseAdv {
 

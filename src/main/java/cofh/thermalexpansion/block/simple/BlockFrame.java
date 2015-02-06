@@ -9,13 +9,13 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalfoundation.fluid.TFFluids;
+import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -34,9 +34,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import thermalfoundation.fluid.TFFluids;
-import thermalfoundation.item.TFItems;
 
 public class BlockFrame extends Block implements IDismantleable, IInitializer {
 

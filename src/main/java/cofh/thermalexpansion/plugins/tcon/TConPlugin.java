@@ -1,13 +1,10 @@
 package cofh.thermalexpansion.plugins.tcon;
 
 import static cofh.lib.util.helpers.ItemHelper.cloneStack;
-
+import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.event.FMLInterModComms;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumChatFormatting;
-
-import thermalfoundation.item.TFItems;
 
 public class TConPlugin {
 

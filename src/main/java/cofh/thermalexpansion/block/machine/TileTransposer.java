@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.CoFHCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
@@ -31,7 +30,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.TRANSPOSER.ordinal();
@@ -52,7 +50,6 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
-		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Transposer", true);
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}

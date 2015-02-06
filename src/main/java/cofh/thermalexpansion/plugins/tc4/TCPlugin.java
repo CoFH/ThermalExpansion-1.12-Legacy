@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.plugins.tc4;
 
 import static cofh.api.modhelpers.ThaumcraftHelper.parseAspects;
-
 import cofh.asm.relauncher.Strippable;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
@@ -11,10 +10,9 @@ import cofh.thermalexpansion.block.simple.BlockRockwool;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEFlorbs;
 import cofh.thermalexpansion.item.TEItems;
-
-import thermalfoundation.block.BlockOre;
-import thermalfoundation.block.BlockStorage;
-import thermalfoundation.item.TFItems;
+import cofh.thermalfoundation.block.BlockOre;
+import cofh.thermalfoundation.block.BlockStorage;
+import cofh.thermalfoundation.item.TFItems;
 
 public class TCPlugin {
 

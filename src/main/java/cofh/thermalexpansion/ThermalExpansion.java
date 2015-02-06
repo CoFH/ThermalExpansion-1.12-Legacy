@@ -45,6 +45,7 @@ import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalfoundation.ThermalFoundation;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.CustomProperty;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -73,8 +74,6 @@ import net.minecraftforge.oredict.RecipeSorter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import thermalfoundation.ThermalFoundation;
-
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
 guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
@@ -89,12 +88,13 @@ public class ThermalExpansion extends BaseMod {
 	@Instance(modId)
 	public static ThermalExpansion instance;
 
-	@SidedProxy(clientSide = "thermalexpansion.core.ProxyClient", serverSide = "thermalexpansion.core.Proxy")
+	@SidedProxy(clientSide = "cofh.thermalexpansion.core.ProxyClient", serverSide = "cofh.thermalexpansion.core.Proxy")
 	public static Proxy proxy;
 
 	public static final Logger log = LogManager.getLogger(modId);
 
 	public static final ConfigHandler config = new ConfigHandler(version);
+	public static final ConfigHandler configClient = new ConfigHandler(version);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
 	public static final CreativeTabs tabBlocks = new CreativeTabBlocks();
@@ -114,10 +114,9 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		// loadLang();
-
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
-		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/ThermalExpansion.cfg")));
+		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg")));
+		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg")));
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
@@ -197,6 +196,7 @@ public class ThermalExpansion extends BaseMod {
 
 		cleanConfig(false);
 		config.cleanUp(false, true);
+		configClient.cleanUp(false, true);
 
 		log.info("Load Complete.");
 	}

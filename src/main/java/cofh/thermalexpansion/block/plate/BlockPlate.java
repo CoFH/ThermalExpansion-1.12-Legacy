@@ -8,12 +8,11 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 import java.util.List;
-
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -31,8 +30,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import thermalfoundation.fluid.TFFluids;
 
 public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 

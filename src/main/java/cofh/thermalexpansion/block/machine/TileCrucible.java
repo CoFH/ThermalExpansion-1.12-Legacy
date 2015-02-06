@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.CoFHCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
@@ -28,7 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.CRUCIBLE.ordinal();
@@ -49,7 +47,6 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		defaultEnergyConfig[TYPE].setParams(maxPower / 10, maxPower, Math.max(480000, maxPower * 1200));
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
-		enableSound[TYPE] = CoFHCore.configClient.get("sound", "Machine.Crucible", true);
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}

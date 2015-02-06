@@ -20,11 +20,10 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-
 public class SawmillManager {
 
 	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
-	// private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
+	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
 	static {
@@ -33,7 +32,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(new ComparableItemStackSawmill(input));
+		return input == null ? null : recipeMap.get(query.set(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {

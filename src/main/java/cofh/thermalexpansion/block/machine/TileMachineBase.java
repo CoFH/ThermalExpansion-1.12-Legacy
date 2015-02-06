@@ -19,7 +19,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 
-
 public abstract class TileMachineBase extends TileAugmentable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
@@ -42,7 +41,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 			enableSecurity[i] = ThermalExpansion.config.get("security", "Machine." + name + ".Securable", enableSecurity[i], comment);
 
 			comment = "Enable sounds for the " + name + ". (Default: true)";
-			enableSound[i] = ThermalExpansion.config.get("tweak.sound", "Machine." + name + ".Sound", enableSound[i], comment);
+			enableSound[i] = ThermalExpansion.configClient.get("sound", "Machine." + name + ".Sound", enableSound[i], comment);
 		}
 	}
 

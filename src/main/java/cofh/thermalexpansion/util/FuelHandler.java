@@ -15,13 +15,12 @@ import java.util.Set;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
 public class FuelHandler {
 
 	public static ConfigHandler configFuels = new ConfigHandler(ThermalExpansion.version);
 
 	static {
-		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Fuels.cfg")));
+		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/fuels.cfg")));
 	}
 
 	private FuelHandler() {

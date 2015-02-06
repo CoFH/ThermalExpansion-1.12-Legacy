@@ -5,6 +5,8 @@ import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalfoundation.fluid.TFFluids;
+import cofh.thermalfoundation.item.TFItems;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -18,9 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-
-import thermalfoundation.fluid.TFFluids;
-import thermalfoundation.item.TFItems;
 
 public class CrucibleManager {
 

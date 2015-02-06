@@ -6,6 +6,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalfoundation.item.TFItems;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -18,8 +19,6 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-
-import thermalfoundation.item.TFItems;
 
 public class PulverizerManager {
 

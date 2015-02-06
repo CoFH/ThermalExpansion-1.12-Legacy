@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
-
 public class TEFlorbs {
 
 	private TEFlorbs() {
@@ -28,7 +27,7 @@ public class TEFlorbs {
 
 	public static void preInit() {
 
-		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/ThermalExpansion-Florbs.cfg")));
+		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/florbs.cfg")));
 
 		String category = "tweak";
 		String comment = null;

@@ -11,13 +11,11 @@ import cofh.lib.gui.element.ElementSimpleToolTip;
 import cofh.thermalexpansion.block.plate.TilePlateImpulse;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-
+import cofh.thermalfoundation.fluid.TFFluids;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-
-import thermalfoundation.fluid.TFFluids;
 
 public class GuiPlateImpulse extends GuiBaseAdv {
 

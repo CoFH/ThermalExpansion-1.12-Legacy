@@ -1,12 +1,10 @@
 package cofh.thermalexpansion.item;
 
+import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-
-import thermalfoundation.item.TFItems;
 
 public class TEAugments {
 
