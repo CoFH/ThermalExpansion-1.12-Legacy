@@ -9,7 +9,7 @@
 	
 	<!-- Project information -->
 	<property name="build.name" value="${ant.project.name}"/>
-	<property name="class.pckg" value="thermalexpansion"/>
+	<property name="class.pckg" value="cofh/thermalexpansion"/>
 	<!-- Version file -->
 	<property name="verclass.dir" value="${src.dir}/${class.pckg}" />
 	<property name="verclass.name" value="ThermalExpansion.java"/>
