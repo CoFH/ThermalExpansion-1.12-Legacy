@@ -2,7 +2,6 @@ package thermalexpansion.block.device;
 
 import cofh.api.core.ICustomInventory;
 import cofh.api.inventory.IInventoryRetainer;
-import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
@@ -237,9 +236,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 		PacketCoFHBase payload = super.getPacket();
 
-		payload.addByte((byte) access.ordinal());
 		payload.addByte(selectedSchematic);
-		payload.addString(owner);
 
 		return payload;
 	}
@@ -256,14 +253,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 		super.handleTilePacket(payload, isServer);
 
-		access = ISecurable.AccessMode.values()[payload.getByte()];
 		selectedSchematic = payload.getByte();
-
-		if (!isServer) {
-			owner = payload.getString();
-		} else {
-			payload.getString();
-		}
 	}
 
 	/* ITileInfoPacketHandler */
