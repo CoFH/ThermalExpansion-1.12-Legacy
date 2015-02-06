@@ -103,7 +103,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			setDefaultInventoryTag(stack);
 		}
 		if (SecurityHelper.isSecure(stack)) {
-			if (SecurityHelper.getOwner(stack).variant() == 0) {
+			if (SecurityHelper.getOwner(stack).getId().variant() == 0) {
 				SecurityHelper.setOwner(stack, player.getGameProfile());
 			}
 		}
@@ -177,8 +177,10 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			return true;
 		}
 		AccessMode access = SecurityHelper.getAccess(stack);
-		UUID ownerID = SecurityHelper.getOwner(stack);
-		if (access.isPublic() || ownerID.variant() == 0 || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+			return true;
+		UUID ownerID = SecurityHelper.getOwner(stack).getId();
+		if (ownerID.variant() == 0)
 			return true;
 
 		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));

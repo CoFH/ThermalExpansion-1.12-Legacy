@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.util.Utils;
+import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.relauncher.Side;
 
@@ -32,8 +33,14 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
 	protected AccessMode access = AccessMode.PUBLIC;
 	protected boolean canAccess = true;
+	private boolean inWorld = false;
 
 	public ItemStack[] inventory = new ItemStack[0];
+
+	public void cofh_validate() {
+
+		inWorld = true;
+	}
 
 	public boolean canAccess() {
 
@@ -132,11 +139,12 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		super.readFromNBT(nbt);
 
+		owner = CoFHProps.DEFAULT_OWNER;
 		access = AccessMode.values()[nbt.getByte("Access")];
 
 		String uuid = nbt.getString("OwnerUUID");
 		String name = nbt.getString("Owner");
-        if (uuid != null) {
+        if (!Strings.isNullOrEmpty(uuid)) {
             setOwner(new GameProfile(UUID.fromString(uuid), name));
         } else {
             setOwnerName(name);
@@ -213,6 +221,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 
 		if (!isServer) {
+			owner = CoFHProps.DEFAULT_OWNER;
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 		} else {
 			payload.getUUID();
@@ -269,7 +278,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
-		markChunkDirty();
+		if (inWorld)
+			markChunkDirty();
 	}
 
 	@Override
@@ -330,40 +340,35 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwnerName(String name) {
 
-		return setOwner(UUID.fromString(PreYggdrasilConverter.func_152719_a(name)));
+		if (Strings.isNullOrEmpty(name))
+			return false;
+		return setOwner(new GameProfile(UUID.fromString(PreYggdrasilConverter.func_152719_a(name)), name));
 	}
 
 	@Override
-	public boolean setOwner(UUID uuid) {
-
-		if (owner.getId().variant() == 0) {
-			owner = SecurityHelper.getProfile(uuid, null);
-			markChunkDirty();
-			return true;
-		}
-		return false;
-	}
-
 	public boolean setOwner(GameProfile profile) {
 
 		if (owner.getId().variant() == 0) {
 			owner = profile;
-			new Thread("CoFH User Loader") {
-				@Override
-				public void run() {
-					owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
-				}
-			}.start();
-			markChunkDirty();
-			return true;
+			if (owner.getId().variant() != 0) {
+				new Thread("CoFH User Loader") {
+					@Override
+					public void run() {
+						owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
+					}
+				}.start();
+				if (inWorld)
+					markChunkDirty();
+				return true;
+			}
 		}
 		return false;
 	}
 
 	@Override
-	public UUID getOwner() {
+	public GameProfile getOwner() {
 
-		return owner.getId();
+		return owner;
 	}
 
 	@Override

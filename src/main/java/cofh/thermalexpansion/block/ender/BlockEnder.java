@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.ender;
 
+import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
@@ -10,13 +11,13 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -68,10 +69,10 @@ public class BlockEnder extends BlockTEBase {
 			tile.setInvName(ItemHelper.getNameFromItemStack(stack));
 
 			if (SecurityHelper.isSecure(stack)) {
-				UUID stackOwner = SecurityHelper.getOwner(stack);
+				GameProfile stackOwner = SecurityHelper.getOwner(stack);
 
-				if (0 != stackOwner.variant()) {
-					tile.setOwner(stackOwner);
+				if (((ISecurable) tile).setOwner(stackOwner)) {
+					;
 				} else if (living instanceof ICommandSender) {
 					tile.setOwnerName(living.getCommandSenderName());
 				}

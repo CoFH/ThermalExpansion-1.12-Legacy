@@ -12,6 +12,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.network.PacketTEBase;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.Optional;
 
 import gnu.trove.map.hash.THashMap;
@@ -23,7 +24,6 @@ import invtweaks.api.container.ContainerSectionCallback;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
@@ -130,7 +130,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@Override
-	public UUID getOwner() {
+	public GameProfile getOwner() {
 
 		return SecurityHelper.getOwner(getContainerStack());
 	}
@@ -152,7 +152,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@Override
-	public boolean setOwner(UUID name) {
+	public boolean setOwner(GameProfile name) {
 
 		throw new UnsupportedOperationException();
 	}
