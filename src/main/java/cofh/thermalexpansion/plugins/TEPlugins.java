@@ -5,7 +5,6 @@ import cofh.thermalexpansion.core.TEProps;
 
 import java.util.ArrayList;
 
-
 public class TEPlugins {
 
 	static class Plugin {
@@ -15,7 +14,7 @@ public class TEPlugins {
 
 		public Plugin(String pluginPath) {
 
-			this.pluginPath = "thermalexpansion.plugins." + pluginPath;
+			this.pluginPath = "cofh.thermalexpansion.plugins." + pluginPath;
 		}
 
 		public void preInit() {
