@@ -340,7 +340,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwnerName(String name) {
 
-		if (Strings.isNullOrEmpty(name))
+		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name))
 			return false;
 		String uuid = PreYggdrasilConverter.func_152719_a(name);
 		if (Strings.isNullOrEmpty(uuid))
