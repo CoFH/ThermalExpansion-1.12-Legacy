@@ -342,7 +342,10 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		if (Strings.isNullOrEmpty(name))
 			return false;
-		return setOwner(new GameProfile(UUID.fromString(PreYggdrasilConverter.func_152719_a(name)), name));
+		String uuid = PreYggdrasilConverter.func_152719_a(name);
+		if (Strings.isNullOrEmpty(uuid))
+			return false;
+		return setOwner(new GameProfile(UUID.fromString(uuid), name));
 	}
 
 	@Override
