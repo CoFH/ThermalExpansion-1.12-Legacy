@@ -3,7 +3,7 @@ package cofh.thermalexpansion.item;
 import cofh.core.item.ItemArmorAdv;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
-import cofh.thermalfoundation.item.Equipment;
+import cofh.thermalfoundation.item.TFEquipment;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,24 +17,24 @@ public class TEEquipment {
 
 	public static void preInit() {
 
-		itemHelmetInvar = Equipment.Invar.itemHelmet;
-		itemPlateInvar = Equipment.Invar.itemPlate;
-		itemLegsInvar = Equipment.Invar.itemLegs;
-		itemBootsInvar = Equipment.Invar.itemBoots;
+		itemHelmetInvar = TFEquipment.Invar.itemHelmet;
+		itemPlateInvar = TFEquipment.Invar.itemPlate;
+		itemLegsInvar = TFEquipment.Invar.itemLegs;
+		itemBootsInvar = TFEquipment.Invar.itemBoots;
 
-		itemBattleWrenchInvar = new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
+		itemBattleWrenchInvar = new ItemWrenchBattle(TFEquipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
 		itemBattleWrenchInvar.setUnlocalizedName("thermalexpansion.tool.invarBattleWrench");
 		itemBattleWrenchInvar.setTextureName("thermalexpansion:tool/InvarBattleWrench");
 		itemBattleWrenchInvar.setCreativeTab(ThermalExpansion.tabTools);
-		itemSwordInvar = Equipment.Invar.itemSword;
-		itemShovelInvar = Equipment.Invar.itemShovel;
-		itemPickaxeInvar = Equipment.Invar.itemPickaxe;
-		itemAxeInvar = Equipment.Invar.itemAxe;
-		itemHoeInvar = Equipment.Invar.itemHoe;
-		itemShearsInvar = Equipment.Invar.itemShears;
-		itemFishingRodInvar = Equipment.Invar.itemFishingRod;
-		itemSickleInvar = Equipment.Invar.itemSickle;
-		itemBowInvar = Equipment.Invar.itemBow;
+		itemSwordInvar = TFEquipment.Invar.itemSword;
+		itemShovelInvar = TFEquipment.Invar.itemShovel;
+		itemPickaxeInvar = TFEquipment.Invar.itemPickaxe;
+		itemAxeInvar = TFEquipment.Invar.itemAxe;
+		itemHoeInvar = TFEquipment.Invar.itemHoe;
+		itemShearsInvar = TFEquipment.Invar.itemShears;
+		itemFishingRodInvar = TFEquipment.Invar.itemFishingRod;
+		itemSickleInvar = TFEquipment.Invar.itemSickle;
+		itemBowInvar = TFEquipment.Invar.itemBow;
 
 		GameRegistry.registerItem(itemBattleWrenchInvar, "tool.battleWrenchInvar");
 
