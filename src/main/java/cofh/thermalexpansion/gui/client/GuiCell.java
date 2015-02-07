@@ -18,7 +18,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-
 public class GuiCell extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Cell.png";
@@ -78,6 +77,53 @@ public class GuiCell extends GuiBaseAdv {
 	}
 
 	@Override
+	protected void updateElementInformation() {
+
+		int change = 0;
+		int change2 = 0;
+
+		if (GuiScreen.isShiftKeyDown()) {
+			change = 1000;
+			change2 = 100;
+		} else if (GuiScreen.isCtrlKeyDown()) {
+			change = 5;
+			change2 = 1;
+		} else {
+			change = 50;
+			change2 = 10;
+		}
+
+		if (myTile.energyReceive > 0) {
+			decRecv.setActive();
+			decRecv.setToolTip(StringHelper.localize("info.thermalexpansion.decRecv") + " " + change + "/" + change2);
+		} else {
+			decRecv.setDisabled();
+			decRecv.clearToolTip();
+		}
+		if (myTile.energyReceive < TileCell.MAX_RECEIVE[myTile.type]) {
+			incRecv.setActive();
+			incRecv.setToolTip(StringHelper.localize("info.thermalexpansion.incRecv") + " " + change + "/" + change2);
+		} else {
+			incRecv.setDisabled();
+			incRecv.clearToolTip();
+		}
+		if (myTile.energySend > 0) {
+			decSend.setActive();
+			decSend.setToolTip(StringHelper.localize("info.thermalexpansion.decSend") + " " + change + "/" + change2);
+		} else {
+			decSend.setDisabled();
+			decSend.clearToolTip();
+		}
+		if (myTile.energySend < TileCell.MAX_SEND[myTile.type]) {
+			incSend.setActive();
+			incSend.setToolTip(StringHelper.localize("info.thermalexpansion.incSend") + " " + change + "/" + change2);
+		} else {
+			incSend.setDisabled();
+			incSend.clearToolTip();
+		}
+	}
+
+	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		int change = 0;
@@ -127,53 +173,6 @@ public class GuiCell extends GuiBaseAdv {
 
 		myTile.energyReceive = curReceive;
 		myTile.energySend = curSend;
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
-		int change = 0;
-		int change2 = 0;
-
-		if (GuiScreen.isShiftKeyDown()) {
-			change = 1000;
-			change2 = 100;
-		} else if (GuiScreen.isCtrlKeyDown()) {
-			change = 5;
-			change2 = 1;
-		} else {
-			change = 50;
-			change2 = 10;
-		}
-
-		if (myTile.energyReceive > 0) {
-			decRecv.setActive();
-			decRecv.setToolTip(StringHelper.localize("info.thermalexpansion.decRecv") + " " + change + "/" + change2);
-		} else {
-			decRecv.setDisabled();
-			decRecv.clearToolTip();
-		}
-		if (myTile.energyReceive < TileCell.MAX_RECEIVE[myTile.type]) {
-			incRecv.setActive();
-			incRecv.setToolTip(StringHelper.localize("info.thermalexpansion.incRecv") + " " + change + "/" + change2);
-		} else {
-			incRecv.setDisabled();
-			incRecv.clearToolTip();
-		}
-		if (myTile.energySend > 0) {
-			decSend.setActive();
-			decSend.setToolTip(StringHelper.localize("info.thermalexpansion.decSend") + " " + change + "/" + change2);
-		} else {
-			decSend.setDisabled();
-			decSend.clearToolTip();
-		}
-		if (myTile.energySend < TileCell.MAX_SEND[myTile.type]) {
-			incSend.setActive();
-			incSend.setToolTip(StringHelper.localize("info.thermalexpansion.incSend") + " " + change + "/" + change2);
-		} else {
-			incSend.setDisabled();
-			incSend.clearToolTip();
-		}
 	}
 
 	@Override
