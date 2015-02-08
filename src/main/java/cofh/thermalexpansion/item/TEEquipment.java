@@ -1,13 +1,11 @@
 package cofh.thermalexpansion.item;
 
 import cofh.core.item.ItemArmorAdv;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalfoundation.item.Equipment;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class TEEquipment {
 
@@ -22,10 +20,6 @@ public class TEEquipment {
 		itemLegsInvar = Equipment.Invar.itemLegs;
 		itemBootsInvar = Equipment.Invar.itemBoots;
 
-		itemBattleWrenchInvar = new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
-		itemBattleWrenchInvar.setUnlocalizedName("thermalexpansion.tool.invarBattleWrench");
-		itemBattleWrenchInvar.setTextureName("thermalexpansion:tool/InvarBattleWrench");
-		itemBattleWrenchInvar.setCreativeTab(ThermalExpansion.tabTools);
 		itemSwordInvar = Equipment.Invar.itemSword;
 		itemShovelInvar = Equipment.Invar.itemShovel;
 		itemPickaxeInvar = Equipment.Invar.itemPickaxe;
@@ -35,8 +29,6 @@ public class TEEquipment {
 		itemFishingRodInvar = Equipment.Invar.itemFishingRod;
 		itemSickleInvar = Equipment.Invar.itemSickle;
 		itemBowInvar = Equipment.Invar.itemBow;
-
-		GameRegistry.registerItem(itemBattleWrenchInvar, "tool.battleWrenchInvar");
 
 	}
 
@@ -54,7 +46,6 @@ public class TEEquipment {
 		GameRegistry.registerCustomItemStack("armorInvarBoots", armorInvarBoots);
 
 		/* Tools */
-		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
 		toolInvarSword = new ItemStack(itemSwordInvar);
 		toolInvarShovel = new ItemStack(itemShovelInvar);
 		toolInvarPickaxe = new ItemStack(itemPickaxeInvar);
@@ -65,7 +56,6 @@ public class TEEquipment {
 		toolInvarSickle = new ItemStack(itemSickleInvar);
 		toolInvarBow = new ItemStack(itemBowInvar);
 
-		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
 		GameRegistry.registerCustomItemStack("toolInvarSword", toolInvarSword);
 		GameRegistry.registerCustomItemStack("toolInvarShovel", toolInvarShovel);
 		GameRegistry.registerCustomItemStack("toolInvarPickaxe", toolInvarPickaxe);
@@ -79,18 +69,6 @@ public class TEEquipment {
 
 	public static void postInit() {
 
-		/* Tools */
-		if (enableBattleWrench) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
-					TEItems.toolWrench }));
-		}
-	}
-
-	public static boolean enableBattleWrench = true;
-
-	static {
-		String category = "item.feature";
-		enableBattleWrench = ThermalExpansion.config.get(category, "Tool.Invar.BattleWrench", true);
 	}
 
 	public static ItemArmorAdv itemHelmetInvar;
@@ -98,7 +76,6 @@ public class TEEquipment {
 	public static ItemArmorAdv itemLegsInvar;
 	public static ItemArmorAdv itemBootsInvar;
 
-	public static Item itemBattleWrenchInvar;
 	public static Item itemSwordInvar;
 	public static Item itemShovelInvar;
 	public static Item itemPickaxeInvar;
@@ -114,7 +91,6 @@ public class TEEquipment {
 	public static ItemStack armorInvarLegs;
 	public static ItemStack armorInvarBoots;
 
-	public static ItemStack toolInvarBattleWrench;
 	public static ItemStack toolInvarSword;
 	public static ItemStack toolInvarShovel;
 	public static ItemStack toolInvarPickaxe;

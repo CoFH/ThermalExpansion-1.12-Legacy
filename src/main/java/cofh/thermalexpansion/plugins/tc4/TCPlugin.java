@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.tc4;
 
 import static cofh.api.modhelpers.ThaumcraftHelper.parseAspects;
+
 import cofh.asm.relauncher.Strippable;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine;
@@ -146,10 +147,10 @@ public class TCPlugin {
 		parseAspects(TEEquipment.toolInvarShears, "4 metallum, 4 harvest, 2 tutamen");
 		parseAspects(TEEquipment.toolInvarFishingRod, "1 metallum, 1 aqua, 1 instrumentum");
 		parseAspects(TEEquipment.toolInvarSickle, "5 metallum, 4 tutamen, 4 harvest");
-		parseAspects(TEEquipment.toolInvarBattleWrench, "6 metallum, 1 instrumentum, 1 machina, 3 telum");
 
 		parseAspects(TEItems.toolWrench, "4 metallum, 1 instrumentum");
 		parseAspects(TEItems.toolMultimeter, "4 metallum, 2 potentia, 3 machina, 2 sensus, 2 instrumentum");
+		parseAspects(TEItems.toolInvarBattleWrench, "6 metallum, 1 instrumentum, 1 machina, 3 telum");
 
 		parseAspects(TEItems.diagramSchematic, "3 cognitio");
 		parseAspects(TEItems.diagramRedprint, "3 cognitio, 1 potentia");
