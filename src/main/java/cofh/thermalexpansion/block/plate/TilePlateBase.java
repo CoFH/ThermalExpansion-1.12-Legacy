@@ -27,8 +27,8 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Plates to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Plate.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Plates to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Plate.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

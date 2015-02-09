@@ -27,7 +27,7 @@ public class SawmillManager {
 	private static boolean allowOverwrite = false;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Sawmill.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Sawmill", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
@@ -256,9 +256,7 @@ public class SawmillManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackSawmill extends ComparableItemStack {
 
-		static final String BLOCK = "block";
 		static final String ORE = "ore";
-		static final String DUST = "dust";
 		static final String INGOT = "ingot";
 		static final String NUGGET = "nugget";
 
@@ -266,8 +264,7 @@ public class SawmillManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
-					|| oreName.equals(RUBBER);
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(RUBBER);
 		}
 
 		public static int getOreID(ItemStack stack) {

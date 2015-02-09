@@ -32,10 +32,13 @@ public class SmelterManager {
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
+	private static int oreMultiplier = 2;
+	private static int oreMultiplierCinnabar = 3;
+
 	private static ArrayList<String> blastList = new ArrayList<String>();
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Smelter.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Smelter", "AllowRecipeOverwrite", false);
 
 		blastList.add("mithril");
 		blastList.add("enderium");
@@ -129,7 +132,10 @@ public class SmelterManager {
 
 	public static void loadRecipes() {
 
-		boolean steelRecipe = ThermalExpansion.config.get("tweak.crafting", "Smelter.Steel.Enable", true);
+		String comment;
+		String category = "RecipeManagers.Smelter.Recipes";
+
+		boolean steelRecipe = ThermalExpansion.config.get(category, "Steel", true);
 
 		if (ItemHelper.oreNameExists("ingotSteel") && steelRecipe) {
 			ItemStack ingotSteel = ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1);
@@ -137,9 +143,9 @@ public class SmelterManager {
 			addAlloyRecipe(8000, "dustCoal", 2, "dustSteel", 1, ingotSteel);
 			addAlloyRecipe(8000, "dustCoal", 2, "dustIron", 1, ingotSteel);
 			addAlloyRecipe(8000, "dustCoal", 2, "ingotIron", 1, ingotSteel);
-			addAlloyRecipe(8000, "charcoal", 4, "dustSteel", 1, ingotSteel);
-			addAlloyRecipe(8000, "charcoal", 4, "dustIron", 1, ingotSteel);
-			addAlloyRecipe(8000, "charcoal", 4, "ingotIron", 1, ingotSteel);
+			addAlloyRecipe(8000, "dustCharcoal", 4, "dustSteel", 1, ingotSteel);
+			addAlloyRecipe(8000, "dustCharcoal", 4, "dustIron", 1, ingotSteel);
+			addAlloyRecipe(8000, "dustCharcoal", 4, "ingotIron", 1, ingotSteel);
 		}
 		String[] oreNameList = OreDictionary.getOreNames();
 		String oreName = "";

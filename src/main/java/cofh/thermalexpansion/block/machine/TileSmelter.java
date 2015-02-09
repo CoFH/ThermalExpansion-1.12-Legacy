@@ -27,10 +27,11 @@ public class TileSmelter extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Smelter.BasePower", 40), 10, 500);
-		ThermalExpansion.config.set("tweak.machine", "Smelter.BasePower", maxPower);
+		String category = "Machine.Smelter";
+		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
+		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineSmelter");
 

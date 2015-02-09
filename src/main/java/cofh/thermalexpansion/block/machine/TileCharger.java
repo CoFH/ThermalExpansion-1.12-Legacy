@@ -31,10 +31,11 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Charger.BasePower", 10000), 100, 20000);
-		ThermalExpansion.config.set("tweak.machine", "Charger.BasePower", maxPower);
+		String category = "Machine.Charger";
+		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 10000), 100, 20000);
+		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(1, maxPower, Math.max(480000, maxPower * 60));
+		defaultEnergyConfig[TYPE].setParams(1, basePower, Math.max(480000, basePower * 60));
 
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}

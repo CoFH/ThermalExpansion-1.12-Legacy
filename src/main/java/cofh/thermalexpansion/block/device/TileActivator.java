@@ -61,15 +61,15 @@ public class TileActivator extends TileAugmentable {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Activators to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Activators to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Device.Activator.Securable", enableSecurity, comment);
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.device", "Activator.BasePower", 20), 0, 500);
-		ThermalExpansion.config.set("tweak.device", "Activator.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "BasePower", 20), 0, 500);
+		ThermalExpansion.config.set("Device.Activator", "BasePower", maxPower);
 		energyConfig.setParamsPower(maxPower);
 
-		maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.device", "Activator.ActivationPower", 20), 0, 500);
-		ThermalExpansion.config.set("tweak.device", "Activator.ActivationEnergy", maxPower);
+		maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "ActivationEnergy", 20), 0, 500);
+		ThermalExpansion.config.set("Device.Activator", "ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
 	}
 

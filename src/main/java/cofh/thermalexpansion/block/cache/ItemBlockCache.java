@@ -52,7 +52,7 @@ public class ItemBlockCache extends ItemBlockBase {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		list.add(StringHelper.localize("info.cofh.capacity") + ": " + TileCache.SIZE[ItemHelper.getItemDamage(stack)]);
+		list.add(StringHelper.localize("info.cofh.capacity") + ": " + TileCache.CAPACITY[ItemHelper.getItemDamage(stack)]);
 		if (stack.stackTagCompound == null) {
 			list.add(StringHelper.localize("info.cofh.empty"));
 			return;

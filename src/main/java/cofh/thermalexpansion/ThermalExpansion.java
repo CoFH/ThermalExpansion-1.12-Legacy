@@ -1,6 +1,5 @@
 package cofh.thermalexpansion;
 
-import cofh.CoFHCore;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.ConfigHandler;
@@ -63,19 +62,23 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.RecipeSorter;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -117,6 +120,14 @@ public class ThermalExpansion extends BaseMod {
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
 		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg"), true));
 		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg"), true));
+
+		// BEGIN TEMP CODE
+		// TODO: Remove after 4.1
+
+		config.renameCategory("security", "Security");
+		config.renameCategory("world", "World");
+
+		// END TEMP CODE
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
@@ -271,7 +282,7 @@ public class ThermalExpansion extends BaseMod {
 	void loadWorldGeneration() {
 
 		if (!config
-				.get("world", "GenerateDefaultFiles", true,
+				.get("World", "GenerateDefaultFiles", true,
 						"If enabled, Thermal Expansion will create default world generation files - if it cannot find existing ones. Only disable this if you know what you are doing.")) {
 			return;
 		}
@@ -289,27 +300,31 @@ public class ThermalExpansion extends BaseMod {
 
 	void configOptions() {
 
-		boolean optionColorBlind = false;
-		boolean optionDrawBorders = true;
-
-		String category = "General";
-		String comment = null;
-
-		optionColorBlind = CoFHCore.configClient.get(category, "EnableColorBlindTextures", false);
-
-		category = "Interface";
-		optionDrawBorders = CoFHCore.configClient.get(category, "EnableGUISlotBorders", true);
+		String category;
+		String comment;
 
 		category = "Holiday";
 		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
 		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
 
 		/* Graphics Config */
-		if (optionColorBlind) {
+		if (CoFHProps.enableColorBlindTextures) {
 			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
 			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
+		}
+
+		category = "General";
+		comment = "If enabled, ingots are used instead of gears in many default recipes.";
+		String iPrefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
+		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
+				"Signalum", "Lumium", "Enderium")) {
+			String prefix = "thermalexpansion:machine";
+			ArrayList<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
+			for (int i = 0; i < partList.size(); i++) {
+				OreDictionary.registerOre(prefix + entry, partList.get(i));
+			}
 		}
 
 		// TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);

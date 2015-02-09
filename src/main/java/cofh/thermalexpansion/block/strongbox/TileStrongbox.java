@@ -34,8 +34,8 @@ public class TileStrongbox extends TileInventory implements IReconfigurableFacin
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Strongboxes to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Strongbox.All.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Strongboxes to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Strongbox.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

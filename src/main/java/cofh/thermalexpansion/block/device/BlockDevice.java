@@ -292,10 +292,10 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		String category = "tweak.recipe";
-		breakerUseDiamondPickaxe = ThermalExpansion.config.get(category, "Breaker.UseDiamondPickaxe", false);
-
-		ItemStack pickaxe = breakerUseDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
+		String category = "Device.Breaker";
+		String comment = "If enabled, The Block Breaker will require a Diamond Pickaxe instead of an Invar Pickaxe.";
+		boolean breakerDiamondPickaxe = ThermalExpansion.config.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
+		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
 
 		String tinPart = "thermalexpansion:machineTin";
 
@@ -354,14 +354,12 @@ public class BlockDevice extends BlockTEBase {
 	public static boolean defaultRedstoneControl = true;
 	public static boolean defaultReconfigSides = true;
 
-	public static boolean breakerUseDiamondPickaxe = false;
-
 	static {
-		String category = "block.device";
-		enable[Types.WORKBENCH.ordinal()] = ThermalExpansion.config.get(category, "Workbench", true);
-		enable[Types.ACTIVATOR.ordinal()] = ThermalExpansion.config.get(category, "Activator", true);
-		enable[Types.BREAKER.ordinal()] = ThermalExpansion.config.get(category, "Breaker", true);
-		enable[Types.NULLIFIER.ordinal()] = ThermalExpansion.config.get(category, "Nullifier", true);
+		String category = "Device.";
+
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack workbench;

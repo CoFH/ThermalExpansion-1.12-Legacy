@@ -40,8 +40,8 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Pumps to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Pump.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Pumps to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Device.Pump.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

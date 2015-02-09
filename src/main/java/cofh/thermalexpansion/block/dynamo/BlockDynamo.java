@@ -5,6 +5,7 @@ import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.repack.codechicken.lib.vec.Cuboid6;
 import cofh.repack.codechicken.lib.vec.Rotation;
 import cofh.repack.codechicken.lib.vec.Vector3;
@@ -109,9 +110,7 @@ public class BlockDynamo extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
-			}
+			list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
 		}
 	}
 
@@ -284,12 +283,11 @@ public class BlockDynamo extends BlockTEBase {
 	public static boolean defaultRedstoneControl = true;
 
 	static {
-		String category = "block.dynamo";
-		enable[Types.STEAM.ordinal()] = ThermalExpansion.config.get(category, "Steam", true);
-		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Magmatic", true);
-		enable[Types.COMPRESSION.ordinal()] = ThermalExpansion.config.get(category, "Compression", true);
-		enable[Types.REACTANT.ordinal()] = ThermalExpansion.config.get(category, "Reactant", true);
-		enable[Types.ENERVATION.ordinal()] = ThermalExpansion.config.get(category, "Enervation", true);
+		String category = "Dynamo.";
+
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack dynamoSteam;

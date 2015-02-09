@@ -31,7 +31,7 @@ public class FurnaceManager {
 	private static Set<Block> handledBlocks = new THashSet<Block>();
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Furnace.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Furnace", "AllowRecipeOverwrite", false);
 
 		handledBlocks.add(Blocks.gold_ore);
 		handledBlocks.add(Blocks.iron_ore);

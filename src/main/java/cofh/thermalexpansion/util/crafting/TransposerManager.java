@@ -33,7 +33,7 @@ public class TransposerManager {
 	private static boolean allowOverwrite = false;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Transposer.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Transposer", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {

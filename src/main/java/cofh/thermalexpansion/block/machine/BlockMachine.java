@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.tileentity.ISidedTexture;
+import cofh.core.CoFHProps;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -19,8 +20,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
@@ -39,7 +38,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockMachine extends BlockTEBase {
 
@@ -171,6 +169,10 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
+		if (CoFHProps.enableColorBlindTextures) {
+			System.out.println("error");
+		}
+
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
 		return tile == null ? null : tile.getTexture(side, renderPass);
 	}
@@ -287,25 +289,11 @@ public class BlockMachine extends BlockTEBase {
 		GameRegistry.registerCustomItemStack("assembler", assembler);
 		GameRegistry.registerCustomItemStack("charger", charger);
 
-		String category = "tweak.recipe";
-		String comment = "If enabled, Machines use ingots instead of gears in their default recipes.";
-		String iPrefix = ThermalExpansion.config.get(category, "Machines.UseIngots", false, comment) ? "ingot" : "gear";
-		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
-				"Signalum", "Lumium", "Enderium")) {
-			String prefix = "thermalexpansion:machine";
-			ArrayList<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
-			for (int i = 0; i < partList.size(); i++) {
-				OreDictionary.registerOre(prefix + entry, partList.get(i));
-			}
-		}
-
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
-
-		// ItemStack[] machineFrames = new ItemStack[4];
 
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
@@ -315,9 +303,9 @@ public class BlockMachine extends BlockTEBase {
 					TEItems.powerCoilGold, 'X', "dustRedstone", 'Y', Blocks.brick_block }));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
-			String category = "tweak.recipe";
-			String comment = "If enabled, The pulverizer will use diamonds instead of flint.";
-			Item component = ThermalExpansion.config.get(category, "Pulverizer.AddDiamonds", false, comment) ? Items.diamond : Items.flint;
+			String category = "Machine.Pulverizer";
+			String comment = "If enabled, the Pulverizer will require Diamonds instead of Flint.";
+			Item component = ThermalExpansion.config.get(category, "RequireDiamonds", false, comment) ? Items.diamond : Items.flint;
 			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
 					TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', component }));
 		}
@@ -404,7 +392,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-			"assembler", "charger" };
+		"assembler", "charger" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
@@ -417,19 +405,21 @@ public class BlockMachine extends BlockTEBase {
 		String category = "Machine.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enabled", true);
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 
-		category += "Augments";
-
-		defaultAutoTransfer = ThermalExpansion.config.get(category, "Default.AutoTransfer", true);
-		defaultRedstoneControl = ThermalExpansion.config.get(category, "Default.RedstoneControl", true);
-		defaultReconfigSides = ThermalExpansion.config.get(category, "Default.ReconfigurableSides", true);
+		category = "Machine.All";
 
 		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Basic", false);
 		creativeTiers[1] = ThermalExpansion.config.get(category, "CreativeTab.Hardened", false);
 		creativeTiers[2] = ThermalExpansion.config.get(category, "CreativeTab.Reinforced", false);
 		creativeTiers[3] = ThermalExpansion.config.get(category, "CreativeTab.Resonant", true);
+
+		category += ".Augments";
+
+		defaultAutoTransfer = ThermalExpansion.config.get(category, "Default.AutoTransfer", true);
+		defaultRedstoneControl = ThermalExpansion.config.get(category, "Default.RedstoneControl", true);
+		defaultReconfigSides = ThermalExpansion.config.get(category, "Default.ReconfigurableSides", true);
 	}
 
 	public static ItemStack furnace;

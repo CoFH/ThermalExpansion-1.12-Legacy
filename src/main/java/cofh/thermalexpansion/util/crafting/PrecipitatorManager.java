@@ -17,7 +17,7 @@ public class PrecipitatorManager { // TODO
 	private static boolean allowOverwrite = false;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Precipitator.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Precipitator", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipePrecipitator getRecipe(Fluid fluid) {

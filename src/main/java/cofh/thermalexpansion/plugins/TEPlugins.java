@@ -128,7 +128,7 @@ public class TEPlugins {
 
 	public static boolean addPlugin(String pluginPath, String pluginName) {
 
-		boolean enable = ThermalExpansion.config.get("plugins", pluginName, true);
+		boolean enable = ThermalExpansion.config.get("Plugins." + pluginName, "Enable", true);
 		ThermalExpansion.config.save();
 
 		if (enable) {

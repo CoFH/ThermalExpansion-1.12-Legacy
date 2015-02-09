@@ -44,8 +44,8 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Nullifiers to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Nullifier.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Nullifiers to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Device.Nullifier.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

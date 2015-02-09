@@ -5,6 +5,7 @@ import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
@@ -61,9 +62,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -217,11 +216,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
+					"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-			"ingotSignalum" }));
+					"ingotSignalum" }));
 		}
 		return true;
 	}
@@ -240,9 +239,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.light";
-		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Illuminator", true);
-		enable[Types.LAMP_HALO.ordinal()] = ThermalExpansion.config.get(category, "LampBasic", true);
+		String category = "Light.";
+
+		for (int i = 0; i < Types.values().length - 1; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 		enable[Types.LAMP_BASIC.ordinal()] = enable[Types.LAMP_HALO.ordinal()];
 	}
 

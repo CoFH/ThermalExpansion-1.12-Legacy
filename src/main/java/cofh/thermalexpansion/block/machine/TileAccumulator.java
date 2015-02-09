@@ -51,21 +51,35 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public static int transferRate = genRate / CoFHProps.TIME_CONSTANT;
 	public static boolean passiveGen = false;
 
-	public static FluidStack genStack;
+	public static FluidStack genStack = new FluidStack(FluidRegistry.WATER, 25);
 	public static FluidStack genStackSmall = new FluidStack(FluidRegistry.WATER, 1);
 	public static FluidStack genStackSnow = new FluidStack(FluidRegistry.WATER, 125);
 
 	static {
-		int rate = ThermalExpansion.config.get("tweak.machine", "Accumulator.Rate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT);
+		String comment = "This controls how many mB/t the Accumulator generates. (Default: 25)";
+		int rate = ThermalExpansion.config.get("Machine.Accumulator", "BaseRate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT, comment);
 
-		if (rate > 0 && rate <= 50) {
+		if (rate > 0 && rate <= 1000) {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
 			transferRate = rate;
 		} else {
-			ThermalExpansion.log.info("'Accumulator.Rate' config value is out of acceptable range. Using default. (25)");
+			ThermalExpansion.log.info("'Machine.Accumulator.BaseRate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
-		passiveGen = ThermalExpansion.config.get("tweak.machine", "Accumulator.PassiveGen", false);
+
+		comment = "This controls how many mB/t the Accumulator generates without two or more adjacent source blocks, if enabled. (Default: 25)";
+		rate = ThermalExpansion.config.get("Machine.Accumulator", "PassiveRate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT, comment);
+
+		if (rate > 0 && rate <= 1000) {
+
+		} else {
+			ThermalExpansion.log.info("'Machine.Accumulator.PassiveRate' config value is out of acceptable range. Using default. (1)");
+			rate = 1;
+		}
+		genStackSmall = new FluidStack(FluidRegistry.WATER, rate);
+
+		comment = "Set this to true to enable passive generation (less than two adjacent sources) for the Accumulator.";
+		passiveGen = ThermalExpansion.config.get("Machine.Accumulator", "PassiveGeneration", false);
 	}
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);

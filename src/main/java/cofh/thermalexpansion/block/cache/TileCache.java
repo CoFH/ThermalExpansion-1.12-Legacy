@@ -35,15 +35,19 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 		GameRegistry.registerTileEntity(TileCache.class, "thermalexpansion.Cache");
 	}
 
-	public static int[] SIZE = { Integer.MAX_VALUE, 10000, 40000, 160000, 640000 };
+	public static int[] CAPACITY = { Integer.MAX_VALUE, 10000, 40000, 160000, 640000 };
 	public static final int[] SLOTS = { 0, 1 };
 
 	static {
-		String category = "block.cache.properties";
-		SIZE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.Capacity", SIZE[4]), SIZE[4] / 8, 1000000 * 1000);
-		SIZE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.Capacity", SIZE[3]), SIZE[3] / 8, SIZE[4]);
-		SIZE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.Capacity", SIZE[2]), SIZE[2] / 8, SIZE[3]);
-		SIZE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.Capacity", SIZE[1]), SIZE[1] / 8, SIZE[2]);
+		String category = "Cache.";
+		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]),
+				CAPACITY[4] / 8, 1000000 * 1000);
+		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]),
+				CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]),
+				CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]),
+				CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
 	int meterTracker;
@@ -65,7 +69,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		type = (byte) metadata;
 		inventory = new ItemStack[2];
-		maxCacheStackSize = SIZE[type] - 64 * 2;
+		maxCacheStackSize = CAPACITY[type] - 64 * 2;
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	public int getScaledItemsStored(int scale) {
 
-		return getStoredCount() * scale / SIZE[type];
+		return getStoredCount() * scale / CAPACITY[type];
 	}
 
 	@Override
@@ -167,9 +171,9 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		if (nbt.hasKey("Item")) {
 			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
-			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+			maxCacheStackSize = CAPACITY[type] - storedStack.getMaxStackSize() * 2;
 		} else {
-			maxCacheStackSize = SIZE[type] - 64 * 2;
+			maxCacheStackSize = CAPACITY[type] - 64 * 2;
 		}
 		super.readFromNBT(nbt);
 	}
@@ -257,7 +261,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			clearInventory();
 		} else {
 			storedStack = ItemHelper.cloneStack(stack, Math.min(amount, getMaxStoredCount()));
-			maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+			maxCacheStackSize = CAPACITY[type] - storedStack.getMaxStackSize() * 2;
 			balanceStacks();
 		}
 		updateTrackers();
@@ -268,7 +272,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	@Override
 	public int getMaxStoredCount() {
 
-		return SIZE[type];
+		return CAPACITY[type];
 	}
 
 	/* IInventory */
@@ -286,7 +290,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			if (storedStack == null) {
 				storedStack = inventory[0].copy();
 				inventory[0] = null;
-				maxCacheStackSize = SIZE[type] - storedStack.getMaxStackSize() * 2;
+				maxCacheStackSize = CAPACITY[type] - storedStack.getMaxStackSize() * 2;
 			} else {
 				storedStack.stackSize += inventory[0].stackSize + (inventory[1] == null ? 0 : inventory[1].stackSize);
 			}
@@ -390,7 +394,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 		}
 		if (storedStack != null) {
 			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + SIZE[type]));
+			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + CAPACITY[type]));
 		} else {
 			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
@@ -415,14 +419,14 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 			}
 			return null;
 		}
-		if (getStoredCount() == SIZE[type]) {
+		if (getStoredCount() == CAPACITY[type]) {
 			return stack;
 		}
 		if (ItemHelper.itemsIdentical(stack, storedStack)) {
-			if (getStoredCount() + stack.stackSize > SIZE[type]) {
-				ItemStack retStack = ItemHelper.cloneStack(stack, SIZE[type] - getStoredCount());
+			if (getStoredCount() + stack.stackSize > CAPACITY[type]) {
+				ItemStack retStack = ItemHelper.cloneStack(stack, CAPACITY[type] - getStoredCount());
 				if (!simulate) {
-					setStoredItemCount(SIZE[type]);
+					setStoredItemCount(CAPACITY[type]);
 				}
 				return retStack;
 			}

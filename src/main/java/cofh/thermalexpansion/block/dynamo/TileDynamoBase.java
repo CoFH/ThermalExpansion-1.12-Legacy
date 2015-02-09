@@ -14,8 +14,10 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
 import cofh.thermalexpansion.item.TEAugments;
@@ -39,8 +41,18 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Dynamos to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Dynamos to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
+
+		for (int i = 0; i < BlockDynamo.Types.values().length; i++) {
+			String name = StringHelper.titleCase(BlockDynamo.NAMES[i]);
+			int maxPower = MathHelper.clampI(ThermalExpansion.config.get("Dynamo." + name, "BasePower", 80), 10, 160);
+			ThermalExpansion.config.set("Dynamo." + name, "BasePower", maxPower);
+			maxPower /= 10;
+			maxPower *= 10;
+			defaultEnergyConfig[i] = new EnergyConfig();
+			defaultEnergyConfig[i].setParamsDefault(maxPower);
+		}
 	}
 
 	public static boolean enableSecurity = true;

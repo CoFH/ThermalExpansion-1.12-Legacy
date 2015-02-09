@@ -60,9 +60,7 @@ public class BlockCache extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -272,7 +270,7 @@ public class BlockCache extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
 			GameRegistry
-					.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
+			.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "blockGlassHardened" }));
@@ -291,12 +289,11 @@ public class BlockCache extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.cache";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
+		String category = "Cache.";
+
+		for (int i = 1; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack cacheCreative;

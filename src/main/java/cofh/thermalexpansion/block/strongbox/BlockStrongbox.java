@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.strongbox;
 import cofh.core.enchantment.CoFHEnchantment;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileInventory;
@@ -198,12 +199,11 @@ public class BlockStrongbox extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.strongbox";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
+		String category = "Strongbox.";
+
+		for (int i = 1; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack strongboxCreative;

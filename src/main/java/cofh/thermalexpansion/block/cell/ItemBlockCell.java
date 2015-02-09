@@ -51,15 +51,15 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
+			return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)];
 		}
-		return TileCell.STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return TileCell.STORAGE[ItemHelper.getItemDamage(stack)];
+		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)];
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(TileCell.STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
+					+ StringHelper.getScaledNumber(TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
 		}
 		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.stackTagCompound.getInteger("Send")
 				+ "/" + stack.stackTagCompound.getInteger("Recv") + " RF/t");
@@ -119,7 +119,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
 		int metadata = ItemHelper.getItemDamage(container);
-		int receive = Math.min(maxReceive, Math.min(TileCell.STORAGE[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
+		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
 
 		if (!simulate && metadata != BlockCell.Types.CREATIVE.ordinal()) {
 			stored += receive;
@@ -157,7 +157,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileCell.STORAGE[ItemHelper.getItemDamage(container)];
+		return TileCell.CAPACITY[ItemHelper.getItemDamage(container)];
 	}
 
 }

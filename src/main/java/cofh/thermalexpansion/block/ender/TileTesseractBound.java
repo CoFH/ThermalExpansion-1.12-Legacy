@@ -18,7 +18,7 @@ public class TileTesseractBound extends TileRSControl implements ISidedInventory
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Strongboxes to be secure inventories. (Default: true)";
+		String comment = "Enable this to allow for Strongboxes to be secure inventories.";
 		enableSecurity = ThermalExpansion.config.get("block.security", "Strongbox.Secure", enableSecurity, comment);
 	}
 

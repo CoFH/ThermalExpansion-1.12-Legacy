@@ -11,17 +11,18 @@ public class MFRPlugin {
 
 	public static void preInit() {
 
-		String category = "plugins.tweak";
+		String comment;
+		String category = "Plugins.MineFactoryReloaded.Straw";
 
-		strawRedstone = ThermalExpansion.config.get(category, "MFR.Redstone.Straw", true);
-		strawGlowstone = ThermalExpansion.config.get(category, "MFR.Glowstone.Straw", true);
-		strawEnder = ThermalExpansion.config.get(category, "MFR.Ender.Straw", true);
-		strawPyrotheum = ThermalExpansion.config.get(category, "MFR.Pyrotheum.Straw", true);
-		strawCryotheum = ThermalExpansion.config.get(category, "MFR.Cryotheum.Straw", true);
-		strawCoal = ThermalExpansion.config.get(category, "MFR.Coal.Straw", true);
+		strawRedstone = ThermalExpansion.config.get(category, "Redstone", true);
+		strawGlowstone = ThermalExpansion.config.get(category, "Glowstone", true);
+		strawEnder = ThermalExpansion.config.get(category, "Ender", true);
+		strawPyrotheum = ThermalExpansion.config.get(category, "Pyrotheum", true);
+		strawCryotheum = ThermalExpansion.config.get(category, "Cryotheum", true);
+		strawCoal = ThermalExpansion.config.get(category, "Coal", true);
 
-		strawEnderRange = ThermalExpansion.config.get(category, "MFR.Ender.Range", strawEnderRange,
-				"This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Max: 65536)");
+		comment = "This controls the maximum distance (in blocks) a player will teleport from drinking Ender. (Min: 8, Max: 65536)";
+		strawEnderRange = ThermalExpansion.config.get(category, "Ender.Range", strawEnderRange, comment);
 		strawEnderRange = MathHelper.clampI(strawEnderRange, 8, 65536);
 	}
 

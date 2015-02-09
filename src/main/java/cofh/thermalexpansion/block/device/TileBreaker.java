@@ -52,8 +52,8 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Breakers to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Device.Breaker.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Breakers to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Device.Breaker.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

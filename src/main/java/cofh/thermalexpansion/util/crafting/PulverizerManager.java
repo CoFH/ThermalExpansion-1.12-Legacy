@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -26,8 +27,10 @@ public class PulverizerManager {
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
+	private static int oreMultiplier = 2;
+
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Pulverizer.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Pulverizer", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
@@ -47,18 +50,24 @@ public class PulverizerManager {
 
 	public static void addDefaultRecipes() {
 
-		String category = "tweak.crafting";
+		String comment;
+		String category = "RecipeManagers.Pulverizer.Recipes";
 
-		boolean recipeSandstone = ThermalExpansion.config.get(category, "Pulverizer.Sandstone", true);
-		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Pulverizer.Netherrack", true);
-		boolean recipeCloth = ThermalExpansion.config.get(category, "Pulverizer.Cloth", true);
-		boolean recipeReed = ThermalExpansion.config.get(category, "Pulverizer.Reed", true);
-		boolean recipeBone = ThermalExpansion.config.get(category, "Pulverizer.Bone", true);
-		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "Pulverizer.BlazeRod", true);
-		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "Pulverizer.BlizzRod", true);
+		boolean recipeSandstone = ThermalExpansion.config.get(category, "Sandstone", true);
+		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Netherrack", true);
+		boolean recipeWool = ThermalExpansion.config.get(category, "Wool", true);
+		boolean recipeReed = ThermalExpansion.config.get(category, "Reed", true);
+		boolean recipeBone = ThermalExpansion.config.get(category, "Bone", true);
+		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
+		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
 
-		int chanceCinnabar = (int) MathHelper.clip(ThermalExpansion.config.get(category, "Pulverizer.Cinnabar.Chance", 25), 1, 100);
-		int woolDyeChance = (int) MathHelper.clip(ThermalExpansion.config.get(category, "Pulverizer.Wool.Dye.Chance", 5), 0, 100);
+		category = "RecipeManagers.Pulverizer.Ore";
+
+		comment = "This sets the default rate for Ore->Dust conversion. This number is used in all automatically generated recipes.";
+		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "AmountDustFromOre", 2, comment), 1, 64);
+
+		comment = "Chance of acquiring a Cinnabar Crystal from Redstone Ore.";
+		int chanceCinnabar = MathHelper.clampI(ThermalExpansion.config.get(category, "ChanceCinnabarFromRedstoneOre", 25), 1, 100);
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 10);
@@ -93,16 +102,29 @@ public class PulverizerManager {
 		addRecipe(1600, new ItemStack(Blocks.red_flower), new ItemStack(Items.dye, 4, 1));
 		addRecipe(1600, new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 4, 11));
 
-		if (recipeCloth) {
-			ItemStack silkStack = new ItemStack(Items.string, 4);
-			if (woolDyeChance > 0) {
-				for (int i = 1; i < 16; i++) {
-					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), silkStack, new ItemStack(Items.dye, 1, 15 - i), woolDyeChance);
-				}
-				addTERecipe(1600, new ItemStack(Blocks.wool, 1, 0), silkStack);
-			} else {
-				for (int i = 0; i < 16; i++) {
-					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), silkStack);
+		if (recipeWool) {
+			category = "RecipeManagers.Pulverizer.Wool";
+			int[] dyeChance = new int[ColorHelper.woolColorConfig.length];
+
+			comment = "This sets the default rate for Wool->String conversion. This number is used in all automatically generated recipes.";
+			int numString = ThermalExpansion.config.get(category, "AmountStringFromWool", 4, comment);
+			ItemStack stringStack = new ItemStack(Items.string, numString);
+
+			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
+				dyeChance[i] = 5;
+			}
+			dyeChance[0] = 0;
+			dyeChance[12] = 0;
+			dyeChance[13] = 0;
+			dyeChance[15] = 0;
+
+			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
+				dyeChance[i] = MathHelper.clampI(ThermalExpansion.config.get(category, "ChanceDyeFrom" + ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
+
+				if (dyeChance[i] > 0) {
+					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), stringStack, new ItemStack(Items.dye, 1, 15 - i), dyeChance[i]);
+				} else {
+					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), stringStack);
 				}
 			}
 		}
@@ -259,11 +281,13 @@ public class PulverizerManager {
 			clusterName = null;
 		}
 		if (!registeredRelated.isEmpty()) {
-			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), 2), ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
-			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), 2), ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
+			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier),
+					ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
+			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier),
+					ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
 		} else {
-			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), 2), null, 0);
-			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), 2), null, 0);
+			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier), null, 0);
+			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier), null, 0);
 		}
 		addIngotNameToDustRecipe(2400, ingotName, ItemHelper.cloneStack(registeredDust.get(0), 1));
 	}
@@ -276,7 +300,8 @@ public class PulverizerManager {
 		ArrayList<ItemStack> registeredOres = OreDictionary.getOres(oreName);
 
 		if (!registeredOres.isEmpty()) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, 2), secondaryOutput, secondaryChance);
+			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, oreMultiplier), secondaryOutput,
+					secondaryChance);
 		}
 	}
 
@@ -285,7 +310,7 @@ public class PulverizerManager {
 		if (primaryOutput == null) {
 			return;
 		}
-		ItemStack dust = ItemHelper.cloneStack(primaryOutput, 2);
+		ItemStack dust = ItemHelper.cloneStack(primaryOutput, oreMultiplier);
 		addRecipe(energy, ore, dust, secondaryOutput, secondaryChance);
 	}
 
@@ -386,17 +411,14 @@ public class PulverizerManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackPulverizer extends ComparableItemStack {
 
-		static final String BLOCK = "block";
 		static final String ORE = "ore";
-		static final String DUST = "dust";
 		static final String INGOT = "ingot";
 		static final String NUGGET = "nugget";
 		static final String LOG = "log";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
-					|| oreName.startsWith(LOG);
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG);
 		}
 
 		public static int getOreID(ItemStack stack) {

@@ -49,8 +49,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Satchels to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Satchel.All.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Satchels to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Satchel.All.Securable", enableSecurity, comment);
 	}
 
 	IIcon latch[] = new IIcon[3];

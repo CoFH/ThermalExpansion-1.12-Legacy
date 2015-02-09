@@ -206,8 +206,8 @@ public class BlockEnder extends BlockTEBase {
 	public static boolean enable;
 
 	static {
-		String category = "block.ender";
-		enable = ThermalExpansion.config.get(category, "Tesseract", true);
+		String category = "Ender";
+		enable = ThermalExpansion.config.get(category + ".Tesseract", "Recipe.Enable", true);
 	}
 
 	public static ItemStack tesseract;

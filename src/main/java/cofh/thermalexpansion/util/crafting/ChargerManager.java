@@ -22,7 +22,7 @@ public class ChargerManager {
 	public static final int DEFAULT_ENERGY = 4000;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("tweak.crafting", "Charger.AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Charger", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeCharger getRecipe(ItemStack input) {

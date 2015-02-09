@@ -5,8 +5,6 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.FuelHandler;
@@ -25,13 +23,6 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	static final int TYPE = BlockDynamo.Types.ENERVATION.ordinal();
 
 	public static void initialize() {
-
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Enervation.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("tweak.dynamo", "Enervation.BasePower", maxPower);
-		maxPower /= 10;
-		maxPower *= 10;
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.DynamoEnervation");
 	}

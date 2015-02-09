@@ -40,10 +40,11 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Precipitator.BasePower", 20), 10, 500);
-		ThermalExpansion.config.set("tweak.machine", "Precipitator.BasePower", maxPower);
+		String category = "Machine.Precipitator";
+		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
+		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
 	}

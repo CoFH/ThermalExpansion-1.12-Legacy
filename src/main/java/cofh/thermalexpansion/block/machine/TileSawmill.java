@@ -27,10 +27,11 @@ public class TileSawmill extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Sawmill.BasePower", 20), 10, 500);
-		ThermalExpansion.config.set("tweak.machine", "Sawmill.BasePower", maxPower);
+		String category = "Machine.Sawmill";
+		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
+		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineSawmill");
 

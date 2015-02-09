@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.sponge;
 
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -61,9 +62,7 @@ public class BlockSponge extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -179,10 +178,11 @@ public class BlockSponge extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.sponge";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
-		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Magmatic", true);
+		String category = "Sponge.";
+
+		for (int i = 1; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack spongeCreative;

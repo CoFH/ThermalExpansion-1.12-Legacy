@@ -4,8 +4,6 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -30,13 +28,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	static final int TYPE = BlockDynamo.Types.REACTANT.ordinal();
 
 	public static void initialize() {
-
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Reactant.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("tweak.dynamo", "Reactant.BasePower", maxPower);
-		maxPower /= 10;
-		maxPower *= 10;
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}

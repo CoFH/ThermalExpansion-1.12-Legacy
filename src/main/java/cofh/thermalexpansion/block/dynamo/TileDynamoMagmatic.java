@@ -2,8 +2,6 @@ package cofh.thermalexpansion.block.dynamo;
 
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -26,13 +24,6 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	static final int TYPE = BlockDynamo.Types.MAGMATIC.ordinal();
 
 	public static void initialize() {
-
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Magmatic.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("tweak.dynamo", "Magmatic.BasePower", maxPower);
-		maxPower /= 10;
-		maxPower *= 10;
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsDefault(maxPower);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}

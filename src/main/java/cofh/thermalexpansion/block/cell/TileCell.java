@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.gui.client.GuiCell;
@@ -35,41 +36,44 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Energy Cells to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Cell.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Energy Cells to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Cell.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
 
 	public static int[] MAX_SEND = { 20000, 80, 400, 2000, 10000 };
 	public static int[] MAX_RECEIVE = { 20000, 80, 400, 2000, 10000 };
-	public static int[] STORAGE = { 20000, 400000, 2000000, 10000000, 50000000 };
+	public static int[] CAPACITY = { 20000, 400000, 2000000, 10000000, 50000000 };
 	public static final byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
 
 	static {
-		String category = "tweak.cell";
-		STORAGE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.Storage", STORAGE[4]), STORAGE[4] / 10, 1000000 * 1000);
-		STORAGE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.Storage", STORAGE[3]), STORAGE[3] / 10, STORAGE[4]);
-		STORAGE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.Storage", STORAGE[2]), STORAGE[2] / 10, STORAGE[3]);
-		STORAGE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.Storage", STORAGE[1]), STORAGE[1] / 10, STORAGE[2]);
+		String category2 = "Cell.";
 
-		MAX_SEND[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.MaxSend", MAX_SEND[4]), MAX_SEND[4] / 10, MAX_SEND[4] * 1000);
-		MAX_SEND[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.MaxSend", MAX_SEND[3]), MAX_SEND[3] / 10, MAX_SEND[3] * 1000);
-		MAX_SEND[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.MaxSend", MAX_SEND[2]), MAX_SEND[2] / 10, MAX_SEND[2] * 1000);
-		MAX_SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.MaxSend", MAX_SEND[1]), MAX_SEND[1] / 10, MAX_SEND[1] * 1000);
+		String category = category2 + StringHelper.titleCase(BlockCell.NAMES[4]);
+		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[4]), CAPACITY[4] / 10, 1000000 * 1000);
+		MAX_SEND[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxSend", MAX_SEND[4]), MAX_SEND[4] / 10, MAX_SEND[4] * 1000);
+		MAX_RECEIVE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxReceive", MAX_RECEIVE[4]), MAX_RECEIVE[4] / 10, MAX_RECEIVE[4] * 1000);
 
-		MAX_RECEIVE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.MaxReceive", MAX_RECEIVE[4]), MAX_RECEIVE[4] / 10,
-				MAX_RECEIVE[4] * 1000);
-		MAX_RECEIVE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.MaxReceive", MAX_RECEIVE[3]), MAX_RECEIVE[3] / 10,
-				MAX_RECEIVE[3] * 1000);
-		MAX_RECEIVE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.MaxReceive", MAX_RECEIVE[2]), MAX_RECEIVE[2] / 10,
-				MAX_RECEIVE[2] * 1000);
-		MAX_RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.MaxReceive", MAX_RECEIVE[1]), MAX_RECEIVE[1] / 10,
-				MAX_RECEIVE[1] * 1000);
+		category = category2 + StringHelper.titleCase(BlockCell.NAMES[3]);
+		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[3]), CAPACITY[3] / 10, CAPACITY[4]);
+		MAX_SEND[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxSend", MAX_SEND[3]), MAX_SEND[3] / 10, MAX_SEND[3] * 1000);
+		MAX_RECEIVE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxReceive", MAX_RECEIVE[3]), MAX_RECEIVE[3] / 10, MAX_RECEIVE[3] * 1000);
 
-		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Creative.MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
+		category = category2 + StringHelper.titleCase(BlockCell.NAMES[2]);
+		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[2]), CAPACITY[2] / 10, CAPACITY[3]);
+		MAX_RECEIVE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxReceive", MAX_RECEIVE[2]), MAX_RECEIVE[2] / 10, MAX_RECEIVE[2] * 1000);
+		MAX_SEND[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxSend", MAX_SEND[2]), MAX_SEND[2] / 10, MAX_SEND[2] * 1000);
+
+		category = category2 + StringHelper.titleCase(BlockCell.NAMES[1]);
+		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
+		MAX_SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxSend", MAX_SEND[1]), MAX_SEND[1] / 10, MAX_SEND[1] * 1000);
+		MAX_RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxReceive", MAX_RECEIVE[1]), MAX_RECEIVE[1] / 10, MAX_RECEIVE[1] * 1000);
+
+		category = category2 + StringHelper.titleCase(BlockCell.NAMES[0]);
+		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
 		MAX_RECEIVE[0] = MAX_SEND[0];
-		STORAGE[0] = MAX_SEND[0];
+		CAPACITY[0] = MAX_SEND[0];
 	}
 
 	int compareTracker;
@@ -85,12 +89,12 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public TileCell() {
 
-		energyStorage = new EnergyStorage(STORAGE[1], MAX_RECEIVE[1]);
+		energyStorage = new EnergyStorage(CAPACITY[1], MAX_RECEIVE[1]);
 	}
 
 	public TileCell(int metadata) {
 
-		energyStorage = new EnergyStorage(STORAGE[metadata], MAX_RECEIVE[metadata]);
+		energyStorage = new EnergyStorage(CAPACITY[metadata], MAX_RECEIVE[metadata]);
 		type = (byte) metadata;
 	}
 
@@ -255,7 +259,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		energySend = MathHelper.clampI(nbt.getInteger("Send"), 0, MAX_SEND[type]);
 		energyReceive = MathHelper.clampI(nbt.getInteger("Recv"), 0, MAX_RECEIVE[type]);
 
-		energyStorage = new EnergyStorage(STORAGE[type], MAX_RECEIVE[type]);
+		energyStorage = new EnergyStorage(CAPACITY[type], MAX_RECEIVE[type]);
 		energyStorage.readFromNBT(nbt);
 		meterTracker = (byte) Math.min(8, getScaledEnergyStored(9));
 	}

@@ -5,6 +5,7 @@ import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgradeOveride;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
@@ -66,12 +67,10 @@ public class BlockCell extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				if (i != Types.CREATIVE.ordinal()) {
-					list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), 0));
-				}
-				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), TileCell.STORAGE[i]));
+			if (i != Types.CREATIVE.ordinal()) {
+				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), 0));
 			}
+			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), TileCell.CAPACITY[i]));
 		}
 	}
 
@@ -282,12 +281,11 @@ public class BlockCell extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.cell";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
+		String category = "Cell.";
+
+		for (int i = 1; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static final String TEXTURE_DEFAULT = "CellConfig_";

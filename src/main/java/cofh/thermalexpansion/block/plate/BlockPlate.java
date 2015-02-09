@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.plate;
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.core.TEProps;
@@ -119,9 +120,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -291,11 +290,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.plate";
-		enable[Types.FRAME.ordinal()] = true;
-		enable[Types.SIGNAL.ordinal()] = ThermalExpansion.config.get(category, "Signal", true);
-		enable[Types.IMPULSE.ordinal()] = ThermalExpansion.config.get(category, "Impulse", true);
-		enable[Types.TRANSLOCATE.ordinal()] = ThermalExpansion.config.get(category, "Translocate", true);
+		String category = "Plate.";
+
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+		}
 	}
 
 	public static ItemStack plateFrame;
