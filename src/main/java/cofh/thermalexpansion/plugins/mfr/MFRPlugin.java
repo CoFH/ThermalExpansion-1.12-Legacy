@@ -7,7 +7,6 @@ import cpw.mods.fml.common.Loader;
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 import powercrystals.minefactoryreloaded.api.ValuedItem;
 
-
 public class MFRPlugin {
 
 	public static void preInit() {

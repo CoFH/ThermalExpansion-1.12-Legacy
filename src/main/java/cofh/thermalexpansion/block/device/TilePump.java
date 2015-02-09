@@ -19,7 +19,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TilePump extends TileAugmentable implements IFluidHandler {
 
 	static final int TYPE = BlockDevice.Types.PUMP.ordinal();

@@ -31,7 +31,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockTank extends BlockTEBase {
 
 	public BlockTank() {
@@ -228,7 +227,7 @@ public class BlockTank extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', tankBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'X', "ingotCopper", 'G',
-			"blockGlass" }));
+					"blockGlass" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "blockGlassHardened", 'X', tankHardened }));
@@ -249,12 +248,12 @@ public class BlockTank extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Tank.Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Tank.Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Tank.Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Tank.Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Tank.Resonant", true);
+		String category = "block.tank";
+		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
+		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
+		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
+		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
+		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
 	}
 
 	public static ItemStack tankCreative;

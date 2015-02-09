@@ -28,7 +28,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.opengl.GL11;
 
-
 public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
 	Class<? extends GuiContainer> containerClass;

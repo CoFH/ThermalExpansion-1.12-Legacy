@@ -28,7 +28,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-
 @Strippable("buildcraft.api.tools.IToolWrench")
 public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 

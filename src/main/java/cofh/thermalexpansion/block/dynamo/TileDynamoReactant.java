@@ -25,15 +25,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler {
 
 	static final int TYPE = BlockDynamo.Types.REACTANT.ordinal();
 
 	public static void initialize() {
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Reactant.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("block.tweak", "Dynamo.Reactant.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Reactant.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("tweak.dynamo", "Reactant.BasePower", maxPower);
 		maxPower /= 10;
 		maxPower *= 10;
 		defaultEnergyConfig[TYPE] = new EnergyConfig();

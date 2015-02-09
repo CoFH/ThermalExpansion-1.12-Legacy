@@ -25,7 +25,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public static void initialize() {
@@ -37,7 +36,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Energy Cells to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Cell.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Cell.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -48,27 +47,27 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	public static final byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
 
 	static {
-		String category = "block.tweak";
-		STORAGE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Resonant.Storage", STORAGE[4]), STORAGE[4] / 10, 1000000 * 1000);
-		STORAGE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Reinforced.Storage", STORAGE[3]), STORAGE[3] / 10, STORAGE[4]);
-		STORAGE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Hardened.Storage", STORAGE[2]), STORAGE[2] / 10, STORAGE[3]);
-		STORAGE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Basic.Storage", STORAGE[1]), STORAGE[1] / 10, STORAGE[2]);
+		String category = "tweak.cell";
+		STORAGE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.Storage", STORAGE[4]), STORAGE[4] / 10, 1000000 * 1000);
+		STORAGE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.Storage", STORAGE[3]), STORAGE[3] / 10, STORAGE[4]);
+		STORAGE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.Storage", STORAGE[2]), STORAGE[2] / 10, STORAGE[3]);
+		STORAGE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.Storage", STORAGE[1]), STORAGE[1] / 10, STORAGE[2]);
 
-		MAX_SEND[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Resonant.MaxSend", MAX_SEND[4]), MAX_SEND[4] / 10, MAX_SEND[4] * 1000);
-		MAX_SEND[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Reinforced.MaxSend", MAX_SEND[3]), MAX_SEND[3] / 10, MAX_SEND[3] * 1000);
-		MAX_SEND[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Hardened.MaxSend", MAX_SEND[2]), MAX_SEND[2] / 10, MAX_SEND[2] * 1000);
-		MAX_SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Basic.MaxSend", MAX_SEND[1]), MAX_SEND[1] / 10, MAX_SEND[1] * 1000);
+		MAX_SEND[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.MaxSend", MAX_SEND[4]), MAX_SEND[4] / 10, MAX_SEND[4] * 1000);
+		MAX_SEND[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.MaxSend", MAX_SEND[3]), MAX_SEND[3] / 10, MAX_SEND[3] * 1000);
+		MAX_SEND[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.MaxSend", MAX_SEND[2]), MAX_SEND[2] / 10, MAX_SEND[2] * 1000);
+		MAX_SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.MaxSend", MAX_SEND[1]), MAX_SEND[1] / 10, MAX_SEND[1] * 1000);
 
-		MAX_RECEIVE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Resonant.MaxReceive", MAX_RECEIVE[4]), MAX_RECEIVE[4] / 10,
+		MAX_RECEIVE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.MaxReceive", MAX_RECEIVE[4]), MAX_RECEIVE[4] / 10,
 				MAX_RECEIVE[4] * 1000);
-		MAX_RECEIVE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Reinforced.MaxReceive", MAX_RECEIVE[3]), MAX_RECEIVE[3] / 10,
+		MAX_RECEIVE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.MaxReceive", MAX_RECEIVE[3]), MAX_RECEIVE[3] / 10,
 				MAX_RECEIVE[3] * 1000);
-		MAX_RECEIVE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Hardened.MaxReceive", MAX_RECEIVE[2]), MAX_RECEIVE[2] / 10,
+		MAX_RECEIVE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.MaxReceive", MAX_RECEIVE[2]), MAX_RECEIVE[2] / 10,
 				MAX_RECEIVE[2] * 1000);
-		MAX_RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Basic.MaxReceive", MAX_RECEIVE[1]), MAX_RECEIVE[1] / 10,
+		MAX_RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.MaxReceive", MAX_RECEIVE[1]), MAX_RECEIVE[1] / 10,
 				MAX_RECEIVE[1] * 1000);
 
-		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cell.Creative.MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
+		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Creative.MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
 		MAX_RECEIVE[0] = MAX_SEND[0];
 		STORAGE[0] = MAX_SEND[0];
 	}

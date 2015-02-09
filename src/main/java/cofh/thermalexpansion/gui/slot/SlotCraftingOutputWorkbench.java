@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemSword;
 import net.minecraft.stats.AchievementList;
 
-
 public class SlotCraftingOutputWorkbench extends Slot {
 
 	EntityPlayer myPlayer;

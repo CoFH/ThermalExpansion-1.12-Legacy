@@ -16,7 +16,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-
 public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 
 	public ItemBlockSponge(Block block) {

@@ -41,7 +41,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import net.minecraftforge.oredict.OreDictionary;
 
-
 public class BlockMachine extends BlockTEBase {
 
 	public BlockMachine() {
@@ -90,18 +89,14 @@ public class BlockMachine extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length - 4; i++) {
-			if (enable[i]) {
-				for (int j = 0; j < 4; j++) {
-					if (creativeTiers[j]) {
-						list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
-					}
+			for (int j = 0; j < 4; j++) {
+				if (creativeTiers[j]) {
+					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
 				}
 			}
 		}
 		for (int i = Types.values().length - 4; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) 0));
-			}
+			list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) 0));
 		}
 	}
 
@@ -419,28 +414,22 @@ public class BlockMachine extends BlockTEBase {
 	public static boolean defaultReconfigSides = true;
 
 	static {
-		String category = "block.feature";
-		enable[Types.FURNACE.ordinal()] = ThermalExpansion.config.get(category, "Machine.Furnace", true);
-		enable[Types.PULVERIZER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Pulverizer", true);
-		enable[Types.SAWMILL.ordinal()] = ThermalExpansion.config.get(category, "Machine.Sawmill", true);
-		enable[Types.SMELTER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Smelter", true);
-		enable[Types.CRUCIBLE.ordinal()] = ThermalExpansion.config.get(category, "Machine.Crucible", true);
-		enable[Types.TRANSPOSER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Transposer", true);
-		enable[Types.PRECIPITATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Precipitator", true);
-		enable[Types.EXTRUDER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Extruder", true);
-		enable[Types.ACCUMULATOR.ordinal()] = ThermalExpansion.config.get(category, "Machine.Accumulator", true);
-		enable[Types.ASSEMBLER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Assembler", true);
-		enable[Types.CHARGER.ordinal()] = ThermalExpansion.config.get(category, "Machine.Charger", true);
+		String category = "Machine.";
 
-		category = "block.tweak";
-		defaultAutoTransfer = ThermalExpansion.config.get(category, "Machines.DefaultAugments.AutoTransfer", true);
-		defaultRedstoneControl = ThermalExpansion.config.get(category, "Machines.DefaultAugments.RedstoneControl", true);
-		defaultReconfigSides = ThermalExpansion.config.get(category, "Machines.DefaultAugments.ReconfigSides", true);
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enabled", true);
+		}
 
-		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier0", false);
-		creativeTiers[1] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier1", false);
-		creativeTiers[2] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier2", false);
-		creativeTiers[3] = ThermalExpansion.config.get(category, "CreativeTab.Machines.Tier3", true);
+		category += "Augments";
+
+		defaultAutoTransfer = ThermalExpansion.config.get(category, "Default.AutoTransfer", true);
+		defaultRedstoneControl = ThermalExpansion.config.get(category, "Default.RedstoneControl", true);
+		defaultReconfigSides = ThermalExpansion.config.get(category, "Default.ReconfigurableSides", true);
+
+		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Basic", false);
+		creativeTiers[1] = ThermalExpansion.config.get(category, "CreativeTab.Hardened", false);
+		creativeTiers[2] = ThermalExpansion.config.get(category, "CreativeTab.Reinforced", false);
+		creativeTiers[3] = ThermalExpansion.config.get(category, "CreativeTab.Resonant", true);
 	}
 
 	public static ItemStack furnace;

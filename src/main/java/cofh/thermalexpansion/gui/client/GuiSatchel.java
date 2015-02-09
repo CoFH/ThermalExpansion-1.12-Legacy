@@ -13,7 +13,6 @@ import cofh.thermalexpansion.item.ItemSatchel;
 
 import net.minecraft.entity.player.InventoryPlayer;
 
-
 public class GuiSatchel extends GuiBaseAdv {
 
 	boolean enchanted;

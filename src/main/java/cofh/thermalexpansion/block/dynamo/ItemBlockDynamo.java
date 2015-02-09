@@ -16,7 +16,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-
 public class ItemBlockDynamo extends ItemBlockBase {
 
 	public static ItemStack setDefaultTag(ItemStack container) {

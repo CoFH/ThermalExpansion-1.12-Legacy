@@ -16,7 +16,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class IMCHandler {
 
 	public static IMCHandler instance = new IMCHandler();

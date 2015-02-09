@@ -13,7 +13,6 @@ import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 
-
 public class PacketTEBase extends PacketCoFHBase {
 
 	public static void initialize() {

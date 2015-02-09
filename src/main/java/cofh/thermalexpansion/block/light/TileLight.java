@@ -20,7 +20,6 @@ import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public class TileLight extends TileTEBase implements ITileInfo {
 
 	public static void initialize() {

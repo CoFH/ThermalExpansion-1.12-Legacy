@@ -5,7 +5,6 @@ import cofh.thermalexpansion.block.TileReconfigurable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-
 public class ReconfigurableHelper {
 
 	public static final byte DEFAULT_FACING = 3;

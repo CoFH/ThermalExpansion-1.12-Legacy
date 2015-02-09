@@ -82,7 +82,7 @@ public class ThermalExpansion extends BaseMod {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.7.10R4.0.0B9";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
-	public static final String releaseURL = "https://raw.github.com/CoFH/VERSION/master/ThermalExpansion";
+	public static final String releaseURL = "https://raw.github.com/CoFH/Version/master/ThermalExpansion";
 	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance(modId)
@@ -115,8 +115,8 @@ public class ThermalExpansion extends BaseMod {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
-		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg")));
-		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg")));
+		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg"), true));
+		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg"), true));
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
@@ -292,15 +292,15 @@ public class ThermalExpansion extends BaseMod {
 		boolean optionColorBlind = false;
 		boolean optionDrawBorders = true;
 
-		String category = "general";
+		String category = "General";
 		String comment = null;
 
-		TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
-		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
-		optionColorBlind = CoFHCore.configClient.get(category, "ColorBlindTextures", false);
-		optionDrawBorders = CoFHCore.configClient.get(category, "DrawGUISlotBorders", true);
+		optionColorBlind = CoFHCore.configClient.get(category, "EnableColorBlindTextures", false);
 
-		category = "holiday";
+		category = "Interface";
+		optionDrawBorders = CoFHCore.configClient.get(category, "EnableGUISlotBorders", true);
+
+		category = "Holiday";
 		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
 		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
 
@@ -311,7 +311,9 @@ public class ThermalExpansion extends BaseMod {
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
-		TEProps.enableGuiBorders = optionDrawBorders;
+
+		// TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
+		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
 	}
 
 	void cleanConfig(boolean preInit) {
@@ -323,6 +325,10 @@ public class ThermalExpansion extends BaseMod {
 		String[] categoryNames = config.getCategoryNames().toArray(new String[config.getCategoryNames().size()]);
 		for (int i = 0; i < categoryNames.length; i++) {
 			config.getCategory(categoryNames[i]).setLanguageKey(prefix + categoryNames[i]).setRequiresMcRestart(true);
+		}
+		categoryNames = configClient.getCategoryNames().toArray(new String[configClient.getCategoryNames().size()]);
+		for (int i = 0; i < categoryNames.length; i++) {
+			configClient.getCategory(categoryNames[i]).setLanguageKey(prefix + categoryNames[i]).setRequiresMcRestart(true);
 		}
 	}
 

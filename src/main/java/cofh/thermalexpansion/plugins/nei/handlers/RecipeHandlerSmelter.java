@@ -10,7 +10,6 @@ import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 
 import net.minecraft.item.ItemStack;
 
-
 public class RecipeHandlerSmelter extends RecipeHandlerBase {
 
 	public static RecipeHandlerSmelter instance = new RecipeHandlerSmelter();

@@ -17,7 +17,9 @@ import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -280,12 +282,12 @@ public class BlockCell extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Cell.Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Cell.Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Cell.Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Cell.Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Cell.Resonant", true);
+		String category = "block.cell";
+		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
+		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
+		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
+		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
+		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
 	}
 
 	public static final String TEXTURE_DEFAULT = "CellConfig_";

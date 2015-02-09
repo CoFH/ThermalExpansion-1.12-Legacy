@@ -12,6 +12,7 @@ import cofh.thermalexpansion.block.plate.TilePlateSignal;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalfoundation.fluid.TFFluids;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;

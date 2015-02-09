@@ -8,7 +8,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagByte;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class RecipeMachineUpgrade extends ShapedOreRecipe {
 
 	byte level = 0;

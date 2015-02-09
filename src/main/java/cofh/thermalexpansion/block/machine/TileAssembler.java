@@ -25,7 +25,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.ASSEMBLER.ordinal();
@@ -41,8 +40,8 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Assembler.BasePower", 20), 10, 500);
-		ThermalExpansion.config.set("block.tweak", "Machine.Assembler.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Assembler.BasePower", 20), 10, 500);
+		ThermalExpansion.config.set("tweak.machine", "Assembler.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 

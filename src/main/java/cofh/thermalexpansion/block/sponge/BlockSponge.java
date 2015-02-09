@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockSponge extends BlockTEBase {
 
 	public BlockSponge() {
@@ -180,10 +179,10 @@ public class BlockSponge extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Sponge.Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Sponge.Basic", true);
-		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Sponge.Magmatic", true);
+		String category = "block.sponge";
+		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
+		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
+		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Magmatic", true);
 	}
 
 	public static ItemStack spongeCreative;

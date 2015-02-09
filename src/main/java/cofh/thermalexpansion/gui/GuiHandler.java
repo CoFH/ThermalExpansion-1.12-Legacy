@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
-
 public class GuiHandler implements IGuiHandler {
 
 	public static final int TILE_ID = 0;

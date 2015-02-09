@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class TabSchematic extends TabBase {
 
 	public static int defaultSide = 1;

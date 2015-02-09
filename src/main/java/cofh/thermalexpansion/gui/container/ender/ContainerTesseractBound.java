@@ -6,7 +6,6 @@ import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerTesseractBound extends ContainerTEBase {
 
 	TileTesseractBound myTile;

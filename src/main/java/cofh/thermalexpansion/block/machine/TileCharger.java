@@ -17,7 +17,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-
 public class TileCharger extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
@@ -32,8 +31,8 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Charger.BasePower", 10000), 100, 20000);
-		ThermalExpansion.config.set("block.tweak", "Machine.Charger.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Charger.BasePower", 10000), 100, 20000);
+		ThermalExpansion.config.set("tweak.machine", "Charger.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParams(1, maxPower, Math.max(480000, maxPower * 60));
 

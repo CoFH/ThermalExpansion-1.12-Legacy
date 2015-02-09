@@ -15,7 +15,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 
-
 //import thermalexpansion.gui.client.plate.GuiPlateSignal;
 
 public class TilePlateSignal extends TilePlateBase {

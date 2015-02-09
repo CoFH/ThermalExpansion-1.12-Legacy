@@ -9,7 +9,6 @@ import cpw.mods.fml.relauncher.Side;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 
-
 public class TileTesseractBound extends TileRSControl implements ISidedInventory {
 
 	public static void initialize() {
@@ -25,7 +24,7 @@ public class TileTesseractBound extends TileRSControl implements ISidedInventory
 
 	public static boolean enableSecurity = true;
 
-	String owner = null;//CoFHProps.DEFAULT_OWNER;
+	String owner = null;// CoFHProps.DEFAULT_OWNER;
 	private AccessMode access = AccessMode.PUBLIC;
 
 	int[] slots = new int[0];

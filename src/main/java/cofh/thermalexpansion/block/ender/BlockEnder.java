@@ -35,7 +35,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockEnder extends BlockTEBase {
 
 	public BlockEnder() {
@@ -207,8 +206,8 @@ public class BlockEnder extends BlockTEBase {
 	public static boolean enable;
 
 	static {
-		String category = "block.feature";
-		enable = ThermalExpansion.config.get(category, "Tesseract.Enable", true);
+		String category = "block.ender";
+		enable = ThermalExpansion.config.get(category, "Tesseract", true);
 	}
 
 	public static ItemStack tesseract;

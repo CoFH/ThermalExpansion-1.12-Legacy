@@ -38,7 +38,6 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 
-
 public class TEBlocks {
 
 	private TEBlocks() {

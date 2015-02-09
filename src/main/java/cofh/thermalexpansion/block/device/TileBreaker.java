@@ -31,7 +31,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileBreaker extends TileAugmentable implements IFluidHandler {
 
 	static final int TYPE = BlockDevice.Types.BREAKER.ordinal();

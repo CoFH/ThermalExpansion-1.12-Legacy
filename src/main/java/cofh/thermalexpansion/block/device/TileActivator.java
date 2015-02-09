@@ -36,7 +36,6 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-
 public class TileActivator extends TileAugmentable {
 
 	static final int TYPE = BlockDevice.Types.ACTIVATOR.ordinal();
@@ -65,12 +64,12 @@ public class TileActivator extends TileAugmentable {
 		String comment = "Enable this to allow for Activators to be securable. (Default: true)";
 		enableSecurity = ThermalExpansion.config.get("security", "Device.Activator.Securable", enableSecurity, comment);
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Device.Activator.BasePower", 20), 0, 500);
-		ThermalExpansion.config.set("block.tweak", "Device.Activator.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.device", "Activator.BasePower", 20), 0, 500);
+		ThermalExpansion.config.set("tweak.device", "Activator.BasePower", maxPower);
 		energyConfig.setParamsPower(maxPower);
 
-		maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Device.Activator.ActivationPower", 20), 0, 500);
-		ThermalExpansion.config.set("block.tweak", "Device.Activator.ActivationPower", maxPower);
+		maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.device", "Activator.ActivationPower", 20), 0, 500);
+		ThermalExpansion.config.set("tweak.device", "Activator.ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
 	}
 

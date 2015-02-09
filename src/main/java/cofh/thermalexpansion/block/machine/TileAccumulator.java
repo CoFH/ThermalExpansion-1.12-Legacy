@@ -56,7 +56,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public static FluidStack genStackSnow = new FluidStack(FluidRegistry.WATER, 125);
 
 	static {
-		int rate = ThermalExpansion.config.get("tweak", "Accumulator.Rate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT);
+		int rate = ThermalExpansion.config.get("tweak.machine", "Accumulator.Rate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT);
 
 		if (rate > 0 && rate <= 50) {
 			genRate = rate * CoFHProps.TIME_CONSTANT;
@@ -65,7 +65,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 			ThermalExpansion.log.info("'Accumulator.Rate' config value is out of acceptable range. Using default. (25)");
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
-		passiveGen = ThermalExpansion.config.get("tweak", "Accumulator.PassiveGen", false);
+		passiveGen = ThermalExpansion.config.get("tweak.machine", "Accumulator.PassiveGen", false);
 	}
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);

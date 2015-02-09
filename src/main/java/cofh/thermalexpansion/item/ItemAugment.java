@@ -16,7 +16,6 @@ import java.util.Set;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
-
 public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	public class AugmentEntry {

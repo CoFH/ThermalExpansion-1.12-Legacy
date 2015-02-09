@@ -40,7 +40,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockDevice extends BlockTEBase {
 
 	public BlockDevice() {
@@ -358,11 +357,11 @@ public class BlockDevice extends BlockTEBase {
 	public static boolean breakerUseDiamondPickaxe = false;
 
 	static {
-		String category = "block.feature";
-		enable[Types.WORKBENCH.ordinal()] = ThermalExpansion.config.get(category, "Device.Workbench", true);
-		enable[Types.ACTIVATOR.ordinal()] = ThermalExpansion.config.get(category, "Device.Activator", true);
-		enable[Types.BREAKER.ordinal()] = ThermalExpansion.config.get(category, "Device.Breaker", true);
-		enable[Types.NULLIFIER.ordinal()] = ThermalExpansion.config.get(category, "Device.Nullifier", true);
+		String category = "block.device";
+		enable[Types.WORKBENCH.ordinal()] = ThermalExpansion.config.get(category, "Workbench", true);
+		enable[Types.ACTIVATOR.ordinal()] = ThermalExpansion.config.get(category, "Activator", true);
+		enable[Types.BREAKER.ordinal()] = ThermalExpansion.config.get(category, "Breaker", true);
+		enable[Types.NULLIFIER.ordinal()] = ThermalExpansion.config.get(category, "Nullifier", true);
 	}
 
 	public static ItemStack workbench;

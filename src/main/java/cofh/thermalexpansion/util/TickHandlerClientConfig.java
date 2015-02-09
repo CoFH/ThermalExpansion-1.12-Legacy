@@ -8,7 +8,6 @@ import cpw.mods.fml.common.gameevent.TickEvent.Phase;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 
-
 public class TickHandlerClientConfig {
 
 	public static TickHandlerClientConfig instance = new TickHandlerClientConfig();

@@ -7,14 +7,17 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
+
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;

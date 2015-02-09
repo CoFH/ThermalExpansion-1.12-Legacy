@@ -29,7 +29,6 @@ import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
-
 public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static ItemStack setDefaultInventoryTag(ItemStack container) {
@@ -177,15 +176,18 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			return true;
 		}
 		AccessMode access = SecurityHelper.getAccess(stack);
-		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
 			return true;
+		}
 		UUID ownerID = SecurityHelper.getOwner(stack).getId();
-		if (ownerID.variant() == 0)
+		if (ownerID.variant() == 0) {
 			return true;
+		}
 
 		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
-		if (ownerID.equals(otherID))
+		if (ownerID.equals(otherID)) {
 			return true;
+		}
 
 		String owner = SecurityHelper.getOwnerName(stack);
 		return access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);

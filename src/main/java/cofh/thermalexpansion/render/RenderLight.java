@@ -25,7 +25,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderLight instance = new RenderLight();

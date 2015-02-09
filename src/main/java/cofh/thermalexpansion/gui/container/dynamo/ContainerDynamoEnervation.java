@@ -9,7 +9,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerDynamoEnervation extends ContainerTEBase implements ISlotValidator {
 
 	TileDynamoEnervation myTile;

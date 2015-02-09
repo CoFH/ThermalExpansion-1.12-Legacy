@@ -33,7 +33,6 @@ import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockCache extends BlockTEBase {
 
 	public BlockCache() {
@@ -273,7 +272,7 @@ public class BlockCache extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
 			GameRegistry
-			.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
+					.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "blockGlassHardened" }));
@@ -292,12 +291,12 @@ public class BlockCache extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Cache.Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Cache.Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Cache.Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Cache.Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Cache.Resonant", true);
+		String category = "block.cache";
+		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
+		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
+		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
+		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
+		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
 	}
 
 	public static ItemStack cacheCreative;

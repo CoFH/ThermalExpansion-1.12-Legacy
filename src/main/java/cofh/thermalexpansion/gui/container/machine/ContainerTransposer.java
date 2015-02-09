@@ -13,7 +13,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerTransposer extends ContainerTEBase implements ISlotValidator {
 
 	TileTransposer myTile;

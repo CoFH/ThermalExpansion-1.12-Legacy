@@ -11,7 +11,6 @@ import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 
 import net.minecraft.item.ItemStack;
 
-
 public class RecipeHandlerPulverizer extends RecipeHandlerBase {
 
 	public static RecipeHandlerPulverizer instance = new RecipeHandlerPulverizer();

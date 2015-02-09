@@ -23,7 +23,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
 public class ItemFlorb extends ItemBase {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {

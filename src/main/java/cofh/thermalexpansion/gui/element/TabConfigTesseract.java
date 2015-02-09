@@ -10,11 +10,10 @@ import java.util.List;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class TabConfigTesseract extends TabBase {
 
 	public static final String[] TOOLTIPS = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
-		StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
+			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
 	TileTesseract myTile;
 	String myPlayer;

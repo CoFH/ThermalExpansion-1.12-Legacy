@@ -23,7 +23,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-
 public class ItemIgniter extends ItemBase implements IEnergyContainerItem {
 
 	public int maxEnergy = 80000;

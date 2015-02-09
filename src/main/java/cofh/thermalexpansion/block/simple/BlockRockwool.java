@@ -21,7 +21,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 
-
 public class BlockRockwool extends Block implements IInitializer {
 
 	public BlockRockwool() {

@@ -17,7 +17,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class TileSponge extends TileTEBase implements ISidedTexture {
 
 	public static void initialize() {

@@ -24,7 +24,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 @ChestContainer()
 public class ContainerStrongbox extends ContainerTEBase implements ISlotValidator {
 

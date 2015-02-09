@@ -30,7 +30,6 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderTank instance = new RenderTank();

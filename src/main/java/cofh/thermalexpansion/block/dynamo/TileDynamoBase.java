@@ -35,13 +35,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
 public abstract class TileDynamoBase extends TileRSControl implements IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	public static void configure() {
 
 		String comment = "Enable this to allow for Dynamos to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Dynamo.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

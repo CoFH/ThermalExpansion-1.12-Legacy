@@ -14,7 +14,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-
 public class ChargerManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCharger>();

@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class RecipeHandlerTransposer extends RecipeHandlerBase {
 
 	public static RecipeHandlerTransposer instance = new RecipeHandlerTransposer();

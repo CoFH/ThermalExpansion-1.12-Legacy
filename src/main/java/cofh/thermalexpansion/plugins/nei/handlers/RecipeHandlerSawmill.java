@@ -11,7 +11,6 @@ import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 
 import net.minecraft.item.ItemStack;
 
-
 public class RecipeHandlerSawmill extends RecipeHandlerBase {
 
 	public static RecipeHandlerSawmill instance = new RecipeHandlerSawmill();

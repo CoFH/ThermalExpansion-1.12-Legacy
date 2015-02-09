@@ -12,7 +12,6 @@ import net.minecraft.inventory.SlotFurnace;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerFurnace extends ContainerTEBase implements ISlotValidator {
 
 	TileFurnace myTile;

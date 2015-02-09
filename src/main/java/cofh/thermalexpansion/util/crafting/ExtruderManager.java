@@ -10,7 +10,6 @@ import java.util.Map;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class ExtruderManager { // TODO
 
 	@SuppressWarnings("rawtypes")

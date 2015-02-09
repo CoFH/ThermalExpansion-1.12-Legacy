@@ -16,7 +16,6 @@ import net.minecraftforge.fluids.FluidRegistry;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
 public class RenderEntityFlorb extends Render {
 
 	public static final RenderEntityFlorb instance = new RenderEntityFlorb();

@@ -14,7 +14,6 @@ import net.minecraft.client.gui.GuiScreen;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class TabConfigCell extends TabBase {
 
 	public static String TUTORIAL_CONFIG = "The Configuration tab determines how energy is transferred to and from this device.";

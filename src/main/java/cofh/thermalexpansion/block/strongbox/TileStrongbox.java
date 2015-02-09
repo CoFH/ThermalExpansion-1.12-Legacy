@@ -24,7 +24,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 
-
 public class TileStrongbox extends TileInventory implements IReconfigurableFacing, ISidedInventory, IInventoryRetainer {
 
 	public static void initialize() {

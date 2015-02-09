@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.gui.element;
 
+import cofh.core.CoFHProps;
 import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.core.TEProps;
-
 
 public class ElementSlotOverlay extends ElementBase {
 
@@ -45,7 +45,7 @@ public class ElementSlotOverlay extends ElementBase {
 			return;
 		}
 		RenderHelper.bindTexture(texture);
-		if (TEProps.enableGuiBorders) {
+		if (CoFHProps.enableGUISlotBorders) {
 			drawSlotWithBorder(posX, posY);
 		} else {
 			drawSlotNoBorder(posX, posY);

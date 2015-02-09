@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 	public static void initialize() {

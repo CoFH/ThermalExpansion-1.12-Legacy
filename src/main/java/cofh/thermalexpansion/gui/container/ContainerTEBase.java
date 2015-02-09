@@ -18,7 +18,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerTEBase extends Container implements IAugmentableContainer {
 
 	TileCoFHBase baseTile;

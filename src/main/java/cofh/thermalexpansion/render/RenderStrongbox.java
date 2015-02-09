@@ -22,7 +22,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
 public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemRenderer {
 
 	public static final RenderStrongbox instance = new RenderStrongbox();

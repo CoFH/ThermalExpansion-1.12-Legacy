@@ -36,10 +36,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class BlockDynamo extends BlockTEBase {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
+
 	static {
 		Cuboid6 bb = new Cuboid6(0, 0, 0, 1, 10 / 16., 1);
 		Vector3 p = new Vector3(0.5, 0.5, 0.5);
@@ -284,12 +284,12 @@ public class BlockDynamo extends BlockTEBase {
 	public static boolean defaultRedstoneControl = true;
 
 	static {
-		String category = "block.feature";
-		enable[Types.STEAM.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Steam", true);
-		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Magmatic", true);
-		enable[Types.COMPRESSION.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Compression", true);
-		enable[Types.REACTANT.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Reactant", true);
-		enable[Types.ENERVATION.ordinal()] = ThermalExpansion.config.get(category, "Dynamo.Enervation", true);
+		String category = "block.dynamo";
+		enable[Types.STEAM.ordinal()] = ThermalExpansion.config.get(category, "Steam", true);
+		enable[Types.MAGMATIC.ordinal()] = ThermalExpansion.config.get(category, "Magmatic", true);
+		enable[Types.COMPRESSION.ordinal()] = ThermalExpansion.config.get(category, "Compression", true);
+		enable[Types.REACTANT.ordinal()] = ThermalExpansion.config.get(category, "Reactant", true);
+		enable[Types.ENERVATION.ordinal()] = ThermalExpansion.config.get(category, "Enervation", true);
 	}
 
 	public static ItemStack dynamoSteam;

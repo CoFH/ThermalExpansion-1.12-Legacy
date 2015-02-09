@@ -22,7 +22,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory, IFluidHandler {
 
 	static final int TYPE = BlockMachine.Types.PRECIPITATOR.ordinal();
@@ -41,8 +40,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Precipitator.BasePower", 20), 10, 500);
-		ThermalExpansion.config.set("block.tweak", "Machine.Precipitator.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Precipitator.BasePower", 20), 10, 500);
+		ThermalExpansion.config.set("tweak.machine", "Precipitator.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 

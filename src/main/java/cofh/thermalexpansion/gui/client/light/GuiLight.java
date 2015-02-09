@@ -20,7 +20,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class GuiLight extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Light.png";

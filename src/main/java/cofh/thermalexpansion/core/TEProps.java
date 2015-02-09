@@ -31,8 +31,6 @@ public class TEProps {
 	public static final String TEXTURE_DEFAULT = "Config_";
 	public static final String TEXTURE_CB = "Config_CB_";
 
-	public static boolean colorBlind;
-
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
 	public static ResourceLocation textureGuiAssembler = PATH_ASSEMBLER;
 	public static String textureSelection = TEXTURE_DEFAULT;
@@ -49,7 +47,6 @@ public class TEProps {
 
 	public static int lavaRF = 200000;
 
-	public static boolean enableGuiBorders = true;
 	public static boolean enableAchievements = false;
 	public static boolean enableDebugOutput = false;
 

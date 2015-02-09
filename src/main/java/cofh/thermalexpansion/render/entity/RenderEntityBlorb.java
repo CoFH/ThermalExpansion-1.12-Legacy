@@ -15,7 +15,6 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-
 public class RenderEntityBlorb extends Render {
 
 	public static final RenderEntityBlorb instance = new RenderEntityBlorb();

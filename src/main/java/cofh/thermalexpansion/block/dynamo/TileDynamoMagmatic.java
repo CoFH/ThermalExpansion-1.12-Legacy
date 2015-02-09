@@ -21,15 +21,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler {
 
 	static final int TYPE = BlockDynamo.Types.MAGMATIC.ordinal();
 
 	public static void initialize() {
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Magmatic.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("block.tweak", "Dynamo.Magmatic.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Magmatic.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("tweak.dynamo", "Magmatic.BasePower", maxPower);
 		maxPower /= 10;
 		maxPower *= 10;
 		defaultEnergyConfig[TYPE] = new EnergyConfig();

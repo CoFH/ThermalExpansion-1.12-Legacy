@@ -23,7 +23,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 	static final int TYPE = BlockDevice.Types.NULLIFIER.ordinal();

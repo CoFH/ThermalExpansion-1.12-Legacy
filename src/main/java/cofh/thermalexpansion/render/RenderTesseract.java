@@ -30,7 +30,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
-
 @SideOnly(Side.CLIENT)
 public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRenderer {
 

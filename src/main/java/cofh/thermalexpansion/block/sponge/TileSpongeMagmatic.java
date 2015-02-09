@@ -9,7 +9,6 @@ import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class TileSpongeMagmatic extends TileSponge {
 
 	public static void initialize() {

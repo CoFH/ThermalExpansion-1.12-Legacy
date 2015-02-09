@@ -10,7 +10,6 @@ import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
 import net.minecraft.item.ItemStack;
 
-
 public class RecipeHandlerFurnace extends RecipeHandlerBase {
 
 	public static RecipeHandlerFurnace instance = new RecipeHandlerFurnace();

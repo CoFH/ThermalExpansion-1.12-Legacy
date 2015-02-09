@@ -15,7 +15,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
 
-
 @Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 

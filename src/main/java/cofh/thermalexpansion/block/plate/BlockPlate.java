@@ -12,7 +12,9 @@ import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
+
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
@@ -289,11 +291,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
+		String category = "block.plate";
 		enable[Types.FRAME.ordinal()] = true;
-		enable[Types.SIGNAL.ordinal()] = ThermalExpansion.config.get(category, "Plate.Signal", true);
-		enable[Types.IMPULSE.ordinal()] = ThermalExpansion.config.get(category, "Plate.Impulse", true);
-		enable[Types.TRANSLOCATE.ordinal()] = ThermalExpansion.config.get(category, "Plate.Translocate", true);
+		enable[Types.SIGNAL.ordinal()] = ThermalExpansion.config.get(category, "Signal", true);
+		enable[Types.IMPULSE.ordinal()] = ThermalExpansion.config.get(category, "Impulse", true);
+		enable[Types.TRANSLOCATE.ordinal()] = ThermalExpansion.config.get(category, "Translocate", true);
 	}
 
 	public static ItemStack plateFrame;

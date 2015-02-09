@@ -8,7 +8,6 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class RecipeMachine extends ShapedOreRecipe {
 
 	int targetSlot = 4;

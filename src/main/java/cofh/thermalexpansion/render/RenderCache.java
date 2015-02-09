@@ -11,7 +11,6 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class RenderCache extends TileEntitySpecialRenderer implements IItemRenderer {
 
 	public static final RenderCache instance = new RenderCache();

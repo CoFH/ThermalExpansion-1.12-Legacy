@@ -11,6 +11,7 @@ import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.util.FuelHandler;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -32,8 +33,8 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	public static void initialize() {
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Steam.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("block.tweak", "Dynamo.Steam.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Steam.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("tweak.dynamo", "Steam.BasePower", maxPower);
 		maxPower /= 10;
 		maxPower *= 10;
 		defaultEnergyConfig[TYPE] = new EnergyConfig();

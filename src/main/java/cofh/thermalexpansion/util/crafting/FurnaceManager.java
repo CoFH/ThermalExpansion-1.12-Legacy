@@ -5,11 +5,14 @@ import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.item.TFItems;
+
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
+
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

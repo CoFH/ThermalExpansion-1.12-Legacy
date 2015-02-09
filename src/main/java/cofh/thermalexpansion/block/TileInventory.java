@@ -27,7 +27,6 @@ import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 
-
 public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
 
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
@@ -144,11 +143,11 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		String uuid = nbt.getString("OwnerUUID");
 		String name = nbt.getString("Owner");
-        if (!Strings.isNullOrEmpty(uuid)) {
-            setOwner(new GameProfile(UUID.fromString(uuid), name));
-        } else {
-            setOwnerName(name);
-        }
+		if (!Strings.isNullOrEmpty(uuid)) {
+			setOwner(new GameProfile(UUID.fromString(uuid), name));
+		} else {
+			setOwnerName(name);
+		}
 
 		if (!enableSecurity()) {
 			access = AccessMode.PUBLIC;
@@ -278,8 +277,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
-		if (inWorld)
+		if (inWorld) {
 			markChunkDirty();
+		}
 	}
 
 	@Override
@@ -340,11 +340,13 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwnerName(String name) {
 
-		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name))
+		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
 			return false;
+		}
 		String uuid = PreYggdrasilConverter.func_152719_a(name);
-		if (Strings.isNullOrEmpty(uuid))
+		if (Strings.isNullOrEmpty(uuid)) {
 			return false;
+		}
 		return setOwner(new GameProfile(UUID.fromString(uuid), name));
 	}
 
@@ -355,13 +357,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 			owner = profile;
 			if (owner.getId().variant() != 0) {
 				new Thread("CoFH User Loader") {
+
 					@Override
 					public void run() {
+
 						owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
 					}
 				}.start();
-				if (inWorld)
+				if (inWorld) {
 					markChunkDirty();
+				}
 				return true;
 			}
 		}

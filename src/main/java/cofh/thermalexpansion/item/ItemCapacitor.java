@@ -19,7 +19,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
 public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 	public ItemCapacitor() {
@@ -241,8 +240,8 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
 
-	public static final int[] SEND = { 20000, 80, 80, 400, 2000, 10000 };
-	public static final int[] RECEIVE = { 20000, 0, 80, 400, 2000, 10000 };
-	public static final int[] STORAGE = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
+	public static int[] SEND = { 20000, 80, 80, 400, 2000, 10000 };
+	public static int[] RECEIVE = { 20000, 0, 80, 400, 2000, 10000 };
+	public static int[] STORAGE = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
 
 }

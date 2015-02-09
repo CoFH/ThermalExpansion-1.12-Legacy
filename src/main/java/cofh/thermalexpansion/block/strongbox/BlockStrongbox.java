@@ -26,7 +26,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
-
 public class BlockStrongbox extends BlockTEBase {
 
 	public BlockStrongbox() {
@@ -199,12 +198,12 @@ public class BlockStrongbox extends BlockTEBase {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Strongbox.Creative", true);
-		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Strongbox.Basic", true);
-		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Strongbox.Hardened", true);
-		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Strongbox.Reinforced", true);
-		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Strongbox.Resonant", true);
+		String category = "block.strongbox";
+		enable[Types.CREATIVE.ordinal()] = ThermalExpansion.config.get(category, "Creative", true);
+		enable[Types.BASIC.ordinal()] = ThermalExpansion.config.get(category, "Basic", true);
+		enable[Types.HARDENED.ordinal()] = ThermalExpansion.config.get(category, "Hardened", true);
+		enable[Types.REINFORCED.ordinal()] = ThermalExpansion.config.get(category, "Reinforced", true);
+		enable[Types.RESONANT.ordinal()] = ThermalExpansion.config.get(category, "Resonant", true);
 	}
 
 	public static ItemStack strongboxCreative;

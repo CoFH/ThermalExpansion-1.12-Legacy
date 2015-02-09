@@ -6,7 +6,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
 
-
 public class TileSpongeCreative extends TileSponge {
 
 	public static void initialize() {

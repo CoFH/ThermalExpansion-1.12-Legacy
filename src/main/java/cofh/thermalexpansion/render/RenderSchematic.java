@@ -12,7 +12,6 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class RenderSchematic implements IItemRenderer {
 
 	public static final RenderSchematic instance = new RenderSchematic();

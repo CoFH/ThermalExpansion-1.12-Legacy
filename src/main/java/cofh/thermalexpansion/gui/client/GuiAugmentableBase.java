@@ -19,7 +19,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
 	protected TileAugmentable myTile;

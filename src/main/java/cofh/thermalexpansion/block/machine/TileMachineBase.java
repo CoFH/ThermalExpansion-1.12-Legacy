@@ -37,11 +37,11 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
-			String comment = "Enable this to allow for " + name + "s to be securable. (Default: true)";
+			String comment = "Enable this to allow for " + name + "s to be securable.";
 			enableSecurity[i] = ThermalExpansion.config.get("security", "Machine." + name + ".Securable", enableSecurity[i], comment);
 
-			comment = "Enable sounds for the " + name + ". (Default: true)";
-			enableSound[i] = ThermalExpansion.configClient.get("sound", "Machine." + name + ".Sound", enableSound[i], comment);
+			comment = "Enable sounds for the " + name + ".";
+			enableSound[i] = ThermalExpansion.configClient.get("Machine." + name, "Sound.Enable", enableSound[i], comment);
 		}
 	}
 

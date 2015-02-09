@@ -22,7 +22,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-
 public class EntityFlorb extends EntityThrowable {
 
 	public static void initialize() {

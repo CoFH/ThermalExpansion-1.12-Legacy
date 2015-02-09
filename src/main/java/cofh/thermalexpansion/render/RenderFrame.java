@@ -23,7 +23,6 @@ import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
-
 public class RenderFrame implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 	public static final RenderFrame instance = new RenderFrame();

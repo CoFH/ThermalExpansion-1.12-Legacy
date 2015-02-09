@@ -6,8 +6,10 @@ import cofh.repack.codechicken.lib.render.CCRenderState;
 import cofh.thermalexpansion.block.ender.TileTesseract;
 import cofh.thermalfoundation.render.shader.ShaderStarfield;
 import cpw.mods.fml.client.registry.ClientRegistry;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
+
 import org.lwjgl.opengl.GL11;
 
 public class RenderTesseractStarfield extends TileEntitySpecialRenderer {

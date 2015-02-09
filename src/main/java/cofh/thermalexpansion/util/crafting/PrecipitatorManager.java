@@ -10,7 +10,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public class PrecipitatorManager { // TODO
 
 	private static Map<Fluid, RecipePrecipitator> recipeMap = new THashMap<Fluid, RecipePrecipitator>();

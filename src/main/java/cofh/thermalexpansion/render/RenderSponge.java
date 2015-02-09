@@ -11,7 +11,6 @@ import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 import net.minecraftforge.client.MinecraftForgeClient;
 
-
 public class RenderSponge implements IItemRenderer {
 
 	public static final RenderSponge instance = new RenderSponge();

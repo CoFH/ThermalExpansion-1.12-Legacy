@@ -13,7 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-
 public class CreativeTabFlorbs extends CreativeTabs {
 
 	int iconIndex = 0;

@@ -5,7 +5,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.util.IIcon;
 
-
 public class TileLexicon extends TileAugmentable {
 
 	public static void initialize() {

@@ -16,7 +16,6 @@ import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerTransposer;
 
 import net.minecraft.item.ItemStack;
 
-
 public class NEIThermalExpansionConfig implements IConfigureNEI {
 
 	/* IConfigureNEI */

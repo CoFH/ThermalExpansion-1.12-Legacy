@@ -14,13 +14,16 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ender.ContainerTesseract;
 import cofh.thermalexpansion.gui.element.TabConfigTesseract;
 import cofh.thermalfoundation.fluid.TFFluids;
+
 import java.util.LinkedList;
 import java.util.List;
+
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
+
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 

@@ -28,7 +28,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.IIcon;
 
-
 public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture, IInventoryRetainer {
 
 	public static void initialize() {

@@ -15,7 +15,6 @@ import java.util.List;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Slot;
 
-
 public class NEIRecipeOverlayHandler implements IOverlayHandler {
 
 	public int xOffset = 19;

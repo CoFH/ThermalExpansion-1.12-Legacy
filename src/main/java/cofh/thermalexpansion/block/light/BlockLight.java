@@ -14,7 +14,9 @@ import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
 import java.util.List;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -215,11 +217,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		return true;
 	}
@@ -238,10 +240,10 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
-		String category = "block.feature";
-		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Light.Illuminator", true);
-		enable[Types.LAMP_HALO.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
-		enable[Types.LAMP_BASIC.ordinal()] = ThermalExpansion.config.get(category, "Light.LampBasic", true);
+		String category = "block.light";
+		enable[Types.ILLUMINATOR.ordinal()] = ThermalExpansion.config.get(category, "Illuminator", true);
+		enable[Types.LAMP_HALO.ordinal()] = ThermalExpansion.config.get(category, "LampBasic", true);
+		enable[Types.LAMP_BASIC.ordinal()] = enable[Types.LAMP_HALO.ordinal()];
 	}
 
 	public static ItemStack illuminator;

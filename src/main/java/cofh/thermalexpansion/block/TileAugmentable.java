@@ -20,7 +20,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraftforge.fluids.FluidStack;
 
-
 public abstract class TileAugmentable extends TileReconfigurable implements IAugmentable, IEnergyInfo, ISidedInventory {
 
 	protected SideConfig sideConfig;

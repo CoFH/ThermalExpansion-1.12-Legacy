@@ -12,7 +12,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerPulverizer extends ContainerTEBase implements ISlotValidator {
 
 	TilePulverizer myTile;

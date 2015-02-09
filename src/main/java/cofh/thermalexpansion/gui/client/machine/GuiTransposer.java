@@ -18,7 +18,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public class GuiTransposer extends GuiAugmentableBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Transposer.png";

@@ -44,8 +44,8 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Machine.Transposer.BasePower", 40), 10, 500);
-		ThermalExpansion.config.set("block.tweak", "Machine.Transposer.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.machine", "Transposer.BasePower", 40), 10, 500);
+		ThermalExpansion.config.set("tweak.machine", "Transposer.BasePower", maxPower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(maxPower);
 

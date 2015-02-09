@@ -12,6 +12,7 @@ import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.FuelHandler;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -25,8 +26,8 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static void initialize() {
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Enervation.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("block.tweak", "Dynamo.Enervation.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Enervation.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("tweak.dynamo", "Enervation.BasePower", maxPower);
 		maxPower /= 10;
 		maxPower *= 10;
 		defaultEnergyConfig[TYPE] = new EnergyConfig();

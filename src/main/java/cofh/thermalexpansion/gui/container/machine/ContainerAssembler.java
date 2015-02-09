@@ -23,7 +23,6 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class ContainerAssembler extends ContainerTEBase implements ISchematicContainer {
 
 	TileAssembler myTile;

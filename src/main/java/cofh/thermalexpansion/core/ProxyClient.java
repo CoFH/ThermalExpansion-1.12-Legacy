@@ -27,7 +27,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
-
 public class ProxyClient extends Proxy {
 
 	public static RenderItemModular rendererComponent = new RenderItemModular();

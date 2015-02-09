@@ -21,15 +21,14 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileDynamoCompression extends TileDynamoBase implements IFluidHandler {
 
 	static final int TYPE = BlockDynamo.Types.COMPRESSION.ordinal();
 
 	public static void initialize() {
 
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("block.tweak", "Dynamo.Compression.BasePower", 80), 10, 160);
-		ThermalExpansion.config.set("block.tweak", "Dynamo.Compression.BasePower", maxPower);
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("tweak.dynamo", "Compression.BasePower", 80), 10, 160);
+		ThermalExpansion.config.set("tweak.dynamo", "Compression.BasePower", maxPower);
 		maxPower /= 10;
 		maxPower *= 10;
 		defaultEnergyConfig[TYPE] = new EnergyConfig();

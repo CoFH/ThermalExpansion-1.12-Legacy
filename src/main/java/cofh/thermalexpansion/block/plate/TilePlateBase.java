@@ -18,7 +18,6 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-
 public class TilePlateBase extends TileInventory implements ITileInfo {
 
 	public static void initialize() {
@@ -29,7 +28,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Plates to be securable. (Default: true)";
-		enableSecurity = ThermalExpansion.config.get("security", "Plate.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("security", "Plate.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

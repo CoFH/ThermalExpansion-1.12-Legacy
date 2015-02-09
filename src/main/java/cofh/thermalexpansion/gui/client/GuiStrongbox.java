@@ -13,7 +13,6 @@ import cofh.thermalexpansion.gui.container.ContainerStrongbox;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
-
 public class GuiStrongbox extends GuiBaseAdv {
 
 	TileStrongbox myTile;

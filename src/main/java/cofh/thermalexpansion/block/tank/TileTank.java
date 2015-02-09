@@ -27,7 +27,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-
 public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 
 	public static void initialize() {
@@ -40,11 +39,11 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	public static int[] CAPACITY = { 1000, 8000, 32000, 128000, 512000 };
 
 	static {
-		String category = "block.tweak";
-		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Resonant.Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
-		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Reinforced.Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
-		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Hardened.Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
-		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Tank.Basic.Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
+		String category = "tweak.tank";
+		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Resonant.Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
+		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Reinforced.Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Hardened.Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Basic.Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
 	int compareTracker;

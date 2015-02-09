@@ -21,7 +21,6 @@ import cpw.mods.fml.common.event.FMLModIdMappingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
-
 public class FMLEventHandler {
 
 	public static FMLEventHandler instance = new FMLEventHandler();

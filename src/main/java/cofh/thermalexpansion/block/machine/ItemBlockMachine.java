@@ -17,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-
 public class ItemBlockMachine extends ItemBlockBase {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
