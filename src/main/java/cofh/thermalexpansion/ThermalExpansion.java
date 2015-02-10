@@ -10,11 +10,14 @@ import cofh.mod.updater.UpdateManager;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
+import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.device.TileActivator;
 import cofh.thermalexpansion.block.device.TileBreaker;
 import cofh.thermalexpansion.block.device.TileNullifier;
 import cofh.thermalexpansion.block.device.TileWorkbench;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.core.Proxy;
@@ -58,6 +61,7 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -213,6 +217,12 @@ public class ThermalExpansion extends BaseMod {
 	}
 
 	@EventHandler
+	public void serverStarting(FMLServerStartedEvent event) {
+
+		handleIdMapping();
+	}
+
+	@EventHandler
 	public void handleIMC(IMCEvent theIMC) {
 
 		IMCHandler.instance.handleIMC(theIMC.getMessages());
@@ -220,7 +230,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public void handleConfigSync(PacketCoFHBase payload) {
 
-		FMLEventHandler.instance.handleIdMappingEvent(null);
+		handleIdMapping();
 
 		TileCell.enableSecurity = payload.getBool();
 		TileWorkbench.enableSecurity = payload.getBool();
@@ -260,6 +270,23 @@ public class ThermalExpansion extends BaseMod {
 		return payload;
 	}
 
+	public synchronized void handleIdMapping() {
+
+		FurnaceManager.refreshRecipes();
+		PulverizerManager.refreshRecipes();
+		SawmillManager.refreshRecipes();
+		SmelterManager.refreshRecipes();
+		CrucibleManager.refreshRecipes();
+		TransposerManager.refreshRecipes();
+		PrecipitatorManager.refreshRecipes();
+		ExtruderManager.refreshRecipes();
+		ChargerManager.refreshRecipes();
+
+		BlockDevice.refreshItemStacks();
+		BlockDynamo.refreshItemStacks();
+		BlockMachine.refreshItemStacks();
+	}
+
 	// Called when the client disconnects from the server.
 	public void resetClientConfigs() {
 
@@ -273,7 +300,7 @@ public class ThermalExpansion extends BaseMod {
 		TileStrongbox.configure();
 		ItemSatchel.configure();
 
-		FMLEventHandler.instance.handleIdMappingEvent(null);
+		handleIdMapping();
 
 		log.info(StringHelper.localize("Restoring Client Configuration..."));
 	}
