@@ -358,7 +358,9 @@ public class BlockDevice extends BlockTEBase {
 		String category = "Device.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			if (i != Types.LEXICON.ordinal() && i != Types.PUMP.ordinal()) {
+				enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			}
 		}
 	}
 

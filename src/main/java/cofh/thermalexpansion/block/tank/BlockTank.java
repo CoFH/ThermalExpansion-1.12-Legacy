@@ -61,10 +61,11 @@ public class BlockTank extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+		if (enable[0]) {
+			list.add(new ItemStack(item, 1, 0));
+		}
+		for (int i = 1; i < Types.values().length; i++) {
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -250,6 +251,7 @@ public class BlockTank extends BlockTEBase {
 	static {
 		String category = "Tank.";
 
+		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
 		for (int i = 1; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}

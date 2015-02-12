@@ -59,7 +59,10 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
+		if (enable[0]) {
+			list.add(new ItemStack(item, 1, 0));
+		}
+		for (int i = 1; i < Types.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -270,7 +273,7 @@ public class BlockCache extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
 			GameRegistry
-			.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
+					.addRecipe(new ShapedOreRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "blockGlassHardened" }));
@@ -291,7 +294,7 @@ public class BlockCache extends BlockTEBase {
 	static {
 		String category = "Cache.";
 
-        enable[0] = true;
+		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
 		for (int i = 1; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}

@@ -56,10 +56,11 @@ public class BlockStrongbox extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
-			if (enable[i]) {
-				list.add(new ItemStack(item, 1, i));
-			}
+		if (enable[0]) {
+			list.add(new ItemStack(item, 1, 0));
+		}
+		for (int i = 1; i < Types.values().length; i++) {
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
@@ -172,7 +173,7 @@ public class BlockStrongbox extends BlockTEBase {
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
 			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y',
-			"ingotTin" }));
+					"ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced,
@@ -200,8 +201,8 @@ public class BlockStrongbox extends BlockTEBase {
 
 	static {
 		String category = "Strongbox.";
-        enable[0] = true;
-        for (int i = 1; i < Types.values().length; i++) {
+		enable[0] = true;
+		for (int i = 1; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}

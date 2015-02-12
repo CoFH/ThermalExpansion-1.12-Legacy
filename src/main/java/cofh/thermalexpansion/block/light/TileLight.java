@@ -238,13 +238,11 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
 		mode = tag.getByte("Mode");
-
 		dim = tag.getBoolean("Dim");
 
 		if (tag.hasKey("Color")) {
 			setColor(tag.getInteger("Color"));
 		}
-
 		worldObj.func_147451_t(xCoord, yCoord, zCoord);
 		sendUpdatePacket(Side.CLIENT);
 	}
@@ -253,7 +251,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setByte("Mode", mode);
-
 		tag.setBoolean("Dim", dim);
 
 		if (modified) {

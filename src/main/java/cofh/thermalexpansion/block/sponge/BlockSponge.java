@@ -61,7 +61,10 @@ public class BlockSponge extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
+		if (enable[0]) {
+			list.add(new ItemStack(item, 1, 0));
+		}
+		for (int i = 1; i < Types.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -161,7 +164,7 @@ public class BlockSponge extends BlockTEBase {
 
 		if (enable[Types.BASIC.ordinal()]) {
 			GameRegistry
-			.addRecipe(new ShapedOreRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
+					.addRecipe(new ShapedOreRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(spongeMagmatic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B',
@@ -180,7 +183,7 @@ public class BlockSponge extends BlockTEBase {
 	static {
 		String category = "Sponge.";
 
-        enable[0] = true;
+		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
 		for (int i = 1; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}

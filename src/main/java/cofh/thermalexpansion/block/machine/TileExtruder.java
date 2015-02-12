@@ -33,7 +33,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		processItems[1] = new ItemStack(Blocks.stone);
 		processItems[2] = new ItemStack(Blocks.obsidian);
 
-		String category = "tweak.machine";
+		String category = "RecipeManagers.Extruder.Recipes";
 
 		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
 		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
