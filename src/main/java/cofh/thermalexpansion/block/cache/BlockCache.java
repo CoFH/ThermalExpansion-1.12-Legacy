@@ -291,6 +291,7 @@ public class BlockCache extends BlockTEBase {
 	static {
 		String category = "Cache.";
 
+        enable[0] = true;
 		for (int i = 1; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
