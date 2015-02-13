@@ -89,7 +89,7 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 		if (basicGui && ServerHelper.isServerWorld(world)) {
 			return tile.openGui(player);
 		}
-		return true;
+		return false;
 	}
 
 	@Override

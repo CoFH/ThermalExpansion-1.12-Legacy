@@ -101,17 +101,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 		TileLight theTile = (TileLight) world.getTileEntity(x, y, z);
 
-		if (ItemHelper.isPlayerHoldingItem(Items.dye, player)) {
-			if (ServerHelper.isServerWorld(world)) {
-				theTile.setColor(ColorHelper.getDyeColor(player.getCurrentEquippedItem().getItemDamage()));
-
-				if (!player.capabilities.isCreativeMode) {
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemHelper.consumeItem(player.getCurrentEquippedItem()));
-				}
-				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "note.harp", 0.5F, 1.0F);
-			}
-			return true;
-		}
 		if (ItemHelper.isPlayerHoldingItem(Items.glowstone_dust, player)) {
 			if (ServerHelper.isServerWorld(world)) {
 				theTile.resetColor();
