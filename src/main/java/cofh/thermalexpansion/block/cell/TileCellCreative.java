@@ -59,7 +59,7 @@ public class TileCellCreative extends TileCell {
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false);
+		adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], energySend, false);
 	}
 
 	/* NBT METHODS */
