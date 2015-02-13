@@ -22,7 +22,7 @@ public class GuiConfigTE extends GuiConfig {
 	public static final String[] CATEGORIES_CLIENT = { "Machine" };
 	public static final String[] CATEGORIES_COMMON = { "Machine" };
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private static List<IConfigElement> getConfigElements(GuiScreen parent) {
 
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
@@ -33,6 +33,7 @@ public class GuiConfigTE extends GuiConfig {
 		return list;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static List<IConfigElement> getClientConfigElements() {
 
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
@@ -43,6 +44,7 @@ public class GuiConfigTE extends GuiConfig {
 		return list;
 	}
 
+	@SuppressWarnings("rawtypes")
 	private static List<IConfigElement> getCommonConfigElements() {
 
 		List<IConfigElement> list = new ArrayList<IConfigElement>();

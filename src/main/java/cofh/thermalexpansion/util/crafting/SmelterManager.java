@@ -32,7 +32,9 @@ public class SmelterManager {
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
+	@SuppressWarnings("unused")
 	private static int oreMultiplier = 2;
+	@SuppressWarnings("unused")
 	private static int oreMultiplierCinnabar = 3;
 
 	private static ArrayList<String> blastList = new ArrayList<String>();
@@ -132,7 +134,6 @@ public class SmelterManager {
 
 	public static void loadRecipes() {
 
-		String comment;
 		String category = "RecipeManagers.Smelter.Recipes";
 
 		boolean steelRecipe = ThermalExpansion.config.get(category, "Steel", true);

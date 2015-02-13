@@ -48,7 +48,6 @@ public class CrucibleManager {
 
 	public static void addDefaultRecipes() {
 
-		String comment;
 		String category = "RecipeManagers.Crucible.Recipes";
 
 		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Netherrack", true);
