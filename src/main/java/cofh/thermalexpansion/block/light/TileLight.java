@@ -36,7 +36,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 	int lightValue;
 	public int color = 0xFFFFFF;
-	int renderColor = 0xAAAAAAFF;
+	int renderColor = 0xFFFFFFFF;
 
 	/* GUI METHODS */
 	@Override
@@ -198,6 +198,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		dim = payload.getBool();
 		if (!isServer) {
 			lightValue = payload.getByte();
+			setRenderColor();
 			worldObj.func_147451_t(xCoord, yCoord, zCoord);
 		}
 	}
