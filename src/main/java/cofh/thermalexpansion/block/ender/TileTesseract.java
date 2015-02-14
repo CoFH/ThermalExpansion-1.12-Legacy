@@ -22,7 +22,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.client.ender.GuiTesseract;
-import cofh.thermalexpansion.gui.container.ender.ContainerTesseract;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.Utils;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -48,7 +48,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-IInventoryConnection, ISidedInventory {
+		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
@@ -521,7 +521,7 @@ IInventoryConnection, ISidedInventory {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTesseract(inventory, this);
+		return new ContainerTEBase(inventory, this, false, false);
 	}
 
 	@Override

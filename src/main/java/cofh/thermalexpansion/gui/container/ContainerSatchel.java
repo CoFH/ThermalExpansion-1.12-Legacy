@@ -148,9 +148,9 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 			return true;
 
 		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
-		if (ownerID.equals(otherID))
+		if (ownerID.equals(otherID)){
 			return true;
-
+		}
 		return access.isRestricted() && SocialRegistry.playerHasAccess(name, getOwner());
 	}
 

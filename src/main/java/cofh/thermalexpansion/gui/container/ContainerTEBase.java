@@ -27,6 +27,9 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	protected boolean augmentLock = true;
 
+	protected boolean hasAugSlots;
+	protected boolean hasPlayerInvSlots;
+
 	public ContainerTEBase() {
 
 	}
@@ -38,14 +41,26 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile) {
 
+		this(inventory, tile, true, true);
+	}
+
+	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile, boolean augSlots, boolean playerInvSlots) {
+
 		if (tile instanceof TileCoFHBase) {
 			baseTile = (TileCoFHBase) tile;
 		}
+		hasAugSlots = augSlots;
+		hasPlayerInvSlots = playerInvSlots;
+
 		/* Augment Slots */
-		addAugmentSlots();
+		if (hasAugSlots) {
+			addAugmentSlots();
+		}
 
 		/* Player Inventory */
-		addPlayerInventory(inventory);
+		if (hasPlayerInvSlots) {
+			addPlayerInventory(inventory);
+		}
 	}
 
 	protected void addAugmentSlots() {
@@ -101,6 +116,9 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slotIndex) {
 
+		if (!hasPlayerInvSlots) {
+			return null;
+		}
 		ItemStack stack = null;
 		Slot slot = (Slot) inventorySlots.get(slotIndex);
 

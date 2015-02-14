@@ -11,7 +11,7 @@ import cofh.core.gui.element.TabTutorial;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ender.TileTesseract;
 import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.gui.container.ender.ContainerTesseract;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.TabConfigTesseract;
 import cofh.thermalfoundation.fluid.TFFluids;
 
@@ -53,7 +53,7 @@ public class GuiTesseract extends GuiBaseAdv {
 
 	public GuiTesseract(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerTesseract(inventory, theTile), TEXTURE);
+		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 		myTile = (TileTesseract) theTile;
 		name = myTile.getInventoryName();
 		drawInventory = false;

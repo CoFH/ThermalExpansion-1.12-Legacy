@@ -5,7 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TileTEBase;
-import cofh.thermalexpansion.gui.client.light.GuiLight;
+import cofh.thermalexpansion.gui.client.GuiLight;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -54,7 +54,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	@Override
 	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTEBase(inventory, this, false, false);
 	}
 
 	@Override
@@ -183,6 +183,24 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		}
 
 		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		resetColor();
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		resetColor();
 	}
 
 	/* ITilePacketHandler */
