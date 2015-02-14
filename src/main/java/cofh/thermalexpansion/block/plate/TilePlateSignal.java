@@ -120,7 +120,7 @@ public class TilePlateSignal extends TilePlateBase {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTEBase(inventory, this, false, false);
 	}
 
 	/* NBT METHODS */

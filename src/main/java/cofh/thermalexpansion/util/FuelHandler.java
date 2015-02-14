@@ -61,7 +61,7 @@ public class FuelHandler {
 
 	public static void parseFuels() {
 
-		String category = "fuels.magmatic";
+		String category = "Fuels.Magmatic";
 		registerMagmaticFuel("lava", configFuels.get(category, "lava", TEProps.lavaRF * 9 / 10));
 		registerMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
 
@@ -70,7 +70,7 @@ public class FuelHandler {
 			registerMagmaticFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, TEProps.lavaRF * 9 / 10));
 		}
 
-		category = "fuels.compression";
+		category = "Fuels.Compression";
 		registerCompressionFuel("coal", configFuels.get(category, "coal", 1000000));
 
 		registerCompressionFuel("biofuel", configFuels.get(category, "biofuel", 500000));
@@ -85,7 +85,7 @@ public class FuelHandler {
 			registerCompressionFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, 500000));
 		}
 
-		category = "fuels.reactant";
+		category = "Fuels.Reactant";
 		registerReactantFuel("redstone", configFuels.get(category, "redstone", 600000));
 		registerReactantFuel("glowstone", configFuels.get(category, "glowstone", 750000));
 
@@ -103,7 +103,7 @@ public class FuelHandler {
 			registerReactantFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, 200000));
 		}
 
-		category = "coolants";
+		category = "Coolants";
 		registerCoolant("water", configFuels.get(category, "water", 400000));
 		registerCoolant("cryotheum", configFuels.get(category, "cryotheum", 4000000));
 		registerCoolant("ice", configFuels.get(category, "ice", 2000000));

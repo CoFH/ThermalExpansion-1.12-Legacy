@@ -29,12 +29,11 @@ public class TEFlorbs {
 
 		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/florbs.cfg")));
 
-		String category = "tweak";
+		String category = "General";
 		String comment = null;
 
-		category = "item.feature";
 		comment = "This allows you to disable Florbs entirely. It also means that you actively dislike fun things.";
-		enableFlorbs = configFlorbs.get(category, "Florb.Enable", true, comment);
+		enableFlorbs = configFlorbs.get(category, "Florbs.Enable", true, comment);
 
 		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
 	}
@@ -67,7 +66,7 @@ public class TEFlorbs {
 				if (!enableFlorbs) {
 					continue;
 				}
-				if (configFlorbs.get("whitelist", fluid.getName(), true)) {
+				if (configFlorbs.get("Whitelist", fluid.getName(), true)) {
 					if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
 						TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
 					} else {

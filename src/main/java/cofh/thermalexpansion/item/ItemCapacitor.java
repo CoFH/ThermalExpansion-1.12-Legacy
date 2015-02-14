@@ -5,6 +5,7 @@ import cofh.core.item.ItemBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 
@@ -32,11 +33,11 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), STORAGE[Types.CREATIVE.ordinal()]));
-		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.POTATO.ordinal()), STORAGE[Types.POTATO.ordinal()]));
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), CAPACITY[Types.CREATIVE.ordinal()]));
+		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.POTATO.ordinal()), CAPACITY[Types.POTATO.ordinal()]));
 		for (int i = 2; i < Types.values().length; i++) {
 			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), 0));
-			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), STORAGE[i]));
+			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), CAPACITY[i]));
 		}
 	}
 
@@ -60,12 +61,14 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		}
 		if (ItemHelper.getItemDamage(stack) == Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[Types.CREATIVE.ordinal()]
+					+ " RF/t");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(STORAGE[ItemHelper.getItemDamage(stack)]) + " RF");
+					+ StringHelper.getScaledNumber(CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
+					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		}
-		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
-				+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.4"));
@@ -151,15 +154,15 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public int getDisplayDamage(ItemStack stack) {
 
 		if (stack.stackTagCompound == null) {
-			return STORAGE[ItemHelper.getItemDamage(stack)];
+			return CAPACITY[ItemHelper.getItemDamage(stack)];
 		}
-		return STORAGE[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return CAPACITY[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
 
-		return STORAGE[ItemHelper.getItemDamage(stack)];
+		return CAPACITY[ItemHelper.getItemDamage(stack)];
 	}
 
 	/* IEnergyContainerItem */
@@ -174,7 +177,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.stackTagCompound.getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(STORAGE[metadata] - stored, RECEIVE[metadata]));
+		int receive = Math.min(maxReceive, Math.min(CAPACITY[metadata] - stored, RECEIVE[metadata]));
 
 		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored += receive;
@@ -215,7 +218,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return STORAGE[container.getItemDamage()];
+		return CAPACITY[container.getItemDamage()];
 	}
 
 	/* HELPERS */
@@ -241,7 +244,40 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
 
 	public static int[] SEND = { 20000, 80, 80, 400, 2000, 10000 };
-	public static int[] RECEIVE = { 20000, 0, 80, 400, 2000, 10000 };
-	public static int[] STORAGE = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
+	public static int[] RECEIVE = { 0, 0, 80, 400, 2000, 10000 };
+	public static int[] CAPACITY = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
+
+	static {
+		String category2 = "Item.Capacitor.";
+
+		String category = category2 + StringHelper.titleCase(NAMES[5]);
+		CAPACITY[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[5]), CAPACITY[5] / 10, 1000000 * 1000);
+		SEND[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[5]), SEND[5] / 10, SEND[5] * 1000);
+		RECEIVE[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[5]), RECEIVE[5] / 10, RECEIVE[4] * 1000);
+
+		category = category2 + StringHelper.titleCase(NAMES[4]);
+		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[4]), CAPACITY[4] / 10, CAPACITY[5]);
+		SEND[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[4]), SEND[4] / 10, SEND[4] * 1000);
+		RECEIVE[4] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[4]), RECEIVE[4] / 10, RECEIVE[4] * 1000);
+
+		category = category2 + StringHelper.titleCase(NAMES[3]);
+		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[3]), CAPACITY[3] / 10, CAPACITY[4]);
+		SEND[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[3]), SEND[3] / 10, SEND[3] * 1000);
+		RECEIVE[3] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[3]), RECEIVE[3] / 10, RECEIVE[3] * 1000);
+
+		category = category2 + StringHelper.titleCase(NAMES[2]);
+		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[2]), CAPACITY[2] / 10, CAPACITY[3]);
+		RECEIVE[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[2]), RECEIVE[2] / 10, RECEIVE[2] * 1000);
+		SEND[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[2]), SEND[2] / 10, SEND[2] * 1000);
+
+		category = category2 + StringHelper.titleCase(NAMES[1]);
+		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
+		// SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
+		RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[1]), RECEIVE[1] / 10, RECEIVE[1] * 1000);
+
+		category = category2 + StringHelper.titleCase(NAMES[0]);
+		SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[0]), SEND[0] / 10, SEND[0] * 1000);
+		CAPACITY[0] = SEND[0];
+	}
 
 }

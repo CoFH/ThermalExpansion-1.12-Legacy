@@ -66,7 +66,7 @@ public class TEItems {
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
 		capacitorPotato = EnergyHelper.setDefaultEnergyTag(itemCapacitor.addItem(ItemCapacitor.Types.POTATO.ordinal(), "capacitorPotato", 0),
-				ItemCapacitor.STORAGE[ItemCapacitor.Types.POTATO.ordinal()]);
+				ItemCapacitor.CAPACITY[ItemCapacitor.Types.POTATO.ordinal()]);
 		capacitorBasic = itemCapacitor.addItem(ItemCapacitor.Types.BASIC.ordinal(), "capacitorBasic", 0);
 		capacitorHardened = itemCapacitor.addItem(ItemCapacitor.Types.HARDENED.ordinal(), "capacitorHardened", 0);
 		capacitorReinforced = itemCapacitor.addItem(ItemCapacitor.Types.REINFORCED.ordinal(), "capacitorReinforced", 1);

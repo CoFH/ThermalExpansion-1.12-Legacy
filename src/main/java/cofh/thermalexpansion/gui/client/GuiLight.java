@@ -133,8 +133,8 @@ public class GuiLight extends GuiBaseAdv {
 			}
 		}.setValue(myTile.mode));
 
-		buttonDim = new ElementButton(this, 7, 22, "Dim", 176, 0, 176, 20, 176, 40, 20, 20, TEX_PATH);
-		buttonReset = new ElementButton(this, 29, 22, "Reset", 216, 0, 216, 20, 216, 40, 20, 20, TEX_PATH);
+		buttonDim = new ElementButton(this, 29, 22, "Dim", 176, 0, 176, 20, 176, 40, 20, 20, TEX_PATH);
+		buttonReset = new ElementButton(this, 7, 22, "Reset", 216, 0, 216, 20, 216, 40, 20, 20, TEX_PATH);
 		addElement(buttonDim);
 		addElement(buttonReset);
 

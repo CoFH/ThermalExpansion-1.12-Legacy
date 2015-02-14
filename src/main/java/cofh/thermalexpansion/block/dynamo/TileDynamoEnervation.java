@@ -34,7 +34,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	static ItemStack blockRedstone = new ItemStack(Blocks.redstone_block);
 
 	static {
-		String category = "fuels.enervation";
+		String category = "Fuels.Enervation";
 		redstoneRF = FuelHandler.configFuels.get(category, "redstone", redstoneRF);
 		blockRedstoneRF = redstoneRF * 10;
 	}

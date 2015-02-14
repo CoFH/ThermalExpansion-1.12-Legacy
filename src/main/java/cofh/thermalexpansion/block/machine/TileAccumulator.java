@@ -67,8 +67,8 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		}
 		genStack = new FluidStack(FluidRegistry.WATER, genRate);
 
-		comment = "This controls how many mB/t the Accumulator generates without two or more adjacent source blocks, if enabled. (Default: 25)";
-		rate = ThermalExpansion.config.get("Machine.Accumulator", "PassiveRate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT, comment);
+		comment = "This controls how many mB/t the Accumulator generates without two or more adjacent source blocks, if enabled. (Default: 1)";
+		rate = ThermalExpansion.config.get("Machine.Accumulator", "PassiveRate", 1, comment);
 
 		if (rate > 0 && rate <= 1000) {
 

@@ -47,7 +47,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	static ItemStack blockCoal = new ItemStack(Blocks.coal_block);
 
 	static {
-		String category = "fuels.steam";
+		String category = "Fuels.Steam";
 		coalRF = FuelHandler.configFuels.get(category, "coal", coalRF);
 		charcoalRF = FuelHandler.configFuels.get(category, "charcoal", charcoalRF);
 		woodRF = FuelHandler.configFuels.get(category, "wood", woodRF);

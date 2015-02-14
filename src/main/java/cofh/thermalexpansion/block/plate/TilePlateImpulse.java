@@ -94,7 +94,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTEBase(inventory, this, false, false);
 	}
 
 	/* NBT METHODS */
@@ -105,7 +105,6 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 		intensity = nbt.getInteger("Int");
 		angle = nbt.getInteger("Angle");
-
 	}
 
 	@Override
@@ -115,7 +114,6 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 		nbt.setInteger("Int", intensity);
 		nbt.setInteger("Angle", angle);
-
 	}
 
 	/* NETWORK METHODS */

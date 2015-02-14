@@ -42,7 +42,7 @@
             {"name": "ThermalFoundation:Ore", "metadata": 3, "weight":20}
         ],
         "clusterSize": 8,
-        "numClusters": 4,
+        "numClusters": 6,
         "minHeight": 5,
         "maxHeight": 30,
         "retrogen": "true",
