@@ -24,10 +24,12 @@ import invtweaks.api.container.ContainerSectionCallback;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.management.PreYggdrasilConverter;
 
 @ChestContainer()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
@@ -138,10 +140,18 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	public boolean canPlayerAccess(String name) {
 
 		AccessMode access = getAccess();
-		String owner = getOwnerName();
+		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+			return true;
 
-		return access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)) || owner.equals(CoFHProps.DEFAULT_OWNER) || owner.equals(name)
-				|| access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
+		UUID ownerID = getOwner().getId();
+		if (ownerID.variant() == 0)
+			return true;
+
+		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
+		if (ownerID.equals(otherID))
+			return true;
+
+		return access.isRestricted() && SocialRegistry.playerHasAccess(name, getOwner());
 	}
 
 	@Override

@@ -13,6 +13,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import com.mojang.authlib.GameProfile;
 
 import java.util.List;
 import java.util.UUID;
@@ -179,7 +180,8 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
 			return true;
 		}
-		UUID ownerID = SecurityHelper.getOwner(stack).getId();
+		GameProfile profile = SecurityHelper.getOwner(stack);
+		UUID ownerID = profile.getId();
 		if (ownerID.variant() == 0) {
 			return true;
 		}
@@ -189,8 +191,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 			return true;
 		}
 
-		String owner = SecurityHelper.getOwnerName(stack);
-		return access.isRestricted() && SocialRegistry.playerHasAccess(name, owner);
+		return access.isRestricted() && SocialRegistry.playerHasAccess(name, profile);
 	}
 
 	public static boolean isEnchanted(ItemStack container) {
