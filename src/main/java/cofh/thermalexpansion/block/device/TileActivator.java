@@ -247,10 +247,14 @@ public class TileActivator extends TileAugmentable {
 
 		int i = -1;
 
+        int n = 0;
 		for (int k = 0; k < MAX_SLOT; k++) {
-			if (getStackInSlot(k) != null && MathHelper.RANDOM.nextInt(2) == 0) {
-				i = k;
-			}
+			if (getStackInSlot(k) != null) {
+                n++;
+                if (n == 1 || MathHelper.RANDOM.nextInt(n) == 0) {
+                    i = k;
+                }
+            }
 		}
 		return i == -1 ? incrementTracker() : i;
 	}
