@@ -196,7 +196,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static boolean isEnchanted(ItemStack container) {
 
-		return EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container) > 0;
+		return EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, container) > 0;
 	}
 
 	public static int getStorageIndex(int type, int enchant) {
@@ -207,7 +207,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	public static int getStorageIndex(ItemStack container) {
 
 		int type = container.getItemDamage();
-		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container);
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, container);
 
 		return getStorageIndex(type, enchant);
 	}

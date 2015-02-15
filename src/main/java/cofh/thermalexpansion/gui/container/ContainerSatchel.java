@@ -140,15 +140,17 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	public boolean canPlayerAccess(String name) {
 
 		AccessMode access = getAccess();
-		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name)))
+		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
 			return true;
+		}
 
 		UUID ownerID = getOwner().getId();
-		if (ownerID.variant() == 0)
+		if (ownerID.variant() == 0) {
 			return true;
+		}
 
 		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
-		if (ownerID.equals(otherID)){
+		if (ownerID.equals(otherID)) {
 			return true;
 		}
 		return access.isRestricted() && SocialRegistry.playerHasAccess(name, getOwner());

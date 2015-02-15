@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.TEItems;
 
@@ -26,8 +27,14 @@ public class SawmillManager {
 	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
+	private static float logMultiplier = 1.5F;
+
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Sawmill", "AllowRecipeOverwrite", false);
+
+		String category = "RecipeManagers.Sawmill.Log";
+		String comment = "This sets the default rate for Log->Plank conversion. This number is used in all automatically generated recipes.";
+		logMultiplier = MathHelper.clampF((float) ThermalExpansion.config.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
 	}
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
@@ -153,7 +160,7 @@ public class SawmillManager {
 
 					if (resultEntry != null) {
 						ItemStack result = resultEntry.copy();
-						result.stackSize *= 1.5F;
+						result.stackSize *= logMultiplier;
 						addRecipe(800, log, result, TEItems.sawdust);
 					}
 				}
@@ -164,7 +171,7 @@ public class SawmillManager {
 
 				if (resultEntry != null) {
 					ItemStack result = resultEntry.copy();
-					result.stackSize *= 1.5F;
+					result.stackSize *= logMultiplier;
 					addRecipe(800, log, result, TEItems.sawdust);
 				}
 			}

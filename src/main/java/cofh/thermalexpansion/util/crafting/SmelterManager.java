@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
@@ -32,15 +33,20 @@ public class SmelterManager {
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
-	@SuppressWarnings("unused")
 	private static int oreMultiplier = 2;
-	@SuppressWarnings("unused")
-	private static int oreMultiplierCinnabar = 3;
+	private static int oreMultiplierSpecial = 3;
 
 	private static ArrayList<String> blastList = new ArrayList<String>();
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Smelter", "AllowRecipeOverwrite", false);
+
+		String category = "RecipeManagers.Smelter.Ore";
+		String comment = "This sets the default rate for Ore->Ingot conversion. This number is used in all automatically generated recipes.";
+		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
+
+		comment = "This sets the boosted rate for Ore->Ingot conversion - when Rich Slag or Cinnabar Crystals are used. This number is used in all automatically generated recipes.";
+		oreMultiplierSpecial = MathHelper.clampI(ThermalExpansion.config.get(category, "SpecialMultiplier", oreMultiplierSpecial, comment), 1, 64);
 
 		blastList.add("mithril");
 		blastList.add("enderium");
@@ -97,7 +103,7 @@ public class SmelterManager {
 
 	public static void addDefaultRecipes() {
 
-		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 40);
+		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 
 		ItemStack blockGlass = new ItemStack(TEBlocks.blockGlass, 2, 0);
@@ -105,7 +111,7 @@ public class SmelterManager {
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
 
 		addDefaultOreDictionaryRecipe("oreIron", "dustIron", TFItems.ingotIron, TFItems.ingotNickel);
-		addDefaultOreDictionaryRecipe("oreGold", "dustGold", TFItems.ingotGold, null, 10, 75, 25);
+		addDefaultOreDictionaryRecipe("oreGold", "dustGold", TFItems.ingotGold, null, 20, 75, 25);
 		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", TFItems.ingotCopper, TFItems.ingotGold);
 		addDefaultOreDictionaryRecipe("oreTin", "dustTin", TFItems.ingotTin, TFItems.ingotIron);
 		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", TFItems.ingotSilver, TFItems.ingotLead);
@@ -226,10 +232,11 @@ public class SmelterManager {
 		if (ingot == null) {
 			return;
 		}
-		ItemStack ingot2 = ItemHelper.cloneStack(ingot, 2);
+		ItemStack ingot2 = ItemHelper.cloneStack(ingot, oreMultiplier);
 
 		if (oreName != null) {
-			addOreToIngotRecipe(oreName, ingot2, ItemHelper.cloneStack(ingot, 3), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
+			addOreToIngotRecipe(oreName, ingot2, ItemHelper.cloneStack(ingot, oreMultiplierSpecial), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance,
+					slagOreChance);
 		}
 		if (dustName != null) {
 			addDustToIngotRecipe(dustName, ingot2, slagDustChance);
@@ -431,7 +438,6 @@ public class SmelterManager {
 
 			return energy;
 		}
-
 	}
 
 }

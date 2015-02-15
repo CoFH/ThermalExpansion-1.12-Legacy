@@ -13,12 +13,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 
-public class CreativeTabFlorbs extends CreativeTabs {
+public class TECreativeTabFlorbs extends CreativeTabs {
 
 	int iconIndex = 0;
 	TimeTracker iconTracker = new TimeTracker();
 
-	public CreativeTabFlorbs() {
+	public TECreativeTabFlorbs() {
 
 		super("ThermalExpansionFlorbs");
 	}

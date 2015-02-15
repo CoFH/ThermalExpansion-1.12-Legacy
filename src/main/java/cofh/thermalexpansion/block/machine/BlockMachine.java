@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.tileentity.ISidedTexture;
-import cofh.core.CoFHProps;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -78,6 +77,8 @@ public class BlockMachine extends BlockTEBase {
 			return new TileAssembler();
 		case CHARGER:
 			return new TileCharger();
+		case INSOLATOR:
+			return new TileInsolator();
 		default:
 			return null;
 		}
@@ -86,15 +87,20 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length - 4; i++) {
+		for (int i = 0; i < Types.values().length - 5; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (creativeTiers[j]) {
 					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
 				}
 			}
 		}
-		for (int i = Types.values().length - 4; i < Types.values().length; i++) {
+		for (int i = Types.values().length - 5; i < Types.values().length - 1; i++) {
 			list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) 0));
+		}
+		for (int j = 0; j < 4; j++) {
+			if (creativeTiers[j]) {
+				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, Types.INSOLATOR.ordinal()), (byte) j));
+			}
 		}
 	}
 
@@ -168,10 +174,6 @@ public class BlockMachine extends BlockTEBase {
 
 	@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-
-		if (CoFHProps.enableColorBlindTextures) {
-			System.out.println("error");
-		}
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
 		return tile == null ? null : tile.getTexture(side, renderPass);
@@ -255,6 +257,7 @@ public class BlockMachine extends BlockTEBase {
 		TileAccumulator.initialize();
 		TileAssembler.initialize();
 		TileCharger.initialize();
+		TileInsolator.initialize();
 
 		if (defaultAutoTransfer) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
@@ -276,6 +279,7 @@ public class BlockMachine extends BlockTEBase {
 		accumulator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ACCUMULATOR.ordinal()));
 		assembler = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.ASSEMBLER.ordinal()));
 		charger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CHARGER.ordinal()));
+		insolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.INSOLATOR.ordinal()));
 
 		GameRegistry.registerCustomItemStack("furnace", furnace);
 		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);
@@ -288,6 +292,7 @@ public class BlockMachine extends BlockTEBase {
 		GameRegistry.registerCustomItemStack("accumulator", accumulator);
 		GameRegistry.registerCustomItemStack("assembler", assembler);
 		GameRegistry.registerCustomItemStack("charger", charger);
+		GameRegistry.registerCustomItemStack("insolator", insolator);
 
 		return true;
 	}
@@ -297,6 +302,8 @@ public class BlockMachine extends BlockTEBase {
 
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
+
+		String invarPart = "thermalexpansion:machineInvar";
 
 		if (enable[Types.FURNACE.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(furnace, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
@@ -314,11 +321,11 @@ public class BlockMachine extends BlockTEBase {
 					TEItems.powerCoilGold, 'X', Items.iron_axe, 'Y', "plankWood" }));
 		}
 		if (enable[Types.SMELTER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', invarPart, 'P',
 					TEItems.powerCoilGold, 'X', Items.bucket, 'Y', "ingotInvar" }));
 		}
 		if (enable[Types.CRUCIBLE.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+			GameRegistry.addRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', invarPart, 'P',
 					TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', Blocks.nether_brick }));
 		}
 		if (enable[Types.TRANSPOSER.ordinal()]) {
@@ -345,6 +352,11 @@ public class BlockMachine extends BlockTEBase {
 			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
 					copperPart, 'P', TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
 		}
+		if (enable[Types.INSOLATOR.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeMachine(insolator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', "gearLumium", 'Y', Blocks.dirt }));
+		}
+
 		TECraftingHandler.addMachineUpgradeRecipes(furnace);
 		TECraftingHandler.addMachineUpgradeRecipes(pulverizer);
 		TECraftingHandler.addMachineUpgradeRecipes(sawmill);
@@ -356,6 +368,7 @@ public class BlockMachine extends BlockTEBase {
 		// TECraftingHandler.addMachineUpgradeRecipes(accumulator);
 		// TECraftingHandler.addMachineUpgradeRecipes(assembler);
 		// TECraftingHandler.addMachineUpgradeRecipes(charger);
+		TECraftingHandler.addMachineUpgradeRecipes(insolator);
 
 		TECraftingHandler.addSecureRecipe(furnace);
 		TECraftingHandler.addSecureRecipe(pulverizer);
@@ -368,6 +381,7 @@ public class BlockMachine extends BlockTEBase {
 		TECraftingHandler.addSecureRecipe(accumulator);
 		TECraftingHandler.addSecureRecipe(assembler);
 		TECraftingHandler.addSecureRecipe(charger);
+		TECraftingHandler.addSecureRecipe(insolator);
 
 		return true;
 	}
@@ -385,14 +399,15 @@ public class BlockMachine extends BlockTEBase {
 		accumulator = ItemBlockMachine.setDefaultTag(accumulator);
 		assembler = ItemBlockMachine.setDefaultTag(assembler);
 		charger = ItemBlockMachine.setDefaultTag(charger);
+		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
 	public static enum Types {
-		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER
+		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR
 	}
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-		"assembler", "charger" };
+			"assembler", "charger", "insolator" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
@@ -433,5 +448,6 @@ public class BlockMachine extends BlockTEBase {
 	public static ItemStack accumulator;
 	public static ItemStack assembler;
 	public static ItemStack charger;
+	public static ItemStack insolator;
 
 }

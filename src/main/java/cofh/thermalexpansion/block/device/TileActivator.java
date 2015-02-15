@@ -228,6 +228,7 @@ public class TileActivator extends TileAugmentable {
 	}
 
 	public int getNextStackIndex() {
+
 		// FIXME: is this called too frequently? round-robin is wrong
 
 		if (!needsWorld) {
@@ -252,11 +253,12 @@ public class TileActivator extends TileAugmentable {
 
 		for (int k = 0; k < MAX_SLOT; k++) {
 			if (getStackInSlot(k) != null) {
-                tracker[i++] = k; // track filled slots
-            }
+				tracker[i++] = k; // track filled slots
+			}
 		}
-		if (i == 0) // pass through tracker field if no slots filled
+		if (i == 0) {
 			return incrementTracker();
+		}
 		int v = MathHelper.RANDOM.nextInt(i + 1); // +1 so that the tracker field is used in some cases (old behavior. wrong?)
 		return i == v ? incrementTracker() : tracker[v];
 	}

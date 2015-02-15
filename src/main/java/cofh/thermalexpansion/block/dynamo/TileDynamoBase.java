@@ -201,6 +201,21 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		}
 	}
 
+	public void onPlaced() {
+
+		byte oldFacing = facing;
+		for (int i = facing + 1, e = facing + 6; i < e; i++) {
+			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
+				facing = (byte) (i % 6);
+				if (facing != oldFacing) {
+					updateAdjacentHandlers();
+					markDirty();
+					sendUpdatePacket(Side.CLIENT);
+				}
+			}
+		}
+	}
+
 	@Override
 	public void invalidate() {
 
@@ -317,6 +332,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		super.writeToNBT(nbt);
 
 		writeAugmentsToNBT(nbt);
+		energyStorage.writeToNBT(nbt);
 
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Active", isActive);

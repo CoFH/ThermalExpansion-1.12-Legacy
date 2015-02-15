@@ -119,7 +119,7 @@ public class BlockDynamo extends BlockTEBase {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 
-		tile.rotateBlock();
+		tile.onPlaced();
 
 		if (stack.stackTagCompound != null) {
 			tile.readAugmentsFromNBT(stack.stackTagCompound);

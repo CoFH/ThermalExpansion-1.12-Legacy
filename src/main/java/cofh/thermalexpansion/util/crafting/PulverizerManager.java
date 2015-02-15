@@ -31,6 +31,10 @@ public class PulverizerManager {
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Pulverizer", "AllowRecipeOverwrite", false);
+
+		String category = "RecipeManagers.Pulverizer.Ore";
+		String comment = "This sets the default rate for Ore->Dust conversion. This number is used in all automatically generated recipes.";
+		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
 	}
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
@@ -61,14 +65,6 @@ public class PulverizerManager {
 		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
 		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
 
-		category = "RecipeManagers.Pulverizer.Ore";
-
-		comment = "This sets the default rate for Ore->Dust conversion. This number is used in all automatically generated recipes.";
-		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "AmountDustFromOre", 2, comment), 1, 64);
-
-		comment = "Chance of acquiring a Cinnabar Crystal from Redstone Ore.";
-		int chanceCinnabar = MathHelper.clampI(ThermalExpansion.config.get(category, "ChanceCinnabarFromRedstoneOre", 25), 1, 100);
-
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 10);
 		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 10);
@@ -90,7 +86,7 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.emerald_ore), new ItemStack(Items.emerald, 2, 0));
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 9, 4));
-		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, chanceCinnabar);
+		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, 25);
 		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 10);
 
 		for (int i = 0; i < 3; i++) {
@@ -107,7 +103,7 @@ public class PulverizerManager {
 			int[] dyeChance = new int[ColorHelper.woolColorConfig.length];
 
 			comment = "This sets the default rate for Wool->String conversion. This number is used in all automatically generated recipes.";
-			int numString = ThermalExpansion.config.get(category, "AmountStringFromWool", 4, comment);
+			int numString = ThermalExpansion.config.get(category, "String", 4, comment);
 			ItemStack stringStack = new ItemStack(Items.string, numString);
 
 			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
@@ -118,8 +114,9 @@ public class PulverizerManager {
 			dyeChance[13] = 0;
 			dyeChance[15] = 0;
 
+			category = "RecipeManagers.Pulverizer.Wool.Dye";
 			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
-				dyeChance[i] = MathHelper.clampI(ThermalExpansion.config.get(category, "ChanceDyeFrom" + ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
+				dyeChance[i] = MathHelper.clampI(ThermalExpansion.config.get(category, ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
 
 				if (dyeChance[i] > 0) {
 					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), stringStack, new ItemStack(Items.dye, 1, 15 - i), dyeChance[i]);
@@ -144,7 +141,7 @@ public class PulverizerManager {
 		int energy = 4000;
 
 		addOreNameToDustRecipe(energy, "oreIron", TFItems.dustIron, TFItems.dustNickel, 10);
-		addOreNameToDustRecipe(energy, "oreGold", TFItems.dustGold, null, 0);
+		addOreNameToDustRecipe(energy, "oreGold", TFItems.dustGold, TFItems.crystalCinnabar, 5);
 		addOreNameToDustRecipe(energy, "oreCopper", TFItems.dustCopper, TFItems.dustGold, 10);
 		addOreNameToDustRecipe(energy, "oreTin", TFItems.dustTin, TFItems.dustIron, 10);
 		addOreNameToDustRecipe(energy, "oreSilver", TFItems.dustSilver, TFItems.dustLead, 10);

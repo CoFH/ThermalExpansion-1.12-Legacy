@@ -74,7 +74,7 @@ public class BlockStrongbox extends BlockTEBase {
 		if (stack.stackTagCompound != null) {
 			TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
 
-			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, stack);
+			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, stack);
 			tile.createInventory();
 
 			if (stack.stackTagCompound.hasKey("Inventory")) {
@@ -113,7 +113,7 @@ public class BlockStrongbox extends BlockTEBase {
 				tag = new NBTTagCompound();
 			}
 			if (tile.enchant > 0) {
-				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.enchantmentHolding.effectId, tile.enchant);
+				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.holding.effectId, tile.enchant);
 			}
 			tile.writeInventoryToNBT(tag);
 		}

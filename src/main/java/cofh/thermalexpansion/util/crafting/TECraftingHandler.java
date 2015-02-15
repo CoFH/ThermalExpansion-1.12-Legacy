@@ -83,6 +83,8 @@ public class TECraftingHandler {
 			player.addStat(TEAchievements.assembler, 1);
 		} else if (stack.isItemEqual(BlockMachine.charger)) {
 			player.addStat(TEAchievements.charger, 1);
+		} else if (stack.isItemEqual(BlockMachine.insolator)) {
+			player.addStat(TEAchievements.insolator, 1);
 		}
 	}
 

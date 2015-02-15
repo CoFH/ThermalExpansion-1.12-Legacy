@@ -24,9 +24,9 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
-	protected static final boolean[] enableSound = { true, true, true, true, true, true, true, true, true, true, true };
-	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7 };
-	public static boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true };
+	protected static final boolean[] enableSound = { true, true, true, true, true, true, true, true, true, true, true, true };
+	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7, 15 };
+	public static boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true, true };
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };

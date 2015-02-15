@@ -28,7 +28,7 @@ public class TileSmelter extends TileMachineBase {
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Smelter";
-		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
+		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);

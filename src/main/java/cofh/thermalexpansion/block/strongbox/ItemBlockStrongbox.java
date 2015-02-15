@@ -82,7 +82,7 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	public static int getStorageIndex(ItemStack container) {
 
 		int type = container.getItemDamage();
-		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.enchantmentHolding.effectId, container);
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, container);
 
 		return getStorageIndex(type, enchant);
 	}

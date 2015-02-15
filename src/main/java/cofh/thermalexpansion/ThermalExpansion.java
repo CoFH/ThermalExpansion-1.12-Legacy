@@ -3,7 +3,6 @@ package cofh.thermalexpansion;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.ConfigHandler;
-import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.mod.BaseMod;
 import cofh.mod.updater.UpdateManager;
@@ -22,11 +21,9 @@ import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.core.Proxy;
 import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.gui.CreativeTabBlocks;
-import cofh.thermalexpansion.gui.CreativeTabFlorbs;
-import cofh.thermalexpansion.gui.CreativeTabItems;
-import cofh.thermalexpansion.gui.CreativeTabTools;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.gui.TECreativeTab;
+import cofh.thermalexpansion.gui.TECreativeTabFlorbs;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
@@ -39,6 +36,7 @@ import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.ExtruderManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
+import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.PrecipitatorManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
@@ -82,7 +80,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -104,13 +102,31 @@ public class ThermalExpansion extends BaseMod {
 	public static final ConfigHandler configClient = new ConfigHandler(version);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
-	public static final CreativeTabs tabBlocks = new CreativeTabBlocks();
-	public static final CreativeTabs tabItems = new CreativeTabItems();
-	public static final CreativeTabs tabTools = new CreativeTabTools();
-	public static final CreativeTabs tabFlorbs = new CreativeTabFlorbs();
+	public static final CreativeTabs tabBlocks = new TECreativeTab("Blocks") {
 
-	public static File worldGen;
-	public static final String worldGenInternal = "assets/thermalexpansion/world/ThermalExpansion-Ores.json";
+		// @Override
+		// protected ItemStack getStack() {
+		//
+		// return BlockFrame.frameCellReinforcedFull;
+		// }
+	};
+	public static final CreativeTabs tabItems = new TECreativeTab("Items") {
+
+		@Override
+		protected ItemStack getStack() {
+
+			return TEItems.powerCoilElectrum;
+		}
+	};
+	public static final CreativeTabs tabTools = new TECreativeTab("Tools") {
+
+		@Override
+		protected ItemStack getStack() {
+
+			return TEItems.toolWrench;
+		}
+	};
+	public static final CreativeTabs tabFlorbs = new TECreativeTabFlorbs();
 
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
@@ -124,14 +140,6 @@ public class ThermalExpansion extends BaseMod {
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL));
 		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg"), true));
 		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg"), true));
-
-		// BEGIN TEMP CODE
-		// TODO: Remove after 4.1
-
-		config.renameCategory("security", "Security");
-		config.renameCategory("world", "World");
-
-		// END TEMP CODE
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
@@ -159,9 +167,6 @@ public class ThermalExpansion extends BaseMod {
 			// TEAchievements.initialize();
 		}
 
-		/* Init World Gen */
-		loadWorldGeneration();
-
 		/* Register Handlers */
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
@@ -180,6 +185,7 @@ public class ThermalExpansion extends BaseMod {
 		PrecipitatorManager.addDefaultRecipes();
 		ExtruderManager.addDefaultRecipes();
 		ChargerManager.addDefaultRecipes();
+		InsolatorManager.addDefaultRecipes();
 
 		TEItems.postInit();
 		TEBlocks.postInit();
@@ -204,6 +210,7 @@ public class ThermalExpansion extends BaseMod {
 		PrecipitatorManager.loadRecipes();
 		ExtruderManager.loadRecipes();
 		ChargerManager.loadRecipes();
+		InsolatorManager.loadRecipes();
 
 		FuelHandler.parseFuels();
 
@@ -281,6 +288,7 @@ public class ThermalExpansion extends BaseMod {
 		PrecipitatorManager.refreshRecipes();
 		ExtruderManager.refreshRecipes();
 		ChargerManager.refreshRecipes();
+		InsolatorManager.refreshRecipes();
 
 		BlockDevice.refreshItemStacks();
 		BlockDynamo.refreshItemStacks();
@@ -306,25 +314,6 @@ public class ThermalExpansion extends BaseMod {
 	}
 
 	/* LOADING FUNCTIONS */
-	void loadWorldGeneration() {
-
-		if (!config
-				.get("World", "GenerateDefaultFiles", true,
-						"If enabled, Thermal Expansion will create default world generation files - if it cannot find existing ones. Only disable this if you know what you are doing.")) {
-			return;
-		}
-		worldGen = new File(CoFHProps.configDir, "/cofh/world/ThermalExpansion-Ores.json");
-
-		if (!worldGen.exists()) {
-			try {
-				worldGen.createNewFile();
-				CoreUtils.copyFileUsingStream(worldGenInternal, worldGen);
-			} catch (Throwable t) {
-				t.printStackTrace();
-			}
-		}
-	}
-
 	void configOptions() {
 
 		String category;
@@ -361,7 +350,14 @@ public class ThermalExpansion extends BaseMod {
 	void cleanConfig(boolean preInit) {
 
 		if (preInit) {
+			// BEGIN TEMP CODE
+			// TODO: Remove after 4.1
 
+			config.renameCategory("security", "Security");
+			config.removeCategory("world");
+			config.removeCategory("World");
+
+			// END TEMP CODE
 		}
 		String prefix = "config.thermalexpansion.";
 		String[] categoryNames = config.getCategoryNames().toArray(new String[config.getCategoryNames().size()]);

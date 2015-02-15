@@ -23,6 +23,7 @@ public class TEAchievements {
 	public static Achievement accumulator;
 	public static Achievement assembler;
 	public static Achievement charger;
+	public static Achievement insolator;
 
 	public static Achievement glass;
 
