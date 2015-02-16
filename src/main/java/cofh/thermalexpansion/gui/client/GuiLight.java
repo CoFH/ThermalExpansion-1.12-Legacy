@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client;
 
 import cofh.core.gui.GuiBaseAdv;
+import cofh.core.gui.element.TabInfo;
 import cofh.core.render.IconRegistry;
 import cofh.lib.gui.GuiColor;
 import cofh.lib.gui.element.ElementButton;
@@ -69,13 +70,17 @@ public class GuiLight extends GuiBaseAdv {
 		myTile = tile;
 		name = myTile.getName();
 		drawInventory = false;
-		this.height = 92;
+		this.height = 100;
+
+		generateInfo("tab.thermalexpansion.light", 3);
 	}
 
 	@Override
 	public void initGui() {
 
 		super.initGui();
+
+		addTab(new TabInfo(this, myInfo));
 
 		GuiColor tileColor = new GuiColor((byte) 255, myTile.color);
 		int type = myTile.getBlockMetadata();

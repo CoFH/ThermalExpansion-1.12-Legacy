@@ -2,12 +2,15 @@ package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.TEItems;
 
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +20,7 @@ import java.util.Set;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class InsolatorManager {
 
@@ -33,6 +37,10 @@ public class InsolatorManager {
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Insolator", "AllowRecipeOverwrite", false);
+
+		String category = "RecipeManagers.Insolator.Crop";
+		String comment = "This sets the boosted rate for Crop growth - when Rich Phyto-Gro is used. This number is used in all automatically generated recipes.";
+		cropMultiplierSpecial = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
 	}
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -77,6 +85,8 @@ public class InsolatorManager {
 
 	public static void addDefaultRecipes() {
 
+		// OreDictionary.registerOre("seedCarrot", new ItemStack(Items.carrot));
+
 		addDefaultRecipe(new ItemStack(Items.wheat_seeds), new ItemStack(Items.wheat), new ItemStack(Items.wheat_seeds), 150);
 		addDefaultRecipe(new ItemStack(Items.potato), new ItemStack(Items.potato, 3), new ItemStack(Items.poisonous_potato), 2);
 		addDefaultRecipe(new ItemStack(Items.carrot), new ItemStack(Items.carrot, 3), null, 0);
@@ -88,6 +98,18 @@ public class InsolatorManager {
 
 	public static void loadRecipes() {
 
+		String[] oreNameList = OreDictionary.getOreNames();
+		String oreName = "";
+
+		for (int i = 0; i < oreNameList.length; i++) {
+			if (oreNameList[i].startsWith("seed")) {
+				oreName = oreNameList[i].substring(4, oreNameList[i].length());
+
+				// if (isStandardOre(oreNameList[i])) {
+				addDefaultOreDictionaryRecipe(oreName);
+				// }
+			}
+		}
 	}
 
 	public static void refreshRecipes() {
@@ -139,6 +161,40 @@ public class InsolatorManager {
 	}
 
 	/* HELPER FUNCTIONS */
+	public static void addDefaultOreDictionaryRecipe(String oreType) {
+
+		String seedName = "seed" + StringHelper.titleCase(oreType);
+		String cropName = "crop" + StringHelper.titleCase(oreType);
+
+		ArrayList<ItemStack> registeredSeed = OreDictionary.getOres(seedName);
+		ArrayList<ItemStack> registeredCrop = OreDictionary.getOres(cropName);
+
+		if (registeredSeed.isEmpty() || registeredCrop.isEmpty()) {
+			return;
+		}
+		boolean isTuber = false;
+		boolean isBlock = false;
+		for (int i = 0; i < registeredSeed.size(); i++) {
+			for (int j = 0; j < registeredCrop.size(); j++) {
+				if (ItemHelper.itemsEqualWithMetadata(registeredSeed.get(i), registeredCrop.get(j))) {
+					isTuber = true;
+				}
+			}
+		}
+		if (ItemHelper.isBlock(registeredCrop.get(0))) {
+			isBlock = true;
+		}
+		ItemStack seed = ItemHelper.cloneStack(registeredSeed.get(0), 1);
+		ItemStack crop = ItemHelper.cloneStack(registeredCrop.get(0), isTuber ? 3 : 1);
+
+		if (isBlock || isTuber) {
+			addDefaultRecipe(seed, crop, null, 0);
+		} else {
+			addDefaultRecipe(seed, crop, seed, 150);
+		}
+
+	}
+
 	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (secondaryOutput != null) {

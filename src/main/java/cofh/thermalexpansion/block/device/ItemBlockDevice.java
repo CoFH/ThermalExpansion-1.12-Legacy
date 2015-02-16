@@ -51,9 +51,12 @@ public class ItemBlockDevice extends ItemBlockBase {
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, list);
+		list.add(StringHelper.getInfoText("info.thermalexpansion.device." + BlockDevice.NAMES[ItemHelper.getItemDamage(stack)]));
+
 		if (ItemHelper.getItemDamage(stack) == BlockDevice.Types.WORKBENCH.ordinal()) {
 			ItemHelper.addInventoryInformation(stack, list, 0, 20);
 		}
+
 	}
 
 }

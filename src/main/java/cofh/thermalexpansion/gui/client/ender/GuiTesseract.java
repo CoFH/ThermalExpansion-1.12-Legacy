@@ -30,7 +30,6 @@ import org.lwjgl.input.Mouse;
 public class GuiTesseract extends GuiBaseAdv {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_ENDER + "Tesseract.png");
-	static final String INFO = "Use these to quickly transport things across vast distances.\n\nTune the Ender Frequency to determine links.";
 
 	static final int TB_HEIGHT = 12;
 
@@ -60,6 +59,8 @@ public class GuiTesseract extends GuiBaseAdv {
 		playerName = inventory.player.getCommandSenderName();
 
 		tempFreq = myTile.frequency;
+
+		generateInfo("tab.thermalexpansion.ender.tesseract", 2);
 	}
 
 	@Override
@@ -69,7 +70,8 @@ public class GuiTesseract extends GuiBaseAdv {
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigTesseract(this, myTile, playerName));
-		addTab(new TabInfo(this, INFO));
+
+		addTab(new TabInfo(this, myInfo));
 		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabOperation()));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));

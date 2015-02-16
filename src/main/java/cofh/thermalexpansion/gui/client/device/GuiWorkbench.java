@@ -17,7 +17,6 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Workbench.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Crafts things! A crafting recipe may be written to or read from a schematic.\n\nStores its contents securely.\n\nShift + Right Click on a Schematic to craft it instantly.";
 
 	public TileWorkbench myTile;
 	String playerName;
@@ -32,6 +31,8 @@ public class GuiWorkbench extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
 		ySize = 210;
+
+		generateInfo("tab.thermalexpansion.device.workbench", 3);
 	}
 
 	@Override
@@ -39,10 +40,10 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		super.initGui();
 
+		addTab(new TabInfo(this, myInfo));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
-		addTab(new TabInfo(this, INFO));
 
 		setSchematic = (ElementButton) addElement(new ElementButton(this, 98, 55, "Set", 176, 32, 176, 48, 176, 64, 16, 16, TEX_PATH));
 		getSchematic = (ElementButton) addElement(new ElementButton(this, 98, 19, "Get", 192, 32, 192, 48, 192, 64, 16, 16, TEX_PATH));

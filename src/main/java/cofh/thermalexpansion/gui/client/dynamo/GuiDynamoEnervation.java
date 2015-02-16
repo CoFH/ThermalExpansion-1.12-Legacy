@@ -13,7 +13,6 @@ import net.minecraft.util.ResourceLocation;
 public class GuiDynamoEnervation extends GuiDynamoBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoEnervation.png");
-	static final String INFO = "Extracts Redstone Flux directly from natural sources or from objects which store it.\n\nGeneration rate varies according to energy demand.";
 
 	ElementDualScaled duration;
 

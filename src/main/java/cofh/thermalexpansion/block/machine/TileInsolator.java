@@ -239,7 +239,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, 4, side)) {
+					if (transferItem(2, 8, side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -253,7 +253,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, 4, side)) {
+				if (transferItem(3, 8, side)) {
 					outputTrackerSecondary = side;
 					break;
 				}

@@ -22,7 +22,6 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Imparts a force upon contact.\n\nForce and angle can be configured.\n\nWrench while sneaking to dismantle.";
 
 	TilePlateImpulse myTile;
 	String playerName;
@@ -41,7 +40,9 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
 		drawInventory = false;
-		this.height = 92;
+		this.height = 100;
+
+		generateInfo("tab.thermalexpansion.plate.impulse", 2);
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 
 		super.initGui();
 
-		addTab(new TabInfo(this, INFO));
+		addTab(new TabInfo(this, myInfo));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

@@ -24,7 +24,6 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 	protected TileAugmentable myTile;
 	protected String playerName;
 
-	public String myInfo = "";
 	public String myTutorial = StringHelper.tutorialTabAugment();
 
 	protected TabBase redstoneTab;
@@ -49,14 +48,6 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 		}
 		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
-		}
-	}
-
-	protected void generateInfo(String tileString, int lines) {
-
-		myInfo = StringHelper.localize(tileString + "." + 0);
-		for (int i = 1; i < lines; i++) {
-			myInfo += "\n\n" + StringHelper.localize(tileString + "." + i);
 		}
 	}
 

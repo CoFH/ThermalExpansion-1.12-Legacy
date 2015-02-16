@@ -22,7 +22,6 @@ public class GuiPlateSignal extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Emits a redstone signal at another location upon contact.\n\nSignal parameters can be configured.\n\nWrench while sneaking to dismantle.";
 
 	TilePlateSignal myTile;
 	String playerName;
@@ -43,7 +42,9 @@ public class GuiPlateSignal extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
 		drawInventory = false;
-		this.height = 92;
+		this.height = 100;
+
+		generateInfo("tab.thermalexpansion.plate.signal", 2);
 	}
 
 	@Override
@@ -51,7 +52,7 @@ public class GuiPlateSignal extends GuiBaseAdv {
 
 		super.initGui();
 
-		addTab(new TabInfo(this, INFO));
+		addTab(new TabInfo(this, myInfo));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

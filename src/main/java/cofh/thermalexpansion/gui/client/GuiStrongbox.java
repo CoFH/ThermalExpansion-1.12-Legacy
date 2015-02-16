@@ -18,7 +18,6 @@ public class GuiStrongbox extends GuiBaseAdv {
 	TileStrongbox myTile;
 	String playerName;
 	int storageIndex;
-	String myInfo = "";
 
 	public GuiStrongbox(InventoryPlayer inventory, TileEntity tile) {
 
@@ -32,12 +31,6 @@ public class GuiStrongbox extends GuiBaseAdv {
 
 		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
 		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
-	}
-
-	@Override
-	public void initGui() {
-
-		super.initGui();
 
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.creative");
@@ -48,6 +41,13 @@ public class GuiStrongbox extends GuiBaseAdv {
 				myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
 			}
 		}
+	}
+
+	@Override
+	public void initGui() {
+
+		super.initGui();
+
 		addTab(new TabInfo(this, myInfo));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));

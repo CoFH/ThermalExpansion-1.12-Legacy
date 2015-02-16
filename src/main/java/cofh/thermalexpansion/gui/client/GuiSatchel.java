@@ -19,7 +19,6 @@ public class GuiSatchel extends GuiBaseAdv {
 	boolean secure;
 	String playerName;
 	int storageIndex;
-	String myInfo = "";
 
 	public GuiSatchel(InventoryPlayer inventory, ContainerSatchel container) {
 
@@ -36,12 +35,6 @@ public class GuiSatchel extends GuiBaseAdv {
 
 		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
 		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
-	}
-
-	@Override
-	public void initGui() {
-
-		super.initGui();
 
 		if (storageIndex == ItemSatchel.Types.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.satchel.creative");
@@ -52,6 +45,13 @@ public class GuiSatchel extends GuiBaseAdv {
 				myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
 			}
 		}
+	}
+
+	@Override
+	public void initGui() {
+
+		super.initGui();
+
 		addTab(new TabInfo(this, myInfo));
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));

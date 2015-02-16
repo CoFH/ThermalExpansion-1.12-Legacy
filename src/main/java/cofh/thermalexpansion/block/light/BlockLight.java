@@ -76,6 +76,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 				tile.setColor(stack.stackTagCompound.getInteger("Color"));
 			}
 			tile.dim = stack.stackTagCompound.getBoolean("Dim");
+			tile.mode = stack.stackTagCompound.getByte("Mode");
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -170,12 +171,13 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 		tag = new NBTTagCompound();
-		if (tile != null && tile.modified) {
+		if (tile.modified) {
 			tag.setInteger("Color", tile.color);
 		}
 		if (tile.dim) {
 			tag.setBoolean("Dim", tile.dim);
 		}
+		tag.setByte("Mode", tile.mode);
 		return tag.hasNoTags() ? null : tag;
 	}
 
@@ -205,11 +207,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			"ingotSignalum" }));
 		}
 		return true;
 	}

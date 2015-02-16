@@ -21,7 +21,6 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Translocates objects that touch it upon contact.\n\nDistance may be configured.\n\nWrench while sneaking to dismantle.";
 
 	TilePlateTranslocate myTile;
 	String playerName;
@@ -38,7 +37,9 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
 		drawInventory = false;
-		this.height = 92;
+		this.height = 100;
+
+		generateInfo("tab.thermalexpansion.plate.translocate", 2);
 	}
 
 	@Override
@@ -46,7 +47,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 
 		super.initGui();
 
-		addTab(new TabInfo(this, INFO));
+		addTab(new TabInfo(this, myInfo));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

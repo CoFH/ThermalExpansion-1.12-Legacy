@@ -22,7 +22,6 @@ public class GuiCell extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Cell.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
-	static final String INFO = "Stores Redstone Flux.\n\nHold Shift or Ctrl to fine tune energy control.\n\nWrench while sneaking to dismantle.";
 
 	TileCell myTile;
 	String playerName;
@@ -38,6 +37,8 @@ public class GuiCell extends GuiBaseAdv {
 		myTile = (TileCell) theTile;
 		name = myTile.getInventoryName();
 		playerName = inventory.player.getCommandSenderName();
+
+		generateInfo("tab.thermalexpansion.cell", 2);
 	}
 
 	@Override
@@ -49,7 +50,8 @@ public class GuiCell extends GuiBaseAdv {
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigCell(this, myTile));
-		addTab(new TabInfo(this, INFO));
+
+		addTab(new TabInfo(this, myInfo));
 		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
