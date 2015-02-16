@@ -27,8 +27,8 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	protected boolean augmentLock = true;
 
-	protected boolean hasAugSlots;
-	protected boolean hasPlayerInvSlots;
+	protected boolean hasAugSlots = true;
+	protected boolean hasPlayerInvSlots = true;
 
 	public ContainerTEBase() {
 

@@ -20,7 +20,7 @@ public class FMLEventHandler {
 	public void onPlayerLogin(PlayerLoggedInEvent event) {
 
 		if (TEProps.enableAchievements) {
-			event.player.addStat(TEAchievements.baseTE, 1);
+			event.player.addStat(TEAchievements.base, 1);
 		}
 		PacketTEBase.sendConfigSyncPacketToClient(event.player);
 	}

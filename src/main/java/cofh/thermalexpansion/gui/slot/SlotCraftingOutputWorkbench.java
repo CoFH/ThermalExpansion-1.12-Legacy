@@ -3,6 +3,7 @@ package cofh.thermalexpansion.gui.slot;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.TileWorkbench;
 import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -55,6 +56,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 
 		myTile.createItem(true, inventory.getStackInSlot(getSlotIndex()));
+		FMLCommonHandler.instance().firePlayerCraftingEvent(player, stack, myContainer.craftMatrix);
 		this.onCrafting(stack);
 		super.onPickupFromSlot(player, stack);
 	}

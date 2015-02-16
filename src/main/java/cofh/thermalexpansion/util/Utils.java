@@ -23,15 +23,6 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class Utils {
 
-	public static int statId = 20000;
-
-	/* ID FUNCTIONS */
-	public static int getStatId() {
-
-		statId++;
-		return statId;
-	}
-
 	/* ITEM FUNCTIONS */
 	public static boolean isAugmentItem(ItemStack container) {
 

@@ -20,6 +20,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.core.Proxy;
+import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.TECreativeTab;
@@ -80,7 +81,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
@@ -164,7 +165,7 @@ public class ThermalExpansion extends BaseMod {
 		TEPlugins.initialize();
 
 		if (TEProps.enableAchievements) {
-			// TEAchievements.initialize();
+			TEAchievements.initialize();
 		}
 
 		/* Register Handlers */

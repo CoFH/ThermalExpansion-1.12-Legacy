@@ -24,7 +24,7 @@ import net.minecraft.tileentity.TileEntity;
 public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
 	TileWorkbench myTile;
-	InventoryCraftingCustom craftMatrix;
+	public InventoryCraftingCustom craftMatrix;
 	IInventory craftResult = new InventoryCraftResult();
 
 	public SlotCraftingOutputWorkbench myOutput;

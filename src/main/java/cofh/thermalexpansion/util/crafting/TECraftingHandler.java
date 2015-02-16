@@ -3,7 +3,12 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.cache.BlockCache;
+import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
+import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
@@ -61,7 +66,12 @@ public class TECraftingHandler {
 		if (!TEProps.enableAchievements) {
 			return;
 		}
-		if (stack.isItemEqual(BlockMachine.furnace)) {
+		// Crafting Steps
+		if (stack.isItemEqual(BlockFrame.frameMachineBasic)) {
+			player.addStat(TEAchievements.machineFrame, 1);
+		}
+		// Machine Achievements
+		else if (stack.isItemEqual(BlockMachine.furnace)) {
 			player.addStat(TEAchievements.furnace, 1);
 		} else if (stack.isItemEqual(BlockMachine.pulverizer)) {
 			player.addStat(TEAchievements.pulverizer, 1);
@@ -85,6 +95,16 @@ public class TECraftingHandler {
 			player.addStat(TEAchievements.charger, 1);
 		} else if (stack.isItemEqual(BlockMachine.insolator)) {
 			player.addStat(TEAchievements.insolator, 1);
+		}
+		// Resonant Achievements
+		else if (stack.isItemEqual(BlockCell.cellResonant)) {
+			player.addStat(TEAchievements.resonantCell, 1);
+		} else if (stack.isItemEqual(BlockTank.tankResonant)) {
+			player.addStat(TEAchievements.resonantTank, 1);
+		} else if (stack.isItemEqual(BlockCache.cacheResonant)) {
+			player.addStat(TEAchievements.resonantCache, 1);
+		} else if (stack.isItemEqual(BlockStrongbox.strongboxResonant)) {
+			player.addStat(TEAchievements.resonantStrongbox, 1);
 		}
 	}
 
