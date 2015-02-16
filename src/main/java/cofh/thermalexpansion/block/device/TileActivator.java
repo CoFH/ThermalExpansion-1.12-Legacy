@@ -378,7 +378,7 @@ public class TileActivator extends TileAugmentable {
 					return true;
 				}
 				PlayerInteractEvent event = ForgeEventFactory.onPlayerInteract(thePlayer, Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj);
-				if (event.useItem != Event.Result.DENY) {
+				if (event.useItem == Event.Result.DENY) {
 					return false;
 				}
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
