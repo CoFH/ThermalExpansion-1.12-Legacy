@@ -108,8 +108,8 @@ public class TEItems {
 		sawdustCompressed = itemMaterial.addItem(513, "dustWoodCompressed");
 		slag = itemMaterial.addItem(514, "slag");
 		slagRich = itemMaterial.addItem(515, "slagRich");
-		fertilizer = itemMaterial.addItem(516, "fertilizer");
-		fertilizerRich = itemMaterial.addItem(517, "fertilizerRich");
+		fertilizer = itemMaterial.addOreDictItem(516, "fertilizer");
+		fertilizerRich = itemMaterial.addOreDictItem(517, "fertilizerRich");
 
 		TEAugments.initialize();
 		TEEquipment.initialize();
@@ -147,11 +147,11 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic,
 				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
 		GameRegistry
-		.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
+				.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
 		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened, 'Y',
-		"nuggetInvar" }));
+				"nuggetInvar" }));
 		GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
-		"nuggetElectrum" }));
+				"nuggetElectrum" }));
 
 		TECraftingHandler.addSecureRecipe(satchelCreative);
 		TECraftingHandler.addSecureRecipe(satchelBasic);
@@ -175,19 +175,19 @@ public class TEItems {
 
 		if (servosAllowSilver) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-			"ingotSilver" }));
+					"ingotSilver" }));
 		}
 		if (servosAllowInvar) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-			"ingotInvar" }));
+					"ingotInvar" }));
 		}
 		if (servosAllowBronze) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-			"ingotBronze" }));
+					"ingotBronze" }));
 		}
 		if (servosAllowSteel) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-			"ingotSteel" }));
+					"ingotSteel" }));
 		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotGold" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotSilver" }));
@@ -197,9 +197,9 @@ public class TEItems {
 
 		/* Misc Items */
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
-		"dustCoal" }));
+				"dustCoal" }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
-		"dustCharcoal" }));
+				"dustCharcoal" }));
 
 		ItemHelper.addGearRecipe(new ItemStack(Items.paper, 2), "dustWood", new ItemStack(Items.water_bucket));
 		GameRegistry.addRecipe(new ShapedOreRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
@@ -210,7 +210,7 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(fertilizer, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter", slag }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(fertilizer, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slag }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(fertilizerRich, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter",
-			slagRich }));
+				slagRich }));
 		GameRegistry.addRecipe(new ShapelessOreRecipe(ItemHelper.cloneStack(fertilizerRich, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slagRich }));
 
 		TEAugments.postInit();

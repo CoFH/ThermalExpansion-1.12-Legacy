@@ -192,6 +192,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 		augmentStatus = new boolean[augments.length];
 		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
 		energyStorage.setCapacity(energyConfig.maxEnergy);
+		energyStorage.setMaxTransfer(energyConfig.maxPower * ENERGY_TRANSFER[level]);
 	}
 
 	/* GUI METHODS */
@@ -242,7 +243,6 @@ public abstract class TileMachineBase extends TileAugmentable {
 		onLevelChange();
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
-		augmentStatus = new boolean[augments.length];
 
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound tag = list.getCompoundTagAt(i);

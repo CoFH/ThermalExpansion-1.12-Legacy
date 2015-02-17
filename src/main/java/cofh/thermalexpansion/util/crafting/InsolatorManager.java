@@ -93,6 +93,8 @@ public class InsolatorManager {
 		addDefaultRecipe(new ItemStack(Items.carrot), new ItemStack(Items.carrot, 3), null, 0);
 		addDefaultRecipe(new ItemStack(Items.reeds), new ItemStack(Items.reeds, 2), null, 0);
 		addDefaultRecipe(new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Blocks.vine), new ItemStack(Blocks.vine, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Blocks.waterlily), new ItemStack(Blocks.waterlily, 2), null, 0);
 		addDefaultRecipe(new ItemStack(Items.pumpkin_seeds), new ItemStack(Blocks.pumpkin), null, 0);
 		addDefaultRecipe(new ItemStack(Items.melon_seeds), new ItemStack(Blocks.melon_block), null, 0);
 	}
