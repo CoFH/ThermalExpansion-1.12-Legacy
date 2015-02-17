@@ -65,6 +65,7 @@ public class SawmillManager {
 		addRecipe(2400, new ItemStack(Blocks.jukebox), new ItemStack(Blocks.planks, 8), new ItemStack(Items.diamond, 1));
 		addRecipe(2400, new ItemStack(Blocks.trapdoor), new ItemStack(Blocks.planks, 3));
 		addRecipe(2400, new ItemStack(Blocks.fence_gate), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
+		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 8));
 
 		addRecipe(2400, new ItemStack(Items.boat), new ItemStack(Blocks.planks, 5));
 		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 2), TEItems.sawdust);

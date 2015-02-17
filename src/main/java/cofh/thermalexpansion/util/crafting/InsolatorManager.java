@@ -19,18 +19,19 @@ import java.util.Set;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStack>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStack>, RecipeInsolator>();
-	private static Set<ComparableItemStack> validationSet = new THashSet<ComparableItemStack>();
-	private static ComparableItemStack query = new ComparableItemStack(new ItemStack(Blocks.stone));
-	private static ComparableItemStack querySecondary = new ComparableItemStack(new ItemStack(Blocks.stone));
+	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
+	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
+	private static ComparableItemStackInsolator query = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
+	private static ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
-	private static int cropMultiplierSpecial = 2;
+	private static int cropMultiplierSpecial = 3;
 
 	public static final int DEFAULT_ENERGY = 7200;
 	public static final int DEFAULT_ENERGY_SPECIAL = 9600;
@@ -114,14 +115,14 @@ public class InsolatorManager {
 
 	public static void refreshRecipes() {
 
-		Map<List<ComparableItemStack>, RecipeInsolator> tempMap = new THashMap<List<ComparableItemStack>, RecipeInsolator>(recipeMap.size());
-		Set<ComparableItemStack> tempSet = new THashSet<ComparableItemStack>();
+		Map<List<ComparableItemStackInsolator>, RecipeInsolator> tempMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>(recipeMap.size());
+		Set<ComparableItemStackInsolator> tempSet = new THashSet<ComparableItemStackInsolator>();
 		RecipeInsolator tempRecipe;
 
-		for (Entry<List<ComparableItemStack>, RecipeInsolator> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackInsolator>, RecipeInsolator> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStack primary = new ComparableItemStack(tempRecipe.primaryInput);
-			ComparableItemStack secondary = new ComparableItemStack(tempRecipe.secondaryInput);
+			ComparableItemStackInsolator primary = new ComparableItemStackInsolator(tempRecipe.primaryInput);
+			ComparableItemStackInsolator secondary = new ComparableItemStackInsolator(tempRecipe.secondaryInput);
 
 			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -141,9 +142,9 @@ public class InsolatorManager {
 			return false;
 		}
 		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStack(primaryInput), new ComparableItemStack(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStack(primaryInput));
-		validationSet.add(new ComparableItemStack(secondaryInput));
+		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
+		validationSet.add(new ComparableItemStackInsolator(primaryInput));
+		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
 		return true;
 	}
 
@@ -154,9 +155,9 @@ public class InsolatorManager {
 			return false;
 		}
 		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStack(primaryInput), new ComparableItemStack(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStack(primaryInput));
-		validationSet.add(new ComparableItemStack(secondaryInput));
+		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
+		validationSet.add(new ComparableItemStackInsolator(primaryInput));
+		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
 		return true;
 	}
 
@@ -290,6 +291,57 @@ public class InsolatorManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+	}
+
+	/* ITEMSTACK CLASS */
+	public static class ComparableItemStackInsolator extends ComparableItemStack {
+
+		static final String SEED = "seed";
+		static final String CROP = "crop";
+
+		public static boolean safeOreType(String oreName) {
+
+			return oreName.startsWith(SEED) || oreName.startsWith(CROP);
+		}
+
+		public static int getOreID(ItemStack stack) {
+
+			int id = ItemHelper.oreProxy.getOreID(stack);
+
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+				return -1;
+			}
+			return id;
+		}
+
+		public static int getOreID(String oreName) {
+
+			if (!safeOreType(oreName)) {
+				return -1;
+			}
+			return ItemHelper.oreProxy.getOreID(oreName);
+		}
+
+		public ComparableItemStackInsolator(ItemStack stack) {
+
+			super(stack);
+			oreID = getOreID(stack);
+		}
+
+		public ComparableItemStackInsolator(Item item, int damage, int stackSize) {
+
+			super(item, damage, stackSize);
+			this.oreID = getOreID(this.toItemStack());
+		}
+
+		@Override
+		public ComparableItemStackInsolator set(ItemStack stack) {
+
+			super.set(stack);
+			oreID = getOreID(stack);
+
+			return this;
 		}
 	}
 

@@ -158,6 +158,14 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
+	}
+
+	@Override
 	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
 		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;

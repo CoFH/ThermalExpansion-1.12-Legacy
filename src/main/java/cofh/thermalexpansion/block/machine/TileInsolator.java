@@ -239,7 +239,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, 8, side)) {
+					if (transferItem(2, AUTO_EJECT[level], side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -253,12 +253,20 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, 8, side)) {
+				if (transferItem(3, AUTO_EJECT[level], side)) {
 					outputTrackerSecondary = side;
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	@Override

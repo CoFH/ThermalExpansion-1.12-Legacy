@@ -115,12 +115,20 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(1, 64, side)) {
+				if (transferItem(1, AUTO_EJECT[level], side)) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	@Override

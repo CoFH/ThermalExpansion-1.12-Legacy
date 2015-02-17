@@ -169,13 +169,13 @@ public class TilePulverizer extends TileMachineBase {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(1, 4, side)) {
-						if (!transferItem(2, 4, side)) {
-							transferItem(1, 4, side);
+					if (transferItem(1, AUTO_EJECT[level] >> 1, side)) {
+						if (!transferItem(2, AUTO_EJECT[level] >> 1, side)) {
+							transferItem(1, AUTO_EJECT[level] >> 1, side);
 						}
 						outputTrackerPrimary = side;
 						break;
-					} else if (transferItem(2, 8, side)) {
+					} else if (transferItem(2, AUTO_EJECT[level], side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -189,7 +189,7 @@ public class TilePulverizer extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, 4, side)) {
+				if (transferItem(3, AUTO_EJECT[level], side)) {
 					outputTrackerSecondary = side;
 					break;
 				}

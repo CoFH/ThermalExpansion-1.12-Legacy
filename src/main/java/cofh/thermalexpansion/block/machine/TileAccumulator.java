@@ -210,6 +210,14 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {

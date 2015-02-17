@@ -87,14 +87,14 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length - 5; i++) {
+		for (int i = 0; i < Types.values().length - 4; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (creativeTiers[j]) {
 					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
 				}
 			}
 		}
-		for (int i = Types.values().length - 5; i < Types.values().length - 1; i++) {
+		for (int i = Types.values().length - 4; i < Types.values().length - 1; i++) {
 			list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) 0));
 		}
 		for (int j = 0; j < 4; j++) {
@@ -337,8 +337,8 @@ public class BlockMachine extends BlockTEBase {
 					'P', TEItems.powerCoilGold, 'X', Blocks.piston, 'Y', "ingotInvar" }));
 		}
 		if (enable[Types.EXTRUDER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
-					copperPart, 'P', TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
+			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.ACCUMULATOR.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
@@ -364,7 +364,7 @@ public class BlockMachine extends BlockTEBase {
 		TECraftingHandler.addMachineUpgradeRecipes(crucible);
 		TECraftingHandler.addMachineUpgradeRecipes(transposer);
 		TECraftingHandler.addMachineUpgradeRecipes(precipitator);
-		// TECraftingHandler.addMachineUpgradeRecipes(extruder);
+		TECraftingHandler.addMachineUpgradeRecipes(extruder);
 		// TECraftingHandler.addMachineUpgradeRecipes(accumulator);
 		// TECraftingHandler.addMachineUpgradeRecipes(assembler);
 		// TECraftingHandler.addMachineUpgradeRecipes(charger);
@@ -407,7 +407,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-		"assembler", "charger", "insolator" };
+			"assembler", "charger", "insolator" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];

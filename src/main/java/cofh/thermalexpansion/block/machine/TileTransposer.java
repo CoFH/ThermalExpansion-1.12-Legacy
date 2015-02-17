@@ -317,12 +317,20 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 2 || sideCache[side] == 4) {
-				if (transferItem(2, 4, side)) {
+				if (transferItem(2, AUTO_EJECT[level], side)) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	protected void processContainerItem() {

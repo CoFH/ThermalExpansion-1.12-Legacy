@@ -121,7 +121,7 @@ public class TileFurnace extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(1, 4, side)) {
+				if (transferItem(1, AUTO_EJECT[level], side)) {
 					outputTracker = side;
 					break;
 				}

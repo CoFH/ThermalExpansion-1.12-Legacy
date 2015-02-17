@@ -127,12 +127,20 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, 4, side)) {
+				if (transferItem(0, AUTO_EJECT[level], side)) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		tank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	/* GUI METHODS */
@@ -179,6 +187,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		outputTracker = nbt.getInteger("Tracker");
 		prevSelection = nbt.getByte("Prev");
 		curSelection = nbt.getByte("Sel");
+
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {

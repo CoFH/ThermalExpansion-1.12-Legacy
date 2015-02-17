@@ -97,18 +97,19 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		if (isActive) {
 			if (processRem > 0) {
-				processRem--;
-			} else if (canFinish()) {
+				processRem -= processMod;
+			}
+			if (canFinish()) {
 				processFinish();
 				transferProducts();
 				processRem = processMax;
 
-				if (redstoneControlOrDisable() && canStart()) {
-					processStart();
-				} else {
+				if (!redstoneControlOrDisable() || !canStart()) {
 					isActive = false;
 					wasActive = true;
 					tracker.markTime(worldObj);
+				} else {
+					processStart();
 				}
 			}
 		} else if (redstoneControlOrDisable()) {
@@ -117,7 +118,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			}
 			if (timeCheckEighth() && canStart()) {
 				processStart();
-				processRem--;
+				processRem -= processMod;
 				isActive = true;
 			}
 		}
@@ -180,12 +181,21 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, 4, side)) {
+				if (transferItem(0, AUTO_EJECT[level], side)) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
+
+		hotTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
+		coldTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	/* GUI METHODS */
@@ -255,15 +265,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-		payload.addFluidStack(hotRenderFluid);
-		payload.addFluidStack(coldRenderFluid);
-		return payload;
-	}
-
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 

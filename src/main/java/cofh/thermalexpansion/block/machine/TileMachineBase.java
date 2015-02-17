@@ -32,6 +32,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
 	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24 };
+	protected static final int AUTO_EJECT[] = new int[] { 8, 16, 32, 64 };
+	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8 };
 
 	public static void configure() {
 
@@ -184,6 +186,14 @@ public abstract class TileMachineBase extends TileAugmentable {
 		}
 	}
 
+	protected void onLevelChange() {
+
+		augments = new ItemStack[AUGMENT_COUNT[level]];
+		augmentStatus = new boolean[augments.length];
+		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
+		energyStorage.setCapacity(energyConfig.maxEnergy);
+	}
+
 	/* GUI METHODS */
 	@Override
 	public int getScaledProgress(int scale) {
@@ -229,12 +239,9 @@ public abstract class TileMachineBase extends TileAugmentable {
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
 
 		level = nbt.getByte("Level");
-		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
-		energyStorage.setCapacity(energyConfig.maxEnergy);
-		energyStorage.setMaxTransfer(energyConfig.maxPower * ENERGY_TRANSFER[level]);
+		onLevelChange();
 
 		NBTTagList list = nbt.getTagList("Augments", 10);
-		augments = new ItemStack[AUGMENT_COUNT[level]];
 		augmentStatus = new boolean[augments.length];
 
 		for (int i = 0; i < list.tagCount(); i++) {
@@ -312,10 +319,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 			level = payload.getByte();
 
 			if (curLevel != level) {
-				augments = new ItemStack[AUGMENT_COUNT[level]];
-				augmentStatus = new boolean[augments.length];
-				energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
-				energyStorage.setCapacity(energyConfig.maxEnergy);
+				onLevelChange();
 			}
 		} else {
 			payload.getByte();
