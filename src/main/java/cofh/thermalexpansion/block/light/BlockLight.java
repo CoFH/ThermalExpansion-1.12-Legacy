@@ -203,7 +203,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public boolean postInit() {
 
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
+			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 500), false);
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampBasic, 4), new Object[] {
