@@ -272,8 +272,8 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 		category = category2 + StringHelper.titleCase(NAMES[1]);
 		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
-		// SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
-		RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[1]), RECEIVE[1] / 10, RECEIVE[1] * 1000);
+		SEND[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
+		// RECEIVE[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[1]), RECEIVE[1] / 10, RECEIVE[1] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[0]);
 		SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[0]), SEND[0] / 10, SEND[0] * 1000);

@@ -32,9 +32,9 @@ public class RecipeHandlerPulverizer extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(50, 17, 176, 96, 18, 18);
-		drawTexturedModalRect(106, 13, 224, 96, 26, 26);
-		drawTexturedModalRect(110, 44, 176, 96, 18, 18);
+		drawTexturedModalRect(50, 17, 132, 96, 18, 18);
+		drawTexturedModalRect(106, 13, 150, 96, 26, 26);
+		drawTexturedModalRect(110, 44, 132, 96, 18, 18);
 
 		drawTexturedModalRect(51, 36, 224, 16, 16, 16);
 		drawProgressBar(51, 36, 240, 16, 16, 16, 100, 7);

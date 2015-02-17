@@ -27,13 +27,13 @@ public class TEFlorbs {
 
 	public static void preInit() {
 
-		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/florbs.cfg")));
+		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/florbs.cfg"), true));
 
 		String category = "General";
 		String comment = null;
 
-		comment = "This allows you to disable Florbs entirely. It also means that you actively dislike fun things.";
-		enableFlorbs = configFlorbs.get(category, "Florbs.Enable", true, comment);
+		comment = "This allows you to disable recipes for Florbs. It also means that you actively dislike fun things.";
+		enable = configFlorbs.get(category, "Recipe.Enable", true, comment);
 
 		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
 	}
@@ -63,7 +63,7 @@ public class TEFlorbs {
 				} else {
 					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 1), fluid));
 				}
-				if (!enableFlorbs) {
+				if (!enable) {
 					continue;
 				}
 				if (configFlorbs.get("Whitelist", fluid.getName(), true)) {
@@ -75,12 +75,12 @@ public class TEFlorbs {
 				}
 			}
 		}
-		if (!enableFlorbs) {
+		if (!enable) {
 			return;
 		}
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, "slimeball", Items.blaze_powder }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { TEItems.sawdust, TEItems.slag, Items.magma_cream }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(florbStack, new Object[] { "dustWood", TEItems.slag, "slimeball" }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, "slimeball", Items.blaze_powder }));
+		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, Items.magma_cream }));
 	}
 
 	public static ItemFlorb itemFlorb;
@@ -89,7 +89,7 @@ public class TEFlorbs {
 	public static ItemStack florbMagmatic;
 	public static ArrayList<ItemStack> florbList = new ArrayList<ItemStack>();
 
-	public static boolean enableFlorbs = true;
+	public static boolean enable = true;
 	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.version);
 
 }

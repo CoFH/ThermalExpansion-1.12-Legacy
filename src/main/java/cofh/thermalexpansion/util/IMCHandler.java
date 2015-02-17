@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
@@ -28,13 +29,7 @@ public class IMCHandler {
 				if (theMessage.isNBTMessage()) {
 					theNBT = theMessage.getNBTValue();
 
-					if (theMessage.key.equalsIgnoreCase("CrucibleRecipe")) {
-						CrucibleManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack
-								.loadFluidStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
-						continue;
-					}
-
-					else if (theMessage.key.equalsIgnoreCase("FurnaceRecipe")) {
+					if (theMessage.key.equalsIgnoreCase("FurnaceRecipe")) {
 						FurnaceManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
 								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
@@ -53,6 +48,25 @@ public class IMCHandler {
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						} else {
 							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						}
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("SawmillRecipe")) {
+						if (theNBT.hasKey("secondaryChance")) {
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						} else if (theNBT.hasKey("secondaryOutput")) {
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						} else {
+							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
 									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
@@ -88,22 +102,9 @@ public class IMCHandler {
 						continue;
 					}
 
-					else if (theMessage.key.equalsIgnoreCase("SawmillRecipe")) {
-						if (theNBT.hasKey("secondaryChance")) {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
-						} else if (theNBT.hasKey("secondaryOutput")) {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
-						} else {
-							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
-									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
-									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
-						}
+					else if (theMessage.key.equalsIgnoreCase("CrucibleRecipe")) {
+						CrucibleManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack
+								.loadFluidStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 
@@ -119,6 +120,12 @@ public class IMCHandler {
 								ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")),
 								FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getInteger("chance"), theNBT.getBoolean("reversible"),
 								theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("ChargerRecipe")) {
+						ChargerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
+								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						continue;
 					}
 

@@ -206,7 +206,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 				} else {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}
-				if (secondaryChance < recipeChance && inventory[4].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
+				if (secondaryChance < recipeChance && inventory[3].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
 						&& worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}

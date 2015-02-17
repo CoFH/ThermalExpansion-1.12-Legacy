@@ -83,7 +83,7 @@ public class TEAchievements {
 		resonantTank = new Achievement("cofh.te.resonantTank", "thermalexpansion.resonantTank", 0, 4, BlockTank.tankResonant, null).registerStat();
 		resonantCache = new Achievement("cofh.te.resonantCache", "thermalexpansion.resonantCache", 0, 5, BlockCache.cacheResonant, null).registerStat();
 		resonantStrongbox = new Achievement("cofh.te.resonantStrongbox", "thermalexpansion.resonantStrongbox", 0, 6, BlockStrongbox.strongboxResonant, null)
-		.registerStat();
+				.registerStat();
 
 		// Tool Achievements
 		wrench = new Achievement("cofh.te.wrench", "thermalexpansion.wrench", -2, -1, TEItems.toolWrench, base).registerStat();

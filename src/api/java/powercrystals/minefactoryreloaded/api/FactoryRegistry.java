@@ -18,7 +18,7 @@ public class FactoryRegistry {
 	/*
 	 * This may be called at any time during pre-init, init or post-init, assuming all blocks and items that are being accessed from the registry have been
 	 * appropriately registered. Possible messages:
-	 *
+	 * 
 	 * // Registration: addLaserPreferredOre | NBTTag with an ItemStack saved on it, with the color on the "value" attribute, | A ValuedItem with item and value
 	 * set. registerAutoSpawnerBlacklist | The String identifier of an entity, | A subclass of EntityLivingBase. registerFertilizable | An instance of
 	 * IFactoryFertilizable. registerFertilizer | An instance of IFactoryFertilizer. registerFruitLog | The String identifier of a block. registerGrindable | An
@@ -30,7 +30,7 @@ public class FactoryRegistry {
 	 * list for rubber trees to spawn in. registerSafariNetBlacklist | A subclass of EntityLivingBase. registerSafariNetHandler | An instance of
 	 * ISafariNetHandler. registerSludgeDrop | NBTTag with an ItemStack saved on it, with the weight on the "value" attribute, | A ValuedItem with item and
 	 * value set. registerSpawnHandler | An instance of IMobSpawnHandler. registerVillagerTradeMob | An instance of IRandomMobProvider.
-	 *
+	 * 
 	 * // Simple implementations: { Harvestables registerHarvestable_Standard | The String identifier of a block. registerHarvestable_Log | The String
 	 * identifier of a block. registerHarvestable_Leaves | The String identifier of a block. registerHarvestable_Vine | The String identifier of a block.
 	 * registerHarvestable_Shrub | The String identifier of a block. registerHarvestable_Mushroom | The String identifier of a block. registerHarvestable_Crop |

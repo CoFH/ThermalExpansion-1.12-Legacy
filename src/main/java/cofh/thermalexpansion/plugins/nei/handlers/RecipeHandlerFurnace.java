@@ -31,8 +31,8 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(50, 17, 176, 96, 18, 18);
-		drawTexturedModalRect(106, 22, 224, 96, 26, 26);
+		drawTexturedModalRect(50, 17, 132, 96, 18, 18);
+		drawTexturedModalRect(106, 22, 150, 96, 26, 26);
 
 		drawTexturedModalRect(51, 36, 224, 32, 16, 16);
 		drawProgressBar(51, 36, 240, 32, 16, 16, 100, 7);

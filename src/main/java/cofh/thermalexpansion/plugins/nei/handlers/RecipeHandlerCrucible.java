@@ -36,7 +36,8 @@ public class RecipeHandlerCrucible extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(50, 17, 176, 96, 18, 18);
+		drawTexturedModalRect(50, 17, 132, 96, 18, 18);
+
 		drawTexturedModalRect(51, 36, 224, 32, 16, 16);
 		drawProgressBar(51, 36, 240, 32, 16, 16, 100, 7);
 

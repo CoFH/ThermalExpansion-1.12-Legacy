@@ -31,13 +31,13 @@ public class RecipeHandlerSmelter extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(26, 17, 176, 96, 18, 18);
-		drawTexturedModalRect(50, 17, 176, 96, 18, 18);
-		drawTexturedModalRect(106, 13, 224, 96, 26, 26);
-		drawTexturedModalRect(110, 44, 176, 96, 18, 18);
+		drawTexturedModalRect(26, 17, 132, 96, 18, 18);
+		drawTexturedModalRect(50, 17, 132, 96, 18, 18);
+		drawTexturedModalRect(106, 13, 150, 96, 26, 26);
+		drawTexturedModalRect(110, 44, 132, 96, 18, 18);
 
-		drawTexturedModalRect(37, 36, 224, 32, 16, 16);
-		drawProgressBar(37, 36, 240, 32, 16, 16, 100, 7);
+		drawTexturedModalRect(39, 37, 224, 32, 16, 16);
+		drawProgressBar(39, 37, 240, 32, 16, 16, 100, 7);
 
 		drawTexturedModalRect(74, 24, 176, 16, 24, 16);
 		drawProgressBar(74, 24, 200, 16, 24, 16, 20, 0);

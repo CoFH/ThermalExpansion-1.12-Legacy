@@ -36,8 +36,8 @@ public class RecipeHandlerTransposer extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(74, 10, 176, 96, 18, 18);
-		drawTexturedModalRect(71, 37, 224, 96, 26, 26);
+		drawTexturedModalRect(74, 10, 132, 96, 18, 18);
+		drawTexturedModalRect(71, 37, 150, 96, 26, 26);
 
 		drawTexturedModalRect(36, 20, 224, 0, 16, 16);
 		drawProgressBar(36, 20, 240, 0, 16, 16, 100, 7);
