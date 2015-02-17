@@ -311,8 +311,14 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 				'X', "gemDiamond" }));
 		TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameIlluminator, new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S',
-				"ingotSignalum" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(frameIlluminator, 2), new Object[] {
+				" Q ",
+				"G G",
+				" S ",
+				'G', "blockGlassHardened",
+				'Q', "gemQuartz",
+				'S', "ingotSignalum"
+			}));
 
 		return true;
 	}

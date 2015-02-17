@@ -206,12 +206,24 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 		if (enable[Types.LAMP_HALO.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasic, new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampBasic, 4), new Object[] {
+				" L ",
+				"GLG",
+				" S ",
+				'L', "ingotLumium",
+				'G', "blockGlassHardened",
+				'S', "ingotSignalum"
+			}));
 		}
 		if (enable[Types.LAMP_BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(lampBasicAlt, new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S',
-					"ingotSignalum" }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampBasicAlt, 4), new Object[] {
+				" L ",
+				"GLG",
+				" S ",
+				'L', "dustLumium",
+				'G', "blockGlassHardened",
+				'S', "ingotSignalum"
+			}));
 		}
 		return true;
 	}
@@ -235,7 +247,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		for (int i = 0; i < Types.values().length - 1; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
-		enable[Types.LAMP_BASIC.ordinal()] = enable[Types.LAMP_HALO.ordinal()];
 	}
 
 	public static ItemStack illuminator;
