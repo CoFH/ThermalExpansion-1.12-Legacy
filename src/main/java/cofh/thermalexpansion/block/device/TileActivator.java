@@ -21,6 +21,7 @@ import cpw.mods.fml.relauncher.Side;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -249,7 +250,7 @@ public class TileActivator extends TileAugmentable {
 
 		int i = 0;
 		int[] tracker = new int[MAX_SLOT];
-		// TODO: incrementing this array is probably bad
+		// TODO: allocating this array is probably bad
 
 		for (int k = 0; k < MAX_SLOT; k++) {
 			if (getStackInSlot(k) != null) {
@@ -339,6 +340,17 @@ public class TileActivator extends TileAugmentable {
 		myFakePlayer.onUpdate();
 	}
 
+	@Override
+	public boolean rotateBlock() {
+
+		if (!needsWorld) {
+			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
+			myFakePlayer.theItemInWorldManager.cancelDestroyingBlock(coords[0], coords[1], coords[2]);
+			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
+		}
+		return super.rotateBlock();
+	}
+
 	public boolean simLeftClick(EntityPlayer thePlayer, ItemStack deployingStack, int side) {
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
@@ -356,14 +368,24 @@ public class TileActivator extends TileAugmentable {
 				}
 			}
 		} else {
+			myFakePlayer.theItemInWorldManager.cancelDestroyingBlock(coords[0], coords[1], coords[2]);
 			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
-			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing));
+			List<Entity> entities = worldObj.selectEntitiesWithinAABB(Entity.class,
+				BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing), new IEntitySelector() {
+
+					@Override
+					public boolean isEntityApplicable(Entity e) {
+
+						return e.canAttackWithItem();
+					}
+
+			});
 
 			if (entities.size() == 0) {
 
 				return false;
 			}
-			thePlayer.attackTargetEntityWithCurrentItem(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0));
+			thePlayer.attackTargetEntityWithCurrentItem(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size()) : 0));
 		}
 		return true;
 	}
