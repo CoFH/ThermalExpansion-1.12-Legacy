@@ -125,6 +125,22 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	@Override
+	public void blockPlaced() {
+
+		byte oldFacing = facing;
+		for (int i = facing + 1, e = facing + 6; i < e; i++) {
+			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
+				facing = (byte) (i % 6);
+				if (facing != oldFacing) {
+					updateAdjacentHandlers();
+					markDirty();
+					sendUpdatePacket(Side.CLIENT);
+				}
+			}
+		}
+	}
+
+	@Override
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
@@ -198,21 +214,6 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		} else if (tracker.hasDelayPassed(worldObj, 100) && wasActive) {
 			wasActive = false;
 			sendUpdatePacket(Side.CLIENT);
-		}
-	}
-
-	public void onPlaced() {
-
-		byte oldFacing = facing;
-		for (int i = facing + 1, e = facing + 6; i < e; i++) {
-			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
-				facing = (byte) (i % 6);
-				if (facing != oldFacing) {
-					updateAdjacentHandlers();
-					markDirty();
-					sendUpdatePacket(Side.CLIENT);
-				}
-			}
 		}
 	}
 

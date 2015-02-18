@@ -88,7 +88,10 @@ public class GuiWorkbench extends GuiBaseAdv {
 			setSchematic.setToolTip("info.thermalexpansion.noRecipe");
 			setSchematic.setDisabled();
 		}
-		myTile.createItemClient(false, ((ContainerWorkbench) inventorySlots).myOutput.getStackNoUpdate());
+		if (myTile.updateClient) {
+			myTile.createItemClient(false, ((ContainerWorkbench) inventorySlots).myOutput.getStackNoUpdate());
+			myTile.updateClient = false;
+		}
 	}
 
 	@Override

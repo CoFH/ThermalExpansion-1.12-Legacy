@@ -66,20 +66,20 @@ public class PulverizerManager {
 		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
-		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 10);
-		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 10);
+		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 15);
+		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 15);
 		addRecipe(3200, new ItemStack(Blocks.glass), new ItemStack(Blocks.sand));
 		addRecipe(800, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 2));
 
 		if (recipeSandstone) {
-			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 15);
+			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 25);
 		}
-		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 10);
+		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 15);
 		addRecipe(2400, new ItemStack(Items.coal, 1, 1), TFItems.dustCharcoal);
 		addRecipe(4000, new ItemStack(Blocks.obsidian), ItemHelper.cloneStack(TFItems.dustObsidian, 4));
 
 		if (recipeNetherrack) {
-			addTERecipe(3200, new ItemStack(Blocks.netherrack), new ItemStack(Blocks.gravel), TFItems.dustSulfur, 10);
+			addTERecipe(3200, new ItemStack(Blocks.netherrack), new ItemStack(Blocks.gravel), TFItems.dustSulfur, 15);
 		}
 		addRecipe(2400, new ItemStack(Blocks.coal_ore), new ItemStack(Items.coal, 3, 0), TFItems.dustCoal, 25);
 		addRecipe(2400, new ItemStack(Blocks.diamond_ore), new ItemStack(Items.diamond, 2, 0));
@@ -87,7 +87,7 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 9, 4));
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, 25);
-		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 10);
+		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 15);
 
 		for (int i = 0; i < 3; i++) {
 			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));

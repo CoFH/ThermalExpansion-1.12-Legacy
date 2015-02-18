@@ -78,6 +78,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	@Override
 	public ItemStack slotClick(int slotId, int mouseButton, int modifier, EntityPlayer player) {
 
+		myTile.updateClient = true;
 		if (slotId == 57) {
 			modifier = 0;
 		}

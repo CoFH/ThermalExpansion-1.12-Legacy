@@ -52,6 +52,9 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public boolean[] missingItem = { false, false, false, false, false, false, false, false, false };
 	public ItemStack[] craftingGrid = new ItemStack[9];
 
+	// This is really client only
+	public boolean updateClient = false;
+
 	public TileWorkbench() {
 
 		inventory = new ItemStack[21];
@@ -210,6 +213,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public void clearCraftingGrid() {
 
+		updateClient = true;
 		for (int i = 0; i < 9; i++) {
 			craftingGrid[i] = null;
 		}
@@ -218,6 +222,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public void setCraftingGrid() {
 
+		updateClient = true;
 		for (int i = 0; i < 9; i++) {
 			craftingGrid[i] = SchematicHelper.getSchematicSlot(getStackInSlot(getCurrentSchematicSlot()), i);
 		}
@@ -357,6 +362,20 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 			}
 		}
 		nbt.setTag("Crafting", list);
+	}
+
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+
+		updateClient = true;
+		return super.decrStackSize(slot, amount);
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+
+		updateClient = true;
+		super.setInventorySlotContents(slot, stack);
 	}
 
 	/* ICustomInventory */

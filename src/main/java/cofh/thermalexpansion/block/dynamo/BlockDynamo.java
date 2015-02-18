@@ -119,8 +119,6 @@ public class BlockDynamo extends BlockTEBase {
 
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
 
-		tile.onPlaced();
-
 		if (stack.stackTagCompound != null) {
 			tile.readAugmentsFromNBT(stack.stackTagCompound);
 			tile.installAugments();

@@ -272,7 +272,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
-		return slot == 0 ? InsolatorManager.isItemValid(stack) : true;
+		return slot <= 1 ? InsolatorManager.isItemValid(stack) : true;
 	}
 
 	/* GUI METHODS */

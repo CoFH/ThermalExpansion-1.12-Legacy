@@ -55,8 +55,8 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("Strength").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
-		addElement(new ElementSimpleToolTip(this, 85, 20).setToolTip("Pants").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
+		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("info.cofh.force").setSize(24, 24).setTexture(TEX_INFO_FORCE, 24, 24));
+		addElement(new ElementSimpleToolTip(this, 85, 20).setToolTip("info.cofh.angle").setSize(24, 24).setTexture(TEX_INFO_ANGLE, 24, 24));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidGlowstone).setSize(16, 16));
 

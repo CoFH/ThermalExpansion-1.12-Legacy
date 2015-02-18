@@ -235,7 +235,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
-		return slot == 0 ? SmelterManager.isItemValid(stack) : true;
+		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
 	}
 
 	/* GUI METHODS */

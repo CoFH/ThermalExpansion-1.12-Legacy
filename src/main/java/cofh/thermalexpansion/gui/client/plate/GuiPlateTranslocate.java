@@ -52,7 +52,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("Dist").setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
+		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 24, 24));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidEnder).setSize(16, 16));
 
