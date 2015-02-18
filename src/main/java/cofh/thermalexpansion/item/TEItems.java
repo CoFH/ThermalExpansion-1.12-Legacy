@@ -18,6 +18,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 
@@ -110,6 +111,7 @@ public class TEItems {
 		slagRich = itemMaterial.addItem(515, "slagRich");
 		fertilizer = itemMaterial.addOreDictItem(516, "fertilizer");
 		fertilizerRich = itemMaterial.addOreDictItem(517, "fertilizerRich");
+		OreDictionary.registerOre("fertilizer", fertilizerRich);
 
 		TEAugments.initialize();
 		TEEquipment.initialize();
