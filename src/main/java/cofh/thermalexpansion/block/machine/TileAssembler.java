@@ -165,7 +165,6 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 					}
 				}
 			}
-
 			if (recipeSlot[i] != null) {
 				for (int j = 2; j < invCopy.length; j++) {
 					if (invCopy[j] != null && ItemHelper.craftingEquivalent(invCopy[j], recipeSlot[i], recipeOre[i], recipeOutput)) {
@@ -238,7 +237,6 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 				isActive = false;
 				return;
 			}
-
 			if (canCreate(recipeOutput)) {
 				if (createItem()) {
 					recipeOutput = ItemHelper.findMatchingRecipe(crafting, worldObj);

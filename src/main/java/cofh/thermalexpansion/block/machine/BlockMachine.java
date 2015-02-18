@@ -87,19 +87,11 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length - 4; i++) {
+		for (int i = 0; i < Types.values().length; i++) {
 			for (int j = 0; j < 4; j++) {
 				if (creativeTiers[j]) {
 					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
 				}
-			}
-		}
-		for (int i = Types.values().length - 4; i < Types.values().length - 1; i++) {
-			list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) 0));
-		}
-		for (int j = 0; j < 4; j++) {
-			if (creativeTiers[j]) {
-				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, Types.INSOLATOR.ordinal()), (byte) j));
 			}
 		}
 	}
@@ -341,16 +333,16 @@ public class BlockMachine extends BlockTEBase {
 					TEItems.pneumaticServo, 'X', Blocks.piston, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.ACCUMULATOR.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
-					copperPart, 'P', TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
+			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.pneumaticServo, 'X', Items.bucket, 'Y', "blockGlass" }));
 		}
 		if (enable[Types.ASSEMBLER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
-					copperPart, 'P', TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
+			GameRegistry.addRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', Blocks.chest, 'Y', "gearTin" }));
 		}
 		if (enable[Types.CHARGER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameMachineBasic, 'I',
-					copperPart, 'P', TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
+			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
+					TEItems.powerCoilGold, 'X', BlockFrame.frameCellBasic, 'Y', TEItems.powerCoilSilver }));
 		}
 		if (enable[Types.INSOLATOR.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeMachine(insolator, defaultAugments, new Object[] { " X ", "YCY", "IPI", 'C', machineFrame, 'I', copperPart, 'P',
@@ -365,8 +357,8 @@ public class BlockMachine extends BlockTEBase {
 		TECraftingHandler.addMachineUpgradeRecipes(transposer);
 		TECraftingHandler.addMachineUpgradeRecipes(precipitator);
 		TECraftingHandler.addMachineUpgradeRecipes(extruder);
-		// TECraftingHandler.addMachineUpgradeRecipes(accumulator);
-		// TECraftingHandler.addMachineUpgradeRecipes(assembler);
+		TECraftingHandler.addMachineUpgradeRecipes(accumulator);
+		TECraftingHandler.addMachineUpgradeRecipes(assembler);
 		// TECraftingHandler.addMachineUpgradeRecipes(charger);
 		TECraftingHandler.addMachineUpgradeRecipes(insolator);
 
@@ -407,7 +399,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-			"assembler", "charger", "insolator" };
+		"assembler", "charger", "insolator" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];

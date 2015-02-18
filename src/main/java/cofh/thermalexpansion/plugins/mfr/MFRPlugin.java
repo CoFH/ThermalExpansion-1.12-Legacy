@@ -68,10 +68,11 @@ public class MFRPlugin {
 				@Override
 				public FertilizerType getFertilizerType(ItemStack stack) {
 
-					if (TEItems.fertilizer.isItemEqual(stack))
+					if (TEItems.fertilizer.isItemEqual(stack)) {
 						return FertilizerType.GrowPlant;
-					else if (TEItems.fertilizerRich.isItemEqual(stack))
+					} else if (TEItems.fertilizerRich.isItemEqual(stack)) {
 						return FertilizerType.GrowPlant;
+					}
 					return FertilizerType.None;
 				}
 
@@ -79,10 +80,12 @@ public class MFRPlugin {
 				public void consume(ItemStack fertilizer) {
 
 					if (TEItems.fertilizerRich.isItemEqual(fertilizer)) {
-						if (MathHelper.RANDOM.nextBoolean())
+						if (MathHelper.RANDOM.nextBoolean()) {
 							fertilizer.stackSize += 1;
-					} else
+						}
+					} else {
 						fertilizer.stackSize -= 1;
+					}
 					fertilizer.stackSize -= 1;
 				}
 

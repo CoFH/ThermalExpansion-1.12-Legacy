@@ -45,7 +45,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 400), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(480000, basePower * 1200));
+		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 
 		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
 

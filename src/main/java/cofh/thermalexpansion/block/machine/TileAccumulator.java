@@ -48,36 +48,26 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	public static int genRate = 25 * CoFHProps.TIME_CONSTANT;
-	public static int transferRate = genRate / CoFHProps.TIME_CONSTANT;
+	public static int genRatePassive = 1 * CoFHProps.TIME_CONSTANT;
 	public static boolean passiveGen = false;
-
-	public static FluidStack genStack = new FluidStack(FluidRegistry.WATER, 25);
-	public static FluidStack genStackSmall = new FluidStack(FluidRegistry.WATER, 1);
-	public static FluidStack genStackSnow = new FluidStack(FluidRegistry.WATER, 125);
 
 	static {
 		String comment = "This controls how many mB/t the Accumulator generates. (Default: 25)";
 		int rate = ThermalExpansion.config.get("Machine.Accumulator", "BaseRate", TileAccumulator.genRate / CoFHProps.TIME_CONSTANT, comment);
 
-		if (rate > 0 && rate <= 1000) {
-			genRate = rate * CoFHProps.TIME_CONSTANT;
-			transferRate = rate;
-		} else {
+		if (rate < 1 || rate > 1000) {
 			ThermalExpansion.log.info("'Machine.Accumulator.BaseRate' config value is out of acceptable range. Using default. (25)");
+		} else {
+			genRate = rate * CoFHProps.TIME_CONSTANT;
 		}
-		genStack = new FluidStack(FluidRegistry.WATER, genRate);
-
 		comment = "This controls how many mB/t the Accumulator generates without two or more adjacent source blocks, if enabled. (Default: 1)";
 		rate = ThermalExpansion.config.get("Machine.Accumulator", "PassiveRate", 1, comment);
 
-		if (rate > 0 && rate <= 1000) {
-
-		} else {
+		if (rate < 1 || rate > 1000) {
 			ThermalExpansion.log.info("'Machine.Accumulator.PassiveRate' config value is out of acceptable range. Using default. (1)");
-			rate = 1;
+		} else {
+			genRatePassive = rate * CoFHProps.TIME_CONSTANT;
 		}
-		genStackSmall = new FluidStack(FluidRegistry.WATER, rate);
-
 		comment = "Set this to true to enable passive generation (less than two adjacent sources) for the Accumulator.";
 		passiveGen = ThermalExpansion.config.get("Machine.Accumulator", "PassiveGeneration", false);
 	}
@@ -92,6 +82,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public TileAccumulator() {
 
 		super();
+		tank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -119,12 +110,12 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		if (isActive) {
 			if (timeCheck()) {
 				if (adjacentSources >= 2) {
-					tank.fill(genStack, true);
+					tank.fillLocked(genRate * processMod, true);
 				} else {
 					if (worldObj.isRaining() && worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
-						tank.fill(genStack, true);
+						tank.fillLocked(genRate * processMod, true);
 					} else if (passiveGen) {
-						tank.fill(genStackSmall, true);
+						tank.fillLocked(genRatePassive * processMod, true);
 					}
 				}
 			}
@@ -176,12 +167,6 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 			++adjacentSources;
-		}
-		block = worldObj.getBlock(xCoord, yCoord + 1, zCoord);
-
-		if (block == Blocks.snow) {
-			worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
-			tank.fill(genStackSnow, true);
 		}
 	}
 
