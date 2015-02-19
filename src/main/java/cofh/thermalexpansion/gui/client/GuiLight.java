@@ -162,10 +162,11 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
+					renderStart = 0;
 					setText("255");
 				}
 			}
-		}.setFilter("0123456789", true).setText("0");
+		}.setFilter("0123456789", true).setText("0").setBackgroundColor(0, 0, 0);
 		textG = new ElementTextFieldLimited(this, 8 + 13 + 55 * 1, 6 + 68, 24, 10, (short) 4) {
 
 			@Override
@@ -185,10 +186,11 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
+					renderStart = 0;
 					setText("255");
 				}
 			}
-		}.setFilter("0123456789", true).setText("0");
+		}.setFilter("0123456789", true).setText("0").setBackgroundColor(0, 0, 0);
 		textB = new ElementTextFieldLimited(this, 8 + 13 + 55 * 2, 6 + 68, 24, 10, (short) 4) {
 
 			@Override
@@ -208,10 +210,11 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
+					renderStart = 0;
 					setText("255");
 				}
 			}
-		}.setFilter("0123456789", true).setText("0");
+		}.setFilter("0123456789", true).setText("0").setBackgroundColor(0, 0, 0);
 
 		sliderR = new SliderHorizontal(this, 8 + 55 * 0, 6 + 52, 50, 12, 255) {
 
