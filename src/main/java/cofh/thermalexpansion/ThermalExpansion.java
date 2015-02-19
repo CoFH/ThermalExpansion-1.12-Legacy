@@ -30,6 +30,7 @@ import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.plugins.TEPlugins;
+import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.FMLEventHandler;
 import cofh.thermalexpansion.util.FuelHandler;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -147,6 +148,7 @@ public class ThermalExpansion extends BaseMod {
 
 		RecipeSorter.register("thermalexpansion:machine", RecipeMachine.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
 		RecipeSorter.register("thermalexpansion:machineUpgrade", RecipeMachineUpgrade.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
+		RecipeSorter.register("thermalexpansion:NEIWrapper", NEIRecipeWrapper.class, RecipeSorter.Category.UNKNOWN, "after:forge:shapedore");
 
 		cleanConfig(true);
 
