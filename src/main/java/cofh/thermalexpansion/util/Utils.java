@@ -118,10 +118,10 @@ public class Utils {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
 
-		return isInventory(tile, side);
+		return isAccessibleInventory(tile, side);
 	}
 
-	public static boolean isInventory(TileEntity tile, int side) {
+	public static boolean isAccessibleInventory(TileEntity tile, int side) {
 
 		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]).length <= 0) {
 			return false;

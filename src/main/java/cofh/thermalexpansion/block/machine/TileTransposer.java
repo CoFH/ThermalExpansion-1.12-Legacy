@@ -582,8 +582,6 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		super.handleGuiPacket(payload);
 
-		reverse = payload.getBool();
-		reverseFlag = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
 	}
 

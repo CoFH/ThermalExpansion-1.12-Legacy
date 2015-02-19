@@ -26,9 +26,11 @@ import net.minecraftforge.oredict.OreDictionary;
 public class SmelterManager {
 
 	public static ItemStack blockSand = new ItemStack(Blocks.sand);
+	public static ItemStack blockSoulSand = new ItemStack(Blocks.soul_sand);
 
 	private static Map<List<ComparableItemStackSafe>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSafe>, RecipeSmelter>();
 	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
+	private static Set<ComparableItemStackSafe> fluxSet = new THashSet<ComparableItemStackSafe>();
 	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
@@ -96,6 +98,11 @@ public class SmelterManager {
 		return input == null ? false : validationSet.contains(query.set(input));
 	}
 
+	public static boolean isItemFlux(ItemStack input) {
+
+		return input == null ? false : fluxSet.contains(query.set(input));
+	}
+
 	public static boolean isStandardOre(String oreName) {
 
 		return ItemHelper.oreNameExists(oreName) && FurnaceManager.recipeExists(OreDictionary.getOres(oreName).get(0));
@@ -103,8 +110,16 @@ public class SmelterManager {
 
 	public static void addDefaultRecipes() {
 
+		addFlux(blockSand);
+		addFlux(blockSoulSand);
+		addFlux(TEItems.slagRich);
+		addFlux(TFItems.crystalCinnabar);
+		addFlux(TFItems.dustPyrotheum);
+		addFlux(TFItems.dustObsidian);
+
+		addTERecipe(4000, new ItemStack(Blocks.stone), blockSand, new ItemStack(Blocks.cobblestone, 2), TEItems.slag, 100);
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
-		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), new ItemStack(Blocks.soul_sand), new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
+		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 
 		ItemStack blockGlass = new ItemStack(TEBlocks.blockGlass, 2, 0);
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
@@ -226,6 +241,11 @@ public class SmelterManager {
 	}
 
 	/* HELPER FUNCTIONS */
+	private static void addFlux(ItemStack flux) {
+
+		fluxSet.add(new ComparableItemStackSafe(flux));
+	}
+
 	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance,
 			int slagOreChance, int slagDustChance) {
 

@@ -430,7 +430,7 @@ IInventoryConnection, ISidedInventory {
 	public boolean isAdjacentInventory(int side) {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
-		return tile instanceof TileTesseract ? false : Utils.isInventory(tile, side);
+		return tile instanceof TileTesseract ? false : Utils.isAccessibleInventory(tile, side);
 	}
 
 	public boolean modeSendEnergy() {

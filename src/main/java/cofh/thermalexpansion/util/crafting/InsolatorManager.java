@@ -27,6 +27,8 @@ public class InsolatorManager {
 
 	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
+	private static Set<ComparableItemStackInsolator> fertilizerSet = new THashSet<ComparableItemStackInsolator>();
+
 	private static ComparableItemStackInsolator query = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
 	private static ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
@@ -84,9 +86,15 @@ public class InsolatorManager {
 		return input == null ? false : validationSet.contains(query.set(input));
 	}
 
+	public static boolean isItemFertilizer(ItemStack input) {
+
+		return input == null ? false : fertilizerSet.contains(query.set(input));
+	}
+
 	public static void addDefaultRecipes() {
 
-		// OreDictionary.registerOre("seedCarrot", new ItemStack(Items.carrot));
+		addFertilizer(TEItems.fertilizer);
+		addFertilizer(TEItems.fertilizerRich);
 
 		addDefaultRecipe(new ItemStack(Items.wheat_seeds), new ItemStack(Items.wheat), new ItemStack(Items.wheat_seeds), 150);
 		addDefaultRecipe(new ItemStack(Items.potato), new ItemStack(Items.potato, 3), new ItemStack(Items.poisonous_potato), 2);
@@ -107,10 +115,7 @@ public class InsolatorManager {
 		for (int i = 0; i < oreNameList.length; i++) {
 			if (oreNameList[i].startsWith("seed")) {
 				oreName = oreNameList[i].substring(4, oreNameList[i].length());
-
-				// if (isStandardOre(oreNameList[i])) {
 				addDefaultOreDictionaryRecipe(oreName);
-				// }
 			}
 		}
 	}
@@ -164,6 +169,11 @@ public class InsolatorManager {
 	}
 
 	/* HELPER FUNCTIONS */
+	private static void addFertilizer(ItemStack fertilizer) {
+
+		fertilizerSet.add(new ComparableItemStackInsolator(fertilizer));
+	}
+
 	public static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		String seedName = "seed" + StringHelper.titleCase(oreType);
@@ -195,7 +205,6 @@ public class InsolatorManager {
 		} else {
 			addDefaultRecipe(seed, crop, seed, 150);
 		}
-
 	}
 
 	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.MathHelper;
@@ -51,6 +52,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
+
+	public boolean lockPrimary = true;
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
 
@@ -272,6 +275,14 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
+		if (lockPrimary) {
+			if (slot == 0) {
+				return InsolatorManager.isItemFertilizer(stack);
+			}
+			if (slot == 1) {
+				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
+			}
+		}
 		return slot <= 1 ? InsolatorManager.isItemValid(stack) : true;
 	}
 
@@ -326,6 +337,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
+		lockPrimary = nbt.getBoolean("Lock");
 		tank.readFromNBT(nbt);
 	}
 
@@ -336,23 +348,55 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
+		nbt.setBoolean("Lock", lockPrimary);
 		tank.writeToNBT(nbt);
 	}
 
 	/* NETWORK METHODS */
-	// TODO: Add these if Insolator changes over to something else.
-	// @Override
-	// public CoFHPacket getGuiPacket() {
-	//
-	// CoFHPacket payload = super.getGuiPacket();
-	//
-	// return payload;
-	// }
-	//
-	// @Override
-	// protected void handleGuiPacket(CoFHPacket payload) {
-	//
-	// }
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		lockPrimary = payload.getBool();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		lockPrimary = payload.getBool();
+		callNeighborTileChange();
+	}
+
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
+	}
 
 	/* IFluidHandler */
 	@Override

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -40,6 +41,8 @@ public class TileSmelter extends TileMachineBase {
 
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
+
+	public boolean lockPrimary = true;
 
 	public TileSmelter() {
 
@@ -235,6 +238,14 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	public boolean isItemValid(ItemStack stack, int slot, int side) {
 
+		if (lockPrimary) {
+			if (slot == 0) {
+				return SmelterManager.isItemFlux(stack);
+			}
+			if (slot == 1) {
+				return !SmelterManager.isItemFlux(stack) && SmelterManager.isItemValid(stack);
+			}
+		}
 		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
 	}
 
@@ -259,6 +270,7 @@ public class TileSmelter extends TileMachineBase {
 
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
+		lockPrimary = nbt.getBoolean("Lock");
 	}
 
 	@Override
@@ -268,6 +280,53 @@ public class TileSmelter extends TileMachineBase {
 
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
+		nbt.setBoolean("Lock", lockPrimary);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		lockPrimary = payload.getBool();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		lockPrimary = payload.getBool();
+		callNeighborTileChange();
+	}
+
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
 	}
 
 }

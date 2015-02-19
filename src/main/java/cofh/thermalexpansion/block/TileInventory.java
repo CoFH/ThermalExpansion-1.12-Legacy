@@ -67,7 +67,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 		/* Add to Adjacent Inventory */
-		if (Utils.isInventory(curTile, side)) {
+		if (Utils.isAccessibleInventory(curTile, side)) {
 			inventory[slot].stackSize -= amount - Utils.addToInventory(curTile, side, stack);
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;

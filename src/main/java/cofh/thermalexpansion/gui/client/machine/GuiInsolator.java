@@ -1,8 +1,11 @@
 package cofh.thermalexpansion.gui.client.machine;
 
+import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.gui.element.ElementSimple;
+import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
@@ -14,7 +17,10 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiInsolator extends GuiAugmentableBase {
 
-	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Insolator.png");
+	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Insolator.png";
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
+
+	TileInsolator myTile;
 
 	ElementSlotOverlay[] slotPrimaryInput = new ElementSlotOverlay[2];
 	ElementSlotOverlay[] slotSecondaryInput = new ElementSlotOverlay[2];
@@ -25,11 +31,16 @@ public class GuiInsolator extends GuiAugmentableBase {
 	ElementDualScaled progress;
 	ElementDualScaled speed;
 
+	ElementButton mode;
+	ElementSimple modeOverlay;
+
 	public GuiInsolator(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerInsolator(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.insolator", 3);
+		generateInfo("tab.thermalexpansion.machine.insolator", 4);
+
+		myTile = (TileInsolator) tile;
 	}
 
 	@Override
@@ -50,6 +61,9 @@ public class GuiInsolator extends GuiAugmentableBase {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1));
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 48, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_SUN, 32, 16));
+
+		mode = (ElementButton) addElement(new ElementButton(this, 80, 53, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
+		modeOverlay = (ElementSimple) addElement(new ElementSimple(this, 32, 26).setTextureOffsets(176, 48).setSize(16, 16).setTexture(TEX_PATH, 256, 256));
 	}
 
 	@Override
@@ -83,6 +97,31 @@ public class GuiInsolator extends GuiAugmentableBase {
 		}
 		progress.setQuantity(myTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));
+
+		if (myTile.lockPrimary) {
+			mode.setToolTip("info.thermalexpansion.toggleInsolatorUnlock");
+			mode.setSheetX(176);
+			mode.setHoverX(176);
+			modeOverlay.setVisible(true);
+		} else {
+			mode.setToolTip("info.thermalexpansion.toggleInsolatorLock");
+			mode.setSheetX(192);
+			mode.setHoverX(192);
+			modeOverlay.setVisible(false);
+		}
+	}
+
+	@Override
+	public void handleElementButtonClick(String buttonName, int mouseButton) {
+
+		if (buttonName.equals("Mode")) {
+			if (myTile.lockPrimary) {
+				playSound("random.click", 1.0F, 0.6F);
+			} else {
+				playSound("random.click", 1.0F, 0.8F);
+			}
+			myTile.setMode(!myTile.lockPrimary);
+		}
 	}
 
 }
