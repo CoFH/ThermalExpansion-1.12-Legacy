@@ -23,9 +23,9 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	}
 
 	public static final int MIN_INTENSITY = 0;
-	public static final int MAX_INTENSITY = 100;
-	public static final int MIN_ANGLE = 0;
-	public static final int MAX_ANGLE = 900;
+	public static final int MAX_INTENSITY = 35;
+	public static final int MIN_ANGLE = -150;
+	public static final int MAX_ANGLE = 600;
 
 	public int intensity = 10;
 	public int angle;
@@ -42,6 +42,8 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
+		if ((direction >> 1) == 0 && (alignment == 0))
+			theEntity.fallDistance = 0;
 		double[] v = getVector(intensityX, intensityY, 0D);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
@@ -49,37 +51,58 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	protected void accelerateEntity(Entity theEntity, double x, double y, double z) {
 
 		theEntity.onGround = false;
+		long tv, tc;
 
-		long tv = Double.doubleToRawLongBits(theEntity.motionX);
-		long tc = Double.doubleToRawLongBits(x);
+		tv = Double.doubleToRawLongBits(theEntity.motionX);
+		tc = x == 0 ? ~tv : Double.doubleToRawLongBits(x);
 		tv &= ~((tv & 0x8000000000000000l) ^ (tc & 0x8000000000000000l)) >> 63;
-		// the section above ensures the motion* value will be non-0 only if its sign bit matches
-		// the sign bit of the value we're adding to it. this clamps the velocity to always be
-		// in the direction we want to move the entity, and adds to it if it is, else setting it
 		theEntity.motionX = Double.longBitsToDouble(tv) + x;
 
 		tv = Double.doubleToRawLongBits(theEntity.motionY);
-		tc = Double.doubleToRawLongBits(y);
+		tc = y == 0 ? ~tv : Double.doubleToRawLongBits(y);
 		tv &= ~((tv & 0x8000000000000000l) ^ (tc & 0x8000000000000000l)) >> 63;
 		theEntity.motionY = Double.longBitsToDouble(tv) + y;
 
 		tv = Double.doubleToRawLongBits(theEntity.motionZ);
-		tc = Double.doubleToRawLongBits(z);
+		tc = z == 0 ? ~tv : Double.doubleToRawLongBits(z);
 		tv &= ~((tv & 0x8000000000000000l) ^ (tc & 0x8000000000000000l)) >> 63;
 		theEntity.motionZ = Double.longBitsToDouble(tv) + z;
 
-		/**
-		 * Truth table: x = -5; motionX = -5; sign(x) = 1000 0000 0000 0000 sign(motionX) = 1000 0000 0000 0000 xSign ^ motionXSign = 0000 0000 0000 0000
-		 * ~(xSign ^ motionXSign) = 1111 1111 1111 1111 combinedSign >> 63 = 1111 1111 1111 1111 ***** x = 5; motionX = 5; sign(x) = 0000 0000 0000 0000
-		 * sign(motionX) = 0000 0000 0000 0000 xSign ^ motionXSign = 0000 0000 0000 0000 ~(xSign ^ motionXSign) = 1111 1111 1111 1111 combinedSign >> 63 = 1111
-		 * 1111 1111 1111 ***** x = -5; motionX = 5; sign(x) = 1000 0000 0000 0000 sign(motionX) = 0000 0000 0000 0000 xSign ^ motionXSign = 1000 0000 0000 0000
-		 * ~(xSign ^ motionXSign) = 0111 1111 1111 1111 combinedSign >> 63 = 0000 0000 0000 0000
-		 */
+		// the section above ensures the motion* value will be non-0 only if its sign bit matches
+		// the sign bit of the value we're adding to it. this clamps the velocity to always be
+		// in the direction we want to move the entity, and adds to it if it is, else setting it
+
+		// Truth table:
+		// x                      = -5;
+		// motionX                = -5;
+		// sign(x)                = 1000 0000 0000 0000
+		// sign(motionX)          = 1000 0000 0000 0000
+		// xSign ^ motionXSign    = 0000 0000 0000 0000
+		// ~(xSign ^ motionXSign) = 1111 1111 1111 1111
+		// combinedSign >> 63     = 1111 1111 1111 1111
+		// *****
+		// x                      = 5;
+		// motionX                = 5;
+		// sign(x)                = 0000 0000 0000 0000
+		// sign(motionX)          = 0000 0000 0000 0000
+		// xSign ^ motionXSign    = 0000 0000 0000 0000
+		// ~(xSign ^ motionXSign) = 1111 1111 1111 1111
+		// combinedSign >> 63     = 1111 1111 1111 1111
+		// *****
+		// x                      = -5;
+		// motionX                = 5;
+		// sign(x)                = 1000 0000 0000 0000
+		// sign(motionX)          = 0000 0000 0000 0000
+		// xSign ^ motionXSign    = 1000 0000 0000 0000
+		// ~(xSign ^ motionXSign) = 0111 1111 1111 1111
+		// combinedSign >> 63     = 0000 0000 0000 0000
 	}
 
 	private void updateForce() {
 
 		double fAngle = angle * Math.PI / 1800D;
+		if (getVector(1, 0, 1)[0] == 0)
+			fAngle = 0;
 		intensityX = Math.cos(fAngle) * intensity / 10D;
 		intensityY = Math.sin(fAngle) * intensity / 10D;
 	}
@@ -194,7 +217,6 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		direction = tag.getByte("Dir");
 
 		intensity = tag.getInteger("Int");
 		angle = tag.getInteger("Angle");
@@ -211,7 +233,6 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		tag.setByte("Dir", direction);
 
 		tag.setInteger("Int", intensity);
 		tag.setInteger("Angle", angle);

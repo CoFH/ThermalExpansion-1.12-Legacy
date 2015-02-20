@@ -233,7 +233,6 @@ public class TilePlateSignal extends TilePlateBase {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		direction = tag.getByte("Dir");
 
 		distance = tag.getByte("Dist");
 		intensity = tag.getByte("Int");
@@ -249,7 +248,6 @@ public class TilePlateSignal extends TilePlateBase {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		tag.setByte("Dir", direction);
 
 		tag.setByte("Dist", distance);
 		tag.setByte("Int", intensity);

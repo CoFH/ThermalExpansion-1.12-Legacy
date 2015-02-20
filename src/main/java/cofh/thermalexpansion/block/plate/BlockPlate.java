@@ -125,9 +125,29 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	@Override
-	public void onEntityWalking(World world, int x, int y, int z, Entity entity) {
+	public void onFallenUpon(World world, int x, int y, int z, Entity entity, float distance) {
 
-		// onEntityCollidedWithBlock(world, x, y, z, entity);
+		l: {
+			TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
+			if (tile == null) {
+				break l;
+			}
+			AxisAlignedBB bb = entity.boundingBox;
+			if (!bb.intersectsWith(getCollisionBlockBounds(tile, x, y, z))) {
+				return;
+			}
+			switch (Types.values()[world.getBlockMetadata(x, y, z)]) {
+			case IMPULSE:
+				if ((tile.direction >> 1) == 0 && (tile.alignment == 0))
+					entity.fallDistance = 0;
+				break;
+			case TRANSLOCATE:
+				tile.onEntityCollidedWithBlock(entity);
+				break;
+			default:
+				break;
+			}
+		}
 	}
 
 	@Override

@@ -164,7 +164,6 @@ public class TilePlateTranslocate extends TilePlateBase {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		direction = tag.getByte("Dir");
 
 		distance = tag.getByte("Dist");
 
@@ -178,7 +177,6 @@ public class TilePlateTranslocate extends TilePlateBase {
 		if (!canPlayerAccess(player.getCommandSenderName())) {
 			return;
 		}
-		tag.setByte("Dir", direction);
 
 		tag.setByte("Dist", distance);
 	}
