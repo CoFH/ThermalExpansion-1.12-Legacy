@@ -326,9 +326,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		if (from.ordinal() == 0 && mode == 1 && !adjacentTanks[0]) {
 			return 0;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
-			return 0;
-		}
 		int amount = tank.fill(resource, doFill);
 
 		if (from.ordinal() != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
@@ -349,9 +346,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
-			return null;
-		}
 		return tank.drain(resource, doDrain);
 	}
 
@@ -361,22 +355,19 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
-			return null;
-		}
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
 
-		return from.ordinal() < 2;
+		return true;
 	}
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 
-		return from.ordinal() < 1;
+		return true;
 	}
 
 	@Override
