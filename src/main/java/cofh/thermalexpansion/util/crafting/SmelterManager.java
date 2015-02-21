@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -28,11 +29,11 @@ public class SmelterManager {
 	public static ItemStack blockSand = new ItemStack(Blocks.sand);
 	public static ItemStack blockSoulSand = new ItemStack(Blocks.soul_sand);
 
-	private static Map<List<ComparableItemStackSafe>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSafe>, RecipeSmelter>();
-	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
-	private static Set<ComparableItemStackSafe> fluxSet = new THashSet<ComparableItemStackSafe>();
-	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
-	private static ComparableItemStackSafe querySecondary = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
+	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
+	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
+	private static Set<ComparableItemStackSmelter> fluxSet = new THashSet<ComparableItemStackSmelter>();
+	private static ComparableItemStackSmelter query = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
+	private static ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
 	private static int oreMultiplier = 2;
@@ -115,7 +116,6 @@ public class SmelterManager {
 		addFlux(TEItems.slagRich);
 		addFlux(TFItems.crystalCinnabar);
 		addFlux(TFItems.dustPyrotheum);
-		addFlux(TFItems.dustObsidian);
 
 		addTERecipe(4000, new ItemStack(Blocks.stone), blockSand, new ItemStack(Blocks.cobblestone, 2), TEItems.slag, 100);
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
@@ -194,14 +194,14 @@ public class SmelterManager {
 
 	public static void refreshRecipes() {
 
-		Map<List<ComparableItemStackSafe>, RecipeSmelter> tempMap = new THashMap<List<ComparableItemStackSafe>, RecipeSmelter>(recipeMap.size());
-		Set<ComparableItemStackSafe> tempSet = new THashSet<ComparableItemStackSafe>();
+		Map<List<ComparableItemStackSmelter>, RecipeSmelter> tempMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>(recipeMap.size());
+		Set<ComparableItemStackSmelter> tempSet = new THashSet<ComparableItemStackSmelter>();
 		RecipeSmelter tempRecipe;
 
-		for (Entry<List<ComparableItemStackSafe>, RecipeSmelter> entry : recipeMap.entrySet()) {
+		for (Entry<List<ComparableItemStackSmelter>, RecipeSmelter> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe primary = new ComparableItemStackSafe(tempRecipe.primaryInput);
-			ComparableItemStackSafe secondary = new ComparableItemStackSafe(tempRecipe.secondaryInput);
+			ComparableItemStackSmelter primary = new ComparableItemStackSmelter(tempRecipe.primaryInput);
+			ComparableItemStackSmelter secondary = new ComparableItemStackSmelter(tempRecipe.secondaryInput);
 
 			tempMap.put(Arrays.asList(primary, secondary), tempRecipe);
 			tempSet.add(primary);
@@ -221,9 +221,9 @@ public class SmelterManager {
 			return false;
 		}
 		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStackSafe(primaryInput), new ComparableItemStackSafe(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackSafe(primaryInput));
-		validationSet.add(new ComparableItemStackSafe(secondaryInput));
+		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
+		validationSet.add(new ComparableItemStackSmelter(primaryInput));
+		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
 		return true;
 	}
 
@@ -234,16 +234,16 @@ public class SmelterManager {
 			return false;
 		}
 		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStackSafe(primaryInput), new ComparableItemStackSafe(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackSafe(primaryInput));
-		validationSet.add(new ComparableItemStackSafe(secondaryInput));
+		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
+		validationSet.add(new ComparableItemStackSmelter(primaryInput));
+		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
 		return true;
 	}
 
 	/* HELPER FUNCTIONS */
 	private static void addFlux(ItemStack flux) {
 
-		fluxSet.add(new ComparableItemStackSafe(flux));
+		fluxSet.add(new ComparableItemStackSmelter(flux));
 	}
 
 	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance,
@@ -457,6 +457,62 @@ public class SmelterManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+	}
+
+	/* ITEMSTACK CLASS */
+	public static class ComparableItemStackSmelter extends ComparableItemStack {
+
+		static final String BLOCK = "block";
+		static final String ORE = "ore";
+		static final String DUST = "dust";
+		static final String INGOT = "ingot";
+		static final String NUGGET = "nugget";
+		static final String SAND = "sand";
+
+		public static boolean safeOreType(String oreName) {
+
+			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
+					|| oreName.equals("sand");
+		}
+
+		public static int getOreID(ItemStack stack) {
+
+			int id = ItemHelper.oreProxy.getOreID(stack);
+
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+				return -1;
+			}
+			return id;
+		}
+
+		public static int getOreID(String oreName) {
+
+			if (!safeOreType(oreName)) {
+				return -1;
+			}
+			return ItemHelper.oreProxy.getOreID(oreName);
+		}
+
+		public ComparableItemStackSmelter(ItemStack stack) {
+
+			super(stack);
+			oreID = getOreID(stack);
+		}
+
+		public ComparableItemStackSmelter(Item item, int damage, int stackSize) {
+
+			super(item, damage, stackSize);
+			this.oreID = getOreID(this.toItemStack());
+		}
+
+		@Override
+		public ComparableItemStackSmelter set(ItemStack stack) {
+
+			super.set(stack);
+			oreID = getOreID(stack);
+
+			return this;
 		}
 	}
 

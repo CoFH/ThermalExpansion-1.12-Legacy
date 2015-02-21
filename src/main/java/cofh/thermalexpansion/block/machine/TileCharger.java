@@ -7,12 +7,12 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.mod.updater.ModVersion;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,6 +20,8 @@ import net.minecraft.nbt.NBTTagCompound;
 public class TileCharger extends TileMachineBase {
 
 	static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
+
+	static int RATE[];
 
 	public static void initialize() {
 
@@ -36,6 +38,12 @@ public class TileCharger extends TileMachineBase {
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParams(1, basePower, Math.max(400000, basePower * 50));
+
+		RATE = new int[4];
+		RATE[0] = basePower;
+		RATE[1] = basePower * 2;
+		RATE[2] = basePower * 3;
+		RATE[3] = basePower * 4;
 
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}
@@ -218,6 +226,12 @@ public class TileCharger extends TileMachineBase {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void onLevelChange() {
+
+		super.onLevelChange();
 	}
 
 	protected void processContainerItem() {

@@ -52,12 +52,12 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 24, 24));
+		addElement(new ElementSimpleToolTip(this, 13, 24).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 24, 24));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidEnder).setSize(16, 16));
 
-		decDistance = new ElementButton(this, 10, 56, "decDistance", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
-		incDistance = new ElementButton(this, 26, 56, "incDistance", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		decDistance = new ElementButton(this, 10, 66, "decDistance", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		incDistance = new ElementButton(this, 26, 66, "incDistance", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 
 		addElement(decDistance);
 		addElement(incDistance);
@@ -124,7 +124,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		if (myTile.distance < 10) {
 			xDistance += 6;
 		}
-		fontRendererObj.drawString(strDistance, xDistance, 47, 0x404040);
+		fontRendererObj.drawString(strDistance, xDistance, 56, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

@@ -55,15 +55,15 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		addElement(new ElementSimpleToolTip(this, 13, 20).setToolTip("info.cofh.force").setSize(24, 24).setTexture(TEX_INFO_FORCE, 24, 24));
-		addElement(new ElementSimpleToolTip(this, 85, 20).setToolTip("info.cofh.angle").setSize(24, 24).setTexture(TEX_INFO_ANGLE, 24, 24));
+		addElement(new ElementSimpleToolTip(this, 13, 24).setToolTip("info.cofh.force").setSize(24, 24).setTexture(TEX_INFO_FORCE, 24, 24));
+		addElement(new ElementSimpleToolTip(this, 85, 24).setToolTip("info.cofh.angle").setSize(24, 24).setTexture(TEX_INFO_ANGLE, 24, 24));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidGlowstone).setSize(16, 16));
 
-		decIntensity = new ElementButton(this, 10, 56, "decIntensity", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
-		incIntensity = new ElementButton(this, 26, 56, "incIntensity", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
-		decAngle = new ElementButton(this, 82, 56, "decAngle", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
-		incAngle = new ElementButton(this, 98, 56, "incAngle", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		decIntensity = new ElementButton(this, 10, 66, "decIntensity", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		incIntensity = new ElementButton(this, 26, 66, "incIntensity", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		decAngle = new ElementButton(this, 82, 66, "decAngle", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		incAngle = new ElementButton(this, 98, 66, "incAngle", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 
 		addElement(decIntensity);
 		addElement(incIntensity);
@@ -116,10 +116,10 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 			}
 		}
 		if (buttonName.equalsIgnoreCase("decIntensity")) {
-			myTile.intensity -= change;
+			myTile.intensity -= (Math.max(1, change / 5));
 			pitch -= 0.1F;
 		} else if (buttonName.equalsIgnoreCase("incIntensity")) {
-			myTile.intensity += change;
+			myTile.intensity += (Math.max(1, change / 5));
 			pitch += 0.1F;
 		} else if (buttonName.equalsIgnoreCase("decAngle")) {
 			myTile.angle -= change;
@@ -166,19 +166,18 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
 		int xIntensity = 26;
-		int xAngle = 98;
+		int xAngle = 92;
 
 		String strIntensity = String.format("%-8.1f", myTile.intensity / 10D);
 		String strAngle = String.format("%-8.1f", myTile.angle / 10D);
 
-		if (myTile.intensity < 10) {
-			xIntensity += 6;
-		}
-		if (myTile.angle < 10) {
+		if (myTile.angle < 100 && myTile.angle >= 0) {
 			xAngle += 6;
+		} else if (myTile.angle <= -100) {
+			xAngle -= 6;
 		}
-		fontRendererObj.drawString(strIntensity, xIntensity, 47, 0x404040);
-		fontRendererObj.drawString(strAngle, xAngle, 47, 0x404040);
+		fontRendererObj.drawString(strIntensity, xIntensity, 56, 0x404040);
+		fontRendererObj.drawString(strAngle, xAngle, 56, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

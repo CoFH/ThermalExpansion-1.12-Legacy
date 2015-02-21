@@ -243,9 +243,9 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
 
-	public static int[] SEND = { 20000, 80, 80, 400, 2000, 10000 };
-	public static int[] RECEIVE = { 0, 0, 80, 400, 2000, 10000 };
-	public static int[] CAPACITY = { 20000, 16000, 80000, 400000, 2000000, 10000000 };
+	public static int[] SEND = { 100000, 160, 80, 400, 4000, 16000 };
+	public static int[] RECEIVE = { 0, 0, 200, 800, 8000, 32000 };
+	public static int[] CAPACITY = { 100000, 32000, 80000, 400000, 4000000, 20000000 };
 
 	static {
 		String category2 = "Item.Capacitor.";

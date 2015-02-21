@@ -317,7 +317,6 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 				if (!inputOreName.equals("Unknown")) {
 					inputList = OreDictionary.getOres(inputOreName);
 				}
-
 				cycleInput &= ComparableItemStackSafe.getOreID(inputOreName) != -1;
 			}
 			if (secondaryInput != null) {
@@ -326,7 +325,6 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 				if (!secondaryInputOreName.equals("Unknown")) {
 					secondaryList = OreDictionary.getOres(secondaryInputOreName);
 				}
-
 				cycleSecondary &= ComparableItemStackSafe.getOreID(secondaryInputOreName) != -1;
 			}
 		}

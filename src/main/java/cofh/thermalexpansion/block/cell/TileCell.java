@@ -42,9 +42,9 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public static boolean enableSecurity = true;
 
-	public static int[] MAX_SEND = { 20000, 80, 400, 2000, 10000 };
-	public static int[] MAX_RECEIVE = { 20000, 80, 400, 2000, 10000 };
-	public static int[] CAPACITY = { 20000, 400000, 2000000, 10000000, 50000000 };
+	public static int[] MAX_SEND = { 100000, 200, 800, 8000, 32000 };
+	public static int[] MAX_RECEIVE = { 100000, 200, 800, 8000, 32000 };
+	public static int[] CAPACITY = { 100000, 400000, 2000000, 20000000, 80000000 };
 	public static final byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
 
 	static {

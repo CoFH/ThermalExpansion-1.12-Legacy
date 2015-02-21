@@ -456,7 +456,6 @@ public class PulverizerManager {
 
 			return this;
 		}
-
 	}
 
 }
