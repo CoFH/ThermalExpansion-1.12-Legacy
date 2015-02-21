@@ -47,7 +47,7 @@ public class GuiAssembler extends GuiAugmentableBase {
 		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
 	}
 
 	@Override

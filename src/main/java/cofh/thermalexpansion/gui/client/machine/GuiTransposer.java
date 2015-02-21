@@ -58,7 +58,7 @@ public class GuiTransposer extends GuiAugmentableBase {
 		slotTankRev[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(2, 3, 1).setVisible(false));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progressBackgroundRev = (ElementSimple) addElement(new ElementSimple(this, 112, 19).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 48, 16));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 19).setFluid(myTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(2).setBackground(false).setSize(24, 16)

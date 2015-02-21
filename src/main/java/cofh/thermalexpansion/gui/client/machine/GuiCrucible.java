@@ -40,7 +40,7 @@ public class GuiCrucible extends GuiAugmentableBase {
 		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 103, 34).setFluid(myTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16)
 				.setTexture(TEX_DROP_RIGHT, 48, 16));

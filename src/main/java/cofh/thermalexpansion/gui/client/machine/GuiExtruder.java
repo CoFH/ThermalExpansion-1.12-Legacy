@@ -47,8 +47,8 @@ public class GuiExtruder extends GuiAugmentableBase {
 		slotInputWater = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
 		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
 
-		addElement(new ElementFluidTank(this, 8, 9, myTile.getTank(0)));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)));
+		addElement(new ElementFluidTank(this, 8, 9, myTile.getTank(0)).setAlwaysShow(true));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setAlwaysShow(true));
 		progressLava = (ElementFluid) addElement(new ElementFluid(this, 40, 49).setFluid(FluidHelper.LAVA).setSize(24, 16));
 		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidHelper.WATER).setSize(24, 16));
 		progressLavaOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 40, 49).setMode(1).setBackground(false).setSize(24, 16)

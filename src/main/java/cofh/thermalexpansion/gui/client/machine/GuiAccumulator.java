@@ -31,7 +31,7 @@ public class GuiAccumulator extends GuiAugmentableBase {
 
 		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2));
 
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setAlwaysShow(true));
 	}
 
 	@Override
