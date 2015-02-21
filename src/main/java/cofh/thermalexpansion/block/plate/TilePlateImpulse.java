@@ -42,6 +42,8 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
+		if (intensity == 0)
+			return;
 		if ((direction >> 1) == 0 && (alignment == 0))
 			theEntity.fallDistance = 0;
 		double[] v = getVector(intensityX, intensityY, 0D);
@@ -101,7 +103,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	private void updateForce() {
 
 		double fAngle = angle * Math.PI / 1800D;
-		if (getVector(1, 0, 1)[0] == 0)
+		if ((direction >> 1) == 0)
 			fAngle = 0;
 		intensityX = Math.cos(fAngle) * intensity / 10D;
 		intensityY = Math.sin(fAngle) * intensity / 10D;

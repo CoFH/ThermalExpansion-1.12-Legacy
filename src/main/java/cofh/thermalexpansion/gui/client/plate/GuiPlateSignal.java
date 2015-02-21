@@ -180,7 +180,7 @@ public class GuiPlateSignal extends GuiBaseAdv {
 		int xIntensity = 62;
 		int xDuration = 98;
 
-		String strDistance = String.format("%-8s", "" + myTile.distance);
+		String strDistance = String.format("%-8s", "" + (myTile.distance + 1));
 		String strIntensity = String.format("%-8s", "" + myTile.intensity);
 		String strDuration = String.format("%-8s", "" + myTile.duration);
 

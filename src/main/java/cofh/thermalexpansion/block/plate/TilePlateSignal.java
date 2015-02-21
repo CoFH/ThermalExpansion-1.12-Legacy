@@ -10,6 +10,7 @@ import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -25,15 +26,16 @@ public class TilePlateSignal extends TilePlateBase {
 	}
 
 	public static final byte MIN_DISTANCE = 0;
-	public static final byte MAX_DISTANCE = 16;
+	public static final byte MAX_DISTANCE = 15;
 	public static final byte MIN_INTENSITY = 0;
 	public static final byte MAX_INTENSITY = 15;
 	public static final byte MIN_DURATION = 2;
 	public static final byte MAX_DURATION = 40;
 
-	public byte distance = 16;
+	public byte distance = 15;
 	public byte intensity = 15;
 	public byte duration = 20;
+	public byte collisionMode = 0;
 	byte collided = 0;
 
 	public TilePlateSignal() {
@@ -64,7 +66,7 @@ public class TilePlateSignal extends TilePlateBase {
 
 	private void removeSignal() {
 
-		int[] v = getVector(distance);
+		int[] v = getVector(distance + 1);
 		int x = v[0], y = v[1], z = v[2];
 
 		if (worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z).equals(TEBlocks.blockAirSignal)) {
@@ -87,8 +89,26 @@ public class TilePlateSignal extends TilePlateBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		if (worldObj.isRemote || !(theEntity instanceof EntityLivingBase)) {
+		if (worldObj.isRemote) {
 			return;
+		}
+
+		switch (collisionMode) {
+		case 3:
+			if (!(theEntity instanceof IMob))
+				return;
+			break;
+		case 2:
+			if (!(theEntity instanceof EntityPlayer))
+				return;
+			break;
+		case 1:
+			if (!(theEntity instanceof EntityLivingBase))
+				return;
+			break;
+		case 0:
+		default:
+			break;
 		}
 
 		if (collided > 0) {
@@ -98,7 +118,7 @@ public class TilePlateSignal extends TilePlateBase {
 			}
 		}
 
-		int[] v = getVector(distance);
+		int[] v = getVector(distance + 1);
 		int x = v[0], y = v[1], z = v[2];
 
 		if (worldObj.isAirBlock(xCoord + x, yCoord + y, zCoord + z)) {
