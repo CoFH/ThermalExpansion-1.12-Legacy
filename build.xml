@@ -264,6 +264,7 @@
 				<fileset dir="${resources.dir}"/>
 			</copy>
 			<update-languages/>
+			<echo file="${classes.dir}/vers.prop">${build.full}${build.number}</echo>
 			<jar destfile="${dist.dir}/${build.name}${build.full}@{build}.jar"
 				compress="true" level="9" basedir="${classes.dir}">
 				<zipfileset src="${lib.dir}/MineFactoryReloaded.jar"/>
