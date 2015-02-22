@@ -82,12 +82,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.0B9";
+	public static final String version = "1.7.10R4.0.0RC1";
 	public static final String dependencies = "required-after:ThermalFoundation@[" + ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/Version/master/ThermalExpansion";
 	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
