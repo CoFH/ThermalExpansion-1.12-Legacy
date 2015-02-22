@@ -72,7 +72,7 @@ public class PulverizerManager {
 		addRecipe(800, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 2));
 
 		if (recipeSandstone) {
-			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 25);
+			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 40);
 		}
 		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 15);
 		addRecipe(2400, new ItemStack(Items.coal, 1, 1), TFItems.dustCharcoal);
