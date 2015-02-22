@@ -4,6 +4,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
+import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
@@ -126,6 +127,28 @@ public class IMCHandler {
 					else if (theMessage.key.equalsIgnoreCase("ChargerRecipe")) {
 						ChargerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
 								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("InsolatorRecipe")) {
+						if (theNBT.hasKey("secondaryChance")) {
+							InsolatorManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")), theNBT.getInteger("secondaryChance"),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						} else if (theNBT.hasKey("secondaryOutput")) {
+							InsolatorManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryOutput")),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						} else {
+							InsolatorManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")),
+									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
+									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						}
 						continue;
 					}
 
