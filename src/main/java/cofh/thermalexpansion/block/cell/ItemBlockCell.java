@@ -117,11 +117,15 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (container.stackTagCompound == null) {
 			setDefaultTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
 		int metadata = ItemHelper.getItemDamage(container);
+
+		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
+			return 0;
+		}
+		int stored = container.stackTagCompound.getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
 
-		if (!simulate && metadata != BlockCell.Types.CREATIVE.ordinal()) {
+		if (!simulate) {
 			stored += receive;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}
@@ -134,11 +138,15 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (container.stackTagCompound == null) {
 			setDefaultTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
 		int metadata = ItemHelper.getItemDamage(container);
+
+		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
+			return maxExtract;
+		}
+		int stored = container.stackTagCompound.getInteger("Energy");
 		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[metadata]));
 
-		if (!simulate && metadata != BlockCell.Types.CREATIVE.ordinal()) {
+		if (!simulate) {
 			stored -= extract;
 			container.stackTagCompound.setInteger("Energy", stored);
 		}

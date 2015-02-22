@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
+import cofh.asm.relauncher.Implementable;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
@@ -15,6 +16,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
 
+@Implementable("buildcraft.api.tiles.IHasWork")
 @Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 
@@ -164,6 +166,12 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public boolean shouldPlaySound() {
 
 		return !tileEntityInvalid && isActive;
+	}
+
+	/* IHasWork */
+	public boolean hasWork() {
+
+		return isActive;
 	}
 
 }

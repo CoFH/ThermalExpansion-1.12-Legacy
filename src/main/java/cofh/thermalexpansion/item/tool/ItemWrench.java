@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.item.tool;
 
-import buildcraft.api.tools.IToolWrench;
-
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
-import cofh.asm.relauncher.Strippable;
+import cofh.asm.relauncher.Implementable;
 import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -28,8 +26,8 @@ import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-@Strippable("buildcraft.api.tools.IToolWrench")
-public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
+@Implementable("buildcraft.api.tools.IToolWrench")
+public class ItemWrench extends ItemBase implements IToolHammer {
 
 	public ItemWrench() {
 
@@ -119,13 +117,11 @@ public class ItemWrench extends ItemBase implements IToolWrench, IToolHammer {
 	}
 
 	/* IToolWrench */
-	@Override
 	public boolean canWrench(EntityPlayer player, int x, int y, int z) {
 
 		return true;
 	}
 
-	@Override
 	public void wrenchUsed(EntityPlayer player, int x, int y, int z) {
 
 	}

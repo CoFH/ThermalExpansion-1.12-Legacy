@@ -93,18 +93,45 @@ public class InsolatorManager {
 
 	public static void addDefaultRecipes() {
 
+		String comment;
+		String category = "RecipeManagers.Insolator.Recipes";
+
+		boolean recipeCocoaBean = ThermalExpansion.config.get(category, "CocoaBean", true);
+		boolean recipeReeds = ThermalExpansion.config.get(category, "Reeds", true);
+		boolean recipeCactus = ThermalExpansion.config.get(category, "Cactus", true);
+		boolean recipeVine = ThermalExpansion.config.get(category, "Vine", true);
+		boolean recipeLilyPad = ThermalExpansion.config.get(category, "LilyPad", true);
+		boolean recipePumpkin = ThermalExpansion.config.get(category, "Pumpkin", true);
+		boolean recipeMelon = ThermalExpansion.config.get(category, "Melon", true);
+
 		addFertilizer(TEItems.fertilizer);
 		addFertilizer(TEItems.fertilizerRich);
 
 		addDefaultRecipe(new ItemStack(Items.wheat_seeds), new ItemStack(Items.wheat), new ItemStack(Items.wheat_seeds), 150);
 		addDefaultRecipe(new ItemStack(Items.potato), new ItemStack(Items.potato, 3), new ItemStack(Items.poisonous_potato), 2);
 		addDefaultRecipe(new ItemStack(Items.carrot), new ItemStack(Items.carrot, 3), null, 0);
-		addDefaultRecipe(new ItemStack(Items.reeds), new ItemStack(Items.reeds, 2), null, 0);
-		addDefaultRecipe(new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus, 2), null, 0);
-		addDefaultRecipe(new ItemStack(Blocks.vine), new ItemStack(Blocks.vine, 2), null, 0);
-		addDefaultRecipe(new ItemStack(Blocks.waterlily), new ItemStack(Blocks.waterlily, 2), null, 0);
-		addDefaultRecipe(new ItemStack(Items.pumpkin_seeds), new ItemStack(Blocks.pumpkin), null, 0);
-		addDefaultRecipe(new ItemStack(Items.melon_seeds), new ItemStack(Blocks.melon_block), null, 0);
+
+		if (recipeCocoaBean) {
+			addDefaultRecipe(new ItemStack(Items.dye, 1, 3), new ItemStack(Items.dye, 3, 3), null, 0);
+		}
+		if (recipeReeds) {
+			addDefaultRecipe(new ItemStack(Items.reeds), new ItemStack(Items.reeds, 2), null, 0);
+		}
+		if (recipeCactus) {
+			addDefaultRecipe(new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus, 2), null, 0);
+		}
+		if (recipeVine) {
+			addDefaultRecipe(new ItemStack(Blocks.vine), new ItemStack(Blocks.vine, 2), null, 0);
+		}
+		if (recipeLilyPad) {
+			addDefaultRecipe(new ItemStack(Blocks.waterlily), new ItemStack(Blocks.waterlily, 2), null, 0);
+		}
+		if (recipePumpkin) {
+			addDefaultRecipe(new ItemStack(Items.pumpkin_seeds), new ItemStack(Blocks.pumpkin), null, 0);
+		}
+		if (recipeMelon) {
+			addDefaultRecipe(new ItemStack(Items.melon_seeds), new ItemStack(Blocks.melon_block), null, 0);
+		}
 	}
 
 	public static void loadRecipes() {

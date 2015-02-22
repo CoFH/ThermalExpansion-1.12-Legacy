@@ -48,6 +48,7 @@ public class BlockAirSignal extends BlockAirBase implements IRedNetOutputNode {
 		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 	}
 
+	/* IRedNetOutputNode */
 	@Override
 	public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
 
