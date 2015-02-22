@@ -19,13 +19,13 @@ public class TileCellCreative extends TileCell {
 
 	public TileCellCreative() {
 
-		energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
+		energyStorage.setEnergyStored(-1);
 	}
 
 	public TileCellCreative(int metadata) {
 
 		super(metadata);
-		energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
+		energyStorage.setEnergyStored(-1);
 	}
 
 	@Override

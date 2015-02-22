@@ -310,7 +310,7 @@ public class BlockDevice extends BlockTEBase {
 		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',
-					TEItems.pneumaticServo, 'X', Blocks.chest }));
+					TEItems.powerCoilGold, 'X', Blocks.chest }));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',

@@ -67,7 +67,7 @@ public class BlockCell extends BlockTEBase {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		if (enable[0]) {
-			list.add(new ItemStack(item, 1, 0));
+			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), -1));
 		}
 		for (int i = 1; i < Types.values().length; i++) {
 			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), 0));
@@ -260,7 +260,7 @@ public class BlockCell extends BlockTEBase {
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
-					.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
+			.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
 		}
 		TECraftingHandler.addSecureRecipe(cellCreative);
 		TECraftingHandler.addSecureRecipe(cellBasic);

@@ -87,6 +87,11 @@ public class GuiCell extends GuiBaseAdv {
 		if (GuiScreen.isShiftKeyDown()) {
 			change = 1000;
 			change2 = 100;
+
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
+				change2 *= 10;
+			}
 		} else if (GuiScreen.isCtrlKeyDown()) {
 			change = 5;
 			change2 = 1;
@@ -137,6 +142,9 @@ public class GuiCell extends GuiBaseAdv {
 			if (mouseButton == 1) {
 				change = 100;
 				pitch = 0.8F;
+			}
+			if (GuiScreen.isCtrlKeyDown()) {
+				change *= 10;
 			}
 		} else if (GuiScreen.isCtrlKeyDown()) {
 			change = 5;
@@ -192,15 +200,55 @@ public class GuiCell extends GuiBaseAdv {
 		int xSend = 110;
 
 		if (myTile.energyReceive < 10) {
-			xRecv = 32;
-		} else if (myTile.energyReceive < 100) {
-			xRecv = 26;
+			xRecv += 6;
 		}
+		if (myTile.energyReceive < 100) {
+			xRecv += 6;
+		}
+		if (myTile.energyReceive < 1000) {
+			xRecv += 6;
+		}
+		if (myTile.energyReceive >= 10000) {
+			xRecv -= 6;
+		}
+		if (myTile.energyReceive >= 100000) {
+			xRecv -= 3;
+		}
+
 		if (myTile.energySend < 10) {
-			xSend = 122;
-		} else if (myTile.energySend < 100) {
-			xSend = 116;
+			xSend += 6;
 		}
+		if (myTile.energySend < 100) {
+			xSend += 6;
+		}
+		if (myTile.energySend < 1000) {
+			xSend += 6;
+		}
+		if (myTile.energySend >= 10000) {
+			xSend -= 6;
+		}
+		if (myTile.energySend >= 100000) {
+			xSend -= 3;
+		}
+
+		// if (myTile.energyReceive < 10) {
+		// xRecv = 32;
+		// } else if (myTile.energyReceive < 100) {
+		// xRecv = 26;
+		// } else if (myTile.energyReceive >= 10000) {
+		// xRecv = 14;
+		// } else if (myTile.energyReceive >= 1000) {
+		// xRecv = 17;
+		// }
+		// if (myTile.energySend < 10) {
+		// xSend = 122;
+		// } else if (myTile.energySend < 100) {
+		// xSend = 116;
+		// } else if (myTile.energySend >= 10000) {
+		// xSend = 104;
+		// } else if (myTile.energySend >= 1000) {
+		// xSend = 107;
+		// }
 		fontRendererObj.drawString(recv, xRecv, 44, 0x404040);
 		fontRendererObj.drawString(send, xSend, 44, 0x404040);
 

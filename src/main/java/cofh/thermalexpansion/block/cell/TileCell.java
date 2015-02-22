@@ -73,7 +73,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		category = category2 + StringHelper.titleCase(BlockCell.NAMES[0]);
 		MAX_SEND[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "MaxValue", MAX_SEND[0]), MAX_SEND[0] / 10, MAX_SEND[0] * 1000);
 		MAX_RECEIVE[0] = MAX_SEND[0];
-		CAPACITY[0] = MAX_SEND[0];
+		CAPACITY[0] = -1;
 	}
 
 	int compareTracker;

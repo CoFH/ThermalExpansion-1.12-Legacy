@@ -246,6 +246,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 						} else {
 							inventory[1].stackSize += recipeOutput.stackSize;
 						}
+						transferProducts();
 						isActive = true;
 					}
 				} else {
