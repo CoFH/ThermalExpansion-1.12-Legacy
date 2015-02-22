@@ -23,6 +23,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
@@ -340,6 +341,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwnerName(String name) {
 
+		if (MinecraftServer.getServer() == null) {
+			return false;
+		}
 		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
 			return false;
 		}
@@ -356,14 +360,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (owner.getId().variant() == 0) {
 			owner = profile;
 			if (owner.getId().variant() != 0) {
-				new Thread("CoFH User Loader") {
+				if (MinecraftServer.getServer() != null) {
+					new Thread("CoFH User Loader") {
 
-					@Override
-					public void run() {
+						@Override
+						public void run() {
 
-						owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
-					}
-				}.start();
+							owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
+						}
+					}.start();
+				}
 				if (inWorld) {
 					markChunkDirty();
 				}

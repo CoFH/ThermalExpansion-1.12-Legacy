@@ -60,6 +60,10 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (world.isRemote) {
+			return;
+		}
+
 		TileEntity aTile = world.getTileEntity(x, y, z);
 
 		if (aTile instanceof TileTesseract) {
