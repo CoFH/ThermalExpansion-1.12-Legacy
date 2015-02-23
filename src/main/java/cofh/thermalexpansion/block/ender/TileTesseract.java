@@ -48,7 +48,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-IInventoryConnection, ISidedInventory {
+		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
@@ -277,14 +277,19 @@ IInventoryConnection, ISidedInventory {
 				if (handler.canReceiveEnergy()) {
 					energy = handler.receiveEnergy(energy, simulate);
 				}
+				if (energy <= 0) {
+					energyTrackerRemote = i;
+				}
 			}
 			for (int i = 0; i < validOutputs.size() && i < energyTrackerRemote && energy > 0; i++) {
 				handler = validOutputs.get(i);
 				if (handler.canReceiveEnergy()) {
 					energy = handler.receiveEnergy(energy, simulate);
 				}
+				if (energy <= 0) {
+					energyTrackerRemote = i;
+				}
 			}
-			energyTrackerRemote = incrRemoteTracker(energyTrackerRemote, validOutputs.size());
 		}
 		isSendingEnergy = false;
 		return startAmount - energy;
@@ -307,14 +312,19 @@ IInventoryConnection, ISidedInventory {
 				if (handler.canReceiveFluid()) {
 					fluid = handler.receiveFluid(fluid, doFill);
 				}
+				if (fluid == null || fluid.amount <= 0) {
+					fluidTrackerRemote = i;
+				}
 			}
 			for (int i = 0; i < validOutputs.size() && i < fluidTrackerRemote && fluid != null && fluid.amount > 0; i++) {
 				handler = validOutputs.get(i);
 				if (handler.canReceiveFluid()) {
 					fluid = handler.receiveFluid(fluid, doFill);
 				}
+				if (fluid == null || fluid.amount <= 0) {
+					fluidTrackerRemote = i;
+				}
 			}
-			fluidTrackerRemote = incrRemoteTracker(fluidTrackerRemote, validOutputs.size());
 		}
 		isSendingFluid = false;
 		return startAmount - fluid.amount;
@@ -333,14 +343,19 @@ IInventoryConnection, ISidedInventory {
 				if (handler.canReceiveItems()) {
 					item = handler.receiveItem(item);
 				}
+				if (item == null || item.stackSize == 0) {
+					itemTrackerRemote = i;
+				}
 			}
 			for (int i = 0; i < validOutputs.size() && i < itemTrackerRemote && item != null && item.stackSize > 0; i++) {
 				handler = validOutputs.get(i);
 				if (handler.canReceiveItems()) {
 					item = handler.receiveItem(item);
 				}
+				if (item == null || item.stackSize == 0) {
+					itemTrackerRemote = i;
+				}
 			}
-			itemTrackerRemote = incrRemoteTracker(itemTrackerRemote, validOutputs.size());
 		}
 		if (item != null && item.stackSize > 0) {
 			inventory[0] = item;
@@ -405,15 +420,6 @@ IInventoryConnection, ISidedInventory {
 			}
 		}
 		itemTrackerAdjacent = 0;
-	}
-
-	public int incrRemoteTracker(int tracker, int max) {
-
-		tracker++;
-		if (tracker >= max) {
-			tracker = 0;
-		}
-		return tracker;
 	}
 
 	/* HELPER METHODS */
