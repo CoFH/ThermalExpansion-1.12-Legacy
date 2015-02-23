@@ -605,6 +605,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		if (!isActive) {
 			reverse = reverseFlag;
 		}
+		markDirty();
 		callNeighborTileChange();
 	}
 

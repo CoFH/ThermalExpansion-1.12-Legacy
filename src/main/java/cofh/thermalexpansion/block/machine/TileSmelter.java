@@ -270,7 +270,7 @@ public class TileSmelter extends TileMachineBase {
 
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
-		lockPrimary = nbt.getBoolean("Lock");
+		lockPrimary = nbt.getBoolean("SlotLock");
 	}
 
 	@Override
@@ -280,7 +280,7 @@ public class TileSmelter extends TileMachineBase {
 
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
-		nbt.setBoolean("Lock", lockPrimary);
+		nbt.setBoolean("SlotLock", lockPrimary);
 	}
 
 	/* NETWORK METHODS */
@@ -318,6 +318,7 @@ public class TileSmelter extends TileMachineBase {
 		super.handleModePacket(payload);
 
 		lockPrimary = payload.getBool();
+		markDirty();
 		callNeighborTileChange();
 	}
 

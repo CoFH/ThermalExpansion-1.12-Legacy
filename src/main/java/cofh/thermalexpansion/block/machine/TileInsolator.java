@@ -337,7 +337,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
-		lockPrimary = nbt.getBoolean("Lock");
+		lockPrimary = nbt.getBoolean("SlotLock");
 		tank.readFromNBT(nbt);
 	}
 
@@ -348,7 +348,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
-		nbt.setBoolean("Lock", lockPrimary);
+		nbt.setBoolean("SlotLock", lockPrimary);
 		tank.writeToNBT(nbt);
 	}
 
@@ -387,6 +387,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		super.handleModePacket(payload);
 
 		lockPrimary = payload.getBool();
+		markDirty();
 		callNeighborTileChange();
 	}
 
