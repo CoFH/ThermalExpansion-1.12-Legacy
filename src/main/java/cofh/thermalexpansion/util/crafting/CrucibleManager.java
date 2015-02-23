@@ -130,6 +130,12 @@ public class CrucibleManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
+	public static boolean removeRecipe(ItemStack input) {
+
+		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	public static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
 

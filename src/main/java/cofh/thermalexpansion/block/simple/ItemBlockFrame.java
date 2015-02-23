@@ -25,6 +25,7 @@ public class ItemBlockFrame extends ItemBlockBase {
 
 		switch (BlockFrame.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case MACHINE_RESONANT:
+		case CELL_RESONANT_FULL:
 		case TESSERACT_FULL:
 			return EnumRarity.rare;
 		case MACHINE_REINFORCED:

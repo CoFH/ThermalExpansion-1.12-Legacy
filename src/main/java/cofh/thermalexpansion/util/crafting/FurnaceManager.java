@@ -175,6 +175,7 @@ public class FurnaceManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
 	public static boolean removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;

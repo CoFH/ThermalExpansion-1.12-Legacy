@@ -167,7 +167,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		type = nbt.getByte("Type");
 		facing = nbt.getByte("Facing");
-		locked = nbt.getBoolean("Lock");
+		locked = nbt.getBoolean("LockItem");
 
 		if (nbt.hasKey("Item")) {
 			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
@@ -185,7 +185,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		nbt.setByte("Type", type);
 		nbt.setByte("Facing", facing);
-		nbt.setBoolean("Lock", locked);
+		nbt.setBoolean("LockItem", locked);
 
 		if (storedStack != null) {
 			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));

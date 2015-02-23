@@ -36,6 +36,11 @@ public class IMCHandler {
 						continue;
 					}
 
+					else if (theMessage.key.equalsIgnoreCase("RemoveFurnaceRecipe")) {
+						FurnaceManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
+						continue;
+					}
+
 					else if (theMessage.key.equalsIgnoreCase("PulverizerRecipe")) {
 						if (theNBT.hasKey("secondaryChance")) {
 							PulverizerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
@@ -55,6 +60,11 @@ public class IMCHandler {
 						continue;
 					}
 
+					else if (theMessage.key.equalsIgnoreCase("RemovePulverizerRecipe")) {
+						PulverizerManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
+						continue;
+					}
+
 					else if (theMessage.key.equalsIgnoreCase("SawmillRecipe")) {
 						if (theNBT.hasKey("secondaryChance")) {
 							SawmillManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
@@ -71,6 +81,11 @@ public class IMCHandler {
 									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("RemoveSawmillRecipe")) {
+						SawmillManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
 						continue;
 					}
 
@@ -96,6 +111,12 @@ public class IMCHandler {
 						continue;
 					}
 
+					else if (theMessage.key.equalsIgnoreCase("RemoveSmelterRecipe")) {
+						SmelterManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
+								ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")));
+						continue;
+					}
+
 					else if (theMessage.key.equalsIgnoreCase("SmelterBlastOreType")) {
 						if (theNBT.hasKey("oreType")) {
 							SmelterManager.addBlastOreName(theNBT.getString("oreType"));
@@ -109,10 +130,21 @@ public class IMCHandler {
 						continue;
 					}
 
+					else if (theMessage.key.equalsIgnoreCase("RemoveCrucibleRecipe")) {
+						CrucibleManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
+						continue;
+					}
+
 					else if (theMessage.key.equalsIgnoreCase("TransposerFillRecipe")) {
 						TransposerManager.addFillRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
 								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")),
 								theNBT.getBoolean("reversible"), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("RemoveTransposerFillRecipe")) {
+						TransposerManager.removeFillRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")),
+								FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")));
 						continue;
 					}
 
@@ -124,9 +156,19 @@ public class IMCHandler {
 						continue;
 					}
 
+					else if (theMessage.key.equalsIgnoreCase("RemoveTransposerExtractRecipe")) {
+						TransposerManager.removeExtractionRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
+						continue;
+					}
+
 					else if (theMessage.key.equalsIgnoreCase("ChargerRecipe")) {
 						ChargerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack
 								.loadItemStackFromNBT(theNBT.getCompoundTag("output")), theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("RemoveChargerRecipe")) {
+						ChargerManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
 						continue;
 					}
 
@@ -149,6 +191,12 @@ public class IMCHandler {
 									ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryOutput")),
 									theNBT.hasKey("overwrite") ? theNBT.getBoolean("overwrite") : false);
 						}
+						continue;
+					}
+
+					else if (theMessage.key.equalsIgnoreCase("RemoveInsolatorRecipe")) {
+						InsolatorManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")),
+								ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")));
 						continue;
 					}
 

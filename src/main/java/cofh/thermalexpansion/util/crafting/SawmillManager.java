@@ -125,6 +125,7 @@ public class SawmillManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
 	public static boolean removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackSawmill(input)) != null;

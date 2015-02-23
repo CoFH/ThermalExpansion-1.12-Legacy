@@ -203,6 +203,12 @@ public class InsolatorManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
+	public static boolean removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+
+		return recipeMap.remove(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput))) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	private static void addFertilizer(ItemStack fertilizer) {
 

@@ -248,6 +248,12 @@ public class SmelterManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
+	public static boolean removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+
+		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput))) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	private static void addFlux(ItemStack flux) {
 

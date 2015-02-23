@@ -206,6 +206,17 @@ public class TransposerManager {
 		return true;
 	}
 
+	/* REMOVE RECIPES */
+	public static boolean removeFillRecipe(ItemStack input, FluidStack fluid) {
+
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.fluidID)) != null;
+	}
+
+	public static boolean removeExtractionRecipe(ItemStack input) {
+
+		return recipeMapExtraction.remove(new ComparableItemStackSafe(input)) != null;
+	}
+
 	/* HELPER FUNCTIONS */
 	public static boolean addFillRecipe(int energy, FluidContainerData data, boolean reversible) {
 

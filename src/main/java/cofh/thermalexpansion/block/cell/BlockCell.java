@@ -248,6 +248,8 @@ public class BlockCell extends BlockTEBase {
 			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened,
+					'P', TEItems.powerCoilElectrum }));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger(
 					"Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic,
@@ -259,6 +261,8 @@ public class BlockCell extends BlockTEBase {
 					"ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(cellResonant, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I',
+					"ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
 			.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
 		}
