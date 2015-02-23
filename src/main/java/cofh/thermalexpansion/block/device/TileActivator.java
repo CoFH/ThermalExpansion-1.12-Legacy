@@ -42,8 +42,8 @@ public class TileActivator extends TileAugmentable {
 	static final int TYPE = BlockDevice.Types.ACTIVATOR.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
 	static EnergyConfig energyConfig = new EnergyConfig();
-	static int ACTIVATION_ENERGY;
 
+	static int ACTIVATION_ENERGY = 20;
 	static int MAX_SLOT = 9;
 
 	public static void initialize() {
@@ -69,7 +69,8 @@ public class TileActivator extends TileAugmentable {
 		ThermalExpansion.config.set("Device.Activator", "BasePower", maxPower);
 		energyConfig.setParamsPower(maxPower);
 
-		maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "ActivationEnergy", 20), 0, 500);
+		comment = "This value sets how much energy the Activator uses when it actually does something. Set to 0 to disable it requiring energy.";
+		maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
 		ThermalExpansion.config.set("Device.Activator", "ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
 	}
@@ -84,6 +85,7 @@ public class TileActivator extends TileAugmentable {
 	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
 	int slotTracker = 0;
+	int[] tracker;
 
 	public TileActivator() {
 
@@ -222,7 +224,7 @@ public class TileActivator extends TileAugmentable {
 			}
 		}
 		for (int e = pInventory.length; i < e; i++) {
-			if (InventoryHelper.addItemStackToInventory(inventory, pInventory[i], 0, getChargeSlot() - 1)) {
+			if (InventoryHelper.addItemStackToInventory(inventory, pInventory[i], 0, MAX_SLOT - 1)) {
 				pInventory[i] = null;
 			}
 		}
@@ -249,7 +251,7 @@ public class TileActivator extends TileAugmentable {
 	public int getRandomStackIndex() {
 
 		int i = 0;
-		int[] tracker = new int[MAX_SLOT];
+		tracker = new int[MAX_SLOT];
 		// TODO: allocating this array is probably bad
 
 		for (int k = 0; k < MAX_SLOT; k++) {

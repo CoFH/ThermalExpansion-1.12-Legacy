@@ -27,7 +27,7 @@ public class InsolatorManager {
 
 	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
-	private static Set<ComparableItemStackInsolator> fertilizerSet = new THashSet<ComparableItemStackInsolator>();
+	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<ComparableItemStackInsolator>();
 
 	private static ComparableItemStackInsolator query = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
 	private static ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
@@ -88,7 +88,7 @@ public class InsolatorManager {
 
 	public static boolean isItemFertilizer(ItemStack input) {
 
-		return input == null ? false : fertilizerSet.contains(query.set(input));
+		return input == null ? false : lockSet.contains(query.set(input));
 	}
 
 	public static void addDefaultRecipes() {
@@ -166,6 +166,14 @@ public class InsolatorManager {
 		recipeMap = tempMap;
 		validationSet.clear();
 		validationSet = tempSet;
+
+		Set<ComparableItemStackInsolator> tempSet2 = new THashSet<ComparableItemStackInsolator>();
+		for (ComparableItemStackInsolator entry : lockSet) {
+			ComparableItemStackInsolator lock = new ComparableItemStackInsolator(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+			tempSet2.add(lock);
+		}
+		lockSet.clear();
+		lockSet = tempSet2;
 	}
 
 	/* ADD RECIPES */
@@ -198,7 +206,7 @@ public class InsolatorManager {
 	/* HELPER FUNCTIONS */
 	private static void addFertilizer(ItemStack fertilizer) {
 
-		fertilizerSet.add(new ComparableItemStackInsolator(fertilizer));
+		lockSet.add(new ComparableItemStackInsolator(fertilizer));
 	}
 
 	public static void addDefaultOreDictionaryRecipe(String oreType) {

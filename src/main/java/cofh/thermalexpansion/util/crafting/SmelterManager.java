@@ -31,7 +31,7 @@ public class SmelterManager {
 
 	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
-	private static Set<ComparableItemStackSmelter> fluxSet = new THashSet<ComparableItemStackSmelter>();
+	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<ComparableItemStackSmelter>();
 	private static ComparableItemStackSmelter query = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
@@ -101,7 +101,7 @@ public class SmelterManager {
 
 	public static boolean isItemFlux(ItemStack input) {
 
-		return input == null ? false : fluxSet.contains(query.set(input));
+		return input == null ? false : lockSet.contains(query.set(input));
 	}
 
 	public static boolean isStandardOre(String oreName) {
@@ -211,6 +211,14 @@ public class SmelterManager {
 		recipeMap = tempMap;
 		validationSet.clear();
 		validationSet = tempSet;
+
+		Set<ComparableItemStackSmelter> tempSet2 = new THashSet<ComparableItemStackSmelter>();
+		for (ComparableItemStackSmelter entry : lockSet) {
+			ComparableItemStackSmelter lock = new ComparableItemStackSmelter(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+			tempSet2.add(lock);
+		}
+		lockSet.clear();
+		lockSet = tempSet2;
 	}
 
 	/* ADD RECIPES */
@@ -243,7 +251,7 @@ public class SmelterManager {
 	/* HELPER FUNCTIONS */
 	private static void addFlux(ItemStack flux) {
 
-		fluxSet.add(new ComparableItemStackSmelter(flux));
+		lockSet.add(new ComparableItemStackSmelter(flux));
 	}
 
 	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance,
