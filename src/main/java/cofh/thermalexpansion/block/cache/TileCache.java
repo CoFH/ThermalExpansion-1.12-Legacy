@@ -240,7 +240,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	@Override
 	public void setStoredItemCount(int amount) {
 
-		if (storedStack == null || amount < 0) {
+		if (storedStack == null) {
 			return;
 		}
 		storedStack.stackSize = Math.min(amount, getMaxStoredCount());
@@ -276,6 +276,32 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	}
 
 	/* IInventory */
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+
+		if (inventory[slot] == null) {
+			return null;
+		}
+		if (inventory[slot].stackSize <= amount) {
+			amount = inventory[slot].stackSize;
+		}
+		ItemStack stack = inventory[slot].splitStack(amount);
+
+		if (inventory[slot].stackSize <= 0) {
+			inventory[slot] = null;
+		}
+		storedStack.stackSize += (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
+
+		if (storedStack.stackSize > 0) {
+			balanceStacks();
+		} else {
+			clearInventory();
+		}
+		updateTrackers();
+		markDirty();
+		return stack;
+	}
+
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
