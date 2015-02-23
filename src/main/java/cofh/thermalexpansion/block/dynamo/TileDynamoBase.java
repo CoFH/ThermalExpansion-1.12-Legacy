@@ -666,23 +666,27 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public boolean rotateBlock() {
 
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return false;
+		}
 		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord)).size() != 0) {
 			return false;
 		}
-
-		byte oldFacing = facing;
-		for (int i = facing + 1, e = facing + 6; i < e; i++) {
-			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
-				facing = (byte) (i % 6);
-				if (facing != oldFacing) {
-					updateAdjacentHandlers();
-					markDirty();
-					sendUpdatePacket(Side.CLIENT);
+		if (adjacentHandler != null) {
+			byte oldFacing = facing;
+			for (int i = facing + 1, e = facing + 6; i < e; i++) {
+				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
+					facing = (byte) (i % 6);
+					if (facing != oldFacing) {
+						updateAdjacentHandlers();
+						markDirty();
+						sendUpdatePacket(Side.CLIENT);
+					}
+					return true;
 				}
-				return true;
 			}
+			return false;
 		}
-
 		facing = (byte) ((facing + 1) % 6);
 		updateAdjacentHandlers();
 		markDirty();

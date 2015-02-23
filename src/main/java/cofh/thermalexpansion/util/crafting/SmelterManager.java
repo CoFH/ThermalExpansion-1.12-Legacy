@@ -117,7 +117,7 @@ public class SmelterManager {
 		addFlux(TFItems.crystalCinnabar);
 		addFlux(TFItems.dustPyrotheum);
 
-		addTERecipe(4000, new ItemStack(Blocks.stone), blockSand, new ItemStack(Blocks.cobblestone, 2), TEItems.slag, 100);
+		addTERecipe(4000, new ItemStack(Blocks.cobblestone, 2), blockSand, new ItemStack(Blocks.stone, 1), TEItems.slag, 100);
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 
