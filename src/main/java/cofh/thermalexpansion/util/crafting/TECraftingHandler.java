@@ -36,20 +36,23 @@ public class TECraftingHandler {
 		FMLCommonHandler.instance().bus().register(instance);
 	}
 
+	public static void addMachineRecipes(ItemStack stack, ItemStack augments, Object[] recipe) {
+
+	}
+
 	public static void addMachineUpgradeRecipes(ItemStack stack) {
 
-		GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(1, stack, new Object[] { "IGI", " X ", "I I", 'I', "ingotInvar", 'G',
-				"gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) })));
-		GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(2, stack, new Object[] { "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G',
-				"gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) })));
-		GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeMachineUpgrade(3, stack, new Object[] { "IGI", " X ", "I I", 'I', "ingotSilver", 'G',
-				"gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) })));
+		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(1, RecipeMachineUpgrade.getMachineLevel(stack, 1), new Object[] { "IGI", " X ", "I I", 'I',
+			"ingotInvar", 'G', "gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) }));
+		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(2, RecipeMachineUpgrade.getMachineLevel(stack, 2), new Object[] { "IGI", " X ", "I I", 'I',
+			"blockGlassHardened", 'G', "gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) }));
+		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(3, RecipeMachineUpgrade.getMachineLevel(stack, 3), new Object[] { "IGI", " X ", "I I", 'I',
+			"ingotSilver", 'G', "gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) }));
 	}
 
 	public static void addSecureRecipe(ItemStack stack) {
 
-		GameRegistry.addRecipe(NEIRecipeWrapper.wrap(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X',
-				stack })));
+		NEIRecipeWrapper.addSecureRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', stack }));
 	}
 
 	@SubscribeEvent

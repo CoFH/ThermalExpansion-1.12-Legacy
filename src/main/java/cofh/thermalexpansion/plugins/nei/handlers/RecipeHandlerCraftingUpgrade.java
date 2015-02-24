@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapedRecipeHandler;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper.RecipeType;
 
 import java.util.List;
 
@@ -23,6 +24,11 @@ public class RecipeHandlerCraftingUpgrade extends ShapedRecipeHandler {
 		if (outputId.equals("crafting")) {
 			for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
 				if (r.getClass() != NEIRecipeWrapper.class) {
+					continue;
+				}
+				RecipeType type = ((NEIRecipeWrapper) r).getRecipeType();
+
+				if (type != RecipeType.UPGRADE) {
 					continue;
 				}
 				IRecipe irecipe = ((NEIRecipeWrapper) r).getWrappedRecipe();
@@ -52,6 +58,11 @@ public class RecipeHandlerCraftingUpgrade extends ShapedRecipeHandler {
 			if (r.getClass() != NEIRecipeWrapper.class) {
 				continue;
 			}
+			RecipeType type = ((NEIRecipeWrapper) r).getRecipeType();
+
+			if (type != RecipeType.UPGRADE) {
+				continue;
+			}
 			IRecipe irecipe = ((NEIRecipeWrapper) r).getWrappedRecipe();
 
 			if (NEIServerUtils.areStacksSameTypeCrafting(irecipe.getRecipeOutput(), result)) {
@@ -76,6 +87,11 @@ public class RecipeHandlerCraftingUpgrade extends ShapedRecipeHandler {
 
 		for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
 			if (r.getClass() != NEIRecipeWrapper.class) {
+				continue;
+			}
+			RecipeType type = ((NEIRecipeWrapper) r).getRecipeType();
+
+			if (type != RecipeType.UPGRADE) {
 				continue;
 			}
 			IRecipe irecipe = ((NEIRecipeWrapper) r).getWrappedRecipe();

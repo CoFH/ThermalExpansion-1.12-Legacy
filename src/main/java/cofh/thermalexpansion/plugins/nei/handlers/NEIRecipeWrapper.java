@@ -11,25 +11,47 @@ import net.minecraft.world.World;
 // Simple wrapper class to hide recipes from NEI
 public class NEIRecipeWrapper implements IRecipe {
 
+	public enum RecipeType {
+		MACHINE, UPGRADE, SECURE
+	};
+
 	private final IRecipe recipe;
 
-	public static void addRecipe(IRecipe recipe) {
+	public final RecipeType type;
 
-		GameRegistry.addRecipe(wrap(recipe));
+	public static void addMachineRecipe(IRecipe recipe) {
+
+		GameRegistry.addRecipe(wrap(recipe, RecipeType.MACHINE));
 	}
 
-	public static IRecipe wrap(IRecipe recipe) {
+	public static void addUpgradeRecipe(IRecipe recipe) {
+
+		GameRegistry.addRecipe(wrap(recipe, RecipeType.UPGRADE));
+	}
+
+	public static void addSecureRecipe(IRecipe recipe) {
+
+		GameRegistry.addRecipe(wrap(recipe, RecipeType.SECURE));
+	}
+
+	public static IRecipe wrap(IRecipe recipe, RecipeType type) {
 
 		if (Loader.isModLoaded("NotEnoughItems")) {
-			return new NEIRecipeWrapper(recipe);
+			return new NEIRecipeWrapper(recipe, type);
 		} else {
 			return recipe;
 		}
 	}
 
-	private NEIRecipeWrapper(IRecipe recipe) {
+	private NEIRecipeWrapper(IRecipe recipe, RecipeType type) {
 
 		this.recipe = recipe;
+		this.type = type;
+	}
+
+	public RecipeType getRecipeType() {
+
+		return type;
 	}
 
 	public IRecipe getWrappedRecipe() {
