@@ -4,9 +4,14 @@ import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
+import codechicken.nei.recipe.GuiRecipe;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
+
+import java.awt.Point;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -70,6 +75,28 @@ public class RecipeHandlerInsolator extends RecipeHandlerBase {
 				drawString(secondChance + "%", 90, 54, 0x939393, false);
 			}
 		}
+	}
+
+	@Override
+	public List<String> handleTooltip(GuiRecipe gui, List<String> currenttip, int recipe) {
+
+		int minX1 = 153;
+		int maxX1 = 169;
+		int minY1 = 19;
+		int maxY1 = 79;
+		int yOffset = 65;
+		Point mousepos = getMousePosition();
+
+		if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop && mousepos.y < maxY1 + gui.guiTop
+				&& arecipe[0] == recipe) {
+			FluidStack fluid = FluidHelper.WATER;
+			currenttip.add(fluid.getFluid().getLocalizedName(fluid));
+		} else if (mousepos.x >= minX1 + gui.guiLeft && mousepos.x < maxX1 + gui.guiLeft && mousepos.y >= minY1 + gui.guiTop + yOffset
+				&& mousepos.y < maxY1 + gui.guiTop + yOffset && arecipe[1] == recipe) {
+			FluidStack fluid = FluidHelper.WATER;
+			currenttip.add(fluid.getFluid().getLocalizedName(fluid));
+		}
+		return super.handleTooltip(gui, currenttip, recipe);
 	}
 
 	@SuppressWarnings("unchecked")
