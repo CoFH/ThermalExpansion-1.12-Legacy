@@ -410,18 +410,21 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		}
 		int amount = Math.min(tank.getFluidAmount(), energy);
 		int filled = tank.getFluid() == null ? 0 : containerItem.fill(inventory[1], new FluidStack(tank.getFluid(), amount), true);
-		processRem -= filled;
-		tank.drain(filled, true);
-		energyStorage.modifyEnergyStored(-filled);
 
-		if (containerItem.getFluid(inventory[1]).amount >= containerItem.getCapacity(inventory[1])) {
-			transferProducts();
-			reverse = reverseFlag;
+		if (containerItem.getFluid(inventory[1]) != null) {
+			processRem -= filled;
+			tank.drain(filled, true);
+			energyStorage.modifyEnergyStored(-filled);
 
-			if (!redstoneControlOrDisable()) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
+			if (containerItem.getFluid(inventory[1]).amount >= containerItem.getCapacity(inventory[1])) {
+				transferProducts();
+				reverse = reverseFlag;
+
+				if (!redstoneControlOrDisable()) {
+					isActive = false;
+					wasActive = true;
+					tracker.markTime(worldObj);
+				}
 			}
 		}
 	}
