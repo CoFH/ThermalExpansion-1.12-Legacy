@@ -284,6 +284,9 @@ public class SmelterManager {
 
 	public static void addDefaultOreDictionaryRecipe(String oreType, String relatedType) {
 
+		if (oreType.length() <= 0) {
+			return;
+		}
 		String oreName = "ore" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);

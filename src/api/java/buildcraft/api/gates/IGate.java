@@ -6,7 +6,17 @@
  * Please check the contents of the license, which should be located
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
-@API(apiVersion = "1.0", owner = "BuildCraftAPI|core", provides = "BuildCraftAPI|tools")
-package buildcraft.api.tools;
-import cpw.mods.fml.common.API;
+package buildcraft.api.gates;
 
+import net.minecraftforge.common.util.ForgeDirection;
+
+import buildcraft.api.transport.IPipe;
+
+public interface IGate {
+	@Deprecated
+	void setPulsing(boolean pulse);
+	
+	ForgeDirection getSide();
+
+	IPipe getPipe();
+}

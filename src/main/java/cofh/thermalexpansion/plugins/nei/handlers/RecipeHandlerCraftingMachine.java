@@ -5,12 +5,15 @@ import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper.RecipeType;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 
 import java.util.List;
 
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -20,6 +23,8 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 
 	public static RecipeHandlerCraftingMachine instance = new RecipeHandlerCraftingMachine();
+
+	public static PositionedStack output = new PositionedStack(new ItemStack(Blocks.stone), 119, 24);
 
 	@SuppressWarnings("unchecked")
 	@Override
@@ -178,7 +183,20 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 		@Override
 		public PositionedStack getResult() {
 
-			return result;
+			ItemStack stack = ingredients.get(3).item;
+			ItemStack toDisplay = result.item.copy();
+
+			if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineBasic)) {
+				toDisplay.stackTagCompound.setByte("Level", (byte) 0);
+			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineHardened)) {
+				toDisplay.stackTagCompound.setByte("Level", (byte) 1);
+			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineReinforced)) {
+				toDisplay.stackTagCompound.setByte("Level", (byte) 2);
+			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineResonant)) {
+				toDisplay.stackTagCompound.setByte("Level", (byte) 3);
+			}
+			output.item = toDisplay;
+			return output;
 		}
 
 		@Override

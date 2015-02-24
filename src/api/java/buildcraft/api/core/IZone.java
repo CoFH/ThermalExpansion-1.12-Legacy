@@ -6,7 +6,16 @@
  * Please check the contents of the license, which should be located
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
-@API(apiVersion = "3.0", owner = "BuildCraftAPI|core", provides = "BuildCraftAPI|transport")
-package buildcraft.api.transport;
-import cpw.mods.fml.common.API;
+package buildcraft.api.core;
 
+import java.util.Random;
+
+public interface IZone {
+
+	double distanceTo(BlockIndex index);
+
+	boolean contains(double x, double y, double z);
+
+	BlockIndex getRandomBlockIndex(Random rand);
+
+}

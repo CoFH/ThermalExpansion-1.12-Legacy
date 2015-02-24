@@ -217,6 +217,9 @@ public class InsolatorManager {
 
 	public static void addDefaultOreDictionaryRecipe(String oreType) {
 
+		if (oreType.length() <= 0) {
+			return;
+		}
 		String seedName = "seed" + StringHelper.titleCase(oreType);
 		String cropName = "crop" + StringHelper.titleCase(oreType);
 

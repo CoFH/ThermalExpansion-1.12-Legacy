@@ -6,7 +6,8 @@
  * Please check the contents of the license, which should be located
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
-@API(apiVersion = "1.0", owner = "BuildCraft|Core", provides = "BuildCraftAPI|core")
-package buildcraft.api;
-import cpw.mods.fml.common.API;
+package buildcraft.api.statements;
 
+public interface IActionReceptor {
+	void actionActivated(IStatement statement, IStatementParameter[] parameters);
+}
