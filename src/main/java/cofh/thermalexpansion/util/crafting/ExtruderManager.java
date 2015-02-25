@@ -1,7 +1,5 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.thermalexpansion.ThermalExpansion;
-
 import gnu.trove.map.hash.THashMap;
 
 import java.util.List;
@@ -18,7 +16,7 @@ public class ExtruderManager { // TODO
 	private static boolean allowOverwrite = false;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Extruder", "AllowRecipeOverwrite", false);
+		//allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Extruder", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeExtruder[] getRecipeList() {

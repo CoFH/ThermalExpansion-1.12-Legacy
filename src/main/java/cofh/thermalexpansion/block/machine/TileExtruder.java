@@ -1,14 +1,16 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
+import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
+import cofh.thermalexpansion.item.TEAugments;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -27,7 +29,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 	static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
 
+	public byte processLevel;
+
 	public static void initialize() {
+
+		processItems = new ItemStack[3];
 
 		processItems[0] = new ItemStack(Blocks.cobblestone);
 		processItems[1] = new ItemStack(Blocks.stone);
@@ -35,21 +41,36 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		String category = "RecipeManagers.Extruder.Recipes";
 
-		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
+		//		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0,
+		//			TEProps.MAX_FLUID_SMALL);
+		//		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0,
+		//			TEProps.MAX_FLUID_SMALL);
+		//		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0,
+		//			TEProps.MAX_FLUID_SMALL);
+		//
+		//		processWater[0][0] = MathHelper.clampI(
+		//			ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
+		//		processWater[0][1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[0][1]),
+		//			0, TEProps.MAX_FLUID_SMALL);
+		//		processWater[0][2] = MathHelper.clampI(
+		//			ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
+		//
+		//		processTime[0][0] = MathHelper.clampI(
+		//			ThermalExpansion.config.get(category, "Extruder.Cobblestone.Time", processTime[0][0]),
+		//			4,
+		//			72000);
+		//		processTime[0][1] = MathHelper
+		//				.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[0][1]), 4, 72000);
+		//		processTime[0][2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[0][2]),
+		//			4,
+		//			72000);
 
-		processWater[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[1]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[2]), 0, TEProps.MAX_FLUID_SMALL);
-
-		processTime[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Time", processTime[0]), 4, 72000);
-		processTime[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[1]), 4, 72000);
-		processTime[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[2]), 4, 72000);
+		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder.Recipes");
+		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder");
 
 		defaultSideConfig[TYPE] = new SideConfig();
 		defaultSideConfig[TYPE].numGroup = 3;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
+		defaultSideConfig[TYPE].slotGroups = new int[][] { { }, { }, { 0 } };
 		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
 		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
@@ -62,9 +83,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	static int[] processLava = { 0, 0, 1000 };
-	static int[] processWater = { 0, 1000, 1000 };
-	static int[] processTime = { 40, 80, 120 };
+	static int[][] processWater = { { 0, 1000, 1000 }, { 0, 500, 500 }, { 0, 250, 250 }, { 0, 125, 125 } };
+	static int[][] processTime = { { 40, 80, 120 }, { 40, 80, 60 }, { 40, 80, 30 }, { 40, 80, 15 } };
 	static ItemStack[] processItems = new ItemStack[3];
+
+	ItemStack[] outputItems;
 
 	int outputTracker;
 	byte curSelection;
@@ -79,6 +102,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		super();
 
 		inventory = new ItemStack[1];
+		outputItems = processItems.clone();
 	}
 
 	@Override
@@ -128,16 +152,17 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME || coldTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
+		if (hotTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME ||
+				coldTank.getFluidAmount() < FluidContainerRegistry.BUCKET_VOLUME) {
 			return false;
 		}
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(processItems[curSelection])) {
+		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[curSelection].getMaxStackSize();
+		return inventory[0].stackSize != outputItems[curSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -149,7 +174,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected void processStart() {
 
-		processMax = processTime[curSelection];
+		processMax = processTime[processLevel][curSelection];
 		processRem = processMax;
 		prevSelection = curSelection;
 	}
@@ -157,13 +182,23 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected void processFinish() {
 
+		int maxCreate = Math.min(
+			outputItems[prevSelection].stackSize,
+			Math.min(hotTank.getFluidAmount() / Math.max(1, processLava[prevSelection]),
+				coldTank.getFluidAmount() / Math.max(1, processWater[processLevel][prevSelection])));
+
 		if (inventory[0] == null) {
-			inventory[0] = processItems[prevSelection].copy();
+			inventory[0] = ItemHelper.cloneStack(outputItems[prevSelection], maxCreate);
 		} else {
-			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			inventory[0].stackSize += maxCreate;
+			int maxStack = inventory[0].getMaxStackSize();
+			if (inventory[0].stackSize > maxStack) {
+				maxCreate -= inventory[0].stackSize - maxStack;
+				inventory[0].stackSize = maxStack;
+			}
 		}
-		hotTank.drain(processLava[prevSelection], true);
-		coldTank.drain(processWater[prevSelection], true);
+		hotTank.drain(processLava[prevSelection] * maxCreate, true);
+		coldTank.drain(processWater[processLevel][prevSelection] * maxCreate, true);
 		prevSelection = curSelection;
 	}
 
@@ -282,6 +317,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		} else {
 			payload.addFluidStack(coldTank.getFluid());
 		}
+		payload.addByte(processLevel);
 		return payload;
 	}
 
@@ -306,10 +342,21 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
 		hotTank.setFluid(payload.getFluidStack());
 		coldTank.setFluid(payload.getFluidStack());
+
+		byte tempLevel = processLevel;
+
+		processLevel = payload.getByte();
+
+		if (tempLevel != processLevel) {
+			for (int i = 0; i < 3; i++) {
+				outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
+			}
+		}
 	}
 
 	@Override
@@ -339,11 +386,64 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		curSelection = lastSelection;
 	}
 
+	/* AUGMENT HELPERS */
+	@Override
+	protected boolean installAugment(int slot) {
+
+		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+		boolean installed = false;
+
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
+			return false;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST) > 0) {
+			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST);
+
+			if (augLevel > level) {
+				return false;
+			}
+			if (hasDuplicateAugment(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel, slot)) {
+				return false;
+			}
+			if (hasAugmentChain(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel)) {
+				processLevel = (byte) Math.max(augLevel, processLevel);
+				for (int i = 0; i < 3; i++) {
+					outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
+				}
+			} else {
+				return false;
+			}
+			installed = true;
+		}
+		return installed ? true : super.installAugment(slot);
+	}
+
+	@Override
+	protected void onInstalled() {
+
+		super.onInstalled();
+
+		for (int i = 0; i < 3; i++) {
+			outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
+		}
+	}
+
+	@Override
+	protected void resetAugments() {
+
+		super.resetAugments();
+
+		processLevel = 0;
+		for (int i = 0; i < 3; i++) {
+			outputItems[i].stackSize = 1;
+		}
+	}
+
 	/* ICustomInventory */
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return processItems;
+		return outputItems;
 	}
 
 	@Override

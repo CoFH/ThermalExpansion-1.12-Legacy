@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
 public class ItemAugment extends ItemBase implements IAugmentItem {
@@ -36,7 +37,8 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize("info.thermalexpansion.augment") + ": " + StringHelper.localize(getUnlocalizedName(stack) + ".name");
+		return StringHelper.localize("info.thermalexpansion.augment") + ": " +
+				StringHelper.localize(getUnlocalizedName(stack) + ".name");
 	}
 
 	@Override
@@ -54,25 +56,35 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		boolean augmentChain = true;
 		String type = getPrimaryType(stack);
 		list.add(StringHelper.localize("info.thermalexpansion.augment." + type));
 
 		int level = getPrimaryLevel(stack);
-		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] + StringHelper.END);
+		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] +
+			StringHelper.END);
 
+		/* DYNAMO EFFICIENCY */
 		if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
 			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
+
+			/* DYNAMO OUTPUT */
 		} else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
-			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
+			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " +
+					StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
 			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
+
+			/* MACHINE SECONDARY */
 		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
 			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_SUM[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
+
+			/* MACHINE SPEED */
 		} else if (type.equals(TEAugments.MACHINE_SPEED)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
@@ -82,9 +94,24 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 		}
-		if (level > 1) {
-			list.add(StringHelper.localize("info.thermalexpansion.augment.levels.0"));
-			list.add(StringHelper.localize("info.thermalexpansion.augment.levels.1"));
+		/* MACHINE SPECIFIC */
+		else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " +
+					TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.cobblestone.getLocalizedName() + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " +
+					TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[1][level] + " " + Blocks.stone.getLocalizedName() + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " +
+					TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[2][level] + " " + Blocks.obsidian.getLocalizedName() + " "
+					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "-" + (1000 - TEAugments.MACHINE_EXTRUDER_WATER_MOD[level]) / 10D + "% "
+					+ StringHelper.localize("info.thermalexpansion.augment.waterConsumed") + StringHelper.END);
+			addMachineInfo(list, level);
+		}
+		if (level > 1 && augmentChain) {
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.augment.levels.0"));
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.augment.levels.1"));
 		}
 	}
 

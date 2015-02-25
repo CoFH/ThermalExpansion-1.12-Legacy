@@ -65,19 +65,29 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		ItemStack stack = inventory[slot].copy();
 		amount = Math.min(amount, stack.stackSize);
 		stack.stackSize = amount;
+		int added = 0;
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 		/* Add to Adjacent Inventory */
 		if (Utils.isAccessibleInventory(curTile, side)) {
-			inventory[slot].stackSize -= amount - Utils.addToInventory(curTile, side, stack);
+			added = Utils.addToInventory(curTile, side, stack);
+			if (added >= amount) {
+				return false;
+			}
+			inventory[slot].stackSize -= amount - added;
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}
 			return true;
 		}
+		added = 0;
 		/* Add to Adjacent Pipe */
 		if (Utils.isPipeTile(curTile)) {
-			inventory[slot].stackSize -= Utils.addToPipeTile(curTile, side, stack);
+			added = Utils.addToPipeTile(curTile, side, stack);
+			if (added <= 0) {
+				return false;
+			}
+			inventory[slot].stackSize -= added;
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}

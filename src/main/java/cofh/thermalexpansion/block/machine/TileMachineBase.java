@@ -326,51 +326,6 @@ public abstract class TileMachineBase extends TileAugmentable {
 		}
 	}
 
-	/* IInventory */
-	@Override
-	public ItemStack decrStackSize(int slot, int amount) {
-
-		ItemStack stack = super.decrStackSize(slot, amount);
-
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
-			}
-		}
-		return stack;
-	}
-
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			if (isActive && inventory[slot] != null) {
-				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
-				}
-			}
-		}
-		super.setInventorySlotContents(slot, stack);
-	}
-
-	@Override
-	public void markDirty() {
-
-		if (isActive && !hasValidInput()) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
-		}
-		super.markDirty();
-	}
-
 	/* AUGMENT HELPERS */
 	@Override
 	protected boolean installAugment(int slot) {
@@ -471,6 +426,51 @@ public abstract class TileMachineBase extends TileAugmentable {
 		augmentAutoTransfer = false;
 		augmentReconfigSides = false;
 		augmentRedstoneControl = false;
+	}
+
+	/* IInventory */
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+
+		ItemStack stack = super.decrStackSize(slot, amount);
+
+		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
+			if (isActive && (inventory[slot] == null || !hasValidInput())) {
+				isActive = false;
+				wasActive = true;
+				tracker.markTime(worldObj);
+				processRem = 0;
+			}
+		}
+		return stack;
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+
+		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
+			if (isActive && inventory[slot] != null) {
+				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
+					isActive = false;
+					wasActive = true;
+					tracker.markTime(worldObj);
+					processRem = 0;
+				}
+			}
+		}
+		super.setInventorySlotContents(slot, stack);
+	}
+
+	@Override
+	public void markDirty() {
+
+		if (isActive && !hasValidInput()) {
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+			processRem = 0;
+		}
+		super.markDirty();
 	}
 
 	/* IEnergyInfo */

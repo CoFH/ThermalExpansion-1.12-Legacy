@@ -154,7 +154,6 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 		if (augmentReconfigSides != prevReconfig || augmentRedstoneControl != prevControl) {
 			onInstalled();
-			sendUpdatePacket(Side.SERVER);
 		}
 	}
 

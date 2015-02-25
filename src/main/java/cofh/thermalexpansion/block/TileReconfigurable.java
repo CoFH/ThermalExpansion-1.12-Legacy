@@ -98,6 +98,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 		} else {
 			payload.getByte();
 		}
+		callNeighborTileChange();
 	}
 
 	/* IReconfigurableFacing */
