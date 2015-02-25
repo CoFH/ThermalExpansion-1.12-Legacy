@@ -26,7 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.management.PreYggdrasilConverter;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 
@@ -102,24 +102,26 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		if (needsTag(stack)) {
 			setDefaultInventoryTag(stack);
 		}
-		if (SecurityHelper.isSecure(stack)) {
-			if (SecurityHelper.getOwner(stack).getId().variant() == 0) {
-				SecurityHelper.setOwner(stack, player.getGameProfile());
-			}
-		}
 		if (ServerHelper.isServerWorld(world)) {
+			if (SecurityHelper.isSecure(stack)) {
+				if (SecurityHelper.getOwner(stack).getId().variant() == 0) {
+					SecurityHelper.setOwner(stack, player.getGameProfile());
+					player.addChatMessage(new ChatComponentTranslation("chat.cofh.secureItem"));
+					return stack;
+				}
+			}
 			if (canPlayerAccess(stack, player.getCommandSenderName())) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
-				player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure.1") + " " + SecurityHelper.getOwnerName(stack) + "! "
-						+ StringHelper.localize("chat.cofh.secure.2")));
+				player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", SecurityHelper.getOwnerName(stack)));
 			}
 		}
 		return stack;
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX,
+			float hitY, float hitZ) {
 
 		return false;
 	}
@@ -165,9 +167,12 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 		super.registerIcons(ir);
 
-		latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPublic");
-		latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchFriends");
-		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPrivate");
+		latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
+				"LatchPublic");
+		latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
+				"LatchFriends");
+		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
+				"LatchPrivate");
 	}
 
 	/* HELPERS */
@@ -220,7 +225,11 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	public static enum Types {
-		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
+		CREATIVE,
+		BASIC,
+		HARDENED,
+		REINFORCED,
+		RESONANT
 	}
 
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
