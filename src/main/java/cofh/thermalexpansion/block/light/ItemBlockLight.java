@@ -3,7 +3,10 @@ package cofh.thermalexpansion.block.light;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
@@ -32,6 +35,20 @@ public class ItemBlockLight extends ItemBlock {
 	public int getMetadata(int i) {
 
 		return i % BlockLight.Types.values().length;
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		list.add(StringHelper.getInfoText("info.thermalexpansion.light.0"));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.light.1"));
+		list.add(StringHelper.getNoticeText("info.thermalexpansion.multimeter"));
 	}
 
 }

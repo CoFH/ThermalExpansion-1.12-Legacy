@@ -56,10 +56,10 @@ public class ItemBlockDynamo extends ItemBlockBase {
 		// RSControlHelper.addRSControlInformation(stack, list);
 
 		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
-		list.add(StringHelper.localize("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(stack)]));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(stack)]));
 
 		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Types.STEAM.ordinal()) {
-			list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo.steam.0"));
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.dynamo.steam.0"));
 		}
 	}
 

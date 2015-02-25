@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.plate;
 
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -51,4 +54,22 @@ public class ItemBlockPlate extends ItemBlock {
 		return false;
 	}
 
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		if (ItemHelper.getItemDamage(stack) <= 0) {
+			return;
+		}
+		SecurityHelper.addOwnerInformation(stack, list);
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		SecurityHelper.addAccessInformation(stack, list);
+
+		list.add(StringHelper.getInfoText("info.thermalexpansion.plate." + BlockPlate.NAMES[ItemHelper.getItemDamage(stack)]));
+		list.add(StringHelper.getNoticeText("info.thermalexpansion.multimeter"));
+	}
 }
