@@ -264,7 +264,7 @@ public class BlockCell extends BlockTEBase {
 			GameRegistry.addRecipe(new ShapedOreRecipe(cellResonant, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I',
 					"ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
-			.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
+					.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
 		}
 		TECraftingHandler.addSecureRecipe(cellCreative);
 		TECraftingHandler.addSecureRecipe(cellBasic);

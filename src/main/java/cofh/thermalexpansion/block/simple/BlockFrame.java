@@ -300,7 +300,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	public boolean postInit() {
 
 		GameRegistry
-		.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
+				.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
 
 		/* Direct Recipes */
 		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
@@ -341,7 +341,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(frameIlluminator, 2), new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened",
-			'Q', "gemQuartz", 'S', "ingotSignalum" }));
+				'Q', "gemQuartz", 'S', "ingotSignalum" }));
 
 		return true;
 	}
@@ -351,7 +351,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	}
 
 	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellHardened",
-		"cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };
+			"cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };
 
 	public static ItemStack frameMachineBasic;
 	public static ItemStack frameMachineHardened;

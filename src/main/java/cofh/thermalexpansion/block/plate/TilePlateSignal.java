@@ -95,16 +95,19 @@ public class TilePlateSignal extends TilePlateBase {
 
 		switch (collisionMode) {
 		case 3:
-			if (!(theEntity instanceof IMob))
+			if (!(theEntity instanceof IMob)) {
 				return;
+			}
 			break;
 		case 2:
-			if (!(theEntity instanceof EntityPlayer))
+			if (!(theEntity instanceof EntityPlayer)) {
 				return;
+			}
 			break;
 		case 1:
-			if (!(theEntity instanceof EntityLivingBase))
+			if (!(theEntity instanceof EntityLivingBase)) {
 				return;
+			}
 			break;
 		case 0:
 		default:

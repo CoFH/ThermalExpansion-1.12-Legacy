@@ -43,11 +43,11 @@ public class TECraftingHandler {
 	public static void addMachineUpgradeRecipes(ItemStack stack) {
 
 		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(1, RecipeMachineUpgrade.getMachineLevel(stack, 1), new Object[] { "IGI", " X ", "I I", 'I',
-			"ingotInvar", 'G', "gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) }));
+				"ingotInvar", 'G', "gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) }));
 		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(2, RecipeMachineUpgrade.getMachineLevel(stack, 2), new Object[] { "IGI", " X ", "I I", 'I',
-			"blockGlassHardened", 'G', "gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) }));
+				"blockGlassHardened", 'G', "gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) }));
 		NEIRecipeWrapper.addUpgradeRecipe(new RecipeMachineUpgrade(3, RecipeMachineUpgrade.getMachineLevel(stack, 3), new Object[] { "IGI", " X ", "I I", 'I',
-			"ingotSilver", 'G', "gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) }));
+				"ingotSilver", 'G', "gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) }));
 	}
 
 	public static void addSecureRecipe(ItemStack stack) {

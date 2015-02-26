@@ -40,16 +40,16 @@ public class GuiActivator extends GuiAugmentableBase {
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 
 		settingClick = new ElementButton(this, 120, 20, "LeftClick", myTile.leftClick ? 176 : 196, 0, myTile.leftClick ? 176 : 196, 20, 20, 20, TEX_PATH)
-		.setToolTip(myTile.leftClick ? "info.thermalexpansion.clickLeft" : "info.thermalexpansion.clickRight");
+				.setToolTip(myTile.leftClick ? "info.thermalexpansion.clickLeft" : "info.thermalexpansion.clickRight");
 		settingSneak = new ElementButton(this, 144, 20, "Sneak", myTile.actsSneaking ? 176 : 196, 60, myTile.actsSneaking ? 176 : 196, 80, 20, 20, TEX_PATH)
-		.setToolTip(myTile.actsSneaking ? "info.thermalexpansion.sneakOn" : "info.thermalexpansion.sneakOff");
+				.setToolTip(myTile.actsSneaking ? "info.thermalexpansion.sneakOn" : "info.thermalexpansion.sneakOff");
 		settingSlot = new ElementButton(this, 120, 44, "tickSlot", myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 120,
 				myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216, 140, 20, 20, TEX_PATH)
-		.setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.slotsRR" : myTile.tickSlot == 1 ? "info.thermalexpansion.slotsRand"
-				: "info.thermalexpansion.slotsFirst");
+				.setToolTip(myTile.tickSlot == 0 ? "info.thermalexpansion.slotsRR" : myTile.tickSlot == 1 ? "info.thermalexpansion.slotsRand"
+						: "info.thermalexpansion.slotsFirst");
 		settingAngle = new ElementButton(this, 144, 44, "Angle", myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216, 180, myTile.angle == 0 ? 176
 				: myTile.angle == 1 ? 196 : 216, 200, 20, 20, TEX_PATH).setToolTip(myTile.angle == 0 ? "info.thermalexpansion.angleLow"
-						: myTile.angle == 1 ? "info.thermalexpansion.angleLevel" : "info.thermalexpansion.angleHigh");
+				: myTile.angle == 1 ? "info.thermalexpansion.angleLevel" : "info.thermalexpansion.angleHigh");
 
 		addElement(settingClick);
 		addElement(settingSneak);

@@ -120,8 +120,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX,
-			float hitY, float hitZ) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
 		return false;
 	}
@@ -167,12 +166,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 		super.registerIcons(ir);
 
-		latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
-				"LatchPublic");
-		latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
-				"LatchFriends");
-		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" +
-				"LatchPrivate");
+		latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPublic");
+		latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchFriends");
+		latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPrivate");
 	}
 
 	/* HELPERS */
@@ -225,11 +221,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	public static enum Types {
-		CREATIVE,
-		BASIC,
-		HARDENED,
-		REINFORCED,
-		RESONANT
+		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };

@@ -138,8 +138,9 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}
 			switch (Types.values()[world.getBlockMetadata(x, y, z)]) {
 			case IMPULSE:
-				if ((tile.direction >> 1) == 0 && (tile.alignment == 0))
+				if ((tile.direction >> 1) == 0 && (tile.alignment == 0)) {
 					entity.fallDistance = 0;
+				}
 				break;
 			case TRANSLOCATE:
 				tile.onEntityCollidedWithBlock(entity);

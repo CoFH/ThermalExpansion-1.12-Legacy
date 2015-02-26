@@ -42,10 +42,12 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		if (intensity == 0)
+		if (intensity == 0) {
 			return;
-		if ((direction >> 1) == 0 && (alignment == 0))
+		}
+		if ((direction >> 1) == 0 && (alignment == 0)) {
 			theEntity.fallDistance = 0;
+		}
 		double[] v = getVector(intensityX, intensityY, 0D);
 		accelerateEntity(theEntity, v[0], v[1], v[2]);
 	}
@@ -75,36 +77,37 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		// in the direction we want to move the entity, and adds to it if it is, else setting it
 
 		// Truth table:
-		// x                      = -5;
-		// motionX                = -5;
-		// sign(x)                = 1000 0000 0000 0000
-		// sign(motionX)          = 1000 0000 0000 0000
-		// xSign ^ motionXSign    = 0000 0000 0000 0000
+		// x = -5;
+		// motionX = -5;
+		// sign(x) = 1000 0000 0000 0000
+		// sign(motionX) = 1000 0000 0000 0000
+		// xSign ^ motionXSign = 0000 0000 0000 0000
 		// ~(xSign ^ motionXSign) = 1111 1111 1111 1111
-		// combinedSign >> 63     = 1111 1111 1111 1111
+		// combinedSign >> 63 = 1111 1111 1111 1111
 		// *****
-		// x                      = 5;
-		// motionX                = 5;
-		// sign(x)                = 0000 0000 0000 0000
-		// sign(motionX)          = 0000 0000 0000 0000
-		// xSign ^ motionXSign    = 0000 0000 0000 0000
+		// x = 5;
+		// motionX = 5;
+		// sign(x) = 0000 0000 0000 0000
+		// sign(motionX) = 0000 0000 0000 0000
+		// xSign ^ motionXSign = 0000 0000 0000 0000
 		// ~(xSign ^ motionXSign) = 1111 1111 1111 1111
-		// combinedSign >> 63     = 1111 1111 1111 1111
+		// combinedSign >> 63 = 1111 1111 1111 1111
 		// *****
-		// x                      = -5;
-		// motionX                = 5;
-		// sign(x)                = 1000 0000 0000 0000
-		// sign(motionX)          = 0000 0000 0000 0000
-		// xSign ^ motionXSign    = 1000 0000 0000 0000
+		// x = -5;
+		// motionX = 5;
+		// sign(x) = 1000 0000 0000 0000
+		// sign(motionX) = 0000 0000 0000 0000
+		// xSign ^ motionXSign = 1000 0000 0000 0000
 		// ~(xSign ^ motionXSign) = 0111 1111 1111 1111
-		// combinedSign >> 63     = 0000 0000 0000 0000
+		// combinedSign >> 63 = 0000 0000 0000 0000
 	}
 
 	private void updateForce() {
 
 		double fAngle = angle * Math.PI / 1800D;
-		if ((direction >> 1) == 0)
+		if ((direction >> 1) == 0) {
 			fAngle = 0;
+		}
 		intensityX = Math.cos(fAngle) * intensity / 10D;
 		intensityY = Math.sin(fAngle) * intensity / 10D;
 	}

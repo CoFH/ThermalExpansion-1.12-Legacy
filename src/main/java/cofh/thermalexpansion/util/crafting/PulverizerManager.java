@@ -187,6 +187,12 @@ public class PulverizerManager {
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
 			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
 		}
+		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
+			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
+		}
+		if (ItemHelper.oreNameExists("silicon")) {
+			addRecipe(1600, new ItemStack(Blocks.sand, 1), ItemHelper.cloneStack(OreDictionary.getOres("silicon").get(0), 1));
+		}
 
 		String[] oreNameList = OreDictionary.getOreNames();
 		String oreName = "";
@@ -416,10 +422,11 @@ public class PulverizerManager {
 		static final String INGOT = "ingot";
 		static final String NUGGET = "nugget";
 		static final String LOG = "log";
+		static final String SAND = "sand";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG);
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG) || oreName.equals(SAND);
 		}
 
 		public static int getOreID(ItemStack stack) {

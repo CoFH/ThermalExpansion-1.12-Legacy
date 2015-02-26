@@ -147,9 +147,11 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 		}
 
 		Object[] items = recipe.getInput();
-		for (Object item : items)
-			if (item instanceof List && ((List<?>) item).isEmpty())// ore handler, no ores
+		for (Object item : items) {
+			if (item instanceof List && ((List<?>) item).isEmpty()) {
 				return null;
+			}
+		}
 
 		return new CachedMachineRecipe(width, height, items, recipe.getRecipeOutput());
 	}

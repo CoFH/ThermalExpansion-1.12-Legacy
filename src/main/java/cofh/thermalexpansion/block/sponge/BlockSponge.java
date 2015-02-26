@@ -164,7 +164,7 @@ public class BlockSponge extends BlockTEBase {
 
 		if (enable[Types.BASIC.ordinal()]) {
 			GameRegistry
-			.addRecipe(new ShapedOreRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
+					.addRecipe(new ShapedOreRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(spongeMagmatic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B',
