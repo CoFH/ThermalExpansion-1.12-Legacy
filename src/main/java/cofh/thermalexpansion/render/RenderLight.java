@@ -218,10 +218,12 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		}
 		int metadata = item.getItemDamage();
 		int color = 0xFFFFFFFF;
+		boolean modified = false;
 
-		if (item.hasTagCompound()) {
+		if (item.hasTagCompound() && item.stackTagCompound.hasKey("Color")) {
 			color = item.getTagCompound().getInteger("Color");
 			color = (color << 8) + 0xFF;
+			modified = true;
 		}
 
 		RenderUtils.preItemRender();
@@ -229,7 +231,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 		switch (BlockLight.Types.getType(metadata)) {
 		case ILLUMINATOR:
-			renderItemIlluminator(color, item.hasTagCompound(), offset);
+			renderItemIlluminator(color, modified, offset);
 			break;
 		case LAMP_HALO:
 		case LAMP_BASIC:

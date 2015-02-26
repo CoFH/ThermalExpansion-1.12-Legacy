@@ -73,6 +73,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 
 			if (stack.stackTagCompound.hasKey("Color")) {
+				System.out.println("yup fucked");
 				tile.setColor(stack.stackTagCompound.getInteger("Color"));
 			}
 			tile.dim = stack.stackTagCompound.getBoolean("Dim");
@@ -170,7 +171,10 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
-		tag = new NBTTagCompound();
+
+		if (tag == null) {
+			tag = new NBTTagCompound();
+		}
 		if (tile.modified) {
 			tag.setInteger("Color", tile.color);
 		}
