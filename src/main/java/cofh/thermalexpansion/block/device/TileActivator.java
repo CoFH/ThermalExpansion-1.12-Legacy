@@ -25,7 +25,6 @@ import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -358,7 +357,7 @@ public class TileActivator extends TileAugmentable {
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 
 		Block theBlock = worldObj.getBlock(coords[0], coords[1], coords[2]);
-		if (theBlock != Blocks.air) {
+		if (theBlock.isAir(worldObj, coords[0], coords[1], coords[2])) {
 			if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock == -1) {
 				myFakePlayer.theItemInWorldManager.onBlockClicked(coords[0], coords[1], coords[2], facing ^ 1);
 			} else if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
