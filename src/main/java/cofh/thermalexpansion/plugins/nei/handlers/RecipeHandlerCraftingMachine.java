@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.nei.handlers;
 
-import codechicken.core.ReflectionManager;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -139,8 +138,8 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 		int width;
 		int height;
 		try {
-			width = ReflectionManager.getField(ShapedOreRecipe.class, Integer.class, recipe, 4);
-			height = ReflectionManager.getField(ShapedOreRecipe.class, Integer.class, recipe, 5);
+			width = 3;
+			height = 3;
 		} catch (Exception e) {
 			NEIClientConfig.logger.error("Error loading recipe", e);
 			return null;
