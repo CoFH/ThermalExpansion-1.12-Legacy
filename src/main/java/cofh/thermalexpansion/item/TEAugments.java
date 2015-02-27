@@ -54,8 +54,8 @@ public class TEAugments {
 		}
 
 		for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
-			machineExtruderBoost[i] = itemAugment.addItem(512 + i, MACHINE_EXTRUDER_BOOST + i);
-			itemAugment.addAugmentData(512 + i, MACHINE_EXTRUDER_BOOST, 1 + i);
+			machineExtruderBoost[i] = itemAugment.addItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
+			itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i);
 		}
 	}
 
@@ -124,7 +124,7 @@ public class TEAugments {
 	public static byte NUM_MACHINE_EXTRUDER = 3;
 
 	public static final int[] DYNAMO_EFFICIENCY_MOD = { 0, 100, 250, 500 };
-	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 100, 350, 750 };
+	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 100, 350, 850 };
 	public static final int[] DYNAMO_OUTPUT_MOD = { 1, 2, 4, 8 };
 	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_MOD = { 0, 150, 100, 50 };
 	public static final int[] DYNAMO_OUTPUT_EFFICIENCY_SUM = { 0, 150, 250, 300 };
@@ -153,6 +153,7 @@ public class TEAugments {
 	public static ItemStack enderItem;
 
 	public static ItemStack generalAutoTransfer;
+	public static ItemStack generalAutoInput;
 	public static ItemStack generalReconfigSides;
 	public static ItemStack generalRedstoneControl;
 
@@ -174,11 +175,14 @@ public class TEAugments {
 	public static String ENERGY_STORAGE = "energyStorage";
 
 	public static String GENERAL_AUTO_TRANSFER = "generalAutoTransfer";
+	public static String GENERAL_AUTO_INPUT = "generalAutoInput";
 	public static String GENERAL_RECONFIG_SIDES = "generalReconfigSides";
 	public static String GENERAL_REDSTONE_CONTROL = "generalRedstoneControl";
 
 	public static String MACHINE_SECONDARY = "machineSecondary";
 	public static String MACHINE_SPEED = "machineSpeed";
 
+	public static String MACHINE_FURNACE_BOOST = "machineFurnaceBoost";
 	public static String MACHINE_EXTRUDER_BOOST = "machineExtruderBoost";
+
 }

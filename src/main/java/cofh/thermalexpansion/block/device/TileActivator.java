@@ -161,7 +161,6 @@ public class TileActivator extends TileAugmentable {
 			} else if (!needsWorld) {
 
 				if (leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) {
-
 					work = true;
 					int tickSlot = getNextStackIndex();
 					myFakePlayer.theItemInWorldManager.updateBlockRemoving();
@@ -169,7 +168,6 @@ public class TileActivator extends TileAugmentable {
 						work = simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
 					}
 				} else if (!leftClick && myFakePlayer.itemInUse != null) {
-
 					work = true;
 					int slot = getNextStackIndex();
 					myFakePlayer.inventory.currentItem = slot;
@@ -177,11 +175,9 @@ public class TileActivator extends TileAugmentable {
 					checkItemsUpdated();
 				}
 			}
-
 			if (work) {
 				drainEnergy(ACTIVATION_ENERGY);
 			}
-
 		} else {
 			if (isActive) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -374,16 +370,15 @@ public class TileActivator extends TileAugmentable {
 			List<Entity> entities = worldObj.selectEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing),
 					new IEntitySelector() {
 
-						@Override
-						public boolean isEntityApplicable(Entity e) {
+				@Override
+				public boolean isEntityApplicable(Entity e) {
 
-							return e.canAttackWithItem();
-						}
+					return e.canAttackWithItem();
+				}
 
-					});
+			});
 
 			if (entities.size() == 0) {
-
 				return false;
 			}
 			thePlayer.attackTargetEntityWithCurrentItem(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size()) : 0));
