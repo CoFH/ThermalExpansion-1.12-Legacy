@@ -81,7 +81,6 @@ public class TileActivator extends TileAugmentable {
 	public boolean actsSneaking = false;
 	public byte angle = 1;
 
-	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
 	int slotTracker = 0;
 	int[] tracker;
@@ -93,6 +92,22 @@ public class TileActivator extends TileAugmentable {
 		inventory = new ItemStack[10];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 3);
 
+	}
+
+	@Override
+	public int getInvSlotCount() {
+
+		return MAX_SLOT;
+	}
+
+	@Override
+	public void cofh_validate() {
+
+		super.cofh_validate();
+
+		if (ServerHelper.isServerWorld(worldObj)) {
+			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
+		}
 	}
 
 	@Override
@@ -130,7 +145,7 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public void onRedstoneUpdate() {
 
-		if (!redstoneControlOrDisable() && !needsWorld && myFakePlayer.itemInUse != null) {
+		if (!redstoneControlOrDisable() && myFakePlayer.itemInUse != null) {
 			myFakePlayer.stopUsingItem();
 		} else {
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
@@ -158,7 +173,7 @@ public class TileActivator extends TileAugmentable {
 
 			if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 				work = doDeploy();
-			} else if (!needsWorld) {
+			} else {
 
 				if (leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) {
 					work = true;
@@ -229,16 +244,13 @@ public class TileActivator extends TileAugmentable {
 
 		// FIXME: is this called too frequently? round-robin is wrong
 
-		if (!needsWorld) {
-			if ((leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) || myFakePlayer.itemInUse != null) {
-				return slotTracker;
-			}
-			if (tickSlot == 0) {
-				return incrementTracker();
-			} else if (tickSlot == 1) {
-				return getRandomStackIndex();
-			}
-			return 0;
+		if ((leftClick && myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock > -1) || myFakePlayer.itemInUse != null) {
+			return slotTracker;
+		}
+		if (tickSlot == 0) {
+			return incrementTracker();
+		} else if (tickSlot == 1) {
+			return getRandomStackIndex();
 		}
 		return 0;
 	}
@@ -284,10 +296,6 @@ public class TileActivator extends TileAugmentable {
 
 	public void updateFakePlayer(int tickSlot) {
 
-		if (needsWorld) {
-			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
-			needsWorld = false;
-		}
 		myFakePlayer.inventory.mainInventory = new ItemStack[36];
 		for (int i = 0; i < MAX_SLOT; i++) {
 			myFakePlayer.inventory.mainInventory[i] = getStackInSlot(i);
@@ -340,7 +348,7 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public boolean rotateBlock() {
 
-		if (!needsWorld) {
+		if (inWorld) {
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 			myFakePlayer.theItemInWorldManager.cancelDestroyingBlock(coords[0], coords[1], coords[2]);
 			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;

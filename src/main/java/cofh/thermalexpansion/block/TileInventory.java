@@ -33,7 +33,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
 	protected AccessMode access = AccessMode.PUBLIC;
 	protected boolean canAccess = true;
-	private boolean inWorld = false;
+	protected boolean inWorld = false;
 
 	public ItemStack[] inventory = new ItemStack[0];
 
