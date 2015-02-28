@@ -13,6 +13,7 @@ import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -397,6 +398,27 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.readPortableData(player, tag);
+		lockPrimary = tag.getBoolean("SlotLock");
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.writePortableData(player, tag);
+		tag.setBoolean("SlotLock", lockPrimary);
 	}
 
 	/* IFluidHandler */

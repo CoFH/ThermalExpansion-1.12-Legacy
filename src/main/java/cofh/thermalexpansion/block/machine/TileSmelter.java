@@ -10,6 +10,7 @@ import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -328,6 +329,27 @@ public class TileSmelter extends TileMachineBase {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* IPortableData */
+	@Override
+	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.readPortableData(player, tag);
+		lockPrimary = tag.getBoolean("SlotLock");
+	}
+
+	@Override
+	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player.getCommandSenderName())) {
+			return;
+		}
+		super.writePortableData(player, tag);
+		tag.setBoolean("SlotLock", lockPrimary);
 	}
 
 }
