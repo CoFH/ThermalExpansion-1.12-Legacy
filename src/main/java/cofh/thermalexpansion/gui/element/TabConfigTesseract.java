@@ -16,14 +16,13 @@ public class TabConfigTesseract extends TabBase {
 			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
 	TileTesseract myTile;
-	String myPlayer;
 
-	public TabConfigTesseract(GuiBase gui, TileTesseract theTile, String playerName) {
+	public TabConfigTesseract(GuiBase gui, TileTesseract theTile) {
 
-		this(gui, TabConfiguration.defaultSide, theTile, playerName);
+		this(gui, TabConfiguration.defaultSide, theTile);
 	}
 
-	public TabConfigTesseract(GuiBase gui, int side, TileTesseract theTile, String playerName) {
+	public TabConfigTesseract(GuiBase gui, int side, TileTesseract theTile) {
 
 		super(gui, side);
 
@@ -35,7 +34,6 @@ public class TabConfigTesseract extends TabBase {
 		maxHeight = 92;
 		maxWidth = 100;
 		myTile = theTile;
-		myPlayer = playerName;
 	}
 
 	public static final String[] buttonNames = { "IconSendOnly", "IconRecvOnly", "IconSendRecv", "IconBlocked" };

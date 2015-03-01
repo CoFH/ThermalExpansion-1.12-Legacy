@@ -13,6 +13,8 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalfoundation.fluid.TFFluids;
 
+import java.util.UUID;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +26,7 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateImpulse myTile;
-	String playerName;
+	UUID playerName;
 
 	ElementButton decIntensity;
 	ElementButton incIntensity;
@@ -38,7 +40,7 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 		myTile = (TilePlateImpulse) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 		drawInventory = false;
 		this.height = 100;
 

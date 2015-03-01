@@ -13,6 +13,8 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.TabConfigCell;
 
+import java.util.UUID;
+
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -24,7 +26,7 @@ public class GuiCell extends GuiBaseAdv {
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileCell myTile;
-	String playerName;
+	UUID playerName;
 
 	ElementButton decRecv;
 	ElementButton incRecv;
@@ -36,7 +38,7 @@ public class GuiCell extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileCell) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 
 		generateInfo("tab.thermalexpansion.cell", 2);
 	}

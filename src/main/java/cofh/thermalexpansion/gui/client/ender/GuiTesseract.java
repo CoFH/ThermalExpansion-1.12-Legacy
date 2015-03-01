@@ -17,6 +17,7 @@ import cofh.thermalfoundation.fluid.TFFluids;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -34,7 +35,7 @@ public class GuiTesseract extends GuiBaseAdv {
 	static final int TB_HEIGHT = 12;
 
 	TileTesseract myTile;
-	String playerName;
+	UUID playerName;
 
 	GuiTextField tbName;
 	GuiLimitedTextField tbFreq;
@@ -56,7 +57,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		myTile = (TileTesseract) theTile;
 		name = myTile.getInventoryName();
 		drawInventory = false;
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 
 		tempFreq = myTile.frequency;
 
@@ -69,7 +70,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		super.initGui();
 
 		addTab(new TabRedstone(this, myTile));
-		addTab(new TabConfigTesseract(this, myTile, playerName));
+		addTab(new TabConfigTesseract(this, myTile));
 
 		addTab(new TabInfo(this, myInfo));
 		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabOperation()));

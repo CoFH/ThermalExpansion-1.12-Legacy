@@ -13,6 +13,8 @@ import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 	protected TileDynamoBase myTile;
-	protected String playerName;
+	protected UUID playerName;
 
 	public String myInfo = "";
 	public String myTutorial = StringHelper.tutorialTabAugment();
@@ -35,7 +37,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		myTile = (TileDynamoBase) tile;
 		name = myTile.getInventoryName();
-		playerName = player.getCommandSenderName();
+		playerName = player.getGameProfile().getId();
 
 		if (myTile.augmentRedstoneControl) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();

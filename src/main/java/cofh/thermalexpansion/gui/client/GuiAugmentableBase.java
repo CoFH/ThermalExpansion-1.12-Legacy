@@ -13,6 +13,8 @@ import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TileAugmentable;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -22,7 +24,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
 	protected TileAugmentable myTile;
-	protected String playerName;
+	protected UUID playerName;
 
 	public String myTutorial = StringHelper.tutorialTabAugment();
 
@@ -35,7 +37,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
 		myTile = (TileAugmentable) tile;
 		name = myTile.getInventoryName();
-		playerName = player.getCommandSenderName();
+		playerName = player.getGameProfile().getId();
 
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();

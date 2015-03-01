@@ -13,6 +13,8 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalfoundation.fluid.TFFluids;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -23,7 +25,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTranslocate myTile;
-	String playerName;
+	UUID playerName;
 
 	ElementButton decDistance;
 	ElementButton incDistance;
@@ -35,7 +37,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 		myTile = (TilePlateTranslocate) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 		drawInventory = false;
 		this.height = 100;
 

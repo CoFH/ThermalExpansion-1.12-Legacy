@@ -93,7 +93,6 @@ public class InsolatorManager {
 
 	public static void addDefaultRecipes() {
 
-		String comment;
 		String category = "RecipeManagers.Insolator.Recipes";
 
 		boolean recipeCocoaBean = ThermalExpansion.config.get(category, "CocoaBean", true);

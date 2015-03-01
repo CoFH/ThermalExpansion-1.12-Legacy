@@ -102,6 +102,7 @@ public class Utils {
 	private static int addToPipeTile_do(TileEntity tile, int side, ItemStack stack) {
 
 		if (tile instanceof IPipeTile) {
+			@SuppressWarnings("deprecation")
 			int used = ((IPipeTile) tile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
 			return used;
 		}

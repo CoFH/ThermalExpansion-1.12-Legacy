@@ -9,6 +9,8 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
 import cofh.thermalexpansion.network.PacketTEBase;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -19,7 +21,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	public TileWorkbench myTile;
-	String playerName;
+	UUID playerName;
 
 	ElementButton setSchematic;
 	ElementButton getSchematic;
@@ -29,7 +31,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 		super(new ContainerWorkbench(inventory, theTile), TEXTURE);
 		myTile = (TileWorkbench) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 		ySize = 210;
 
 		generateInfo("tab.thermalexpansion.device.workbench", 3);

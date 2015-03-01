@@ -10,13 +10,15 @@ import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerStrongbox;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
 public class GuiStrongbox extends GuiBaseAdv {
 
 	TileStrongbox myTile;
-	String playerName;
+	UUID playerName;
 	int storageIndex;
 
 	public GuiStrongbox(InventoryPlayer inventory, TileEntity tile) {
@@ -24,7 +26,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		super(new ContainerStrongbox(inventory, tile));
 
 		myTile = (TileStrongbox) tile;
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 		storageIndex = myTile.getStorageIndex();
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
 		name = myTile.getInventoryName();

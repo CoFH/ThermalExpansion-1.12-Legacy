@@ -11,20 +11,22 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.ContainerSatchel;
 import cofh.thermalexpansion.item.ItemSatchel;
 
+import java.util.UUID;
+
 import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSatchel extends GuiBaseAdv {
 
 	boolean enchanted;
 	boolean secure;
-	String playerName;
+	UUID playerName;
 	int storageIndex;
 
 	public GuiSatchel(InventoryPlayer inventory, ContainerSatchel container) {
 
 		super(container);
 
-		playerName = inventory.player.getCommandSenderName();
+		playerName = inventory.player.getGameProfile().getId();
 		storageIndex = ItemSatchel.getStorageIndex(container.getContainerStack());
 		enchanted = ItemSatchel.isEnchanted(container.getContainerStack());
 		secure = SecurityHelper.isSecure(container.getContainerStack());
@@ -55,16 +57,6 @@ public class GuiSatchel extends GuiBaseAdv {
 		addTab(new TabInfo(this, myInfo));
 		if (ItemSatchel.enableSecurity && secure) {
 			addTab(new TabSecurity(this, (ISecurable) inventorySlots, playerName));
-		}
-	}
-
-	@Override
-	public void updateScreen() {
-
-		super.updateScreen();
-
-		if (secure && !((ISecurable) inventorySlots).canPlayerAccess(playerName)) {
-			this.mc.thePlayer.closeScreen();
 		}
 	}
 
