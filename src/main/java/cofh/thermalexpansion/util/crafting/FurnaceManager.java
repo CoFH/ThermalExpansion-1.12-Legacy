@@ -206,6 +206,13 @@ public class FurnaceManager {
 			this.input = input;
 			this.output = output;
 			this.energy = energy;
+
+			if (input.stackSize <= 0) {
+				input.stackSize = 1;
+			}
+			if (output.stackSize <= 0) {
+				output.stackSize = 1;
+			}
 		}
 
 		public ItemStack getInput() {

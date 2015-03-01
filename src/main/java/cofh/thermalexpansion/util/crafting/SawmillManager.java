@@ -231,6 +231,16 @@ public class SawmillManager {
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
+
+			if (input.stackSize <= 0) {
+				input.stackSize = 1;
+			}
+			if (primaryOutput.stackSize <= 0) {
+				primaryOutput.stackSize = 1;
+			}
+			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
+				secondaryOutput.stackSize = 1;
+			}
 		}
 
 		public ItemStack getInput() {

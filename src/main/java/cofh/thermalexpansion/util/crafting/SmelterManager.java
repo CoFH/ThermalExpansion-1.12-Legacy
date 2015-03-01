@@ -441,6 +441,19 @@ public class SmelterManager {
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
+
+			if (primaryInput.stackSize <= 0) {
+				primaryInput.stackSize = 1;
+			}
+			if (secondaryInput.stackSize <= 0) {
+				secondaryInput.stackSize = 1;
+			}
+			if (primaryOutput.stackSize <= 0) {
+				primaryOutput.stackSize = 1;
+			}
+			if (secondaryOutput != null && secondaryOutput.stackSize <= 0) {
+				secondaryOutput.stackSize = 1;
+			}
 		}
 
 		public ItemStack getPrimaryInput() {

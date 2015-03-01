@@ -186,11 +186,11 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
-		renderFrame(item.getItemDamage(), 0, offset, offset, offset);
+		renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
 		CCRenderState.draw();
 
 		CCRenderState.startDrawing();
-		renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
+		renderFrame(item.getItemDamage(), 0, offset, offset, offset);
 		CCRenderState.draw();
 
 		RenderUtils.postItemRender();
