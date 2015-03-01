@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.inventory.ComparableItemStackSafe;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.item.TFItems;
@@ -16,6 +16,7 @@ import java.util.Set;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -23,8 +24,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackSafe, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackSafe, RecipeFurnace>();
-	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
+	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>();
+	private static ComparableItemStackFurnace query = new ComparableItemStackFurnace(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -119,7 +120,11 @@ public class FurnaceManager {
 		ItemStack output;
 
 		for (ItemStack key : smeltingList.keySet()) {
+			if (key != null) {
+				System.out.println(key.toString());
+			}
 			if (key == null || recipeExists(key)) {
+
 				continue;
 			}
 			output = smeltingList.get(key);
@@ -143,12 +148,12 @@ public class FurnaceManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeFurnace> tempMap = new THashMap<ComparableItemStackSafe, RecipeFurnace>(recipeMap.size());
+		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>(recipeMap.size());
 		RecipeFurnace tempRecipe;
 
-		for (Entry<ComparableItemStackSafe, RecipeFurnace> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSafe(tempRecipe.input), tempRecipe);
+			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -161,7 +166,7 @@ public class FurnaceManager {
 			return false;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
+		recipeMap.put(new ComparableItemStackFurnace(input), recipe);
 		return true;
 	}
 
@@ -171,14 +176,14 @@ public class FurnaceManager {
 			return false;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
+		recipeMap.put(new ComparableItemStackFurnace(input), recipe);
 		return true;
 	}
 
 	/* REMOVE RECIPES */
 	public static boolean removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
+		return recipeMap.remove(new ComparableItemStackFurnace(input)) != null;
 	}
 
 	/* HELPER FUNCTIONS */
@@ -228,6 +233,57 @@ public class FurnaceManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+	}
+
+	/* ITEMSTACK CLASS */
+	public static class ComparableItemStackFurnace extends ComparableItemStack {
+
+		static final String ORE = "ore";
+		static final String DUST = "dust";
+
+		public static boolean safeOreType(String oreName) {
+
+			return oreName.startsWith(ORE) || oreName.startsWith(DUST);
+		}
+
+		public static int getOreID(ItemStack stack) {
+
+			int id = ItemHelper.oreProxy.getOreID(stack);
+
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+				return -1;
+			}
+			return id;
+		}
+
+		public static int getOreID(String oreName) {
+
+			if (!safeOreType(oreName)) {
+				return -1;
+			}
+			return ItemHelper.oreProxy.getOreID(oreName);
+		}
+
+		public ComparableItemStackFurnace(ItemStack stack) {
+
+			super(stack);
+			oreID = getOreID(stack);
+		}
+
+		public ComparableItemStackFurnace(Item item, int damage, int stackSize) {
+
+			super(item, damage, stackSize);
+			this.oreID = getOreID(this.toItemStack());
+		}
+
+		@Override
+		public ComparableItemStackFurnace set(ItemStack stack) {
+
+			super.set(stack);
+			oreID = getOreID(stack);
+
+			return this;
 		}
 	}
 
