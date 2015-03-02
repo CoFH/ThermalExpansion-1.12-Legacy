@@ -282,8 +282,11 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 		GameRegistry.registerCustomItemStack("frameMachineReinforced", frameMachineReinforced);
 		GameRegistry.registerCustomItemStack("frameMachineResonant", frameMachineResonant);
 		GameRegistry.registerCustomItemStack("frameCellBasic", frameCellBasic);
+		GameRegistry.registerCustomItemStack("frameCellHardened", frameCellHardened);
 		GameRegistry.registerCustomItemStack("frameCellReinforcedEmpty", frameCellReinforcedEmpty);
 		GameRegistry.registerCustomItemStack("frameCellReinforcedFull", frameCellReinforcedFull);
+		GameRegistry.registerCustomItemStack("frameCellResonantEmpty", frameCellResonantEmpty);
+		GameRegistry.registerCustomItemStack("frameCellResonantFull", frameCellResonantFull);
 		GameRegistry.registerCustomItemStack("frameTesseractEmpty", frameTesseractEmpty);
 		GameRegistry.registerCustomItemStack("frameTesseractFull", frameTesseractFull);
 		GameRegistry.registerCustomItemStack("frameIlluminator", frameIlluminator);
