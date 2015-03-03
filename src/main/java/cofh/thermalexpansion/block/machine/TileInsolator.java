@@ -303,11 +303,6 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	@Override
 	public void receiveGuiNetworkData(int i, int j) {
 
-		if (tank.getFluid() == null) {
-			tank.setFluid(new FluidStack(FluidRegistry.WATER, j));
-		} else {
-			tank.getFluid().amount = j;
-		}
 	}
 
 	@Override
@@ -360,6 +355,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addBool(lockPrimary);
+		payload.addInt(tank.getFluidAmount());
 
 		return payload;
 	}
@@ -380,6 +376,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		super.handleGuiPacket(payload);
 
 		lockPrimary = payload.getBool();
+		tank.getFluid().amount = payload.getInt();
 	}
 
 	@Override

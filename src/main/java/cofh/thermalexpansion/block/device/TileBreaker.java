@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.api.inventory.IInventoryConnection;
+import cofh.api.inventory.IInventoryConnection.ConnectionType;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.render.IconRegistry;
@@ -31,7 +33,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileBreaker extends TileAugmentable implements IFluidHandler {
+public class TileBreaker extends TileAugmentable implements IFluidHandler, IInventoryConnection {
 
 	static final int TYPE = BlockDevice.Types.BREAKER.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
@@ -248,6 +250,13 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler {
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return CoFHProps.EMPTY_TANK_INFO;
+	}
+
+	/* IInventoryConnection */
+	@Override
+	public ConnectionType canConnectInventory(ForgeDirection from) {
+
+		return ConnectionType.FORCE;
 	}
 
 	/* IReconfigurableFacing */

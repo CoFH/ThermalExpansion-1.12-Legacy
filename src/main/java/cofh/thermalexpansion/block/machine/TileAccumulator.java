@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.CoFHProps;
+import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.FluidHelper;
@@ -14,8 +15,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -217,32 +216,6 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-		switch (i) {
-		case 0:
-			adjacentSources = j;
-			return;
-		case 1:
-			if (tank.getFluid() == null) {
-				tank.setFluid(new FluidStack(FluidRegistry.WATER, j));
-			} else {
-				tank.getFluid().amount = j;
-			}
-			return;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
-
-		super.sendGuiNetworkData(container, player);
-
-		player.sendProgressBarUpdate(container, 0, adjacentSources);
-		player.sendProgressBarUpdate(container, 1, tank.getFluidAmount());
-	}
-
-	@Override
 	public FluidTankAdv getTank() {
 
 		return tank;
@@ -278,19 +251,23 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	/* NETWORK METHODS */
-	// TODO: Add these if Accumulator changes over to something else.
-	// @Override
-	// public CoFHPacket getGuiPacket() {
-	//
-	// CoFHPacket payload = super.getGuiPacket();
-	//
-	// return payload;
-	// }
-	//
-	// @Override
-	// protected void handleGuiPacket(CoFHPacket payload) {
-	//
-	// }
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(tank.getFluidAmount());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.getFluid().amount = payload.getInt();
+	}
 
 	/* IFluidHandler */
 	@Override
