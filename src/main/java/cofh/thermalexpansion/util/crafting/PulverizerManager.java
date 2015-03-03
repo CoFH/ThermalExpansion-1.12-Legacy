@@ -187,9 +187,6 @@ public class PulverizerManager {
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
 			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
 		}
-		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
-			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
-		}
 		if (ItemHelper.oreNameExists("silicon")) {
 			addRecipe(1600, new ItemStack(Blocks.sand, 1), ItemHelper.cloneStack(OreDictionary.getOres("silicon").get(0), 1));
 		}

@@ -77,7 +77,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 			/* MACHINE SECONDARY */
 		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
-			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_SUM[level] + "% "
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_TOOLTIP[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 
@@ -87,7 +87,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
 			list.add(StringHelper.RED + "x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
-			list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_SUM[level] + "% "
+			list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_TOOLTIP[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 		}
