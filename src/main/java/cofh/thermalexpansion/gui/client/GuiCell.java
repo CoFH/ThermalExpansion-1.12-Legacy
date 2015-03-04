@@ -54,7 +54,7 @@ public class GuiCell extends GuiBaseAdv {
 		addTab(new TabConfigCell(this, myTile));
 
 		addTab(new TabInfo(this, myInfo));
-		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + TabConfigCell.TUTORIAL_CONFIG));
+		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfigurationEnergy()));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

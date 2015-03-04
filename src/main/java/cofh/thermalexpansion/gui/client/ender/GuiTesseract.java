@@ -73,7 +73,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		addTab(new TabConfigTesseract(this, myTile));
 
 		addTab(new TabInfo(this, myInfo));
-		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabOperation()));
+		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfigurationOperation()));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

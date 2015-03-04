@@ -63,6 +63,9 @@ public class ItemBlockEnder extends ItemBlockBase {
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
+		list.add(StringHelper.getInfoText("info.thermalexpansion.ender.tesseract.0"));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.ender.tesseract.1"));
+
 		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
 			int frequency = stack.stackTagCompound.getInteger("Frequency");
 			byte modeItem = stack.stackTagCompound.getByte("ModeItems");
