@@ -162,6 +162,8 @@ public class TileActivator extends TileAugmentable {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
+		} else if (!inWorld) {
+			cofh_validate();
 		}
 
 		if (hasEnergy(ACTIVATION_ENERGY)) {
