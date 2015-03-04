@@ -361,7 +361,7 @@ public class TileActivator extends TileAugmentable {
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 
 		Block theBlock = worldObj.getBlock(coords[0], coords[1], coords[2]);
-		if (theBlock.isAir(worldObj, coords[0], coords[1], coords[2])) {
+		if (!theBlock.isAir(worldObj, coords[0], coords[1], coords[2])) {
 			if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock == -1) {
 				myFakePlayer.theItemInWorldManager.onBlockClicked(coords[0], coords[1], coords[2], facing ^ 1);
 			} else if (myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock >= 9) {
