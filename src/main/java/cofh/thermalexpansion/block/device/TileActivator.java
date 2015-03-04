@@ -413,7 +413,8 @@ public class TileActivator extends TileAugmentable {
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
 				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result == null || result.stackSize <= 0 ? null : result);
 				return !ItemStack.areItemStacksEqual(old, result);
-			}
+			} else
+				return true;
 		}
 		return false;
 	}
