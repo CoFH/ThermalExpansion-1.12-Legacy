@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.api.inventory.IInventoryConnection;
-import cofh.api.inventory.IInventoryConnection.ConnectionType;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.render.IconRegistry;
@@ -256,8 +255,11 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 	@Override
 	public ConnectionType canConnectInventory(ForgeDirection from) {
 
-		return ConnectionType.FORCE;
-	}
+        if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1)
+            return ConnectionType.FORCE;
+        else
+            return ConnectionType.DEFAULT;
+    }
 
 	/* IReconfigurableFacing */
 	@Override
