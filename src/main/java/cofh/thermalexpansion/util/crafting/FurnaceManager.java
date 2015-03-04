@@ -120,11 +120,7 @@ public class FurnaceManager {
 		ItemStack output;
 
 		for (ItemStack key : smeltingList.keySet()) {
-			if (key != null) {
-				System.out.println(key.toString());
-			}
 			if (key == null || recipeExists(key)) {
-
 				continue;
 			}
 			output = smeltingList.get(key);
