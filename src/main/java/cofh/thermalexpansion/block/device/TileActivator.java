@@ -409,14 +409,11 @@ public class TileActivator extends TileAugmentable {
 				if (event.useItem == Event.Result.DENY) {
 					return false;
 				}
-				ItemStack old = deployingStack.copy();
 				ItemStack result = deployingStack.useItemRightClick(worldObj, thePlayer);
 				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result == null || result.stackSize <= 0 ? null : result);
-				return !ItemStack.areItemStacksEqual(old, result);
-			} else
-				return true;
+			}
 		}
-		return false;
+		return true;
 	}
 
 	public boolean simRightClick2(EntityPlayer thePlayer, ItemStack deployingStack, int blockX, int blockY, int blockZ, int side) {
