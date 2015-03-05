@@ -173,7 +173,7 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 
 			for (int itemIndex = 0; itemIndex < ingredients.size(); itemIndex++) {
 				if (itemIndex == 3) {
-					ingredients.get(3).setPermutationToRender((cycleticks / 50) % 4);
+					ingredients.get(3).setPermutationToRender((cycleticks / 50) % ingredients.get(3).items.length);
 				} else {
 					randomRenderPermutation(ingredients.get(itemIndex), cycleticks / 20 + itemIndex);
 				}

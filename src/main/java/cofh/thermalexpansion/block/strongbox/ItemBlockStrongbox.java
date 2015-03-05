@@ -91,7 +91,7 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return CoFHProps.STORAGE_SIZE[getStorageIndex(container)];
+		return CoFHProps.STORAGE_SIZE[Math.min(12, getStorageIndex(container))];
 	}
 
 }
