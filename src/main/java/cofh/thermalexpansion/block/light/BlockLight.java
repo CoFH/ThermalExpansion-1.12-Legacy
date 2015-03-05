@@ -192,12 +192,12 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		TileLightFalse.initialize();
 
 		illuminator = new ItemStack(this, 1, 0);
-		lampBasic = new ItemStack(this, 1, 1);
-		lampBasicAlt = new ItemStack(this, 1, 2);
+		lampLumiumRadiant = new ItemStack(this, 1, 1);
+		lampLumium = new ItemStack(this, 1, 2);
 
 		GameRegistry.registerCustomItemStack("illuminator", illuminator);
-		GameRegistry.registerCustomItemStack("lampBasic", lampBasic);
-		GameRegistry.registerCustomItemStack("lampBasicAlt", lampBasicAlt);
+		GameRegistry.registerCustomItemStack("lampLumiumRadiant", lampLumiumRadiant);
+		GameRegistry.registerCustomItemStack("lampLumium", lampLumium);
 
 		return true;
 	}
@@ -208,19 +208,19 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 500), false);
 		}
-		if (enable[Types.LAMP_HALO.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampBasic, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G',
-				"blockGlassHardened", 'S', "ingotSignalum" }));
+		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium",
+				'G', "blockGlassHardened", 'S', "ingotSignalum" }));
 		}
-		if (enable[Types.LAMP_BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampBasicAlt, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
+		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
 				"blockGlassHardened", 'S', "ingotSignalum" }));
 		}
 		return true;
 	}
 
 	public static enum Types {
-		ILLUMINATOR, LAMP_HALO, LAMP_BASIC;
+		ILLUMINATOR, LAMP_LUMIUM_RADIANT, LAMP_LUMIUM;
 
 		public static Types getType(int meta) {
 
@@ -229,19 +229,19 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 	}
 
-	public static final String[] NAMES = { "illuminator", "lampBasic", "lampBasicAlt" };
+	public static final String[] NAMES = { "illuminator", "lampLumiumRadiant", "lampLumium" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
 		String category = "Light.";
 
-		for (int i = 0; i < Types.values().length - 1; i++) {
+		for (int i = 0; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}
 
 	public static ItemStack illuminator;
-	public static ItemStack lampBasic;
-	public static ItemStack lampBasicAlt;
+	public static ItemStack lampLumiumRadiant;
+	public static ItemStack lampLumium;
 
 }
