@@ -103,11 +103,11 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public void cofh_validate() {
 
-		super.cofh_validate();
-
 		if (ServerHelper.isServerWorld(worldObj)) {
 			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 		}
+
+		super.cofh_validate();
 	}
 
 	@Override
@@ -350,7 +350,7 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public boolean rotateBlock() {
 
-		if (inWorld) {
+		if (inWorld && ServerHelper.isServerWorld(worldObj)) {
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 			myFakePlayer.theItemInWorldManager.cancelDestroyingBlock(coords[0], coords[1], coords[2]);
 			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
