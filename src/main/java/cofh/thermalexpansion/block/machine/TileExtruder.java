@@ -87,7 +87,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	static int[][] processTime = { { 40, 80, 120 }, { 40, 80, 60 }, { 40, 80, 30 }, { 40, 80, 15 } };
 	static ItemStack[] processItems = new ItemStack[3];
 
-	ItemStack[] outputItems;
+	ItemStack[] outputItems = new ItemStack[3];
 
 	int outputTracker;
 	byte curSelection;
@@ -102,7 +102,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		super();
 
 		inventory = new ItemStack[1];
-		outputItems = processItems.clone();
+
+		for (int i = 0; i < 3; i++) {
+			outputItems[i] = processItems[i].copy();
+		}
 	}
 
 	@Override
