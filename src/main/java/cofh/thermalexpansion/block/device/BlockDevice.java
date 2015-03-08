@@ -299,30 +299,69 @@ public class BlockDevice extends BlockTEBase {
 
 		String tinPart = "thermalexpansion:machineTin";
 
+		// @formatter:off
 		if (enable[Types.WORKBENCH.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] { " X ", "ICI", " P ", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
-					BlockStrongbox.strongboxBasic, 'X', Items.paper }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] { "YXY", "ICI", "YPY", 'C', Blocks.crafting_table, 'I', "ingotCopper", 'P',
-					Blocks.chest, 'X', Items.paper, 'Y', "ingotTin" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Blocks.crafting_table,
+					'I', "ingotCopper",
+					'P', BlockStrongbox.strongboxBasic,
+					'X', Items.paper
+			}));
+			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] {
+					"YXY",
+					"ICI",
+					"YPY",
+					'C', Blocks.crafting_table,
+					'I', "ingotCopper",
+					'P', Blocks.chest,
+					'X', Items.paper,
+					'Y', "ingotTin"
+			}));
 		}
 		if (enable[Types.LEXICON.ordinal()]) {
 
 		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',
-					TEItems.powerCoilGold, 'X', Blocks.chest }));
+			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Blocks.piston,
+					'I', tinPart,
+					'P', TEItems.powerCoilGold,
+					'X', Blocks.chest
+			}));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Blocks.piston, 'I', tinPart, 'P',
-					TEItems.pneumaticServo, 'X', pickaxe }));
+			GameRegistry.addRecipe(new RecipeAugmentable(breaker, defaultAugments, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Blocks.piston,
+					'I', tinPart,
+					'P', TEItems.pneumaticServo,
+					'X', pickaxe
+			}));
 		}
 		if (enable[Types.PUMP.ordinal()]) {
 
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] { " X ", "ICI", " P ", 'C', Items.lava_bucket, 'I', tinPart,
-					'P', TEItems.pneumaticServo, 'X', "ingotInvar" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Items.lava_bucket,
+					'I', tinPart,
+					'P', TEItems.pneumaticServo,
+					'X', "ingotInvar"
+			}));
 		}
+		// @formatter:on
+
 		TECraftingHandler.addSecureRecipe(workbench);
 		// TECraftingHandler.addSecureRecipe(lexicon);
 		TECraftingHandler.addSecureRecipe(activator);
@@ -343,7 +382,12 @@ public class BlockDevice extends BlockTEBase {
 	}
 
 	public static enum Types {
-		WORKBENCH, LEXICON, ACTIVATOR, BREAKER, PUMP, NULLIFIER
+		WORKBENCH,
+		LEXICON,
+		ACTIVATOR,
+		BREAKER,
+		PUMP,
+		NULLIFIER
 	}
 
 	public static String[] NAMES = { "workbench", "lexicon", "activator", "breaker", "pump", "nullifier" };
