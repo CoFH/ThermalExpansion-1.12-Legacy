@@ -359,7 +359,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 				return false;
 			}
 			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
-				secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel];
+				// secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel]; TODO: May bring this back; not sure.
 				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
 				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
 				installed = true;

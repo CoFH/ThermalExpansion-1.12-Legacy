@@ -85,14 +85,18 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		} else if (type.equals(TEAugments.MACHINE_SPEED)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
-			list.add(StringHelper.RED + "x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " "
+			list.add(StringHelper.RED + "+" + TEAugments.MACHINE_SPEED_ENERGY_MOD_TOOLTIP[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
-			list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_TOOLTIP[level] + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
+			// list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_TOOLTIP[level] + "% " TODO: May bring this back, not sure.
+			// + StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
-		}
-		/* MACHINE SPECIFIC */
-		else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
+
+			/* MACHINE SPECIFIC */
+		} else if (type.equals(TEAugments.MACHINE_FURNACE_FOOD)) {
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.0") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "-50% " + StringHelper.localize("info.thermalexpansion.augment.energyUsed"));
+			list.add(StringHelper.RED + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.1") + StringHelper.END);
+		} else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
 					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.cobblestone.getLocalizedName() + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);

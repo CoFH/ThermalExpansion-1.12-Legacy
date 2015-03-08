@@ -25,6 +25,7 @@ import net.minecraftforge.oredict.OreDictionary;
 public class FurnaceManager {
 
 	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>();
+	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<ComparableItemStackFurnace>();
 	private static ComparableItemStackFurnace query = new ComparableItemStackFurnace(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
@@ -34,6 +35,7 @@ public class FurnaceManager {
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Furnace", "AllowRecipeOverwrite", false);
 
+		handledBlocks.add(Blocks.cactus);
 		handledBlocks.add(Blocks.gold_ore);
 		handledBlocks.add(Blocks.iron_ore);
 		handledBlocks.add(Blocks.coal_ore);
@@ -68,18 +70,37 @@ public class FurnaceManager {
 		return recipeMap.values().toArray(new RecipeFurnace[0]);
 	}
 
+	public static boolean isFoodItem(ItemStack input) {
+
+		if (input == null) {
+			return false;
+		}
+		if (foodSet.contains(query.set(input))) {
+			return true;
+		}
+		query.metadata = OreDictionary.WILDCARD_VALUE;
+		return foodSet.contains(query);
+	}
+
 	public static void addDefaultRecipes() {
 
 		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.cactus), new ItemStack(Items.dye, 1, 2));
-		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
-		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
-		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
-		addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
+		addTERecipe(DEFAULT_ENERGY * 2, new ItemStack(Blocks.hay_block), new ItemStack(Items.coal, 1, 1));
+
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
+
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.porkchop)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.beef)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.chicken)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.potato)));
 
 		for (int i = 0; i < 2; i++) {
-			addTERecipe(DEFAULT_ENERGY / 4, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
+			addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.fish, 1, i)));
 		}
-
 		int energy = DEFAULT_ENERGY;
 
 		addOreDictRecipe("oreIron", TFItems.ingotIron);
@@ -128,10 +149,8 @@ public class FurnaceManager {
 				continue;
 			}
 			int energy = DEFAULT_ENERGY;
-			if (key.getItem() instanceof ItemFood) {
-				energy /= 2;
-			}
 			if (output.getItem() instanceof ItemFood) {
+				foodSet.add(new ComparableItemStackFurnace(key));
 				energy /= 2;
 			}
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
@@ -145,14 +164,21 @@ public class FurnaceManager {
 	public static void refreshRecipes() {
 
 		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>(recipeMap.size());
+		Set<ComparableItemStackFurnace> tempSet = new THashSet<ComparableItemStackFurnace>();
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
+
+			if (tempRecipe.isOutputFood()) {
+				tempSet.add(new ComparableItemStackFurnace(tempRecipe.input));
+			}
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
+		foodSet.clear();
+		foodSet = tempSet;
 	}
 
 	/* ADD RECIPES */
@@ -202,6 +228,8 @@ public class FurnaceManager {
 		final ItemStack output;
 		final int energy;
 
+		boolean isOutputFood;
+
 		RecipeFurnace(ItemStack input, ItemStack output, int energy) {
 
 			this.input = input;
@@ -214,6 +242,14 @@ public class FurnaceManager {
 			if (output.stackSize <= 0) {
 				output.stackSize = 1;
 			}
+			if (output.getItem() instanceof ItemFood) {
+				isOutputFood = true;
+			}
+		}
+
+		public boolean isOutputFood() {
+
+			return isOutputFood;
 		}
 
 		public ItemStack getInput() {

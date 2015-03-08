@@ -73,7 +73,7 @@ public class ItemBlockEnder extends ItemBlockBase {
 			byte modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
 
 			if (frequency < 0) {
-				list.add(StringHelper.localize("info.cofh.frequency") + ": None");
+				list.add(StringHelper.localize("info.cofh.frequency") + ": " + StringHelper.localize("info.cofh.none"));
 			} else {
 				list.add(StringHelper.localize("info.cofh.frequency") + ": " + frequency);
 			}
@@ -85,6 +85,6 @@ public class ItemBlockEnder extends ItemBlockBase {
 	}
 
 	public static final String[] MODES = { StringHelper.localize("info.thermalexpansion.modeSend"), StringHelper.localize("info.thermalexpansion.modeRecv"),
-			StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
+		StringHelper.localize("info.thermalexpansion.modeSendRecv"), StringHelper.localize("info.thermalexpansion.modeBlocked") };
 
 }

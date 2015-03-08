@@ -137,7 +137,6 @@ public class PulverizerManager {
 		if (recipeBlizzRod) {
 			addTERecipe(1600, TFItems.rodBlizz, ItemHelper.cloneStack(TFItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
 		}
-
 		int energy = 4000;
 
 		addOreNameToDustRecipe(energy, "oreIron", TFItems.dustIron, TFItems.dustNickel, 10);

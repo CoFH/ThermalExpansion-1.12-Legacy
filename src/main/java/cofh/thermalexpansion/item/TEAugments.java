@@ -53,6 +53,9 @@ public class TEAugments {
 			itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i);
 		}
 
+		// machineFurnaceFood = itemAugment.addItem(256, MACHINE_FURNACE_FOOD);
+		// itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
+
 		for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
 			machineExtruderBoost[i] = itemAugment.addItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
 			itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i);
@@ -79,7 +82,7 @@ public class TEAugments {
 				'Y', TFItems.dustCryotheum }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotCopper", 'X', TEItems.powerCoilSilver, 'Y',
-		"dustRedstone" }));
+				"dustRedstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
 				TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotSilver", 'X', TEItems.powerCoilSilver, 'Y',
@@ -91,20 +94,23 @@ public class TEAugments {
 
 		/* MACHINE */
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X', "blockCloth", 'Y',
-		"blockCloth" }));
+				"blockCloth" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotBronze", 'I', "blockGlassHardened", 'X',
 				"blockClothRock", 'Y', "dustGlowstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[2], new Object[] { " I ", "IXI", "YIY", 'I', "blockGlassHardened", 'X',
 				TEItems.pneumaticServo, 'Y', TFItems.dustCryotheum }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X', TEItems.powerCoilGold, 'Y',
-		"dustRedstone" }));
+				"dustRedstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotBronze", 'I', "ingotGold", 'X',
 				TEItems.powerCoilGold, 'Y', TFItems.dustPyrotheum }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotGold", 'X', TEItems.powerCoilGold, 'Y',
 				Items.ender_pearl }));
 
 		/* MACHINE SPECIFIC */
+		// GameRegistry.addRecipe(new ShapedOreRecipe(machineFurnaceFood, new Object[] { " I ", "NXN", "YIY", 'N', "dustRedstone", 'I', "ingotSilver", 'X',
+		// TEItems.powerCoilGold, 'Y', Blocks.brick_block }));
+
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineExtruderBoost[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X',
 				TEItems.pneumaticServo, 'Y', Blocks.cobblestone }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineExtruderBoost[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotBronze", 'I', "ingotGold", 'X',
@@ -133,8 +139,9 @@ public class TEAugments {
 
 	public static final int[] MACHINE_SPEED_PROCESS_MOD = { 1, 2, 4, 8 };
 	public static final int[] MACHINE_SPEED_ENERGY_MOD = { 1, 3, 8, 20 };
-	public static final int[] MACHINE_SPEED_SECONDARY_MOD = { 0, 5, 10, 15 };
-	public static final int[] MACHINE_SPEED_SECONDARY_MOD_TOOLTIP = { 0, 5, 15, 25 };
+	public static final int[] MACHINE_SPEED_ENERGY_MOD_TOOLTIP = { 1, 50, 100, 150 };
+	// public static final int[] MACHINE_SPEED_SECONDARY_MOD = { 0, 5, 10, 15 }; TODO: May bring this back; not sure.
+	// public static final int[] MACHINE_SPEED_SECONDARY_MOD_TOOLTIP = { 0, 5, 15, 25 };
 	public static final int[] MACHINE_SECONDARY_MOD = { 0, 10, 15, 20 };
 	public static final int[] MACHINE_SECONDARY_MOD_TOOLTIP = { 0, 11, 33, 81 };
 
@@ -160,6 +167,7 @@ public class TEAugments {
 	public static ItemStack[] machineSecondary = new ItemStack[NUM_MACHINE_SECONDARY];
 	public static ItemStack[] machineSpeed = new ItemStack[NUM_MACHINE_SPEED];
 
+	public static ItemStack machineFurnaceFood;
 	public static ItemStack[] machineExtruderBoost = new ItemStack[NUM_MACHINE_EXTRUDER];
 
 	/* Augment Helpers */
@@ -182,7 +190,7 @@ public class TEAugments {
 	public static String MACHINE_SECONDARY = "machineSecondary";
 	public static String MACHINE_SPEED = "machineSpeed";
 
-	public static String MACHINE_FURNACE_BOOST = "machineFurnaceBoost";
+	public static String MACHINE_FURNACE_FOOD = "machineFurnaceFood";
 	public static String MACHINE_EXTRUDER_BOOST = "machineExtruderBoost";
 
 }
