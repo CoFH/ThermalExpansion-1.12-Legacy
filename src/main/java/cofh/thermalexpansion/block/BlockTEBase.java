@@ -58,12 +58,6 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY || event.useBlock == Result.DENY) {
 			return false;
 		}
-		if (Utils.isHoldingDebugger(player)) {
-			return true;
-		}
-		if (Utils.isHoldingMultimeter(player)) {
-			return true;
-		}
 		if (player.isSneaking()) {
 			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, x, y, z)) {

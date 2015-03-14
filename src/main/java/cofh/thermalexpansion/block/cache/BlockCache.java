@@ -92,8 +92,7 @@ public class BlockCache extends BlockTEBase {
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
 		if (super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ)) {
-
-			if (Utils.isHoldingDebugger(player) || Utils.isHoldingMultimeter(player) || Utils.isHoldingUsableWrench(player, x, y, z)) {
+			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
 				return true;
 			}
 		}

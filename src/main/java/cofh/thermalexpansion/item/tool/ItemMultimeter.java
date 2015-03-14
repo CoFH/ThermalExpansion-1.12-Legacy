@@ -50,14 +50,27 @@ public class ItemMultimeter extends ItemBase {
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
+		boolean r = doItemUse(stack, player, world, x, y, z, hitSide, hitX, hitY, hitZ);
+		if (r) { // HACK: forge is fucking stupid with this method
+			ServerHelper.sendItemUsePacket(stack, player, world, x, y, z, hitSide, hitX, hitY, hitZ);
+		}
+		return r;
+	}
+
+	public boolean doItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+
 		player.swingItem();
 
 		Block block = world.getBlock(x, y, z);
 		ArrayList<IChatComponent> info = new ArrayList<IChatComponent>();
 
-		if (ItemHelper.getItemDamage(stack) == 0) {
+		if (ItemHelper.getItemDamage(stack) == 0) { // Multimeter
 			if (ServerHelper.isClientWorld(world)) {
-				return false;
+				if (block instanceof IBlockConfigGui || block instanceof IBlockInfo) {
+					return true;
+				}
+				TileEntity theTile = world.getTileEntity(x, y, z);
+				return theTile instanceof ITileInfo;
 			}
 			if (player.isSneaking() && block instanceof IBlockConfigGui) {
 				if (((IBlockConfigGui) block).openConfigGui(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player)) {
@@ -70,21 +83,27 @@ public class ItemMultimeter extends ItemBase {
 				for (int i = 0; i < info.size(); i++) {
 					player.addChatMessage(info.get(i));
 				}
+				info.clear();
+				return true;
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
-
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, false);
+						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, false);
 						for (int i = 0; i < info.size(); i++) {
 							player.addChatMessage(info.get(i));
 						}
 					}
+					info.clear();
+					return true;
 				}
 			}
-		} else {
+			info.clear();
+			return false;
+		} else { // Debugger
 			if (player.isSneaking() && block instanceof IBlockDebug) {
 				((IBlockDebug) (block)).debugBlock(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player);
+				return true;
 			} else if (block instanceof IBlockInfo) {
 				if (ServerHelper.isClientWorld(world)) {
 					info.add(new ChatComponentText("-Client-"));
@@ -95,16 +114,19 @@ public class ItemMultimeter extends ItemBase {
 				for (int i = 0; i < info.size(); i++) {
 					player.addChatMessage(info.get(i));
 				}
+				info.clear();
+				return true;
 			} else {
 				TileEntity theTile = world.getTileEntity(x, y, z);
-
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.VALID_DIRECTIONS[hitSide], player, player.isSneaking());
+						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, player.isSneaking());
 						for (int i = 0; i < info.size(); i++) {
 							player.addChatMessage(info.get(i));
 						}
 					}
+					info.clear();
+					return true;
 				}
 			}
 		}

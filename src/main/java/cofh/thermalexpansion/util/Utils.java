@@ -8,8 +8,6 @@ import cofh.api.item.IToolHammer;
 import cofh.api.transport.IItemDuct;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.item.TEItems;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -194,23 +192,6 @@ public class Utils {
 		}
 	}
 
-	// }
-
-	public static boolean isHoldingMultimeter(EntityPlayer player) {
-
-		return ItemHelper.isPlayerHoldingItemStack(TEItems.toolMultimeter, player);
-	}
-
-	public static boolean isHoldingDebugger(EntityPlayer player) {
-
-		return ItemHelper.isPlayerHoldingItemStack(TEItems.toolDebugger, player);
-	}
-
-	public static boolean isHoldingServo(EntityPlayer player) {
-
-		return ItemHelper.isPlayerHoldingItemStack(TEItems.pneumaticServo, player);
-	}
-
 	public static boolean isPipeTile(TileEntity tile) {
 
 		return bcPipeExists && isPipeTile_do(tile);
@@ -220,5 +201,7 @@ public class Utils {
 
 		return tile instanceof IPipeTile;
 	}
+
+	// }
 
 }
