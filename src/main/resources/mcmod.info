@@ -9,9 +9,7 @@
         "mcversion": "${mcversion}",
         "url": "http://www.teamcofh.com",
         "updateUrl": "",
-        "authors": [
-            "Team CoFH"
-        ],
+        "authorList": [ "Team CoFH" ],
         "parent": "",
         "screenshots": [],
         "dependencies": [
