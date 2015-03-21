@@ -31,7 +31,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 
 	private static final ResourceLocation field_147529_c = new ResourceLocation("textures/environment/end_sky.png");
 	private static final ResourceLocation field_147526_d = new ResourceLocation("textures/entity/end_portal.png");
-	private static final Random field_147527_e = new Random(0);
+	private static final Random random = new Random(0);
 	static CCModel modelCenter = CCModel.quadModel(24);
 	FloatBuffer field_147528_b = GLAllocation.createDirectFloatBuffer(16);
 
@@ -40,8 +40,10 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 		modelCenter.generateBlock(0, 0.14, 0.14, 0.14, 0.87, 0.87, 0.87).computeNormals();
 	}
 
-	public void renderTileEntityAt(World world, double x, double y, double z, float time) {
-		field_147527_e.setSeed(31110L);
+	public void renderTileEntityAt(TileTesseract tile, double x, double y, double z, float time) {
+
+		World world = tile.getWorldObj();
+		random.setSeed(31110L + tile.frequency);
 
 		GL11.glDisable(GL11.GL_LIGHTING);
 
@@ -53,13 +55,15 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 		GL11.glEnable(GL11.GL_TEXTURE_GEN_T);
 		GL11.glEnable(GL11.GL_TEXTURE_GEN_R);
 		GL11.glEnable(GL11.GL_TEXTURE_GEN_Q);
+		GL11.glMatrixMode(GL11.GL_TEXTURE);
+		GL11.glPushMatrix();
+		GL11.glLoadIdentity();
+		GL11.glTranslatef(random.nextFloat(), world.getTotalWorldTime() % 50000L / 50000F, random.nextFloat());
 
 		Tessellator tessellator = Tessellator.instance;
-		float tran = (world.getTotalWorldTime() % 50000L / 50000F);
 
 		final int end = 8;
 		for (int i = 0; i < end; ++i) {
-			GL11.glPushMatrix();
 			float f5 = end - i;
 			float f7 = 1.0F / (f5 + 1.0F);
 
@@ -76,19 +80,12 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 				GL11.glEnable(GL11.GL_BLEND);
 				GL11.glBlendFunc(GL11.GL_ONE, GL11.GL_ONE);
 			}
-			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, this.func_147525_a(1, 0, 0, 0));
-			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 1, 0));
-			GL11.glTexGen(GL11.GL_R, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 0, 1));
-			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.func_147525_a(0, 1, 0, 0));
-			GL11.glPopMatrix();
-			GL11.glMatrixMode(GL11.GL_TEXTURE);
-			GL11.glPushMatrix();
-			GL11.glLoadIdentity();
-			GL11.glTranslatef(0.0F, tran, 0.0F);
 
-			float f11 = (float)field_147527_e.nextDouble() * 0.5F + 0.1F;
-			float f12 = (float)field_147527_e.nextDouble() * 0.5F + 0.4F;
-			float f13 = (float)field_147527_e.nextDouble() * 0.5F + 0.5F;
+			GL11.glTranslatef(random.nextFloat() * (1 - f7), 0, random.nextFloat() * (1 - f7));
+
+			float f11 = (float) random.nextDouble() * 0.5F + 0.1F;
+			float f12 = (float) random.nextDouble() * 0.5F + 0.4F;
+			float f13 = (float) random.nextDouble() * 0.5F + 0.5F;
 			if (i == 0) {
 				f13 = 1.0F;
 				f12 = 1.0F;
@@ -98,8 +95,15 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 			f12 *= f7;
 			f11 *= f7;
 
+			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, this.func_147525_a(1, 0, 0, 0));
+			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 1, 0));
+			GL11.glTexGen(GL11.GL_R, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 0, 1));
+			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.func_147525_a(0, 1, 0, 0));
+
+			GL11.glRotatef(180, 0, 0, 1);
 			tessellator.startDrawingQuads();
 			tessellator.setColorOpaque_F(f11, f12, f13);
+			tessellator.setBrightness(0xF000F0);
 			tessellator.addVertex(x + 0.14, y + 0.14, z + 0.87);
 			tessellator.addVertex(x + 0.14, y + 0.14, z + 0.14);
 			tessellator.addVertex(x + 0.87, y + 0.14, z + 0.14);
@@ -108,19 +112,21 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 
 			tessellator.startDrawingQuads();
 			tessellator.setColorOpaque_F(f11, f12, f13);
+			tessellator.setBrightness(0xF000F0);
 			tessellator.addVertex(x + 0.87, y + 0.87, z + 0.87);
 			tessellator.addVertex(x + 0.87, y + 0.87, z + 0.14);
 			tessellator.addVertex(x + 0.14, y + 0.87, z + 0.14);
 			tessellator.addVertex(x + 0.14, y + 0.87, z + 0.87);
 			tessellator.draw();
 
-			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, this.func_147525_a(1, 0, 0, 0));
-			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, this.func_147525_a(0, 1, 0, 0));
+			GL11.glTexGen(GL11.GL_S, GL11.GL_EYE_PLANE, this.func_147525_a(0, 1, 0, 0));
+			GL11.glTexGen(GL11.GL_T, GL11.GL_EYE_PLANE, this.func_147525_a(1, 0, 0, 0));
 			GL11.glTexGen(GL11.GL_R, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 0, 1));
 			GL11.glTexGen(GL11.GL_Q, GL11.GL_EYE_PLANE, this.func_147525_a(0, 0, 1, 0));
 
 			tessellator.startDrawingQuads();
 			tessellator.setColorOpaque_F(f11, f12, f13);
+			tessellator.setBrightness(0xF000F0);
 			tessellator.addVertex(x + 0.14, y + 0.14, z + 0.14);
 			tessellator.addVertex(x + 0.14, y + 0.87, z + 0.14);
 			tessellator.addVertex(x + 0.87, y + 0.87, z + 0.14);
@@ -139,25 +145,25 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 
 			tessellator.startDrawingQuads();
 			tessellator.setColorOpaque_F(f11, f12, f13);
+			tessellator.setBrightness(0xF000F0);
 			tessellator.addVertex(x + 0.14, y + 0.14, z + 0.87);
 			tessellator.addVertex(x + 0.14, y + 0.87, z + 0.87);
 			tessellator.addVertex(x + 0.14, y + 0.87, z + 0.14);
 			tessellator.addVertex(x + 0.14, y + 0.14, z + 0.14);
 			tessellator.draw();
 
-			GL11.glRotatef(180, 0, 0, 1);
-
 			tessellator.startDrawingQuads();
 			tessellator.setColorOpaque_F(f11, f12, f13);
+			tessellator.setBrightness(0xF000F0);
 			tessellator.addVertex(x + 0.87, y + 0.14, z + 0.14);
 			tessellator.addVertex(x + 0.87, y + 0.87, z + 0.14);
 			tessellator.addVertex(x + 0.87, y + 0.87, z + 0.87);
 			tessellator.addVertex(x + 0.87, y + 0.14, z + 0.87);
 			tessellator.draw();
-			GL11.glPopMatrix();
-			GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		}
 
+		GL11.glPopMatrix();
+		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 		GL11.glDisable(GL11.GL_BLEND);
 		GL11.glDisable(GL11.GL_TEXTURE_GEN_S);
 		GL11.glDisable(GL11.GL_TEXTURE_GEN_T);
@@ -182,7 +188,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 		}
 
 		if (ShaderStarfield.starfieldShader == 0) {
-			renderTileEntityAt(tile.getWorldObj(), x, y, z, 1 - f);
+			renderTileEntityAt((TileTesseract) tile, x, y, z, 1 - f);
 			return;
 		}
 
