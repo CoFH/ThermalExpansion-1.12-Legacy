@@ -113,7 +113,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public boolean shouldRenderInPass(int pass) {
 
-		return pass == 1;
+		return pass == 0;
 	}
 
 	@Override
