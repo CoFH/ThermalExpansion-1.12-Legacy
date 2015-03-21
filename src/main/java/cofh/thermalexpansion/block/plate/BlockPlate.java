@@ -248,6 +248,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		IconRegistry.addIcon("PlateBottom", "thermalexpansion:plate/Plate_Bottom", ir);
+		IconRegistry.addIcon("PlateTopO", "thermalexpansion:plate/Plate_Top_Circle", ir);
 		IconRegistry.addIcon("PlateTop0", "thermalexpansion:plate/Plate_Top_Down", ir);
 		IconRegistry.addIcon("PlateTop1", "thermalexpansion:plate/Plate_Top_Up", ir);
 		IconRegistry.addIcon("PlateTop2", "thermalexpansion:plate/Plate_Top_North", ir);
