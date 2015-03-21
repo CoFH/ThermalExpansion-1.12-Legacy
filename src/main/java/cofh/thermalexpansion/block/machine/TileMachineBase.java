@@ -178,14 +178,11 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	protected void updateIfChanged(boolean curActive) {
 
-		if (curActive != isActive && isActive == true) {
-			if (tracker.hasDelayPassed(worldObj, 100))
-				sendUpdatePacket(Side.CLIENT);
-		} else if (wasActive) {
-			if (tracker.hasDelayPassed(worldObj, 100)) {
-				wasActive = false;
-				sendUpdatePacket(Side.CLIENT);
-			}
+		if (curActive != isActive && !wasActive) {
+			sendUpdatePacket(Side.CLIENT);
+		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
+			wasActive = false;
+			sendUpdatePacket(Side.CLIENT);
 		}
 	}
 
