@@ -6,6 +6,7 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.MathHelper;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -61,7 +62,7 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 
 	public int getScaledEnergyStored(int scale) {
 
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored());
 	}
 
 	/* NBT METHODS */

@@ -32,6 +32,9 @@ public class TEAugments {
 		dynamoCoilDuct = itemAugment.addItem(48, DYNAMO_COIL_DUCT);
 		itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);
 
+		dynamoThrottle = itemAugment.addItem(49, DYNAMO_THROTTLE);
+		itemAugment.addAugmentData(49, DYNAMO_THROTTLE, 2);
+
 		for (int i = 0; i < NUM_DYNAMO_EFFICIENCY; i++) {
 			dynamoEfficiency[i] = itemAugment.addItem(64 + i, DYNAMO_EFFICIENCY + i);
 			itemAugment.addAugmentData(64 + i, DYNAMO_EFFICIENCY, 1 + i);
@@ -40,9 +43,6 @@ public class TEAugments {
 			dynamoOutput[i] = itemAugment.addItem(80 + i, DYNAMO_OUTPUT + i);
 			itemAugment.addAugmentData(80 + i, DYNAMO_OUTPUT, 1 + i);
 		}
-		// TODO: Advanced Dynamo Throttle
-		// dynamoThrottle = itemAugment.addItem(96, DYNAMO_THROTTLE);
-		// itemAugment.addAugmentData(96, DYNAMO_THROTTLE, 1);
 
 		for (int i = 0; i < NUM_MACHINE_SECONDARY; i++) {
 			machineSecondary[i] = itemAugment.addItem(112 + i, MACHINE_SECONDARY + i);
@@ -53,8 +53,8 @@ public class TEAugments {
 			itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i);
 		}
 
-		// machineFurnaceFood = itemAugment.addItem(256, MACHINE_FURNACE_FOOD);
-		// itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
+		machineFurnaceFood = itemAugment.addItem(256, MACHINE_FURNACE_FOOD);
+		itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
 
 		for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
 			machineExtruderBoost[i] = itemAugment.addItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
@@ -71,8 +71,8 @@ public class TEAugments {
 
 		/* DYNAMO */
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoCoilDuct, new Object[] { " I ", "IXI", " I ", 'I', "nuggetLead", 'X', "ingotCopper" }));
-		// GameRegistry.addRecipe(new ShapedOreRecipe(dynamoThrottle, new Object[] { " I ", "IXI", "YIY", 'I', "nuggetLead", 'X', "ingotElectrum", 'Y',
-		// "dustRedstone" }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoThrottle, new Object[] { " I ", "IXI", "YIY", 'I', "nuggetLead", 'X', "ingotElectrum", 'Y',
+				"dustRedstone" }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoEfficiency[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotLead", 'X', TEItems.powerCoilSilver,
 				'Y', "ingotTin", 'Y', "dustRedstone" }));
@@ -82,7 +82,7 @@ public class TEAugments {
 				'Y', TFItems.dustCryotheum }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotCopper", 'X', TEItems.powerCoilSilver, 'Y',
-				"dustRedstone" }));
+		"dustRedstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotCopper", 'I', "ingotSilver", 'X',
 				TEItems.powerCoilSilver, 'Y', "dustGlowstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(dynamoOutput[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotSilver", 'X', TEItems.powerCoilSilver, 'Y',
@@ -94,22 +94,22 @@ public class TEAugments {
 
 		/* MACHINE */
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X', "blockCloth", 'Y',
-				"blockCloth" }));
+		"blockCloth" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotBronze", 'I', "blockGlassHardened", 'X',
 				"blockClothRock", 'Y', "dustGlowstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSecondary[2], new Object[] { " I ", "IXI", "YIY", 'I', "blockGlassHardened", 'X',
 				TEItems.pneumaticServo, 'Y', TFItems.dustCryotheum }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X', TEItems.powerCoilGold, 'Y',
-				"dustRedstone" }));
+		"dustRedstone" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[1], new Object[] { " I ", "NXN", "YIY", 'N', "ingotBronze", 'I', "ingotGold", 'X',
 				TEItems.powerCoilGold, 'Y', TFItems.dustPyrotheum }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineSpeed[2], new Object[] { " I ", "IXI", "YIY", 'I', "ingotGold", 'X', TEItems.powerCoilGold, 'Y',
 				Items.ender_pearl }));
 
 		/* MACHINE SPECIFIC */
-		// GameRegistry.addRecipe(new ShapedOreRecipe(machineFurnaceFood, new Object[] { " I ", "NXN", "YIY", 'N', "dustRedstone", 'I', "ingotSilver", 'X',
-		// TEItems.powerCoilGold, 'Y', Blocks.brick_block }));
+		GameRegistry.addRecipe(new ShapedOreRecipe(machineFurnaceFood, new Object[] { " I ", "NXN", "YIY", 'N', "dustRedstone", 'I', "ingotSilver", 'X',
+				TEItems.powerCoilGold, 'Y', Blocks.brick_block }));
 
 		GameRegistry.addRecipe(new ShapedOreRecipe(machineExtruderBoost[0], new Object[] { " N ", "NXN", "YNY", 'N', "ingotBronze", 'X',
 				TEItems.pneumaticServo, 'Y', Blocks.cobblestone }));

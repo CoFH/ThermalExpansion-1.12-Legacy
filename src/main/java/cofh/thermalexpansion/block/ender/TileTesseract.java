@@ -48,7 +48,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-		IInventoryConnection, ISidedInventory {
+IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
@@ -277,6 +277,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (validOutputs != null) {
 			isSendingEnergy = true;
 			IEnderEnergyHandler handler;
+			energyTrackerRemote++;
+			energyTrackerRemote %= validOutputs.size();
 
 			for (int i = energyTrackerRemote; i < validOutputs.size() && energy > 0; i++) {
 				handler = validOutputs.get(i);
@@ -312,6 +314,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (validOutputs != null) {
 			isSendingFluid = true;
 			IEnderFluidHandler handler;
+			fluidTrackerRemote++;
+			fluidTrackerRemote %= validOutputs.size();
 
 			for (int i = fluidTrackerRemote; i < validOutputs.size() && fluid != null && fluid.amount > 0; i++) {
 				handler = validOutputs.get(i);
@@ -343,6 +347,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (validOutputs != null) {
 			isSendingItems = true;
 			IEnderItemHandler handler;
+			itemTrackerRemote++;
+			itemTrackerRemote %= validOutputs.size();
 
 			for (int i = itemTrackerRemote; i < validOutputs.size() && item != null && item.stackSize > 0; i++) {
 				handler = validOutputs.get(i);
@@ -683,7 +689,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	 */
 	public void sendNamesList(EntityPlayerMP thePlayer) {
 
-		String lookupName = access.isPublic() ? "_Public_" : owner.getName();
+		String lookupName = access.isPublic() ? "_public_" : owner.getName();
 		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
 
 		PacketCoFHBase payload = PacketTileInfo.newPacket(this);

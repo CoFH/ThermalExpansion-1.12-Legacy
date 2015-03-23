@@ -62,27 +62,35 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		int level = getPrimaryLevel(stack);
 		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] + StringHelper.END);
 
+		/* DYNAMO THROTTLE */
+		if (type.equals(TEAugments.DYNAMO_THROTTLE)) {
+			augmentChain = false;
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.augment.levels.2"));
+		}
 		/* DYNAMO EFFICIENCY */
-		if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
+		else if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
 			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
-			/* DYNAMO OUTPUT */
-		} else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
+		}
+		/* DYNAMO OUTPUT */
+		else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
 			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
 			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
-			/* MACHINE SECONDARY */
-		} else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
+		}
+		/* MACHINE SECONDARY */
+		else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
 			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_TOOLTIP[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 
-			/* MACHINE SPEED */
-		} else if (type.equals(TEAugments.MACHINE_SPEED)) {
+		}
+		/* MACHINE SPEED */
+		else if (type.equals(TEAugments.MACHINE_SPEED)) {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
 			list.add(StringHelper.RED + "+" + TEAugments.MACHINE_SPEED_ENERGY_MOD_TOOLTIP[level] + "% "
@@ -91,12 +99,16 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			// + StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 
-			/* MACHINE SPECIFIC */
-		} else if (type.equals(TEAugments.MACHINE_FURNACE_FOOD)) {
+		}
+		/* MACHINE - FURNACE */
+		else if (type.equals(TEAugments.MACHINE_FURNACE_FOOD)) {
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.0") + StringHelper.END);
 			list.add(StringHelper.BRIGHT_GREEN + "-50% " + StringHelper.localize("info.thermalexpansion.augment.energyUsed"));
 			list.add(StringHelper.RED + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.1") + StringHelper.END);
-		} else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
+
+		}
+		/* MACHINE - EXTRUDER */
+		else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
 					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.cobblestone.getLocalizedName() + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);

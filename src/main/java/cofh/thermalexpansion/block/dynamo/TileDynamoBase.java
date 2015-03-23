@@ -209,9 +209,9 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 	protected void updateIfChanged(boolean curActive) {
 
-		if (curActive != isActive && isActive == true) {
+		if (curActive != isActive && !wasActive) {
 			sendUpdatePacket(Side.CLIENT);
-		} else if (tracker.hasDelayPassed(worldObj, 100) && wasActive) {
+		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
 			sendUpdatePacket(Side.CLIENT);
 		}
@@ -233,6 +233,9 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		if (!isActive) {
 			return 0;
 		}
+		if (augmentThrottle) {
+			return calcEnergyAugment();
+		}
 		if (energyStorage.getEnergyStored() < config.minPowerLevel) {
 			return config.maxPower;
 		}
@@ -242,16 +245,16 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
 	}
 
-	protected int calcEnergy2() {
+	protected int calcEnergyAugment() {
 
-		if (!isActive || energyStorage.getEnergyStored() == energyStorage.getMaxEnergyStored()) {
+		if (energyStorage.getEnergyStored() >= energyStorage.getMaxEnergyStored()) {
 			return 0;
 		}
-		if (energyStorage.getEnergyStored() < config.maxPowerLevel) {
+		if (energyStorage.getEnergyStored() < config.minPowerLevel) {
 			return config.maxPower;
 		}
-		if (energyStorage.getEnergyStored() > config.minPowerLevel) {
-			return config.minPower;
+		if (energyStorage.getEnergyStored() >= energyStorage.getMaxEnergyStored() - config.energyRamp) {
+			return 1;
 		}
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / config.energyRamp;
 	}

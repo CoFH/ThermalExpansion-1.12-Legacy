@@ -92,7 +92,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	public int getScaledItemsStored(int scale) {
 
-		return getStoredCount() * scale / CAPACITY[type];
+		return MathHelper.round((long) getStoredCount() * scale / CAPACITY[type]);
 	}
 
 	@Override
@@ -140,7 +140,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	protected void updateTrackers() {
 
-		int curScale = getScaledItemsStored(15);
+		int curScale = getScaledItemsStored(14) + getStoredCount() > 0 ? 1 : 0;
 
 		if (compareTracker != curScale) {
 			compareTracker = curScale;
