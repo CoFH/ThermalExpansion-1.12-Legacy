@@ -50,6 +50,8 @@ public class TEProps {
 	public static boolean enableAchievements = false;
 	public static boolean enableDebugOutput = false;
 
+	public static boolean useAlternateShader = false;
+
 	/* Render Ids */
 	public static int renderIdCell = -1;
 	public static int renderIdDynamo = -1;

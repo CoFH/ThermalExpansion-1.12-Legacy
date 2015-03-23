@@ -2,9 +2,9 @@ package cofh.thermalexpansion.render;
 
 import cofh.core.render.ShaderHelper;
 import cofh.lib.render.RenderHelper;
-import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;
 import cofh.thermalexpansion.block.ender.TileTesseract;
+import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalfoundation.render.shader.ShaderStarfield;
 import cpw.mods.fml.client.registry.ClientRegistry;
 
@@ -32,13 +32,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 	private static final ResourceLocation field_147529_c = new ResourceLocation("textures/environment/end_sky.png");
 	private static final ResourceLocation field_147526_d = new ResourceLocation("textures/entity/end_portal.png");
 	private static final Random random = new Random(0);
-	static CCModel modelCenter = CCModel.quadModel(24);
 	FloatBuffer field_147528_b = GLAllocation.createDirectFloatBuffer(16);
-
-	static {
-
-		modelCenter.generateBlock(0, 0.14, 0.14, 0.14, 0.87, 0.87, 0.87).computeNormals();
-	}
 
 	public void renderTileEntityAt(TileTesseract tile, double x, double y, double z, float time) {
 
@@ -187,7 +181,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 			return;
 		}
 
-		if (ShaderStarfield.starfieldShader == 0) {
+		if (TEProps.useAlternateShader || ShaderStarfield.starfieldShader == 0) {
 			renderTileEntityAt((TileTesseract) tile, x, y, z, 1 - f);
 			return;
 		}
