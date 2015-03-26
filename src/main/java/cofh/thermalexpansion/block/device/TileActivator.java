@@ -145,6 +145,9 @@ public class TileActivator extends TileAugmentable {
 	@Override
 	public void onRedstoneUpdate() {
 
+		if (worldObj.isRemote)
+			return;
+
 		if (!redstoneControlOrDisable() && myFakePlayer.itemInUse != null) {
 			myFakePlayer.stopUsingItem();
 		} else {
