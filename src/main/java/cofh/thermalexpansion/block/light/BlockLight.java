@@ -210,11 +210,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium",
-				'G', "blockGlassHardened", 'S', "ingotSignalum" }));
+					'G', "blockGlassHardened", 'S', "ingotSignalum" }));
 		}
 		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
-				"blockGlassHardened", 'S', "ingotSignalum" }));
+					"blockGlassHardened", 'S', "ingotSignalum" }));
 		}
 		return true;
 	}

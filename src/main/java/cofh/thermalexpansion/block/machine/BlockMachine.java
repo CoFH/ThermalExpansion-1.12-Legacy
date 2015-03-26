@@ -122,8 +122,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY,
-			float hitZ) {
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
 
 		TileEntity tile = world.getTileEntity(x, y, z);
 
@@ -197,8 +196,7 @@ public class BlockMachine extends BlockTEBase {
 		// Face Textures
 		for (int i = 0; i < Types.values().length; i++) {
 			IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]), ir);
-			IconRegistry.addIcon("MachineActive" + i,
-				"thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]), ir);
+			IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]), ir);
 		}
 
 		// Config Textures
@@ -297,7 +295,6 @@ public class BlockMachine extends BlockTEBase {
 
 		String machineFrame = "thermalexpansion:machineFrame";
 		String copperPart = "thermalexpansion:machineCopper";
-
 		String invarPart = "thermalexpansion:machineInvar";
 
 		// @formatter:off
@@ -496,22 +493,11 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	public static enum Types {
-		FURNACE,
-		PULVERIZER,
-		SAWMILL,
-		SMELTER,
-		CRUCIBLE,
-		TRANSPOSER,
-		PRECIPITATOR,
-		EXTRUDER,
-		ACCUMULATOR,
-		ASSEMBLER,
-		CHARGER,
-		INSOLATOR
+		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR
 	}
 
-	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer",
-			"precipitator", "extruder", "accumulator", "assembler", "charger", "insolator" };
+	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
+			"assembler", "charger", "insolator" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];

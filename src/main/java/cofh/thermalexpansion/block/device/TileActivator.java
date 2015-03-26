@@ -380,13 +380,13 @@ public class TileActivator extends TileAugmentable {
 			List<Entity> entities = worldObj.selectEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing),
 					new IEntitySelector() {
 
-				@Override
-				public boolean isEntityApplicable(Entity e) {
+						@Override
+						public boolean isEntityApplicable(Entity e) {
 
-					return e.canAttackWithItem();
-				}
+							return e.canAttackWithItem();
+						}
 
-			});
+					});
 
 			if (entities.size() == 0) {
 				return false;

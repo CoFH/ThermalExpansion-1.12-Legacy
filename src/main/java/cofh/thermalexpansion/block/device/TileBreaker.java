@@ -255,11 +255,12 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 	@Override
 	public ConnectionType canConnectInventory(ForgeDirection from) {
 
-        if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1)
-            return ConnectionType.FORCE;
-        else
-            return ConnectionType.DEFAULT;
-    }
+		if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
+			return ConnectionType.FORCE;
+		} else {
+			return ConnectionType.DEFAULT;
+		}
+	}
 
 	/* IReconfigurableFacing */
 	@Override

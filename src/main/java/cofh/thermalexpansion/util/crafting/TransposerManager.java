@@ -73,9 +73,26 @@ public class TransposerManager {
 
 	public static void addDefaultRecipes() {
 
-		addFillRecipe(8000, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.mossy_cobblestone), new FluidStack(FluidRegistry.WATER, 250), false);
-		addFillRecipe(8000, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
-		addFillRecipe(8000, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.end_stone), new FluidStack(TFFluids.fluidEnder, 250), false);
+		String comment;
+		String category = "RecipeManagers.Transposer.Recipes";
+
+		boolean recipeMossyCobble = ThermalExpansion.config.get(category, "MossyCobblestone", true);
+		boolean recipeMossyStoneBrick = ThermalExpansion.config.get(category, "MossyStoneBrick", true);
+		boolean recipeEndStone = ThermalExpansion.config.get(category, "EndStone", true);
+		// boolean recipeNetherBrick = ThermalExpansion.config.get(category, "NetherBrick", true);
+
+		if (recipeMossyCobble) {
+			addFillRecipe(8000, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.mossy_cobblestone), new FluidStack(FluidRegistry.WATER, 250), false);
+		}
+		if (recipeMossyStoneBrick) {
+			addFillRecipe(8000, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
+		}
+		if (recipeEndStone) {
+			addFillRecipe(8000, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.end_stone), new FluidStack(TFFluids.fluidEnder, 250), false);
+		}
+		// if (recipeNetherBrick) {
+		// addFillRecipe(8000, new ItemStack(Items.brick), new ItemStack(Items.netherbrick), new FluidStack(FluidRegistry.LAVA, 250), false);
+		// }
 		addTEFillRecipe(4000, new ItemStack(Items.glowstone_dust), new ItemStack(Items.blaze_powder), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addTEFillRecipe(4000, new ItemStack(Items.snowball), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);

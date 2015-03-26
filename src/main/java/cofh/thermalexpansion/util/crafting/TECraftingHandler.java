@@ -13,7 +13,6 @@ import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
-import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
@@ -130,7 +129,7 @@ public class TECraftingHandler {
 					continue;
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
-				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, TFItems.dustPyrotheum }));
+				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, "dustPyrotheum" }));
 			}
 		}
 	}

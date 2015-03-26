@@ -42,7 +42,7 @@ public class ProxyClient extends Proxy {
 		ItemRenderRegistry.addItemRenderer(TEItems.diagramSchematic, RenderSchematic.instance);
 
 		TEProps.useAlternateShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
-			"Tesseracts will use an alternate starfield shader if true.");
+				"Tesseracts will use an alternate starfield shader if true.");
 	}
 
 	@Override

@@ -11,7 +11,6 @@ import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalfoundation.item.Equipment;
-import cofh.thermalfoundation.item.TFItems;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Blocks;
@@ -142,7 +141,7 @@ public class TEItems {
 		GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X',
 				capacitorHardened, 'Y', Items.diamond }));
 		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X',
-				capacitorReinforced, 'Y', TFItems.dustPyrotheum }));
+				capacitorReinforced, 'Y', "dustPyrotheum" }));
 
 		/* Satchels */
 		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));

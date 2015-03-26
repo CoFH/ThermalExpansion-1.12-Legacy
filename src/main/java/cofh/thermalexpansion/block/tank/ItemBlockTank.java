@@ -114,7 +114,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
 
-		if (resource == null) {
+		if (resource == null || container.stackSize > 1) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -169,7 +169,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid") || maxDrain == 0) {
+		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid") || maxDrain == 0 || container.stackSize > 1) {
 			return null;
 		}
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));

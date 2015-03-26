@@ -382,12 +382,7 @@ public class BlockDevice extends BlockTEBase {
 	}
 
 	public static enum Types {
-		WORKBENCH,
-		LEXICON,
-		ACTIVATOR,
-		BREAKER,
-		PUMP,
-		NULLIFIER
+		WORKBENCH, LEXICON, ACTIVATOR, BREAKER, PUMP, NULLIFIER
 	}
 
 	public static String[] NAMES = { "workbench", "lexicon", "activator", "breaker", "pump", "nullifier" };

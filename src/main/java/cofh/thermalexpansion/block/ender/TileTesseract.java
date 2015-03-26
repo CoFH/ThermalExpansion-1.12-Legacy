@@ -48,7 +48,7 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
-IInventoryConnection, ISidedInventory {
+		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
 
