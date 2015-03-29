@@ -162,7 +162,7 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
-					renderStart = 0;
+					renderStartX = 0;
 					setText("255");
 				}
 			}
@@ -186,7 +186,7 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
-					renderStart = 0;
+					renderStartX = 0;
 					setText("255");
 				}
 			}
@@ -210,7 +210,7 @@ public class GuiLight extends GuiBaseAdv {
 			protected void onCharacterEntered(boolean success) {
 
 				if (getValue(text, textLength) > 255) {
-					renderStart = 0;
+					renderStartX = 0;
 					setText("255");
 				}
 			}
