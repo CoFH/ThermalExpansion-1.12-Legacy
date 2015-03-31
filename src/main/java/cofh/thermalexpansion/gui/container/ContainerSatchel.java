@@ -26,10 +26,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.management.PreYggdrasilConverter;
 
 @ChestContainer()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
@@ -137,9 +137,10 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@Override
-	public boolean canPlayerAccess(String name) {
+	public boolean canPlayerAccess(EntityPlayer player) {
 
 		AccessMode access = getAccess();
+		String name = player.getCommandSenderName();
 		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
 			return true;
 		}
@@ -149,7 +150,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 			return true;
 		}
 
-		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
+		UUID otherID = player.getGameProfile().getId();
 		if (ownerID.equals(otherID)) {
 			return true;
 		}

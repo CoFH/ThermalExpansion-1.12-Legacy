@@ -161,7 +161,7 @@ public class TilePlateTranslocate extends TilePlateBase {
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 
@@ -174,7 +174,7 @@ public class TilePlateTranslocate extends TilePlateBase {
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 

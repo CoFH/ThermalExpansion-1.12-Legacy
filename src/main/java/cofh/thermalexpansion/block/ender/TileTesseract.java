@@ -548,7 +548,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (CoreUtils.isFakePlayer(player)) {
 			return true;
 		}
-		if (canPlayerAccess(player.getCommandSenderName())) {
+		if (canPlayerAccess(player)) {
 			if (ServerHelper.isServerWorld(worldObj)) {
 				sendNamesList((EntityPlayerMP) player);
 			}
@@ -565,7 +565,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public void sendGuiNetworkData(Container container, ICrafting player) {
 
-		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getCommandSenderName()) ? 1 : 0);
+		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
 	}
 
 	/* NBT METHODS */
@@ -961,7 +961,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
@@ -978,7 +978,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		RedstoneControlHelper.setItemStackTagRS(tag, this);

@@ -112,7 +112,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean openGui(EntityPlayer player) {
 
-		if (canPlayerAccess(player.getCommandSenderName())) {
+		if (canPlayerAccess(player)) {
 			if (hasGui()) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			}
@@ -140,7 +140,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		super.sendGuiNetworkData(container, player);
 
-		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player).getCommandSenderName()) ? 1 : 0);
+		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
 	}
 
 	/* NBT METHODS */

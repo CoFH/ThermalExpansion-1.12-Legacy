@@ -636,7 +636,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		if (augmentRedstoneControl) {
@@ -647,7 +647,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		RedstoneControlHelper.setItemStackTagRS(tag, this);

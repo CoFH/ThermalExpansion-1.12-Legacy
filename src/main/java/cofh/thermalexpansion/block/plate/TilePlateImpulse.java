@@ -219,7 +219,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 
@@ -235,7 +235,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 

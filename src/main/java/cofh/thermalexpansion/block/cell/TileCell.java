@@ -383,7 +383,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
@@ -413,7 +413,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		RedstoneControlHelper.setItemStackTagRS(tag, this);

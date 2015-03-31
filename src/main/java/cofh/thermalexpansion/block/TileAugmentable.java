@@ -298,7 +298,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		if (augmentRedstoneControl) {
@@ -328,7 +328,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		RedstoneControlHelper.setItemStackTagRS(tag, this);

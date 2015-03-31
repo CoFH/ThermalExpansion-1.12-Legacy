@@ -335,7 +335,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		super.readPortableData(player, tag);
@@ -345,7 +345,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
 
-		if (!canPlayerAccess(player.getCommandSenderName())) {
+		if (!canPlayerAccess(player)) {
 			return;
 		}
 		super.writePortableData(player, tag);
