@@ -4,28 +4,28 @@ import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
-import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
-import cofh.thermalexpansion.util.crafting.FurnaceManager;
-import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
+import cofh.thermalexpansion.gui.client.machine.GuiCharger;
+import cofh.thermalexpansion.util.crafting.ChargerManager;
+import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
 
 import net.minecraft.item.ItemStack;
 
-public class RecipeHandlerFurnace extends RecipeHandlerBase {
+public class RecipeHandlerCharger extends RecipeHandlerBase {
 
-	public static RecipeHandlerFurnace instance = new RecipeHandlerFurnace();
+	public static RecipeHandlerCharger instance = new RecipeHandlerCharger();
 
-	public RecipeHandlerFurnace() {
+	public RecipeHandlerCharger() {
 
 		super();
-		this.maxEnergy = 20 * 1200;
+		this.maxEnergy = 400 * 1000;
 	}
 
 	@Override
 	public void initialize() {
 
 		this.trCoords = new int[] { 74, 23, 24, 18 };
-		this.recipeName = "furnace";
-		this.containerClass = GuiFurnace.class;
+		this.recipeName = "charger";
+		this.containerClass = GuiCharger.class;
 	}
 
 	@Override
@@ -49,9 +49,13 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 		int energy = ((NEIRecipeBase) arecipes.get(recipe)).energy;
 
 		if (energy < 1000) {
-			drawString(energy + "RF", 46, 54, 0x939393, false);
+			drawString(energy + "RF", 56, 54, 0x939393, false);
+		} else if (energy < 10000) {
+			drawString(energy + "RF", 50, 54, 0x939393, false);
+		} else if (energy < 100000) {
+			drawString(energy + "RF", 44, 54, 0x939393, false);
 		} else {
-			drawString(energy + "RF", 40, 54, 0x939393, false);
+			drawString(energy + "RF", 38, 54, 0x939393, false);
 		}
 	}
 
@@ -60,9 +64,9 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 	public void loadCraftingRecipes(String outputId, Object... results) {
 
 		if (outputId.equals(getOverlayIdentifier())) {
-			RecipeFurnace[] recipes = FurnaceManager.getRecipeList();
-			for (RecipeFurnace recipe : recipes) {
-				arecipes.add(new NEIRecipeFurnace(recipe));
+			RecipeCharger[] recipes = ChargerManager.getRecipeList();
+			for (RecipeCharger recipe : recipes) {
+				arecipes.add(new NEIRecipeCharger(recipe));
 			}
 		} else {
 			super.loadCraftingRecipes(outputId, results);
@@ -73,10 +77,10 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
 
-		RecipeFurnace[] recipes = FurnaceManager.getRecipeList();
-		for (FurnaceManager.RecipeFurnace recipe : recipes) {
+		RecipeCharger[] recipes = ChargerManager.getRecipeList();
+		for (ChargerManager.RecipeCharger recipe : recipes) {
 			if (NEIServerUtils.areStacksSameType(recipe.getOutput(), result)) {
-				arecipes.add(new NEIRecipeFurnace(recipe));
+				arecipes.add(new NEIRecipeCharger(recipe));
 			}
 		}
 	}
@@ -84,7 +88,7 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(String inputId, Object... ingredients) {
 
-		if (inputId.equals("fuel") && getClass() == RecipeHandlerFurnace.class) {
+		if (inputId.equals("fuel") && getClass() == RecipeHandlerCharger.class) {
 			loadCraftingRecipes(getOverlayIdentifier());
 		} else {
 			super.loadUsageRecipes(inputId, ingredients);
@@ -95,18 +99,18 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 
-		RecipeFurnace[] recipes = FurnaceManager.getRecipeList();
-		for (RecipeFurnace recipe : recipes) {
+		RecipeCharger[] recipes = ChargerManager.getRecipeList();
+		for (RecipeCharger recipe : recipes) {
 			if (NEIServerUtils.areStacksSameType(recipe.getInput(), ingredient)) {
-				arecipes.add(new NEIRecipeFurnace(recipe));
+				arecipes.add(new NEIRecipeCharger(recipe));
 			}
 		}
 	}
 
 	/* RECIPE CLASS */
-	class NEIRecipeFurnace extends NEIRecipeBase {
+	class NEIRecipeCharger extends NEIRecipeBase {
 
-		public NEIRecipeFurnace(RecipeFurnace recipe) {
+		public NEIRecipeCharger(RecipeCharger recipe) {
 
 			input = new PositionedStack(recipe.getInput(), 51, 18);
 			output = new PositionedStack(recipe.getOutput(), 111, 27);

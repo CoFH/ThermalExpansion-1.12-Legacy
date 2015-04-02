@@ -33,6 +33,8 @@ public class ItemDiagram extends ItemBase {
 
 		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			return baseName + SchematicHelper.getOutputName(stack);
+		} else if (ItemHelper.getItemDamage(stack) == Types.PATTERN.ordinal()) {
+			return ""; // TODO: Implement patterns
 		}
 		return baseName + RedprintHelper.getName(stack);
 	}
@@ -43,6 +45,9 @@ public class ItemDiagram extends ItemBase {
 		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			return SchematicHelper.getOutputName(stack).isEmpty() ? EnumRarity.common : EnumRarity.uncommon;
 		}
+		if (ItemHelper.getItemDamage(stack) == Types.PATTERN.ordinal()) {
+			return EnumRarity.common;
+		}
 		return RedprintHelper.getName(stack).isEmpty() ? EnumRarity.common : EnumRarity.uncommon;
 	}
 
@@ -51,6 +56,8 @@ public class ItemDiagram extends ItemBase {
 
 		if (ItemHelper.getItemDamage(stack) == Types.SCHEMATIC.ordinal()) {
 			SchematicHelper.addSchematicInformation(stack, list);
+		} else if (ItemHelper.getItemDamage(stack) == Types.PATTERN.ordinal()) {
+
 		} else {
 			RedprintHelper.addRedprintInformation(stack, list);
 		}
@@ -83,6 +90,9 @@ public class ItemDiagram extends ItemBase {
 
 		if (player.isSneaking()) {
 			stack.setTagCompound(null);
+		}
+		if (stack.getItemDamage() != Types.REDPRINT.ordinal()) {
+			return false;
 		} else if (ServerHelper.isServerWorld(world)) {
 			TileEntity tile = world.getTileEntity(x, y, z);
 
@@ -107,7 +117,7 @@ public class ItemDiagram extends ItemBase {
 	}
 
 	public enum Types {
-		SCHEMATIC, REDPRINT
+		SCHEMATIC, REDPRINT, PATTERN
 	}
 
 }
