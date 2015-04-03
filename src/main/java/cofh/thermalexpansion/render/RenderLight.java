@@ -6,6 +6,8 @@ import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;
+import cofh.repack.codechicken.lib.vec.Transformation;
+import cofh.repack.codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.light.TileLight;
@@ -35,9 +37,11 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 	static IIcon[] textureCenter = new IIcon[2];
 	static IIcon textureHalo;
 
-	static CCModel[] modelFrame = new CCModel[NUM_RENDERS];
-	static CCModel[] modelCenter = new CCModel[NUM_RENDERS];
-	static CCModel[] modelHalo = new CCModel[NUM_RENDERS];
+	static final int NUM_STYLES = 16;
+
+	static CCModel[] modelFrame = new CCModel[NUM_STYLES];
+	static CCModel[] modelCenter = new CCModel[NUM_STYLES];
+	static CCModel[] modelHalo = new CCModel[NUM_STYLES];
 
 	static {
 		TEProps.renderIdLight = RenderingRegistry.getNextAvailableRenderId();
@@ -62,92 +66,92 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 2.0D * d1;
-		double d3 = 0.0625D;
+		double d3 = 0.0625D - d1;
 
-		modelFrame[0] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals();
-		modelFrame[1] = CCModel.quadModel(24).generateBlock(0, d1, d1, d1, 1 - d1, 1 - d1, 1 - d1).computeNormals();
-		modelCenter[0] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2).computeNormals();
-		modelHalo[1] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3).computeNormals().shrinkUVs(d3);
-	}
+		int i = 0;
+		modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2);
+		modelHalo[i] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3);
 
-	public void renderCenter(int metadata, boolean modified, double x, double y, double z) {
+		{ // flat lamp
+			double d4 = 1. / 16, d5 = 15. / 16, d6 = 2. / 16;
+			++i;
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
+		}
+		{ // button lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
+			++i;
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
+		}
+		{ // tall lamp
+			double d4 = 0.5 - 3. / 16, d5 = 0.5 + 3. / 16, d6 = 7. / 16;
+			++i;
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
+		}
+		{ // wide lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
+			++i;
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d2, d5 - d2, d6 - d2, 1 - d2);
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, -d3, d5 + d3, d6 + d3, 1 + d3);
+		}
+		{ // torch lamp
+			double d4 = 0.5 - 1. / 16, d5 = 0.5 + 1. / 16, d6 = 10. / 16;
+			++i;
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
+		}
 
-		if (modified) {
-			modelCenter[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureCenter[1]));
-		} else {
-			modelCenter[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureCenter[0]));
+		for (; i >= 0; --i) {
+			modelFrame[i] = CCModel.quadModel(24).generateBlock(0, BlockLight.models[i]);
+			modelFrame[i].computeNormals();
+			modelCenter[i].computeNormals();
+			modelHalo[i].computeNormals().shrinkUVs(d3);
 		}
 	}
 
-	public void renderFrame(int metadata, double x, double y, double z) {
+	public void renderCenter(int style, int color, boolean modified, Transformation t) {
 
-		modelFrame[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureFrame[metadata]));
+		modelCenter[style].setColour(color);
+		modelCenter[style].render(t, RenderUtils.getIconTransformation(textureCenter[modified ? 1 : 0]));
+		modelCenter[style].setColour(0xFFFFFFFF);
 	}
 
-	public void renderHalo(int metadata, double x, double y, double z) {
+	public void renderFrame(int style, int color, int type, Transformation t) {
 
-		modelHalo[metadata].render(x, y, z, RenderUtils.getIconTransformation(textureHalo));
+		modelFrame[style].setColour(color);
+		modelFrame[style].render(t, RenderUtils.getIconTransformation(textureFrame[type]));
+		modelFrame[style].setColour(0xFFFFFFFF);
 	}
 
-	public boolean renderWorldIlluminator(int color, boolean modified, double x, double y, double z) {
+	public void renderHalo(int style, int color, Transformation t) {
 
-		if (BlockCoFHBase.renderPass == 0) {
+		modelHalo[style].setColour(color & ~0x80);
+		modelHalo[style].render(t, RenderUtils.getIconTransformation(textureHalo));
+		modelHalo[style].setColour(0xFFFFFFFF);
+	}
+
+	public boolean renderWorldIlluminator(int pass, int style, int color, boolean modified, Transformation t) {
+
+		if (pass == 0) {
 			return false;
 		}
-		modelCenter[0].setColour(color);
-		renderCenter(0, modified, x, y, z);
-		modelCenter[0].setColour(0xFFFFFFFF);
+		renderCenter(style, color, modified, t);
 
-		renderFrame(0, x, y, z);
+		renderFrame(style, -1, 0, t);
 		return true;
 	}
 
-	public boolean renderWorldLampHalo(int color, boolean active, double x, double y, double z) {
+	public boolean renderWorldLampLumium(int pass, int style, int color, boolean active, Transformation t) {
 
-		if (BlockCoFHBase.renderPass == 0) {
-			modelFrame[1].setColour(color);
-			renderFrame(1, x, y, z);
-			modelFrame[1].setColour(0xFFFFFFFF);
+		if (pass == 0) {
+			renderFrame(style, color, 1, t);
 			return true;
 		} else if (active) {
-			modelHalo[1].setColour(color - 0x80);
-			renderHalo(1, x, y, z);
-			modelHalo[1].setColour(0xFFFFFFFF);
+			renderHalo(style, color, t);
 		}
 		return active;
-	}
-
-	public boolean renderWorldLampLumium(int color, boolean active, double x, double y, double z) {
-
-		if (BlockCoFHBase.renderPass == 0) {
-			modelFrame[1].setColour(color);
-			renderFrame(1, x, y, z);
-			modelFrame[1].setColour(0xFFFFFFFF);
-			return true;
-		}
-		return BlockCoFHBase.renderPass == 0;
-	}
-
-	public void renderItemIlluminator(int color, boolean modified, double offset) {
-
-		CCRenderState.startDrawing();
-		modelCenter[0].setColour(color);
-		renderCenter(0, modified, offset, offset, offset);
-		modelCenter[0].setColour(0xFFFFFFFF);
-		CCRenderState.draw();
-
-		CCRenderState.startDrawing();
-		renderFrame(0, offset, offset, offset);
-		CCRenderState.draw();
-	}
-
-	public void renderItemLampLumium(int color, double offset) {
-
-		CCRenderState.startDrawing();
-		modelFrame[1].setColour(color);
-		renderFrame(1, offset, offset, offset);
-		modelFrame[1].setColour(0xFFFFFFFF);
-		CCRenderState.draw();
 	}
 
 	/* ISimpleBlockRenderingHandler */
@@ -167,18 +171,24 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		int bMeta = world.getBlockMetadata(x, y, z);
 
 		RenderUtils.preWorldRender(world, x, y, z);
+		int renderPass = BlockCoFHBase.renderPass;
 
 		int color = theTile.getColorMultiplier();
-		boolean modified = theTile.modified;
-		boolean active = theTile.getInternalLight() > 0;
+		boolean active = false;
+		generateModels();
+
+		int style = theTile.style;
+		int alignment = theTile.alignment;
+
+		Transformation pos = BlockLight.getTransformation(style, alignment).with(new Vector3(x, y, z).translation());
 
 		switch (BlockLight.Types.getType(bMeta)) {
 		case ILLUMINATOR:
-			return renderWorldIlluminator(color, modified, x, y, z);
+			return renderWorldIlluminator(renderPass, style, color, theTile.modified, pos);
 		case LAMP_LUMIUM_RADIANT:
-			return renderWorldLampHalo(color, active, x, y, z);
+			active = theTile.getInternalLight() > 0;
 		case LAMP_LUMIUM:
-			return renderWorldLampLumium(color, active, x, y, z);
+			return renderWorldLampLumium(renderPass, style, color, active, pos);
 		}
 		return false;
 	}
@@ -206,6 +216,24 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
 
 		return true;
+	}
+
+	public void renderItemIlluminator(int color, boolean modified, double offset) {
+
+		CCRenderState.startDrawing();
+		renderCenter(0, color, modified, new Vector3(offset, offset, offset).translation());
+		CCRenderState.draw();
+
+		CCRenderState.startDrawing();
+		renderFrame(0, -1, 0, new Vector3(offset, offset, offset).translation());
+		CCRenderState.draw();
+	}
+
+	public void renderItemLampLumium(int color, double offset) {
+
+		CCRenderState.startDrawing();
+		renderFrame(0, color, 1, new Vector3(offset, offset, offset).translation());
+		CCRenderState.draw();
 	}
 
 	@Override

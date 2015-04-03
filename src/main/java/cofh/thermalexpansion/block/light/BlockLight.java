@@ -6,10 +6,15 @@ import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.repack.codechicken.lib.vec.Cuboid6;
+import cofh.repack.codechicken.lib.vec.Rotation;
+import cofh.repack.codechicken.lib.vec.Transformation;
+import cofh.repack.codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.render.transformation.TorchTransformation;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -35,6 +41,59 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockLight extends BlockTEBase implements IBlockConfigGui {
+
+	public static Cuboid6[] models;
+	static {
+
+		double d1 = 0;
+		models = new Cuboid6[6];
+		{ // full block
+			models[0] = new Cuboid6(d1, d1, d1, 1 - d1, 1 - d1, 1 - d1);
+		}
+		{ // flat lamp
+			double d4 = 1. / 16, d5 = 15. / 16, d6 = 2. / 16;
+			models[1] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+		{ // button lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
+			models[2] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+		{ // tall lamp
+			double d4 = 0.5 - 3. / 16, d5 = 0.5 + 3. / 16, d6 = 7. / 16;
+			models[3] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+		{ // wide lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
+			models[4] = new Cuboid6(d4 + d1, d1, d1, d5 - d1, d6 - d1, 1 - d1);
+		}
+		{ // torch lamp
+			double d4 = 0.5 - 1. / 16, d5 = 0.5 + 1. / 16, d6 = 10. / 16;
+			models[5] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+	}
+
+	public static Transformation getTransformation(int style, int alignment) {
+
+		Transformation ret = TorchTransformation.sideTransformations[0];
+		switch (style) {
+		case 1:
+		case 2:
+		case 3:
+			ret = Rotation.sideRotations[alignment].at(Vector3.center);
+			break;
+		case 4:
+			ret = Rotation.quarterRotations[alignment >> 3].with(Rotation.sideRotations[alignment & 7]).at(Vector3.center);
+			break;
+		case 5:
+			ret = TorchTransformation.sideTransformations[alignment];
+			break;
+		case 0:
+		default:
+			break;
+		}
+
+		return ret;
+	}
 
 	public BlockLight() {
 
@@ -61,9 +120,65 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
+		NBTTagCompound tag = new NBTTagCompound();
 		for (int i = 0; i < Types.values().length; i++) {
-			list.add(new ItemStack(item, 1, i));
+			ItemStack stack = new ItemStack(item, 1, i);
+			stack.setTagCompound(tag);
+			for (byte j = 0; j < 6; ++j) {
+				tag.setByte("Style", j);
+				list.add(stack.copy());
+			}
 		}
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(World world, int x, int y, int z) {
+
+		TileLight tile = (TileLight)world.getTileEntity(x, y, z);
+		switch (tile.style) {
+		case 2:
+		case 5:
+			return null;
+		}
+		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
+		return ret.add(new Vector3(x, y, z)).toAABB();
+	}
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
+
+		TileLight tile = (TileLight)world.getTileEntity(x, y, z);
+		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
+		switch (tile.style) {
+		case 5:
+			switch (tile.alignment) {
+			case 2:
+			case 3:
+				ret.expand(new Vector3(0.1, 0, 0));
+				break;
+			case 4:
+			case 5:
+				ret.expand(new Vector3(0, 0, 0.1));
+				break;
+			default:
+				ret.expand(0.05);
+			}
+		}
+		ret.setBlockBounds(this);
+	}
+
+	@Override
+	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
+
+		if (super.canReplace(world, x, y, z, side, stack)) {
+			if (stack.stackTagCompound != null) {
+				int style = stack.stackTagCompound.getByte("Style");
+				if (style == 5 && side == 0)
+					return false;
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -77,6 +192,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			}
 			tile.dim = stack.stackTagCompound.getBoolean("Dim");
 			tile.mode = stack.stackTagCompound.getByte("Mode");
+			tile.style = stack.stackTagCompound.getByte("Style");
 		}
 		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
@@ -181,6 +297,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			tag.setBoolean("Dim", tile.dim);
 		}
 		tag.setByte("Mode", tile.mode);
+		if (tile.style != 0) {
+			tag.setByte("Style", tile.style);
+		}
 		return tag.hasNoTags() ? null : tag;
 	}
 

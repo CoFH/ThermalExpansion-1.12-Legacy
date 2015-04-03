@@ -33,6 +33,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public boolean isPowered;
 	public byte inputPower;
 	public boolean dim;
+	public byte style;
+	public byte alignment;
 
 	int lightValue;
 	public int color = 0xFFFFFF;
@@ -178,6 +180,10 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		}
 		payload.addByte(mode);
 		payload.addBool(dim);
+		payload.addByte(style);
+		if (style != 0) {
+			payload.addByte(alignment);
+		}
 		if (ServerHelper.isServerWorld(worldObj)) {
 			payload.addByte(getInternalLight());
 		}
@@ -214,6 +220,10 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		}
 		mode = payload.getByte();
 		dim = payload.getBool();
+		style = payload.getByte();
+		if (style != 0) {
+			alignment = payload.getByte();
+		}
 		if (!isServer) {
 			lightValue = payload.getByte();
 			setRenderColor();
@@ -235,6 +245,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		inputPower = nbt.getByte("Signal");
 
 		dim = nbt.getBoolean("Dim");
+
+		style = nbt.getByte("Style");
+		alignment = nbt.getByte("Align");
 	}
 
 	@Override
@@ -250,6 +263,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		nbt.setByte("Signal", inputPower);
 
 		nbt.setBoolean("Dim", dim);
+
+		nbt.setByte("Style", style);
+		nbt.setByte("Align", alignment);
 	}
 
 	/* IPortableData */
