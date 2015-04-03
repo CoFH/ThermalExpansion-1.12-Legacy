@@ -246,6 +246,7 @@ public class TEItems {
 
 	public static ItemStack diagramSchematic;
 	public static ItemStack diagramRedprint;
+	public static ItemStack diagramPattern;
 
 	public static ItemStack capacitorPotato;
 	public static ItemStack capacitorBasic;

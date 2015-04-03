@@ -46,6 +46,7 @@ import cofh.thermalexpansion.util.crafting.RecipeMachineUpgrade;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import cofh.thermalexpansion.util.crafting.TECraftingParser;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.ThermalFoundation;
 import cpw.mods.fml.common.Mod;
@@ -145,6 +146,7 @@ public class ThermalExpansion extends BaseMod {
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
+		TECraftingParser.initialize();
 
 		RecipeSorter.register("thermalexpansion:machine", RecipeMachine.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
 		RecipeSorter.register("thermalexpansion:machineUpgrade", RecipeMachineUpgrade.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
@@ -155,6 +157,12 @@ public class ThermalExpansion extends BaseMod {
 		TEItems.preInit();
 		TEBlocks.preInit();
 		TEPlugins.preInit();
+
+		try {
+			TECraftingParser.parseCraftingFiles();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 
 		configOptions();
 	}

@@ -1,19 +1,16 @@
 package cofh.thermalexpansion.util.crafting;
 
+import cofh.core.CoFHProps;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cofh.thermalfoundation.item.TFItems;
-
 import gnu.trove.map.hash.THashMap;
-
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -53,28 +50,28 @@ public class CrucibleManager {
 		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Netherrack", true);
 		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
 
-		int tweakNetherrackRF = ThermalExpansion.config.get(category, "Netherrack.Energy", TEProps.lavaRF * 6 / 10);
-		int tweakBlazeRodRF = ThermalExpansion.config.get(category, "BlazeRod.Energy", TEProps.lavaRF / 10);
+		int tweakNetherrackRF = ThermalExpansion.config.get(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
+		int tweakBlazeRodRF = ThermalExpansion.config.get(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 
 		if (recipeNetherrack) {
-			if (tweakNetherrackRF >= TEProps.lavaRF / 100 && tweakNetherrackRF <= TEProps.lavaRF) {
+			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
 				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 			} else {
-				addTERecipe(TEProps.lavaRF * 6 / 10, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 				ThermalExpansion.log.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.config.set(category, "Netherrack.Energy", TEProps.lavaRF * 6 / 10);
+				ThermalExpansion.config.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
 			}
 		}
 		if (recipeBlazeRod) {
-			if (tweakBlazeRodRF >= TEProps.lavaRF / 20 && tweakBlazeRodRF <= TEProps.lavaRF) {
+			if (tweakBlazeRodRF >= CoFHProps.LAVA_RF / 20 && tweakBlazeRodRF <= CoFHProps.LAVA_RF) {
 				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 			} else {
-				addTERecipe(TEProps.lavaRF / 100, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
+				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 				ThermalExpansion.log.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.config.set(category, "BlazeRod.Energy", TEProps.lavaRF / 10);
+				ThermalExpansion.config.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 			}
 		}
-		int defaultCost = TEProps.lavaRF * 8 / 5;
+		int defaultCost = CoFHProps.LAVA_RF * 8 / 5;
 
 		addTERecipe(defaultCost, new ItemStack(Blocks.cobblestone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 		addTERecipe(defaultCost, new ItemStack(Blocks.stone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));

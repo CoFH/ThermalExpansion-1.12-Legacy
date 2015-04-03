@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins;
 
+import cofh.core.CoFHProps;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.core.TEProps;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ public class TEPlugins {
 				pluginClass = TEPlugins.class.getClassLoader().loadClass(pluginPath);
 				pluginClass.getMethod("preInit", new Class[0]).invoke(null, new Object[0]);
 			} catch (Throwable t) {
-				if (TEProps.enableDebugOutput) {
+				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
 				}
 			}
@@ -36,7 +36,7 @@ public class TEPlugins {
 					pluginClass.getMethod("initialize", new Class[0]).invoke(null, new Object[0]);
 				}
 			} catch (Throwable t) {
-				if (TEProps.enableDebugOutput) {
+				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
 				}
 			}
@@ -49,7 +49,7 @@ public class TEPlugins {
 					pluginClass.getMethod("postInit", new Class[0]).invoke(null, new Object[0]);
 				}
 			} catch (Throwable t) {
-				if (TEProps.enableDebugOutput) {
+				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
 				}
 			}
@@ -62,7 +62,7 @@ public class TEPlugins {
 					pluginClass.getMethod("loadComplete", new Class[0]).invoke(null, new Object[0]);
 				}
 			} catch (Throwable t) {
-				if (TEProps.enableDebugOutput) {
+				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
 				}
 			}
@@ -75,7 +75,7 @@ public class TEPlugins {
 					pluginClass.getMethod("registerRenderInformation", new Class[0]).invoke(null, new Object[0]);
 				}
 			} catch (Throwable t) {
-				if (TEProps.enableDebugOutput) {
+				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
 				}
 			}
@@ -87,8 +87,7 @@ public class TEPlugins {
 	static {
 		// addPlugin("cc.CCPlugin", "ComputerCraft");
 		addPlugin("mfr.MFRPlugin", "MineFactoryReloaded");
-		addPlugin("tc4.TCPlugin", "Thaumcraft4");
-		addPlugin("tcon.TConPlugin", "TConstruct");
+		addPlugin("thaumcraft.ThaumcraftPlugin", "Thaumcraft");
 	}
 
 	public static void preInit() {

@@ -30,6 +30,10 @@ public class TECraftingHandler {
 
 	public static TECraftingHandler instance = new TECraftingHandler();
 
+	private TECraftingHandler() {
+
+	}
+
 	public static void initialize() {
 
 		FMLCommonHandler.instance().bus().register(instance);

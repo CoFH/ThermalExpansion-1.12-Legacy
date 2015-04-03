@@ -6,12 +6,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.TileDynamoCompression;
 import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
-import cofh.thermalexpansion.core.TEProps;
-
 import java.io.File;
 import java.util.Locale;
 import java.util.Set;
-
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 
@@ -71,12 +68,12 @@ public class FuelHandler {
 	public static void parseFuels() {
 
 		String category = "Fuels.Magmatic";
-		registerMagmaticFuel("lava", configFuels.get(category, "lava", TEProps.lavaRF * 9 / 10));
+		registerMagmaticFuel("lava", configFuels.get(category, "lava", CoFHProps.LAVA_RF * 9 / 10));
 		registerMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
 
 		Set<String> catKeys = configFuels.getCategoryKeys(category);
 		for (String s : catKeys) {
-			registerMagmaticFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, TEProps.lavaRF * 9 / 10));
+			registerMagmaticFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, CoFHProps.LAVA_RF * 9 / 10));
 		}
 
 		category = "Fuels.Compression";

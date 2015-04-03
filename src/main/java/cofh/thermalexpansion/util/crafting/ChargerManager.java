@@ -55,6 +55,9 @@ public class ChargerManager {
 
 	public static void loadRecipes() {
 
+		if (ItemHelper.oreNameExists("crystalCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartzCharged")) {
+			addRecipe(3200, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("crystalCertusQuartzCharged").get(0));
+		}
 	}
 
 	public static void refreshRecipes() {
@@ -79,6 +82,11 @@ public class ChargerManager {
 		RecipeCharger recipe = new RecipeCharger(input, output, energy);
 		recipeMap.put(new ComparableItemStackSafe(input), recipe);
 		return true;
+	}
+
+	public static boolean addRecipe(int energy, ItemStack input, ItemStack output) {
+
+		return addRecipe(energy, input, output, false);
 	}
 
 	public static boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {

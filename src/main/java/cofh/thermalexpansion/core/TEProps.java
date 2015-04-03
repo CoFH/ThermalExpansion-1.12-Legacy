@@ -45,10 +45,7 @@ public class TEProps {
 
 	public static boolean holidayChristmas = true;
 
-	public static int lavaRF = 200000;
-
 	public static boolean enableAchievements = false;
-	public static boolean enableDebugOutput = false;
 
 	public static boolean useAlternateShader = false;
 

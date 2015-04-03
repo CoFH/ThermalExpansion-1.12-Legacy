@@ -242,7 +242,7 @@ public class IMCHandler {
 					ThermalExpansion.log.warn("ThermalExpansion received an invalid IMC from " + theMessage.getSender() + "! Key was " + theMessage.key);
 				}
 			} catch (Exception e) {
-				ThermalExpansion.log.warn("ThermalExpansion received an broken IMC from " + theMessage.getSender() + "!");
+				ThermalExpansion.log.warn("ThermalExpansion received a broken IMC from " + theMessage.getSender() + "!");
 				e.printStackTrace();
 			}
 		}
