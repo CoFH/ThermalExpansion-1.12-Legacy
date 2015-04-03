@@ -175,7 +175,6 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 		int color = theTile.getColorMultiplier();
 		boolean active = false;
-		generateModels();
 
 		int style = theTile.style;
 		int alignment = theTile.alignment;
@@ -218,22 +217,13 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		return true;
 	}
 
-	public void renderItemIlluminator(int color, boolean modified, double offset) {
+	public void renderItemIlluminator(int style, int color, boolean modified, Transformation t) {
 
-		CCRenderState.startDrawing();
-		renderCenter(0, color, modified, new Vector3(offset, offset, offset).translation());
+		renderCenter(style, color, modified, t);
 		CCRenderState.draw();
 
 		CCRenderState.startDrawing();
-		renderFrame(0, -1, 0, new Vector3(offset, offset, offset).translation());
-		CCRenderState.draw();
-	}
-
-	public void renderItemLampLumium(int color, double offset) {
-
-		CCRenderState.startDrawing();
-		renderFrame(0, color, 1, new Vector3(offset, offset, offset).translation());
-		CCRenderState.draw();
+		renderFrame(style, -1, 0, t);
 	}
 
 	@Override
@@ -248,24 +238,34 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 		int color = 0xFFFFFFFF;
 		boolean modified = false;
 
-		if (item.hasTagCompound() && item.stackTagCompound.hasKey("Color")) {
-			color = item.getTagCompound().getInteger("Color");
-			color = (color << 8) + 0xFF;
-			modified = true;
+		int style = 0;
+		int alignment = 0;
+
+		if (item.hasTagCompound()) {
+			if (item.stackTagCompound.hasKey("Color")) {
+				color = item.getTagCompound().getInteger("Color");
+				color = (color << 8) + 0xFF;
+				modified = true;
+			}
+			style = item.stackTagCompound.getByte("Style");
 		}
 
 		RenderUtils.preItemRender();
 		RenderHelper.setBlockTextureSheet();
 
+		Transformation pos = BlockLight.getTransformation(style, alignment).with(new Vector3(offset, offset, offset).translation());
+
+		CCRenderState.startDrawing();
 		switch (BlockLight.Types.getType(metadata)) {
 		case ILLUMINATOR:
-			renderItemIlluminator(color, modified, offset);
+			renderItemIlluminator(style, color, modified, pos);
 			break;
 		case LAMP_LUMIUM_RADIANT:
 		case LAMP_LUMIUM:
-			renderItemLampLumium(color, offset);
+			renderWorldLampLumium(0, style, color, false, pos);
 			break;
 		}
+		CCRenderState.draw();
 		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
 	}
