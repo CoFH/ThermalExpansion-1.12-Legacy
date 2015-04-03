@@ -250,6 +250,26 @@ public class TileSmelter extends TileMachineBase {
 		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.readPortableTagInternal(player, tag)) {
+			return false;
+		}
+		lockPrimary = tag.getBoolean("SlotLock");
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.writePortableTagInternal(player, tag)) {
+			return false;
+		}
+		tag.setBoolean("SlotLock", lockPrimary);
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -329,27 +349,6 @@ public class TileSmelter extends TileMachineBase {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		super.readPortableData(player, tag);
-		lockPrimary = tag.getBoolean("SlotLock");
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		super.writePortableData(player, tag);
-		tag.setBoolean("SlotLock", lockPrimary);
 	}
 
 }

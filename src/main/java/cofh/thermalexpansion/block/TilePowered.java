@@ -106,7 +106,7 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		}
 	}
 
-	/* IEnergyHandler */
+	/* IEnergyReceiver */
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 

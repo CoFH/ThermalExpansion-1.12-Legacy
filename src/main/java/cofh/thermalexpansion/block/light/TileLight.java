@@ -40,13 +40,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public int color = 0xFFFFFF;
 	int renderColor = 0xAAAAAAFF;
 
-	/* GUI METHODS */
-	@Override
-	public boolean hasGui() {
-
-		return true;
-	}
-
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
@@ -168,6 +161,38 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		return true;
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		mode = tag.getByte("Mode");
+		dim = tag.getBoolean("Dim");
+
+		if (tag.hasKey("Color")) {
+			setColor(tag.getInteger("Color"));
+		}
+		worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setByte("Mode", mode);
+		tag.setBoolean("Dim", dim);
+
+		if (modified) {
+			tag.setInteger("Color", color);
+		}
+		return true;
+	}
+
+	/* GUI METHODS */
+	@Override
+	public boolean hasGui() {
+
+		return true;
+	}
+
 	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getPacket() {
@@ -266,31 +291,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		nbt.setByte("Style", style);
 		nbt.setByte("Align", alignment);
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		mode = tag.getByte("Mode");
-		dim = tag.getBoolean("Dim");
-
-		if (tag.hasKey("Color")) {
-			setColor(tag.getInteger("Color"));
-		}
-		worldObj.func_147451_t(xCoord, yCoord, zCoord);
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		tag.setByte("Mode", mode);
-		tag.setBoolean("Dim", dim);
-
-		if (modified) {
-			tag.setInteger("Color", color);
-		}
 	}
 
 	/* ITileInfo */

@@ -97,17 +97,29 @@ public class BlockCache extends BlockTEBase {
 			}
 		}
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+		boolean playSound = false;
+		int insertCount = 0;
 
 		if (ItemHelper.isPlayerHoldingNothing(player)) {
 			if (player.isSneaking()) {
 				tile.toggleLock();
+
+				if (tile.locked) {
+					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.8F);
+				} else {
+					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.6F);
+				}
 				return true;
 			}
 			if (tile.getStoredItemType() != null) {
 				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
 					if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
 						player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+						playSound = true;
 					}
+				}
+				if (playSound) {
+					world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.7F);
 				}
 			}
 			return true;
@@ -117,6 +129,10 @@ public class BlockCache extends BlockTEBase {
 
 		if (!player.capabilities.isCreativeMode && ret != heldStack) {
 			player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+			playSound = true;
+		}
+		if (playSound) {
+			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.7F);
 		}
 		return true;
 	}
@@ -127,6 +143,7 @@ public class BlockCache extends BlockTEBase {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
+		boolean playSound = false;
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 
 		int extractAmount = player.isSneaking() ? 1 : 64;
@@ -136,9 +153,13 @@ public class BlockCache extends BlockTEBase {
 			if (!player.inventory.addItemStackToInventory(extract)) {
 				return;
 			}
+			playSound = true;
 			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
 		} else {
 			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
+		}
+		if (playSound) {
+			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.pop", 0.1F, 0.8F);
 		}
 	}
 

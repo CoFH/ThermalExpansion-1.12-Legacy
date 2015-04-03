@@ -5,7 +5,6 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateImpulse;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -112,6 +111,24 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		intensityY = Math.sin(fAngle) * intensity / 10D;
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		intensity = tag.getInteger("Int");
+		angle = tag.getInteger("Angle");
+
+		updateForce();
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setInteger("Int", intensity);
+		tag.setInteger("Angle", angle);
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -213,34 +230,6 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 			payload.getInt();
 			payload.getInt();
 		}
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		intensity = tag.getInteger("Int");
-		angle = tag.getInteger("Angle");
-
-		updateForce();
-
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		tag.setInteger("Int", intensity);
-		tag.setInteger("Angle", angle);
 	}
 
 	// @Override

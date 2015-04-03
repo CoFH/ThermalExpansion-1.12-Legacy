@@ -41,6 +41,10 @@ public class RedprintHelper {
 		if (stack.stackTagCompound == null) {
 			return "";
 		}
+		if (stack.stackTagCompound.hasKey("DisplayType")) {
+			return ": " + StringHelper.localize(stack.stackTagCompound.getString("Type")) + " ("
+					+ StringHelper.localize(stack.stackTagCompound.getString("DisplayType")) + ")";
+		}
 		return ": " + StringHelper.localize(stack.stackTagCompound.getString("Type"));
 	}
 

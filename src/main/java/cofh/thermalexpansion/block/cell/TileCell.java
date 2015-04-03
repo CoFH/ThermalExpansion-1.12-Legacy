@@ -235,6 +235,43 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		}
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+		sideCache[0] = storedSideCache[0];
+		sideCache[1] = storedSideCache[1];
+		sideCache[facing] = storedSideCache[storedFacing];
+		sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+		sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+		sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+		energySend = (tag.getInteger("Send") * MAX_SEND[getType()]) / 1000;
+		energyReceive = (tag.getInteger("Recv") * MAX_RECEIVE[getType()]) / 1000;
+
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+
+		tag.setInteger("Send", (energySend * 1000) / MAX_SEND[getType()]);
+		tag.setInteger("Recv", energyReceive * 1000 / MAX_RECEIVE[getType()]);
+
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -378,49 +415,6 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	public String getDataType() {
 
 		return "tile.thermalexpansion.cell";
-	}
-
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
-
-		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
-		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
-
-		sideCache[0] = storedSideCache[0];
-		sideCache[1] = storedSideCache[1];
-		sideCache[facing] = storedSideCache[storedFacing];
-		sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
-		sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
-		sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
-
-		for (int i = 0; i < 6; i++) {
-			if (sideCache[i] >= getNumConfig(i)) {
-				sideCache[i] = 0;
-			}
-		}
-		energySend = (tag.getInteger("Send") * MAX_SEND[getType()]) / 1000;
-		energyReceive = (tag.getInteger("Recv") * MAX_RECEIVE[getType()]) / 1000;
-
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		RedstoneControlHelper.setItemStackTagRS(tag, this);
-		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
-
-		tag.setInteger("Send", (energySend * 1000) / MAX_SEND[getType()]);
-		tag.setInteger("Recv", energyReceive * 1000 / MAX_RECEIVE[getType()]);
 	}
 
 	/* IReconfigurableFacing */

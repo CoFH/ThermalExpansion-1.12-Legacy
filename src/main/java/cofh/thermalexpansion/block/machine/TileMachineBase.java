@@ -521,6 +521,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 		return IconRegistry.getIcon("MachineSide");
 	}
 
+	/* ISoundSource */
 	@Override
 	public String getSoundName() {
 

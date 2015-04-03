@@ -1,14 +1,13 @@
-package cofh.thermalexpansion.block.ender;
+package cofh.thermalexpansion.block.device;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.energy.IEnergyHandler;
-import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.util.fluid.FluidTankAdv;
-import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.core.TEProps;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -16,7 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileChunkLoader extends TilePowered implements IFluidHandler, IEnergyHandler, IEnergyInfo {
+public class TileChunkLoader extends TileAugmentable implements IFluidHandler {
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 	EnergyStorage energyStorage = new EnergyStorage(400000);
@@ -109,37 +108,6 @@ public class TileChunkLoader extends TilePowered implements IFluidHandler, IEner
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
 
-	/* IEnergyHandler */
-	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
-
-		return true;
-	}
-
-	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
-
-		return energyStorage.receiveEnergy(maxReceive, simulate);
-	}
-
-	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
-
-		return 0;
-	}
-
-	@Override
-	public int getEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getEnergyStored();
-	}
-
-	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
-
-		return energyStorage.getMaxEnergyStored();
-	}
-
 	/* IEnergyInfo */
 	@Override
 	public int getInfoEnergyPerTick() {
@@ -155,16 +123,12 @@ public class TileChunkLoader extends TilePowered implements IFluidHandler, IEner
 		return 0;
 	}
 
+	/* ISidedTexture */
 	@Override
-	public int getInfoEnergyStored() {
+	public IIcon getTexture(int side, int pass) {
 
-		return energyStorage.getEnergyStored();
-	}
-
-	@Override
-	public int getInfoMaxEnergyStored() {
-
-		return energyStorage.getMaxEnergyStored();
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

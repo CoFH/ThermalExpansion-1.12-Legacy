@@ -6,7 +6,6 @@ import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateSignal;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -133,6 +132,26 @@ public class TilePlateSignal extends TilePlateBase {
 		}
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		distance = tag.getByte("Dist");
+		intensity = tag.getByte("Int");
+		duration = tag.getByte("Time");
+
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setByte("Dist", distance);
+		tag.setByte("Int", intensity);
+		tag.setByte("Time", duration);
+
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -247,34 +266,6 @@ public class TilePlateSignal extends TilePlateBase {
 			payload.getByte();
 			payload.getByte();
 		}
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		distance = tag.getByte("Dist");
-		intensity = tag.getByte("Int");
-		duration = tag.getByte("Time");
-
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		tag.setByte("Dist", distance);
-		tag.setByte("Int", intensity);
-		tag.setByte("Time", duration);
 	}
 
 }

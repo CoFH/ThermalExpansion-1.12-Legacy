@@ -529,6 +529,32 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		}
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+
+		frequency = tag.getInteger("Frequency");
+		modeItem = tag.getByte("ModeItems");
+		modeFluid = tag.getByte("ModeFluid");
+		modeEnergy = tag.getByte("ModeEnergy");
+
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+
+		tag.setInteger("Frequency", frequency);
+		tag.setByte("ModeItems", modeItem);
+		tag.setByte("ModeFluid", modeFluid);
+		tag.setByte("ModeEnergy", modeEnergy);
+
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -955,38 +981,6 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return CoFHProps.EMPTY_TANK_INFO;
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
-
-		frequency = tag.getInteger("Frequency");
-		modeItem = tag.getByte("ModeItems");
-		modeFluid = tag.getByte("ModeFluid");
-		modeEnergy = tag.getByte("ModeEnergy");
-
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		RedstoneControlHelper.setItemStackTagRS(tag, this);
-
-		tag.setInteger("Frequency", frequency);
-		tag.setByte("ModeItems", modeItem);
-		tag.setByte("ModeFluid", modeFluid);
-		tag.setByte("ModeEnergy", modeEnergy);
 	}
 
 	/* ISecurable */

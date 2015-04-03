@@ -491,6 +491,28 @@ public class TileActivator extends TileAugmentable {
 		}
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		actsSneaking = tag.getBoolean("Sneaking");
+		leftClick = tag.getBoolean("LeftClick");
+		tickSlot = tag.getByte("TickSlot");
+		angle = tag.getByte("Angle");
+
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setBoolean("Sneaking", actsSneaking);
+		tag.setBoolean("LeftClick", leftClick);
+		tag.setByte("TickSlot", tickSlot);
+		tag.setByte("Angle", angle);
+
+		return true;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -575,35 +597,6 @@ public class TileActivator extends TileAugmentable {
 		actsSneaking = payload.getBool();
 		tickSlot = payload.getByte();
 		angle = payload.getByte();
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		super.readPortableData(player, tag);
-
-		actsSneaking = tag.getBoolean("Sneaking");
-		leftClick = tag.getBoolean("LeftClick");
-		tickSlot = tag.getByte("TickSlot");
-		angle = tag.getByte("Angle");
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		super.writePortableData(player, tag);
-
-		tag.setBoolean("Sneaking", actsSneaking);
-		tag.setBoolean("LeftClick", leftClick);
-		tag.setByte("TickSlot", tickSlot);
-		tag.setByte("Angle", angle);
 	}
 
 	/* IReconfigurableFacing */

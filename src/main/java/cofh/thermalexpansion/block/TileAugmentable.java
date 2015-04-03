@@ -43,6 +43,40 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 		return true;
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (augmentRedstoneControl) {
+			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+		}
+		if (augmentReconfigSides) {
+			int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+			byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+			sideCache[0] = storedSideCache[0];
+			sideCache[1] = storedSideCache[1];
+			sideCache[facing] = storedSideCache[storedFacing];
+			sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+			sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+			sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+			for (int i = 0; i < 6; i++) {
+				if (sideCache[i] >= getNumConfig(i)) {
+					sideCache[i] = 0;
+				}
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+		return true;
+	}
+
 	/* GUI METHODS */
 	public int getScaledProgress(int scale) {
 
@@ -292,47 +326,6 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	public int getInfoMaxEnergyStored() {
 
 		return energyStorage.getMaxEnergyStored();
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		if (augmentRedstoneControl) {
-			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
-		}
-		if (augmentReconfigSides) {
-			int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
-			byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
-
-			sideCache[0] = storedSideCache[0];
-			sideCache[1] = storedSideCache[1];
-			sideCache[facing] = storedSideCache[storedFacing];
-			sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
-			sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
-			sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
-
-			for (int i = 0; i < 6; i++) {
-				if (sideCache[i] >= getNumConfig(i)) {
-					sideCache[i] = 0;
-				}
-			}
-			markDirty();
-			sendUpdatePacket(Side.CLIENT);
-		}
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		RedstoneControlHelper.setItemStackTagRS(tag, this);
-		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
 	}
 
 	/* IReconfigurableSides */

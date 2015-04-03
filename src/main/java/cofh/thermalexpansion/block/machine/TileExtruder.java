@@ -13,6 +13,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.item.TEAugments;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
@@ -233,6 +234,24 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		hotTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 		coldTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
+	}
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.readPortableTagInternal(player, tag)) {
+			return false;
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.writePortableTagInternal(player, tag)) {
+			return false;
+		}
+		return true;
 	}
 
 	/* GUI METHODS */

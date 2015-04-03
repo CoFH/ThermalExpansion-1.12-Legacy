@@ -124,7 +124,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 		Block block = worldObj.getBlock(coords[0], coords[1], coords[2]);
-		FluidStack theStack = FluidHelper.getFluidFromWorld(worldObj, coords[0], coords[1], coords[2]);
+		FluidStack theStack = FluidHelper.getFluidFromWorld(worldObj, coords[0], coords[1], coords[2], true);
 		if (theStack != null) {
 			for (int i = 0; i < 6 && theStack.amount > 0; i++) {
 				if (sideCache[i] == 1) {

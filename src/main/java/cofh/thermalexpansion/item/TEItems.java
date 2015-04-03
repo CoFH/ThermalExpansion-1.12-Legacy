@@ -5,7 +5,9 @@ import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.tool.ItemChiller;
 import cofh.thermalexpansion.item.tool.ItemIgniter;
+import cofh.thermalexpansion.item.tool.ItemInterfaceBucket;
 import cofh.thermalexpansion.item.tool.ItemMultimeter;
 import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
@@ -32,6 +34,8 @@ public class TEItems {
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool", "wrench");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
+		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
+		itemSuperBucket = (ItemInterfaceBucket) new ItemInterfaceBucket().setUnlocalizedName("tool", "superBucket");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
@@ -41,7 +45,6 @@ public class TEItems {
 		itemBattleWrenchInvar.setUnlocalizedName("thermalexpansion.tool.invarBattleWrench");
 		itemBattleWrenchInvar.setTextureName("thermalexpansion:tool/InvarBattleWrench");
 		itemBattleWrenchInvar.setCreativeTab(ThermalExpansion.tabTools);
-
 		GameRegistry.registerItem(itemBattleWrenchInvar, "tool.battleWrenchInvar");
 
 		TEAugments.preInit();
@@ -57,10 +60,11 @@ public class TEItems {
 		toolWrench = itemWrench.addItem(0, "wrench");
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
-		toolIgniter = itemIgniter.addItem(0, "igniter");
+		toolIgniter = new ItemStack(itemIgniter);
+		toolChiller = new ItemStack(itemChiller);
+		toolSuperBucket = new ItemStack(itemSuperBucket);
 
 		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
-
 		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
 
 		/* Capacitor */
@@ -229,6 +233,8 @@ public class TEItems {
 	public static ItemWrench itemWrench;
 	public static ItemMultimeter itemMultimeter;
 	public static ItemIgniter itemIgniter;
+	public static ItemChiller itemChiller;
+	public static ItemInterfaceBucket itemSuperBucket;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemMaterial;
 
@@ -241,6 +247,8 @@ public class TEItems {
 	public static ItemStack toolMultimeter;
 	public static ItemStack toolDebugger;
 	public static ItemStack toolIgniter;
+	public static ItemStack toolChiller;
+	public static ItemStack toolSuperBucket;
 
 	public static ItemStack toolInvarBattleWrench;
 

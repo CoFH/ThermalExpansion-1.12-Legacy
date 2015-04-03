@@ -6,7 +6,6 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTranslocate;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -61,6 +60,20 @@ public class TilePlateTranslocate extends TilePlateBase {
 				entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 0.5F, 1.0F);
 			}
 		}
+	}
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		distance = tag.getByte("Dist");
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setByte("Dist", distance);
+		return true;
 	}
 
 	/* GUI METHODS */
@@ -155,30 +168,6 @@ public class TilePlateTranslocate extends TilePlateBase {
 		} else {
 			payload.getByte();
 		}
-	}
-
-	/* IPortableData */
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		distance = tag.getByte("Dist");
-
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-
-		tag.setByte("Dist", distance);
 	}
 
 }

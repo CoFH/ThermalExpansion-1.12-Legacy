@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -28,6 +29,16 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 		}
 		tileName = name;
 		return true;
+	}
+
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		return false;
+	}
+
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		return false;
 	}
 
 	/* GUI METHODS */
@@ -179,10 +190,24 @@ public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacket
 	@Override
 	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
 
+		if (!canPlayerAccess(player)) {
+			return;
+		}
+		if (readPortableTagInternal(player, tag)) {
+			markDirty();
+			sendUpdatePacket(Side.CLIENT);
+		}
 	}
 
 	@Override
 	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!canPlayerAccess(player)) {
+			return;
+		}
+		if (writePortableTagInternal(player, tag)) {
+
+		}
 
 	}
 

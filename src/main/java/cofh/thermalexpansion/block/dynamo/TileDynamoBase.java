@@ -159,17 +159,6 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		energyStorage.setEnergyStored(quantity);
 	}
 
-	/* GUI METHODS */
-	public IEnergyStorage getEnergyStorage() {
-
-		return energyStorage;
-	}
-
-	public int getScaledEnergyStored(int scale) {
-
-		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
-	}
-
 	@Override
 	public void updateEntity() {
 
@@ -304,7 +293,34 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		return FluidRegistry.WATER.getIcon();
 	}
 
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (augmentRedstoneControl) {
+			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+
+		return true;
+	}
+
 	/* GUI METHODS */
+	public IEnergyStorage getEnergyStorage() {
+
+		return energyStorage;
+	}
+
+	public int getScaledEnergyStored(int scale) {
+
+		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+	}
+
 	public FluidTankAdv getTank(int tankIndex) {
 
 		return null;
@@ -631,26 +647,6 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	public String getDataType() {
 
 		return "tile.thermalexpansion.dynamo";
-	}
-
-	@Override
-	public void readPortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		if (augmentRedstoneControl) {
-			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
-		}
-	}
-
-	@Override
-	public void writePortableData(EntityPlayer player, NBTTagCompound tag) {
-
-		if (!canPlayerAccess(player)) {
-			return;
-		}
-		RedstoneControlHelper.setItemStackTagRS(tag, this);
 	}
 
 	/* IReconfigurableFacing */
