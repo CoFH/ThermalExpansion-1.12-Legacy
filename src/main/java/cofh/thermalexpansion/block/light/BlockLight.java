@@ -124,7 +124,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		for (int i = 0; i < Types.values().length; i++) {
 			ItemStack stack = new ItemStack(item, 1, i);
 			stack.setTagCompound(tag);
-			for (byte j = 0; j < 6; ++j) {
+			for (byte j = 0; j < models.length; ++j) {
 				tag.setByte("Style", j);
 				list.add(stack.copy());
 			}
