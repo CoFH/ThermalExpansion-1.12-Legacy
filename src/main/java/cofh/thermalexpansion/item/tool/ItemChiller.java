@@ -31,12 +31,6 @@ public class ItemChiller extends ItemEnergyContainerBase implements IEnergyConta
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
-
-		super.addInformation(stack, player, list, check);
-	}
-
-	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {

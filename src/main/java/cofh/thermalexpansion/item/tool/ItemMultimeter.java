@@ -7,9 +7,11 @@ import cofh.api.tileentity.ITileInfo;
 import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +29,15 @@ public class ItemMultimeter extends ItemBase {
 		super("thermalexpansion");
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		if (ItemHelper.getItemDamage(stack) == 0) {
+			list.add(StringHelper.getInfoText("info.thermalexpansion.tool.multimeter.0"));
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.tool.multimeter.1"));
+		}
 	}
 
 	@Override

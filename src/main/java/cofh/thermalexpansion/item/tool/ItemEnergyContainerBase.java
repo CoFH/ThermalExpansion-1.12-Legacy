@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.item.IEqualityOverrideItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -16,9 +17,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
-public abstract class ItemEnergyContainerBase extends Item implements IEnergyContainerItem {
+public abstract class ItemEnergyContainerBase extends Item implements IEnergyContainerItem, IEqualityOverrideItem {
 
 	public int maxEnergy = 80000;
 	public int maxTransfer = 160;
@@ -64,6 +66,8 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 		if (stack.stackTagCompound == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
+		list.add(StringHelper.getInfoText("info.thermalexpansion.tool." + itemName));
+
 		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
 		list.add(StringHelper.ORANGE + energyPerUse + " RF " + StringHelper.localize("info.cofh.perUse") + StringHelper.END);
 	}
@@ -192,4 +196,23 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 
 		return maxEnergy;
 	}
+
+	/* IEqualityOverrideItem */
+	@Override
+	public boolean isLastHeldItemEqual(ItemStack current, ItemStack previous) {
+
+		NBTTagCompound a = current.stackTagCompound, b = previous.stackTagCompound;
+		if (a == b) {
+			return true;
+		}
+		if (a == null || b == null) {
+			return false;
+		}
+		a = (NBTTagCompound) a.copy();
+		b = (NBTTagCompound) b.copy();
+		a.removeTag("Energy");
+		b.removeTag("Energy");
+		return a.equals(b);
+	}
+
 }

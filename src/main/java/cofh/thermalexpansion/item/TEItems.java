@@ -7,8 +7,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.ItemChiller;
 import cofh.thermalexpansion.item.tool.ItemIgniter;
-import cofh.thermalexpansion.item.tool.ItemInterfaceBucket;
 import cofh.thermalexpansion.item.tool.ItemMultimeter;
+import cofh.thermalexpansion.item.tool.ItemPump;
 import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -35,7 +35,7 @@ public class TEItems {
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
-		itemSuperBucket = (ItemInterfaceBucket) new ItemInterfaceBucket().setUnlocalizedName("tool", "superBucket");
+		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
@@ -62,7 +62,7 @@ public class TEItems {
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = new ItemStack(itemIgniter);
 		toolChiller = new ItemStack(itemChiller);
-		toolSuperBucket = new ItemStack(itemSuperBucket);
+		toolPump = new ItemStack(itemPump);
 
 		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
 		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
@@ -234,7 +234,7 @@ public class TEItems {
 	public static ItemMultimeter itemMultimeter;
 	public static ItemIgniter itemIgniter;
 	public static ItemChiller itemChiller;
-	public static ItemInterfaceBucket itemSuperBucket;
+	public static ItemPump itemPump;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemMaterial;
 
@@ -248,7 +248,7 @@ public class TEItems {
 	public static ItemStack toolDebugger;
 	public static ItemStack toolIgniter;
 	public static ItemStack toolChiller;
-	public static ItemStack toolSuperBucket;
+	public static ItemStack toolPump;
 
 	public static ItemStack toolInvarBattleWrench;
 

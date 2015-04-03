@@ -1,10 +1,11 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.item.IMultiModeItem;
+import cofh.core.util.KeyBindingMultiMode;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
@@ -34,7 +35,9 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class ItemInterfaceBucket extends ItemEnergyContainerBase implements IEnergyContainerItem, IMultiModeItem {
+import org.lwjgl.input.Keyboard;
+
+public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem {
 
 	IIcon fillIcon;
 	IIcon ejectIcon;
@@ -51,13 +54,15 @@ public class ItemInterfaceBucket extends ItemEnergyContainerBase implements IEne
 		}
 	}
 
-	public ItemInterfaceBucket() {
+	public ItemPump() {
 
-		super("superBucket");
+		super("pump");
 		setMaxDamage(1);
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
-		setTextureName("thermalexpansion:tools/SuperBucket");
+		setTextureName("thermalexpansion:tools/Pump");
+
+		energyPerUse = 200;
 
 		MinecraftForge.EVENT_BUS.register(this);
 	}
@@ -66,6 +71,8 @@ public class ItemInterfaceBucket extends ItemEnergyContainerBase implements IEne
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		super.addInformation(stack, player, list, check);
+		list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
+				+ Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
 	}
 
 	@Override
