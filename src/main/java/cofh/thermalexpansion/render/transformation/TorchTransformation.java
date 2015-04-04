@@ -71,7 +71,7 @@ public class TorchTransformation extends Transformation {
 				return sideTransformations[0];
 			}
 		}
-		return null;
+		return isRedundant() ? next : null;
 	}
 
 	@Override
