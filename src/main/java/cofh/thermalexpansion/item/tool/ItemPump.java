@@ -7,7 +7,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.eventhandler.Event.Result;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -47,15 +47,6 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	int FILL = 0;
 	int EJECT = 1;
 
-	@SubscribeEvent
-	public void onPlayerInteract(PlayerInteractEvent event) {
-
-		ItemStack equipped = event.entityPlayer.getHeldItem();
-		if (event.action == Action.RIGHT_CLICK_BLOCK && equipped != null && equipped.getItem() == this && !event.entityPlayer.isSneaking()) {
-			event.setCanceled(true);
-		}
-	}
-
 	public ItemPump() {
 
 		super("pump");
@@ -65,8 +56,6 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 		setTextureName("thermalexpansion:tools/Pump");
 
 		energyPerUse = 200;
-
-		MinecraftForge.EVENT_BUS.register(this);
 	}
 
 	@Override
@@ -78,10 +67,20 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
+		return true;
+	}
+
+	@Override
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+
+		PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, hitSide, world);
+		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY || event.useBlock == Result.DENY || event.useItem == Result.DENY) {
+			return false;
+		}
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-			return stack;
+			return false;
 		}
 		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == FILL);
 
@@ -168,11 +167,12 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 					if (!player.capabilities.isCreativeMode) {
 						extractEnergy(stack, energyPerUse, false);
 					}
+					return true;
 				}
 			}
 			player.swingItem();
 		}
-		return stack;
+		return false;
 	}
 
 	protected ItemStack findDrainContainerItem(FluidStack fluid, int amount, IInventory inventory) {
