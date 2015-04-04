@@ -8,6 +8,8 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -233,6 +235,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public void registerIcons(IIconRegister ir) {
 
 		this.fillIcon = ir.registerIcon(this.getIconString() + "_Input");
