@@ -6,6 +6,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.device.GuiWorkbench;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCharger;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingMachine;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingSecure;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingUpgrade;
@@ -57,6 +58,9 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 
 		API.registerRecipeHandler(RecipeHandlerInsolator.instance);
 		API.registerUsageHandler(RecipeHandlerInsolator.instance);
+
+		API.registerRecipeHandler(RecipeHandlerCharger.instance);
+		API.registerUsageHandler(RecipeHandlerCharger.instance);
 
 		API.registerGuiOverlayHandler(GuiWorkbench.class, new NEIRecipeOverlayHandler(), "crafting");
 

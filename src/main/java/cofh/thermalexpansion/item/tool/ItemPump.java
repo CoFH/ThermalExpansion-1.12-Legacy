@@ -90,7 +90,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
 			return false;
 		}
-		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, 128, getMode(stack) == FILL);
+		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == FILL);
 
 		if (pos != null) {
 			if (ServerHelper.isServerWorld(world)) {

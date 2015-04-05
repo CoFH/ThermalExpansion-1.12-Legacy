@@ -85,7 +85,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public int energyReceive;
 	public int energySend;
-	public byte type;
+	public byte type = 1;
 
 	public TileCell() {
 
@@ -94,8 +94,8 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	public TileCell(int metadata) {
 
-		energyStorage = new EnergyStorage(CAPACITY[metadata], MAX_RECEIVE[metadata]);
 		type = (byte) metadata;
+		energyStorage = new EnergyStorage(CAPACITY[type], MAX_RECEIVE[type]);
 	}
 
 	@Override
@@ -447,6 +447,17 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
+		sendUpdatePacket(Side.SERVER);
+		return true;
+	}
+
+	@Override
+	public boolean setSide(int side, int config) {
+
+		if (sideCache[side] == config || config >= getNumConfig(side)) {
+			return false;
+		}
+		sideCache[side] = (byte) config;
 		sendUpdatePacket(Side.SERVER);
 		return true;
 	}

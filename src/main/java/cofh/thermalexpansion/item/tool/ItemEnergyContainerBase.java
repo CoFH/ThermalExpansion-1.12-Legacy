@@ -215,6 +215,7 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 		b = (NBTTagCompound) b.copy();
 		a.removeTag("Energy");
 		b.removeTag("Energy");
+		System.out.println("called");
 		return a.equals(b);
 	}
 
