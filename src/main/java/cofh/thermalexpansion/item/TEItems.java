@@ -10,6 +10,7 @@ import cofh.thermalexpansion.item.tool.ItemIgniter;
 import cofh.thermalexpansion.item.tool.ItemMiner;
 import cofh.thermalexpansion.item.tool.ItemMultimeter;
 import cofh.thermalexpansion.item.tool.ItemPump;
+import cofh.thermalexpansion.item.tool.ItemTransfuser;
 import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -37,6 +38,7 @@ public class TEItems {
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
 		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
+		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemMiner = (ItemMiner) new ItemMiner().setUnlocalizedName("tool", "miner");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
@@ -65,6 +67,7 @@ public class TEItems {
 		toolIgniter = new ItemStack(itemIgniter);
 		toolChiller = new ItemStack(itemChiller);
 		toolPump = new ItemStack(itemPump);
+		toolTransfuser = new ItemStack(itemTransfuser);
 		toolMiner = new ItemStack(itemMiner);
 
 		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
@@ -238,6 +241,7 @@ public class TEItems {
 	public static ItemIgniter itemIgniter;
 	public static ItemChiller itemChiller;
 	public static ItemPump itemPump;
+	public static ItemTransfuser itemTransfuser;
 	public static ItemMiner itemMiner;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemMaterial;
@@ -253,6 +257,7 @@ public class TEItems {
 	public static ItemStack toolIgniter;
 	public static ItemStack toolChiller;
 	public static ItemStack toolPump;
+	public static ItemStack toolTransfuser;
 	public static ItemStack toolMiner;
 
 	public static ItemStack toolInvarBattleWrench;

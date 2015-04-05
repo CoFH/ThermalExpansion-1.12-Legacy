@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.api.item.IMultiModeItem;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -13,11 +12,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class ItemMiner extends ItemEnergyContainerBase implements IMultiModeItem {
+public class ItemMiner extends ItemEnergyContainerBase {
 
 	static final int MAX_DURATION = 72000;
 	public int range = 64;
@@ -148,64 +146,6 @@ public class ItemMiner extends ItemEnergyContainerBase implements IMultiModeItem
 
 		}
 		return false;
-	}
-
-	/* IMultiModeItem */
-	@Override
-	public int getMode(ItemStack stack) {
-
-		return stack.stackTagCompound == null ? 0 : stack.stackTagCompound.getInteger("Mode");
-	}
-
-	@Override
-	public boolean setMode(ItemStack stack, int mode) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.stackTagCompound.setInteger("Mode", mode);
-		return false;
-	}
-
-	@Override
-	public boolean incrMode(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode++;
-		if (curMode >= getNumModes(stack)) {
-			curMode = 0;
-		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
-		return true;
-	}
-
-	@Override
-	public boolean decrMode(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode--;
-		if (curMode <= 0) {
-			curMode = getNumModes(stack) - 1;
-		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
-		return true;
-	}
-
-	@Override
-	public int getNumModes(ItemStack stack) {
-
-		return 2;
-	}
-
-	@Override
-	public void onModeChange(EntityPlayer player, ItemStack stack) {
-
 	}
 
 }

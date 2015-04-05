@@ -3,41 +3,25 @@ package cofh.thermalexpansion.item.tool;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.item.IEqualityOverrideItem;
 import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
 
-public abstract class ItemEnergyContainerBase extends Item implements IEnergyContainerItem, IEqualityOverrideItem {
+public abstract class ItemEnergyContainerBase extends ItemToolBase implements IEnergyContainerItem, IEqualityOverrideItem {
 
 	public int maxEnergy = 80000;
 	public int maxTransfer = 160;
 	public int energyPerUse = 400;
 
-	public String modName = "thermalexpansion";
-	public final String itemName;
-
 	public ItemEnergyContainerBase(String name) {
 
-		super();
-		this.itemName = name;
-		setMaxDamage(1);
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
+		super(name);
 	}
 
 	public ItemEnergyContainerBase setEnergyParameters(int maxEnergy, int maxTransfer, int energyPerUse) {
@@ -75,18 +59,6 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		return false;
-	}
-
-	@Override
-	public boolean isFull3D() {
-
-		return true;
-	}
-
-	@Override
 	public boolean isDamaged(ItemStack stack) {
 
 		return stack.getItemDamage() != Short.MAX_VALUE;
@@ -105,51 +77,6 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 	public int getMaxDamage(ItemStack stack) {
 
 		return 1 + maxEnergy;
-	}
-
-	@Override
-	public boolean hasCustomEntity(ItemStack stack) {
-
-		return SecurityHelper.isSecure(stack);
-	}
-
-	@Override
-	public String getUnlocalizedName(ItemStack stack) {
-
-		return new StringBuilder().append(getUnlocalizedName()).append('.').append(itemName).toString();
-	}
-
-	@Override
-	public Entity createEntity(World world, Entity location, ItemStack stack) {
-
-		if (SecurityHelper.isSecure(stack)) {
-			location.invulnerable = true;
-			location.isImmuneToFire = true;
-			((EntityItem) location).lifespan = Integer.MAX_VALUE;
-		}
-		return null;
-	}
-
-	@Override
-	public Item setUnlocalizedName(String name) {
-
-		GameRegistry.registerItem(this, name);
-		name = modName + "." + name;
-		return super.setUnlocalizedName(name);
-	}
-
-	public Item setUnlocalizedName(String textureName, String registrationName) {
-
-		GameRegistry.registerItem(this, registrationName);
-		textureName = modName + "." + textureName;
-		return super.setUnlocalizedName(textureName);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister ir) {
-
-		this.itemIcon = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + StringHelper.titleCase(itemName));
 	}
 
 	/* IEnergyContainerItem */
@@ -215,7 +142,6 @@ public abstract class ItemEnergyContainerBase extends Item implements IEnergyCon
 		b = (NBTTagCompound) b.copy();
 		a.removeTag("Energy");
 		b.removeTag("Energy");
-		System.out.println("called");
 		return a.equals(b);
 	}
 

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.api.item.IMultiModeItem;
 import cofh.core.util.KeyBindingMultiMode;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -20,7 +19,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -35,13 +33,13 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import org.lwjgl.input.Keyboard;
 
-public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem {
+public class ItemPump extends ItemEnergyContainerBase {
 
 	IIcon fillIcon;
-	IIcon ejectIcon;
+	IIcon drainIcon;
 
-	int FILL = 0;
-	int EJECT = 1;
+	static final int INPUT = 0;
+	static final int OUTPUT = 1;
 
 	public ItemPump() {
 
@@ -65,7 +63,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	@Override
 	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
-		return false;
+		return true;
 	}
 
 	@Override
@@ -90,7 +88,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
 			return false;
 		}
-		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == FILL);
+		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == INPUT);
 
 		if (pos != null) {
 			if (ServerHelper.isServerWorld(world)) {
@@ -99,7 +97,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 				FluidStack resource;
 				boolean success = false;
 
-				if (getMode(stack) == FILL) {
+				if (getMode(stack) == INPUT) {
 					if (FluidHelper.isFluidHandler(tile)) {
 						IFluidHandler handler = (IFluidHandler) tile;
 						resource = handler.drain(fd, FluidContainerRegistry.BUCKET_VOLUME, false);
@@ -113,7 +111,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 							success = true;
 						}
 					}
-				} else if (getMode(stack) == EJECT) {
+				} else if (getMode(stack) == OUTPUT) {
 					if (FluidHelper.isFluidHandler(tile)) {
 						IFluidHandler handler = (IFluidHandler) tile;
 						FluidTankInfo[] tankInfo = handler.getTankInfo(fd);
@@ -239,7 +237,7 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	@Override
 	public IIcon getIcon(ItemStack stack, int pass) {
 
-		return getMode(stack) == FILL ? this.fillIcon : this.ejectIcon;
+		return getMode(stack) == INPUT ? this.fillIcon : this.drainIcon;
 	}
 
 	@Override
@@ -247,65 +245,14 @@ public class ItemPump extends ItemEnergyContainerBase implements IMultiModeItem 
 	public void registerIcons(IIconRegister ir) {
 
 		this.fillIcon = ir.registerIcon(this.getIconString() + "_Input");
-		this.ejectIcon = ir.registerIcon(this.getIconString() + "_Output");
+		this.drainIcon = ir.registerIcon(this.getIconString() + "_Output");
 	}
 
 	/* IMultiModeItem */
 	@Override
-	public int getMode(ItemStack stack) {
-
-		return stack.stackTagCompound == null ? 0 : stack.stackTagCompound.getInteger("Mode");
-	}
-
-	@Override
-	public boolean setMode(ItemStack stack, int mode) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		stack.stackTagCompound.setInteger("Mode", mode);
-		return false;
-	}
-
-	@Override
-	public boolean incrMode(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode++;
-		if (curMode >= getNumModes(stack)) {
-			curMode = 0;
-		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
-		return true;
-	}
-
-	@Override
-	public boolean decrMode(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
-			stack.setTagCompound(new NBTTagCompound());
-		}
-		int curMode = getMode(stack);
-		curMode--;
-		if (curMode <= 0) {
-			curMode = getNumModes(stack) - 1;
-		}
-		stack.stackTagCompound.setInteger("Mode", curMode);
-		return true;
-	}
-
-	@Override
 	public int getNumModes(ItemStack stack) {
 
 		return 2;
-	}
-
-	@Override
-	public void onModeChange(EntityPlayer player, ItemStack stack) {
-
 	}
 
 }

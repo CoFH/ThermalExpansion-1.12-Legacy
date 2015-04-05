@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -19,7 +18,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 
-public class ItemIgniter extends ItemEnergyContainerBase implements IEnergyContainerItem {
+public class ItemIgniter extends ItemEnergyContainerBase {
 
 	public int range = 32;
 
