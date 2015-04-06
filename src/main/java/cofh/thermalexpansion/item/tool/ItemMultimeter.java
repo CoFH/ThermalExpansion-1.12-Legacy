@@ -34,6 +34,12 @@ public class ItemMultimeter extends ItemBase {
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
 		if (ItemHelper.getItemDamage(stack) == 0) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.tool.multimeter.0"));
 			list.add(StringHelper.getNoticeText("info.thermalexpansion.tool.multimeter.1"));

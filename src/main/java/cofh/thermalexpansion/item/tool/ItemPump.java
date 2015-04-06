@@ -1,15 +1,11 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.core.util.KeyBindingMultiMode;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
@@ -31,8 +27,6 @@ import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 
-import org.lwjgl.input.Keyboard;
-
 public class ItemPump extends ItemEnergyContainerBase {
 
 	IIcon fillIcon;
@@ -50,14 +44,6 @@ public class ItemPump extends ItemEnergyContainerBase {
 		setTextureName("thermalexpansion:tools/Pump");
 
 		energyPerUse = 200;
-	}
-
-	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
-
-		super.addInformation(stack, player, list, check);
-		list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
-				+ Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
 	}
 
 	@Override

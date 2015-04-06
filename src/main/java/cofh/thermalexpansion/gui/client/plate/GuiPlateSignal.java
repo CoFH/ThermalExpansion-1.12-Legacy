@@ -59,9 +59,9 @@ public class GuiPlateSignal extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		addElement(new ElementSimpleToolTip(this, 13, 24).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 24, 24));
-		addElement(new ElementSimpleToolTip(this, 49, 24).setToolTip("info.cofh.strength").setSize(24, 24).setTexture(TEX_INFO_SIGNAL, 24, 24));
-		addElement(new ElementSimpleToolTip(this, 85, 24).setToolTip("info.cofh.duration").setSize(24, 24).setTexture(TEX_INFO_DURATION, 24, 24));
+		addElement(new ElementSimpleToolTip(this, 13, 24).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 32, 32));
+		addElement(new ElementSimpleToolTip(this, 49, 24).setToolTip("info.cofh.strength").setSize(24, 24).setTexture(TEX_INFO_SIGNAL, 32, 32));
+		addElement(new ElementSimpleToolTip(this, 85, 24).setToolTip("info.cofh.duration").setSize(24, 24).setTexture(TEX_INFO_DURATION, 32, 32));
 
 		addElement(new ElementFluid(this, 134, 32).setFluid(TFFluids.fluidRedstone).setSize(16, 16));
 

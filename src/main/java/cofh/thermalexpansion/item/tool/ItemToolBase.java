@@ -1,12 +1,15 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.item.IMultiModeItem;
+import cofh.core.util.KeyBindingMultiMode;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.List;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
@@ -16,6 +19,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+
+import org.lwjgl.input.Keyboard;
 
 public abstract class ItemToolBase extends Item implements IMultiModeItem {
 
@@ -29,6 +34,28 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		setMaxDamage(1);
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
+	}
+
+	@Override
+	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			list.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		addInformationDelegate(stack, player, list, check);
+
+		if (getNumModes(stack) > 0) {
+			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
+					+ Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
+		}
+	}
+
+	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		list.add(StringHelper.getInfoText("info.thermalexpansion.tool." + itemName));
 	}
 
 	@Override

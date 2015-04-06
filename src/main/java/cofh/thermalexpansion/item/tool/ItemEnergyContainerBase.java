@@ -49,11 +49,17 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+
+	}
+
+	@Override
+	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List list, boolean check) {
+
+		super.addInformationDelegate(stack, player, list, check);
+
 		if (stack.stackTagCompound == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		list.add(StringHelper.getInfoText("info.thermalexpansion.tool." + itemName));
-
 		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
 		list.add(StringHelper.ORANGE + energyPerUse + " RF " + StringHelper.localize("info.cofh.perUse") + StringHelper.END);
 	}
