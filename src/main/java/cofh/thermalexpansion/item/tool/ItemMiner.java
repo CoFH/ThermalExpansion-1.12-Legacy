@@ -18,7 +18,8 @@ import net.minecraft.world.World;
 public class ItemMiner extends ItemEnergyContainerBase {
 
 	static final int MAX_DURATION = 72000;
-	public int range = 64;
+	int energyPerUse = 1;
+	int range = 128;
 
 	public ItemMiner() {
 
@@ -89,7 +90,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 
 	public boolean doBeam(ItemStack stack, World world, EntityPlayer player) {
 
-		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, 64, true);
+		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, range, true);
 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
 			player.stopUsingItem();
@@ -135,17 +136,11 @@ public class ItemMiner extends ItemEnergyContainerBase {
 				break;
 			}
 			for (int drop = 0; drop < drops.size(); drop++) {
-				// float f = 0.3F;
-				// double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				// double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				// double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				EntityItem item = new EntityItem(world, pos.blockX, pos.blockY, pos.blockZ, drops.get(drop));
 				item.delayBeforeCanPickup = 10;
 				world.spawnEntityInWorld(item);
 			}
-
 		}
 		return false;
 	}
-
 }

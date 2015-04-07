@@ -7,6 +7,7 @@ import cofh.core.item.tool.ItemSwordAdv;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.common.eventhandler.Event.Result;
 
 import java.util.List;
@@ -27,6 +28,10 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
 	public ItemWrenchBattle(ToolMaterial toolMaterial) {
 
 		super(toolMaterial);
+
+		setUnlocalizedName("thermalexpansion.tool.battleWrench");
+		setTextureName("thermalexpansion:tool/BattleWrench");
+		setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

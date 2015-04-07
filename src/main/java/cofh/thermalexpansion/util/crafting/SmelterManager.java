@@ -148,9 +148,6 @@ public class SmelterManager {
 		addAlloyRecipe(2400, "ingotNickel", 1, "ingotIron", 2, stackInvar);
 		addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
 		addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
-
-		addBlastOreRecipe("mithril");
-		addBlastOreRecipe("enderium");
 	}
 
 	public static void loadRecipes() {
@@ -376,6 +373,7 @@ public class SmelterManager {
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
+		// if (OreDictionary.)
 		ArrayList<ItemStack> registeredOre = OreDictionary.getOres(oreName);
 		ArrayList<ItemStack> registeredDust = OreDictionary.getOres(dustName);
 		ArrayList<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);

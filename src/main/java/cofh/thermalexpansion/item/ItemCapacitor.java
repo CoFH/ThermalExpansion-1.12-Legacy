@@ -33,7 +33,9 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), CAPACITY[Types.CREATIVE.ordinal()]));
+		if (ENABLE[0]) {
+			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), CAPACITY[Types.CREATIVE.ordinal()]));
+		}
 		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.POTATO.ordinal()), CAPACITY[Types.POTATO.ordinal()]));
 		for (int i = 2; i < Types.values().length; i++) {
 			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, i), 0));
@@ -243,14 +245,22 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 
 	public static final String[] NAMES = { "creative", "potato", "basic", "hardened", "reinforced", "resonant" };
 
+	public static boolean[] ENABLE = { true, true, true, true, true, true };
 	public static int[] SEND = { 100000, 160, 80, 400, 4000, 16000 };
 	public static int[] RECEIVE = { 0, 0, 200, 800, 8000, 32000 };
 	public static int[] CAPACITY = { 100000, 32000, 80000, 400000, 4000000, 20000000 };
 
 	static {
 		String category2 = "Item.Capacitor.";
+		String category = category2 + StringHelper.titleCase(NAMES[0]);
+		ENABLE[0] = ThermalExpansion.config.get(category, "Enable", ENABLE[0]);
 
-		String category = category2 + StringHelper.titleCase(NAMES[5]);
+		for (int i = 1; i < Types.values().length; i++) {
+			category = category2 + StringHelper.titleCase(NAMES[i]);
+			ENABLE[i] = ThermalExpansion.config.get(category, "Recipe", ENABLE[i]);
+		}
+
+		category = category2 + StringHelper.titleCase(NAMES[5]);
 		CAPACITY[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Capacity", CAPACITY[5]), CAPACITY[5] / 10, 1000000 * 1000);
 		SEND[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Send", SEND[5]), SEND[5] / 10, SEND[5] * 1000);
 		RECEIVE[5] = MathHelper.clampI(ThermalExpansion.config.get(category, "Receive", RECEIVE[5]), RECEIVE[5] / 10, RECEIVE[4] * 1000);
