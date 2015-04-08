@@ -34,6 +34,7 @@ public class TEItems {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool", "wrench");
 		itemBattleWrench = (ItemWrenchBattle) new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
+		GameRegistry.registerItem(itemBattleWrench, "tool.battleWrenchInvar");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
@@ -43,8 +44,6 @@ public class TEItems {
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
-
-		GameRegistry.registerItem(itemBattleWrench, "tool.battleWrench");
 
 		TEAugments.preInit();
 		TEEquipment.preInit();
