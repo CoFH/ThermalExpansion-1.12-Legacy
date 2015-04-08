@@ -32,7 +32,7 @@ public class RenderCache extends TileEntitySpecialRenderer implements IItemRende
 			return;
 		}
 		GL11.glPushMatrix();
-		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.facing, x, y, z);
+		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
 		GL11.glPopMatrix();
 	}
 

@@ -105,31 +105,12 @@ public class ThermalExpansion extends BaseMod {
 	public static final ConfigHandler configClient = new ConfigHandler(version);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
-	public static final CreativeTabs tabBlocks = new TECreativeTab("Blocks") {
+	public static CreativeTabs tabCommon = null;
 
-		// @Override
-		// protected ItemStack getStack() {
-		//
-		// return BlockFrame.frameCellReinforcedFull;
-		// }
-	};
-	public static final CreativeTabs tabItems = new TECreativeTab("Items") {
-
-		@Override
-		protected ItemStack getStack() {
-
-			return TEItems.powerCoilElectrum;
-		}
-	};
-	public static final CreativeTabs tabTools = new TECreativeTab("Tools") {
-
-		@Override
-		protected ItemStack getStack() {
-
-			return TEItems.toolWrench;
-		}
-	};
-	public static final CreativeTabs tabFlorbs = new TECreativeTabFlorbs();
+	public static CreativeTabs tabBlocks = tabCommon;
+	public static CreativeTabs tabItems = tabCommon;
+	public static CreativeTabs tabTools = tabCommon;
+	public static CreativeTabs tabFlorbs = tabCommon;
 
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
@@ -153,6 +134,7 @@ public class ThermalExpansion extends BaseMod {
 		RecipeSorter.register("thermalexpansion:NEIWrapper", NEIRecipeWrapper.class, RecipeSorter.Category.UNKNOWN, "after:forge:shapedore");
 
 		cleanConfig(true);
+		configOptions();
 
 		TEItems.preInit();
 		TEBlocks.preInit();
@@ -163,8 +145,6 @@ public class ThermalExpansion extends BaseMod {
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
-
-		configOptions();
 	}
 
 	@EventHandler
@@ -177,7 +157,6 @@ public class ThermalExpansion extends BaseMod {
 		if (TEProps.enableAchievements) {
 			TEAchievements.initialize();
 		}
-
 		/* Register Handlers */
 		NetworkRegistry.INSTANCE.registerGuiHandler(instance, guiHandler);
 		MinecraftForge.EVENT_BUS.register(proxy);
@@ -353,7 +332,52 @@ public class ThermalExpansion extends BaseMod {
 				OreDictionary.registerOre(prefix + entry, partList.get(i));
 			}
 		}
+		category = "Interface.CreativeTab";
+		boolean blockTab = false;
+		boolean itemTab = false;
+		boolean toolTab = false;
+		boolean florbTab = false;
 
+		comment = "Set to TRUE to put Thermal Expansion Blocks under a general \"Thermal Expansion\" Creative Tab.";
+		blockTab = configClient.get(category, "BlocksInCommonTab", blockTab);
+
+		comment = "Set to TRUE to put Thermal Expansion Items under a general \"Thermal Expansion\" Creative Tab.";
+		itemTab = configClient.get(category, "ItemsInCommonTab", itemTab);
+
+		comment = "Set to TRUE to put Thermal Expansion Tools under a general \"Thermal Expansion\" Creative Tab.";
+		toolTab = configClient.get(category, "ToolsInCommonTab", toolTab);
+
+		comment = "Set to TRUE to put Thermal Expansion Florbs under a general \"Thermal Expansion\" Creative Tab.";
+		florbTab = configClient.get(category, "FlorbsInCommonTab", florbTab);
+
+		if (blockTab || itemTab || toolTab || florbTab) {
+			tabCommon = new TECreativeTab();
+		}
+		tabBlocks = blockTab ? tabCommon : new TECreativeTab("Blocks") {
+
+			// @Override
+			// protected ItemStack getStack() {
+			//
+			// return BlockFrame.frameCellReinforcedFull;
+			// }
+		};
+		tabItems = itemTab ? tabCommon : new TECreativeTab("Items") {
+
+			@Override
+			protected ItemStack getStack() {
+
+				return TEItems.powerCoilElectrum;
+			}
+		};
+		tabTools = toolTab ? tabCommon : new TECreativeTab("Tools") {
+
+			@Override
+			protected ItemStack getStack() {
+
+				return TEItems.toolWrench;
+			}
+		};
+		tabFlorbs = florbTab ? tabCommon : new TECreativeTabFlorbs();
 		// TEProps.enableDebugOutput = config.get(category, "EnableDebugOutput", TEProps.enableDebugOutput);
 		// TEProps.enableAchievements = config.get(category, "EnableAchievements", TEProps.enableAchievements);
 	}

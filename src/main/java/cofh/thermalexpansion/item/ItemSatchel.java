@@ -226,4 +226,21 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 
+	public static boolean[] ENABLE = { false, true, true, true, true };
+
+	static {
+		String category2 = "Item.Satchel.";
+		String category = category2 + StringHelper.titleCase(NAMES[0]);
+
+		// TODO: Implement Creative Satchel.
+		String comment = "Not yet implemented. This option does not work.";
+		ENABLE[0] = ThermalExpansion.config.get(category, "Enable", ENABLE[0]);
+		ENABLE[0] = false;
+
+		for (int i = 1; i < Types.values().length; i++) {
+			category = category2 + StringHelper.titleCase(NAMES[i]);
+			ENABLE[i] = ThermalExpansion.config.get(category, "Recipe", ENABLE[i]);
+		}
+	}
+
 }

@@ -6,6 +6,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.device.GuiWorkbench;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCharger;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingMachine;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingSecure;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingUpgrade;
@@ -16,7 +17,6 @@ import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerPulverizer;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerSawmill;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerSmelter;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerTransposer;
-import cofh.thermalfoundation.item.TFItems;
 
 import net.minecraft.item.ItemStack;
 
@@ -58,6 +58,9 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 		API.registerRecipeHandler(RecipeHandlerInsolator.instance);
 		API.registerUsageHandler(RecipeHandlerInsolator.instance);
 
+		API.registerRecipeHandler(RecipeHandlerCharger.instance);
+		API.registerUsageHandler(RecipeHandlerCharger.instance);
+
 		API.registerGuiOverlayHandler(GuiWorkbench.class, new NEIRecipeOverlayHandler(), "crafting");
 
 		API.hideItem(new ItemStack(TEBlocks.blockAirBarrier));
@@ -65,9 +68,6 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 		API.hideItem(new ItemStack(TEBlocks.blockAirSignal));
 
 		API.hideItem(TEItems.satchelCreative);
-
-		// TODO: Temp until Lexicon is finished
-		API.hideItem(new ItemStack(TFItems.itemLexicon));
 	}
 
 	@Override

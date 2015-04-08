@@ -112,9 +112,9 @@ public class TabSchematic extends TabBase {
 
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		RenderHelper.bindTexture(GRID_TEXTURE);
-		gui.drawSizedTexturedModalRect(posX() + 8, posY + 20, 0, 0, 64, 64, 64, 64);
+		gui.drawSizedTexturedModalRect(posX() + 13, posY + 25, 5, 5, 54, 54, 64, 64);
 		RenderHelper.bindTexture(OUTPUT_TEXTURE);
-		gui.drawSizedTexturedModalRect(posX() + 72, posY + 25, 0, 0, 26, 26, 26, 26);
+		gui.drawSizedTexturedModalRect(posX() + 72, posY + 25, 3, 3, 26, 26, 32, 32);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

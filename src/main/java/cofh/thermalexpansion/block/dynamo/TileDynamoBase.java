@@ -581,11 +581,11 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		augmentCoilDuct = false;
 	}
 
-	/* IEnergyHandler */
+	/* IEnergyProvider */
 	@Override
 	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
 
-		return 0;
+		return from.ordinal() != facing ? 0 : energyStorage.extractEnergy(Math.min(config.maxPower * 2, maxExtract), simulate);
 	}
 
 	@Override

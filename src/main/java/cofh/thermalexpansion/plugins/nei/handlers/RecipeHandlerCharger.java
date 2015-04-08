@@ -23,7 +23,7 @@ public class RecipeHandlerCharger extends RecipeHandlerBase {
 	@Override
 	public void initialize() {
 
-		this.trCoords = new int[] { 74, 23, 24, 18 };
+		this.trCoords = new int[] { 79, 43, 18, 16 };
 		this.recipeName = "charger";
 		this.containerClass = GuiCharger.class;
 	}
@@ -31,14 +31,11 @@ public class RecipeHandlerCharger extends RecipeHandlerBase {
 	@Override
 	public void drawBackgroundExtras(int recipe) {
 
-		drawTexturedModalRect(50, 17, 132, 96, 18, 18);
-		drawTexturedModalRect(106, 22, 150, 96, 26, 26);
+		drawTexturedModalRect(79, 24, 132, 96, 18, 18);
+		drawTexturedModalRect(116, 20, 150, 96, 26, 26);
 
-		drawTexturedModalRect(51, 36, 224, 32, 16, 16);
-		drawProgressBar(51, 36, 240, 32, 16, 16, 100, 7);
-
-		drawTexturedModalRect(74, 24, 176, 16, 24, 16);
-		drawProgressBar(74, 24, 200, 16, 24, 16, 20, 0);
+		drawTexturedModalRect(79, 44, 224, 80, 16, 16);
+		drawProgressBar(79, 44, 240, 80, 16, 16, 20, 7);
 	}
 
 	@Override
@@ -49,13 +46,13 @@ public class RecipeHandlerCharger extends RecipeHandlerBase {
 		int energy = ((NEIRecipeBase) arecipes.get(recipe)).energy;
 
 		if (energy < 1000) {
-			drawString(energy + "RF", 56, 54, 0x939393, false);
+			drawString(energy + "RF", 44, 48, 0x939393, false);
 		} else if (energy < 10000) {
-			drawString(energy + "RF", 50, 54, 0x939393, false);
+			drawString(energy + "RF", 38, 48, 0x939393, false);
 		} else if (energy < 100000) {
-			drawString(energy + "RF", 44, 54, 0x939393, false);
+			drawString(energy + "RF", 32, 48, 0x939393, false);
 		} else {
-			drawString(energy + "RF", 38, 54, 0x939393, false);
+			drawString(energy + "RF", 26, 48, 0x939393, false);
 		}
 	}
 
@@ -112,8 +109,8 @@ public class RecipeHandlerCharger extends RecipeHandlerBase {
 
 		public NEIRecipeCharger(RecipeCharger recipe) {
 
-			input = new PositionedStack(recipe.getInput(), 51, 18);
-			output = new PositionedStack(recipe.getOutput(), 111, 27);
+			input = new PositionedStack(recipe.getInput(), 80, 25);
+			output = new PositionedStack(recipe.getOutput(), 121, 25);
 			energy = recipe.getEnergy();
 
 			setOres();

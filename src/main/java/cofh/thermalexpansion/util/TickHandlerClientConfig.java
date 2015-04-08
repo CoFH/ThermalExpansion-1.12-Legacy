@@ -28,7 +28,6 @@ public class TickHandlerClientConfig {
 			} else if (mc.inGameHasFocus) {
 				needsMenu = true;
 			}
-
 		}
 	}
 

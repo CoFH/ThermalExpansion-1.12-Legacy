@@ -51,7 +51,7 @@ public class ThaumcraftPlugin {
 
 		parseAspects(TEItems.toolWrench, "4 metallum, 1 instrumentum");
 		parseAspects(TEItems.toolMultimeter, "4 metallum, 2 potentia, 3 machina, 2 sensus, 2 instrumentum");
-		parseAspects(TEItems.toolInvarBattleWrench, "6 metallum, 1 instrumentum, 1 machina, 3 telum");
+		parseAspects(TEItems.toolBattleWrench, "6 metallum, 1 instrumentum, 1 machina, 3 telum");
 
 		parseAspects(TEItems.diagramSchematic, "3 cognitio");
 		parseAspects(TEItems.diagramRedprint, "3 cognitio, 1 potentia");

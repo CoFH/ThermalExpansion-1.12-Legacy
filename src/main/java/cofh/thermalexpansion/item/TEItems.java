@@ -7,8 +7,10 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.ItemChiller;
 import cofh.thermalexpansion.item.tool.ItemIgniter;
+import cofh.thermalexpansion.item.tool.ItemMiner;
 import cofh.thermalexpansion.item.tool.ItemMultimeter;
 import cofh.thermalexpansion.item.tool.ItemPump;
+import cofh.thermalexpansion.item.tool.ItemTransfuser;
 import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -17,7 +19,6 @@ import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -32,20 +33,17 @@ public class TEItems {
 	public static void preInit() {
 
 		itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool", "wrench");
+		itemBattleWrench = (ItemWrenchBattle) new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
+		GameRegistry.registerItem(itemBattleWrench, "tool.battleWrenchInvar");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
 		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
+		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
 		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
-
-		itemBattleWrenchInvar = new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
-		itemBattleWrenchInvar.setUnlocalizedName("thermalexpansion.tool.invarBattleWrench");
-		itemBattleWrenchInvar.setTextureName("thermalexpansion:tool/InvarBattleWrench");
-		itemBattleWrenchInvar.setCreativeTab(ThermalExpansion.tabTools);
-		GameRegistry.registerItem(itemBattleWrenchInvar, "tool.battleWrenchInvar");
 
 		TEAugments.preInit();
 		TEEquipment.preInit();
@@ -63,9 +61,10 @@ public class TEItems {
 		toolIgniter = new ItemStack(itemIgniter);
 		toolChiller = new ItemStack(itemChiller);
 		toolPump = new ItemStack(itemPump);
+		toolTransfuser = new ItemStack(itemTransfuser);
 
-		toolInvarBattleWrench = new ItemStack(itemBattleWrenchInvar);
-		GameRegistry.registerCustomItemStack("toolInvarBattleWrench", toolInvarBattleWrench);
+		toolBattleWrench = new ItemStack(itemBattleWrench);
+		GameRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
 
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
@@ -127,36 +126,67 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolWrench, new Object[] { "I I", " T ", " I ", 'I', "ingotIron", 'T', "ingotTin" }));
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P',
 				powerCoilElectrum, 'G', "gearElectrum" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic,
-				'G', Items.flint }));
 
+		if (enableIgniter) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'G', Items.flint }));
+		}
+		if (enableChiller) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'G', Items.snowball }));
+		}
+		if (enablePump) {
+
+		}
+		if (enableTransfuser) {
+
+		}
 		if (enableBattleWrench) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolInvarBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
 					toolWrench }));
 		}
 
 		/* Capacitors */
-		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, "dustRedstone", "nuggetLead" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, "dustRedstone", "nuggetLead" }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X',
-				"ingotCopper", 'Y', "dustSulfur" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
-				capacitorBasic, 'Y', "ingotTin" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X',
-				capacitorHardened, 'Y', Items.diamond }));
-		GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X',
-				capacitorReinforced, 'Y', "dustPyrotheum" }));
+		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.POTATO.ordinal()]) {
+			GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.potato, "dustRedstone", "nuggetLead" }));
+			GameRegistry.addRecipe(new ShapelessOreRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, "dustRedstone", "nuggetLead" }));
+		}
+		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.BASIC.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X',
+					"ingotCopper", 'Y', "dustSulfur" }));
+		}
+		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.HARDENED.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'Y', "ingotTin" }));
+		}
+		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.REINFORCED.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X',
+					capacitorHardened, 'Y', Items.diamond }));
+		}
+		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.RESONANT.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X',
+					capacitorReinforced, 'Y', "dustPyrotheum" }));
+		}
 
 		/* Satchels */
-		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic,
-				new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
-		GameRegistry
-				.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened, 'Y',
-				"nuggetInvar" }));
-		GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
-				"nuggetElectrum" }));
+		if (ItemSatchel.ENABLE[ItemSatchel.Types.BASIC.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic,
+					new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
+			GameRegistry.addRecipe(new ShapedOreRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y',
+					"blockClothRock" }));
+		}
+		if (ItemSatchel.ENABLE[ItemSatchel.Types.HARDENED.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y',
+					"nuggetTin" }));
+		}
+		if (ItemSatchel.ENABLE[ItemSatchel.Types.REINFORCED.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened,
+					'Y', "nuggetInvar" }));
+		}
+		if (ItemSatchel.ENABLE[ItemSatchel.Types.RESONANT.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
+					"nuggetElectrum" }));
+		}
 
 		TECraftingHandler.addSecureRecipe(satchelCreative);
 		TECraftingHandler.addSecureRecipe(satchelBasic);
@@ -223,34 +253,56 @@ public class TEItems {
 		TEFlorbs.postInit();
 	}
 
+	public static boolean enableIgniter = true;
+	public static boolean enableChiller = true;
+	public static boolean enablePump = true;
+	public static boolean enableTransfuser = true;
 	public static boolean enableBattleWrench = true;
 
 	static {
-		String category = "Equipment.Invar.Tool";
+		String category2 = "Item.Tool.";
+		String category = category2 + "Igniter";
+		enableIgniter = ThermalExpansion.config.get(category, "Recipe", true);
+
+		category = category2 + "Chiller";
+		enableChiller = ThermalExpansion.config.get(category, "Recipe", true);
+
+		category = category2 + "Pump";
+		enablePump = ThermalExpansion.config.get(category, "Recipe", true);
+
+		category = category2 + "Transfuser";
+		enableTransfuser = ThermalExpansion.config.get(category, "Recipe", true);
+
+		category = category2 + "BattleWrench";
 		enableBattleWrench = ThermalExpansion.config.get(category, "BattleWrench", true);
+
+		// TODO: Remove someday.
+		ThermalExpansion.config.removeCategory("Equipment");
 	}
 
 	public static ItemWrench itemWrench;
+	public static ItemWrenchBattle itemBattleWrench;
 	public static ItemMultimeter itemMultimeter;
 	public static ItemIgniter itemIgniter;
 	public static ItemChiller itemChiller;
 	public static ItemPump itemPump;
+	public static ItemTransfuser itemTransfuser;
+	public static ItemMiner itemMiner;
 	public static ItemDiagram itemDiagram;
 	public static ItemBase itemMaterial;
-
-	public static Item itemBattleWrenchInvar;
 
 	public static ItemCapacitor itemCapacitor;
 	public static ItemSatchel itemSatchel;
 
 	public static ItemStack toolWrench;
+	public static ItemStack toolBattleWrench;
 	public static ItemStack toolMultimeter;
 	public static ItemStack toolDebugger;
 	public static ItemStack toolIgniter;
 	public static ItemStack toolChiller;
 	public static ItemStack toolPump;
-
-	public static ItemStack toolInvarBattleWrench;
+	public static ItemStack toolTransfuser;
+	public static ItemStack toolMiner;
 
 	public static ItemStack diagramSchematic;
 	public static ItemStack diagramRedprint;

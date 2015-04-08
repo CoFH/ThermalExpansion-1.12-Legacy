@@ -106,7 +106,6 @@ public class TileActivator extends TileAugmentable {
 		if (ServerHelper.isServerWorld(worldObj)) {
 			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 		}
-
 		super.cofh_validate();
 	}
 

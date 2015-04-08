@@ -164,6 +164,17 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
+	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
+
+		if (player.capabilities.isCreativeMode && !player.isSneaking()) {
+			onBlockClicked(world, x, y, z, player);
+			return false;
+		} else {
+			return world.setBlockToAir(x, y, z);
+		}
+	}
+
+	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
 
 		ItemStack stack = player.getCurrentEquippedItem();
