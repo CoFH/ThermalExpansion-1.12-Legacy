@@ -5,7 +5,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
 
@@ -121,9 +121,12 @@ public class SmelterManager {
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 
-		ItemStack blockGlass = new ItemStack(TEBlocks.blockGlass, 2, 0);
+		ItemStack blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardened, 2);
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
 		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
+		blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardenedIlluminated, 2);
+		addAlloyRecipe(4000, "dustLumium", 1, "dustObsidian", 8, blockGlass);
+		addAlloyRecipe(4000, "ingotLumium", 1, "dustObsidian", 8, blockGlass);
 
 		addDefaultOreDictionaryRecipe("oreIron", "dustIron", TFItems.ingotIron, TFItems.ingotNickel);
 		addDefaultOreDictionaryRecipe("oreGold", "dustGold", TFItems.ingotGold, null, 20, 75, 25);

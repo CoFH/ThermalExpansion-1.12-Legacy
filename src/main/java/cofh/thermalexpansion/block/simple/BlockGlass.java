@@ -26,6 +26,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
@@ -40,9 +41,15 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	}
 
 	@Override
+	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+
+		return world.getBlockMetadata(x, y, z) == 1 ? 15 : 0;
+	}
+
+	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 2; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -71,7 +78,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public int getRenderBlockPass() {
 
-		return 1;
+		return 0;
 	}
 
 	@Override
@@ -170,9 +177,13 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public boolean initialize() {
 
-		glassHardened = new ItemStack(this);
+		glassHardened = new ItemStack(this, 1, 0);
+		glassHardenedIlluminated = new ItemStack(this, 1, 1);
 
 		ItemHelper.registerWithHandlers("blockGlassHardened", glassHardened);
+		ItemHelper.registerWithHandlers("blockGlassHardenedIlluminated", glassHardenedIlluminated);
+
+		OreDictionary.registerOre("blockGlassHardened", glassHardenedIlluminated);
 
 		return true;
 	}
@@ -186,5 +197,6 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	public static IIcon TEXTURE;
 
 	public static ItemStack glassHardened;
+	public static ItemStack glassHardenedIlluminated;
 
 }

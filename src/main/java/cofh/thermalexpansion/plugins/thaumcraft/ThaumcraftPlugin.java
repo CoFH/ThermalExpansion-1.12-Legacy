@@ -43,6 +43,7 @@ public class ThaumcraftPlugin {
 
 		parseAspects(BlockRockwool.rockWool, "1 fabrico, 2 pannus, 2 perditio");
 		parseAspects(BlockGlass.glassHardened, "1 ignis, 1 tutamen, 1 vitreus");
+		parseAspects(BlockGlass.glassHardenedIlluminated, "1 ignis, 1 tutamen, 1 vitreus, 1 lux");
 
 		parseAspects(TEEquipment.toolInvarShears, "4 metallum, 4 harvest, 2 tutamen");
 		parseAspects(TEEquipment.toolInvarFishingRod, "1 metallum, 1 aqua, 1 instrumentum");

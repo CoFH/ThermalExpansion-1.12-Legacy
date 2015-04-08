@@ -107,22 +107,6 @@
 		<echo message="Downloading NEI API... "/>
 		<get src="http://chickenbones.net/maven/codechicken/NotEnoughItems/1.7.10-1.0.2.15/NotEnoughItems-1.7.10-1.0.2.15-dev.jar" dest="${download.dir}/NEI.jar"/>
 
-		<echo message="Downloading Buildcraft API.. "/>
-		<get src="https://github.com/BuildCraft/BuildCraft/archive/master.zip" dest="${download.dir}/Buildcraft.zip"/>
-		<!-- Begin hack -->
-		<unzip src="${download.dir}/Buildcraft.zip" dest="${download.dir}"/>
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<mkdir dir="${compile.dir}"/>
-		<javac srcdir="${download.dir}/BuildCraft-master/api/" destdir="${compile.dir}"
-			target="1.6" source="1.6"
-			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
-			<include name="buildcraft/api/**/*.java"/>
-		</javac>
-		<jar destfile="${download.dir}/Buildcraft.jar" compress="true" level="9" basedir="${compile.dir}"/>
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<delete dir="${download.dir}/BuildCraft-master"/>
-		<!-- End hack -->
-
 		<echo message="Downloading CoFHLib... "/>
 		<get src="https://github.com/CoFH/CoFHLib/archive/master.zip" dest="${download.dir}/CoFHLib.zip"/>
 		<!-- Begin hack -->
@@ -157,26 +141,31 @@
 		<jar destfile="${download.dir}/CoFHCore.jar" compress="true" level="9" basedir="${compile.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<!-- End hack -->
-
+		
 		<echo message="Downloading MFR API.. "/>
-		<get src="https://github.com/skyboy/MineFactoryReloaded/archive/master.zip" dest="${download.dir}/MFR.zip"/>
 		<!-- Begin hack -->
-		<unzip src="${download.dir}/MFR.zip" dest="${download.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<mkdir dir="${compile.dir}"/>
-		<javac srcdir="${download.dir}/MineFactoryReloaded-master/src" destdir="${compile.dir}"
+		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
 			target="1.6" source="1.6"
 			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
 			<include name="powercrystals/minefactoryreloaded/api/**/*.java"/>
-		      <classpath>
-				<fileset file="${download.dir}/codechickenlib.jar"/>
-				<fileset file="${download.dir}/CoFHLib.jar"/>
-				<fileset file="${download.dir}/CoFHCore.jar"/>
-		      </classpath>
 		</javac>
 		<jar destfile="${download.dir}/MineFactoryReloaded.jar" compress="true" level="9" basedir="${compile.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
-		<delete dir="${download.dir}/MineFactoryReloaded-master"/>
+		<!-- End hack -->
+		
+		<echo message="Downloading Buildcraft API.. "/>
+		<!-- Begin hack -->
+		<delete dir="${compile.dir}" failonerror="false"/>
+		<mkdir dir="${compile.dir}"/>
+		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
+			target="1.6" source="1.6"
+			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
+			<include name="buildcraft/api/**/*.java"/>
+		</javac>
+		<jar destfile="${download.dir}/Buildcraft.jar" compress="true" level="9" basedir="${compile.dir}"/>
+		<delete dir="${compile.dir}" failonerror="false"/>
 		<!-- End hack -->
 
 		<echo message="Downloading ThermalFoundation... "/>
