@@ -49,7 +49,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	public boolean isSecured() {
 
-		return 0 != owner.getId().variant();
+		return !SecurityHelper.isDefaultUUID(owner.getId());
 	}
 
 	public boolean enableSecurity() {
@@ -367,9 +367,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean setOwner(GameProfile profile) {
 
-		if (owner.getId().variant() == 0) {
+		if (SecurityHelper.isDefaultUUID(owner.getId())) {
 			owner = profile;
-			if (owner.getId().variant() != 0) {
+			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
 				if (MinecraftServer.getServer() != null) {
 					new Thread("CoFH User Loader") {
 

@@ -25,7 +25,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
@@ -104,13 +103,13 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		}
 		if (ServerHelper.isServerWorld(world)) {
 			if (SecurityHelper.isSecure(stack)) {
-				if (SecurityHelper.getOwner(stack).getId().variant() == 0) {
+				if (SecurityHelper.isDefaultUUID(SecurityHelper.getOwner(stack).getId())) {
 					SecurityHelper.setOwner(stack, player.getGameProfile());
 					player.addChatMessage(new ChatComponentTranslation("chat.cofh.secureItem"));
 					return stack;
 				}
 			}
-			if (canPlayerAccess(stack, player.getCommandSenderName())) {
+			if (canPlayerAccess(stack, player)) {
 				player.openGui(ThermalExpansion.instance, GuiHandler.SATCHEL_ID, world, 0, 0, 0);
 			} else if (SecurityHelper.isSecure(stack)) {
 				player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", SecurityHelper.getOwnerName(stack)));
@@ -172,22 +171,23 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	}
 
 	/* HELPERS */
-	public static boolean canPlayerAccess(ItemStack stack, String name) {
+	public static boolean canPlayerAccess(ItemStack stack, EntityPlayer player) {
 
 		if (!SecurityHelper.isSecure(stack)) {
 			return true;
 		}
+		String name = player.getCommandSenderName();
 		AccessMode access = SecurityHelper.getAccess(stack);
 		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
 			return true;
 		}
 		GameProfile profile = SecurityHelper.getOwner(stack);
 		UUID ownerID = profile.getId();
-		if (ownerID.variant() == 0) {
+		if (SecurityHelper.isDefaultUUID(ownerID)) {
 			return true;
 		}
 
-		UUID otherID = UUID.fromString(PreYggdrasilConverter.func_152719_a(name));
+		UUID otherID = player.getGameProfile().getId();
 		if (ownerID.equals(otherID)) {
 			return true;
 		}

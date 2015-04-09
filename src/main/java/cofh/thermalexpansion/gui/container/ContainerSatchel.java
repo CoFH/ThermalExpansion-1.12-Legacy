@@ -146,7 +146,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		}
 
 		UUID ownerID = getOwner().getId();
-		if (ownerID.variant() == 0) {
+		if (SecurityHelper.isDefaultUUID(ownerID)) {
 			return true;
 		}
 
