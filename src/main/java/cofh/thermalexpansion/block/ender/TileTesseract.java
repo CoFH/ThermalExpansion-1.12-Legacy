@@ -85,8 +85,6 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	public byte modeFluid = (byte) TransferMode.RECV.ordinal();
 	public byte modeEnergy = (byte) TransferMode.RECV.ordinal();
 
-	/* Augment Variables */
-
 	public TileTesseract() {
 
 		inventory = new ItemStack[1];
