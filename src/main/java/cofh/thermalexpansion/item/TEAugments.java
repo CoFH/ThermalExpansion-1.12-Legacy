@@ -21,10 +21,12 @@ public class TEAugments {
 	public static void initialize() {
 
 		generalAutoTransfer = itemAugment.addItem(0, GENERAL_AUTO_TRANSFER);
+		// generalAutoExtract = itemAugment.addItem(1, GENERAL_AUTO_EXTRACT);
 		generalReconfigSides = itemAugment.addItem(16, GENERAL_RECONFIG_SIDES);
 		generalRedstoneControl = itemAugment.addItem(32, GENERAL_REDSTONE_CONTROL);
 
 		itemAugment.addAugmentData(0, GENERAL_AUTO_TRANSFER, 1);
+		// itemAugment.addAugmentData(1, GENERAL_AUTO_EXTRACT, 1);
 		itemAugment.addAugmentData(16, GENERAL_RECONFIG_SIDES, 1);
 		itemAugment.addAugmentData(32, GENERAL_REDSTONE_CONTROL, 1);
 
@@ -159,7 +161,7 @@ public class TEAugments {
 	public static ItemStack enderItem;
 
 	public static ItemStack generalAutoTransfer;
-	public static ItemStack generalAutoInput;
+	public static ItemStack generalAutoExtract;
 	public static ItemStack generalReconfigSides;
 	public static ItemStack generalRedstoneControl;
 
@@ -182,7 +184,7 @@ public class TEAugments {
 	public static String ENERGY_STORAGE = "energyStorage";
 
 	public static String GENERAL_AUTO_TRANSFER = "generalAutoTransfer";
-	public static String GENERAL_AUTO_INPUT = "generalAutoInput";
+	public static String GENERAL_AUTO_EXTRACT = "generalAutoExtract";
 	public static String GENERAL_RECONFIG_SIDES = "generalReconfigSides";
 	public static String GENERAL_REDSTONE_CONTROL = "generalRedstoneControl";
 

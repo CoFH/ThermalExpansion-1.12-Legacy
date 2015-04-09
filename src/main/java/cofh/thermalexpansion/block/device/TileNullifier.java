@@ -32,7 +32,7 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 		defaultSideConfig = new SideConfig();
 		defaultSideConfig.numConfig = 2;
-		defaultSideConfig.slotGroups = new int[][] { {}, {}, {} };
+		defaultSideConfig.slotGroups = new int[][] { {}, { 0 }, {} };
 		defaultSideConfig.allowInsertionSide = new boolean[] { false, false, false };
 		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, false };
 		defaultSideConfig.allowInsertionSlot = new boolean[] { true };

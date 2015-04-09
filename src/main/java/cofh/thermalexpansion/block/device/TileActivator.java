@@ -48,13 +48,13 @@ public class TileActivator extends TileAugmentable {
 	public static void initialize() {
 
 		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numConfig = 3;
-		defaultSideConfig.slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		defaultSideConfig.allowInsertionSide = new boolean[] { false, true, false };
-		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, true };
+		defaultSideConfig.numConfig = 4;
+		defaultSideConfig.slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		defaultSideConfig.allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, true, true };
 		defaultSideConfig.allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
 		defaultSideConfig.allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
-		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig.sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig.defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
