@@ -122,11 +122,11 @@ public class SmelterManager {
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
 
 		ItemStack blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardened, 2);
-		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 8, blockGlass);
-		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 8, blockGlass);
+		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 4, blockGlass);
+		addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 4, blockGlass);
 		blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardenedIlluminated, 2);
-		addAlloyRecipe(4000, "dustLumium", 1, "dustObsidian", 8, blockGlass);
-		addAlloyRecipe(4000, "ingotLumium", 1, "dustObsidian", 8, blockGlass);
+		addAlloyRecipe(4000, "dustLumium", 1, "dustObsidian", 4, blockGlass);
+		addAlloyRecipe(4000, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
 
 		addDefaultOreDictionaryRecipe("oreIron", "dustIron", TFItems.ingotIron, TFItems.ingotNickel);
 		addDefaultOreDictionaryRecipe("oreGold", "dustGold", TFItems.ingotGold, null, 20, 75, 25);
