@@ -279,7 +279,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
+		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] < 1) {
 			return null;
 		}
 		if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
@@ -291,7 +291,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
+		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] < 1) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

@@ -32,12 +32,19 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 5;
+		defaultSideConfig[TYPE].numConfig = 6;
 		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 },
-				{ 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6 };
+				{ 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 },
+				{ 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
+
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true,
+				true, true, true, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true,
+				true, true, true, true, true, true, true };
+
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Assembler";

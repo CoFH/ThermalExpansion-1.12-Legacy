@@ -369,13 +369,13 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return sideConfig.allowInsertionSide[sideCache[side]] ? isItemValid(stack, slot, side) : false;
+		return sideConfig.allowInsertionSide[sideCache[side]] && sideConfig.allowInsertionSlot[slot] ? isItemValid(stack, slot, side) : false;
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return sideConfig.allowExtractionSide[sideCache[side]];
+		return sideConfig.allowExtractionSide[sideCache[side]] && sideConfig.allowExtractionSlot[slot];
 	}
 
 }
