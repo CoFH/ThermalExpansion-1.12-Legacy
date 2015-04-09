@@ -175,12 +175,14 @@
 		<unzip src="${download.dir}/ThermalFoundation.zip" dest="${download.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<mkdir dir="${compile.dir}"/>
-		<javac srcdir="${download.dir}/ThermalFoundation-master/src/main/java" destdir="${compile.dir}"
-			target="1.6" source="1.6"
-			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
+		<javac destdir="${compile.dir}" target="1.6" source="1.6" classpathref="mcp.classpath"
+			debug="true" debuglevel="lines,source" includeAntRuntime="false">
+			<src path="${download.dir}/ThermalFoundation-master/src/main/java"/>
+			<src path="${download.dir}/ThermalFoundation-master/src/api/java"/>
 			<include name="**/*.java"/>
 		      <classpath>
 				<fileset file="${download.dir}/codechickenlib.jar"/>
+				<fileset file="${download.dir}/NEI.jar"/>
 		      	<fileset file="${download.dir}/CoFHLib.jar"/>
 		      	<fileset file="${download.dir}/CoFHCore.jar"/>
 		      </classpath>
