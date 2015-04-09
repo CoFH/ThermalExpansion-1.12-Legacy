@@ -77,7 +77,7 @@ public class ThaumcraftPlugin {
 		parseAspects(BlockMachine.assembler, "8 metallum, 2 vitreus, 6 machina, 2 potentia, 4 fabrico, 2 motus");
 		parseAspects(BlockMachine.charger, "8 metallum, 2 vitreus, 6 machina, 6 potentia, 2 permutatio");
 
-		ThermalExpansion.log.info("Thaumcraft Plugin Enabled.");
+		ThermalExpansion.log.info("Thermal Expansion: Thaumcraft Plugin Enabled.");
 	}
 
 }

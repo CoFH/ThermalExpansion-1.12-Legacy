@@ -37,9 +37,9 @@ public class TEItems {
 		GameRegistry.registerItem(itemBattleWrench, "tool.battleWrenchInvar");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
-		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
-		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
-		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
+		// itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
+		// itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
+		// itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
@@ -56,15 +56,14 @@ public class TEItems {
 
 		/* Tools */
 		toolWrench = itemWrench.addItem(0, "wrench");
+		toolBattleWrench = new ItemStack(itemBattleWrench);
+		GameRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = new ItemStack(itemIgniter);
-		toolChiller = new ItemStack(itemChiller);
-		toolPump = new ItemStack(itemPump);
-		toolTransfuser = new ItemStack(itemTransfuser);
-
-		toolBattleWrench = new ItemStack(itemBattleWrench);
-		GameRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
+		// toolChiller = new ItemStack(itemChiller);
+		// toolPump = new ItemStack(itemPump);
+		// toolTransfuser = new ItemStack(itemTransfuser);
 
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
@@ -127,24 +126,24 @@ public class TEItems {
 		GameRegistry.addRecipe(new ShapedOreRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P',
 				powerCoilElectrum, 'G', "gearElectrum" }));
 
-		if (enableIgniter) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
-					capacitorBasic, 'G', Items.flint }));
-		}
-		if (enableChiller) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
-					capacitorBasic, 'G', Items.snowball }));
-		}
-		if (enablePump) {
-
-		}
-		if (enableTransfuser) {
-
-		}
 		if (enableBattleWrench) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
 					toolWrench }));
 		}
+		if (enableIgniter) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'G', Items.flint }));
+		}
+		// if (enableChiller) {
+		// GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
+		// capacitorBasic, 'G', Items.snowball }));
+		// }
+		// if (enablePump) {
+		//
+		// }
+		// if (enableTransfuser) {
+		//
+		// }
 
 		/* Capacitors */
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.POTATO.ordinal()]) {

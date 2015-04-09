@@ -1,17 +1,14 @@
 package cofh.thermalexpansion.block.cache;
 
 import cofh.api.inventory.IInventoryRetainer;
-import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
-import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileInventory;
+import cofh.thermalexpansion.block.TileReconfigurable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
@@ -28,7 +25,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
-public class TileCache extends TileInventory implements IDeepStorageUnit, IReconfigurableFacing, ISidedInventory, IInventoryRetainer, ISidedTexture, ITileInfo {
+public class TileCache extends TileReconfigurable implements IDeepStorageUnit, ISidedInventory, IInventoryRetainer, ITileInfo {
 
 	public static void initialize() {
 
@@ -37,6 +34,7 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 	public static int[] CAPACITY = { Integer.MAX_VALUE, 10000, 40000, 160000, 640000 };
 	public static final int[] SLOTS = { 0, 1 };
+	public static final byte[] DEFAULT_SIDES = { 1, 0, 0, 0, 0, 0 };
 
 	static {
 		String category = "Cache.";
@@ -54,7 +52,6 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	int compareTracker;
 
 	public byte type = 1;
-	public byte facing = 3;
 
 	public boolean locked;
 	public int maxCacheStackSize;
@@ -161,6 +158,18 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 		return false;
 	}
 
+	// @Override
+	// public Object getGuiClient(InventoryPlayer inventory) {
+	//
+	// return new GuiCell(inventory, this);
+	// }
+	//
+	// @Override
+	// public Object getGuiServer(InventoryPlayer inventory) {
+	//
+	// return new ContainerTEBase(inventory, this);
+	// }
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -197,8 +206,6 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 	public PacketCoFHBase getPacket() {
 
 		PacketCoFHBase payload = super.getPacket();
-		payload.addByte(type);
-		payload.addByte(facing);
 		payload.addBool(locked);
 		payload.addItemStack(storedStack);
 
@@ -214,8 +221,6 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 
 		super.handleTilePacket(payload, isServer);
 
-		type = payload.getByte();
-		facing = payload.getByte();
 		locked = payload.getBool();
 		storedStack = payload.getItemStack();
 
@@ -340,38 +345,11 @@ public class TileCache extends TileInventory implements IDeepStorageUnit, IRecon
 		markDirty();
 	}
 
-	/* IReconfigurableFacing */
+	/* IReconfigurableSides */
 	@Override
-	public int getFacing() {
+	public int getNumConfig(int side) {
 
-		return facing;
-	}
-
-	@Override
-	public boolean allowYAxisFacing() {
-
-		return false;
-	}
-
-	@Override
-	public boolean rotateBlock() {
-
-		facing = BlockHelper.SIDE_LEFT[facing];
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 2 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-		return true;
+		return 1;
 	}
 
 	/* ISidedInventory */

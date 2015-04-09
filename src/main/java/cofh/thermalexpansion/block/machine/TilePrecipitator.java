@@ -33,11 +33,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		processItems[2] = new ItemStack(Blocks.ice);
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 3;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Precipitator";

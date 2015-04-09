@@ -9,10 +9,19 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemBlockLight extends ItemBlock {
+
+	public static ItemStack setDefaultTag(ItemStack container, int style) {
+
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setByte("Style", (byte) style);
+		container.setTagCompound(tag);
+		return container;
+	}
 
 	public ItemBlockLight(Block block) {
 
@@ -30,8 +39,7 @@ public class ItemBlockLight extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.light." +
-				BlockLight.NAMES[ItemHelper.getItemDamage(stack) % BlockLight.Types.values().length] + ".name";
+		return "tile.thermalexpansion.light." + BlockLight.NAMES[ItemHelper.getItemDamage(stack) % BlockLight.Types.values().length] + ".name";
 	}
 
 	@Override
@@ -55,8 +63,8 @@ public class ItemBlockLight extends ItemBlock {
 	}
 
 	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX,
-			float hitY, float hitZ, int metadata) {
+	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
+			int metadata) {
 
 		if (!world.setBlock(x, y, z, field_150939_a, metadata, 3)) {
 			return false;

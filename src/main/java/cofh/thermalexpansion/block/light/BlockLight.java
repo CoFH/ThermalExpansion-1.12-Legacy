@@ -120,21 +120,17 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		NBTTagCompound tag = new NBTTagCompound();
 		for (int i = 0; i < Types.values().length; i++) {
-			ItemStack stack = new ItemStack(item, 1, i);
-			stack.setTagCompound(tag);
-			for (byte j = 0; j < models.length; ++j) {
-				tag.setByte("Style", j);
-				list.add(stack.copy());
-			}
+			// for (byte j = 0; j < models.length; ++j) {
+			list.add(ItemBlockLight.setDefaultTag(new ItemStack(item, 1, i), 0));// j));
+			// }
 		}
 	}
 
 	@Override
 	public AxisAlignedBB getBoundingBox(World world, int x, int y, int z) {
 
-		TileLight tile = (TileLight)world.getTileEntity(x, y, z);
+		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 		switch (tile.style) {
 		case 2:
 		case 5:
@@ -147,7 +143,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
-		TileLight tile = (TileLight)world.getTileEntity(x, y, z);
+		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
 		switch (tile.style) {
 		case 5:
@@ -173,8 +169,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		if (super.canReplace(world, x, y, z, side, stack)) {
 			if (stack.stackTagCompound != null) {
 				int style = stack.stackTagCompound.getByte("Style");
-				if (style == 5 && side == 0)
+				if (style == 5 && side == 0) {
 					return false;
+				}
 			}
 			return true;
 		}
@@ -310,9 +307,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		TileLight.initialize();
 		TileLightFalse.initialize();
 
-		illuminator = new ItemStack(this, 1, 0);
-		lampLumiumRadiant = new ItemStack(this, 1, 1);
-		lampLumium = new ItemStack(this, 1, 2);
+		illuminator = ItemBlockLight.setDefaultTag(new ItemStack(this, 1, 0), 0);
+		lampLumiumRadiant = ItemBlockLight.setDefaultTag(new ItemStack(this, 1, 1), 0);
+		lampLumium = ItemBlockLight.setDefaultTag(new ItemStack(this, 1, 2), 0);
 
 		GameRegistry.registerCustomItemStack("illuminator", illuminator);
 		GameRegistry.registerCustomItemStack("lampLumiumRadiant", lampLumiumRadiant);

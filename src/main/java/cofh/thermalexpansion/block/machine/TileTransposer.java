@@ -37,11 +37,13 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 5;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, false, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE].numConfig = 6;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Transposer";

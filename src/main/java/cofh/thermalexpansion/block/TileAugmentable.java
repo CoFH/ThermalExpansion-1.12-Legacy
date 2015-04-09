@@ -356,7 +356,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public int getNumConfig(int side) {
 
-		return sideConfig.numGroup;
+		return sideConfig.numConfig;
 	}
 
 	/* ISidedInventory */
@@ -369,13 +369,13 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return sideConfig.allowInsertion[sideCache[side]] ? isItemValid(stack, slot, side) : false;
+		return sideConfig.allowInsertionSide[sideCache[side]] ? isItemValid(stack, slot, side) : false;
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return sideConfig.allowExtraction[sideCache[side]];
+		return sideConfig.allowExtractionSide[sideCache[side]];
 	}
 
 }

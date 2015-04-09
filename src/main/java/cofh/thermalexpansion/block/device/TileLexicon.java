@@ -22,10 +22,10 @@ public class TileLexicon extends TileAugmentable {
 	public static void initialize() {
 
 		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numGroup = 3;
+		defaultSideConfig.numConfig = 3;
 		defaultSideConfig.slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5 }, { 6, 7, 8, 9, 10, 11 } };
-		defaultSideConfig.allowInsertion = new boolean[] { false, true, false };
-		defaultSideConfig.allowExtraction = new boolean[] { false, false, true };
+		defaultSideConfig.allowInsertionSide = new boolean[] { false, true, false };
+		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, true };
 		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig.defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 

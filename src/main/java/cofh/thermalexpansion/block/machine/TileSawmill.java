@@ -20,11 +20,13 @@ public class TileSawmill extends TileMachineBase {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 5;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4 };
+		defaultSideConfig[TYPE].numConfig = 6;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Sawmill";

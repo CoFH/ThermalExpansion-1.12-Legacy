@@ -31,10 +31,10 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 2;
+		defaultSideConfig[TYPE].numConfig = 2;
 		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 

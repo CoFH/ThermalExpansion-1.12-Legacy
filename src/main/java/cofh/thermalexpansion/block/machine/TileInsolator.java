@@ -33,11 +33,13 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 7;
+		defaultSideConfig[TYPE].numConfig = 8;
 		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, false, false, true, true };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6 };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Insolator";

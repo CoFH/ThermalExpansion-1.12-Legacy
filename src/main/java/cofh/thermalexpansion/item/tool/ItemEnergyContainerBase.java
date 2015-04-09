@@ -41,18 +41,6 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
-
-		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
-		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
-		}
-
-	}
-
-	@Override
 	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		super.addInformationDelegate(stack, player, list, check);

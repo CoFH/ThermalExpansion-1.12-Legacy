@@ -32,11 +32,11 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public static void initialize() {
 
 		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numGroup = 5;
+		defaultSideConfig[TYPE].numConfig = 5;
 		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 },
 				{ 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		defaultSideConfig[TYPE].allowInsertion = new boolean[] { false, true, false, true, true };
-		defaultSideConfig[TYPE].allowExtraction = new boolean[] { false, true, true, true, true };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
@@ -360,7 +360,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowInsertion[sideCache[from.ordinal()]]) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
 			return 0;
 		}
 		int filled = tank.fill(resource, doFill);
@@ -374,7 +374,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtraction[sideCache[from.ordinal()]]) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -386,7 +386,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtraction[sideCache[from.ordinal()]]) {
+		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

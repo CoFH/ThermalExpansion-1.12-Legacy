@@ -58,8 +58,12 @@ public class MFRPlugin {
 				}
 
 			});
-			ThermalExpansion.log.info("MineFactoryReloaded Plugin Enabled.");
 		}
+	}
+
+	public static void loadComplete() {
+
+		ThermalExpansion.log.info("Thermal Expansion: MineFactoryReloaded Plugin Enabled.");
 	}
 
 }

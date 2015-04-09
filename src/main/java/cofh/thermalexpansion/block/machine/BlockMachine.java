@@ -207,6 +207,7 @@ public class BlockMachine extends BlockTEBase {
 		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 4, "thermalexpansion:config/Config_Orange", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 5, "thermalexpansion:config/Config_Green", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 6, "thermalexpansion:config/Config_Purple", ir);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 7, "thermalexpansion:config/Config_Open", ir);
 
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 0, "thermalexpansion:config/Config_None", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 1, "thermalexpansion:config/Config_Blue_CB", ir);
@@ -215,6 +216,7 @@ public class BlockMachine extends BlockTEBase {
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:config/Config_Orange_CB", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:config/Config_Green_CB", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:config/Config_Purple_CB", ir);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:config/Config_Open", ir);
 	}
 
 	@Override
