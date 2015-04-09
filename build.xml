@@ -2,6 +2,7 @@
 	<property environment="env"/>
 	
 	<!-- Basic directories -->
+	<property name="api.dir" value="src/api/java"/>
 	<property name="src.dir" value="src/main/java"/>
 	<property name="build.dir" value="build"/>
 	<property name="resources.dir" value="src/main/resources"/>
