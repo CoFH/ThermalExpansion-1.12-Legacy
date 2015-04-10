@@ -151,7 +151,7 @@ public class TransposerManager {
 	/* ADD RECIPES */
 	public static boolean addTEFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
-		if (input == null || output == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
+		if (input == null || output == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
 			return false;
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
@@ -168,7 +168,7 @@ public class TransposerManager {
 
 	public static boolean addTEExtractionRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
-		if (input == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
+		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
 			return false;
 		}
 		if (output == null && reversible) {
@@ -191,7 +191,7 @@ public class TransposerManager {
 
 	public static boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible, boolean overwrite) {
 
-		if (input == null || output == null || fluid == null || fluid.amount <= 0 || energy <= 0 || !(allowOverwrite & overwrite)
+		if (input == null || output == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0 || !(allowOverwrite & overwrite)
 				&& fillRecipeExists(input, fluid)) {
 			return false;
 		}
@@ -207,7 +207,8 @@ public class TransposerManager {
 
 	public static boolean addExtractionRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible, boolean overwrite) {
 
-		if (input == null || fluid == null || fluid.amount <= 0 || energy <= 0 || !overwrite && extractionRecipeExists(input, fluid)) {
+		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0 || !overwrite
+				&& extractionRecipeExists(input, fluid)) {
 			return false;
 		}
 		if (output == null && reversible || output == null && chance != 0) {
