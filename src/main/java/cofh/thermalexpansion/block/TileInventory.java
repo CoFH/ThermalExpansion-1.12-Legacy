@@ -57,6 +57,16 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
+	public boolean extractItem(int slot, int amount, int side) {
+
+		if (slot > inventory.length) {
+			return false;
+		}
+		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
+
+		return false;
+	}
+
 	public boolean transferItem(int slot, int amount, int side) {
 
 		if (inventory[slot] == null || slot > inventory.length) {
