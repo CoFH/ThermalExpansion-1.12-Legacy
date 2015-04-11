@@ -186,8 +186,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		if (SecurityHelper.isDefaultUUID(ownerID)) {
 			return true;
 		}
-
-		UUID otherID = player.getGameProfile().getId();
+		UUID otherID = SecurityHelper.getID(player);
 		if (ownerID.equals(otherID)) {
 			return true;
 		}
