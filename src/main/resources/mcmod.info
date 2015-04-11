@@ -5,7 +5,7 @@
         "description": "Expanding Minecraft Thermally - provides new options for automation and processing!",
         "version": "${version}",
         "credits": "Team CoFH",
-        "logoFile": "/assets/thermalexpansion/textures/logo.png",
+        "logoFile": "assets/thermalexpansion/textures/logo.png",
         "mcversion": "${mcversion}",
         "url": "http://www.teamcofh.com",
         "updateUrl": "",
