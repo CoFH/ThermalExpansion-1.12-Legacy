@@ -45,7 +45,7 @@ public class TileSmelter extends TileMachineBase {
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
 
-	public boolean lockPrimary = true;
+	public boolean lockPrimary = false;
 
 	public TileSmelter() {
 

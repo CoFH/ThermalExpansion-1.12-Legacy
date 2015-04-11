@@ -56,7 +56,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
 
-	public boolean lockPrimary = true;
+	public boolean lockPrimary = false;
 
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
 

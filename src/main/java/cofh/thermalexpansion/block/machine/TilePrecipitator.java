@@ -10,6 +10,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -143,6 +144,31 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.onLevelChange();
 
 		tank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
+	}
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.readPortableTagInternal(player, tag)) {
+			return false;
+		}
+		if (tag.hasKey("Sel")) {
+			curSelection = tag.getByte("Sel");
+			if (!isActive) {
+				prevSelection = curSelection;
+			}
+		}
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		if (!super.writePortableTagInternal(player, tag)) {
+			return false;
+		}
+		tag.setByte("Sel", curSelection);
+		return true;
 	}
 
 	/* GUI METHODS */

@@ -244,6 +244,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		if (!super.readPortableTagInternal(player, tag)) {
 			return false;
 		}
+		if (tag.hasKey("Sel")) {
+			curSelection = tag.getByte("Sel");
+			if (!isActive) {
+				prevSelection = curSelection;
+			}
+		}
 		return true;
 	}
 
@@ -253,6 +259,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		if (!super.writePortableTagInternal(player, tag)) {
 			return false;
 		}
+		tag.setByte("Sel", curSelection);
 		return true;
 	}
 
