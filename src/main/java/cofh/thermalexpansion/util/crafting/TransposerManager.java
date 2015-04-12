@@ -38,7 +38,8 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input == null || fluid == null ? null : recipeMapFill.get(Arrays.asList(query.set(input).hashCode(), fluid.fluidID));
+		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(query.set(input).hashCode(), fluid
+				.getFluid().hashCode()));
 	}
 
 	public static RecipeTransposer getExtractionRecipe(ItemStack input) {
@@ -95,6 +96,10 @@ public class TransposerManager {
 		}
 		addTEFillRecipe(4000, new ItemStack(Items.glowstone_dust), new ItemStack(Items.blaze_powder), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addTEFillRecipe(4000, new ItemStack(Items.snowball), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		// addTEFillRecipe(4000, new ItemStack(Blocks.sand), ItemHelper.cloneStack(TFItems.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		// addTEFillRecipe(4000, ItemHelper.cloneStack(TFItems.dustObsidian, 1), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(
+		// TFFluids.fluidRedstone, 200), false);
+
 		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);
 		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketGlowstone, 1), new FluidStack(TFFluids.fluidGlowstone, 1000),
 				true);
@@ -103,6 +108,10 @@ public class TransposerManager {
 				true);
 		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketCryotheum, 1), new FluidStack(TFFluids.fluidCryotheum, 1000),
 				true);
+		// addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketAerotheum, 1), new FluidStack(TFFluids.fluidAerotheum, 1000),
+		// true);
+		// addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketPetrotheum, 1), new FluidStack(TFFluids.fluidPetrotheum, 1000),
+		// true);
 		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketCoal, 1), new FluidStack(TFFluids.fluidCoal, 1000), true);
 	}
 
@@ -131,7 +140,7 @@ public class TransposerManager {
 			tempRecipe = entry.getValue();
 			ComparableItemStackSafe inputStack = new ComparableItemStackSafe(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
-			tempFillMap.put(Arrays.asList(inputStack.hashCode(), fluid.fluidID), tempRecipe);
+			tempFillMap.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
 			tempSet.add(inputStack);
 		}
 		for (Entry<ComparableItemStackSafe, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
@@ -157,7 +166,7 @@ public class TransposerManager {
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
 
 		ComparableItemStackSafe inputStack = new ComparableItemStackSafe(input);
-		recipeMapFill.put(Arrays.asList(inputStack.hashCode(), fluid.fluidID), recipeFill);
+		recipeMapFill.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), recipeFill);
 		validationSet.add(inputStack);
 
 		if (reversible) {
@@ -171,10 +180,7 @@ public class TransposerManager {
 		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
 			return false;
 		}
-		if (output == null && reversible) {
-			return false;
-		}
-		if (output == null && chance != 0) {
+		if (output == null && (reversible || chance != 0)) {
 			return false;
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
@@ -191,12 +197,14 @@ public class TransposerManager {
 
 	public static boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible, boolean overwrite) {
 
-		if (input == null || output == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0 || !(allowOverwrite & overwrite)
-				&& fillRecipeExists(input, fluid)) {
+		if (input == null || output == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
+			return false;
+		}
+		if (!(allowOverwrite & overwrite) && fillRecipeExists(input, fluid)) {
 			return false;
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.fluidID), recipeFill);
+		recipeMapFill.put(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
 		validationSet.add(new ComparableItemStackSafe(input));
 
 		if (reversible) {
@@ -207,8 +215,10 @@ public class TransposerManager {
 
 	public static boolean addExtractionRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible, boolean overwrite) {
 
-		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0 || !overwrite
-				&& extractionRecipeExists(input, fluid)) {
+		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
+			return false;
+		}
+		if (!overwrite && extractionRecipeExists(input, fluid)) {
 			return false;
 		}
 		if (output == null && reversible || output == null && chance != 0) {
@@ -227,7 +237,7 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static boolean removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.fluidID)) != null;
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.getFluid().hashCode())) != null;
 	}
 
 	public static boolean removeExtractionRecipe(ItemStack input) {

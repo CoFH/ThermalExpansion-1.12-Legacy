@@ -137,6 +137,12 @@ public class PulverizerManager {
 		if (recipeBlizzRod) {
 			addTERecipe(1600, TFItems.rodBlizz, ItemHelper.cloneStack(TFItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
 		}
+		// if (recipeBlitzRod) {
+		// addTERecipe(1600, TFItems.rodBlitz, ItemHelper.cloneStack(TFItems.dustBlitz, 4), TFItems.dustNiter, 50);
+		// }
+		// if (recipeBasalzRod) {
+		// addTERecipe(1600, TFItems.rodBasalz, ItemHelper.cloneStack(TFItems.dustBasalz, 4), TFItems.dustObsidian, 50);
+		// }
 		int energy = 4000;
 
 		addOreNameToDustRecipe(energy, "oreIron", TFItems.dustIron, TFItems.dustNickel, 10);
