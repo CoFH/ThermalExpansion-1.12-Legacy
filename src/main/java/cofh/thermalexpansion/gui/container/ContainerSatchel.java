@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.gui.container;
 
 import cofh.api.tileentity.ISecurable;
-import cofh.core.CoFHProps;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.SocialRegistry;
 import cofh.lib.gui.container.ContainerInventoryItem;
 import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
@@ -24,7 +22,6 @@ import invtweaks.api.container.ContainerSectionCallback;
 
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -139,22 +136,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	@Override
 	public boolean canPlayerAccess(EntityPlayer player) {
 
-		AccessMode access = getAccess();
-		String name = player.getCommandSenderName();
-		if (access.isPublic() || (CoFHProps.enableOpSecureAccess && CoreUtils.isOp(name))) {
-			return true;
-		}
-
-		UUID ownerID = getOwner().getId();
-		if (SecurityHelper.isDefaultUUID(ownerID)) {
-			return true;
-		}
-
-		UUID otherID = player.getGameProfile().getId();
-		if (ownerID.equals(otherID)) {
-			return true;
-		}
-		return access.isRestricted() && SocialRegistry.playerHasAccess(name, getOwner());
+		throw new UnsupportedOperationException();
 	}
 
 	@Override
