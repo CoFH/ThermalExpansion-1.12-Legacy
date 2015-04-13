@@ -15,6 +15,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.transformation.TorchTransformation;
+import cofh.thermalexpansion.util.crafting.RecipeStyle;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -28,7 +29,6 @@ import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -121,9 +121,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			// for (byte j = 0; j < models.length; ++j) {
-			list.add(ItemBlockLight.setDefaultTag(new ItemStack(item, 1, i), 0));// j));
-			// }
+			for (byte j = 0; j < models.length; ++j) {
+				list.add(ItemBlockLight.setDefaultTag(new ItemStack(item, 1, i), j));
+			}
 		}
 	}
 
@@ -208,25 +208,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			return theTile.setColor(ColorHelper.getDyeColor(15 - color));
 		}
 		return false;
-	}
-
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int bSide, float hitX, float hitY, float hitZ) {
-
-		TileLight theTile = (TileLight) world.getTileEntity(x, y, z);
-
-		if (ItemHelper.isPlayerHoldingItem(Items.glowstone_dust, player)) {
-			if (ServerHelper.isServerWorld(world)) {
-				theTile.resetColor();
-
-				if (!player.capabilities.isCreativeMode) {
-					player.inventory.setInventorySlotContents(player.inventory.currentItem, ItemHelper.consumeItem(player.getCurrentEquippedItem()));
-				}
-				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.25F, 1.0F);
-			}
-			return true;
-		}
-		return super.onBlockActivated(world, x, y, z, player, bSide, hitX, hitY, hitZ);
 	}
 
 	@Override
@@ -323,16 +304,28 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 500), false);
+			addRecipes(illuminator);
 		}
 		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium",
 					'G', "blockGlassHardened", 'S', "ingotSignalum" }));
+			addRecipes(lampLumiumRadiant);
 		}
 		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
 					"blockGlassHardened", 'S', "ingotSignalum" }));
+			addRecipes(lampLumium);
 		}
 		return true;
+	}
+
+	private static void addRecipes(ItemStack lamp) {
+
+		GameRegistry.addRecipe(new RecipeStyle(2, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 1)));
+		GameRegistry.addRecipe(new RecipeStyle(1, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 2)));
+		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 2, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 3)));
+		GameRegistry.addRecipe(new RecipeStyle(3, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 6), 4)));
+		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 4), 5)));
 	}
 
 	public static enum Types {
