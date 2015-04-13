@@ -3,7 +3,6 @@ package cofh.thermalexpansion.item.tool;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -38,9 +37,6 @@ public class ItemPump extends ItemEnergyContainerBase {
 	public ItemPump() {
 
 		super("pump");
-		setMaxDamage(1);
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
 		setTextureName("thermalexpansion:tools/Pump");
 
 		energyPerUse = 200;

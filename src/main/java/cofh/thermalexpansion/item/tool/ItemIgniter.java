@@ -3,7 +3,6 @@ package cofh.thermalexpansion.item.tool;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 
 import java.util.List;
 
@@ -25,9 +24,6 @@ public class ItemIgniter extends ItemEnergyContainerBase {
 	public ItemIgniter() {
 
 		super("igniter");
-		setMaxDamage(1);
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

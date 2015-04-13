@@ -3,11 +3,9 @@ package cofh.thermalexpansion.item.tool;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Implementable;
-import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import cpw.mods.fml.common.eventhandler.Event.Result;
@@ -27,13 +25,11 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 @Implementable("buildcraft.api.tools.IToolWrench")
-public class ItemWrench extends ItemBase implements IToolHammer {
+public class ItemWrench extends ItemToolBase implements IToolHammer {
 
 	public ItemWrench() {
 
-		super("thermalexpansion");
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
+		super("wrench");
 	}
 
 	@Override
@@ -42,12 +38,6 @@ public class ItemWrench extends ItemBase implements IToolHammer {
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.0"));
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.1"));
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.2"));
-	}
-
-	@Override
-	public boolean isFull3D() {
-
-		return true;
 	}
 
 	@Override

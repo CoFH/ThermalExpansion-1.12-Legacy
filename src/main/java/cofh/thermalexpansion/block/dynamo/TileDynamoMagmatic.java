@@ -40,7 +40,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy < 10000) {
+		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);

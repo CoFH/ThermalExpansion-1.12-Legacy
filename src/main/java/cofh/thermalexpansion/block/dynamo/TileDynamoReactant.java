@@ -102,7 +102,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy < 10000) {
+		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);
@@ -137,7 +137,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 			tank.drain(50, true);
 		}
 		if (reactantRF <= 0) {
-			energy = getReactantEnergy(inventory[0]) * fuelMod / FUEL_MOD;
+			energy = (getReactantEnergy(inventory[0]) / FUEL_MOD) * fuelMod;
 			reactantMod = getReactantMod(inventory[0]);
 			reactantRF += energy;
 			currentReactantRF = energy;

@@ -59,7 +59,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 	public static boolean registerCoolant(Fluid fluid, int cooling) {
 
-		if (fluid == null || cooling < 10000) {
+		if (fluid == null || cooling < 10000 || cooling > 200000000) {
 			return false;
 		}
 		coolants.put(fluid, cooling / 20);
@@ -68,7 +68,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 
 	public static boolean registerFuel(Fluid fluid, int energy) {
 
-		if (fluid == null || energy < 10000) {
+		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
 		fuels.put(fluid, energy / 20);

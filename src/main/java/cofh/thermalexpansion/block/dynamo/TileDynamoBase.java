@@ -62,7 +62,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
 
-	public static final int FUEL_MOD = 1000;
+	public static final int FUEL_MOD = 100;
 
 	int compareTracker;
 	int fuelRF;

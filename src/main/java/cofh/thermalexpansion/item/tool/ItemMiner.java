@@ -2,7 +2,6 @@ package cofh.thermalexpansion.item.tool;
 
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +23,6 @@ public class ItemMiner extends ItemEnergyContainerBase {
 	public ItemMiner() {
 
 		super("miningBeam");
-		setMaxDamage(1);
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

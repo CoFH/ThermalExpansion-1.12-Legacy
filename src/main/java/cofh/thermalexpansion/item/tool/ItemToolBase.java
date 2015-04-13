@@ -31,7 +31,6 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 
 		super();
 		this.itemName = name;
-		setMaxDamage(1);
 		setMaxStackSize(1);
 		setCreativeTab(ThermalExpansion.tabTools);
 	}
@@ -59,15 +58,15 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	}
 
 	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		return false;
-	}
-
-	@Override
 	public boolean isFull3D() {
 
 		return true;
+	}
+
+	@Override
+	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+
+		return false;
 	}
 
 	@Override

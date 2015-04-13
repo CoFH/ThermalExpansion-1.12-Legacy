@@ -55,7 +55,7 @@ public class TEItems {
 		ItemSatchel.configure();
 
 		/* Tools */
-		toolWrench = itemWrench.addItem(0, "wrench");
+		toolWrench = new ItemStack(itemWrench);
 		toolBattleWrench = new ItemStack(itemBattleWrench);
 		GameRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");

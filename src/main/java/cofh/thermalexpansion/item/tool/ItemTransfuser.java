@@ -6,7 +6,6 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,9 +33,6 @@ public class ItemTransfuser extends ItemToolBase {
 	public ItemTransfuser() {
 
 		super("transfuser");
-		setMaxDamage(1);
-		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
 		setTextureName("thermalexpansion:tools/Transfuser");
 	}
 

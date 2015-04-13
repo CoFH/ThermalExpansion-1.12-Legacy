@@ -40,8 +40,8 @@ public class TEFlorbs {
 
 	public static void initialize() {
 
-		florb = itemFlorb.addItem(0, "florb");
-		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic");
+		florb = itemFlorb.addItem(0, "florb", 0, false);
+		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic", 0, false);
 	}
 
 	public static void postInit() {

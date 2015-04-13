@@ -69,7 +69,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		}
 		/* DYNAMO EFFICIENCY */
 		else if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
-			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] / 10 + "% "
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
 		}
@@ -78,7 +78,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
 			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
-			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] / 10 + "% "
+			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
 		}
