@@ -2,11 +2,13 @@ package cofh.thermalexpansion.block.plate;
 
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
+import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
@@ -84,6 +86,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			return new TilePlateImpulse();
 		case TRANSLOCATE:
 			return new TilePlateTranslocate();
+		case POWERED_SIGNAL:
+			return new TilePlateCharger();
 		default:
 			return null;
 		}
@@ -170,25 +174,26 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 		float A = 1 / 16f;
 		float B = 15 / 16f;
+		float O = (theTile.direction == 6 ? 16 : 2) / 16f;
 		AxisAlignedBB bb = null;
 		switch (theTile.alignment) {
 		case 0:
-			bb = AxisAlignedBB.getBoundingBox(A, 0, A, B, 2 / 16f, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, 0, A, B, O, B).offset(x, y, z);
 			break;
 		case 1:
-			bb = AxisAlignedBB.getBoundingBox(A, 14 / 16f, A, B, 1, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, 1 - O, A, B, 1, B).offset(x, y, z);
 			break;
 		case 2:
-			bb = AxisAlignedBB.getBoundingBox(A, A, 0, B, B, 2 / 16f).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, A, 0, B, B, O).offset(x, y, z);
 			break;
 		case 3:
-			bb = AxisAlignedBB.getBoundingBox(A, A, 14 / 16f, B, B, 1).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(A, A, 1 - O, B, B, 1).offset(x, y, z);
 			break;
 		case 4:
-			bb = AxisAlignedBB.getBoundingBox(0, A, A, 2 / 16f, B, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(0, A, A, O, B, B).offset(x, y, z);
 			break;
 		case 5:
-			bb = AxisAlignedBB.getBoundingBox(14 / 16f, A, A, 1, B, B).offset(x, y, z);
+			bb = AxisAlignedBB.getBoundingBox(1 - O, A, A, 1, B, B).offset(x, y, z);
 			break;
 		default:
 		}
@@ -270,11 +275,13 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		plateSignal = new ItemStack(this, 1, Types.SIGNAL.ordinal());
 		plateImpulse = new ItemStack(this, 1, Types.IMPULSE.ordinal());
 		plateTranslocate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
+		plateCharge = new ItemStack(this, 1, Types.POWERED_SIGNAL.ordinal());
 
 		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
 		GameRegistry.registerCustomItemStack("plateSignal", plateSignal);
 		GameRegistry.registerCustomItemStack("plateImpulse", plateImpulse);
 		GameRegistry.registerCustomItemStack("plateTranslocate", plateTranslocate);
+		GameRegistry.registerCustomItemStack("plateCharge", plateCharge);
 
 		return true;
 	}
@@ -282,8 +289,17 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public boolean postInit() {
 
-		ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] { "SGS", "I I", "SIS", 'S', "ingotSignalum", 'G', "blockGlassHardened", 'I',
-				"ingotInvar", }));
+		// @formatter:off
+		if (enable[Types.FRAME.ordinal()]) {
+			ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
+					"SGS",
+					"I I",
+					"SIS",
+					'S', "ingotSignalum",
+					'G', "blockGlassHardened",
+					'I', "ingotInvar",
+			}));
+		}
 
 		if (enable[Types.SIGNAL.ordinal()]) {
 			TransposerManager.addTEFillRecipe(2000, plateFrame, plateSignal, new FluidStack(TFFluids.fluidRedstone, 1000), false);
@@ -297,18 +313,36 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			TransposerManager.addTEFillRecipe(2000, plateFrame, plateTranslocate, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
 
+		if (enable[Types.POWERED_SIGNAL.ordinal()]) {
+			ItemHelper.addRecipe(new RecipeUpgrade(5, plateCharge, new Object[] {
+					"EGE",
+					"IPI",
+					"ECE",
+					'E', "ingotElectrum",
+					'G', "gemDiamond",
+					'I', TEItems.powerCoilSilver,
+					'P', plateSignal,
+					'C', TEItems.powerCoilGold,
+			}));
+		}
+
 		TECraftingHandler.addSecureRecipe(plateSignal);
 		TECraftingHandler.addSecureRecipe(plateImpulse);
 		TECraftingHandler.addSecureRecipe(plateTranslocate);
 
+		TECraftingHandler.addSecureRecipe(plateCharge);
+
 		return true;
+		// @formatter:on
 	}
 
 	public static enum Types {
-		FRAME, SIGNAL, IMPULSE, TRANSLOCATE
+		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, POWERED_SIGNAL;
+
+		public int texture = name().startsWith("POWERED") ? 7 : 2;
 	}
 
-	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate" };
+	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -323,5 +357,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public static ItemStack plateSignal;
 	public static ItemStack plateImpulse;
 	public static ItemStack plateTranslocate;
+	public static ItemStack plateCharge;
 
 }

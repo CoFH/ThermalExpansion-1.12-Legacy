@@ -9,6 +9,7 @@ import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;
 import cofh.repack.codechicken.lib.vec.Translation;
 import cofh.repack.codechicken.lib.vec.Vector3;
+import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.plate.TilePlateBase;
 import cofh.thermalexpansion.core.TEProps;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -25,7 +26,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public static final RenderPlate instance = new RenderPlate();
 
 	static IIcon[] texture_frame = new IIcon[8];
-	static IIcon[] texture_fluid = new IIcon[3];
+	static IIcon[] texture_fluid = new IIcon[4];
 	static CCModel[] side_model = new CCModel[6];
 
 	static {
@@ -40,6 +41,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		texture_fluid[0] = IconRegistry.getIcon("FluidRedstone");
 		texture_fluid[1] = IconRegistry.getIcon("FluidGlowstone");
 		texture_fluid[2] = IconRegistry.getIcon("FluidEnder");
+		texture_fluid[3] = IconRegistry.getIcon("FluidRedstone");
 
 		texture_frame[6] = IconRegistry.getIcon("PlateBottom");
 		texture_frame[7] = IconRegistry.getIcon("PlateTopO");
@@ -94,7 +96,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		RenderUtils.preItemRender();
 
 		CCRenderState.startDrawing();
-		render(0, 2, metadata, 0, 0, 0);
+		render(0, BlockPlate.Types.values()[metadata].texture, metadata, 0, 0, 0);
 		CCRenderState.draw();
 
 		RenderUtils.postItemRender();
