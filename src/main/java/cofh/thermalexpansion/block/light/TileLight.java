@@ -126,8 +126,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		case 3:
 			break;
 		case 4:
-			if (bSide >> 1 == (alignment & 3) >> 1) {
-				alignment ^= 4;
+			if (bSide >> 1 == (alignment & 7) >> 1) {
+				alignment ^= 8;
 			}
 			break;
 		case 5:
