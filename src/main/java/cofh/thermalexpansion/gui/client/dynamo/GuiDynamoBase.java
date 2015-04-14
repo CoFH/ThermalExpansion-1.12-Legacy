@@ -10,6 +10,7 @@ import cofh.core.gui.element.TabTutorial;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.TabBase;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 
@@ -37,7 +38,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		myTile = (TileDynamoBase) tile;
 		name = myTile.getInventoryName();
-		playerName = player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(player);
 
 		if (myTile.augmentRedstoneControl) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();

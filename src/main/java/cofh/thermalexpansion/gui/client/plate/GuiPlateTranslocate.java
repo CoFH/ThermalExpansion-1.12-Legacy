@@ -8,6 +8,7 @@ import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementFluid;
 import cofh.lib.gui.element.ElementIcon;
 import cofh.lib.gui.element.ElementSimpleToolTip;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.plate.TilePlateTranslocate;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -37,7 +38,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 		myTile = (TilePlateTranslocate) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 		this.height = 100;
 

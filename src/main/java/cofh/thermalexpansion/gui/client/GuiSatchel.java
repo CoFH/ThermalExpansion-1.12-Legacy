@@ -26,7 +26,7 @@ public class GuiSatchel extends GuiBaseAdv {
 
 		super(container);
 
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 		storageIndex = ItemSatchel.getStorageIndex(container.getContainerStack());
 		enchanted = ItemSatchel.isEnchanted(container.getContainerStack());
 		secure = SecurityHelper.isSecure(container.getContainerStack());

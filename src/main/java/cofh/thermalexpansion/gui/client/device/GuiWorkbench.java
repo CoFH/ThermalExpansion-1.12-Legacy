@@ -4,6 +4,7 @@ import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
 import cofh.lib.gui.element.ElementButton;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.device.TileWorkbench;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
@@ -31,7 +32,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 		super(new ContainerWorkbench(inventory, theTile), TEXTURE);
 		myTile = (TileWorkbench) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 		ySize = 210;
 
 		generateInfo("tab.thermalexpansion.device.workbench", 3);

@@ -5,6 +5,7 @@ import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
 import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
@@ -26,7 +27,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		super(new ContainerStrongbox(inventory, tile));
 
 		myTile = (TileStrongbox) tile;
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 		storageIndex = myTile.getStorageIndex();
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
 		name = myTile.getInventoryName();

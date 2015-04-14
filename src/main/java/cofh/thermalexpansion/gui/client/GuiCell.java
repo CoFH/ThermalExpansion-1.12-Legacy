@@ -7,6 +7,7 @@ import cofh.core.gui.element.TabSecurity;
 import cofh.core.gui.element.TabTutorial;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.cell.TileCell;
 import cofh.thermalexpansion.core.TEProps;
@@ -38,7 +39,7 @@ public class GuiCell extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile), TEXTURE);
 		myTile = (TileCell) theTile;
 		name = myTile.getInventoryName();
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 
 		generateInfo("tab.thermalexpansion.cell", 2);
 	}

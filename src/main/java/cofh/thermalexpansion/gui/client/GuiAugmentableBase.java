@@ -10,6 +10,7 @@ import cofh.core.gui.element.TabSecurity;
 import cofh.core.gui.element.TabTutorial;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.TabBase;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TileAugmentable;
 
@@ -37,7 +38,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
 		myTile = (TileAugmentable) tile;
 		name = myTile.getInventoryName();
-		playerName = player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(player);
 
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();

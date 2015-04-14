@@ -8,6 +8,7 @@ import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabRedstone;
 import cofh.core.gui.element.TabSecurity;
 import cofh.core.gui.element.TabTutorial;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ender.TileTesseract;
 import cofh.thermalexpansion.core.TEProps;
@@ -57,7 +58,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		myTile = (TileTesseract) theTile;
 		name = myTile.getInventoryName();
 		drawInventory = false;
-		playerName = inventory.player.getGameProfile().getId();
+		playerName = SecurityHelper.getID(inventory.player);
 
 		tempFreq = myTile.frequency;
 
