@@ -113,9 +113,27 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	@Override
 	public boolean onWrench(EntityPlayer player, int bSide) {
 
-		mode = (byte) (++mode % 6);
+		// TODO: axis sensitive rotation
+		switch (style) {
+		case 0:
+			mode = (byte) (++mode % 6);
+			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			if (bSide >> 1 == (alignment & 3) >> 1) {
+				alignment ^= 4;
+			}
+			break;
+		case 5:
+			break;
+		}
 		sendUpdatePacket(Side.CLIENT);
-		player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
 		return true;
 	}
 
