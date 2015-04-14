@@ -127,14 +127,18 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 
-		return TEXTURE;
+		if (metadata == 1) {
+			return TEXTURE[1];
+		}
+		return TEXTURE[0];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-		TEXTURE = ir.registerIcon("thermalexpansion:glass/Glass_Hardened");
+		TEXTURE[0] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened");
+		TEXTURE[1] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened_Lumium");
 	}
 
 	/* IDismantleable */
@@ -194,7 +198,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 		return true;
 	}
 
-	public static IIcon TEXTURE;
+	public static IIcon TEXTURE[] = new IIcon[2];
 
 	public static ItemStack glassHardened;
 	public static ItemStack glassHardenedIlluminated;

@@ -89,7 +89,7 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 
-		return BlockGlass.TEXTURE;
+		return BlockGlass.TEXTURE[0];
 	}
 
 	@Override

@@ -24,6 +24,9 @@ public class ItemBlockGlass extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
+		if (stack.getItemDamage() == 1) {
+			return "tile.thermalexpansion.glassLumium.name";
+		}
 		return "tile.thermalexpansion.glass.name";
 	}
 
