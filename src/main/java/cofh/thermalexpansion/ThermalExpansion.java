@@ -89,7 +89,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.1B1";
+	public static final String version = "1.7.10R4.0.1";
 	public static final String dependencies = "required-after:CoFHCore@[" + CoFHCore.version + ",);required-after:ThermalFoundation@["
 			+ ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/Version/master/ThermalExpansion";
@@ -102,13 +102,11 @@ public class ThermalExpansion extends BaseMod {
 	public static Proxy proxy;
 
 	public static final Logger log = LogManager.getLogger(modId);
-
 	public static final ConfigHandler config = new ConfigHandler(version);
 	public static final ConfigHandler configClient = new ConfigHandler(version);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
 	public static CreativeTabs tabCommon = null;
-
 	public static CreativeTabs tabBlocks = tabCommon;
 	public static CreativeTabs tabItems = tabCommon;
 	public static CreativeTabs tabTools = tabCommon;
