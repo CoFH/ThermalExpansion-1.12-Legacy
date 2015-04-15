@@ -270,6 +270,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TilePlateSignal.initialize();
 		TilePlateImpulse.initialize();
 		TilePlateTranslocate.initialize();
+		TilePlateCharger.initialize();
 
 		plateFrame = new ItemStack(this, 1, Types.FRAME.ordinal());
 		plateSignal = new ItemStack(this, 1, Types.SIGNAL.ordinal());

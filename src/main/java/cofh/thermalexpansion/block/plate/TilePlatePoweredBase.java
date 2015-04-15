@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.plate;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
+import cofh.api.energy.IEnergyStorage;
 import cofh.core.network.PacketCoFHBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -86,6 +87,11 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 	public int getMaxEnergyStored(ForgeDirection from) {
 
 		return storage.getMaxEnergyStored();
+	}
+
+	public IEnergyStorage getEnergyStorage() {
+
+		return storage;
 	}
 
 }
