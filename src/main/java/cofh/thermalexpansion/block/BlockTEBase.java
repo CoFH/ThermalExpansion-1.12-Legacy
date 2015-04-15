@@ -136,6 +136,10 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 				double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				EntityItem item = new EntityItem(world, x + x2, y + y2, z + z2, dropBlock);
 				item.delayBeforeCanPickup = 10;
+				if (tile instanceof ISecurable && !((ISecurable) tile).getAccess().isPublic()) {
+					item.func_145797_a(player.getCommandSenderName());
+					// set owner (not thrower) - ensures wrenching player can pick it up first
+				}
 				world.spawnEntityInWorld(item);
 
 				if (player != null) {
