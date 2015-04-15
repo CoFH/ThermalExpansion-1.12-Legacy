@@ -26,7 +26,7 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public static final RenderPlate instance = new RenderPlate();
 
 	static IIcon[] texture_frame = new IIcon[8];
-	static IIcon[] texture_fluid = new IIcon[4];
+	static IIcon[] texture_fluid = new IIcon[6];
 	static CCModel[] side_model = new CCModel[6];
 
 	static {
@@ -42,6 +42,8 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 		texture_fluid[1] = IconRegistry.getIcon("FluidGlowstone");
 		texture_fluid[2] = IconRegistry.getIcon("FluidEnder");
 		texture_fluid[3] = IconRegistry.getIcon("FluidRedstone");
+		texture_fluid[4] = IconRegistry.getIcon("FluidGlowstone");
+		texture_fluid[5] = IconRegistry.getIcon("FluidMana");
 
 		texture_frame[6] = IconRegistry.getIcon("PlateBottom");
 		texture_frame[7] = IconRegistry.getIcon("PlateTopO");

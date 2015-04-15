@@ -88,6 +88,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			return new TilePlateTranslocate();
 		case POWERED_SIGNAL:
 			return new TilePlateCharger();
+		case POWERED_TRANSLOCATE:
+			return new TilePlateTeleporter();
 		default:
 			return null;
 		}
@@ -271,18 +273,24 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TilePlateImpulse.initialize();
 		TilePlateTranslocate.initialize();
 		TilePlateCharger.initialize();
+		//
+		TilePlateTeleporter.initialize();
 
 		plateFrame = new ItemStack(this, 1, Types.FRAME.ordinal());
 		plateSignal = new ItemStack(this, 1, Types.SIGNAL.ordinal());
 		plateImpulse = new ItemStack(this, 1, Types.IMPULSE.ordinal());
 		plateTranslocate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
 		plateCharge = new ItemStack(this, 1, Types.POWERED_SIGNAL.ordinal());
+		plateImpulse2 = new ItemStack(this, 1, Types.POWERED_IMPULSE.ordinal());
+		plateTeleport = new ItemStack(this, 1, Types.POWERED_TRANSLOCATE.ordinal());
 
 		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
 		GameRegistry.registerCustomItemStack("plateSignal", plateSignal);
 		GameRegistry.registerCustomItemStack("plateImpulse", plateImpulse);
 		GameRegistry.registerCustomItemStack("plateTranslocate", plateTranslocate);
 		GameRegistry.registerCustomItemStack("plateCharge", plateCharge);
+		//
+		GameRegistry.registerCustomItemStack("plateTeleport", plateTeleport);
 
 		return true;
 	}
@@ -327,23 +335,38 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}));
 		}
 
+		if (enable[Types.POWERED_TRANSLOCATE.ordinal()]) {
+			ItemHelper.addRecipe(new RecipeUpgrade(5, plateTeleport, new Object[] {
+					"EGE",
+					"IPI",
+					"ECE",
+					'E', "ingotEnderium",
+					'G', "gearMithril",
+					'I', "ingotBronze",
+					'P', plateTranslocate,
+					'C', TEItems.powerCoilGold,
+			}));
+		}
+
 		TECraftingHandler.addSecureRecipe(plateSignal);
 		TECraftingHandler.addSecureRecipe(plateImpulse);
 		TECraftingHandler.addSecureRecipe(plateTranslocate);
 
 		TECraftingHandler.addSecureRecipe(plateCharge);
+		//
+		TECraftingHandler.addSecureRecipe(plateTeleport);
 
 		return true;
 		// @formatter:on
 	}
 
 	public static enum Types {
-		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, POWERED_SIGNAL;
+		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, POWERED_SIGNAL, POWERED_IMPULSE, POWERED_TRANSLOCATE;
 
 		public int texture = name().startsWith("POWERED") ? 7 : 2;
 	}
 
-	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge" };
+	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "impulse", "teleport" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -359,5 +382,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public static ItemStack plateImpulse;
 	public static ItemStack plateTranslocate;
 	public static ItemStack plateCharge;
+	public static ItemStack plateImpulse2;
+	public static ItemStack plateTeleport;
 
 }
