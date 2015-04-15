@@ -30,6 +30,7 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 	public TilePlateCharger() {
 
 		super(BlockPlate.Types.POWERED_SIGNAL, 32000);
+		storage.setMaxTransfer(CHARGE_RATE);
 	}
 
 	/* GUI METHODS */
