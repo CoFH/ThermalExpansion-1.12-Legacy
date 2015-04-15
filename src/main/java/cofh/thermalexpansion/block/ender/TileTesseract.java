@@ -417,14 +417,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		itemTrackerAdjacent++;
 		for (int side = itemTrackerAdjacent; side < 6; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
+			if (Utils.isAdjacentOutput(this, side)) {
 				itemTrackerAdjacent = side;
 				return;
 			}
 		}
 		itemTrackerAdjacent %= 6;
 		for (int side = 0; side < itemTrackerAdjacent; side++) {
-			if (Utils.isAdjacentInventory(this, side)) {
+			if (Utils.isAdjacentOutput(this, side)) {
 				itemTrackerAdjacent = side;
 				return;
 			}
@@ -440,13 +440,13 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (tileInventory instanceof TileTesseract) {
 			return stack.stackSize;
 		}
-		return Utils.addToAdjacentInventory(this, from, stack);
+		return Utils.addToAdjacentInsertion(this, from, stack);
 	}
 
 	public boolean isAdjacentInventory(int side) {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
-		return tile instanceof TileTesseract ? false : Utils.isAccessibleInventory(tile, side);
+		return tile instanceof TileTesseract ? false : Utils.isAccessibleOutput(tile, side);
 	}
 
 	public boolean modeSendEnergy() {

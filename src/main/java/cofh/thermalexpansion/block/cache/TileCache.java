@@ -161,13 +161,13 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	// @Override
 	// public Object getGuiClient(InventoryPlayer inventory) {
 	//
-	// return new GuiCell(inventory, this);
+	// return new GuiCache(inventory, this);
 	// }
 	//
 	// @Override
 	// public Object getGuiServer(InventoryPlayer inventory) {
 	//
-	// return new ContainerTEBase(inventory, this);
+	// return new ContainerCache(inventory, this);
 	// }
 
 	/* NBT METHODS */

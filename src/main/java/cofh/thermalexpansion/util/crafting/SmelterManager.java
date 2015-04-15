@@ -266,14 +266,12 @@ public class SmelterManager {
 		if (ingot == null) {
 			return;
 		}
-		ItemStack ingot2 = ItemHelper.cloneStack(ingot, oreMultiplier);
-
 		if (oreName != null) {
-			addOreToIngotRecipe(oreName, ingot2, ItemHelper.cloneStack(ingot, oreMultiplierSpecial), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance,
-					slagOreChance);
+			addOreToIngotRecipe(oreName, ItemHelper.cloneStack(ingot, oreMultiplier), ItemHelper.cloneStack(ingot, oreMultiplierSpecial),
+					ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
 		}
 		if (dustName != null) {
-			addDustToIngotRecipe(dustName, ingot2, slagDustChance);
+			addDustToIngotRecipe(dustName, ItemHelper.cloneStack(ingot, 2), slagDustChance);
 		}
 	}
 

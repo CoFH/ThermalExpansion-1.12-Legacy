@@ -28,12 +28,12 @@ public class Utils {
 	}
 
 	/* TILE FUNCTIONS */
-	public static int addToAdjacentInventory(TileEntity tile, int from, ItemStack stack) {
+	public static int addToAdjacentInsertion(TileEntity tile, int from, ItemStack stack) {
 
-		return addToAdjacentInventory(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), from, stack);
+		return addToAdjacentInsertion(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), from, stack);
 	}
 
-	public static int addToAdjacentInventory(int x, int y, int z, World worldObj, int from, ItemStack stack) {
+	public static int addToAdjacentInsertion(int x, int y, int z, World worldObj, int from, ItemStack stack) {
 
 		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, from);
 
@@ -45,7 +45,7 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInventory(TileEntity theTile, int from, ItemStack stack) {
+	public static int addToInsertion(TileEntity theTile, int from, ItemStack stack) {
 
 		if (!(InventoryHelper.isInsertion(theTile))) {
 			return stack.stackSize;
@@ -55,7 +55,7 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInventory(int xCoord, int yCoord, int zCoord, World worldObj, int from, ItemStack stack) {
+	public static int addToInsertion(int xCoord, int yCoord, int zCoord, World worldObj, int from, ItemStack stack) {
 
 		TileEntity theTile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
 
@@ -67,7 +67,7 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInventory(IInventory tile, int from, ItemStack stack) {
+	public static int addToInsertion(IInventory tile, int from, ItemStack stack) {
 
 		if (!InventoryHelper.isInsertion(tile)) {
 			return stack.stackSize;
@@ -108,19 +108,42 @@ public class Utils {
 	}
 
 	/* QUERY FUNCTIONS */
-	public static boolean isAdjacentInventory(TileEntity tile, int side) {
+	public static boolean isAdjacentInput(TileEntity tile, int side) {
 
-		return isAdjacentInventory(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), side);
+		return isAdjacentInput(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), side);
 	}
 
-	public static boolean isAdjacentInventory(int x, int y, int z, World worldObj, int side) {
+	public static boolean isAdjacentInput(int x, int y, int z, World worldObj, int side) {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
 
-		return isAccessibleInventory(tile, side);
+		return isAccessibleInput(tile, side);
 	}
 
-	public static boolean isAccessibleInventory(TileEntity tile, int side) {
+	public static boolean isAdjacentOutput(TileEntity tile, int side) {
+
+		return isAdjacentOutput(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), side);
+	}
+
+	public static boolean isAdjacentOutput(int x, int y, int z, World worldObj, int side) {
+
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
+
+		return isAccessibleOutput(tile, side);
+	}
+
+	public static boolean isAccessibleInput(TileEntity tile, int side) {
+
+		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]).length <= 0) {
+			return false;
+		}
+		if (tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	public static boolean isAccessibleOutput(TileEntity tile, int side) {
 
 		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]).length <= 0) {
 			return false;

@@ -62,8 +62,12 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (slot > inventory.length) {
 			return false;
 		}
+
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 
+		if (Utils.isAccessibleInput(curTile, side)) {
+
+		}
 		return false;
 	}
 
@@ -79,8 +83,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 		/* Add to Adjacent Inventory */
-		if (Utils.isAccessibleInventory(curTile, side)) {
-			added = Utils.addToInventory(curTile, side, stack);
+		if (Utils.isAccessibleOutput(curTile, side)) {
+			added = Utils.addToInsertion(curTile, side, stack);
 			if (added >= amount) {
 				return false;
 			}

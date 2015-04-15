@@ -117,8 +117,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return 0;
 		}
-		// TODO Auto-generated method stub
-		return 0;
+		return targetHandler != null ? targetHandler.fill(from, resource, doFill) : 0;
 	}
 
 	@Override
@@ -127,8 +126,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return null;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		return targetHandler != null ? targetHandler.drain(from, resource, doDrain) : null;
 	}
 
 	@Override
@@ -137,8 +135,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return null;
 		}
-		// TODO Auto-generated method stub
-		return null;
+		return targetHandler != null ? targetHandler.drain(from, maxDrain, doDrain) : null;
 	}
 
 	@Override
