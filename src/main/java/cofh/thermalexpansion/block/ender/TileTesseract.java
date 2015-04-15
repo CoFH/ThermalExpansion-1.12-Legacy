@@ -77,7 +77,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	int energyTrackerRemote;
 
 	boolean cached = false;
-	IEnergyReceiver[] adjacentEnergyHandlers = new IEnergyReceiver[6];
+	IEnergyReceiver[] adjacentEnergyReceivers = new IEnergyReceiver[6];
 	IFluidHandler[] adjacentFluidHandlers = new IFluidHandler[6];
 
 	public int frequency = -1;
@@ -192,9 +192,9 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 				adjacentFluidHandlers[i] = null;
 			}
 			if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
-				adjacentEnergyHandlers[i] = (IEnergyReceiver) tile;
+				adjacentEnergyReceivers[i] = (IEnergyReceiver) tile;
 			} else {
-				adjacentEnergyHandlers[i] = null;
+				adjacentEnergyReceivers[i] = null;
 			}
 		}
 		cached = true;
@@ -217,9 +217,9 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			adjacentFluidHandlers[side] = null;
 		}
 		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
-			adjacentEnergyHandlers[side] = (IEnergyReceiver) tile;
+			adjacentEnergyReceivers[side] = (IEnergyReceiver) tile;
 		} else {
-			adjacentEnergyHandlers[side] = null;
+			adjacentEnergyReceivers[side] = null;
 		}
 	}
 
@@ -379,14 +379,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		energyTrackerAdjacent++;
 		for (int side = energyTrackerAdjacent; side < 6; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
+			if (adjacentEnergyReceivers[side] != null) {
 				energyTrackerAdjacent = side;
 				return;
 			}
 		}
 		energyTrackerAdjacent %= 6;
 		for (int side = 0; side < energyTrackerAdjacent; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
+			if (adjacentEnergyReceivers[side] != null) {
 				energyTrackerAdjacent = side;
 				return;
 			}
@@ -740,25 +740,25 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public ItemStack getStackInSlot(int i) {
+	public ItemStack getStackInSlot(int slot) {
 
 		return null;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
+	public ItemStack decrStackSize(int slot, int amount) {
 
 		return null;
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int i) {
+	public ItemStack getStackInSlotOnClosing(int slot) {
 
 		return null;
 	}
 
 	@Override
-	public void setInventorySlotContents(int i, ItemStack stack) {
+	public void setInventorySlotContents(int slot, ItemStack stack) {
 
 		sendItem(stack);
 	}
@@ -828,13 +828,13 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return energy;
 		}
 		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			if (adjacentEnergyReceivers[side] != null) {
+				energy -= adjacentEnergyReceivers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
 			}
 		}
 		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
-			if (adjacentEnergyHandlers[side] != null) {
-				energy -= adjacentEnergyHandlers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+			if (adjacentEnergyReceivers[side] != null) {
+				energy -= adjacentEnergyReceivers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
 			}
 		}
 		incrEnergyTrackerAdjacent();

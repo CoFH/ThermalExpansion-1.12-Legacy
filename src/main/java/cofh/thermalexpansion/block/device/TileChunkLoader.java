@@ -17,6 +17,9 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileChunkLoader extends TileAugmentable implements IFluidHandler {
 
+	static final int TYPE = 0;
+	static SideConfig defaultSideConfig = new SideConfig();
+
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
 	EnergyStorage energyStorage = new EnergyStorage(400000);
 	Ticket ticket;

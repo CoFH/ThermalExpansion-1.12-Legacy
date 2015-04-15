@@ -123,6 +123,9 @@ public class TECraftingHandler {
 			if (oreNameList[i].startsWith("ore")) {
 				oreType = oreNameList[i].substring(3, oreNameList[i].length());
 
+				if (oreType.isEmpty()) {
+					continue;
+				}
 				String oreName = "ore" + StringHelper.titleCase(oreType);
 				String ingotName = "ingot" + StringHelper.titleCase(oreType);
 

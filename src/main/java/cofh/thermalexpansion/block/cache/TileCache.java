@@ -362,7 +362,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return slot == 0 && (storedStack == null || ItemHelper.itemsEqualWithMetadata(stack, storedStack, true));
+		return slot == 0 && (storedStack == null || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	@Override
