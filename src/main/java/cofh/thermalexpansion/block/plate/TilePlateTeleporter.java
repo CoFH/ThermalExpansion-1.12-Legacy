@@ -34,7 +34,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		GameRegistry.registerTileEntity(TilePlateTeleporter.class, "cofh.thermalexpansion.PlateTeleporter");
 	}
 
-	protected static final int TELEPORT_COST = 500000;
+	protected static final int TELEPORT_COST = 100000;
+	protected static final int DIMENSION_TELEPORT_COST = 1000000;
 	protected static final int PARTICLE_DELAY = 80;
 	protected static final int TELEPORT_DELAY = PARTICLE_DELAY + 50;
 
@@ -55,12 +56,22 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		if (theEntity.worldObj.isRemote || destination == -1 || storage.getEnergyStored() < TELEPORT_COST) {
+		if (theEntity.worldObj.isRemote || theEntity.timeUntilPortal > TELEPORT_DELAY) {
+			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
 			return;
 		}
 
-		if (theEntity.timeUntilPortal > TELEPORT_DELAY) {
-			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
+		if (destination == -1 || !RegistryEnderAttuned.hasDestination(this)) {
+			return;
+		}
+
+		int teleportCost = TELEPORT_COST;
+		IEnderDestination dest = RegistryEnderAttuned.getDestination(this);
+		if (dest.dimension() != dimension()) {
+			teleportCost = DIMENSION_TELEPORT_COST;
+		}
+
+		if (storage.getEnergyStored() < teleportCost) {
 			return;
 		}
 
@@ -92,11 +103,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 
-		boolean isPlayer = false;
 		if (theEntity instanceof EntityLivingBase) {
 			if (theEntity.timeUntilPortal++ <= TELEPORT_DELAY) {
-				isPlayer = theEntity instanceof EntityPlayerMP;
-				if (!isPlayer) {
+				if (!(theEntity instanceof EntityPlayerMP)) {
 					theEntity.timeUntilPortal++;
 				}
 				World world = theEntity.worldObj;
@@ -115,8 +124,13 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					packet.addFloat((float) x);
 					packet.addFloat((float) y);
 					packet.addFloat((float) z);
-					if (i == 100)
-						packet.addBool(theEntity instanceof EntityEnderman);
+					if (i == 100) {
+						packet.addInt(theEntity.getEntityId());
+						packet.addInt(dest.x());
+						packet.addInt(dest.y());
+						packet.addInt(dest.z());
+						packet.addInt(dest.dimension());
+					}
 					TargetPoint targ = new TargetPoint(world.provider.dimensionId, xCoord, yCoord, zCoord, 50);
 					PacketHandler.sendToAllAround(packet, targ);
 				}
@@ -126,14 +140,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
 		}
 
-		if (storage.extractEnergy(TELEPORT_COST, false) == TELEPORT_COST) {
-			if (isPlayer) {
-				PacketCoFHBase packet = getModePacket();
-				packet.addByte(101);
-				packet.addInt(theEntity.getEntityId());
-				PacketHandler.sendTo(packet, (EntityPlayer) theEntity);
-			}
-			IEnderDestination dest = RegistryEnderAttuned.getDestination(this);
+		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
 				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer()
 					.getConfigurationManager());
@@ -198,10 +205,20 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			addZapParticles(payload.getInt(), payload.getFloat(), payload.getFloat(), payload.getFloat());
 			break;
 		case 100:
-			addTeleportParticles(payload.getFloat(), payload.getFloat(), payload.getFloat(), payload.getBool());
-			break;
-		case 101:
+			float x = payload.getFloat(), y = payload.getFloat(), z = payload.getFloat();
 			Entity ent = worldObj.getEntityByID(payload.getInt());
+			addTeleportParticles(x, y, z, ent instanceof EntityEnderman);
+			x = payload.getInt() + .5f;
+			y = payload.getInt() + .2f;
+			z = payload.getInt() + .5f;
+			int dim = payload.getInt();
+			if (ent != null) {
+				if (dim != dimension() && !(ent instanceof EntityPlayer)) {
+					ent.setDead();
+				} else {
+					ent.setPosition(x, y, z);
+				}
+			}
 			break;
 		}
 	}
@@ -228,12 +245,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			RegistryEnderAttuned.removeDestination(this);
 			int old = this.frequency;
 			this.frequency = frequency;
-			if (RegistryEnderAttuned.hasDestination(this, false)) {
-				this.frequency = old;
-				return false;
-			}
-			RegistryEnderAttuned.addDestination(this);
 			isActive = frequency != -1;
+			if (isActive) {
+				if (RegistryEnderAttuned.hasDestination(this, false)) {
+					this.frequency = old;
+					return false;
+				}
+				RegistryEnderAttuned.addDestination(this);
+			}
 
 			markDirty();
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -262,10 +281,12 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (frequency != destination) {
 			int old = destination;
 			destination = frequency;
-			if (!RegistryEnderAttuned.hasDestination(this, false)) {
-				// TODO: ???
-				destination = old;
-				return false;
+			if (destination != -1) {
+				if (!RegistryEnderAttuned.hasDestination(this, false)) {
+					// TODO: ???
+					destination = old;
+					return false;
+				}
 			}
 
 			markDirty();
@@ -287,7 +308,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			// TODO: log message
 			return false;
 		}
-		destination = tag.getInteger("Destination");
+		setDestination(tag.getInteger("Destination"));
 		return true;
 	}
 
@@ -305,8 +326,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		super.readFromNBT(nbt);
 
-		frequency = nbt.getInteger("Frequency");
-		destination = nbt.getInteger("Destination");
+		setFrequency(nbt.getInteger("Frequency"));
+		setDestination(nbt.getInteger("Destination"));
 
 	}
 
