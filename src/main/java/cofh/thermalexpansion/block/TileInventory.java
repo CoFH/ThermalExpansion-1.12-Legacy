@@ -42,6 +42,11 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		inWorld = true;
 	}
 
+	public void cofh_invalidate() {
+
+		inWorld = false;
+	}
+
 	public boolean canAccess() {
 
 		return canAccess;

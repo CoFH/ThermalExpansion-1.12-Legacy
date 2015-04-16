@@ -22,7 +22,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiPlateTranslocate extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTranslocate myTile;
@@ -40,7 +40,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
-		this.height = 100;
+		this.ySize = 100;
 
 		generateInfo("tab.thermalexpansion.plate.translocate", 2);
 	}

@@ -1,8 +1,11 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.api.transport.IEnderDestination;
+import cofh.api.transport.RegistryEnderAttuned;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.util.SocialRegistry;
+import cofh.lib.util.helpers.EntityHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import com.mojang.authlib.GameProfile;
@@ -24,16 +27,21 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
-public class TilePlateTeleporter extends TilePlatePoweredBase {
+public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderDestination {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TilePlateCharger.class, "cofh.thermalexpansion.PlateTeleporter");
+		GameRegistry.registerTileEntity(TilePlateTeleporter.class, "cofh.thermalexpansion.PlateTeleporter");
 	}
 
 	protected static final int TELEPORT_COST = 500000;
 	protected static final int PARTICLE_DELAY = 80;
 	protected static final int TELEPORT_DELAY = PARTICLE_DELAY + 50;
+
+	protected int frequency = -1;
+	protected int destination = -1;
+
+	protected boolean isActive;
 
 	public TilePlateTeleporter() {
 
@@ -47,7 +55,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity theEntity) {
 
-		if (theEntity.worldObj.isRemote || storage.getEnergyStored() < TELEPORT_COST) {
+		if (theEntity.worldObj.isRemote || destination == -1 || storage.getEnergyStored() < TELEPORT_COST) {
 			return;
 		}
 
@@ -61,7 +69,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 			comp = EntityPlayer.class;
 		}
 
-		if (!comp.isInstance(theEntity)) {
+		if (!comp.isInstance(theEntity) || !RegistryEnderAttuned.hasDestination(this)) {
 			return;
 		}
 
@@ -123,9 +131,15 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 				PacketCoFHBase packet = getModePacket();
 				packet.addByte(101);
 				packet.addInt(theEntity.getEntityId());
-				PacketHandler.sendTo(packet, (EntityPlayer)theEntity);
+				PacketHandler.sendTo(packet, (EntityPlayer) theEntity);
 			}
-			;
+			IEnderDestination dest = RegistryEnderAttuned.getDestination(this);
+			if (dest.dimension() != dimension()) {
+				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer()
+					.getConfigurationManager());
+			}
+			theEntity.setPositionAndRotation(dest.x() + .5, dest.y() + .2, dest.z() + .5,
+				theEntity.rotationYaw, theEntity.rotationPitch);
 		}
 	}
 
@@ -134,8 +148,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 		time += 2;
 		double dv = time / 2;
 
-		for (int i = time; i --> 0; ) {
-			for (int k = time; k --> 0; ) {
+		for (int i = time; i-- > 0;) {
+			for (int k = time; k-- > 0;) {
 				double yV = Math.cos(k * Math.PI / dv), xV, zV;
 				xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
 				zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
@@ -148,17 +162,18 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 
 	protected void addTeleportParticles(double x, double y, double z, boolean trail) {
 
-		for (int i = 15; i --> 0; ) {
-			for (int k = 15; k --> 0; ) {
+		for (int i = 15; i-- > 0;) {
+			for (int k = 15; k-- > 0;) {
 				double yV = Math.cos(k * Math.PI / 7.5), xV, zV;
 				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
 				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
 				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
 				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj,
-					x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
+						x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
 
 					@Override
 					public void moveEntity(double x, double y, double z) {
+
 						motionY += 0.004;
 						super.moveEntity(x, y + 0.004, z);
 					}
@@ -192,14 +207,95 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 	}
 
 	@Override
+	public String getChannelString() {
+
+		return access.isPublic() ? "_public_" : owner.getName();
+	}
+
+	@Override
+	public int getFrequency() {
+
+		return frequency;
+	}
+
+	@Override
+	public boolean setFrequency(int frequency) {
+
+		if (!access.isPublic()) {
+			return false;
+		}
+		if (frequency != this.frequency) {
+			RegistryEnderAttuned.removeDestination(this);
+			int old = this.frequency;
+			this.frequency = frequency;
+			if (RegistryEnderAttuned.hasDestination(this, false)) {
+				this.frequency = old;
+				return false;
+			}
+			RegistryEnderAttuned.addDestination(this);
+			isActive = frequency != -1;
+
+			markDirty();
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean clearFrequency() {
+
+		return setFrequency(-1);
+	}
+
+	@Override
+	public int getDestination() {
+
+		return destination;
+	}
+
+	@Override
+	public boolean setDestination(int frequency) {
+
+		if (!access.isPublic()) {
+			return false;
+		}
+		if (frequency != destination) {
+			int old = destination;
+			destination = frequency;
+			if (!RegistryEnderAttuned.hasDestination(this, false)) {
+				// TODO: ???
+				destination = old;
+				return false;
+			}
+
+			markDirty();
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean clearDestination() {
+
+		return setDestination(-1);
+	}
+
+	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
+		if (!getChannelString().equals(tag.getString("Channel"))) {
+			// TODO: log message
+			return false;
+		}
+		destination = tag.getInteger("Destination");
 		return true;
 	}
 
 	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
+		tag.setString("Channel", getChannelString());
+		tag.setInteger("Destination", destination);
 		return true;
 	}
 
@@ -209,6 +305,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 
 		super.readFromNBT(nbt);
 
+		frequency = nbt.getInteger("Frequency");
+		destination = nbt.getInteger("Destination");
+
 	}
 
 	@Override
@@ -216,6 +315,38 @@ public class TilePlateTeleporter extends TilePlatePoweredBase {
 
 		super.writeToNBT(nbt);
 
+		nbt.setInteger("Frequency", frequency);
+		nbt.setInteger("Destination", destination);
+	}
+
+	@Override
+	public boolean isNotValid() {
+
+		return !inWorld || this.tileEntityInvalid;
+	}
+
+	@Override
+	public int x() {
+
+		return xCoord;
+	}
+
+	@Override
+	public int y() {
+
+		return yCoord;
+	}
+
+	@Override
+	public int z() {
+
+		return zCoord;
+	}
+
+	@Override
+	public int dimension() {
+
+		return worldObj.provider.dimensionId;
 	}
 
 	/* GUI METHODS */

@@ -23,7 +23,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiPlateSignal extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "Plate.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateSignal myTile;
