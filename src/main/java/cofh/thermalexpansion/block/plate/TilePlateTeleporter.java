@@ -4,6 +4,7 @@ import cofh.api.transport.IEnderDestination;
 import cofh.api.transport.RegistryEnderAttuned;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
+import cofh.core.util.CoreUtils;
 import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.EntityHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
@@ -145,8 +146,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer()
 					.getConfigurationManager());
 			}
-			theEntity.setPositionAndRotation(dest.x() + .5, dest.y() + .2, dest.z() + .5,
-				theEntity.rotationYaw, theEntity.rotationPitch);
+			CoreUtils.teleportEntityTo(theEntity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
 	}
 
@@ -212,8 +212,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			y = payload.getInt() + .2f;
 			z = payload.getInt() + .5f;
 			int dim = payload.getInt();
-			if (ent != null) {
-				if (dim != dimension() && !(ent instanceof EntityPlayer)) {
+			if (ent != null && !(ent instanceof EntityPlayer)) {
+				if (dim != dimension()) {
 					ent.setDead();
 				} else {
 					ent.setPosition(x, y, z);
@@ -327,7 +327,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		super.readFromNBT(nbt);
 
 		setFrequency(nbt.getInteger("Frequency"));
-		setDestination(nbt.getInteger("Destination"));
+		destination = nbt.getInteger("Destination");
 
 	}
 
