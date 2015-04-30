@@ -5,6 +5,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import cpw.mods.fml.common.registry.GameData;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.io.File;
@@ -15,6 +16,11 @@ import java.util.Arrays;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 
 public class TECraftingParser {
 
@@ -207,6 +213,51 @@ public class TECraftingParser {
 		String[] blockTokens = blockRaw.split(":", 2);
 		int i = 0;
 		return GameRegistry.findBlock(blockTokens.length > 1 ? blockTokens[i++] : "minecraft", blockTokens[i]);
+	}
+
+	public static ItemStack parseItemStack(JsonElement itemElement) {
+
+		if (itemElement.isJsonNull()) {
+			return null;
+		}
+		int metadata = 0, stackSize = 1;
+		ItemStack stack;
+
+		if (itemElement.isJsonPrimitive()) {
+			stack = new ItemStack(GameData.getItemRegistry().getObject(itemElement.getAsString()), 1, metadata);
+		} else {
+			JsonObject item = itemElement.getAsJsonObject();
+			if (item.has("meta")) {
+				metadata = item.get("meta").getAsInt();
+			} else if (item.has("metadata")) {
+				metadata = item.get("metadata").getAsInt();
+			}
+			if (item.has("stackSize")) {
+				stackSize = item.get("stackSize").getAsInt();
+			} else if (item.has("quantity")) {
+				stackSize = item.get("quantity").getAsInt();
+			} else if (item.has("amount")) {
+				stackSize = item.get("amount").getAsInt();
+			}
+			stack = new ItemStack(GameData.getItemRegistry().getObject(item.get("name").getAsString()), stackSize, metadata);
+			if (item.has("nbt")) {
+				try {
+					NBTBase nbtbase = JsonToNBT.func_150315_a(item.get("nbt").getAsString());
+
+					if (!(nbtbase instanceof NBTTagCompound)) {
+						ThermalExpansion.log.error("Item has invalid NBT data.");
+					}
+
+					stack.setTagCompound((NBTTagCompound) nbtbase);
+				} catch (NBTException t) {
+					ThermalExpansion.log.error("Item has invalid NBT data.", t);
+				}
+			}
+		}
+		if (stack.getItem() == null) {
+			return null;
+		}
+		return stack;
 	}
 
 }
