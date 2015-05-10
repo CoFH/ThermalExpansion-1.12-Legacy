@@ -708,7 +708,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		}
 	}
 
-	/*
+	/**
 	 * WARNING - Only sends to player
 	 */
 	public void sendNamesList(EntityPlayerMP thePlayer) {
