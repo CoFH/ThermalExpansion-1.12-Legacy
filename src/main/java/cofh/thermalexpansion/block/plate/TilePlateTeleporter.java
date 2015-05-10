@@ -81,7 +81,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			comp = EntityPlayer.class;
 		}
 
-		if (!comp.isInstance(theEntity) || !RegistryEnderAttuned.hasDestination(this)) {
+		if (!comp.isInstance(theEntity)) {
 			return;
 		}
 
