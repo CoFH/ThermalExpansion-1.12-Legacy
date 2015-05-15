@@ -97,7 +97,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 	public BlockLight() {
 
-		super(Material.glass);
+		super(Material.redstoneLight);
 		setHardness(3.0F);
 		setResistance(150.0F);
 		setStepSound(soundTypeGlass);
@@ -217,6 +217,12 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	@Override
+	public boolean isNormalCube() {
+
+		return false;
+	}
+
+	@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdLight;
@@ -303,16 +309,19 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	public boolean postInit() {
 
 		if (enable[Types.ILLUMINATOR.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(TFFluids.fluidGlowstone, 500), false);
+			TransposerManager.addTEFillRecipe(2000, BlockFrame.frameIlluminator, illuminator, new FluidStack(
+					TFFluids.fluidGlowstone, 500), false);
 			addRecipes(illuminator);
 		}
 		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium",
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG",
+					" S ", 'L', "ingotLumium",
 					'G', "blockGlassHardened", 'S', "ingotSignalum" }));
 			addRecipes(lampLumiumRadiant);
 		}
 		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
+			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ",
+					'L', "dustLumium", 'G',
 					"blockGlassHardened", 'S', "ingotSignalum" }));
 			addRecipes(lampLumium);
 		}
@@ -329,7 +338,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	public static enum Types {
-		ILLUMINATOR, LAMP_LUMIUM_RADIANT, LAMP_LUMIUM;
+		ILLUMINATOR,
+		LAMP_LUMIUM_RADIANT,
+		LAMP_LUMIUM;
 
 		public static Types getType(int meta) {
 
