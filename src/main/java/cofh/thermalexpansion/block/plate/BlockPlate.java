@@ -7,6 +7,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -337,14 +338,13 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 		if (enable[Types.POWERED_TRANSLOCATE.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateTeleport, new Object[] {
-					"EGE",
+					"EIE",
 					"IPI",
 					"ECE",
 					'E', "ingotEnderium",
-					'G', "gearMithril",
 					'I', "ingotBronze",
 					'P', plateTranslocate,
-					'C', TEItems.powerCoilGold,
+					'C', BlockCell.cellHardened,
 			}));
 		}
 
