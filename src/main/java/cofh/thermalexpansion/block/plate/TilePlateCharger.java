@@ -80,7 +80,7 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 					break l;
 				}
 				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
-				if (getOwner().getId().equals(i.getId())) {
+				if (i != null && getOwner().getId().equals(i.getId())) {
 					break l;
 				}
 			} else if (canPlayerAccess((EntityPlayer) theEntity)) {
