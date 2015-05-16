@@ -26,7 +26,7 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 
 	boolean full = false;
 	boolean fullOnPlace = false;
-	FluidStack fluid;
+	FluidStack myFluidStack;
 
 	public TileSponge() {
 
@@ -103,7 +103,7 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 
 	public FluidStack getFluid() {
 
-		return fluid;
+		return myFluidStack;
 	}
 
 	public void absorb() {
@@ -131,11 +131,11 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 					queryFluid = FluidHelper.lookupFluidForBlock(query);
 					if (queryMeta == 0) {
 						if (!full && queryFluid != null && queryFluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-							if (fluid == null) {
-								fluid = new FluidStack(queryFluid, 1000);
+							if (myFluidStack == null) {
+								myFluidStack = new FluidStack(queryFluid, 1000);
 								bucketCounter = 1;
 								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-							} else if (fluid.fluidID == queryFluid.getID()) {
+							} else if (myFluidStack.getFluid() == queryFluid) {
 								bucketCounter++;
 								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
 							}
@@ -152,16 +152,16 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 				}
 			}
 		}
-		if (fluid != null) {
-			fluid.amount = bucketCounter * 1000;
+		if (myFluidStack != null) {
+			myFluidStack.amount = bucketCounter * 1000;
 			full = true;
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}
 
-	public void setFluid(FluidStack fluid) {
+	public void setFluid(FluidStack stack) {
 
-		this.fluid = fluid;
+		this.myFluidStack = stack;
 		fullOnPlace = true;
 		full = true;
 	}
@@ -180,8 +180,8 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 		super.readFromNBT(nbt);
 
 		fullOnPlace = nbt.getBoolean("PlaceFull");
-		fluid = FluidStack.loadFluidStackFromNBT(nbt);
-		full = fluid != null;
+		myFluidStack = FluidStack.loadFluidStackFromNBT(nbt);
+		full = myFluidStack != null;
 	}
 
 	@Override
@@ -190,8 +190,8 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("PlaceFull", fullOnPlace);
-		if (fluid != null) {
-			fluid.writeToNBT(nbt);
+		if (myFluidStack != null) {
+			myFluidStack.writeToNBT(nbt);
 		}
 	}
 
@@ -202,7 +202,7 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addBool(full);
-		payload.addFluidStack(fluid);
+		payload.addFluidStack(myFluidStack);
 
 		return payload;
 	}
@@ -215,7 +215,7 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 
 		if (!isServer) {
 			full = payload.getBool();
-			fluid = payload.getFluidStack();
+			myFluidStack = payload.getFluidStack();
 		} else {
 			payload.getBool();
 			payload.getFluidStack();

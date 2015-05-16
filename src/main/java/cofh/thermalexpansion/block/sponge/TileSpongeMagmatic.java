@@ -53,11 +53,11 @@ public class TileSpongeMagmatic extends TileSponge {
 					if (queryMeta == 0) {
 						queryFluid = FluidHelper.lookupFluidForBlock(query);
 						if (!full && queryFluid != null) {
-							if (fluid == null) {
-								fluid = new FluidStack(queryFluid, 1000);
+							if (myFluidStack == null) {
+								myFluidStack = new FluidStack(queryFluid, 1000);
 								bucketCounter = 1;
 								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-							} else if (fluid.fluidID == queryFluid.getID()) {
+							} else if (myFluidStack.getFluid() == queryFluid) {
 								bucketCounter++;
 								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
 							}
@@ -70,8 +70,8 @@ public class TileSpongeMagmatic extends TileSponge {
 				}
 			}
 		}
-		if (fluid != null) {
-			fluid.amount = bucketCounter * 1000;
+		if (myFluidStack != null) {
+			myFluidStack.amount = bucketCounter * 1000;
 			full = true;
 		}
 	}
