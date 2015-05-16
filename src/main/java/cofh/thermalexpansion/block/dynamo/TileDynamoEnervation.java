@@ -88,8 +88,9 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		if (fuelRF <= 0) {
 			if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 				IEnergyContainerItem container = (IEnergyContainerItem) inventory[0].getItem();
-				fuelRF += container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
-				currentFuelRF = redstoneRF;
+				energy = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
+				fuelRF += energy;
+				currentFuelRF = energy;
 			} else {
 				energy = getEnergyValue(inventory[0]) * fuelMod / FUEL_MOD;
 				fuelRF += energy;
