@@ -26,6 +26,7 @@ public class PulverizerManager {
 	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>();
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
+	public static final int DEFAULT_ENERGY = 3200;
 
 	private static int oreMultiplier = 2;
 

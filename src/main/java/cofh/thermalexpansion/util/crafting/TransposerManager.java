@@ -31,6 +31,7 @@ public class TransposerManager {
 	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
 	private static ComparableItemStack query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
+	public static final int DEFAULT_ENERGY = 1600;
 
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Transposer", "AllowRecipeOverwrite", false);
