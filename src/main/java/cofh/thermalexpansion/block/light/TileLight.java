@@ -258,7 +258,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (payload.getBool()) {
+		modified = payload.getBool();
+
+		if (modified) {
 			setColor(payload.getInt());
 		}
 		mode = payload.getByte();
