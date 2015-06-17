@@ -342,7 +342,15 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 		if (stackCheck != (storedStack == null)) {
 			sendUpdatePacket(Side.CLIENT);
 		}
-		markDirty();
+		if (inWorld) {
+			markChunkDirty();
+		}
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 && (storedStack == null || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	/* IReconfigurableSides */

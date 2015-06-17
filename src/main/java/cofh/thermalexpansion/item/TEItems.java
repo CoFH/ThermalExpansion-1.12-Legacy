@@ -37,7 +37,7 @@ public class TEItems {
 		GameRegistry.registerItem(itemBattleWrench, "tool.battleWrenchInvar");
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
-		// itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
+		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
 		// itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
 		// itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
@@ -61,7 +61,7 @@ public class TEItems {
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = new ItemStack(itemIgniter);
-		// toolChiller = new ItemStack(itemChiller);
+		toolChiller = new ItemStack(itemChiller);
 		// toolPump = new ItemStack(itemPump);
 		// toolTransfuser = new ItemStack(itemTransfuser);
 
@@ -134,10 +134,10 @@ public class TEItems {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
 					capacitorBasic, 'G', Items.flint }));
 		}
-		// if (enableChiller) {
-		// GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
-		// capacitorBasic, 'G', Items.snowball }));
-		// }
+		if (enableChiller) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'G', Items.snowball }));
+		}
 		// if (enablePump) {
 		//
 		// }

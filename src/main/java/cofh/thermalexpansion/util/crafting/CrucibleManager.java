@@ -92,6 +92,8 @@ public class CrucibleManager {
 		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(TFFluids.fluidEnder, 250));
 		addTERecipe(8000, TFItems.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
 		addTERecipe(8000, TFItems.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
+		// addTERecipe(8000, TFItems.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
+		// addTERecipe(8000, TFItems.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
 		addTERecipe(8000, TFItems.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 	}
 
