@@ -47,7 +47,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 	public TilePlateTeleporter() {
 
-		super(BlockPlate.Types.POWERED_TRANSLOCATE, 1000000);
+		super(BlockPlate.Types.POWERED_TRANSLOCATE, 2000000);
 	}
 
 	protected void teleportEntity(Entity ent) {
@@ -70,6 +70,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		IEnderDestination dest = RegistryEnderAttuned.getDestination(this);
 		if (dest.dimension() != dimension()) {
 			teleportCost = DIMENSION_TELEPORT_COST;
+		}
+
+		if (theEntity instanceof EntityEnderman) {
+			teleportCost *= 2;
 		}
 
 		if (storage.getEnergyStored() < teleportCost) {
