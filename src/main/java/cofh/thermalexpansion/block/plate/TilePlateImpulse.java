@@ -159,6 +159,8 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 		nbt.setInteger("Int", intensity);
 		nbt.setInteger("Angle", angle);
+
+		updateForce();
 	}
 
 	/* NETWORK METHODS */
