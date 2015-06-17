@@ -143,27 +143,39 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		inHell = worldObj.getBiomeGenForCoords(xCoord, zCoord) == BiomeGenBase.hell;
 
 		adjacentSources = 0;
-		Block block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
-		int bMeta = worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord);
 
+		Block block = worldObj.getBlock(xCoord, yCoord - 1, zCoord);
+		int bMeta = worldObj.getBlockMetadata(xCoord, yCoord - 1, zCoord);
 		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 			++adjacentSources;
 		}
+
+		block = worldObj.getBlock(xCoord, yCoord + 1, zCoord);
+		bMeta = worldObj.getBlockMetadata(xCoord, yCoord + 1, zCoord);
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+
+		block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
+		bMeta = worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord);
+		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+			++adjacentSources;
+		}
+
 		block = worldObj.getBlock(xCoord + 1, yCoord, zCoord);
 		bMeta = worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord);
-
 		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 			++adjacentSources;
 		}
+
 		block = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
 		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1);
-
 		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 			++adjacentSources;
 		}
+
 		block = worldObj.getBlock(xCoord, yCoord, zCoord + 1);
 		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1);
-
 		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 			++adjacentSources;
 		}

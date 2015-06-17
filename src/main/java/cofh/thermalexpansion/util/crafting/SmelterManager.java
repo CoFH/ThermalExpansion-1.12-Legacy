@@ -35,6 +35,7 @@ public class SmelterManager {
 	private static ComparableItemStackSmelter query = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
+	public static final int DEFAULT_ENERGY = 3200;
 
 	private static int oreMultiplier = 2;
 	private static int oreMultiplierSpecial = 3;

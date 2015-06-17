@@ -26,6 +26,7 @@ public class PulverizerManager {
 	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>();
 	private static ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
+	public static final int DEFAULT_ENERGY = 3200;
 
 	private static int oreMultiplier = 2;
 
@@ -171,6 +172,13 @@ public class PulverizerManager {
 
 	public static void loadRecipes() {
 
+		String category = "RecipeManagers.Pulverizer.Recipes";
+
+		boolean siliconRecipe = ThermalExpansion.config.get(category, "Silicon", true);
+
+		if (ItemHelper.oreNameExists("itemSilicon") && siliconRecipe) {
+			addRecipe(1600, new ItemStack(Blocks.sand, 1), ItemHelper.cloneStack(OreDictionary.getOres("itemSilicon").get(0), 1));
+		}
 		if (ItemHelper.oreNameExists("dustEnderPearl")) {
 			addRecipe(1600, new ItemStack(Items.ender_pearl), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl").get(0), 1));
 		}
@@ -190,9 +198,6 @@ public class PulverizerManager {
 		}
 		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
 			addRecipe(1600, new ItemStack(Items.quartz, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
-		}
-		if (ItemHelper.oreNameExists("itemSilicon")) {
-			addRecipe(1600, new ItemStack(Blocks.sand, 1), ItemHelper.cloneStack(OreDictionary.getOres("itemSilicon").get(0), 1));
 		}
 
 		String[] oreNameList = OreDictionary.getOreNames();

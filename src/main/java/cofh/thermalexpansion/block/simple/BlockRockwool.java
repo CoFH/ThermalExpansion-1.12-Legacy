@@ -81,12 +81,14 @@ public class BlockRockwool extends Block implements IInitializer {
 	@Override
 	public boolean postInit() {
 
-		GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, 8), 0.0F);
+		GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, DEFAULT_META), 0.0F);
 		for (int i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(this, 8, i), new Object[] { "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.dye, 1, 15 - i) });
 		}
 		return true;
 	}
+
+	public static int DEFAULT_META = 8;
 
 	public static ItemStack rockWool;
 

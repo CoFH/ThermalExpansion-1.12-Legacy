@@ -148,6 +148,8 @@ public class TileActivator extends TileAugmentable {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
+		} else if (!inWorld) {
+			cofh_validate();
 		}
 		if (!redstoneControlOrDisable() && myFakePlayer.itemInUse != null) {
 			myFakePlayer.stopUsingItem();
@@ -169,7 +171,6 @@ public class TileActivator extends TileAugmentable {
 		} else if (!inWorld) {
 			cofh_validate();
 		}
-
 		if (hasEnergy(ACTIVATION_ENERGY)) {
 			if (!isActive) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);

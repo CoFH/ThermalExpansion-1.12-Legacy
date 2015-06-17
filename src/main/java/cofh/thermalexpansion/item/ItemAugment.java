@@ -95,6 +95,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
 			list.add(StringHelper.RED + "+" + TEAugments.MACHINE_SPEED_ENERGY_MOD_TOOLTIP[level] + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
+			list.add(StringHelper.YELLOW + "(x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " RF/t)" + StringHelper.END);
 			// list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_TOOLTIP[level] + "% " TODO: May bring this back, not sure.
 			// + StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
