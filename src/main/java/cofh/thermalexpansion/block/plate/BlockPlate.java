@@ -126,7 +126,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < Types.values().length; i++) {
+		for (int i = 0; i <= 5; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -336,7 +336,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}));
 		}
 
-		if (enable[Types.POWERED_TRANSLOCATE.ordinal()]) {
+		if (enable[Types.POWERED_TRANSLOCATE.ordinal()] && false) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateTeleport, new Object[] {
 					"EIE",
 					"IPI",
