@@ -6,9 +6,11 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.TileDynamoCompression;
 import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
+
 import java.io.File;
 import java.util.Locale;
 import java.util.Set;
+
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
 

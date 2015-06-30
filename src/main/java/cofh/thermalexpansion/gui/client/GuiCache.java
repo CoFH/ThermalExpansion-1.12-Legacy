@@ -18,7 +18,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-
 public class GuiCache extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "Cache.png";
@@ -55,13 +54,13 @@ public class GuiCache extends GuiBaseAdv {
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
 		}
-		//redstoneTab = addTab(new TabRedstone(this, myTile));
-		//if (myTile.augmentRedstoneControl) {
-		//	myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
-		//}
-		//if (myTile.augmentReconfigSides) {
-		//	myTutorial += "\n\n" + StringHelper.tutorialTabConfiguration();
-		//}
+		// redstoneTab = addTab(new TabRedstone(this, myTile));
+		// if (myTile.augmentRedstoneControl) {
+		// myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
+		// }
+		// if (myTile.augmentReconfigSides) {
+		// myTutorial += "\n\n" + StringHelper.tutorialTabConfiguration();
+		// }
 		addTab(new TabTutorial(this, myTutorial));
 	}
 

@@ -124,8 +124,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					}
 					PacketCoFHBase packet = getModePacket();
 					packet.addByte(i);
-					if (i == 99)
+					if (i == 99) {
 						packet.addInt(amt);
+					}
 					packet.addFloat((float) x);
 					packet.addFloat((float) y);
 					packet.addFloat((float) z);
@@ -139,16 +140,16 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					TargetPoint targ = new TargetPoint(world.provider.dimensionId, xCoord, yCoord, zCoord, 50);
 					PacketHandler.sendToAllAround(packet, targ);
 				}
-				if (i == 99)
+				if (i == 99) {
 					return;
+				}
 			}
 			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
 		}
 
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer()
-					.getConfigurationManager());
+				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
 			}
 			CoreUtils.teleportEntityTo(theEntity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
@@ -179,8 +180,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
 				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
 				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj,
-						x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
+				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
 
 					@Override
 					public void moveEntity(double x, double y, double z) {
@@ -209,7 +209,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			addZapParticles(payload.getInt(), payload.getFloat(), payload.getFloat(), payload.getFloat());
 			break;
 		case 100:
-			float x = payload.getFloat(), y = payload.getFloat(), z = payload.getFloat();
+			float x = payload.getFloat(),
+			y = payload.getFloat(),
+			z = payload.getFloat();
 			Entity ent = worldObj.getEntityByID(payload.getInt());
 			addTeleportParticles(x, y, z, ent instanceof EntityEnderman);
 			x = payload.getInt() + .5f;

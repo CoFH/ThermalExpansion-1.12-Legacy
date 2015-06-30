@@ -24,7 +24,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.input.Keyboard;
 
-
 public class GuiPlateTeleport extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Teleport.png";
@@ -63,8 +62,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		}
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(freq = new ElementTextFieldLimited(this, 102, 40, 26, 11, (short) 3).setFilter("0123456789", false)
-			.setBackgroundColor(0, 0, 0).setText(String.valueOf(myTile.getFrequency())));
+		addElement(freq = new ElementTextFieldLimited(this, 102, 40, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
+				.setText(String.valueOf(myTile.getFrequency())));
 		addElement(name = new ElementTextField(this, 28, 56, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
 
 		addElement(new ElementButton(this, 131, 32, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {

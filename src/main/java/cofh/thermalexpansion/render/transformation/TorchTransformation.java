@@ -9,14 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TorchTransformation extends Transformation {
 
-	public static Transformation[] sideTransformations = {
-		new RedundantTransformation(),
-		new RedundantTransformation(),
-		new TorchTransformation(2),
-		new TorchTransformation(3),
-		new TorchTransformation(4),
-		new TorchTransformation(5),
-	};
+	public static Transformation[] sideTransformations = { new RedundantTransformation(), new RedundantTransformation(), new TorchTransformation(2),
+			new TorchTransformation(3), new TorchTransformation(4), new TorchTransformation(5), };
 
 	int alignment;
 

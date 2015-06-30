@@ -32,6 +32,7 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 		alignment = (byte) side;
 		direction = 7;
 	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
