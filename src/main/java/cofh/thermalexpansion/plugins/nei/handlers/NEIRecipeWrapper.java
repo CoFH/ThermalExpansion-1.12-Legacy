@@ -3,6 +3,8 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import java.util.ArrayList;
+import java.util.List;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -34,9 +36,12 @@ public class NEIRecipeWrapper implements IRecipe {
 		GameRegistry.addRecipe(wrap(recipe, RecipeType.SECURE));
 	}
 
+    public final static List<IRecipe> originalRecipeList = new ArrayList<IRecipe>();
+
 	public static IRecipe wrap(IRecipe recipe, RecipeType type) {
 
 		if (Loader.isModLoaded("NotEnoughItems")) {
+            originalRecipeList.add(recipe);
 			return new NEIRecipeWrapper(recipe, type);
 		} else {
 			return recipe;
