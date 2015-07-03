@@ -33,7 +33,7 @@ public class ItemTransfuser extends ItemToolBase {
 	public ItemTransfuser() {
 
 		super("transfuser");
-		setTextureName("thermalexpansion:tools/Transfuser");
+		setTextureName("thermalexpansion:tool/Transfuser");
 	}
 
 	@Override

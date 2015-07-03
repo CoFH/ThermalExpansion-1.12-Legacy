@@ -37,7 +37,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 	public ItemPump() {
 
 		super("pump");
-		setTextureName("thermalexpansion:tools/Pump");
+		setTextureName("thermalexpansion:tool/Pump");
 
 		energyPerUse = 200;
 	}

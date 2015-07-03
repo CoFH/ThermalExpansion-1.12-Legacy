@@ -62,7 +62,7 @@ public class TEItems {
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = new ItemStack(itemIgniter);
 		toolChiller = new ItemStack(itemChiller);
-		// toolPump = new ItemStack(itemPump);
+		toolPump = new ItemStack(itemPump);
 		// toolTransfuser = new ItemStack(itemTransfuser);
 
 		/* Capacitor */
@@ -139,10 +139,10 @@ public class TEItems {
 					capacitorBasic, 'G', Items.snowball }));
 		}
 		// if (enablePump) {
-		//
+		// GameRegistry.addRecipe(new ShapedOreRecipe(toolPump, new Object[] {}));
 		// }
 		// if (enableTransfuser) {
-		//
+		// GameRegistry.addRecipe(new ShapedOreRecipe(toolTransfuser, new Object[] {}));
 		// }
 
 		/* Capacitors */
