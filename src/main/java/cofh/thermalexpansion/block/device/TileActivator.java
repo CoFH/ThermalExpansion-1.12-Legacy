@@ -97,12 +97,6 @@ public class TileActivator extends TileAugmentable {
 	}
 
 	@Override
-	public int getInvSlotCount() {
-
-		return MAX_SLOT;
-	}
-
-	@Override
 	public void cofh_validate() {
 
 		if (ServerHelper.isServerWorld(worldObj)) {
@@ -526,6 +520,12 @@ public class TileActivator extends TileAugmentable {
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerActivator(inventory, this);
+	}
+
+	@Override
+	public int getInvSlotCount() {
+
+		return MAX_SLOT;
 	}
 
 	/* NBT METHODS */

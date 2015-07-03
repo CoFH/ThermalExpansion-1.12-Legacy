@@ -13,9 +13,10 @@ import cofh.lib.gui.element.listbox.SliderHorizontal;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.light.TileLight;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.relauncher.Side;
 
-import net.minecraft.inventory.Container;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
@@ -64,10 +65,10 @@ public class GuiLight extends GuiBaseAdv {
 
 	boolean sendUpdates = true;
 
-	public GuiLight(Container container, TileLight tile) {
+	public GuiLight(InventoryPlayer inventory, TileLight theTile) {
 
-		super(container, TEXTURE);
-		myTile = tile;
+		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
+		myTile = theTile;
 		name = myTile.getName();
 		drawInventory = false;
 		this.height = 100;

@@ -48,6 +48,8 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	static {
 		String category = "Fuels.Steam";
+		FuelHandler.configFuels.getCategory(category).setComment(
+				"You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
 		coalRF = FuelHandler.configFuels.get(category, "coal", coalRF);
 		charcoalRF = FuelHandler.configFuels.get(category, "charcoal", charcoalRF);
 		woodRF = FuelHandler.configFuels.get(category, "wood", woodRF);

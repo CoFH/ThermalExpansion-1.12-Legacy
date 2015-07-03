@@ -41,18 +41,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	int renderColor = 0xAAAAAAFF;
 
 	@Override
-	public Object getGuiClient(InventoryPlayer inventory) {
-
-		return new GuiLight(getGuiServer(inventory), this);
-	}
-
-	@Override
-	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
-
-		return new ContainerTEBase(inventory, this, false, false);
-	}
-
-	@Override
 	public boolean canUpdate() {
 
 		return false;
@@ -206,6 +194,18 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 	/* GUI METHODS */
 	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiLight(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this, false, false);
+	}
+
+	@Override
 	public boolean hasGui() {
 
 		return true;
@@ -230,7 +230,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (ServerHelper.isServerWorld(worldObj)) {
 			payload.addByte(getInternalLight());
 		}
-
 		return payload;
 	}
 

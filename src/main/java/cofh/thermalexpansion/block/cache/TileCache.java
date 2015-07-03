@@ -328,7 +328,12 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 			balanceStacks();
 		} else { // extraction!
 			if (storedStack == null) {
-				return;
+				if (inventory[1] == null) {
+					return;
+				}
+				storedStack = inventory[1].copy();
+				storedStack.stackSize = 0;
+				maxCacheStackSize = CAPACITY[type] - storedStack.getMaxStackSize() * 2;
 			}
 			storedStack.stackSize += (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
 

@@ -97,6 +97,14 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	@Override
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+
+		for (int i = 0; i < 4; i++) {
+			list.add(new ItemStack(item, 1, i));
+		}
+	}
+
+	@Override
 	public boolean rotateBlock(World world, int x, int y, int z, ForgeDirection axis_fd) {
 
 		boolean r = false;
@@ -121,14 +129,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			world.markBlockForUpdate(x, y, z);
 		}
 		return r;
-	}
-
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-
-		for (int i = 0; i <= 5; i++) {
-			list.add(new ItemStack(item, 1, i));
-		}
 	}
 
 	@Override
@@ -323,7 +323,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			TransposerManager.addTEFillRecipe(2000, plateFrame, plateTranslocate, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
 
-		if (enable[Types.POWERED_SIGNAL.ordinal()]) {
+		if (enable[Types.POWERED_SIGNAL.ordinal()] && false) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateCharge, new Object[] {
 					"EGE",
 					"IPI",
