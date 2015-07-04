@@ -38,8 +38,8 @@ public class TEItems {
 		itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
 		itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
-		// itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
-		// itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
+		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
+		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
@@ -63,7 +63,7 @@ public class TEItems {
 		toolIgniter = new ItemStack(itemIgniter);
 		toolChiller = new ItemStack(itemChiller);
 		toolPump = new ItemStack(itemPump);
-		// toolTransfuser = new ItemStack(itemTransfuser);
+		toolTransfuser = new ItemStack(itemTransfuser);
 
 		/* Capacitor */
 		capacitorCreative = itemCapacitor.addItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", 3);
@@ -138,12 +138,14 @@ public class TEItems {
 			GameRegistry.addRecipe(new ShapedOreRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
 					capacitorBasic, 'G', Items.snowball }));
 		}
-		// if (enablePump) {
-		// GameRegistry.addRecipe(new ShapedOreRecipe(toolPump, new Object[] {}));
-		// }
-		// if (enableTransfuser) {
-		// GameRegistry.addRecipe(new ShapedOreRecipe(toolTransfuser, new Object[] {}));
-		// }
+		if (enablePump) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolPump, new Object[] { "RR ", "RGI", " XY", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
+					capacitorBasic, 'Y', Items.bucket, 'G', "gearBronze" }));
+		}
+		if (enableTransfuser) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(toolTransfuser, new Object[] { "RR ", "RGI", " IY", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
+					"ingotSignalum", 'Y', powerCoilElectrum, 'G', "gearElectrum" }));
+		}
 
 		/* Capacitors */
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.POTATO.ordinal()]) {

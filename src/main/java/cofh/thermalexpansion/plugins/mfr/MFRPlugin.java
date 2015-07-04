@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.plugins.mfr;
 
+import cofh.asm.relauncher.Strippable;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.TEItems;
-import cpw.mods.fml.common.Loader;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -22,45 +22,45 @@ public class MFRPlugin {
 
 	}
 
+	@Strippable("mod:MineFactoryReloaded")
 	public static void postInit() {
 
-		if (Loader.isModLoaded("MineFactoryReloaded")) {
-			FactoryRegistry.sendMessage("registerFertilizer", new IFactoryFertilizer() {
+		FactoryRegistry.sendMessage("registerFertilizer", new IFactoryFertilizer() {
 
-				@Override
-				public Item getFertilizer() {
+			@Override
+			public Item getFertilizer() {
 
-					return TEItems.itemMaterial;
+				return TEItems.itemMaterial;
+			}
+
+			@Override
+			public FertilizerType getFertilizerType(ItemStack stack) {
+
+				if (TEItems.fertilizer.isItemEqual(stack)) {
+					return FertilizerType.GrowPlant;
+				} else if (TEItems.fertilizerRich.isItemEqual(stack)) {
+					return FertilizerType.GrowPlant;
 				}
+				return FertilizerType.None;
+			}
 
-				@Override
-				public FertilizerType getFertilizerType(ItemStack stack) {
+			@Override
+			public void consume(ItemStack fertilizer) {
 
-					if (TEItems.fertilizer.isItemEqual(stack)) {
-						return FertilizerType.GrowPlant;
-					} else if (TEItems.fertilizerRich.isItemEqual(stack)) {
-						return FertilizerType.GrowPlant;
+				if (TEItems.fertilizerRich.isItemEqual(fertilizer)) {
+					if (MathHelper.RANDOM.nextBoolean()) {
+						fertilizer.stackSize += 1;
 					}
-					return FertilizerType.None;
-				}
-
-				@Override
-				public void consume(ItemStack fertilizer) {
-
-					if (TEItems.fertilizerRich.isItemEqual(fertilizer)) {
-						if (MathHelper.RANDOM.nextBoolean()) {
-							fertilizer.stackSize += 1;
-						}
-					} else {
-						fertilizer.stackSize -= 1;
-					}
+				} else {
 					fertilizer.stackSize -= 1;
 				}
+				fertilizer.stackSize -= 1;
+			}
 
-			});
-		}
+		});
 	}
 
+	@Strippable("mod:MineFactoryReloaded")
 	public static void loadComplete() {
 
 		ThermalExpansion.log.info("Thermal Expansion: MineFactoryReloaded Plugin Enabled.");

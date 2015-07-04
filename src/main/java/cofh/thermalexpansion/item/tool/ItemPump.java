@@ -217,6 +217,12 @@ public class ItemPump extends ItemEnergyContainerBase {
 	}
 
 	@Override
+	public IIcon getIconIndex(ItemStack stack) {
+
+		return getIcon(stack, 0);
+	}
+
+	@Override
 	public IIcon getIcon(ItemStack stack, int pass) {
 
 		return getMode(stack) == INPUT ? this.fillIcon : this.drainIcon;

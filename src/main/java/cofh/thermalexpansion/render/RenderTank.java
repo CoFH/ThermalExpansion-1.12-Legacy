@@ -189,6 +189,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		renderFluid(item.getItemDamage(), fluid, offset, offset, offset);
 		CCRenderState.draw();
 
+		CCRenderState.alphaOverride = -1;
 		CCRenderState.startDrawing();
 		renderFrame(item.getItemDamage(), 0, offset, offset, offset);
 		CCRenderState.draw();

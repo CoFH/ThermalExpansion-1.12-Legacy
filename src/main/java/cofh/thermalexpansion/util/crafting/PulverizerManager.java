@@ -65,8 +65,8 @@ public class PulverizerManager {
 		boolean recipeBone = ThermalExpansion.config.get(category, "Bone", true);
 		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
 		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
-		// boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
-		// boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
+		boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
+		boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 15);
@@ -140,12 +140,12 @@ public class PulverizerManager {
 		if (recipeBlizzRod) {
 			addTERecipe(1600, TFItems.rodBlizz, ItemHelper.cloneStack(TFItems.dustBlizz, 4), new ItemStack(Items.snowball), 50);
 		}
-		// if (recipeBlitzRod) {
-		// addTERecipe(1600, TFItems.rodBlitz, ItemHelper.cloneStack(TFItems.dustBlitz, 4), TFItems.dustNiter, 50);
-		// }
-		// if (recipeBasalzRod) {
-		// addTERecipe(1600, TFItems.rodBasalz, ItemHelper.cloneStack(TFItems.dustBasalz, 4), TFItems.dustObsidian, 50);
-		// }
+		if (recipeBlitzRod) {
+			addTERecipe(1600, TFItems.rodBlitz, ItemHelper.cloneStack(TFItems.dustBlitz, 4), TFItems.dustNiter, 50);
+		}
+		if (recipeBasalzRod) {
+			addTERecipe(1600, TFItems.rodBasalz, ItemHelper.cloneStack(TFItems.dustBasalz, 4), TFItems.dustObsidian, 50);
+		}
 		int energy = 4000;
 
 		addOreNameToDustRecipe(energy, "oreIron", TFItems.dustIron, TFItems.dustNickel, 10);
@@ -177,11 +177,16 @@ public class PulverizerManager {
 		String category = "RecipeManagers.Pulverizer.Recipes";
 
 		boolean siliconRecipe = ThermalExpansion.config.get(category, "Silicon", true);
+		boolean diamondRecipe = ThermalExpansion.config.get(category, "Diamond", true);
+		boolean enderPearlRecipe = ThermalExpansion.config.get(category, "EnderPearl", true);
 
 		if (ItemHelper.oreNameExists("itemSilicon") && siliconRecipe) {
 			addRecipe(1600, new ItemStack(Blocks.sand, 1), ItemHelper.cloneStack(OreDictionary.getOres("itemSilicon").get(0), 1));
 		}
-		if (ItemHelper.oreNameExists("dustEnderPearl")) {
+		if (ItemHelper.oreNameExists("dustDiamond") && diamondRecipe) {
+			addRecipe(3200, new ItemStack(Items.diamond, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustDiamond").get(0), 1));
+		}
+		if (ItemHelper.oreNameExists("dustEnderPearl") && enderPearlRecipe) {
 			addRecipe(1600, new ItemStack(Items.ender_pearl), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl").get(0), 1));
 		}
 		if (ItemHelper.oreNameExists("oreSaltpeter")) {
