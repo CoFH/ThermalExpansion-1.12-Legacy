@@ -234,8 +234,15 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		if (!reverse) {
 			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
-			ItemStack output = recipe.getOutput();
 
+			if (recipe == null) {
+				isActive = false;
+				wasActive = true;
+				tracker.markTime(worldObj);
+				processRem = 0;
+				return;
+			}
+			ItemStack output = recipe.getOutput();
 			if (inventory[2] == null) {
 				inventory[2] = output;
 			} else {
@@ -245,8 +252,15 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			tank.drain(recipe.getFluid().amount, true);
 		} else {
 			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[1]);
-			ItemStack output = recipe.getOutput();
 
+			if (recipe == null) {
+				isActive = false;
+				wasActive = true;
+				tracker.markTime(worldObj);
+				processRem = 0;
+				return;
+			}
+			ItemStack output = recipe.getOutput();
 			int recipeChance = recipe.getChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[2] == null) {

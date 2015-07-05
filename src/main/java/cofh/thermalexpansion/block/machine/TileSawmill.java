@@ -114,9 +114,16 @@ public class TileSawmill extends TileMachineBase {
 	protected void processFinish() {
 
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
+
+		if (recipe == null) {
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+			processRem = 0;
+			return;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
-
 		if (inventory[1] == null) {
 			inventory[1] = primaryItem;
 		} else if (inventory[1].isItemEqual(primaryItem)) {

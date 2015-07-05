@@ -115,7 +115,16 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void processFinish() {
 
-		tank.fill(CrucibleManager.getRecipe(inventory[0]).getOutput(), true);
+		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
+
+		if (recipe == null) {
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+			processRem = 0;
+			return;
+		}
+		tank.fill(recipe.getOutput(), true);
 		inventory[0].stackSize--;
 
 		if (inventory[0].stackSize <= 0) {

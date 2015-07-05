@@ -143,9 +143,16 @@ public class TileSmelter extends TileMachineBase {
 	protected void processFinish() {
 
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
+
+		if (recipe == null) {
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+			processRem = 0;
+			return;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
-
 		if (inventory[2] == null) {
 			inventory[2] = primaryItem;
 		} else if (inventory[2].isItemEqual(primaryItem)) {

@@ -180,6 +180,14 @@ public class TileCharger extends TileMachineBase {
 	protected void processFinish() {
 
 		RecipeCharger recipe = ChargerManager.getRecipe(inventory[1]);
+
+		if (recipe == null) {
+			isActive = false;
+			wasActive = true;
+			tracker.markTime(worldObj);
+			processRem = 0;
+			return;
+		}
 		ItemStack output = recipe.getOutput();
 		if (inventory[2] == null) {
 			inventory[2] = output;

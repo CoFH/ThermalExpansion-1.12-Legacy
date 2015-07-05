@@ -90,7 +90,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.2B2";
+	public static final String version = "1.7.10R4.0.2B3";
 	public static final String dependencies = "required-after:CoFHCore@[" + CoFHCore.version + ",);required-after:ThermalFoundation@["
 			+ ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/Version/master/ThermalExpansion";
@@ -123,8 +123,8 @@ public class ThermalExpansion extends BaseMod {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL, CoFHProps.DOWNLOAD_URL));
-		config.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/common.cfg"), true));
-		configClient.setConfiguration(new Configuration(new File(event.getModConfigurationDirectory(), "cofh/thermalexpansion/client.cfg"), true));
+		config.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/common.cfg"), true));
+		configClient.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/client.cfg"), true));
 
 		FMLEventHandler.initialize();
 		TECraftingHandler.initialize();
