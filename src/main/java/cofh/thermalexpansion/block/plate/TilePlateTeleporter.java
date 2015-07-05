@@ -13,10 +13,6 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
-import net.minecraft.client.particle.EntityPortalFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -157,44 +153,44 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 	protected void addZapParticles(int time, double x, double y, double z) {
 
-		time += 2;
-		double dv = time / 2;
-
-		for (int i = time; i-- > 0;) {
-			for (int k = time; k-- > 0;) {
-				double yV = Math.cos(k * Math.PI / dv), xV, zV;
-				xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
-				zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
-				yV = Math.pow(Math.sin(k * Math.PI / dv) * 1., 1) * 2;
-				EntityFX spark = new EntityPortalFX(worldObj, x, y, z, xV, yV, zV);
-				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-			}
-		}
+		// time += 2;
+		// double dv = time / 2;
+		//
+		// for (int i = time; i-- > 0;) {
+		// for (int k = time; k-- > 0;) {
+		// double yV = Math.cos(k * Math.PI / dv), xV, zV;
+		// xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
+		// zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
+		// yV = Math.pow(Math.sin(k * Math.PI / dv) * 1., 1) * 2;
+		// EntityFX spark = new EntityPortalFX(worldObj, x, y, z, xV, yV, zV);
+		// Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+		// }
+		// }
 	}
 
 	protected void addTeleportParticles(double x, double y, double z, boolean trail) {
 
-		for (int i = 15; i-- > 0;) {
-			for (int k = 15; k-- > 0;) {
-				double yV = Math.cos(k * Math.PI / 7.5), xV, zV;
-				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
-				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
-				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
-
-					@Override
-					public void moveEntity(double x, double y, double z) {
-
-						motionY += 0.004;
-						super.moveEntity(x, y + 0.004, z);
-					}
-				};
-				spark.setTrail(trail);
-				spark.setColour(0xE54CFF);
-				spark.setFadeColour(0x750C9F);
-				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-			}
-		}
+		// for (int i = 15; i-- > 0;) {
+		// for (int k = 15; k-- > 0;) {
+		// double yV = Math.cos(k * Math.PI / 7.5), xV, zV;
+		// xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
+		// zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
+		// yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
+		// EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
+		//
+		// @Override
+		// public void moveEntity(double x, double y, double z) {
+		//
+		// motionY += 0.004;
+		// super.moveEntity(x, y + 0.004, z);
+		// }
+		// };
+		// spark.setTrail(trail);
+		// spark.setColour(0xE54CFF);
+		// spark.setFadeColour(0x750C9F);
+		// Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+		// }
+		// }
 	}
 
 	@Override
