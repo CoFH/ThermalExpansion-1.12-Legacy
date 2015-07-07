@@ -4,6 +4,7 @@ import cofh.api.block.IBlockConfigGui;
 import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
 import cofh.api.tileentity.ITileInfo;
+import cofh.core.chat.ChatHelper;
 import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -97,9 +98,7 @@ public class ItemMultimeter extends ItemBase {
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
 
-				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(info.get(i));
-				}
+                ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 				info.clear();
 				return true;
 			} else {
@@ -107,9 +106,7 @@ public class ItemMultimeter extends ItemBase {
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, false);
-						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(info.get(i));
-						}
+                        ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 					}
 					info.clear();
 					return true;
@@ -128,9 +125,7 @@ public class ItemMultimeter extends ItemBase {
 					info.add(new ChatComponentText("-Server-"));
 				}
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, true);
-				for (int i = 0; i < info.size(); i++) {
-					player.addChatMessage(info.get(i));
-				}
+                ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 				info.clear();
 				return true;
 			} else {
@@ -138,9 +133,7 @@ public class ItemMultimeter extends ItemBase {
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, player.isSneaking());
-						for (int i = 0; i < info.size(); i++) {
-							player.addChatMessage(info.get(i));
-						}
+                        ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 					}
 					info.clear();
 					return true;
