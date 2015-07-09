@@ -298,7 +298,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 2) {
+		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -325,12 +325,16 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 
+		// return sideCache[from.ordinal()] == 2;
 		return true;
 	}
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
+		// if (sideCache[from.ordinal()] != 2) {
+		// return CoFHProps.EMPTY_TANK_INFO;
+		// }
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
 

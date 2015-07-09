@@ -375,6 +375,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		for (int i = 0; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
+		ThermalExpansion.config.removeCategory(category + "Charge");
+		ThermalExpansion.config.removeCategory(category + "Teleport");
 	}
 
 	public static ItemStack plateFrame;

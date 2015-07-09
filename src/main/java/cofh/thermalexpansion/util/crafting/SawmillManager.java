@@ -24,7 +24,6 @@ import net.minecraftforge.oredict.OreDictionary;
 public class SawmillManager {
 
 	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
-	private static ComparableItemStackSawmill query = new ComparableItemStackSawmill(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -40,7 +39,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(query.set(input));
+		return input == null ? null : recipeMap.get(new ComparableItemStackSawmill(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {

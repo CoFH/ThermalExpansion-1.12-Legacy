@@ -22,6 +22,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -65,8 +66,22 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
-			list.add(new ItemStack(item, 1, i));
+			if (enable[i]) {
+				list.add(new ItemStack(item, 1, i));
+			}
 		}
+	}
+
+	@Override
+	public float getBlockHardness(World world, int x, int y, int z) {
+
+		return HARDNESS[world.getBlockMetadata(x, y, z)];
+	}
+
+	@Override
+	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
+
+		return RESISTANCE[world.getBlockMetadata(x, y, z)];
 	}
 
 	@Override
@@ -339,10 +354,13 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 				frameCellReinforcedFull }));
 		TransposerManager.addTEFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameTesseractEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened",
-				'X', "gemDiamond" }));
-		TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
-
+		if (recipe[Types.TESSERACT_EMPTY.ordinal()]) {
+			GameRegistry.addRecipe(new ShapedOreRecipe(frameTesseractEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G',
+					"blockGlassHardened", 'X', "gemDiamond" }));
+		}
+		if (recipe[Types.TESSERACT_FULL.ordinal()]) {
+			TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
+		}
 		GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(frameIlluminator, 2), new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened",
 				'Q', "gemQuartz", 'S', "ingotSignalum" }));
 
@@ -355,6 +373,17 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 
 	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellHardened",
 			"cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };
+	public static final float[] HARDNESS = { 5.0F, 15.0F, 20.0F, 20.0F, 5.0F, 15.0F, 20.0F, 20.0F, 20.0F, 20.0F, 15.0F, 15.0F, 3.0F };
+	public static final int[] RESISTANCE = { 15, 90, 120, 120, 15, 90, 120, 120, 120, 120, 2000, 2000, 150 };
+	public static boolean[] enable = new boolean[Types.values().length];
+	public static boolean[] recipe = new boolean[Types.values().length];
+
+	static {
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = true;
+			recipe[i] = true;
+		}
+	}
 
 	public static ItemStack frameMachineBasic;
 	public static ItemStack frameMachineHardened;

@@ -1,10 +1,12 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.util.CoreUtils;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
+import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -156,6 +158,12 @@ public class TileSawmill extends TileMachineBase {
 					inventory[3] = secondaryItem;
 				} else {
 					inventory[3].stackSize += secondaryItem.stackSize;
+				}
+				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, TEItems.sawdust)) {
+					if (secondaryChance < recipeChance && inventory[3].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
+							&& worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				}
 			}
 		}

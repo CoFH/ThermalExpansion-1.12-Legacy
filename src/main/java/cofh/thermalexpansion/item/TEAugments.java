@@ -61,6 +61,10 @@ public class TEAugments {
 			machineExtruderBoost[i] = itemAugment.addItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
 			itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i);
 		}
+		// for (int i = 0; i < NUM_MACHINE_CHARGER; i++) {
+		// machineExtruderBoost[i] = itemAugment.addItem(336 + i, MACHINE_CHARGER_BOOST + i);
+		// itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i);
+		// }
 	}
 
 	public static void postInit() {
@@ -129,6 +133,7 @@ public class TEAugments {
 	public static byte NUM_MACHINE_SPEED = 3;
 
 	public static byte NUM_MACHINE_EXTRUDER = 3;
+	public static byte NUM_MACHINE_CHARGER = 3;
 
 	public static final int[] DYNAMO_EFFICIENCY_MOD = { 0, 10, 25, 50 };
 	public static final int[] DYNAMO_EFFICIENCY_MOD_SUM = { 0, 10, 35, 85 };
@@ -170,6 +175,7 @@ public class TEAugments {
 
 	public static ItemStack machineFurnaceFood;
 	public static ItemStack[] machineExtruderBoost = new ItemStack[NUM_MACHINE_EXTRUDER];
+	public static ItemStack[] machineChargerBoost = new ItemStack[NUM_MACHINE_CHARGER];
 
 	/* Augment Helpers */
 	public static String DYNAMO_COIL_DUCT = "dynamoCoilDuct";
@@ -193,5 +199,6 @@ public class TEAugments {
 
 	public static String MACHINE_FURNACE_FOOD = "machineFurnaceFood";
 	public static String MACHINE_EXTRUDER_BOOST = "machineExtruderBoost";
+	public static String MACHINE_CHARGER_BOOST = "machineChargerBoost";
 
 }

@@ -5,12 +5,15 @@ import cofh.core.render.IconRegistry;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.gui.client.device.GuiLexicon;
+import cofh.thermalexpansion.gui.container.device.ContainerLexicon;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.THashMap;
 
 import java.util.Map;
 
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -69,17 +72,17 @@ public class TileLexicon extends TileAugmentable implements ICustomInventory {
 	}
 
 	/* GUI METHODS */
-	// @Override
-	// public Object getGuiClient(InventoryPlayer inventory) {
-	//
-	// return new GuiLexicon(inventory, this);
-	// }
-	//
-	// @Override
-	// public Object getGuiServer(InventoryPlayer inventory) {
-	//
-	// return new ContainerLexicon(inventory, this);
-	// }
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiLexicon(inventory, this);
+	}
+
+	@Override
+	public Object getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerLexicon(inventory, this);
+	}
 
 	/* NBT METHODS */
 	@Override

@@ -28,9 +28,6 @@ public class InsolatorManager {
 	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<ComparableItemStackInsolator>();
-
-	private static ComparableItemStackInsolator query = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
-	private static ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 
 	private static int cropMultiplierSpecial = 3;
@@ -51,7 +48,10 @@ public class InsolatorManager {
 		if (primaryInput == null || secondaryInput == null) {
 			return false;
 		}
-		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query.set(primaryInput), querySecondary.set(secondaryInput)));
+		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
+		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
+
+		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 		return recipe != null ? false : recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
@@ -60,7 +60,10 @@ public class InsolatorManager {
 		if (primaryInput == null || secondaryInput == null) {
 			return null;
 		}
-		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query.set(primaryInput), querySecondary.set(secondaryInput)));
+		ComparableItemStackInsolator query = new ComparableItemStackInsolator(primaryInput);
+		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
+
+		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 
 		if (recipe == null) {
 			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
@@ -83,12 +86,12 @@ public class InsolatorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(query.set(input));
+		return input == null ? false : validationSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static boolean isItemFertilizer(ItemStack input) {
 
-		return input == null ? false : lockSet.contains(query.set(input));
+		return input == null ? false : lockSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static void addDefaultRecipes() {

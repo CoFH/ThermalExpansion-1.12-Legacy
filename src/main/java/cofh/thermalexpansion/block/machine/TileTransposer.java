@@ -749,6 +749,15 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
+		// if (reverse) {
+		// if (sideCache[from.ordinal()] != 3) {
+		// return CoFHProps.EMPTY_TANK_INFO;
+		// }
+		// } else {
+		// if (sideCache[from.ordinal()] != 1) {
+		// return CoFHProps.EMPTY_TANK_INFO;
+		// }
+		// }
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
 

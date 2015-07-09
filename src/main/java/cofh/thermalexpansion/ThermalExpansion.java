@@ -141,12 +141,6 @@ public class ThermalExpansion extends BaseMod {
 		TEItems.preInit();
 		TEBlocks.preInit();
 		TEPlugins.preInit();
-
-		try {
-			TECraftingParser.parseCraftingFiles();
-		} catch (Throwable t) {
-			t.printStackTrace();
-		}
 	}
 
 	@EventHandler
@@ -168,6 +162,11 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void postInit(FMLPostInitializationEvent event) {
 
+		try {
+			TECraftingParser.parseCraftingFiles();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 		FurnaceManager.addDefaultRecipes();
 		PulverizerManager.addDefaultRecipes();
 		SawmillManager.addDefaultRecipes();
@@ -311,18 +310,7 @@ public class ThermalExpansion extends BaseMod {
 		String category;
 		String comment;
 
-		category = "Holiday";
-		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
-		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
-
-		/* Graphics Config */
-		if (CoFHProps.enableColorBlindTextures) {
-			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
-			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
-			TEProps.textureSelection = TEProps.TEXTURE_CB;
-			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
-		}
-
+		/* General */
 		category = "General";
 		comment = "If enabled, ingots are used instead of gears in many default recipes.";
 		String iPrefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
@@ -334,6 +322,23 @@ public class ThermalExpansion extends BaseMod {
 				OreDictionary.registerOre(prefix + entry, partList.get(i));
 			}
 		}
+
+		/* Graphics */
+		if (CoFHProps.enableColorBlindTextures) {
+			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
+			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
+			TEProps.textureSelection = TEProps.TEXTURE_CB;
+			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
+		}
+		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
+				"Set to TRUE for Tesseracts to use an alternate starfield shader.");
+
+		/* Holidays */
+		category = "Holiday";
+		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
+		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
+
+		/* Interface */
 		category = "Interface.CreativeTab";
 		boolean blockTab = false;
 		boolean itemTab = false;

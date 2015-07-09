@@ -3,7 +3,6 @@ package cofh.thermalexpansion.core;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.ItemRenderRegistry;
 import cofh.core.render.RenderItemModular;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.ender.GuiTesseract;
 import cofh.thermalexpansion.item.TEFlorbs;
 import cofh.thermalexpansion.item.TEItems;
@@ -40,9 +39,6 @@ public class ProxyClient extends Proxy {
 		MinecraftForgeClient.registerItemRenderer(TEFlorbs.itemFlorb, rendererFlorb);
 
 		ItemRenderRegistry.addItemRenderer(TEItems.diagramSchematic, RenderSchematic.instance);
-
-		TEProps.useAlternateShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
-				"Set to TRUE for Tesseracts to use an alternate starfield shader.");
 	}
 
 	@Override

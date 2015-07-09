@@ -83,7 +83,13 @@ public class ItemPump extends ItemEnergyContainerBase {
 					if (FluidHelper.isFluidHandler(tile)) {
 						IFluidHandler handler = (IFluidHandler) tile;
 						resource = handler.drain(fd, FluidContainerRegistry.BUCKET_VOLUME, false);
-						handler.drain(fd, fillFluidContainerItems(resource, player.inventory, true), true);
+
+						if (resource == null) {
+							resource = handler.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, false);
+							handler.drain(ForgeDirection.UNKNOWN, fillFluidContainerItems(resource, player.inventory, true), true);
+						} else {
+							handler.drain(fd, fillFluidContainerItems(resource, player.inventory, true), true);
+						}
 						success = true;
 					} else {
 						resource = FluidHelper.getFluidFromWorld(world, pos.blockX, pos.blockY, pos.blockZ, false);
@@ -109,9 +115,32 @@ public class ItemPump extends ItemEnergyContainerBase {
 							}
 							if (container != null) {
 								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-								containerItem.drain(container,
-										handler.fill(fd, new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME), true), true);
+								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME);
+
+								if (handler.fill(fd, fillStack, false) > 0) {
+									containerItem.drain(container, handler.fill(fd, fillStack, true), true);
+								} else {
+									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, fillStack, true), true);
+								}
 								success = true;
+							}
+						} else {
+							tankInfo = handler.getTankInfo(ForgeDirection.UNKNOWN);
+							if (tankInfo != null) {
+								ItemStack container = null;
+								for (int i = 0; i < tankInfo.length; i++) {
+									resource = tankInfo[i].fluid;
+									container = findDrainContainerItem(resource, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+									if (container != null) {
+										break;
+									}
+								}
+								if (container != null) {
+									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, new FluidStack(containerItem.getFluid(container),
+											FluidContainerRegistry.BUCKET_VOLUME), true), true);
+									success = true;
+								}
 							}
 						}
 					} else {

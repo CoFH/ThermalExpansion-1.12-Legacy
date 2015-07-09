@@ -54,7 +54,9 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		list.add(ItemBlockEnder.setDefaultTag(new ItemStack(item, 1, 0)));
+		if (enable) {
+			list.add(ItemBlockEnder.setDefaultTag(new ItemStack(item, 1, 0)));
+		}
 	}
 
 	@Override
@@ -197,21 +199,40 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		if (enable) {
+		if (recipe) {
 			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
 					'B', "ingotBronze" }));
 		}
-
 		TECraftingHandler.addSecureRecipe(tesseract);
 
 		return true;
 	}
 
-	public static boolean enable;
+	public static boolean enable = true;
+	public static boolean recipe = true;
 
 	static {
 		String category = "Ender";
-		enable = ThermalExpansion.config.get(category + ".Tesseract", "Recipe.Enable", true);
+		recipe = ThermalExpansion.config.get(category + ".Tesseract", "Recipe.Enable", true);
+
+		boolean blockEnable = ThermalExpansion.config.get(category + ".Tesseract", "Show.Block", true,
+				"If FALSE, hides the Tesseract, if the recipe is ALSO disabled.");
+		boolean frameEnable = ThermalExpansion.config.get(category + ".Tesseract", "Show.Frame", true,
+				"If FALSE, hides the Tesseract Frames, if their recipes are ALSO disabled.");
+		boolean frameRecipe = ThermalExpansion.config.get(category + ".Tesseract", "Recipe.Frame", true,
+				"If FALSE, disables the Tesseract Frames recipes, if Tesseracts are ALSO disabled.");
+
+		if (!recipe) {
+			enable = blockEnable;
+
+			BlockFrame.recipe[BlockFrame.Types.TESSERACT_EMPTY.ordinal()] = frameRecipe;
+			BlockFrame.recipe[BlockFrame.Types.TESSERACT_FULL.ordinal()] = frameRecipe;
+
+			if (!frameRecipe) {
+				BlockFrame.enable[BlockFrame.Types.TESSERACT_EMPTY.ordinal()] = frameEnable;
+				BlockFrame.enable[BlockFrame.Types.TESSERACT_FULL.ordinal()] = frameEnable;
+			}
+		}
 	}
 
 	public static ItemStack tesseract;

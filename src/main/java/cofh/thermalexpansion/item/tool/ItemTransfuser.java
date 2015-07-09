@@ -36,11 +36,84 @@ public class ItemTransfuser extends ItemToolBase {
 		setTextureName("thermalexpansion:tool/Transfuser");
 	}
 
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		return false;
-	}
+	// @Override
+	// public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
+	//
+	// MovingObjectPosition blockPos = BlockHelper.getCurrentMovingObjectPosition(player, true);
+	// if (blockPos != null && blockPos.sideHit >= 0) {
+	// player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	// }
+	// return stack;
+	// }
+	//
+	// @Override
+	// public int getMaxItemUseDuration(ItemStack stack) {
+	//
+	// return Short.MAX_VALUE;
+	// }
+	//
+	// @Override
+	// public EnumAction getItemUseAction(ItemStack stack) {
+	//
+	// return EnumAction.bow;
+	// }
+	//
+	// @Override
+	// public void onUsingTick(ItemStack stack, EntityPlayer player, int count) {
+	//
+	// MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == INPUT);
+	//
+	// if (pos == null || pos.sideHit < 0) {
+	// player.setItemInUse(null, 0);
+	// } else {
+	// player.setItemInUse(stack, this.getMaxItemUseDuration(stack));
+	//
+	// if (ServerHelper.isClientWorld(player.worldObj)) {
+	// return;
+	// }
+	// TileEntity tile = player.worldObj.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
+	// ForgeDirection fd = ForgeDirection.values()[pos.sideHit];
+	// int energy;
+	// boolean success = false;
+	//
+	// if (getMode(stack) == INPUT) {
+	// if (EnergyHelper.isEnergyProviderFromSide(tile, fd)) {
+	// IEnergyProvider provider = (IEnergyProvider) tile;
+	// energy = provider.extractEnergy(fd, TRANSFER, true);
+	// provider.extractEnergy(fd, chargeEnergyContainerItems(energy, player.inventory, false), false);
+	// success = true;
+	// }
+	// } else if (getMode(stack) == OUTPUT) {
+	// if (EnergyHelper.isEnergyReceiverFromSide(tile, fd)) {
+	// IEnergyReceiver receiver = (IEnergyReceiver) tile;
+	// ItemStack container = null;
+	// container = findTransferContainerItem(player.inventory);
+	// if (container != null) {
+	// IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+	// int toSend = containerItem.extractEnergy(container, TRANSFER, true);
+	// containerItem.extractEnergy(container, receiver.receiveEnergy(fd, toSend, false), false);
+	// success = true;
+	// }
+	// }
+	// }
+	// if (success) {
+	// player.openContainer.detectAndSendChanges();
+	// ((EntityPlayerMP) player).sendContainerAndContentsToPlayer(player.openContainer, player.openContainer.getInventory());
+	// }
+	// }
+	// }
+	//
+	// @Override
+	// public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+	//
+	// return false;
+	// }
+	//
+	// @Override
+	// public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+	//
+	// return true;
+	// }
 
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
@@ -74,7 +147,13 @@ public class ItemTransfuser extends ItemToolBase {
 					if (EnergyHelper.isEnergyProviderFromSide(tile, fd)) {
 						IEnergyProvider provider = (IEnergyProvider) tile;
 						energy = provider.extractEnergy(fd, TRANSFER, true);
-						provider.extractEnergy(fd, chargeEnergyContainerItems(energy, player.inventory, false), false);
+
+						if (energy <= 0) {
+							energy = provider.extractEnergy(ForgeDirection.UNKNOWN, TRANSFER, true);
+							provider.extractEnergy(ForgeDirection.UNKNOWN, chargeEnergyContainerItems(energy, player.inventory, false), false);
+						} else {
+							provider.extractEnergy(fd, chargeEnergyContainerItems(energy, player.inventory, false), false);
+						}
 						success = true;
 					}
 				} else if (getMode(stack) == OUTPUT) {
@@ -85,7 +164,12 @@ public class ItemTransfuser extends ItemToolBase {
 						if (container != null) {
 							IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
 							int toSend = containerItem.extractEnergy(container, TRANSFER, true);
-							containerItem.extractEnergy(container, receiver.receiveEnergy(fd, toSend, false), false);
+
+							if (receiver.receiveEnergy(fd, toSend, true) > 0) {
+								containerItem.extractEnergy(container, receiver.receiveEnergy(fd, toSend, false), false);
+							} else {
+								containerItem.extractEnergy(container, receiver.receiveEnergy(ForgeDirection.UNKNOWN, toSend, false), false);
+							}
 							success = true;
 						}
 					}

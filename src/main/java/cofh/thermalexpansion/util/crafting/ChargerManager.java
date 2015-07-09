@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -10,14 +11,12 @@ import gnu.trove.map.hash.THashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class ChargerManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCharger>();
-	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 4000;
 
@@ -30,7 +29,9 @@ public class ChargerManager {
 		if (input == null) {
 			return null;
 		}
-		RecipeCharger recipe = recipeMap.get(query.set(input));
+		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
+
+		RecipeCharger recipe = recipeMap.get(input);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -91,7 +92,7 @@ public class ChargerManager {
 
 	public static boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {
 
-		if (input == null || output == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeMap.get(query.set(input)) != null) {
+		if (input == null || output == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeMap.get(new ComparableItemStack(input)) != null) {
 			return false;
 		}
 		RecipeCharger recipe = new RecipeCharger(input, output, energy);

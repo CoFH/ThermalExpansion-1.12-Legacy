@@ -23,6 +23,7 @@ public class GuiLexicon extends GuiAugmentableBase {
 		generateInfo("tab.thermalexpansion.device.lexicon", 3);
 
 		myTile = (TileLexicon) tile;
+		ySize = 197;
 	}
 
 	@Override

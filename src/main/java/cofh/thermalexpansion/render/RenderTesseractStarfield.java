@@ -181,7 +181,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 			return;
 		}
 
-		if (TEProps.useAlternateShader || ShaderStarfield.starfieldShader == 0) {
+		if (TEProps.useAlternateStarfieldShader || ShaderStarfield.starfieldShader == 0) {
 			renderTileEntityAt((TileTesseract) tile, x, y, z, 1 - f);
 			return;
 		}

@@ -137,7 +137,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	protected void updateTrackers() {
 
-		int curScale = getScaledItemsStored(14) + getStoredCount() > 0 ? 1 : 0;
+		int curScale = getScaledItemsStored(14) + (getStoredCount() > 0 ? 1 : 0);
 
 		if (compareTracker != curScale) {
 			compareTracker = curScale;

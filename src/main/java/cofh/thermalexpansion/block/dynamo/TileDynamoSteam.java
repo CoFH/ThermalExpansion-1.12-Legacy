@@ -280,7 +280,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return 0;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -295,7 +295,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || !augmentCoilDuct) {
+		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -310,7 +310,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (!augmentCoilDuct) {
+		if (!augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
 		return waterTank.drain(maxDrain, doDrain);

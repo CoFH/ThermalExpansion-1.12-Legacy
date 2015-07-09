@@ -367,7 +367,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
+		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
 			return 0;
 		}
 		int filled = tank.fill(resource, doFill);
@@ -381,7 +381,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -393,7 +393,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
-		if (from == ForgeDirection.UNKNOWN || !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

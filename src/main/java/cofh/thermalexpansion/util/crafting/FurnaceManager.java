@@ -26,7 +26,6 @@ public class FurnaceManager {
 
 	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<ComparableItemStackFurnace>();
-	private static ComparableItemStackFurnace query = new ComparableItemStackFurnace(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -51,7 +50,9 @@ public class FurnaceManager {
 		if (input == null) {
 			return null;
 		}
-		RecipeFurnace recipe = recipeMap.get(query.set(input));
+		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+
+		RecipeFurnace recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -75,7 +76,9 @@ public class FurnaceManager {
 		if (input == null) {
 			return false;
 		}
-		if (foodSet.contains(query.set(input))) {
+		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+
+		if (foodSet.contains(query)) {
 			return true;
 		}
 		query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -194,7 +197,7 @@ public class FurnaceManager {
 
 	public static boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {
 
-		if (input == null || output == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeMap.get(query.set(input)) != null) {
+		if (input == null || output == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeMap.get(new ComparableItemStackFurnace(input)) != null) {
 			return false;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);

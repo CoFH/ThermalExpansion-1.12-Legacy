@@ -24,7 +24,6 @@ import net.minecraftforge.fluids.FluidStack;
 public class CrucibleManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>();
-	private static ComparableItemStackSafe query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 8000;
 
@@ -34,7 +33,7 @@ public class CrucibleManager {
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(query.set(input));
+		return input == null ? null : recipeMap.get(new ComparableItemStackSafe(input));
 	}
 
 	public static boolean recipeExists(ItemStack input) {

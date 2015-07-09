@@ -29,7 +29,6 @@ public class TransposerManager {
 	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<List<Integer>, RecipeTransposer>();
 	private static Map<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStackSafe, RecipeTransposer>();
 	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
-	private static ComparableItemStack query = new ComparableItemStackSafe(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -39,13 +38,13 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(query.set(input).hashCode(), fluid
-				.getFluid().hashCode()));
+		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStack(input).hashCode(),
+				fluid.getFluid().hashCode()));
 	}
 
 	public static RecipeTransposer getExtractionRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMapExtraction.get(query.set(input));
+		return input == null ? null : recipeMapExtraction.get(new ComparableItemStack(input));
 	}
 
 	public static boolean fillRecipeExists(ItemStack input, FluidStack fluid) {
@@ -70,7 +69,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(query.set(input));
+		return input == null ? false : validationSet.contains(new ComparableItemStack(input));
 	}
 
 	public static void addDefaultRecipes() {

@@ -43,6 +43,7 @@ import net.minecraftforge.oredict.ShapedOreRecipe;
 public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 	public static Cuboid6[] models;
+
 	static {
 
 		double d1 = 0;

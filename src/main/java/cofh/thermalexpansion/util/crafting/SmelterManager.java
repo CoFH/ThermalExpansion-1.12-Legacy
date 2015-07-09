@@ -32,8 +32,6 @@ public class SmelterManager {
 	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
 	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<ComparableItemStackSmelter>();
-	private static ComparableItemStackSmelter query = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
-	private static ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(new ItemStack(Blocks.stone));
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 3200;
 
@@ -65,7 +63,10 @@ public class SmelterManager {
 		if (primaryInput == null || secondaryInput == null) {
 			return false;
 		}
-		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query.set(primaryInput), querySecondary.set(secondaryInput)));
+		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
+		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
+
+		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 		return recipe != null ? false : recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
@@ -74,7 +75,10 @@ public class SmelterManager {
 		if (primaryInput == null || secondaryInput == null) {
 			return null;
 		}
-		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query.set(primaryInput), querySecondary.set(secondaryInput)));
+		ComparableItemStackSmelter query = new ComparableItemStackSmelter(primaryInput);
+		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
+
+		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query, querySecondary));
 
 		if (recipe == null) {
 			recipe = recipeMap.get(Arrays.asList(querySecondary, query));
@@ -97,12 +101,12 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(query.set(input));
+		return input == null ? false : validationSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static boolean isItemFlux(ItemStack input) {
 
-		return input == null ? false : lockSet.contains(query.set(input));
+		return input == null ? false : lockSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static boolean isStandardOre(String oreName) {

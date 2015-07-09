@@ -9,6 +9,17 @@ public class TEProps {
 
 	}
 
+	/* General */
+	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
+	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
+	public static final int MAGMATIC_TEMPERATURE = 1000;
+
+	public static enum PacketID {
+		GUI, FLUID, MODE
+	}
+
+	public static boolean enableAchievements = false;
+
 	/* Graphics */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";
@@ -34,20 +45,10 @@ public class TEProps {
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
 	public static ResourceLocation textureGuiAssembler = PATH_ASSEMBLER;
 	public static String textureSelection = TEXTURE_DEFAULT;
+	public static boolean useAlternateStarfieldShader = false;
 
-	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
-	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
-	public static final int MAGMATIC_TEMPERATURE = 1000;
-
-	public static enum PacketID {
-		GUI, FLUID, MODE
-	}
-
+	/* Holidays */
 	public static boolean holidayChristmas = true;
-
-	public static boolean enableAchievements = false;
-
-	public static boolean useAlternateShader = false;
 
 	/* Render Ids */
 	public static int renderIdCell = -1;
