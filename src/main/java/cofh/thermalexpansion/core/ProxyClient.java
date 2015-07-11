@@ -46,10 +46,10 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void registerIcons(TextureStitchEvent.Pre event) {
 
-		if (event.map.getTextureType() == 1) {
-			IconRegistry.addIcon("machineFrame", "thermalexpansion:component/MachineFrame", event.map);
-			IconRegistry.addIcon("lampFrame", "thermalexpansion:component/LampFrame", event.map);
+		if (event.map.getTextureType() == 0) {
 
+		}
+		if (event.map.getTextureType() == 1) {
 			IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:icons/Icon_Config_Tesseract", event.map);
 			IconRegistry.addIcon("IconRecvOnly", "thermalexpansion:icons/Icon_RecvOnly", event.map);
 			IconRegistry.addIcon("IconSendOnly", "thermalexpansion:icons/Icon_SendOnly", event.map);
@@ -65,20 +65,23 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
-		RenderCache.initialize();
-		RenderCell.initialize();
-		RenderDynamo.initialize();
-		RenderFrame.initialize();
-		RenderPlate.initialize();
-		RenderLight.initialize();
-		RenderSponge.initialize();
-		RenderStrongbox.initialize();
-		RenderTank.initialize();
-		RenderTesseract.initialize();
+		if (event.map.getTextureType() == 0) {
+			RenderCache.initialize();
+			RenderCell.initialize();
+			RenderDynamo.initialize();
+			RenderFrame.initialize();
+			RenderPlate.initialize();
+			RenderLight.initialize();
+			RenderSponge.initialize();
+			RenderStrongbox.initialize();
+			RenderTank.initialize();
+			RenderTesseract.initialize();
 
-		RenderItemFlorb.initialize();
+		} else if (event.map.getTextureType() == 1) {
+			RenderItemFlorb.initialize();
 
-		RenderEntityFlorb.initialize();
+			RenderEntityFlorb.initialize();
+		}
 	}
 
 	@Override

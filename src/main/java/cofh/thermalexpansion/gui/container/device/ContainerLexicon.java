@@ -31,7 +31,7 @@ public class ContainerLexicon extends ContainerTEBase {
 			}
 		}
 		for (int i = 0; i < 9; i++) {
-			addSlotToContainer(new SlotCustomInventory(myTile, 0, null, 0, 8 + i * 18, 84, false));
+			addSlotToContainer(new SlotCustomInventory(myTile, 0, null, i, 8 + i * 18, 84, false));
 		}
 		Slot slot = new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53);
 		if (myTile.getEnergyStorage().getMaxEnergyStored() > 0 || slot.getStack() != null) {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -7,7 +7,6 @@
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
 package buildcraft.api.statements;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,6 +31,8 @@ public class StatementParameterItemStack implements IStatementParameter {
 		if (stack != null) {
 			this.stack = stack.copy();
 			this.stack.stackSize = 1;
+		} else {
+			this.stack = null;
 		}
 	}
 

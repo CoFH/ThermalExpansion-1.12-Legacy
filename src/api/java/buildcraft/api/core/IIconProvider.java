@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -10,7 +10,6 @@ package buildcraft.api.core;
 
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

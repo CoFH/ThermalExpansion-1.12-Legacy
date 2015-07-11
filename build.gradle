@@ -17,12 +17,12 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.7.10R4.0.0"
+version = "1.7.10R4.0.3"
 group = "thermalexpansion"
 archivesBaseName = "ThermalExpansion"
 
 minecraft {
-    version = "1.7.10-10.13.0.1205"
+    version = "1.7.10-10.13.4.1448"
     runDir = "eclipse/assets"
 }
 

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -12,7 +12,6 @@ import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 import buildcraft.api.core.EnumColor;
@@ -25,7 +24,7 @@ public interface IPipeTile extends IInjectable {
 
 	PipeType getPipeType();
 
-	World getWorldObj();
+	World getWorld();
 
 	int x();
 
@@ -48,15 +47,16 @@ public interface IPipeTile extends IInjectable {
 	IPipe getPipe();
 	int getPipeColor();
 
-	PipePluggable getPipePluggable(ForgeDirection direction);
-	boolean hasPipePluggable(ForgeDirection direction);
+	PipePluggable getPipePluggable(ForgeDirection direction); // Now in IPluggableProvider
+	boolean hasPipePluggable(ForgeDirection direction); // Now in IPluggableProvider
 	boolean hasBlockingPluggable(ForgeDirection direction);
 
 	void scheduleNeighborChange();
+	void scheduleRenderUpdate();
 
 	// For compatibility with BC 6.2.x and below
 	int injectItem(ItemStack stack, boolean doAdd, ForgeDirection from, EnumColor color);
 
-	@Deprecated
+	@Deprecated // Now in IInjectable
 	int injectItem(ItemStack stack, boolean doAdd, ForgeDirection from);
 }

@@ -193,7 +193,7 @@ public class BlockDevice extends BlockTEBase {
 		// Face Textures
 		for (int i = 1; i < Types.values().length; i++) {
 			// TODO: this is very temporary; pump-hiding
-			if (i == Types.PUMP.ordinal()) {
+			if (i == Types.LEXICON.ordinal() || i == Types.PUMP.ordinal()) {
 				continue;
 			}
 			IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]), ir);
@@ -259,7 +259,7 @@ public class BlockDevice extends BlockTEBase {
 	public boolean initialize() {
 
 		TileWorkbench.initialize();
-		TileLexicon.initialize();
+		// TileLexicon.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		// TilePump.initialize();
@@ -275,14 +275,14 @@ public class BlockDevice extends BlockTEBase {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
 		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
-		lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
+		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
 		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
 		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
 		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
 
 		GameRegistry.registerCustomItemStack("workbench", workbench);
-		GameRegistry.registerCustomItemStack("lexicon", lexicon);
+		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
 		GameRegistry.registerCustomItemStack("activator", activator);
 		GameRegistry.registerCustomItemStack("breaker", breaker);
 		// GameRegistry.registerCustomItemStack("pump", pump);
@@ -365,7 +365,7 @@ public class BlockDevice extends BlockTEBase {
 		// @formatter:on
 
 		TECraftingHandler.addSecureRecipe(workbench);
-		TECraftingHandler.addSecureRecipe(lexicon);
+		// TECraftingHandler.addSecureRecipe(lexicon);
 		TECraftingHandler.addSecureRecipe(activator);
 		TECraftingHandler.addSecureRecipe(breaker);
 		// TECraftingHandler.addSecureRecipe(pump);
@@ -399,7 +399,7 @@ public class BlockDevice extends BlockTEBase {
 		String category = "Device.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (/* i != Types.LEXICON.ordinal() && */i != Types.PUMP.ordinal()) {
+			if (i != Types.LEXICON.ordinal() && i != Types.PUMP.ordinal()) {
 				enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 			}
 		}

@@ -98,7 +98,7 @@ public class ItemMultimeter extends ItemBase {
 			if (block instanceof IBlockInfo) {
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, false);
 
-                ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+				ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 				info.clear();
 				return true;
 			} else {
@@ -106,7 +106,7 @@ public class ItemMultimeter extends ItemBase {
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, false);
-                        ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+						ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 					}
 					info.clear();
 					return true;
@@ -125,7 +125,7 @@ public class ItemMultimeter extends ItemBase {
 					info.add(new ChatComponentText("-Server-"));
 				}
 				((IBlockInfo) (block)).getBlockInfo(world, x, y, z, ForgeDirection.VALID_DIRECTIONS[hitSide], player, info, true);
-                ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+				ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 				info.clear();
 				return true;
 			} else {
@@ -133,7 +133,7 @@ public class ItemMultimeter extends ItemBase {
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
 						((ITileInfo) theTile).getTileInfo(info, ForgeDirection.UNKNOWN, player, player.isSneaking());
-                        ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+						ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 					}
 					info.clear();
 					return true;

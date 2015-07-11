@@ -203,7 +203,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	@Override
 	protected void processStart() {
 
-		int prevID = renderFluid.fluidID;
+		int prevID = renderFluid.getFluidID();
 		RecipeTransposer recipe;
 
 		if (!reverse) {
@@ -224,7 +224,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;
 		}
-		if (prevID != renderFluid.fluidID) {
+		if (prevID != renderFluid.getFluidID()) {
 			sendFluidPacket();
 		}
 	}
@@ -394,7 +394,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		containerItem = (IFluidContainerItem) inventory[1].getItem();
 		FluidStack containerStack = FluidHelper.getFluidStackFromContainerItem(inventory[1]);
-		int prevID = renderFluid.fluidID;
+		int prevID = renderFluid.getFluidID();
 
 		if (!reverse) {
 			renderFluid = tank.getFluid() == null ? null : tank.getFluid().copy();
@@ -414,7 +414,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			processMax = containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount;
 			processRem = processMax;
 		}
-		if (prevID != renderFluid.fluidID) {
+		if (prevID != renderFluid.getFluidID()) {
 			sendFluidPacket();
 		}
 	}

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -11,10 +11,8 @@ package buildcraft.api.core;
 import java.util.Locale;
 import java.util.Random;
 
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,6 +34,7 @@ public enum EnumColor {
 	MAGENTA,
 	ORANGE,
 	WHITE;
+
 	public static final EnumColor[] VALUES = values();
 	public static final String[] DYES = {
 		"dyeBlack",
@@ -191,13 +190,8 @@ public enum EnumColor {
 		return b.toString().trim();
 	}
 
-	@SideOnly(Side.CLIENT)
-	public static void registerIcons(IIconRegister iconRegister) {
-		brushIcons = new IIcon[16];
-		for (EnumColor c : values()) {
-			brushIcons[c.ordinal()] = iconRegister.registerIcon("buildcraft:triggers/color_"
-					+ c.name().toLowerCase(Locale.ENGLISH));
-		}
+	public static void setIconArray(IIcon[] icons) {
+		brushIcons = icons;
 	}
 
 	@SideOnly(Side.CLIENT)

@@ -6,11 +6,12 @@
  * Please check the contents of the license, which should be located
  * as "LICENSE.API" in the BuildCraft source code distribution.
  */
-package buildcraft.api.statements;
+package buildcraft.api.transport;
 
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public interface IActionExternal extends IStatement {
-	void actionActivate(TileEntity target, ForgeDirection side, IStatementContainer source, IStatementParameter[] parameters);
+public interface IStripesActivator {
+	void sendItem(ItemStack itemStack, ForgeDirection direction);
+	void dropItem(ItemStack itemStack, ForgeDirection direction);
 }

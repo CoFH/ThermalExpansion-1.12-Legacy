@@ -97,8 +97,21 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.quartz_stairs), new ItemStack(Items.quartz, 6));
 		addRecipe(1600, new ItemStack(Blocks.log), ItemHelper.cloneStack(TEItems.sawdust, 2));
 
-		addRecipe(1600, new ItemStack(Blocks.red_flower), new ItemStack(Items.dye, 4, 1));
 		addRecipe(1600, new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 4, 11));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 0), new ItemStack(Items.dye, 4, 1));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 1), new ItemStack(Items.dye, 4, 12));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 2), new ItemStack(Items.dye, 4, 13));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 3), new ItemStack(Items.dye, 4, 7));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 4), new ItemStack(Items.dye, 4, 1));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 5), new ItemStack(Items.dye, 4, 14));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 6), new ItemStack(Items.dye, 4, 7));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 7), new ItemStack(Items.dye, 4, 9));
+		addRecipe(1600, new ItemStack(Blocks.red_flower, 1, 8), new ItemStack(Items.dye, 4, 7));
+
+		addRecipe(1600, new ItemStack(Blocks.double_plant, 1, 0), new ItemStack(Items.dye, 8, 11));
+		addRecipe(1600, new ItemStack(Blocks.double_plant, 1, 1), new ItemStack(Items.dye, 8, 13));
+		addRecipe(1600, new ItemStack(Blocks.double_plant, 1, 4), new ItemStack(Items.dye, 8, 1));
+		addRecipe(1600, new ItemStack(Blocks.double_plant, 1, 5), new ItemStack(Items.dye, 8, 9));
 
 		if (recipeWool) {
 			category = "RecipeManagers.Pulverizer.Wool";

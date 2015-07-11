@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.item;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
+import static cofh.lib.util.helpers.ItemHelper.*;
 
 import cofh.core.item.ItemBase;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -24,8 +23,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class TEItems {
 
@@ -126,24 +123,23 @@ public class TEItems {
 
 		/* Tools */
 		GameRegistry.addRecipe(ShapedRecipe(toolWrench, new Object[] { "I I", " T ", " I ", 'I', "ingotIron", 'T', "ingotTin" }));
-		GameRegistry.addRecipe(ShapedRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P',
-				powerCoilElectrum, 'G', "gearElectrum" }));
+		GameRegistry.addRecipe(ShapedRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P', powerCoilElectrum,
+				'G', "gearElectrum" }));
 
 		if (enableBattleWrench) {
-			GameRegistry.addRecipe(ShapedRecipe(toolBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W',
-					toolWrench }));
+			GameRegistry.addRecipe(ShapedRecipe(toolBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W', toolWrench }));
 		}
 		if (enableIgniter) {
-			GameRegistry.addRecipe(ShapedRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
-					capacitorBasic, 'G', Items.flint }));
+			GameRegistry.addRecipe(ShapedRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic,
+					'G', Items.flint }));
 		}
 		if (enableChiller) {
-			GameRegistry.addRecipe(ShapedRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X',
-					capacitorBasic, 'G', Items.snowball }));
+			GameRegistry.addRecipe(ShapedRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic,
+					'G', Items.snowball }));
 		}
 		if (enablePump) {
-			GameRegistry.addRecipe(ShapedRecipe(toolPump, new Object[] { "RR ", "RGI", " XY", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
-					capacitorBasic, 'Y', Items.bucket, 'G', "gearBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(toolPump, new Object[] { "RR ", "RGI", " XY", 'I', "ingotInvar", 'R', "dustRedstone", 'X', capacitorBasic, 'Y',
+					Items.bucket, 'G', "gearBronze" }));
 		}
 		if (enableTransfuser) {
 			GameRegistry.addRecipe(ShapedRecipe(toolTransfuser, new Object[] { "RR ", "RGI", " IY", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
@@ -156,8 +152,8 @@ public class TEItems {
 			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, "dustRedstone", "nuggetLead" }));
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X',
-					"ingotCopper", 'Y', "dustSulfur" }));
+			GameRegistry.addRecipe(ShapedRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X', "ingotCopper",
+					'Y', "dustSulfur" }));
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
@@ -174,10 +170,8 @@ public class TEItems {
 
 		/* Satchels */
 		if (ItemSatchel.ENABLE[ItemSatchel.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic,
-					new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y',
-					"blockClothRock" }));
+			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
+			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
 		}
 		if (ItemSatchel.ENABLE[ItemSatchel.Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y',
@@ -209,24 +203,23 @@ public class TEItems {
 		boolean servosAllowBronze = ThermalExpansion.config.get(category, "PneumaticServo.AllowBronze", false);
 		boolean servosAllowSteel = ThermalExpansion.config.get(category, "PneumaticServo.AllowSteel", false);
 
-		GameRegistry.addRecipe(ShapedRecipe(pneumaticServo,
-				new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron" }));
+		GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron" }));
 
 		if (servosAllowSilver) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-					"ingotSilver" }));
+			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo,
+					new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSilver" }));
 		}
 		if (servosAllowInvar) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-					"ingotInvar" }));
+			GameRegistry
+					.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotInvar" }));
 		}
 		if (servosAllowBronze) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-					"ingotBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo,
+					new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotBronze" }));
 		}
 		if (servosAllowSteel) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I',
-					"ingotSteel" }));
+			GameRegistry
+					.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSteel" }));
 		}
 		GameRegistry.addRecipe(ShapedRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotGold" }));
 		GameRegistry.addRecipe(ShapedRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotSilver" }));
@@ -235,10 +228,9 @@ public class TEItems {
 		GameRegistry.addRecipe(ShapedRecipe(lock, new Object[] { " S ", "SBS", "SSS", 'B', "ingotBronze", 'S', "nuggetSignalum" }));
 
 		/* Misc Items */
-		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
-				"dustCoal" }));
-		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur",
-				"dustCharcoal" }));
+		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCoal" }));
+		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2),
+				new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCharcoal" }));
 
 		ItemHelper.addGearRecipe(new ItemStack(Items.paper, 2), "dustWood", new ItemStack(Items.water_bucket));
 		GameRegistry.addRecipe(ShapedRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
@@ -248,8 +240,7 @@ public class TEItems {
 
 		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter", slag }));
 		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slag }));
-		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter",
-				slagRich }));
+		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter", slagRich }));
 		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slagRich }));
 
 		TEAugments.postInit();

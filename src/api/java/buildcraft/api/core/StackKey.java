@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -11,7 +11,6 @@ package buildcraft.api.core;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -88,7 +87,7 @@ public final class StackKey {
 			}
 		}
 		if (fluidStack != null) {
-			if (fluidStack.fluidID != k.fluidStack.fluidID ||
+			if (fluidStack.getFluid().getID() != k.fluidStack.getFluid().getID() ||
 					fluidStack.amount != k.fluidStack.amount ||
 					!objectsEqual(fluidStack.tag, k.fluidStack.tag)) {
 				return false;
@@ -107,7 +106,7 @@ public final class StackKey {
 		}
 		result = 31 * result + 7;
 		if (fluidStack != null) {
-			result = 31 * result + fluidStack.fluidID;
+			result = 31 * result + fluidStack.getFluid().getID();
 			result = 31 * result + fluidStack.amount;
 			result = 31 * result + objectHashCode(fluidStack.tag);
 		}

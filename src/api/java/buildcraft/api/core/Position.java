@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2011-2014, SpaceToad and the BuildCraft Team
+ * Copyright (c) 2011-2015, SpaceToad and the BuildCraft Team
  * http://www.mod-buildcraft.com
  *
  * The BuildCraft API is distributed under the terms of the MIT License.
@@ -12,7 +12,6 @@ import io.netty.buffer.ByteBuf;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class Position implements ISerializable {
@@ -192,5 +191,10 @@ public class Position implements ISerializable {
 		stream.writeDouble(y);
 		stream.writeDouble(z);
 		stream.writeByte(orientation.ordinal());
+	}
+
+	@Override
+	public int hashCode() {
+		return (51 * (int) x) + (13 * (int) y) + (int) z;
 	}
 }

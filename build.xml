@@ -19,8 +19,8 @@
 	<property name="mc.version"  value="1.7.10"/>
 	<property name="forge.major" value="10"/>
 	<property name="forge.minor" value="13"/>
-	<property name="forge.patch" value="1"/>
-	<property name="forge.build" value="1217"/>
+	<property name="forge.patch" value="4"/>
+	<property name="forge.build" value="1448"/>
 	
 	<!-- Packaging -->
 	<property name="dist.dir" value="${build.dir}/dist"/>
@@ -28,7 +28,7 @@
 	<property name="apiclasses.dir" value="${build.dir}/api-packaging"/>
 	
 	<!-- Forge paths -->
-	<property name="forge.version" value="${mc.version}-${forge.major}.${forge.minor}.${forge.patch}.${forge.build}"/>
+	<property name="forge.version" value="${mc.version}-${forge.major}.${forge.minor}.${forge.patch}.${forge.build}-${mc.version}"/>
 	<property name="forge.dir" value="${build.dir}/forge"/>
 	<property name="forgebuild.dir" value="${forge.dir}/build"/>
 	<property name="compile.dir" value="${forgebuild.dir}/tmp/compile"/>
@@ -81,10 +81,10 @@
 				<available file="${lib.dir}/CoFHLib.jar" type="file"/>
 				<available file="${lib.dir}/CoFHCore.jar" type="file"/>
 				<available file="${lib.dir}/ThermalFoundation.jar" type="file"/>
-				<available file="${lib.dir}/MineFactoryReloaded.jar" type="file"/>
 				<available file="${lib.dir}/Buildcraft.jar" type="file"/>
-				<available file="${lib.dir}/NEI.jar" type="file"/>
 				<available file="${lib.dir}/InvTweaks.jar" type="file"/>
+				<available file="${lib.dir}/MineFactoryReloaded.jar" type="file"/>
+				<available file="${lib.dir}/NEI.jar" type="file"/>
 			</and>
 		</condition>
 	</target>
@@ -105,11 +105,11 @@
 		<echo message="Downloading CCL... "/>
 		<get src="http://files.minecraftforge.net/maven/codechicken/CodeChickenLib/1.7.10-1.1.1.88/CodeChickenLib-1.7.10-1.1.1.88-dev.jar" dest="${download.dir}/codechickenlib.jar"/>
 
-		<echo message="Downloading NEI API... "/>
-		<get src="http://chickenbones.net/maven/codechicken/NotEnoughItems/1.7.10-1.0.2.15/NotEnoughItems-1.7.10-1.0.2.15-dev.jar" dest="${download.dir}/NEI.jar"/>
-
 		<echo message="Downloading CoFHLib... "/>
 		<get src="https://github.com/CoFH/CoFHLib/archive/master.zip" dest="${download.dir}/CoFHLib.zip"/>
+
+		<echo message="Downloading NEI API... "/>
+		<get src="http://chickenbones.net/maven/codechicken/NotEnoughItems/1.7.10-1.0.2.15/NotEnoughItems-1.7.10-1.0.2.15-dev.jar" dest="${download.dir}/NEI.jar"/>
 		<!-- Begin hack -->
 		<unzip src="${download.dir}/CoFHLib.zip" dest="${download.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
@@ -137,35 +137,10 @@
 		      <classpath>
 				<fileset file="${download.dir}/codechickenlib.jar"/>
 				<fileset file="${download.dir}/CoFHLib.jar"/>
+				<fileset file="${download.dir}/NEI.jar"/>
 		      </classpath>
 		</javac>
 		<jar destfile="${download.dir}/CoFHCore.jar" compress="true" level="9" basedir="${compile.dir}"/>
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<!-- End hack -->
-		
-		<echo message="Downloading MFR API.. "/>
-		<!-- Begin hack -->
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<mkdir dir="${compile.dir}"/>
-		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
-			target="1.6" source="1.6"
-			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
-			<include name="powercrystals/minefactoryreloaded/api/**/*.java"/>
-		</javac>
-		<jar destfile="${download.dir}/MineFactoryReloaded.jar" compress="true" level="9" basedir="${compile.dir}"/>
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<!-- End hack -->
-		
-		<echo message="Downloading Buildcraft API.. "/>
-		<!-- Begin hack -->
-		<delete dir="${compile.dir}" failonerror="false"/>
-		<mkdir dir="${compile.dir}"/>
-		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
-			target="1.6" source="1.6"
-			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
-			<include name="buildcraft/api/**/*.java"/>
-		</javac>
-		<jar destfile="${download.dir}/Buildcraft.jar" compress="true" level="9" basedir="${compile.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<!-- End hack -->
 
@@ -182,16 +157,42 @@
 			<include name="**/*.java"/>
 		      <classpath>
 				<fileset file="${download.dir}/codechickenlib.jar"/>
-				<fileset file="${download.dir}/NEI.jar"/>
 		      	<fileset file="${download.dir}/CoFHLib.jar"/>
 		      	<fileset file="${download.dir}/CoFHCore.jar"/>
+		      	<fileset file="${download.dir}/NEI.jar"/>
 		      </classpath>
 		</javac>
 		<jar destfile="${download.dir}/ThermalFoundation.jar" compress="true" level="9" basedir="${compile.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<delete dir="${download.dir}/ThermalFoundation-master"/>
 		<!-- End hack -->
-		
+
+		<echo message="Downloading Buildcraft API.. "/>
+		<!-- Begin hack -->
+		<delete dir="${compile.dir}" failonerror="false"/>
+		<mkdir dir="${compile.dir}"/>
+		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
+			target="1.6" source="1.6"
+			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
+			<include name="buildcraft/api/**/*.java"/>
+		</javac>
+		<jar destfile="${download.dir}/Buildcraft.jar" compress="true" level="9" basedir="${compile.dir}"/>
+		<delete dir="${compile.dir}" failonerror="false"/>
+		<!-- End hack -->
+
+		<echo message="Downloading MFR API.. "/>
+		<!-- Begin hack -->
+		<delete dir="${compile.dir}" failonerror="false"/>
+		<mkdir dir="${compile.dir}"/>
+		<javac srcdir="${api.dir}/" destdir="${compile.dir}"
+			target="1.6" source="1.6"
+			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false">
+			<include name="powercrystals/minefactoryreloaded/api/**/*.java"/>
+		</javac>
+		<jar destfile="${download.dir}/MineFactoryReloaded.jar" compress="true" level="9" basedir="${compile.dir}"/>
+		<delete dir="${compile.dir}" failonerror="false"/>
+		<!-- End hack -->
+
 		<echo message="Downloading InvTweaks API..." />
 		<get src="http://build.technicpack.net/job/Inventory-Tweaks/77/artifact/build/out/InventoryTweaks-MC1.6.2-1.56-b77.jar" dest="${download.dir}/InvTweaks.jar"/>
 	</target>
@@ -199,30 +200,31 @@
 	<target name="extract-dependencies" depends="setup-forge,get-dependencies" unless="have.libs">
 		<delete dir="${lib.dir}/"/>
 		<mkdir dir="${lib.dir}/"/>
-			
+
 		<echo message="Extracting CCL... "/>
 		<move file="${download.dir}/codechickenlib.jar" todir="${lib.dir}/"/>
-		
-		<echo message="Extracting NEI API... "/>
-		<copy file="${download.dir}/NEI.jar" todir="${lib.dir}"/>
 
 		<echo message="Extracting CoFHLib..."/>
 		<copy file="${download.dir}/CoFHLib.jar" todir="${lib.dir}"/>
-		
+
 		<echo message="Extracting CoFHCore..."/>
 		<copy file="${download.dir}/CoFHCore.jar" todir="${lib.dir}"/>
-		
+
 		<echo message="Extracting ThermalFoundation..."/>
 		<copy file="${download.dir}/ThermalFoundation.jar" todir="${lib.dir}"/>
-		
-		<echo message="Extracting MineFactoryReloaded..."/>
-		<copy file="${download.dir}/MineFactoryReloaded.jar" todir="${lib.dir}"/>
-		
+
 		<echo message="Extracting BuildCraft API..."/>
 		<copy file="${download.dir}/Buildcraft.jar" todir="${lib.dir}"/>
-		
+
 		<echo message="Extracting InvTweaks API... " />
 		<copy file="${download.dir}/InvTweaks.jar" todir="${lib.dir}"/>
+
+		<echo message="Extracting MineFactoryReloaded..."/>
+		<copy file="${download.dir}/MineFactoryReloaded.jar" todir="${lib.dir}"/>
+
+		<echo message="Extracting NEI API... "/>
+		<copy file="${download.dir}/NEI.jar" todir="${lib.dir}"/>
+
 	</target>
 	
 	<macrodef name="move-transformers"><sequential>

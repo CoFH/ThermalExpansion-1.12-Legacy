@@ -103,11 +103,11 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy();
 		processRem = processMax;
 
-		int prevID = renderFluid.fluidID;
+		int prevID = renderFluid.getFluidID();
 		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
 		renderFluid.amount = 0;
 
-		if (prevID != renderFluid.fluidID) {
+		if (prevID != renderFluid.getFluidID()) {
 			sendFluidPacket();
 		}
 	}

@@ -80,6 +80,7 @@ public class TransposerManager {
 		boolean recipeMossyCobble = ThermalExpansion.config.get(category, "MossyCobblestone", true);
 		boolean recipeMossyStoneBrick = ThermalExpansion.config.get(category, "MossyStoneBrick", true);
 		boolean recipeEndStone = ThermalExpansion.config.get(category, "EndStone", true);
+		boolean recipePackedIce = ThermalExpansion.config.get(category, "PackedIce", true);
 		boolean recipeNetherBrick = ThermalExpansion.config.get(category, "NetherBrick", false);
 
 		if (recipeMossyCobble) {
@@ -90,6 +91,9 @@ public class TransposerManager {
 		}
 		if (recipeEndStone) {
 			addFillRecipe(8000, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.end_stone), new FluidStack(TFFluids.fluidEnder, 250), false);
+		}
+		if (recipePackedIce) {
+			addFillRecipe(8000, new ItemStack(Blocks.ice), new ItemStack(Blocks.packed_ice), new FluidStack(TFFluids.fluidCryotheum, 250), false);
 		}
 		if (recipeNetherBrick) {
 			addFillRecipe(4000, new ItemStack(Items.brick), new ItemStack(Items.netherbrick), new FluidStack(FluidRegistry.LAVA, 250), false);
