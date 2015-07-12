@@ -151,7 +151,6 @@ public class TilePulverizer extends TileMachineBase {
 		}
 		if (secondaryItem != null) {
 			int recipeChance = recipe.getSecondaryOutputChance();
-			System.out.println(secondaryChance);
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
