@@ -40,6 +40,7 @@ public class TilePulverizer extends TileMachineBase {
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
 	}
 
+	int inputTracker;
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
 
@@ -73,7 +74,7 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (secondaryItem != null && inventory[3] != null) {
+		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
 			if (!inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
@@ -154,8 +155,12 @@ public class TilePulverizer extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
-				} else {
+				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
+
+					if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
+						inventory[3].stackSize = inventory[3].getMaxStackSize();
+					}
 				}
 			}
 		}
@@ -167,24 +172,41 @@ public class TilePulverizer extends TileMachineBase {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void transferOutput() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		int side;
 		if (inventory[1] != null || inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(1, AUTO_EJECT[level] >> 1, side)) {
-						if (!transferItem(2, AUTO_EJECT[level] >> 1, side)) {
-							transferItem(1, AUTO_EJECT[level] >> 1, side);
+					if (transferItem(1, AUTO_TRANSFER[level] >> 1, side)) {
+						if (!transferItem(2, AUTO_TRANSFER[level] >> 1, side)) {
+							transferItem(1, AUTO_TRANSFER[level] >> 1, side);
 						}
 						outputTrackerPrimary = side;
 						break;
-					} else if (transferItem(2, AUTO_EJECT[level], side)) {
+					} else if (transferItem(2, AUTO_TRANSFER[level], side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -196,20 +218,13 @@ public class TilePulverizer extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, AUTO_EJECT[level], side)) {
+				if (transferItem(3, AUTO_TRANSFER[level], side)) {
 					outputTrackerSecondary = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return slot == 0 ? PulverizerManager.recipeExists(stack) : true;
 	}
 
 	/* GUI METHODS */
@@ -231,8 +246,9 @@ public class TilePulverizer extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		outputTrackerPrimary = nbt.getInteger("Tracker1");
-		outputTrackerSecondary = nbt.getInteger("Tracker2");
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTrackerPrimary = nbt.getInteger("TrackOut1");
+		outputTrackerSecondary = nbt.getInteger("TrackOut2");
 	}
 
 	@Override
@@ -240,8 +256,16 @@ public class TilePulverizer extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker1", outputTrackerPrimary);
-		nbt.setInteger("Tracker2", outputTrackerSecondary);
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut1", outputTrackerPrimary);
+		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 ? PulverizerManager.recipeExists(stack) : true;
 	}
 
 }

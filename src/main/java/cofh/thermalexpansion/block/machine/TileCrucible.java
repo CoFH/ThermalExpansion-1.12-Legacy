@@ -54,7 +54,9 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}
 
+	int inputTracker;
 	int outputTrackerFluid;
+
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
 	FluidStack outputBuffer;
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
@@ -132,9 +134,27 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	protected void transferFluid() {
+	@Override
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	protected void transferOutputFluid() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
@@ -163,7 +183,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		transferFluid();
+		transferOutputFluid();
 
 		super.updateEntity();
 	}
@@ -174,12 +194,6 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		super.onLevelChange();
 
 		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;
 	}
 
 	/* GUI METHODS */
@@ -212,7 +226,9 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-		outputTrackerFluid = nbt.getInteger("Tracker");
+
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
@@ -227,7 +243,8 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTrackerFluid);
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 	}
 
@@ -273,6 +290,13 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;
 	}
 
 	/* ITilePacketHandler */

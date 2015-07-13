@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.ender;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ItemHelper;
@@ -33,7 +35,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockEnder extends BlockTEBase {
 
@@ -200,8 +201,8 @@ public class BlockEnder extends BlockTEBase {
 	public boolean postInit() {
 
 		if (recipe) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver",
-					'B', "ingotBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver", 'B',
+					"ingotBronze" }));
 		}
 		TECraftingHandler.addSecureRecipe(tesseract);
 

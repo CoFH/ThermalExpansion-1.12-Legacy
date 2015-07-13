@@ -32,7 +32,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
 	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24 };
-	protected static final int AUTO_EJECT[] = new int[] { 8, 16, 32, 64 };
+	protected static final int AUTO_TRANSFER[] = new int[] { 8, 16, 32, 64 };
 	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8 };
 
 	public static void configure() {
@@ -53,6 +53,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	protected EnergyConfig energyConfig;
 	protected TimeTracker tracker = new TimeTracker();
+
+	boolean augmentSecondaryNull;
 
 	byte level = 0;
 	int processMod = 1;
@@ -103,7 +105,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 			}
 			if (canFinish()) {
 				processFinish();
-				transferProducts();
+				transferOutput();
+				transferInput();
 				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
@@ -116,7 +119,8 @@ public abstract class TileMachineBase extends TileAugmentable {
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
+				transferInput();
 			}
 			if (timeCheckEighth() && canStart()) {
 				processStart();
@@ -172,7 +176,11 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	}
 
-	protected void transferProducts() {
+	protected void transferInput() {
+
+	}
+
+	protected void transferOutput() {
 
 	}
 
@@ -383,8 +391,16 @@ public abstract class TileMachineBase extends TileAugmentable {
 				return false;
 			}
 		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_TRANSFER) > 0) {
-			augmentAutoTransfer = true;
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_NULL) > 0) {
+			augmentSecondaryNull = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_OUTPUT) > 0) {
+			augmentAutoOutput = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_INPUT) > 0) {
+			augmentAutoInput = true;
 			installed = true;
 		}
 		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
@@ -419,13 +435,13 @@ public abstract class TileMachineBase extends TileAugmentable {
 	@Override
 	protected void resetAugments() {
 
+		super.resetAugments();
+
+		augmentSecondaryNull = false;
+
 		processMod = 1;
 		energyMod = 1;
 		secondaryChance = 100;
-
-		augmentAutoTransfer = false;
-		augmentReconfigSides = false;
-		augmentRedstoneControl = false;
 	}
 
 	/* IInventory */

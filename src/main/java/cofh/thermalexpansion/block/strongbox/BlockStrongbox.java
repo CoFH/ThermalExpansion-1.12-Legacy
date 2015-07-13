@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.strongbox;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.core.enchantment.CoFHEnchantment;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -25,7 +27,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockStrongbox extends BlockTEBase {
 
@@ -168,12 +169,12 @@ public class BlockStrongbox extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', Blocks.chest }));
+			GameRegistry.addRecipe(ShapedRecipe(strongboxBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', Blocks.chest }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
-			GameRegistry.addRecipe(new ShapedOreRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y',
-					"ingotTin" }));
+			GameRegistry
+					.addRecipe(ShapedRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y', "ingotTin" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced,

@@ -4,6 +4,7 @@ import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -20,6 +21,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -67,11 +69,89 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (slot > inventory.length) {
 			return false;
 		}
+		ItemStack stack = inventory[slot];
 
-		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
+		if (stack != null) {
+			amount = Math.min(amount, stack.getMaxStackSize() - stack.stackSize);
+			stack = inventory[slot].copy();
+		}
+		int initialAmount = amount;
+		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
-		if (Utils.isAccessibleInput(curTile, side)) {
+		if (Utils.isAccessibleInput(adjInv, side)) {
+			if (adjInv instanceof ISidedInventory) {
+				ISidedInventory sidedInv = (ISidedInventory) adjInv;
+				int slots[] = sidedInv.getAccessibleSlotsFromSide(side);
 
+				if (slots == null) {
+					return false;
+				}
+				for (int i = 0; i < slots.length && amount > 0; i++) {
+					ItemStack queryStack = sidedInv.getStackInSlot(slots[i]);
+					if (sidedInv.canExtractItem(slots[i], queryStack, side ^ 1)) {
+						if (stack == null) {
+							if (isItemValidForSlot(slot, queryStack)) {
+								int toExtract = Math.min(amount, queryStack.stackSize);
+								stack = ItemHelper.cloneStack(queryStack, toExtract);
+								queryStack.stackSize -= toExtract;
+
+								if (queryStack.stackSize <= 0) {
+									sidedInv.setInventorySlotContents(slots[i], null);
+								} else {
+									sidedInv.setInventorySlotContents(slots[i], queryStack);
+								}
+								amount -= toExtract;
+							}
+						} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack)) {
+							int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+							stack.stackSize += toExtract;
+							queryStack.stackSize -= toExtract;
+
+							if (queryStack.stackSize <= 0) {
+								sidedInv.setInventorySlotContents(slots[i], null);
+							} else {
+								sidedInv.setInventorySlotContents(slots[i], queryStack);
+							}
+							amount -= toExtract;
+						}
+					}
+				}
+			} else {
+				IInventory inv = (IInventory) adjInv;
+				for (int i = 0; i < inv.getSizeInventory() && amount > 0; i++) {
+					ItemStack queryStack = inv.getStackInSlot(i);
+					if (stack == null) {
+						if (isItemValidForSlot(slot, queryStack)) {
+							int toExtract = Math.min(amount, queryStack.stackSize);
+							stack = ItemHelper.cloneStack(queryStack, toExtract);
+							queryStack.stackSize -= toExtract;
+
+							if (queryStack.stackSize <= 0) {
+								inv.setInventorySlotContents(i, null);
+							} else {
+								inv.setInventorySlotContents(i, queryStack);
+							}
+							amount -= toExtract;
+						}
+					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack)) {
+						int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+						stack.stackSize += toExtract;
+						queryStack.stackSize -= toExtract;
+
+						if (queryStack.stackSize <= 0) {
+							inv.setInventorySlotContents(i, null);
+						} else {
+							inv.setInventorySlotContents(i, queryStack);
+						}
+						amount -= toExtract;
+					}
+				}
+			}
+			if (initialAmount != amount) {
+				inventory[slot] = stack;
+				adjInv.markDirty();
+			}
+			return true;
 		}
 		return false;
 	}

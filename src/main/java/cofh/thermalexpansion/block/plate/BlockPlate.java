@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -35,7 +37,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
@@ -301,7 +302,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 		// @formatter:off
 		if (enable[Types.FRAME.ordinal()]) {
-			ItemHelper.addRecipe(new ShapedOreRecipe(plateFrame, new Object[] {
+			ItemHelper.addRecipe(ShapedRecipe(plateFrame, new Object[] {
 					"SGS",
 					"I I",
 					"SIS",

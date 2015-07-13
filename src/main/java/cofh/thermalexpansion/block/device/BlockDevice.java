@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
@@ -38,7 +40,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockDevice extends BlockTEBase {
 
@@ -312,7 +313,7 @@ public class BlockDevice extends BlockTEBase {
 					'P', BlockStrongbox.strongboxBasic,
 					'X', Items.paper
 			}));
-			GameRegistry.addRecipe(new ShapedOreRecipe(workbench, new Object[] {
+			GameRegistry.addRecipe(ShapedRecipe(workbench, new Object[] {
 					"YXY",
 					"ICI",
 					"YPY",

@@ -42,6 +42,8 @@ public class TileSmelter extends TileMachineBase {
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}
 
+	int inputTrackerPrimary;
+	int inputTrackerSecondary;
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
 
@@ -89,7 +91,7 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (secondaryItem != null && inventory[4] != null) {
+		if (!augmentSecondaryNull && secondaryItem != null && inventory[4] != null) {
 			if (!inventory[4].isItemEqual(secondaryItem)) {
 				return false;
 			}
@@ -181,12 +183,19 @@ public class TileSmelter extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[4] == null) {
 					inventory[4] = secondaryItem;
-				} else {
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[4].stackSize += secondaryItem.stackSize;
+					}
+				} else if (inventory[4].isItemEqual(secondaryItem)) {
 					inventory[4].stackSize += secondaryItem.stackSize;
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[4].stackSize += secondaryItem.stackSize;
+					}
 				}
-				if (secondaryChance < recipeChance && inventory[4].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
-						&& worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-					inventory[4].stackSize += secondaryItem.stackSize;
+				if (inventory[4].stackSize > inventory[4].getMaxStackSize()) {
+					inventory[4].stackSize = inventory[4].getMaxStackSize();
 				}
 			}
 		}
@@ -206,24 +215,50 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1 || sideCache[side] == 5) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTrackerPrimary = side;
+					break;
+				}
+			}
+		}
+		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1 || sideCache[side] == 6) {
+				if (extractItem(1, AUTO_TRANSFER[level], side)) {
+					inputTrackerSecondary = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void transferOutput() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		int side;
 		if (inventory[2] != null || inventory[3] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, AUTO_EJECT[level] >> 1, side)) {
-						if (!transferItem(3, AUTO_EJECT[level] >> 1, side)) {
-							transferItem(2, AUTO_EJECT[level] >> 1, side);
+					if (transferItem(2, AUTO_TRANSFER[level] >> 1, side)) {
+						if (!transferItem(3, AUTO_TRANSFER[level] >> 1, side)) {
+							transferItem(2, AUTO_TRANSFER[level] >> 1, side);
 						}
 						outputTrackerPrimary = side;
 						break;
-					} else if (transferItem(3, AUTO_EJECT[level], side)) {
+					} else if (transferItem(3, AUTO_TRANSFER[level], side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -235,28 +270,13 @@ public class TileSmelter extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(4, AUTO_EJECT[level], side)) {
+				if (transferItem(4, AUTO_TRANSFER[level], side)) {
 					outputTrackerSecondary = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		if (lockPrimary) {
-			if (slot == 0) {
-				return SmelterManager.isItemFlux(stack);
-			}
-			if (slot == 1) {
-				return !SmelterManager.isItemFlux(stack) && SmelterManager.isItemValid(stack);
-			}
-		}
-		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
 	}
 
 	@Override
@@ -298,8 +318,10 @@ public class TileSmelter extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		outputTrackerPrimary = nbt.getInteger("Tracker1");
-		outputTrackerSecondary = nbt.getInteger("Tracker2");
+		inputTrackerPrimary = nbt.getInteger("TrackIn1");
+		inputTrackerSecondary = nbt.getInteger("TrackIn2");
+		outputTrackerPrimary = nbt.getInteger("TrackOut1");
+		outputTrackerSecondary = nbt.getInteger("TrackOut2");
 		lockPrimary = nbt.getBoolean("SlotLock");
 	}
 
@@ -308,8 +330,10 @@ public class TileSmelter extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker1", outputTrackerPrimary);
-		nbt.setInteger("Tracker2", outputTrackerSecondary);
+		nbt.setInteger("TrackIn1", inputTrackerPrimary);
+		nbt.setInteger("TrackIn2", inputTrackerSecondary);
+		nbt.setInteger("TrackOut1", outputTrackerPrimary);
+		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
 	}
 
@@ -358,6 +382,21 @@ public class TileSmelter extends TileMachineBase {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		if (lockPrimary) {
+			if (slot == 0) {
+				return SmelterManager.isItemFlux(stack);
+			}
+			if (slot == 1) {
+				return !SmelterManager.isItemFlux(stack) && SmelterManager.isItemValid(stack);
+			}
+		}
+		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
 	}
 
 }

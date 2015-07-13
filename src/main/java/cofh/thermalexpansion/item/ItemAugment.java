@@ -23,6 +23,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 		public String primaryType = "";
 		public int primaryLevel = 0;
+		public int numInfo = 1;
 		public TObjectIntHashMap<String> augmentTypeInfo = new TObjectIntHashMap<String>();
 	}
 
@@ -62,10 +63,15 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		int level = getPrimaryLevel(stack);
 		list.add(StringHelper.WHITE + StringHelper.localize("info.cofh.level") + " " + StringHelper.ROMAN_NUMERAL[level] + StringHelper.END);
 
+		int numInfo = getNumInfo(stack);
+		for (int i = 0; i < numInfo; i++) {
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment." + type + "." + i) + StringHelper.END);
+		}
+
 		/* DYNAMO THROTTLE */
 		if (type.equals(TEAugments.DYNAMO_THROTTLE)) {
 			augmentChain = false;
-			list.add(StringHelper.getNoticeText("info.thermalexpansion.augment.levels.2"));
+			list.add(StringHelper.getNoticeText("info.thermalexpansion.augment.requireRS"));
 		}
 		/* DYNAMO EFFICIENCY */
 		else if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
@@ -103,7 +109,6 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		}
 		/* MACHINE - FURNACE */
 		else if (type.equals(TEAugments.MACHINE_FURNACE_FOOD)) {
-			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.0") + StringHelper.END);
 			list.add(StringHelper.BRIGHT_GREEN + "-50% " + StringHelper.localize("info.thermalexpansion.augment.energyUsed"));
 			list.add(StringHelper.RED + StringHelper.localize("info.thermalexpansion.augment.machineFurnaceFood.1") + StringHelper.END);
 
@@ -132,12 +137,17 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addMachineInfo(List list, int level) {
 
-		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + StringHelper.getRarity(level)
+		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + getRarity(level)
 				+ StringHelper.localize("info.thermalexpansion." + ItemBlockMachine.NAMES[level]) + " " + StringHelper.LIGHT_GRAY
 				+ StringHelper.localize("info.thermalexpansion.augment.machine.1"));
 	}
 
 	public void addAugmentData(int number, String augmentType, int augmentLevel) {
+
+		addAugmentData(number, augmentType, augmentLevel, 1);
+	}
+
+	public void addAugmentData(int number, String augmentType, int augmentLevel, int numInfo) {
 
 		int index = number;
 
@@ -145,6 +155,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			augmentMap.put(index, new AugmentEntry());
 			augmentMap.get(index).primaryType = augmentType;
 			augmentMap.get(index).primaryLevel = augmentLevel;
+			augmentMap.get(index).numInfo = numInfo;
 		}
 		augmentMap.get(index).augmentTypeInfo.put(augmentType, augmentLevel);
 	}
@@ -165,6 +176,27 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 			return 0;
 		}
 		return entry.primaryLevel;
+	}
+
+	private int getNumInfo(ItemStack stack) {
+
+		AugmentEntry entry = augmentMap.get(ItemHelper.getItemDamage(stack));
+		if (entry == null) {
+			return 0;
+		}
+		return entry.numInfo;
+	}
+
+	public String getRarity(int level) {
+
+		switch (level) {
+		case 2:
+			return StringHelper.YELLOW;
+		case 3:
+			return StringHelper.BRIGHT_BLUE;
+		default:
+			return StringHelper.WHITE;
+		}
 	}
 
 	/* IAugmentItem */

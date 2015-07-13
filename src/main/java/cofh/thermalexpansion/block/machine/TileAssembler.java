@@ -96,7 +96,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 				updateOutput();
 			}
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
 			}
 		} else {
 			if (isActive) {
@@ -109,9 +109,9 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferOutput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -122,7 +122,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_EJECT[level], side)) {
+				if (transferItem(1, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
 					break;
 				}
@@ -253,7 +253,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 						} else {
 							inventory[1].stackSize += recipeOutput.stackSize;
 						}
-						transferProducts();
+						transferOutput();
 						isActive = true;
 					}
 				} else {

@@ -57,8 +57,10 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}
 
+	int inputTracker;
 	int outputTracker;
 	int outputTrackerFluid;
+
 	FluidStack outputBuffer;
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
@@ -98,7 +100,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			}
 		}
 		if (reverse) {
-			transferFluid();
+			transferOutputFluid();
 		}
 		if (containerItem != null) {
 			boolean curActive = isActive;
@@ -275,25 +277,18 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		reverse = reverseFlag;
 	}
 
-	protected void transferFluid() {
+	@Override
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!augmentAutoInput) {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
-		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
-
-				if (toDrain > 0) {
-					tank.drain(toDrain, true);
-					outputTrackerFluid = side;
+			if (sideCache[side] == 1) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTracker = side;
 					break;
 				}
 			}
@@ -301,9 +296,9 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferOutput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {
@@ -333,8 +328,33 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 2 || sideCache[side] == 4) {
-				if (transferItem(2, AUTO_EJECT[level], side)) {
+				if (transferItem(2, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	protected void transferOutputFluid() {
+
+		if (!augmentAutoOutput) {
+			return;
+		}
+		if (tank.getFluidAmount() <= 0) {
+			return;
+		}
+		int side;
+		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
+			side = i % 6;
+
+			if (sideCache[side] == 3 || sideCache[side] == 4) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
+
+				if (toDrain > 0) {
+					tank.drain(toDrain, true);
+					outputTrackerFluid = side;
 					break;
 				}
 			}
@@ -377,7 +397,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
 			}
 			if (containerItem == null) {
 				if (FluidHelper.isFluidContainerItem(inventory[1])) {
@@ -433,7 +453,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			energyStorage.modifyEnergyStored(-filled);
 
 			if (containerItem.getFluid(inventory[1]).amount >= containerItem.getCapacity(inventory[1])) {
-				transferProducts();
+				transferOutput();
 				reverse = reverseFlag;
 
 				if (!redstoneControlOrDisable()) {
@@ -458,7 +478,7 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		energyStorage.modifyEnergyStored(-drained);
 
 		if (processRem <= 0) {
-			transferProducts();
+			transferOutput();
 			reverse = reverseFlag;
 
 			if (!redstoneControlOrDisable()) {
@@ -467,12 +487,6 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 				tracker.markTime(worldObj);
 			}
 		}
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return slot == 0 ? FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack) : true;
 	}
 
 	/* GUI METHODS */
@@ -506,8 +520,10 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker1");
-		outputTrackerFluid = nbt.getInteger("Tracker2");
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTracker = nbt.getInteger("TrackOut1");
+		outputTrackerFluid = nbt.getInteger("TrackOut2");
+
 		reverse = nbt.getBoolean("Rev");
 		reverseFlag = reverse;
 		tank.readFromNBT(nbt);
@@ -544,8 +560,9 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker1", outputTracker);
-		nbt.setInteger("Tracker2", outputTrackerFluid);
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut1", outputTracker);
+		nbt.setInteger("TrackOut2", outputTrackerFluid);
 		nbt.setBoolean("Rev", reverse);
 		tank.writeToNBT(nbt);
 	}
@@ -698,6 +715,12 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			reverse = reverseFlag;
 		}
 		super.markDirty();
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 ? FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack) : true;
 	}
 
 	/* IFluidHandler */

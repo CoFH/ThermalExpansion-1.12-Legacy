@@ -28,7 +28,8 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	protected boolean[] augmentStatus = new boolean[3];
 	protected ItemStack[] augments = new ItemStack[3];
 
-	public boolean augmentAutoTransfer;
+	public boolean augmentAutoInput;
+	public boolean augmentAutoOutput;
 	public boolean augmentReconfigSides;
 	public boolean augmentRedstoneControl;
 
@@ -36,11 +37,6 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	public byte[] getDefaultSides() {
 
 		return sideConfig.defaultSides.clone();
-	}
-
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return true;
 	}
 
 	@Override
@@ -270,8 +266,12 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
 		boolean installed = false;
 
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_TRANSFER) > 0) {
-			augmentAutoTransfer = true;
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_OUTPUT) > 0) {
+			augmentAutoOutput = true;
+			installed = true;
+		}
+		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_INPUT) > 0) {
+			augmentAutoInput = true;
 			installed = true;
 		}
 		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
@@ -298,7 +298,8 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 	protected void resetAugments() {
 
-		augmentAutoTransfer = false;
+		augmentAutoOutput = false;
+		augmentAutoInput = false;
 		augmentReconfigSides = false;
 		augmentRedstoneControl = false;
 	}
@@ -369,7 +370,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return sideConfig.allowInsertionSide[sideCache[side]] && sideConfig.allowInsertionSlot[slot] ? isItemValid(stack, slot, side) : false;
+		return sideConfig.allowInsertionSide[sideCache[side]] && sideConfig.allowInsertionSlot[slot] ? isItemValidForSlot(slot, stack) : false;
 	}
 
 	@Override

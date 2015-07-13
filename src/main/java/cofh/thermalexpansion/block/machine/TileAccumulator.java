@@ -104,7 +104,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 			return;
 		}
 		boolean curActive = isActive;
-		transferFluid();
+		transferOutputFluid();
 
 		if (isActive) {
 			if (timeCheck()) {
@@ -181,9 +181,9 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	protected void transferFluid() {
+	protected void transferOutputFluid() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {

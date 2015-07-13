@@ -27,7 +27,7 @@ public class Utils {
 		return container != null && container.getItem() instanceof IAugmentItem;
 	}
 
-	/* TILE FUNCTIONS */
+	/* TILE FUNCTIONS - INSERTION */
 	public static int addToAdjacentInsertion(TileEntity tile, int from, ItemStack stack) {
 
 		return addToAdjacentInsertion(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), from, stack);
@@ -37,11 +37,10 @@ public class Utils {
 
 		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, from);
 
-		if (!(InventoryHelper.isInsertion(theTile))) {
+		if (!InventoryHelper.isInsertion(theTile)) {
 			return stack.stackSize;
 		}
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-
 		return stack == null ? 0 : stack.stackSize;
 	}
 
@@ -106,6 +105,20 @@ public class Utils {
 		}
 		return 0;
 	}
+
+	/* TILE FUNCTIONS - EXTRACTION */
+	// public static ItemStack extractFromAdjacentInventoryIntoSlot(TileEntity tile, int from, int slot, int amount) {
+	//
+	// IInventory theInv = (IInventory) tile;
+	// TileEntity theTile = BlockHelper.getAdjacentTileEntity(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, from);
+	// ItemStack stack = theInv.getStackInSlot(slot);
+	//
+	// if (!InventoryHelper.isInventory(theTile)) {
+	// return stack;
+	// }
+	// stack = InventoryHelper.addToInsertion(theTile, from, stack);
+	// return stack == null ? 0 : stack.stackSize;
+	// }
 
 	/* QUERY FUNCTIONS */
 	public static boolean isAdjacentInput(TileEntity tile, int side) {

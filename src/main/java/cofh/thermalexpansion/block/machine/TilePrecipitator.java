@@ -117,9 +117,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferOutput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -130,7 +130,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_EJECT[level], side)) {
+				if (transferItem(0, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
 					break;
 				}

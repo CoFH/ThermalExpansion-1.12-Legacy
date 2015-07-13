@@ -73,6 +73,9 @@ public class ItemDiagram extends ItemBase {
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
 
 		if (player.isSneaking()) {
+			if (stack.getTagCompound() != null) {
+				world.playSoundAtEntity(player, "random.orb", 0.5F, 0.3F);
+			}
 			stack.setTagCompound(null);
 		}
 		player.swingItem();
@@ -89,6 +92,9 @@ public class ItemDiagram extends ItemBase {
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
 
 		if (player.isSneaking()) {
+			if (stack.getTagCompound() != null) {
+				world.playSoundAtEntity(player, "random.orb", 0.5F, 0.3F);
+			}
 			stack.setTagCompound(null);
 		}
 		if (stack.getItemDamage() != Types.REDPRINT.ordinal()) {
@@ -104,6 +110,7 @@ public class ItemDiagram extends ItemBase {
 						stack.setTagCompound(null);
 					} else {
 						stack.stackTagCompound.setString("Type", ((IPortableData) tile).getDataType());
+						world.playSoundAtEntity(player, "random.orb", 0.5F, 0.7F);
 					}
 				} else {
 					if (stack.stackTagCompound.getString("Type").equals(((IPortableData) tile).getDataType())) {

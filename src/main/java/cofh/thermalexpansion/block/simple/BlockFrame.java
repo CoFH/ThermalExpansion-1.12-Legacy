@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.simple;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.core.render.IconRegistry;
@@ -36,7 +38,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockFrame extends Block implements IDismantleable, IInitializer {
 
@@ -317,52 +318,49 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
 	@Override
 	public boolean postInit() {
 
-		GameRegistry
-				.addRecipe(new ShapedOreRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin" }));
 
 		/* Direct Recipes */
-		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
 		// "gearElectrum" }));
-		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
 		// 'X', "gearSignalum" }));
-		// GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineResonant, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
 		// 'X',
 		// "gearEnderium" }));
 
 		/* Tiered Recipes */
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineHardened, new Object[] { "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X',
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, new Object[] { "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X',
 				frameMachineBasic }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineReinforced, new Object[] { "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum",
-				'X', frameMachineHardened }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameMachineResonant, new Object[] { "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X',
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, new Object[] { "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum", 'X',
+				frameMachineHardened }));
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, new Object[] { "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X',
 				frameMachineReinforced }));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellBasic, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X',
-				Blocks.redstone_block }));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellBasic,
+				new Object[] { "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X', Blocks.redstone_block }));
 		PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', frameCellBasic }));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', frameCellBasic }));
 		PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellReinforcedEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G',
-				"blockGlassHardened", 'X', "gemDiamond" }));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellReinforcedEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "blockGlassHardened", 'X',
+				"gemDiamond" }));
 		TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellResonantEmpty, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X',
-				frameCellReinforcedEmpty }));
-		GameRegistry.addRecipe(new ShapedOreRecipe(frameCellResonantFull, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X',
-				frameCellReinforcedFull }));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantEmpty, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedEmpty }));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantFull, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedFull }));
 		TransposerManager.addTEFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
 		if (recipe[Types.TESSERACT_EMPTY.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(frameTesseractEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G',
-					"blockGlassHardened", 'X', "gemDiamond" }));
+			GameRegistry.addRecipe(ShapedRecipe(frameTesseractEmpty, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened", 'X',
+					"gemDiamond" }));
 		}
 		if (recipe[Types.TESSERACT_FULL.ordinal()]) {
 			TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
-		GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(frameIlluminator, 2), new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened",
-				'Q', "gemQuartz", 'S', "ingotSignalum" }));
+		GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameIlluminator, 2), new Object[] { " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q',
+				"gemQuartz", 'S', "ingotSignalum" }));
 
 		return true;
 	}

@@ -255,7 +255,7 @@ public class BlockMachine extends BlockTEBase {
 		TileInsolator.initialize();
 
 		if (defaultAutoTransfer) {
-			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
+			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoOutput);
 		}
 		if (defaultRedstoneControl) {
 			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);

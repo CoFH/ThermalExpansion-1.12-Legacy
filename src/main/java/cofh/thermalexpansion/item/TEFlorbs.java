@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.item;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
+
 import cofh.core.CoFHProps;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
@@ -17,7 +19,6 @@ import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class TEFlorbs {
 
@@ -78,9 +79,9 @@ public class TEFlorbs {
 		if (!enable) {
 			return;
 		}
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbStack, new Object[] { "dustWood", TEItems.slag, "slimeball" }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, "slimeball", Items.blaze_powder }));
-		GameRegistry.addRecipe(new ShapelessOreRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, Items.magma_cream }));
+		GameRegistry.addRecipe(ShapelessRecipe(florbStack, new Object[] { "dustWood", TEItems.slag, "slimeball" }));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, "slimeball", Items.blaze_powder }));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, Items.magma_cream }));
 	}
 
 	public static ItemFlorb itemFlorb;

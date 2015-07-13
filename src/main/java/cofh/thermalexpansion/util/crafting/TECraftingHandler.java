@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.util.crafting;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
+
 import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -24,7 +26,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.ShapelessOreRecipe;
 
 public class TECraftingHandler {
 
@@ -136,7 +137,7 @@ public class TECraftingHandler {
 					continue;
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
-				GameRegistry.addRecipe(new ShapelessOreRecipe(ingot, new Object[] { oreName, "dustPyrotheum" }));
+				GameRegistry.addRecipe(ShapelessRecipe(ingot, new Object[] { oreName, "dustPyrotheum" }));
 			}
 		}
 	}

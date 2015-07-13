@@ -44,6 +44,7 @@ public class TileFurnace extends TileMachineBase {
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
 	}
 
+	int inputTracker;
 	int outputTracker;
 
 	public TileFurnace() {
@@ -135,9 +136,27 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void transferOutput() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -146,20 +165,13 @@ public class TileFurnace extends TileMachineBase {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_EJECT[level], side)) {
+				if (transferItem(1, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return slot == 0 ? foodBoost ? FurnaceManager.isFoodItem(stack) : FurnaceManager.recipeExists(stack) : true;
 	}
 
 	/* GUI METHODS */
@@ -181,7 +193,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker");
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTracker = nbt.getInteger("TrackOut");
 	}
 
 	@Override
@@ -189,7 +202,8 @@ public class TileFurnace extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTracker);
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
 	}
 
 	/* AUGMENT HELPERS */
@@ -212,6 +226,13 @@ public class TileFurnace extends TileMachineBase {
 		super.resetAugments();
 
 		foodBoost = false;
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 ? foodBoost ? FurnaceManager.isFoodItem(stack) : FurnaceManager.recipeExists(stack) : true;
 	}
 
 }

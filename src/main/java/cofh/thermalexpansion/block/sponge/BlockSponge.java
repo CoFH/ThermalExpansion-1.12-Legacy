@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.sponge;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.StringHelper;
@@ -25,7 +27,6 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockSponge extends BlockTEBase {
 
@@ -163,12 +164,11 @@ public class BlockSponge extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry
-					.addRecipe(new ShapedOreRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
+			GameRegistry.addRecipe(ShapedRecipe(spongeBasic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', "slimeball" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(spongeMagmatic, new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B',
-					Items.magma_cream }));
+			GameRegistry.addRecipe(ShapedRecipe(spongeMagmatic,
+					new Object[] { "SWS", "WBW", "SWS", 'S', Items.string, 'W', "dustWood", 'B', Items.magma_cream }));
 		}
 		return true;
 	}

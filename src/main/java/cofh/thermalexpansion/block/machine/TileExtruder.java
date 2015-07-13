@@ -131,7 +131,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			}
 			if (canFinish()) {
 				processFinish();
-				transferProducts();
+				transferOutput();
 				processRem = processMax;
 
 				if (!redstoneControlOrDisable() || !canStart()) {
@@ -144,7 +144,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
 			}
 			if (timeCheckEighth() && canStart()) {
 				processStart();
@@ -208,9 +208,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferOutput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -221,7 +221,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_EJECT[level], side)) {
+				if (transferItem(0, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
 					break;
 				}

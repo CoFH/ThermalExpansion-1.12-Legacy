@@ -50,7 +50,9 @@ public class TileCharger extends TileMachineBase {
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion.Charger");
 	}
 
+	int inputTracker;
 	int outputTracker;
+
 	IEnergyContainerItem containerItem = null;
 
 	public TileCharger() {
@@ -198,9 +200,27 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void transferOutput() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {
@@ -230,7 +250,7 @@ public class TileCharger extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(2, AUTO_EJECT[level], side)) {
+				if (transferItem(2, AUTO_TRANSFER[level], side)) {
 					outputTracker = side;
 					break;
 				}
@@ -266,7 +286,7 @@ public class TileCharger extends TileMachineBase {
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
 			}
 			if (containerItem == null) {
 				if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
@@ -296,7 +316,7 @@ public class TileCharger extends TileMachineBase {
 		processRem -= received;
 
 		if (processRem <= 0) {
-			transferProducts();
+			transferOutput();
 
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
@@ -304,12 +324,6 @@ public class TileCharger extends TileMachineBase {
 				tracker.markTime(worldObj);
 			}
 		}
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		return slot == 0 ? EnergyHelper.isEnergyContainerItem(stack) || ChargerManager.recipeExists(stack) : true;
 	}
 
 	/* GUI METHODS */
@@ -331,7 +345,8 @@ public class TileCharger extends TileMachineBase {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker");
+		inputTracker = nbt.getInteger("TrackIn");
+		outputTracker = nbt.getInteger("TrackOut");
 
 		// TODO:
 		/** PATCH LOGIC for B9 Slot Addition - to be removed in RELEASE */
@@ -357,7 +372,8 @@ public class TileCharger extends TileMachineBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTracker);
+		nbt.setInteger("TrackIn", inputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
 	}
 
 	/* IInventory */
@@ -406,6 +422,12 @@ public class TileCharger extends TileMachineBase {
 			containerItem = null;
 		}
 		super.markDirty();
+	}
+
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot == 0 ? EnergyHelper.isEnergyContainerItem(stack) || ChargerManager.recipeExists(stack) : true;
 	}
 
 	/* IEnergyInfo */

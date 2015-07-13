@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.light;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
@@ -38,7 +40,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.ShapedOreRecipe;
 
 public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
@@ -315,12 +316,12 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			addRecipes(illuminator);
 		}
 		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium",
-					'G', "blockGlassHardened", 'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G',
+					"blockGlassHardened", 'S', "ingotSignalum" }));
 			addRecipes(lampLumiumRadiant);
 		}
 		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
-			GameRegistry.addRecipe(new ShapedOreRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
+			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
 					"blockGlassHardened", 'S', "ingotSignalum" }));
 			addRecipes(lampLumium);
 		}

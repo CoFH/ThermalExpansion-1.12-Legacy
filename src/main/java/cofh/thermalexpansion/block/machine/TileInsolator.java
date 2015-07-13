@@ -53,6 +53,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion.Insolator");
 	}
 
+	int inputTrackerPrimary;
+	int inputTrackerSecondary;
 	int outputTrackerPrimary;
 	int outputTrackerSecondary;
 
@@ -91,7 +93,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			}
 			if (canFinish()) {
 				processFinish();
-				transferProducts();
+				transferOutput();
+				transferInput();
 				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
@@ -104,7 +107,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
-				transferProducts();
+				transferOutput();
+				transferInput();
 			}
 			if (timeCheckEighth() && canStart()) {
 				processStart();
@@ -148,7 +152,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (secondaryItem != null && inventory[3] != null) {
+		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
 			if (!inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
@@ -216,12 +220,19 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
-				} else {
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
+				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				}
-				if (secondaryChance < recipeChance && inventory[3].stackSize + secondaryItem.stackSize <= secondaryItem.getMaxStackSize()
-						&& worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-					inventory[3].stackSize += secondaryItem.stackSize;
+				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
+					inventory[3].stackSize = inventory[3].getMaxStackSize();
 				}
 			}
 		}
@@ -241,9 +252,36 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	protected void transferProducts() {
+	protected void transferInput() {
 
-		if (!augmentAutoTransfer) {
+		if (!augmentAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1 || sideCache[side] == 5) {
+				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+					inputTrackerPrimary = side;
+					break;
+				}
+			}
+		}
+		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
+			side = i % 6;
+			if (sideCache[side] == 1 || sideCache[side] == 6) {
+				if (extractItem(1, AUTO_TRANSFER[level], side)) {
+					inputTrackerSecondary = side;
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	protected void transferOutput() {
+
+		if (!augmentAutoOutput) {
 			return;
 		}
 		int side;
@@ -252,7 +290,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, AUTO_EJECT[level], side)) {
+					if (transferItem(2, AUTO_TRANSFER[level], side)) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -266,7 +304,7 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, AUTO_EJECT[level], side)) {
+				if (transferItem(3, AUTO_TRANSFER[level], side)) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -280,20 +318,6 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		super.onLevelChange();
 
 		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
-	}
-
-	@Override
-	public boolean isItemValid(ItemStack stack, int slot, int side) {
-
-		if (lockPrimary) {
-			if (slot == 0) {
-				return InsolatorManager.isItemFertilizer(stack);
-			}
-			if (slot == 1) {
-				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
-			}
-		}
-		return slot <= 1 ? InsolatorManager.isItemValid(stack) : true;
 	}
 
 	@Override
@@ -360,6 +384,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		super.readFromNBT(nbt);
 
+		inputTrackerPrimary = nbt.getInteger("TrackIn1");
+		inputTrackerSecondary = nbt.getInteger("TrackIn2");
 		outputTrackerPrimary = nbt.getInteger("Tracker1");
 		outputTrackerSecondary = nbt.getInteger("Tracker2");
 		lockPrimary = nbt.getBoolean("SlotLock");
@@ -371,6 +397,8 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 
 		super.writeToNBT(nbt);
 
+		nbt.setInteger("TrackIn1", inputTrackerPrimary);
+		nbt.setInteger("TrackIn2", inputTrackerSecondary);
 		nbt.setInteger("Tracker1", outputTrackerPrimary);
 		nbt.setInteger("Tracker2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
@@ -424,6 +452,21 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		if (lockPrimary) {
+			if (slot == 0) {
+				return InsolatorManager.isItemFertilizer(stack);
+			}
+			if (slot == 1) {
+				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
+			}
+		}
+		return slot <= 1 ? InsolatorManager.isItemValid(stack) : true;
 	}
 
 	/* IFluidHandler */

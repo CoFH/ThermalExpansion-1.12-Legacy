@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.fluid.TFFluids;
@@ -27,8 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class TransposerManager {
 
 	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<List<Integer>, RecipeTransposer>();
-	private static Map<ComparableItemStackSafe, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStackSafe, RecipeTransposer>();
-	private static Set<ComparableItemStackSafe> validationSet = new THashSet<ComparableItemStackSafe>();
+	private static Map<ComparableItemStack, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStack, RecipeTransposer>();
+	private static Set<ComparableItemStack> validationSet = new THashSet<ComparableItemStack>();
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -136,20 +135,20 @@ public class TransposerManager {
 	public static void refreshRecipes() {
 
 		Map<List<Integer>, RecipeTransposer> tempFillMap = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
-		Map<ComparableItemStackSafe, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStackSafe, RecipeTransposer>(recipeMapExtraction.size());
-		Set<ComparableItemStackSafe> tempSet = new THashSet<ComparableItemStackSafe>();
+		Map<ComparableItemStack, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStack, RecipeTransposer>(recipeMapExtraction.size());
+		Set<ComparableItemStack> tempSet = new THashSet<ComparableItemStack>();
 		RecipeTransposer tempRecipe;
 
 		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe inputStack = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStack inputStack = new ComparableItemStack(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
 			tempFillMap.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
 			tempSet.add(inputStack);
 		}
-		for (Entry<ComparableItemStackSafe, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
+		for (Entry<ComparableItemStack, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackSafe inputStack = new ComparableItemStackSafe(tempRecipe.input);
+			ComparableItemStack inputStack = new ComparableItemStack(tempRecipe.input);
 			tempExtractMap.put(inputStack, tempRecipe);
 			tempSet.add(inputStack);
 		}
@@ -169,7 +168,7 @@ public class TransposerManager {
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
 
-		ComparableItemStackSafe inputStack = new ComparableItemStackSafe(input);
+		ComparableItemStack inputStack = new ComparableItemStack(input);
 		recipeMapFill.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), recipeFill);
 		validationSet.add(inputStack);
 
@@ -189,7 +188,7 @@ public class TransposerManager {
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
 
-		ComparableItemStackSafe inputStack = new ComparableItemStackSafe(input);
+		ComparableItemStack inputStack = new ComparableItemStack(input);
 		recipeMapExtraction.put(inputStack, recipeExtraction);
 		validationSet.add(inputStack);
 
@@ -208,8 +207,8 @@ public class TransposerManager {
 			return false;
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
-		validationSet.add(new ComparableItemStackSafe(input));
+		recipeMapFill.put(Arrays.asList(new ComparableItemStack(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
+		validationSet.add(new ComparableItemStack(input));
 
 		if (reversible) {
 			addExtractionRecipe(energy, output, input, fluid, 100, false, overwrite);
@@ -229,8 +228,8 @@ public class TransposerManager {
 			return false;
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
-		recipeMapExtraction.put(new ComparableItemStackSafe(input), recipeExtraction);
-		validationSet.add(new ComparableItemStackSafe(input));
+		recipeMapExtraction.put(new ComparableItemStack(input), recipeExtraction);
+		validationSet.add(new ComparableItemStack(input));
 
 		if (reversible) {
 			addFillRecipe(energy, output, input, fluid, false, overwrite);
@@ -241,12 +240,12 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static boolean removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackSafe(input).hashCode(), fluid.getFluid().hashCode())) != null;
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStack(input).hashCode(), fluid.getFluid().hashCode())) != null;
 	}
 
 	public static boolean removeExtractionRecipe(ItemStack input) {
 
-		return recipeMapExtraction.remove(new ComparableItemStackSafe(input)) != null;
+		return recipeMapExtraction.remove(new ComparableItemStack(input)) != null;
 	}
 
 	/* HELPER FUNCTIONS */

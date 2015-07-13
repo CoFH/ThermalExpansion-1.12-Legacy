@@ -151,7 +151,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 			} else {
 				slot.onSlotChanged();
 			}
-			if (stackInSlot.stackSize == stack.stackSize) {
+			if (stackInSlot.stackSize >= stack.stackSize) {
 				return null;
 			}
 		}
