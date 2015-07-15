@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.device;
+package cofh.thermalexpansion.block.workbench;
 
 import cofh.api.core.ICustomInventory;
 import cofh.api.inventory.IInventoryRetainer;
@@ -13,8 +13,8 @@ import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
-import cofh.thermalexpansion.gui.client.device.GuiWorkbench;
-import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
+import cofh.thermalexpansion.gui.client.GuiWorkbenchNew;
+import cofh.thermalexpansion.gui.container.ContainerWorkbenchNew;
 import cofh.thermalexpansion.util.SchematicHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -39,14 +39,19 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public static void configure() {
 
 		String comment = "Enable this to allow for Workbenches to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Workbench.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.config.get("Security", "Workbench.All.Securable", enableSecurity, comment);
 	}
 
-	public static boolean enableSecurity = true;
+	public static int[] INVENTORY = { 36, 18, 27, 33, 36 };
+	public static int[] SCHEMATICS = { 12, 3, 6, 9, 12 };
 
 	public static enum PacketInfoID {
 		CLEAR_GRID, SET_GRID, NEI_SUP
 	}
+
+	public static boolean enableSecurity = true;
+
+	public byte type = 1;
 
 	public int selectedSchematic = 0;
 	public boolean[] missingItem = { false, false, false, false, false, false, false, false, false };
@@ -57,19 +62,25 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public TileWorkbench() {
 
-		inventory = new ItemStack[21];
+		inventory = new ItemStack[SCHEMATICS[1] + INVENTORY[1]];
+	}
+
+	public TileWorkbench(int metadata) {
+
+		type = (byte) metadata;
+		inventory = new ItemStack[SCHEMATICS[metadata] + INVENTORY[metadata]];
 	}
 
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
+		return "tile.thermalexpansion.workbench." + BlockWorkbench.NAMES[getType()] + ".name";
 	}
 
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.WORKBENCH.ordinal();
+		return type;
 	}
 
 	public int getCurrentSchematicSlot() {
@@ -240,6 +251,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 		PacketCoFHBase payload = super.getPacket();
 
+		payload.addByte(type);
 		payload.addByte(selectedSchematic);
 
 		return payload;
@@ -256,6 +268,8 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
+
+		type = payload.getByte();
 		selectedSchematic = payload.getByte();
 	}
 
@@ -299,13 +313,13 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiWorkbench(inventory, this);
+		return new GuiWorkbenchNew(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerWorkbench(inventory, this);
+		return new ContainerWorkbenchNew(inventory, this);
 	}
 
 	@Override
@@ -419,11 +433,11 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public IIcon getTexture(int side, int pass) {
 
 		if (side == 0) {
-			return IconRegistry.getIcon("WorkbenchBottom");
+			return IconRegistry.getIcon("WorkbenchBottom", type);
 		} else if (side == 1) {
-			return IconRegistry.getIcon("WorkbenchTop");
+			return IconRegistry.getIcon("WorkbenchTop", type);
 		}
-		return IconRegistry.getIcon("WorkbenchSide");
+		return IconRegistry.getIcon("WorkbenchSide", type);
 	}
 
 }

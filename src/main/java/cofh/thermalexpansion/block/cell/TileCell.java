@@ -267,7 +267,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
 
 		tag.setInteger("Send", (energySend * 1000) / MAX_SEND[getType()]);
-		tag.setInteger("Recv", energyReceive * 1000 / MAX_RECEIVE[getType()]);
+		tag.setInteger("Recv", (energyReceive * 1000) / MAX_RECEIVE[getType()]);
 
 		return true;
 	}
