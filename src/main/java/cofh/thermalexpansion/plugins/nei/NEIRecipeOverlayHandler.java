@@ -7,8 +7,8 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
 import cofh.lib.gui.GuiBase;
-import cofh.thermalexpansion.block.device.TileWorkbench;
-import cofh.thermalexpansion.gui.client.device.GuiWorkbench;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
+import cofh.thermalexpansion.gui.client.GuiWorkbench;
 
 import java.util.List;
 

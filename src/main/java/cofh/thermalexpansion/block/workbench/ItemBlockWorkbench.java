@@ -1,17 +1,20 @@
 package cofh.thermalexpansion.block.workbench;
 
+import cofh.api.item.IInventoryContainerItem;
 import cofh.core.item.ItemBlockBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.cell.BlockCell;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockWorkbench extends ItemBlockBase {
+public class ItemBlockWorkbench extends ItemBlockBase implements IInventoryContainerItem {
 
 	public ItemBlockWorkbench(Block block) {
 
@@ -25,6 +28,21 @@ public class ItemBlockWorkbench extends ItemBlockBase {
 	}
 
 	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+
+		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
+		case CREATIVE:
+			return EnumRarity.epic;
+		case RESONANT:
+			return EnumRarity.rare;
+		case REINFORCED:
+			return EnumRarity.uncommon;
+		default:
+			return EnumRarity.common;
+		}
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		SecurityHelper.addOwnerInformation(stack, list);
@@ -34,9 +52,17 @@ public class ItemBlockWorkbench extends ItemBlockBase {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
+		int meta = ItemHelper.getItemDamage(stack);
 		SecurityHelper.addAccessInformation(stack, list);
 		list.add(StringHelper.getInfoText("info.thermalexpansion.workbench"));
-		ItemHelper.addInventoryInformation(stack, list, 0, 20);
+		ItemHelper.addInventoryInformation(stack, list, 0, TileWorkbench.INVENTORY[meta]);
+	}
+
+	/* IInventoryContainerItem */
+	@Override
+	public int getSizeInventory(ItemStack container) {
+
+		return TileWorkbench.INVENTORY[ItemHelper.getItemDamage(container)];
 	}
 
 }

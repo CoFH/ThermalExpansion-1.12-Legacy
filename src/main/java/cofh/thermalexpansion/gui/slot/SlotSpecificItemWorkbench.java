@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.slot;
 
 import cofh.lib.gui.slot.SlotSpecificItem;
-import cofh.thermalexpansion.block.device.TileWorkbench;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;

@@ -69,7 +69,6 @@ public class ItemBlockLight extends ItemBlock {
 		if (!world.setBlock(x, y, z, field_150939_a, metadata, 3)) {
 			return false;
 		}
-
 		if (world.getBlock(x, y, z) == field_150939_a) {
 			field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
 			field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
@@ -93,7 +92,6 @@ public class ItemBlockLight extends ItemBlock {
 				break;
 			}
 		}
-
 		return true;
 	}
 

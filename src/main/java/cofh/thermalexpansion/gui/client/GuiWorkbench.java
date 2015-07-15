@@ -1,13 +1,13 @@
-package cofh.thermalexpansion.gui.client.device;
+package cofh.thermalexpansion.gui.client;
 
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.util.helpers.SecurityHelper;
-import cofh.thermalexpansion.block.device.TileWorkbench;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
+import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cofh.thermalexpansion.network.PacketTEBase;
 
 import java.util.UUID;
@@ -18,24 +18,67 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiWorkbench extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Workbench.png";
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
+	static String[] TEX_PATH = new String[4];
+	static ResourceLocation[] TEXTURES = new ResourceLocation[4];
+
+	static {
+		for (int i = 0; i < 4; i++) {
+			TEX_PATH[i] = TEProps.PATH_GUI_WORKBENCH + "Workbench" + (i + 1) + ".png";
+			TEXTURES[i] = new ResourceLocation(TEX_PATH[i]);
+		}
+	}
 
 	public TileWorkbench myTile;
 	UUID playerName;
+	int type;
+	int gridXOffset = 44;
+
+	int schematicOffset = 17;
+	int schematicPerRow = 1;
 
 	ElementButton setSchematic;
 	ElementButton getSchematic;
 
 	public GuiWorkbench(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerWorkbench(inventory, theTile), TEXTURE);
-		myTile = (TileWorkbench) theTile;
-		name = myTile.getInventoryName();
-		playerName = SecurityHelper.getID(inventory.player);
-		ySize = 210;
+		super(new ContainerWorkbench(inventory, theTile));
 
-		generateInfo("tab.thermalexpansion.device.workbench", 3);
+		myTile = (TileWorkbench) theTile;
+		playerName = SecurityHelper.getID(inventory.player);
+		type = myTile.getType();
+
+		switch (type) {
+		case 1:
+			texture = TEXTURES[0];
+			ySize = 210;
+			break;
+		case 2:
+			texture = TEXTURES[1];
+			ySize = 228;
+			gridXOffset = 54;
+			schematicOffset = 10;
+			schematicPerRow = 2;
+			break;
+		case 3:
+			texture = TEXTURES[2];
+			xSize = 212;
+			ySize = 228;
+			gridXOffset = 80;
+			schematicOffset = 16;
+			schematicPerRow = 3;
+			break;
+		default:
+			texture = TEXTURES[3];
+			xSize = 230;
+			ySize = 228;
+			gridXOffset = 98;
+			schematicOffset = 16;
+			schematicPerRow = 4;
+			break;
+		}
+		name = myTile.getInventoryName();
+
+		generateInfo("tab.thermalexpansion.workbench", 3);
 	}
 
 	@Override
@@ -47,9 +90,8 @@ public class GuiWorkbench extends GuiBaseAdv {
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
-
-		setSchematic = (ElementButton) addElement(new ElementButton(this, 98, 55, "Set", 176, 32, 176, 48, 176, 64, 16, 16, TEX_PATH));
-		getSchematic = (ElementButton) addElement(new ElementButton(this, 98, 19, "Get", 192, 32, 192, 48, 192, 64, 16, 16, TEX_PATH));
+		setSchematic = (ElementButton) addElement(new ElementButton(this, gridXOffset + 54, 55, "Set", 240, 0, 240, 16, 240, 32, 16, 16, TEX_PATH[0]));
+		getSchematic = (ElementButton) addElement(new ElementButton(this, gridXOffset + 54, 19, "Get", 240, 48, 240, 64, 240, 80, 16, 16, TEX_PATH[0]));
 	}
 
 	@Override
@@ -67,14 +109,14 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (gridNotEmpty()) {
 			getSchematic.setToolTip("info.thermalexpansion.gridClear");
-			getSchematic.setSheetX(208);
-			getSchematic.setHoverX(208);
+			getSchematic.setSheetY(48);
+			getSchematic.setHoverY(64);
 			getSchematic.setActive();
 		} else {
 			if (hasValidSchematic()) {
 				getSchematic.setToolTip("info.thermalexpansion.gridSet");
-				getSchematic.setSheetX(192);
-				getSchematic.setHoverX(192);
+				getSchematic.setSheetX(96);
+				getSchematic.setHoverX(112);
 				getSchematic.setActive();
 			} else {
 				getSchematic.clearToolTip();
@@ -131,12 +173,12 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (!gridNotEmpty()) {
 			getSchematic.setToolTip("info.thermalexpansion.gridSet");
-			getSchematic.setSheetX(192);
-			getSchematic.setHoverX(192);
+			getSchematic.setSheetX(48);
+			getSchematic.setHoverX(64);
 		} else {
 			getSchematic.setToolTip("info.thermalexpansion.gridClear");
-			getSchematic.setSheetX(208);
-			getSchematic.setHoverX(208);
+			getSchematic.setSheetX(96);
+			getSchematic.setHoverX(112);
 		}
 	}
 
@@ -165,7 +207,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (myTile.missingItem[j + i * 3]) {
-					drawTexturedModalRect(guiLeft + 44 + j * 18, guiTop + 19 + i * 18, 176, 80, 16, 16);
+					drawTexturedModalRect(guiLeft + gridXOffset + j * 18, guiTop + 19 + i * 18, 240, 144, 16, 16);
 				}
 			}
 		}
@@ -173,22 +215,11 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	protected void drawCurSelection() {
 
-		int offset = 0;
+		int offset = !hasSchematic() ? 20 : 0;
+		int x = guiLeft + schematicOffset - 2 + (myTile.selectedSchematic % schematicPerRow) * 19;
+		int y = guiTop + 16 + (myTile.selectedSchematic / schematicPerRow) * 19;
 
-		if (!hasSchematic()) {
-			offset = 32;
-		}
-		switch (myTile.selectedSchematic) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 15, guiTop + 15, 176 + offset, 0, 20, 20);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 15, guiTop + 35, 176 + offset, 0, 20, 20);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 15, guiTop + 55, 176 + offset, 0, 20, 20);
-			break;
-		}
+		drawTexturedModalRect(x, y, 236, 160 + offset, 20, 20);
 	}
 
 }

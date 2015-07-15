@@ -4,7 +4,7 @@ import codechicken.nei.api.API;
 import codechicken.nei.api.IConfigureNEI;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
-import cofh.thermalexpansion.gui.client.device.GuiWorkbench;
+import cofh.thermalexpansion.gui.client.GuiWorkbench;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCharger;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingMachine;

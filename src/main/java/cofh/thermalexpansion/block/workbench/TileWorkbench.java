@@ -2,19 +2,17 @@ package cofh.thermalexpansion.block.workbench;
 
 import cofh.api.core.ICustomInventory;
 import cofh.api.inventory.IInventoryRetainer;
-import cofh.api.tileentity.ISidedTexture;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
-import cofh.thermalexpansion.gui.client.GuiWorkbenchNew;
-import cofh.thermalexpansion.gui.container.ContainerWorkbenchNew;
+import cofh.thermalexpansion.gui.client.GuiWorkbench;
+import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cofh.thermalexpansion.util.SchematicHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -26,9 +24,8 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
 
-public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, ISidedTexture, IInventoryRetainer {
+public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, IInventoryRetainer {
 
 	public static void initialize() {
 
@@ -313,13 +310,13 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiWorkbenchNew(inventory, this);
+		return new GuiWorkbench(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerWorkbenchNew(inventory, this);
+		return new ContainerWorkbench(inventory, this);
 	}
 
 	@Override
@@ -332,10 +329,13 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
-		super.readFromNBT(nbt);
-
-		readCraftingFromNBT(nbt);
+		type = nbt.getByte("Type");
 		selectedSchematic = nbt.getByte("Mode");
+		readCraftingFromNBT(nbt);
+
+		inventory = new ItemStack[SCHEMATICS[type] + INVENTORY[type]];
+
+		super.readFromNBT(nbt);
 	}
 
 	@Override
@@ -343,8 +343,9 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 		super.writeToNBT(nbt);
 
-		writeCraftingToNBT(nbt);
+		nbt.setByte("Type", type);
 		nbt.setByte("Mode", (byte) selectedSchematic);
+		writeCraftingToNBT(nbt);
 	}
 
 	public void readCraftingFromNBT(NBTTagCompound nbt) {
@@ -426,18 +427,6 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
 		return false;
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (side == 0) {
-			return IconRegistry.getIcon("WorkbenchBottom", type);
-		} else if (side == 1) {
-			return IconRegistry.getIcon("WorkbenchTop", type);
-		}
-		return IconRegistry.getIcon("WorkbenchSide", type);
 	}
 
 }

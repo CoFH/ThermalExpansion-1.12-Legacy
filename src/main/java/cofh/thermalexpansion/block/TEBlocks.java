@@ -32,6 +32,8 @@ import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.ItemBlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.ItemBlockTank;
+import cofh.thermalexpansion.block.workbench.BlockWorkbench;
+import cofh.thermalexpansion.block.workbench.ItemBlockWorkbench;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
@@ -59,6 +61,7 @@ public class TEBlocks {
 		blockTank = addBlock(new BlockTank());
 		blockStrongbox = addBlock(new BlockStrongbox());
 		blockCache = addBlock(new BlockCache());
+		blockWorkbench = addBlock(new BlockWorkbench());
 		blockTesseract = addBlock(new BlockEnder());
 		blockPlate = addBlock(new BlockPlate());
 		blockLight = addBlock(new BlockLight());
@@ -78,6 +81,7 @@ public class TEBlocks {
 		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
 		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
 		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
+		GameRegistry.registerBlock(blockWorkbench, ItemBlockWorkbench.class, "Workbench");
 		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
 		GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
 		GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
@@ -116,6 +120,7 @@ public class TEBlocks {
 	public static Block blockTank;
 	public static Block blockStrongbox;
 	public static Block blockCache;
+	public static Block blockWorkbench;
 	public static Block blockTesseract;
 	public static Block blockPlate;
 	public static Block blockLight;

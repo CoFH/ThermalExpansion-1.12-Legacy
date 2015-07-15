@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.gui.slot;
 
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.device.TileWorkbench;
-import cofh.thermalexpansion.gui.container.device.ContainerWorkbench;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
+import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 import net.minecraft.entity.player.EntityPlayer;

@@ -14,12 +14,12 @@ import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.device.TileActivator;
 import cofh.thermalexpansion.block.device.TileBreaker;
 import cofh.thermalexpansion.block.device.TileNullifier;
-import cofh.thermalexpansion.block.device.TileWorkbench;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.Proxy;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
@@ -290,12 +290,12 @@ public class ThermalExpansion extends BaseMod {
 	public void resetClientConfigs() {
 
 		TileCell.configure();
-		TileWorkbench.configure();
 		TileActivator.configure();
 		TileBreaker.configure();
 		TileNullifier.configure();
 		TileDynamoBase.configure();
 		TileMachineBase.configure();
+		TileWorkbench.configure();
 		TileStrongbox.configure();
 		ItemSatchel.configure();
 

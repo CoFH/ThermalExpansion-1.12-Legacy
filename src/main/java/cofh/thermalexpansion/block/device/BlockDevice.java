@@ -1,18 +1,14 @@
 package cofh.thermalexpansion.block.device;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
-import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
@@ -59,7 +55,7 @@ public class BlockDevice extends BlockTEBase {
 		}
 		switch (Types.values()[metadata]) {
 		case WORKBENCH:
-			return new TileWorkbench();
+			return new TileWorkbenchFalse();
 		case LEXICON:
 			return new TileLexicon();
 		case ACTIVATOR:
@@ -94,14 +90,7 @@ public class BlockDevice extends BlockTEBase {
 		if (stack.stackTagCompound != null) {
 			TileEntity aTile = world.getTileEntity(x, y, z);
 
-			if (aTile instanceof TileWorkbench) {
-				TileWorkbench tile = (TileWorkbench) aTile;
-
-				if (stack.stackTagCompound.hasKey("Inventory")) {
-					tile.selectedSchematic = stack.stackTagCompound.getByte("Mode");
-					tile.readInventoryFromNBT(stack.stackTagCompound);
-				}
-			} else if (aTile instanceof TileAugmentable) {
+			if (aTile instanceof TileAugmentable) {
 				TileAugmentable tile = (TileAugmentable) world.getTileEntity(x, y, z);
 
 				tile.readAugmentsFromNBT(stack.stackTagCompound);
@@ -208,18 +197,7 @@ public class BlockDevice extends BlockTEBase {
 		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
 		TileEntity tile = world.getTileEntity(x, y, z);
 
-		if (tile instanceof TileWorkbench) {
-			TileWorkbench theTile = (TileWorkbench) tile;
-
-			if (tag == null) {
-				tag = new NBTTagCompound();
-			}
-			tag.setString("Owner", theTile.getOwnerName());
-			tag.setByte("Access", (byte) theTile.getAccess().ordinal());
-			tag.setByte("Mode", (byte) theTile.selectedSchematic);
-
-			theTile.writeInventoryToNBT(tag);
-		} else if (tile instanceof TileAugmentable) {
+		if (tile instanceof TileAugmentable) {
 			TileAugmentable theTile = (TileAugmentable) world.getTileEntity(x, y, z);
 
 			if (tag == null) {
@@ -240,9 +218,7 @@ public class BlockDevice extends BlockTEBase {
 		NBTTagCompound tag = getItemStackTag(world, x, y, z);
 
 		TileEntity tile = world.getTileEntity(x, y, z);
-		if (tile instanceof TileWorkbench) {
-			((TileWorkbench) tile).inventory = new ItemStack[((TileWorkbench) tile).inventory.length];
-		} else if (tile instanceof TileAugmentable) {
+		if (tile instanceof TileAugmentable) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
@@ -259,7 +235,7 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public boolean initialize() {
 
-		TileWorkbench.initialize();
+		TileWorkbenchFalse.initialize();
 		// TileLexicon.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
@@ -275,14 +251,12 @@ public class BlockDevice extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		workbench = new ItemStack(this, 1, Types.WORKBENCH.ordinal());
 		// lexicon = new ItemStack(this, 1, Types.LEXICON.ordinal());
 		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
 		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		// pump = new ItemStack(this, 1, Types.PUMP.ordinal());
 		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
 
-		GameRegistry.registerCustomItemStack("workbench", workbench);
 		// GameRegistry.registerCustomItemStack("lexicon", lexicon);
 		GameRegistry.registerCustomItemStack("activator", activator);
 		GameRegistry.registerCustomItemStack("breaker", breaker);
@@ -303,27 +277,6 @@ public class BlockDevice extends BlockTEBase {
 		String tinPart = "thermalexpansion:machineTin";
 
 		// @formatter:off
-		if (enable[Types.WORKBENCH.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(7, workbench, new Object[] {
-					" X ",
-					"ICI",
-					" P ",
-					'C', Blocks.crafting_table,
-					'I', "ingotCopper",
-					'P', BlockStrongbox.strongboxBasic,
-					'X', Items.paper
-			}));
-			GameRegistry.addRecipe(ShapedRecipe(workbench, new Object[] {
-					"YXY",
-					"ICI",
-					"YPY",
-					'C', Blocks.crafting_table,
-					'I', "ingotCopper",
-					'P', Blocks.chest,
-					'X', Items.paper,
-					'Y', "ingotTin"
-			}));
-		}
 		if (enable[Types.LEXICON.ordinal()]) {
 
 		}
@@ -365,7 +318,6 @@ public class BlockDevice extends BlockTEBase {
 		}
 		// @formatter:on
 
-		TECraftingHandler.addSecureRecipe(workbench);
 		// TECraftingHandler.addSecureRecipe(lexicon);
 		TECraftingHandler.addSecureRecipe(activator);
 		TECraftingHandler.addSecureRecipe(breaker);
@@ -400,13 +352,13 @@ public class BlockDevice extends BlockTEBase {
 		String category = "Device.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			if (i != Types.LEXICON.ordinal() && i != Types.PUMP.ordinal()) {
+			if (i != Types.WORKBENCH.ordinal() && i != Types.LEXICON.ordinal() && i != Types.PUMP.ordinal()) {
 				enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 			}
 		}
+		enable[Types.WORKBENCH.ordinal()] = false;
 	}
 
-	public static ItemStack workbench;
 	public static ItemStack lexicon;
 	public static ItemStack activator;
 	public static ItemStack breaker;

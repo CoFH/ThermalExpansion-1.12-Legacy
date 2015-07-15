@@ -272,6 +272,7 @@ public class BlockCell extends BlockTEBase {
 		TECraftingHandler.addSecureRecipe(cellHardened);
 		TECraftingHandler.addSecureRecipe(cellReinforced);
 		TECraftingHandler.addSecureRecipe(cellResonant);
+
 		return true;
 	}
 

@@ -6,7 +6,7 @@ import cofh.lib.inventory.InventoryCraftingCustom;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
-import cofh.thermalexpansion.gui.slot.SlotCraftingOutputWorkbenchNew;
+import cofh.thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import cofh.thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.SchematicHelper;
@@ -29,7 +29,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematicContainer {
+public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
 	TileWorkbench myTile;
 	IInventory craftResult = new InventoryCraftResult();
@@ -40,9 +40,9 @@ public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematic
 	int rowSize = 9;
 
 	public InventoryCraftingCustom craftMatrix;
-	public SlotCraftingOutputWorkbenchNew myOutput;
+	public SlotCraftingOutputWorkbench myOutput;
 
-	public ContainerWorkbenchNew(InventoryPlayer inventory, TileEntity tile) {
+	public ContainerWorkbench(InventoryPlayer inventory, TileEntity tile) {
 
 		super(tile);
 
@@ -56,32 +56,32 @@ public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematic
 		switch (type) {
 		case 1:
 			addPlayerSlotsToContainer(inventory, 8, 128);
-			addInventorySlotsToContainer(myTile, 8, 79, 2, 9);
 			addSchematicSlotsToContainer(17, 18, 3, 1);
-			myOutput = new SlotCraftingOutputWorkbenchNew(myTile, this, inventory.player, craftResult, 0, 143, 37);
+			addInventorySlotsToContainer(myTile, 8, 79, 2, 9);
+			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
 			rowSize = 9;
 			break;
 		case 2:
 			addPlayerSlotsToContainer(inventory, 8, 146);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 9);
 			addSchematicSlotsToContainer(10, 18, 3, 2);
-			myOutput = new SlotCraftingOutputWorkbenchNew(myTile, this, inventory.player, craftResult, 0, 143, 37);
+			addInventorySlotsToContainer(myTile, 8, 79, 3, 9);
+			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
 			rowSize = 9;
 			gridXOffset = 54;
 			break;
 		case 3:
 			addPlayerSlotsToContainer(inventory, 26, 146);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 11);
 			addSchematicSlotsToContainer(16, 18, 3, 3);
-			myOutput = new SlotCraftingOutputWorkbenchNew(myTile, this, inventory.player, craftResult, 0, 179, 37);
+			addInventorySlotsToContainer(myTile, 8, 79, 3, 11);
+			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 179, 37);
 			rowSize = 11;
 			gridXOffset = 80;
 			break;
 		default:
 			addPlayerSlotsToContainer(inventory, 35, 146);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 12);
 			addSchematicSlotsToContainer(16, 18, 3, 4);
-			myOutput = new SlotCraftingOutputWorkbenchNew(myTile, this, inventory.player, craftResult, 0, 197, 37);
+			addInventorySlotsToContainer(myTile, 8, 79, 3, 12);
+			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 197, 37);
 			rowSize = 13;
 			gridXOffset = 98;
 		}
@@ -120,9 +120,8 @@ public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematic
 
 	private void addSchematicSlotsToContainer(int xOffset, int yOffset, int rows, int cols) {
 
-		// These are added in reverse order so that shift + click inserts in the proper order.
-		for (int i = rows; i > 0; i--) {
-			for (int j = cols; j > 0; j--) {
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
 				addSlotToContainer(new SlotSpecificItemWorkbench(myTile, j + i * cols, xOffset + j * 19, yOffset + i * 19, TEItems.diagramSchematic)
 						.setSlotStackLimit(1));
 			}
@@ -141,13 +140,13 @@ public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematic
 		myTile.updateClient = true;
 
 		int invPlayer = 36;
-		int invTile = invPlayer + numInventory;
-		int invSchematic = invTile + numSchematic;
+		int invSchematic = invPlayer + numSchematic;
+		int invTile = invSchematic + numInventory;
 
 		if (slotId == invSchematic) {
 			modifier = 0;
 		}
-		if (mouseButton == 1 && modifier == 1 && slotId >= invTile && slotId < invSchematic) {
+		if (mouseButton == 1 && modifier == 1 && slotId >= invPlayer && slotId < invSchematic) {
 			Slot slot = (Slot) inventorySlots.get(slotId);
 			if (slot.getHasStack()) {
 				myTile.setCurrentSchematicSlot(slot.getSlotIndex());
@@ -158,7 +157,7 @@ public class ContainerWorkbenchNew extends ContainerTEBase implements ISchematic
 		}
 		if (ServerHelper.isClientWorld(player.worldObj)) {
 			ItemStack result = super.slotClick(slotId, mouseButton, modifier, player);
-			if (slotId >= invPlayer && slotId < invTile) {
+			if (slotId >= invSchematic && slotId < invTile) {
 				myTile.createItemClient(false, myOutput.getStackNoUpdate());
 			}
 			return result;
