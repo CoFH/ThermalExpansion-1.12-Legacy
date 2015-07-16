@@ -90,6 +90,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			return new TilePlateTranslocate();
 		case POWERED_SIGNAL:
 			return new TilePlateCharger();
+		case POWERED_IMPULSE:
+			return new TilePlateExcursion();
 		case POWERED_TRANSLOCATE:
 			return new TilePlateTeleporter();
 		default:
