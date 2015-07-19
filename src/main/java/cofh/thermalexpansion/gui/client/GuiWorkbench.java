@@ -5,6 +5,8 @@ import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
@@ -79,6 +81,11 @@ public class GuiWorkbench extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 
 		generateInfo("tab.thermalexpansion.workbench", 3);
+
+		if (myTile.type == BlockWorkbench.Types.CREATIVE.ordinal()) {
+			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.workbench.creative");
+		}
+
 	}
 
 	@Override
@@ -109,14 +116,14 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (gridNotEmpty()) {
 			getSchematic.setToolTip("info.thermalexpansion.gridClear");
-			getSchematic.setSheetY(48);
-			getSchematic.setHoverY(64);
+			getSchematic.setSheetY(96);
+			getSchematic.setHoverY(112);
 			getSchematic.setActive();
 		} else {
 			if (hasValidSchematic()) {
 				getSchematic.setToolTip("info.thermalexpansion.gridSet");
-				getSchematic.setSheetX(96);
-				getSchematic.setHoverX(112);
+				getSchematic.setSheetY(48);
+				getSchematic.setHoverY(64);
 				getSchematic.setActive();
 			} else {
 				getSchematic.clearToolTip();
@@ -127,10 +134,10 @@ public class GuiWorkbench extends GuiBaseAdv {
 			setSchematic.setToolTip("info.thermalexpansion.writeSchematic");
 			setSchematic.setActive();
 		} else if (hasSchematic()) {
-			setSchematic.setToolTip("info.thermalexpansion.noSchematic");
+			setSchematic.setToolTip("info.thermalexpansion.noRecipe");
 			setSchematic.setDisabled();
 		} else {
-			setSchematic.setToolTip("info.thermalexpansion.noRecipe");
+			setSchematic.setToolTip("info.thermalexpansion.noSchematic");
 			setSchematic.setDisabled();
 		}
 		if (myTile.updateClient) {
@@ -173,12 +180,12 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		if (!gridNotEmpty()) {
 			getSchematic.setToolTip("info.thermalexpansion.gridSet");
-			getSchematic.setSheetX(48);
-			getSchematic.setHoverX(64);
+			getSchematic.setSheetY(48);
+			getSchematic.setHoverY(64);
 		} else {
 			getSchematic.setToolTip("info.thermalexpansion.gridClear");
-			getSchematic.setSheetX(96);
-			getSchematic.setHoverX(112);
+			getSchematic.setSheetY(96);
+			getSchematic.setHoverY(112);
 		}
 	}
 
@@ -204,10 +211,15 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	protected void drawCurMissing() {
 
+		int offset = 144;
+
+		if (myTile.type == BlockWorkbench.Types.CREATIVE.ordinal()) {
+			offset = 160;
+		}
 		for (int i = 0; i < 3; i++) {
 			for (int j = 0; j < 3; j++) {
 				if (myTile.missingItem[j + i * 3]) {
-					drawTexturedModalRect(guiLeft + gridXOffset + j * 18, guiTop + 19 + i * 18, 240, 144, 16, 16);
+					drawTexturedModalRect(guiLeft + gridXOffset + j * 18, guiTop + 19 + i * 18, 240, offset, 16, 16);
 				}
 			}
 		}
@@ -219,7 +231,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 		int x = guiLeft + schematicOffset - 2 + (myTile.selectedSchematic % schematicPerRow) * 19;
 		int y = guiTop + 16 + (myTile.selectedSchematic / schematicPerRow) * 19;
 
-		drawTexturedModalRect(x, y, 236, 160 + offset, 20, 20);
+		drawTexturedModalRect(x, y, 236, 176 + offset, 20, 20);
 	}
 
 }

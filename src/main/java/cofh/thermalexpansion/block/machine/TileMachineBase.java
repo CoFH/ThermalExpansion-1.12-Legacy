@@ -525,16 +525,15 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return IconRegistry.getIcon("MachineBottom");
+				return BlockMachine.machineBottom;
 			} else if (side == 1) {
-				return IconRegistry.getIcon("MachineTop");
+				return BlockMachine.machineTop;
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon(
-					"MachineFace", getType());
+			return side != facing ? BlockMachine.machineSide : isActive ? BlockMachine.machineActive[getType()] : BlockMachine.machineFace[getType()];
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
-		return IconRegistry.getIcon("MachineSide");
+		return BlockMachine.machineSide;
 	}
 
 	/* ISoundSource */

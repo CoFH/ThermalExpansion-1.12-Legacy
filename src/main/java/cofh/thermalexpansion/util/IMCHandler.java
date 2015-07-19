@@ -205,7 +205,7 @@ public class IMCHandler {
 						int energy = theNBT.getInteger("energy");
 
 						if (FuelHandler.registerMagmaticFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("fuels.magmatic", fluidName, energy);
+							FuelHandler.configFuels.get("Fuels.Magmatic", fluidName, energy);
 						}
 						continue;
 					}
@@ -215,7 +215,7 @@ public class IMCHandler {
 						int energy = theNBT.getInteger("energy");
 
 						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("fuels.compression", fluidName, energy);
+							FuelHandler.configFuels.get("Fuels.Compression", fluidName, energy);
 						}
 						continue;
 					}
@@ -225,7 +225,7 @@ public class IMCHandler {
 						int energy = theNBT.getInteger("energy");
 
 						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("fuels.reactant", fluidName, energy);
+							FuelHandler.configFuels.get("Fuels.Reactant", fluidName, energy);
 						}
 						continue;
 					}
@@ -235,7 +235,7 @@ public class IMCHandler {
 						int energy = theNBT.getInteger("energy");
 
 						if (FuelHandler.registerCoolant(fluidName, energy)) {
-							FuelHandler.configFuels.get("coolants", fluidName, energy);
+							FuelHandler.configFuels.get("Coolants", fluidName, energy);
 						}
 						continue;
 					}

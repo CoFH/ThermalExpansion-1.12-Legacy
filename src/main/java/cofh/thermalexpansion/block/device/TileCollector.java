@@ -28,7 +28,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCollector extends TileAugmentable implements IInventoryConnection {
 
-	static final int TYPE = BlockDevice.Types.BREAKER.ordinal();
+	static final int TYPE = BlockDevice.Types.COLLECTOR.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
@@ -49,8 +49,8 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 
 	public static void configure() {
 
-		String comment = "Enable this to allow for Breakers to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Breaker.Securable", enableSecurity, comment);
+		String comment = "Enable this to allow for Collectors to be securable.";
+		enableSecurity = ThermalExpansion.config.get("Security", "Device.Collector.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -74,15 +74,13 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 	@Override
 	public String getName() {
 
-		// TODO Auto-generated method stub
-		return null;
+		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
 	}
 
 	@Override
 	public int getType() {
 
-		// TODO Auto-generated method stub
-		return 0;
+		return TYPE;
 	}
 
 	@Override

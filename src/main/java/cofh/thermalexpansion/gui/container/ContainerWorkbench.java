@@ -143,16 +143,22 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 		int invSchematic = invPlayer + numSchematic;
 		int invTile = invSchematic + numInventory;
 
-		if (slotId == invSchematic) {
+		if (slotId == invTile) {
 			modifier = 0;
 		}
-		if (mouseButton == 1 && modifier == 1 && slotId >= invPlayer && slotId < invSchematic) {
+		if (slotId >= invPlayer && slotId < invSchematic) {
 			Slot slot = (Slot) inventorySlots.get(slotId);
 			if (slot.getHasStack()) {
+				int schematic = myTile.getCurrentSchematicSlot();
 				myTile.setCurrentSchematicSlot(slot.getSlotIndex());
-				myTile.setCraftingGrid();
-				modifier = 0;
-				slotId = invSchematic;
+
+				if (mouseButton == 1 && modifier == 1) {
+					myTile.setCraftingGrid();
+					modifier = 0;
+					slotId = invTile;
+				} else if (schematic != myTile.getCurrentSchematicSlot()) {
+					return player.inventory.getItemStack();
+				}
 			}
 		}
 		if (ServerHelper.isClientWorld(player.worldObj)) {

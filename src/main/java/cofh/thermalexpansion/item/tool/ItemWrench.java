@@ -4,6 +4,7 @@ import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Implementable;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import com.google.common.collect.HashMultimap;
@@ -30,6 +31,7 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 	public ItemWrench() {
 
 		super("wrench");
+		setHasSubtypes(true);
 	}
 
 	@Override
@@ -38,6 +40,10 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.0"));
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.1"));
 		list.add(StringHelper.getFlavorText("info.thermalexpansion.tool.wrench.2"));
+
+		if (ItemHelper.getItemDamage(stack) == 1) {
+			list.add(StringHelper.getInfoText("info.thermalexpansion.tool.wrench.3"));
+		}
 	}
 
 	@Override
@@ -61,6 +67,12 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
 				&& ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
 			((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
+			// TODO: Changeover.
+			// ArrayList<ItemStack> drops = ((IDismantleable) block).dismantleBlock(player, world, x, y, z, true);
+			// for (ItemStack drop : drops) {
+			// player.inventory.addItemStackToInventory(drop);
+			// ((EntityPlayerMP) player).sendContainerAndContentsToPlayer(player.inventoryContainer, player.inventoryContainer.getInventory());
+			// }
 			return true;
 		}
 		if (BlockHelper.canRotate(block)) {

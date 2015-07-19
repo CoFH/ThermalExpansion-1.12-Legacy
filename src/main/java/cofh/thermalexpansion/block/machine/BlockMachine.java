@@ -176,12 +176,12 @@ public class BlockMachine extends BlockTEBase {
 	public IIcon getIcon(int side, int metadata) {
 
 		if (side == 0) {
-			return IconRegistry.getIcon("MachineBottom");
+			return machineBottom;
 		}
 		if (side == 1) {
-			return IconRegistry.getIcon("MachineTop");
+			return machineTop;
 		}
-		return side != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace" + metadata);
+		return side != 3 ? machineSide : machineFace[metadata % Types.values().length];
 	}
 
 	@Override
@@ -189,14 +189,14 @@ public class BlockMachine extends BlockTEBase {
 	public void registerBlockIcons(IIconRegister ir) {
 
 		// Base Textures
-		IconRegistry.addIcon("MachineBottom", "thermalexpansion:machine/Machine_Bottom", ir);
-		IconRegistry.addIcon("MachineTop", "thermalexpansion:machine/Machine_Top", ir);
-		IconRegistry.addIcon("MachineSide", "thermalexpansion:machine/Machine_Side", ir);
+		machineBottom = ir.registerIcon("thermalexpansion:machine/Machine_Bottom");
+		machineTop = ir.registerIcon("thermalexpansion:machine/Machine_Top");
+		machineSide = ir.registerIcon("thermalexpansion:machine/Machine_Side");
 
 		// Face Textures
 		for (int i = 0; i < Types.values().length; i++) {
-			IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]), ir);
-			IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]), ir);
+			machineFace[i] = ir.registerIcon("thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]));
+			machineActive[i] = ir.registerIcon("thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]));
 		}
 
 		// Config Textures
@@ -497,6 +497,13 @@ public class BlockMachine extends BlockTEBase {
 	public static enum Types {
 		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR
 	}
+
+	public static IIcon machineBottom;
+	public static IIcon machineTop;
+	public static IIcon machineSide;
+
+	public static IIcon[] machineFace = new IIcon[Types.values().length];
+	public static IIcon[] machineActive = new IIcon[Types.values().length];
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger", "insolator" };
