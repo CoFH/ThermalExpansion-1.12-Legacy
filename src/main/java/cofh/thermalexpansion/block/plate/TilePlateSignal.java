@@ -86,7 +86,7 @@ public class TilePlateSignal extends TilePlateBase {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(Entity theEntity) {
+	public void onEntityCollidedWithBlock(Entity entity) {
 
 		if (worldObj.isRemote) {
 			return;
@@ -94,17 +94,17 @@ public class TilePlateSignal extends TilePlateBase {
 
 		switch (collisionMode) {
 		case 3:
-			if (!(theEntity instanceof IMob)) {
+			if (!(entity instanceof IMob)) {
 				return;
 			}
 			break;
 		case 2:
-			if (!(theEntity instanceof EntityPlayer)) {
+			if (!(entity instanceof EntityPlayer)) {
 				return;
 			}
 			break;
 		case 1:
-			if (!(theEntity instanceof EntityLivingBase)) {
+			if (!(entity instanceof EntityLivingBase)) {
 				return;
 			}
 			break;

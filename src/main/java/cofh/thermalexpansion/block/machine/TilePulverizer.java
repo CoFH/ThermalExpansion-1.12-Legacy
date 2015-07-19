@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
@@ -15,27 +16,27 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TilePulverizer extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Types.PULVERIZER.ordinal();
-
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		int type = BlockMachine.Types.PULVERIZER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 6;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Pulverizer";
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachinePulverizer");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachinePulverizer");
 
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
 	}
@@ -46,15 +47,8 @@ public class TilePulverizer extends TileMachineBase {
 
 	public TilePulverizer() {
 
-		super();
-
+		super(Types.PULVERIZER);
 		inventory = new ItemStack[1 + 2 + 1 + 1];
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override

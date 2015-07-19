@@ -8,6 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
 import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
@@ -27,31 +28,31 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.ASSEMBLER.ordinal();
-
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 },
+		int type = BlockMachine.Types.ASSEMBLER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 6;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 },
 				{ 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 },
 				{ 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
 
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true,
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true,
 				true, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true,
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true,
 				true, true, true, true, true, true, true };
 
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Assembler";
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParamsPower(basePower);
 
 		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
 	}
@@ -72,15 +73,8 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	public TileAssembler() {
 
-		super();
-
+		super(Types.ASSEMBLER);
 		inventory = new ItemStack[1 + 1 + 1 + 18];
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override

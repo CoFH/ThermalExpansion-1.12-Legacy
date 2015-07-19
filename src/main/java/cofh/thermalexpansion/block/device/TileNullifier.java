@@ -4,8 +4,7 @@ import cofh.core.CoFHProps;
 import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
@@ -23,42 +22,31 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileNullifier extends TileAugmentable implements IFluidHandler {
-
-	static final int TYPE = BlockDevice.Types.NULLIFIER.ordinal();
-	static SideConfig defaultSideConfig = new SideConfig();
+public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 
 	public static void initialize() {
 
-		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numConfig = 2;
-		defaultSideConfig.slotGroups = new int[][] { {}, { 0 }, {} };
-		defaultSideConfig.allowInsertionSide = new boolean[] { false, false, false };
-		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, false };
-		defaultSideConfig.allowInsertionSlot = new boolean[] { true };
-		defaultSideConfig.allowExtractionSlot = new boolean[] { false };
-		defaultSideConfig.sideTex = new int[] { 0, 1, 4 };
-		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+		int type = BlockDevice.Types.NULLIFIER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 2;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {} };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false, false };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, false };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
-		configure();
 	}
-
-	public static void configure() {
-
-		String comment = "Enable this to allow for Nullifiers to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Nullifier.Securable", enableSecurity, comment);
-	}
-
-	public static boolean enableSecurity = true;
 
 	protected static final int[] SLOTS = { 0 };
 	protected static final Fluid renderFluid = FluidRegistry.LAVA;
 
 	public TileNullifier() {
 
-		sideConfig = defaultSideConfig;
-
+		super(Types.NULLIFIER);
 		inventory = new ItemStack[1];
 	}
 
@@ -76,27 +64,9 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 	}
 
 	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
-
-	@Override
 	public int getLightValue() {
 
 		return FluidHelper.getFluidLuminosity(renderFluid);
-	}
-
-	@Override
-	public boolean enableSecurity() {
-
-		return enableSecurity;
 	}
 
 	@Override
@@ -221,12 +191,6 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 
 	/* IReconfigurableFacing */
 	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
-	}
-
-	@Override
 	public boolean setFacing(int side) {
 
 		if (side < 0 || side > 5) {
@@ -239,25 +203,18 @@ public class TileNullifier extends TileAugmentable implements IFluidHandler {
 		return true;
 	}
 
-	/* IReconfigurableSides */
-	@Override
-	public int getNumConfig(int side) {
-
-		return 2;
-	}
-
 	/* ISidedTexture */
 	@Override
 	public IIcon getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry
-					.getIcon("DeviceFace", getType());
+			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
+					: BlockDevice.deviceFace[type];
 		} else if (side < 6) {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
+					: redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];
 		}
-		return IconRegistry.getIcon("DeviceSide");
+		return BlockDevice.deviceSide;
 	}
 
 	/* ISidedInventory */

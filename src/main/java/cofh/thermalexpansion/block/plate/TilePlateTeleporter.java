@@ -46,15 +46,15 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		super(BlockPlate.Types.POWERED_TRANSLOCATE, 2000000);
 	}
 
-	protected void teleportEntity(Entity ent) {
+	protected void teleportEntity(Entity entity) {
 
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(Entity theEntity) {
+	public void onEntityCollidedWithBlock(Entity entity) {
 
-		if (theEntity.worldObj.isRemote || theEntity.timeUntilPortal > TELEPORT_DELAY) {
-			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
+		if (entity.worldObj.isRemote || entity.timeUntilPortal > TELEPORT_DELAY) {
+			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 			return;
 		}
 
@@ -68,7 +68,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			teleportCost = DIMENSION_TELEPORT_COST;
 		}
 
-		if (theEntity instanceof EntityEnderman) {
+		if (entity instanceof EntityEnderman) {
 			teleportCost *= 2;
 		}
 
@@ -81,13 +81,13 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			comp = EntityPlayer.class;
 		}
 
-		if (!comp.isInstance(theEntity)) {
+		if (!comp.isInstance(entity)) {
 			return;
 		}
 
 		l: if (!getAccess().isPublic()) {
-			o: if (theEntity instanceof EntityItem) {
-				String name = ((EntityItem) theEntity).func_145800_j();
+			o: if (entity instanceof EntityItem) {
+				String name = ((EntityItem) entity).func_145800_j();
 				if (name == null) {
 					break o;
 				}
@@ -98,24 +98,24 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				if (getOwner().getId().equals(i.getId())) {
 					break l;
 				}
-			} else if (canPlayerAccess((EntityPlayer) theEntity)) {
+			} else if (canPlayerAccess((EntityPlayer) entity)) {
 				break l;
 			}
 			return;
 		}
 
-		if (theEntity instanceof EntityLivingBase) {
-			if (theEntity.timeUntilPortal++ <= TELEPORT_DELAY) {
-				if (!(theEntity instanceof EntityPlayerMP)) {
-					theEntity.timeUntilPortal++;
+		if (entity instanceof EntityLivingBase) {
+			if (entity.timeUntilPortal++ <= TELEPORT_DELAY) {
+				if (!(entity instanceof EntityPlayerMP)) {
+					entity.timeUntilPortal++;
 				}
-				World world = theEntity.worldObj;
-				int i = theEntity.timeUntilPortal >= TELEPORT_DELAY ? 100 : 99;
-				double x = theEntity.posX, z = theEntity.posZ, y = theEntity.posY;
-				y += theEntity.height * .75;
-				int amt = theEntity.timeUntilPortal * 5 / PARTICLE_DELAY;
-				l: if (i == 100 || amt != ((theEntity.timeUntilPortal - 2) * 5 / PARTICLE_DELAY)) {
-					if (i != 100 && theEntity.timeUntilPortal > PARTICLE_DELAY) {
+				World world = entity.worldObj;
+				int i = entity.timeUntilPortal >= TELEPORT_DELAY ? 100 : 99;
+				double x = entity.posX, z = entity.posZ, y = entity.posY;
+				y += entity.height * .75;
+				int amt = entity.timeUntilPortal * 5 / PARTICLE_DELAY;
+				l: if (i == 100 || amt != ((entity.timeUntilPortal - 2) * 5 / PARTICLE_DELAY)) {
+					if (i != 100 && entity.timeUntilPortal > PARTICLE_DELAY) {
 						break l;
 					}
 					PacketCoFHBase packet = getModePacket();
@@ -127,7 +127,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					packet.addFloat((float) y);
 					packet.addFloat((float) z);
 					if (i == 100) {
-						packet.addInt(theEntity.getEntityId());
+						packet.addInt(entity.getEntityId());
 						packet.addInt(dest.x());
 						packet.addInt(dest.y());
 						packet.addInt(dest.z());
@@ -140,14 +140,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					return;
 				}
 			}
-			theEntity.timeUntilPortal = theEntity.getPortalCooldown() + TELEPORT_DELAY;
+			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 		}
 
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(theEntity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
 			}
-			CoreUtils.teleportEntityTo(theEntity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
+			CoreUtils.teleportEntityTo(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
 	}
 

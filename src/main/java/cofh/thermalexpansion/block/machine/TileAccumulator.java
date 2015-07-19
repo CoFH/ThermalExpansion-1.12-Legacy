@@ -7,6 +7,7 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAccumulator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -26,22 +27,22 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.ACCUMULATOR.ordinal();
-
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 2;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		int type = BlockMachine.Types.ACCUMULATOR.ordinal();
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(0);
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 2;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineAccumulator");
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParamsPower(0);
+
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineAccumulator");
 
 		GameRegistry.registerTileEntity(TileAccumulator.class, "thermalexpansion.Accumulator");
 	}
@@ -80,14 +81,8 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	public TileAccumulator() {
 
-		super();
+		super(Types.ACCUMULATOR);
 		tank.setLock(FluidRegistry.WATER);
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override

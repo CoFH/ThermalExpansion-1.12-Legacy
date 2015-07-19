@@ -7,6 +7,7 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -28,11 +29,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory, IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.EXTRUDER.ordinal();
-
 	public byte processLevel;
 
 	public static void initialize() {
+
+		int type = BlockMachine.Types.EXTRUDER.ordinal();
 
 		processItems = new ItemStack[3];
 
@@ -69,18 +70,18 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder.Recipes");
 		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder");
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 4;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { false, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(0);
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParamsPower(0);
 
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion.Extruder");
 	}
@@ -102,19 +103,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 	public TileExtruder() {
 
-		super();
-
+		super(Types.EXTRUDER);
 		inventory = new ItemStack[1];
 
 		for (int i = 0; i < 3; i++) {
 			outputItems[i] = processItems[i].copy();
 		}
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override

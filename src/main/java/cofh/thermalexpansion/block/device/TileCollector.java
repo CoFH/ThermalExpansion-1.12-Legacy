@@ -5,9 +5,8 @@ import cofh.core.CoFHProps;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.gui.client.device.GuiBreaker;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
+import cofh.thermalexpansion.gui.client.device.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -22,46 +21,36 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileCollector extends TileAugmentable implements IInventoryConnection {
-
-	static final int TYPE = BlockDevice.Types.COLLECTOR.ordinal();
-	static SideConfig defaultSideConfig = new SideConfig();
+public class TileCollector extends TileDeviceBase implements IInventoryConnection {
 
 	public static void initialize() {
 
-		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numConfig = 2;
-		defaultSideConfig.slotGroups = new int[][] { {}, {} };
-		defaultSideConfig.allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig.allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig.allowInsertionSlot = new boolean[] {};
-		defaultSideConfig.allowExtractionSlot = new boolean[] {};
-		defaultSideConfig.sideTex = new int[] { 0, 4 };
-		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+		int type = BlockDevice.Types.COLLECTOR.ordinal();
 
-		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Collector");
-		configure();
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 2;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] {};
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] {};
+		defaultSideConfig[type].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+
+		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion.Collector");
 	}
 
-	public static void configure() {
-
-		String comment = "Enable this to allow for Collectors to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Collector.Securable", enableSecurity, comment);
-	}
-
-	public static boolean enableSecurity = true;
-
-	int area = 2;
+	int areaMajor = 2;
+	int areaMinor = 1;
 
 	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
 	public TileCollector() {
 
-		sideConfig = defaultSideConfig;
+		super(Types.COLLECTOR);
 	}
 
 	@Override
@@ -69,30 +58,6 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 
 		sideCache = getDefaultSides();
 		sideCache[facing ^ 1] = 1;
-	}
-
-	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
-
-	@Override
-	public boolean enableSecurity() {
-
-		return enableSecurity;
-	}
-
-	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
 	}
 
 	@Override
@@ -117,8 +82,7 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 	public void collectItems() {
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
-
-		stuffedItems.addAll(collectItemsInArea(worldObj, coords[0], coords[1], coords[2], area));
+		stuffedItems.addAll(collectItemsInArea(worldObj, coords[0], coords[1], coords[2], facing, areaMajor, areaMinor));
 	}
 
 	public void outputBuffer() {
@@ -146,13 +110,29 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 		}
 	}
 
-	public static List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int area) {
+	public static List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
 
-		int area2 = 1 + area;
+		int areaMajor2 = 1 + areaMajor;
 
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
-		List<EntityItem> result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-				AxisAlignedBB.getBoundingBox(x - area, y - area, z - area, x + area2, y + area2, z + area2));
+		List<EntityItem> result;
+
+		switch (side) {
+		case 0:
+		case 1:
+			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
+					AxisAlignedBB.getBoundingBox(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+			break;
+		case 2:
+		case 3:
+			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
+					AxisAlignedBB.getBoundingBox(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+			break;
+		default:
+			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
+					AxisAlignedBB.getBoundingBox(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+			break;
+		}
 		for (int i = 0; i < result.size(); i++) {
 			EntityItem entity = result.get(i);
 			if (entity.isDead || entity.getEntityItem().stackSize <= 0) {
@@ -168,7 +148,7 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiBreaker(inventory, this);
+		return new GuiCollector(inventory, this);
 	}
 
 	@Override
@@ -212,18 +192,11 @@ public class TileCollector extends TileAugmentable implements IInventoryConnecti
 	@Override
 	public ConnectionType canConnectInventory(ForgeDirection from) {
 
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/* IReconfigurableFacing */
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		// TODO Auto-generated method stub
-		return null;
+		if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
+			return ConnectionType.FORCE;
+		} else {
+			return ConnectionType.DEFAULT;
+		}
 	}
 
 }

@@ -81,7 +81,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (Utils.isAccessibleInput(adjInv, side)) {
 			if (adjInv instanceof ISidedInventory) {
 				ISidedInventory sidedInv = (ISidedInventory) adjInv;
-				int slots[] = sidedInv.getAccessibleSlotsFromSide(side);
+				int slots[] = sidedInv.getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]);
 
 				if (slots == null) {
 					return false;

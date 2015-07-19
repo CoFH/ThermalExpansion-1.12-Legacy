@@ -3,18 +3,14 @@ package cofh.thermalexpansion.block.device;
 import cofh.api.inventory.IInventoryConnection;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 import java.util.LinkedList;
 
@@ -24,7 +20,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -32,34 +27,24 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileBreaker extends TileAugmentable implements IFluidHandler, IInventoryConnection {
-
-	static final int TYPE = BlockDevice.Types.BREAKER.ordinal();
-	static SideConfig defaultSideConfig = new SideConfig();
+public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInventoryConnection {
 
 	public static void initialize() {
 
-		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numConfig = 2;
-		defaultSideConfig.slotGroups = new int[][] { {}, {} };
-		defaultSideConfig.allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig.allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig.allowInsertionSlot = new boolean[] {};
-		defaultSideConfig.allowExtractionSlot = new boolean[] {};
-		defaultSideConfig.sideTex = new int[] { 0, 4 };
-		defaultSideConfig.defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+		int type = BlockDevice.Types.BREAKER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 2;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] {};
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] {};
+		defaultSideConfig[type].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
-		configure();
 	}
-
-	public static void configure() {
-
-		String comment = "Enable this to allow for Breakers to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Breaker.Securable", enableSecurity, comment);
-	}
-
-	public static boolean enableSecurity = true;
 
 	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
@@ -68,7 +53,7 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 
 	public TileBreaker() {
 
-		sideConfig = defaultSideConfig;
+		super(Types.BREAKER);
 	}
 
 	@Override
@@ -76,30 +61,6 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 
 		sideCache = getDefaultSides();
 		sideCache[facing ^ 1] = 1;
-	}
-
-	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
-
-	@Override
-	public boolean enableSecurity() {
-
-		return enableSecurity;
-	}
-
-	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
 	}
 
 	@Override
@@ -262,40 +223,6 @@ public class TileBreaker extends TileAugmentable implements IFluidHandler, IInve
 		} else {
 			return ConnectionType.DEFAULT;
 		}
-	}
-
-	/* IReconfigurableFacing */
-	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
-	}
-
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 1;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-		return true;
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
-					: IconRegistry.getIcon("DeviceFace", getType());
-		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
-		}
-		return IconRegistry.getIcon("DeviceSide");
 	}
 
 }

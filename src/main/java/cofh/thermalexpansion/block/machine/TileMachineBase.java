@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cpw.mods.fml.relauncher.Side;
@@ -26,7 +27,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
 	protected static final boolean[] enableSound = { true, true, true, true, true, true, true, true, true, true, true, true };
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7, 15 };
-	public static boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true, true };
+	public static final boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true, true };
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
@@ -51,6 +52,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	int processRem;
 	boolean wasActive;
 
+	protected final byte type;
 	protected EnergyConfig energyConfig;
 	protected TimeTracker tracker = new TimeTracker();
 
@@ -63,30 +65,44 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	public TileMachineBase() {
 
-		super();
+		this(Types.FURNACE);
+		if (getClass() != TileMachineBase.class) {
+			throw new IllegalArgumentException();
+		}
+	}
 
-		sideConfig = defaultSideConfig[getType()];
-		energyConfig = defaultEnergyConfig[getType()].copy();
+	public TileMachineBase(Types type) {
+
+		this.type = (byte) type.ordinal();
+
+		sideConfig = defaultSideConfig[this.type];
+		energyConfig = defaultEnergyConfig[this.type].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * ENERGY_TRANSFER[level]);
 		setDefaultSides();
 	}
 
 	@Override
+	public int getType() {
+
+		return type;
+	}
+
+	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[getType()] + ".name";
+		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[type] + ".name";
 	}
 
 	@Override
 	public int getLightValue() {
 
-		return isActive ? lightValue[getType()] : 0;
+		return isActive ? lightValue[type] : 0;
 	}
 
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity[getType()];
+		return enableSecurity[type];
 	}
 
 	@Override
@@ -529,7 +545,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 			} else if (side == 1) {
 				return BlockMachine.machineTop;
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? BlockMachine.machineActive[getType()] : BlockMachine.machineFace[getType()];
+			return side != facing ? BlockMachine.machineSide : isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
@@ -540,7 +556,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	@Override
 	public String getSoundName() {
 
-		return enableSound[getType()] ? sounds[getType()] : null;
+		return enableSound[type] ? sounds[type] : null;
 	}
 
 }

@@ -21,7 +21,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TilePump extends TileAugmentable implements IFluidHandler {
 
-	static final int TYPE = BlockDevice.Types.PUMP.ordinal();
+	static final int TYPE = BlockDevice.Types.EXTENDER.ordinal();
 	static SideConfig defaultSideConfig = new SideConfig();
 
 	public static void initialize() {
@@ -69,7 +69,7 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 	@Override
 	public int getType() {
 
-		return BlockDevice.Types.PUMP.ordinal();
+		return BlockDevice.Types.EXTENDER.ordinal();
 	}
 
 	@Override

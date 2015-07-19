@@ -11,9 +11,7 @@ import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
-import cofh.thermalexpansion.block.device.TileActivator;
-import cofh.thermalexpansion.block.device.TileBreaker;
-import cofh.thermalexpansion.block.device.TileNullifier;
+import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
@@ -90,7 +88,7 @@ public class ThermalExpansion extends BaseMod {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.7.10R4.0.3B1";
+	public static final String version = "1.7.10R4.0.4B1";
 	public static final String dependencies = "required-after:CoFHCore@[" + CoFHCore.version + ",);required-after:ThermalFoundation@["
 			+ ThermalFoundation.version + ",)";
 	public static final String releaseURL = "https://raw.github.com/CoFH/Version/master/ThermalExpansion";
@@ -231,15 +229,20 @@ public class ThermalExpansion extends BaseMod {
 		handleIdMapping();
 
 		TileCell.enableSecurity = payload.getBool();
-		TileWorkbench.enableSecurity = payload.getBool();
-		TileActivator.enableSecurity = payload.getBool();
-		TileBreaker.enableSecurity = payload.getBool();
-		TileNullifier.enableSecurity = payload.getBool();
+
+		// TileActivator.enableSecurity = payload.getBool();
+		// TileBreaker.enableSecurity = payload.getBool();
+		// TileNullifier.enableSecurity = payload.getBool();
+
 		TileDynamoBase.enableSecurity = payload.getBool();
+
 		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
 			TileMachineBase.enableSecurity[i] = payload.getBool();
 		}
+
 		TileStrongbox.enableSecurity = payload.getBool();
+		TileWorkbench.enableSecurity = payload.getBool();
+
 		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info("Receiving Server Configuration...");
@@ -251,17 +254,16 @@ public class ThermalExpansion extends BaseMod {
 
 		payload.addBool(TileCell.enableSecurity);
 
-		payload.addBool(TileWorkbench.enableSecurity);
-		payload.addBool(TileActivator.enableSecurity);
-		payload.addBool(TileBreaker.enableSecurity);
-		payload.addBool(TileNullifier.enableSecurity);
-
+		for (int i = 0; i < TileDeviceBase.enableSecurity.length; i++) {
+			payload.addBool(TileDeviceBase.enableSecurity[i]);
+		}
 		payload.addBool(TileDynamoBase.enableSecurity);
 
 		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
 			payload.addBool(TileMachineBase.enableSecurity[i]);
 		}
 		payload.addBool(TileStrongbox.enableSecurity);
+		payload.addBool(TileWorkbench.enableSecurity);
 
 		payload.addBool(ItemSatchel.enableSecurity);
 
@@ -290,9 +292,7 @@ public class ThermalExpansion extends BaseMod {
 	public void resetClientConfigs() {
 
 		TileCell.configure();
-		TileActivator.configure();
-		TileBreaker.configure();
-		TileNullifier.configure();
+		TileDeviceBase.configure();
 		TileDynamoBase.configure();
 		TileMachineBase.configure();
 		TileWorkbench.configure();

@@ -7,6 +7,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.mod.updater.ModVersion;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
@@ -19,27 +20,27 @@ import net.minecraft.nbt.NBTTagCompound;
 
 public class TileCharger extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Types.CHARGER.ordinal();
-
 	static int RATE[];
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, { 0, 2 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		int type = BlockMachine.Types.CHARGER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 4;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 2 }, { 0, 2 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false, true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Charger";
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 8000), 100, 20000);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(1, basePower, Math.max(400000, basePower * 50));
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParams(1, basePower, Math.max(400000, basePower * 50));
 
 		RATE = new int[4];
 		RATE[0] = basePower;
@@ -57,15 +58,8 @@ public class TileCharger extends TileMachineBase {
 
 	public TileCharger() {
 
-		super();
-
+		super(Types.CHARGER);
 		inventory = new ItemStack[1 + 1 + 1 + 1];
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override

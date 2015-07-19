@@ -2,7 +2,6 @@ package cofh.thermalexpansion.block.plate;
 
 import cofh.repack.codechicken.lib.vec.Vector3;
 
-
 public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	public TilePlateExcursion() {
@@ -15,7 +14,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	@Override
 	public void updateEntity() {
-		if(bindY > -1) {
+
+		if (bindY > -1) {
 			ticksElapsed++;
 
 			Vector3 vec = getMovementVector();
@@ -32,17 +32,19 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			float mul = 0.5F;
 			float mulPer = 0.4F;
 			float maxMul = 2;
-			for(int i = start; i < start + count; i++) { // <- Replace to i = 0; i < size
+			for (int i = start; i < start + count; i++) { // <- Replace to i = 0; i < size
 				mul = Math.min(maxMul, mul + mulPer);
 				double rad = radPer * (i + ticksElapsed * 0.4);
 				Vector3 vecRot = vecMag.copy().crossProduct(Vector3.one).multiply(mul).rotate(rad, vecMag).add(vecTip);
-				//Botania.proxy.wispFX(worldObj, vecRot.x, vecRot.y, vecRot.z, 0.4F, 0.4F, 1F, 0.1F, (float) -vecMag.x, (float) -vecMag.y, (float) -vecMag.z, 1F);
+				// Botania.proxy.wispFX(worldObj, vecRot.x, vecRot.y, vecRot.z, 0.4F, 0.4F, 1F, 0.1F, (float) -vecMag.x, (float) -vecMag.y, (float) -vecMag.z,
+				// 1F);
 				vecTip.add(vecMag);
 			}
 		}
 	}
 
 	public Vector3 getMovementVector() {
+
 		return new Vector3(bindX - xCoord, bindY - yCoord, bindZ - zCoord);
 	}
 

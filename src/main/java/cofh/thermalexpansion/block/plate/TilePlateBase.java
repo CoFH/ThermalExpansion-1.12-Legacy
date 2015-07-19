@@ -35,7 +35,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 	byte alignment;
 	byte direction;
-	private final byte type;
+	protected final byte type;
 
 	public TilePlateBase() {
 
@@ -68,7 +68,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		return "tile.thermalexpansion.plate." + BlockPlate.NAMES[getType()] + ".name";
 	}
 
-	public void onEntityCollidedWithBlock(Entity theEntity) {
+	public void onEntityCollidedWithBlock(Entity entity) {
 
 	}
 

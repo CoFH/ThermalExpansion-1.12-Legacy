@@ -4,14 +4,12 @@ import cofh.api.energy.EnergyStorage;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiActivator;
 import cofh.thermalexpansion.gui.container.device.ContainerActivator;
 import cpw.mods.fml.common.eventhandler.Event;
@@ -28,7 +26,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeEventFactory;
@@ -36,47 +33,40 @@ import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
-public class TileActivator extends TileAugmentable {
+public class TileActivator extends TileDeviceBase {
 
-	static final int TYPE = BlockDevice.Types.ACTIVATOR.ordinal();
-	static SideConfig defaultSideConfig = new SideConfig();
-	static EnergyConfig energyConfig = new EnergyConfig();
+	static EnergyConfig energyConfig;
 
 	static int ACTIVATION_ENERGY = 20;
 	static int MAX_SLOT = 9;
 
 	public static void initialize() {
 
-		defaultSideConfig = new SideConfig();
-		defaultSideConfig.numConfig = 4;
-		defaultSideConfig.slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		defaultSideConfig.allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig.allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig.allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
-		defaultSideConfig.allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
-		defaultSideConfig.sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig.defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		int type = BlockDevice.Types.ACTIVATOR.ordinal();
 
-		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
-		configure();
-	}
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 4;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-	public static void configure() {
-
-		String comment = "Enable this to allow for Activators to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Activator.Securable", enableSecurity, comment);
-
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "BasePower", 20), 0, 500);
+		String category = "Device.Activator";
+		int maxPower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 0, 500);
 		ThermalExpansion.config.set("Device.Activator", "BasePower", maxPower);
+		energyConfig = new EnergyConfig();
 		energyConfig.setParamsPower(maxPower);
 
-		comment = "This value sets how much energy the Activator uses when it actually does something. Set to 0 to disable it requiring energy.";
-		maxPower = MathHelper.clampI(ThermalExpansion.config.get("Device.Activator", "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
+		String comment = "This value sets how much energy the Activator uses when it actually does something. Set to 0 to disable it requiring energy.";
+		maxPower = MathHelper.clampI(ThermalExpansion.config.get(category, "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
 		ThermalExpansion.config.set("Device.Activator", "ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
-	}
 
-	public static boolean enableSecurity = true;
+		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
+	}
 
 	public boolean leftClick = false;
 	public byte tickSlot = 0;
@@ -89,11 +79,9 @@ public class TileActivator extends TileAugmentable {
 
 	public TileActivator() {
 
-		sideConfig = defaultSideConfig;
-
+		super(Types.ACTIVATOR);
 		inventory = new ItemStack[10];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 3);
-
 	}
 
 	@Override
@@ -111,30 +99,6 @@ public class TileActivator extends TileAugmentable {
 		sideCache = getDefaultSides();
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 2;
-	}
-
-	@Override
-	public String getName() {
-
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
-
-	@Override
-	public boolean enableSecurity() {
-
-		return enableSecurity;
-	}
-
-	@Override
-	public boolean sendRedstoneUpdates() {
-
-		return true;
 	}
 
 	@Override
@@ -603,12 +567,6 @@ public class TileActivator extends TileAugmentable {
 
 	/* IReconfigurableFacing */
 	@Override
-	public boolean allowYAxisFacing() {
-
-		return true;
-	}
-
-	@Override
 	public boolean setFacing(int side) {
 
 		if (side < 0 || side > 5) {
@@ -620,19 +578,6 @@ public class TileActivator extends TileAugmentable {
 		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : isActive && redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive",
-					getType()) : IconRegistry.getIcon("DeviceFace", getType());
-		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
-		}
-		return IconRegistry.getIcon("DeviceSide");
 	}
 
 }

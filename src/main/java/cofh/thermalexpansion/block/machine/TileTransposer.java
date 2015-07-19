@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.mod.updater.ModVersion;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
@@ -32,27 +33,27 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.TRANSPOSER.ordinal();
-
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		int type = BlockMachine.Types.TRANSPOSER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 6;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false, true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Transposer";
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}
@@ -71,15 +72,8 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 
 	public TileTransposer() {
 
-		super();
-
+		super(Types.TRANSPOSER);
 		inventory = new ItemStack[1 + 1 + 1 + 1];
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override
@@ -794,10 +788,10 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 			} else if (side == 1) {
 				return BlockMachine.machineTop;
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[getType()];
+			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[type];
 		} else {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? BlockMachine.machineActive[getType()] : BlockMachine.machineFace[getType()];
+					: isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
 		}
 	}
 

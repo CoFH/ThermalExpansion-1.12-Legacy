@@ -168,7 +168,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		if (tile == null) {
 			return;
 		}
-
 		AxisAlignedBB bb = entity.boundingBox;
 		if (!bb.intersectsWith(getCollisionBlockBounds(tile, x, y, z))) {
 			return;

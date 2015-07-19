@@ -1,14 +1,20 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
+import cofh.thermalexpansion.core.TEProps;
 import cpw.mods.fml.relauncher.Side;
+
+import net.minecraft.entity.Entity;
+import net.minecraft.util.IIcon;
 
 public abstract class TileDeviceBase extends TileAugmentable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Types.values().length];
-	public static boolean[] enableSecurity = { true, true, true, true, true, true };
+	public static final boolean[] enableSecurity = { true, true, true, true, true, true };
 
 	public static void configure() {
 
@@ -17,6 +23,34 @@ public abstract class TileDeviceBase extends TileAugmentable {
 			String comment = "Enable this to allow for " + name + "s to be securable.";
 			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", enableSecurity[i], comment);
 		}
+		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()])
+				+ ".Securable");
+		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.COLLECTOR.ordinal()]) + ".Securable");
+		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
+	}
+
+	protected final byte type;
+
+	public TileDeviceBase() {
+
+		this(Types.BREAKER);
+		if (getClass() != TileDeviceBase.class) {
+			throw new IllegalArgumentException();
+		}
+	}
+
+	public TileDeviceBase(Types type) {
+
+		this.type = (byte) type.ordinal();
+
+		sideConfig = defaultSideConfig[this.type];
+		setDefaultSides();
+	}
+
+	@Override
+	public int getType() {
+
+		return type;
 	}
 
 	@Override
@@ -29,6 +63,16 @@ public abstract class TileDeviceBase extends TileAugmentable {
 	public boolean enableSecurity() {
 
 		return enableSecurity[getType()];
+	}
+
+	@Override
+	public boolean sendRedstoneUpdates() {
+
+		return true;
+	}
+
+	public void onEntityCollidedWithBlock(Entity entity) {
+
 	}
 
 	/* IReconfigurableFacing */
@@ -50,6 +94,18 @@ public abstract class TileDeviceBase extends TileAugmentable {
 		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
+	}
+
+	/* ISidedTexture */
+	@Override
+	public IIcon getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];
+		} else if (side < 6) {
+			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
+		}
+		return BlockDevice.deviceSide;
 	}
 
 }

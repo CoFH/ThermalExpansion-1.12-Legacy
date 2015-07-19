@@ -2,44 +2,48 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.api.energy.IEnergyReceiver;
 import cofh.core.CoFHProps;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileExtension extends TileAugmentable implements IFluidHandler {
+public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
-	static final int TYPE = 0;
-	static SideConfig defaultSideConfig = new SideConfig();
+	public static void initialize() {
+
+		int type = BlockDevice.Types.EXTENDER.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 2;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] {};
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] {};
+		defaultSideConfig[type].sideTex = new int[] { 0, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+
+		GameRegistry.registerTileEntity(TileExtender.class, "thermalexpansion.Extender");
+	}
 
 	ISidedInventory targetInventorySided;
 	IInventory targetInventory;
 	IEnergyReceiver targetReceiver;
 	IFluidHandler targetHandler;
 
-	@Override
-	public String getName() {
+	public TileExtender() {
 
-		// return "tile.thermalexpansion.device." + 0 + ".name";
-		return "";
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
+		super(Types.EXTENDER);
 	}
 
 	@Override
@@ -85,29 +89,38 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		}
 	}
 
+	/* IReconfigurableFacing */
+	@Override
+	public boolean rotateBlock() {
+
+		super.rotateBlock();
+		updateHandlers();
+		return true;
+	}
+
 	/* IEnergyReceiver */
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		return targetReceiver != null ? targetReceiver.receiveEnergy(from, maxReceive, simulate) : 0;
+		return targetReceiver != null ? targetReceiver.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxReceive, simulate) : 0;
 	}
 
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.getEnergyStored(from) : 0;
+		return targetReceiver != null ? targetReceiver.getEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.getMaxEnergyStored(from) : 0;
+		return targetReceiver != null ? targetReceiver.getMaxEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
 	}
 
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.canConnectEnergy(from) : false;
+		return targetReceiver != null ? targetReceiver.canConnectEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : false;
 	}
 
 	/* IFluidHandler */
@@ -117,7 +130,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return 0;
 		}
-		return targetHandler != null ? targetHandler.fill(from, resource, doFill) : 0;
+		return targetHandler != null ? targetHandler.fill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doFill) : 0;
 	}
 
 	@Override
@@ -126,7 +139,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return null;
 		}
-		return targetHandler != null ? targetHandler.drain(from, resource, doDrain) : null;
+		return targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doDrain) : null;
 	}
 
 	@Override
@@ -135,7 +148,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return null;
 		}
-		return targetHandler != null ? targetHandler.drain(from, maxDrain, doDrain) : null;
+		return targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxDrain, doDrain) : null;
 	}
 
 	@Override
@@ -144,7 +157,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return false;
 		}
-		return targetHandler != null ? targetHandler.canFill(from, fluid) : false;
+		return targetHandler != null ? targetHandler.canFill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
 	}
 
 	@Override
@@ -153,7 +166,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return false;
 		}
-		return targetHandler != null ? targetHandler.canDrain(from, fluid) : false;
+		return targetHandler != null ? targetHandler.canDrain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
 	}
 
 	@Override
@@ -162,7 +175,7 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 		if (from.ordinal() == facing) {
 			return CoFHProps.EMPTY_TANK_INFO;
 		}
-		return targetHandler != null ? targetHandler.getTankInfo(from) : CoFHProps.EMPTY_TANK_INFO;
+		return targetHandler != null ? targetHandler.getTankInfo(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
 	}
 
 	/* IInventory */
@@ -224,19 +237,6 @@ public class TileExtension extends TileAugmentable implements IFluidHandler {
 			return false;
 		}
 		return targetInventorySided != null ? targetInventorySided.canExtractItem(slot, stack, side) : false;
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType())
-					: IconRegistry.getIcon("DeviceFace", getType());
-		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
-		}
-		return IconRegistry.getIcon("DeviceSide");
 	}
 
 }

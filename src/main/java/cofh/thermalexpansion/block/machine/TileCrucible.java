@@ -9,6 +9,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
@@ -29,27 +30,27 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
-	static final int TYPE = BlockMachine.Types.CRUCIBLE.ordinal();
-
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		int type = BlockMachine.Types.CRUCIBLE.ordinal();
+
+		defaultSideConfig[type] = new SideConfig();
+		defaultSideConfig[type].numConfig = 4;
+		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
+		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false };
+		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
+		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Crucible";
 		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 400), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
+		defaultEnergyConfig[type] = new EnergyConfig();
+		defaultEnergyConfig[type].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 
-		sounds[TYPE] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}
@@ -63,15 +64,8 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	public TileCrucible() {
 
-		super();
-
+		super(Types.CRUCIBLE);
 		inventory = new ItemStack[1 + 1];
-	}
-
-	@Override
-	public int getType() {
-
-		return TYPE;
 	}
 
 	@Override
@@ -372,10 +366,10 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 			} else if (side == 1) {
 				return BlockMachine.machineTop;
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[getType()];
+			return side != facing ? BlockMachine.machineSide : isActive ? RenderHelper.getFluidTexture(renderFluid) : BlockMachine.machineFace[type];
 		} else {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? BlockMachine.machineActive[getType()] : BlockMachine.machineFace[getType()];
+					: isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
 		}
 	}
 

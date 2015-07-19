@@ -306,8 +306,15 @@ public class InsolatorManager {
 		final ItemStack secondaryOutput;
 		final int secondaryChance;
 		final int energy;
+		final boolean copyNBT;
 
 		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
+
+			this(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, false);
+		}
+
+		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy,
+				boolean copyNBT) {
 
 			this.primaryInput = primaryInput;
 			this.secondaryInput = secondaryInput;
@@ -315,6 +322,7 @@ public class InsolatorManager {
 			this.secondaryOutput = secondaryOutput;
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
+			this.copyNBT = copyNBT;
 
 			if (primaryInput.stackSize <= 0) {
 				primaryInput.stackSize = 1;

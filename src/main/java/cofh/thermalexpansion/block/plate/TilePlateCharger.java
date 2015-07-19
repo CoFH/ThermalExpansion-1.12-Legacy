@@ -47,9 +47,9 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 	}
 
 	@Override
-	public void onEntityCollidedWithBlock(Entity theEntity) {
+	public void onEntityCollidedWithBlock(Entity entity) {
 
-		if (theEntity.worldObj.isRemote) {
+		if (entity.worldObj.isRemote) {
 			return;
 		}
 
@@ -58,12 +58,12 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 			comp = EntityPlayer.class;
 		}
 
-		if (!comp.isInstance(theEntity) && !(theEntity instanceof EntityItem)) {
+		if (!comp.isInstance(entity) && !(entity instanceof EntityItem)) {
 			return;
 		}
 
-		if (worldTime != theEntity.worldObj.getTotalWorldTime()) {
-			worldTime = theEntity.worldObj.getTotalWorldTime();
+		if (worldTime != entity.worldObj.getTotalWorldTime()) {
+			worldTime = entity.worldObj.getTotalWorldTime();
 			chargeLeft = Math.min(CHARGE_RATE, storage.getEnergyStored());
 		}
 		if (chargeLeft <= 0) {
@@ -71,8 +71,8 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 		}
 
 		l: if (!getAccess().isPublic()) {
-			o: if (theEntity instanceof EntityItem) {
-				String name = ((EntityItem) theEntity).func_145800_j();
+			o: if (entity instanceof EntityItem) {
+				String name = ((EntityItem) entity).func_145800_j();
 				if (name == null) {
 					break o;
 				}
@@ -83,21 +83,21 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 				if (i != null && getOwner().getId().equals(i.getId())) {
 					break l;
 				}
-			} else if (canPlayerAccess((EntityPlayer) theEntity)) {
+			} else if (canPlayerAccess((EntityPlayer) entity)) {
 				break l;
 			}
 			return;
 		}
 
-		if (theEntity instanceof EntityItem) {
-			ItemStack item = ((EntityItem) theEntity).getEntityItem();
+		if (entity instanceof EntityItem) {
+			ItemStack item = ((EntityItem) entity).getEntityItem();
 			if (chargeItem(item)) {
-				((EntityItem) theEntity).age = 0;
+				((EntityItem) entity).age = 0;
 			}
-			((EntityItem) theEntity).setEntityItemStack(item);
+			((EntityItem) entity).setEntityItemStack(item);
 		} else {
 			for (int i = 0; i < 5; ++i) {
-				chargeItem(((EntityLivingBase) theEntity).getEquipmentInSlot(i));
+				chargeItem(((EntityLivingBase) entity).getEquipmentInSlot(i));
 			}
 		}
 	}
