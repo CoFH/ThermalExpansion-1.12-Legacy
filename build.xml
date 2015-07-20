@@ -351,7 +351,31 @@
 		<mkdir dir="${lib.dir}"/>
 		<javac srcdir="${forgebuild.dir}/tmp/recompSrc" destdir="${compile.dir}" target="1.6" source="1.6"
 			classpathref="mcp.classpath" debug="true" debuglevel="lines,source" includeAntRuntime="false"/>
-		<jar destfile="${forge.jar}" compress="true" level="9" basedir="${compile.dir}"/>
+		<jar destfile="${forge.jar}1" compress="true" level="9" basedir="${compile.dir}"/>
+		
+		<echo message="Reobfuscating..."/>
+		<move-transformers/>
+		<java classpath="${reobf.cmd}" classname="immibis.bon.cui.MCPRemap">
+			<arg  line="-q -m"/>
+			<arg value="-to SRG"/>
+			<arg value="-from MCP"/>
+			<arg value="-mcp ${forge.stsh}/unpacked"/>
+			<arg value="-in ${forge.jar}1"/>
+			<arg value="-out ${forge.jar}2"/>
+			<arg value="-jref ${lib.dir}"/>
+		</java>
+		<java classpath="${reobf.cmd}" classname="immibis.bon.cui.MCPRemap">
+			<arg  line="-q -m"/>
+			<arg value="-to MCP"/>
+			<arg value="-from SRG"/>
+			<arg value="-mcp ${forge.stsh}/unpacked"/>
+			<arg value="-in ${forge.jar}2"/>
+			<arg value="-out ${forge.jar}"/>
+			<arg value="-jref ${lib.dir}"/>
+			<arg value="-at ${transformers.dir}"/>
+		</java>
+		<delete file="${forge.jar}1" failonerror="false"/>
+		<delete file="${forge.jar}2" failonerror="false"/>
 		<copy file="${forge.jar}" todir="${forgebuild.dir}/dirtyArtifacts/"/>
 		<delete dir="${compile.dir}"/>
 	</target>
@@ -363,7 +387,7 @@
 	
 	<target name="setup-bon" depends="properties" unless="bon.exists">
 		<echo message="Downloading BON..."/>
-		<get src="https://github.com/skyboy/bearded-octo-nemesis/releases/download/1.1/BON.jar" dest="${reobf.cmd}"/>
+		<get src="https://github.com/skyboy/bearded-octo-nemesis/releases/download/1.3/BON.jar" dest="${reobf.cmd}"/>
 	</target>
 	
 	<target name="upload" depends="build" if="CF_API_TOKEN">
