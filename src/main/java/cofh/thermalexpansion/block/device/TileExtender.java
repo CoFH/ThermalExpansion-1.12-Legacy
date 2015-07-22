@@ -6,7 +6,6 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -40,6 +39,8 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	IInventory targetInventory;
 	IEnergyReceiver targetReceiver;
 	IFluidHandler targetHandler;
+
+    boolean polling = false;
 
 	public TileExtender() {
 
@@ -98,117 +99,177 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		return true;
 	}
 
-	/* IEnergyReceiver */
+
+    /* IEnergyReceiver */
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-		return targetReceiver != null ? targetReceiver.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxReceive, simulate) : 0;
+        if(polling) return 0;
+        polling = true;
+        int energy = targetReceiver != null ? targetReceiver.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxReceive, simulate) : 0;
+        polling = false;
+        return energy;
 	}
 
 	@Override
 	public int getEnergyStored(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.getEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
+        if(polling) return 0;
+        polling = true;
+        int energy = targetReceiver != null ? targetReceiver.getEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
+        polling = false;
+        return energy;
 	}
 
 	@Override
 	public int getMaxEnergyStored(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.getMaxEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
-	}
+        if(polling) return 0;
+        polling = true;
+        int maxEnergy = targetReceiver != null ? targetReceiver.getMaxEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
+        polling = false;
+        return maxEnergy;
+    }
 
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
 
-		return targetReceiver != null ? targetReceiver.canConnectEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : false;
-	}
+        if(polling) return false;
+        polling = true;
+        boolean canConnect = targetReceiver != null ? targetReceiver.canConnectEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : false;
+        polling = false;
+        return canConnect;
+    }
 
 	/* IFluidHandler */
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
 
 		if (from.ordinal() == facing) {
-			return 0;
-		}
-		return targetHandler != null ? targetHandler.fill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doFill) : 0;
+            return 0;
+        }
+        if(polling) return 0;
+        polling = true;
+        int amount = targetHandler != null ? targetHandler.fill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doFill) : 0;
+        polling = false;
+        return amount;
 	}
 
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
 
 		if (from.ordinal() == facing) {
-			return null;
-		}
-		return targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doDrain) : null;
-	}
+            return null;
+        }
+        if(polling) return null;
+        polling = true;
+        FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doDrain) : null;
+        polling = false;
+        return drain;
+    }
 
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
 
 		if (from.ordinal() == facing) {
-			return null;
-		}
-		return targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxDrain, doDrain) : null;
-	}
+            return null;
+        }
+        if(polling) return null;
+        polling = true;
+        FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxDrain, doDrain) : null;
+        polling = false;
+        return drain;
+    }
 
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid) {
 
 		if (from.ordinal() == facing) {
-			return false;
-		}
-		return targetHandler != null ? targetHandler.canFill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
-	}
+            return false;
+        }
+        if(polling) return false;
+        polling = true;
+        boolean canFill = targetHandler != null ? targetHandler.canFill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
+        polling = false;
+        return canFill;
+    }
 
 	@Override
 	public boolean canDrain(ForgeDirection from, Fluid fluid) {
 
 		if (from.ordinal() == facing) {
-			return false;
-		}
-		return targetHandler != null ? targetHandler.canDrain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
-	}
+            return false;
+        }
+        if(polling) return false;
+        polling = true;
+        boolean canDrain = targetHandler != null ? targetHandler.canDrain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
+        polling = false;
+        return canDrain;
+    }
 
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		if (from.ordinal() == facing) {
-			return CoFHProps.EMPTY_TANK_INFO;
-		}
-		return targetHandler != null ? targetHandler.getTankInfo(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
-	}
+            return CoFHProps.EMPTY_TANK_INFO;
+        }
+        if(polling) return CoFHProps.EMPTY_TANK_INFO;
+        polling = true;
+        FluidTankInfo[] tankInfo = targetHandler != null ? targetHandler.getTankInfo(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
+        polling = false;
+        return tankInfo;
+    }
 
 	/* IInventory */
 	@Override
 	public int getSizeInventory() {
 
-		return targetInventory != null ? targetInventory.getSizeInventory() : 0;
-	}
+        if(polling) return 0;
+        polling = true;
+        int size = targetInventory != null ? targetInventory.getSizeInventory() : 0;
+        polling = false;
+        return size;
+    }
 
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 
-		return targetInventory != null ? targetInventory.getStackInSlot(slot) : null;
-	}
+        if(polling) return null;
+        polling = true;
+        ItemStack stack = targetInventory != null ? targetInventory.getStackInSlot(slot) : null;
+        polling = false;
+        return stack;
+    }
 
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
-		return targetInventory != null ? targetInventory.decrStackSize(slot, amount) : null;
-	}
+        if(polling) return null;
+        polling = true;
+        ItemStack stack = targetInventory != null ? targetInventory.decrStackSize(slot, amount) : null;
+        polling = false;
+        return stack;
+    }
 
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 
-		return targetInventory != null ? targetInventory.getStackInSlotOnClosing(slot) : null;
-	}
+        if (polling) return null;
+        polling = true;
+        ItemStack stack = targetInventory != null ? targetInventory.getStackInSlotOnClosing(slot) : null;
+        polling = false;
+        return stack;
+    }
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
+        if(polling) return;
+        polling = true;
 		if (targetInventory != null) {
 			targetInventory.setInventorySlotContents(slot, stack);
 		}
+        polling = false;
 	}
 
 	/* ISidedInventory */
@@ -218,7 +279,14 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (side == facing) {
 			return CoFHProps.EMPTY_INVENTORY;
 		}
-		return targetInventorySided != null ? targetInventorySided.getAccessibleSlotsFromSide(side) : CoFHProps.EMPTY_INVENTORY;
+        if(polling) return CoFHProps.EMPTY_INVENTORY;
+        polling = true;
+        int[] slots;
+        if (targetInventorySided != null) slots = targetInventorySided.getAccessibleSlotsFromSide(side);
+        else if(targetInventory != null) slots = getNonSidedSlots(targetInventory.getSizeInventory());
+        else slots = CoFHProps.EMPTY_INVENTORY;
+        polling = false;
+        return slots;
 	}
 
 	@Override
@@ -227,8 +295,12 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (side == facing) {
 			return false;
 		}
-		return targetInventorySided != null ? targetInventorySided.canInsertItem(slot, stack, side) : false;
-	}
+        if(polling) return false;
+        polling = true;
+        boolean canInsert = targetInventorySided != null ? targetInventorySided.canInsertItem(slot, stack, side) : targetInventory != null;
+        polling = false;
+        return canInsert;
+    }
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
@@ -236,7 +308,33 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (side == facing) {
 			return false;
 		}
-		return targetInventorySided != null ? targetInventorySided.canExtractItem(slot, stack, side) : false;
-	}
+        if(polling) return false;
+        polling = true;
+        boolean canExtract = targetInventorySided != null ? targetInventorySided.canExtractItem(slot, stack, side) : targetInventory != null;
+        polling = false;
+        return canExtract;
+    }
 
+
+    static final int MAX_CACHE_LEVEL = 90;
+    static int[][] slotsCache;
+
+    static {
+        slotsCache = new int[MAX_CACHE_LEVEL][];
+        slotsCache[0] = CoFHProps.EMPTY_INVENTORY;
+    }
+
+    public int[] getNonSidedSlots(int n){
+        if(n < MAX_CACHE_LEVEL && slotsCache[n] != null)
+            return slotsCache[n];
+
+        int[] slots = new int[n];
+        for (int j = 0; j < n; j++) {
+            slots[j] = j;
+        }
+
+        if(n < MAX_CACHE_LEVEL) slotsCache[n] = slots;
+
+        return slots;
+    }
 }
