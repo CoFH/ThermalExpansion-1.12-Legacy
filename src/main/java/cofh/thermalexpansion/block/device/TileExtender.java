@@ -39,6 +39,8 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	IInventory targetInventory;
 	IEnergyReceiver targetReceiver;
 	IFluidHandler targetHandler;
+    TileEntity targetTile;
+    boolean initialInit = false;
 
     boolean polling = false;
 
@@ -63,28 +65,37 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
 	protected void updateHandlers() {
 
+        initialInit = true;
+
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, facing);
 
-		if (tile instanceof ISidedInventory) {
-			targetInventorySided = (ISidedInventory) tile;
+        targetTile = BlockHelper.getAdjacentTileEntity(this, facing);
+
+        if (targetTile != null) {
+            if (targetTile.isInvalid()) targetTile = null;
+            // TODO: Decide if we should allow connections to other Extenders
+            else if(targetTile.getClass() == TileExtender.class) targetTile = null;
+        }
+
+		if (targetTile instanceof ISidedInventory) {
+			targetInventorySided = (ISidedInventory) targetTile;
 		} else {
 			targetInventorySided = null;
 		}
-		if (tile instanceof IInventory) {
-			targetInventory = (IInventory) tile;
+		if (targetTile instanceof IInventory) {
+			targetInventory = (IInventory) targetTile;
 		} else {
 			targetInventory = null;
 		}
-		if (tile instanceof IEnergyReceiver) {
-			targetReceiver = (IEnergyReceiver) tile;
+		if (targetTile instanceof IEnergyReceiver) {
+			targetReceiver = (IEnergyReceiver) targetTile;
 		} else {
 			targetReceiver = null;
 		}
-		if (tile instanceof IFluidHandler) {
-			targetHandler = (IFluidHandler) tile;
+		if (targetTile instanceof IFluidHandler) {
+			targetHandler = (IFluidHandler) targetTile;
 		} else {
 			targetHandler = null;
 		}
@@ -104,27 +115,38 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
 
-        if(polling) return 0;
+        if(checkPollingAndNeighbour()) return 0;
         polling = true;
         int energy = targetReceiver != null ? targetReceiver.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxReceive, simulate) : 0;
         polling = false;
         return energy;
 	}
 
-	@Override
+    public boolean checkPollingAndNeighbour() {
+        if(ServerHelper.isClientWorld(worldObj))
+            return true;
+
+        if(!initialInit || (targetTile != null && targetTile.isInvalid()) ){
+            updateHandlers();
+        }
+
+        return polling && (targetTile != null && !targetTile.isInvalid());
+    }
+
+    @Override
 	public int getEnergyStored(ForgeDirection from) {
 
-        if(polling) return 0;
+        if(checkPollingAndNeighbour()) return 0;
         polling = true;
         int energy = targetReceiver != null ? targetReceiver.getEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
         polling = false;
         return energy;
 	}
 
-	@Override
+    @Override
 	public int getMaxEnergyStored(ForgeDirection from) {
 
-        if(polling) return 0;
+        if(checkPollingAndNeighbour()) return 0;
         polling = true;
         int maxEnergy = targetReceiver != null ? targetReceiver.getMaxEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
         polling = false;
@@ -134,7 +156,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public boolean canConnectEnergy(ForgeDirection from) {
 
-        if(polling) return false;
+        if(checkPollingAndNeighbour()) return false;
         polling = true;
         boolean canConnect = targetReceiver != null ? targetReceiver.canConnectEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : false;
         polling = false;
@@ -148,7 +170,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return 0;
         }
-        if(polling) return 0;
+        if(checkPollingAndNeighbour()) return 0;
         polling = true;
         int amount = targetHandler != null ? targetHandler.fill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doFill) : 0;
         polling = false;
@@ -161,7 +183,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return null;
         }
-        if(polling) return null;
+        if(checkPollingAndNeighbour()) return null;
         polling = true;
         FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doDrain) : null;
         polling = false;
@@ -174,7 +196,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return null;
         }
-        if(polling) return null;
+        if(checkPollingAndNeighbour()) return null;
         polling = true;
         FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxDrain, doDrain) : null;
         polling = false;
@@ -187,7 +209,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return false;
         }
-        if(polling) return false;
+        if(checkPollingAndNeighbour()) return false;
         polling = true;
         boolean canFill = targetHandler != null ? targetHandler.canFill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
         polling = false;
@@ -200,7 +222,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return false;
         }
-        if(polling) return false;
+        if(checkPollingAndNeighbour()) return false;
         polling = true;
         boolean canDrain = targetHandler != null ? targetHandler.canDrain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
         polling = false;
@@ -213,7 +235,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (from.ordinal() == facing) {
             return CoFHProps.EMPTY_TANK_INFO;
         }
-        if(polling) return CoFHProps.EMPTY_TANK_INFO;
+        if(checkPollingAndNeighbour()) return CoFHProps.EMPTY_TANK_INFO;
         polling = true;
         FluidTankInfo[] tankInfo = targetHandler != null ? targetHandler.getTankInfo(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
         polling = false;
@@ -224,7 +246,8 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public int getSizeInventory() {
 
-        if(polling) return 0;
+        if(ServerHelper.isClientWorld(worldObj)) return 1;
+        if(checkPollingAndNeighbour()) return 0;
         polling = true;
         int size = targetInventory != null ? targetInventory.getSizeInventory() : 0;
         polling = false;
@@ -234,7 +257,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public ItemStack getStackInSlot(int slot) {
 
-        if(polling) return null;
+        if(checkPollingAndNeighbour()) return null;
         polling = true;
         ItemStack stack = targetInventory != null ? targetInventory.getStackInSlot(slot) : null;
         polling = false;
@@ -244,7 +267,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
-        if(polling) return null;
+        if(checkPollingAndNeighbour()) return null;
         polling = true;
         ItemStack stack = targetInventory != null ? targetInventory.decrStackSize(slot, amount) : null;
         polling = false;
@@ -254,7 +277,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public ItemStack getStackInSlotOnClosing(int slot) {
 
-        if (polling) return null;
+        if (checkPollingAndNeighbour()) return null;
         polling = true;
         ItemStack stack = targetInventory != null ? targetInventory.getStackInSlotOnClosing(slot) : null;
         polling = false;
@@ -264,7 +287,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
-        if(polling) return;
+        if(checkPollingAndNeighbour()) return;
         polling = true;
 		if (targetInventory != null) {
 			targetInventory.setInventorySlotContents(slot, stack);
@@ -272,14 +295,46 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
         polling = false;
 	}
 
-	/* ISidedInventory */
+    @Override
+    public int getInventoryStackLimit() {
+
+        if (checkPollingAndNeighbour()) return 64;
+        polling = true;
+        int num = targetInventory != null ? targetInventory.getInventoryStackLimit() : 64;
+        polling = false;
+        return num;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+        if (checkPollingAndNeighbour()) return false;
+        polling = true;
+        boolean valid = targetInventory != null ? targetInventory.isItemValidForSlot(slot, stack) : false;
+        polling = false;
+        return valid;
+    }
+
+    @Override
+    public void markDirty() {
+        super.markDirty();
+
+        if (checkPollingAndNeighbour()) return;
+        polling = true;
+        if (targetInventory != null)
+            targetInventory.markDirty();
+        polling = false;
+
+    }
+
+    /* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
 		if (side == facing) {
 			return CoFHProps.EMPTY_INVENTORY;
 		}
-        if(polling) return CoFHProps.EMPTY_INVENTORY;
+        if(checkPollingAndNeighbour()) return CoFHProps.EMPTY_INVENTORY;
         polling = true;
         int[] slots;
         if (targetInventorySided != null) slots = targetInventorySided.getAccessibleSlotsFromSide(side);
@@ -295,7 +350,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (side == facing) {
 			return false;
 		}
-        if(polling) return false;
+        if(checkPollingAndNeighbour()) return false;
         polling = true;
         boolean canInsert = targetInventorySided != null ? targetInventorySided.canInsertItem(slot, stack, side) : targetInventory != null;
         polling = false;
@@ -308,7 +363,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		if (side == facing) {
 			return false;
 		}
-        if(polling) return false;
+        if(checkPollingAndNeighbour()) return false;
         polling = true;
         boolean canExtract = targetInventorySided != null ? targetInventorySided.canExtractItem(slot, stack, side) : targetInventory != null;
         polling = false;
@@ -337,4 +392,6 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
         return slots;
     }
+
+
 }
