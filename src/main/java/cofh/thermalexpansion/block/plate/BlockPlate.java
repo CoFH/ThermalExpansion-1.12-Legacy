@@ -338,19 +338,19 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}));
 		}
 
-		if (enable[Types.POWERED_IMPULSE.ordinal()] && false) {
+		if (enable[Types.POWERED_IMPULSE.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateExcursion, new Object[] {
 					"EGE",
 					"GPG",
 					"ECE",
-					'E', "ingotElectrum",
+					'E', "ingotSignalum",
 					'G', "blockQuartz",
 					'P', plateImpulse,
 					'C', TEItems.powerCoilGold,
 			}));
 		}
 
-		if (enable[Types.POWERED_TRANSLOCATE.ordinal()] && false) {
+		if (enable[Types.POWERED_TRANSLOCATE.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateTeleport, new Object[] {
 					"EIE",
 					"IPI",
