@@ -322,6 +322,13 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		return new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() };
 	}
 
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return getEnergyValue(stack) > 0;
+	}
+
 	/* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {

@@ -36,7 +36,6 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 public class TileActivator extends TileDeviceBase {
 
 	static EnergyConfig energyConfig;
-
 	static int ACTIVATION_ENERGY = 20;
 	static int MAX_SLOT = 9;
 

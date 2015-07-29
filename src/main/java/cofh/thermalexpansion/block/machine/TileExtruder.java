@@ -5,6 +5,7 @@ import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
@@ -41,34 +42,19 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		processItems[1] = new ItemStack(Blocks.stone);
 		processItems[2] = new ItemStack(Blocks.obsidian);
 
-		// String category = "RecipeManagers.Extruder.Recipes";
+		String category = "RecipeManagers.Extruder.Recipes";
 
-		// processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Cobblestone.Lava", processLava[0]), 0,
-		// TEProps.MAX_FLUID_SMALL);
-		// processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Lava", processLava[1]), 0,
-		// TEProps.MAX_FLUID_SMALL);
-		// processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Lava", processLava[2]), 0,
-		// TEProps.MAX_FLUID_SMALL);
-		//
-		// processWater[0][0] = MathHelper.clampI(
-		// ThermalExpansion.config.get(category, "Extruder.Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
-		// processWater[0][1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Water", processWater[0][1]),
-		// 0, TEProps.MAX_FLUID_SMALL);
-		// processWater[0][2] = MathHelper.clampI(
-		// ThermalExpansion.config.get(category, "Extruder.Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
-		//
-		// processTime[0][0] = MathHelper.clampI(
-		// ThermalExpansion.config.get(category, "Extruder.Cobblestone.Time", processTime[0][0]),
-		// 4,
-		// 72000);
-		// processTime[0][1] = MathHelper
-		// .clampI(ThermalExpansion.config.get(category, "Extruder.Stone.Time", processTime[0][1]), 4, 72000);
-		// processTime[0][2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Extruder.Obsidian.Time", processTime[0][2]),
-		// 4,
-		// 72000);
+		processLava[0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
 
-		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder.Recipes");
-		ThermalExpansion.config.removeCategory("RecipeManagers.Extruder");
+		processWater[0][0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[0][1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Stone.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[0][2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
+
+		processTime[0][0] = MathHelper.clampI(ThermalExpansion.config.get(category, "Cobblestone.Time", processTime[0][0]), 4, 72000);
+		processTime[0][1] = MathHelper.clampI(ThermalExpansion.config.get(category, "Stone.Time", processTime[0][1]), 4, 72000);
+		processTime[0][2] = MathHelper.clampI(ThermalExpansion.config.get(category, "Obsidian.Time", processTime[0][2]), 4, 72000);
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 4;

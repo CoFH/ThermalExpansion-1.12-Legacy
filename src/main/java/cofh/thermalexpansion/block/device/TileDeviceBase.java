@@ -14,19 +14,20 @@ import net.minecraft.util.IIcon;
 public abstract class TileDeviceBase extends TileAugmentable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Types.values().length];
-	public static final boolean[] enableSecurity = { true, true, true, true, true, true };
+	public static final boolean[] enableSecurity = new boolean[BlockDevice.Types.values().length];
 
 	public static void configure() {
 
 		for (int i = 0; i < BlockDevice.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockDevice.NAMES[i]);
 			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", enableSecurity[i], comment);
+			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", true, comment);
 		}
 		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()])
 				+ ".Securable");
 		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.COLLECTOR.ordinal()]) + ".Securable");
 		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
+		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.BUFFER.ordinal()]) + ".Securable");
 	}
 
 	protected final byte type;

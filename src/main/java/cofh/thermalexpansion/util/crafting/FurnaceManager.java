@@ -136,6 +136,16 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "dustInvar", TFItems.ingotInvar);
 		addOreDictRecipe(energy, "dustBronze", TFItems.ingotBronze);
 
+		energy = DEFAULT_ENERGY * 6 / 16;
+
+		addOreDictRecipe(energy, "oreberryIron", TFItems.nuggetIron);
+		addOreDictRecipe(energy, "oreberryGold", TFItems.nuggetGold);
+		addOreDictRecipe(energy, "oreberryCopper", TFItems.nuggetCopper);
+		addOreDictRecipe(energy, "oreberryTin", TFItems.nuggetTin);
+		addOreDictRecipe(energy, "oreberrySilver", TFItems.nuggetSilver);
+		addOreDictRecipe(energy, "oreberryLead", TFItems.nuggetLead);
+		addOreDictRecipe(energy, "oreberryNickel", TFItems.nuggetNickel);
+		addOreDictRecipe(energy, "oreberryPlatinum", TFItems.nuggetPlatinum);
 	}
 
 	public static void loadRecipes() {
@@ -290,14 +300,6 @@ public class FurnaceManager {
 				return -1;
 			}
 			return id;
-		}
-
-		public static int getOreID(String oreName) {
-
-			if (!safeOreType(oreName)) {
-				return -1;
-			}
-			return ItemHelper.oreProxy.getOreID(oreName);
 		}
 
 		public ComparableItemStackFurnace(ItemStack stack) {

@@ -180,6 +180,13 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		return Math.min(getEnergyValue(inventory[0]), calcEnergy() * energyMod);
 	}
 
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return getEnergyValue(stack) > 0;
+	}
+
 	/* ISidedInventory */
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {

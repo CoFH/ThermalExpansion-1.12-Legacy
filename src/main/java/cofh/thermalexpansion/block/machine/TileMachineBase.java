@@ -25,9 +25,9 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
-	protected static final boolean[] enableSound = { true, true, true, true, true, true, true, true, true, true, true, true };
+	protected static final boolean[] enableSound = new boolean[BlockMachine.Types.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7, 15 };
-	public static final boolean[] enableSecurity = { true, true, true, true, true, true, true, true, true, true, true, true };
+	public static final boolean[] enableSecurity = new boolean[BlockMachine.Types.values().length];
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
@@ -41,10 +41,10 @@ public abstract class TileMachineBase extends TileAugmentable {
 		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
 			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.config.get("Security", "Machine." + name + ".Securable", enableSecurity[i], comment);
+			enableSecurity[i] = ThermalExpansion.config.get("Security", "Machine." + name + ".Securable", true, comment);
 
 			comment = "Enable sounds for the " + name + ".";
-			enableSound[i] = ThermalExpansion.configClient.get("Machine." + name, "Sound.Enable", enableSound[i], comment);
+			enableSound[i] = ThermalExpansion.configClient.get("Machine." + name, "Sound.Enable", true, comment);
 		}
 	}
 

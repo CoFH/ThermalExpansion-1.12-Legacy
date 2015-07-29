@@ -67,6 +67,8 @@ public class BlockDevice extends BlockTEBase {
 			return new TileExtender();
 		case NULLIFIER:
 			return new TileNullifier();
+		case BUFFER:
+			return new TileBuffer();
 		default:
 			return null;
 		}
@@ -101,7 +103,7 @@ public class BlockDevice extends BlockTEBase {
 
 				tile.sideCache[0] = sideCache[0];
 				tile.sideCache[1] = sideCache[1];
-				tile.sideCache[facing] = 0;
+				tile.sideCache[facing] = sideCache[storedFacing];
 				tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
 				tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 				tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
@@ -246,6 +248,7 @@ public class BlockDevice extends BlockTEBase {
 		TileBreaker.initialize();
 		TileExtender.initialize();
 		TileNullifier.initialize();
+		TileBuffer.initialize();
 
 		if (defaultAutoTransfer) {
 			// defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
@@ -261,12 +264,14 @@ public class BlockDevice extends BlockTEBase {
 		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		// extender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.EXTENDER.ordinal()));
 		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
+		buffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BUFFER.ordinal()));
 
 		// GameRegistry.registerCustomItemStack("collector", collector);
 		GameRegistry.registerCustomItemStack("activator", activator);
 		GameRegistry.registerCustomItemStack("breaker", breaker);
 		// GameRegistry.registerCustomItemStack("extender", extender);
 		GameRegistry.registerCustomItemStack("nullifier", nullifier);
+		GameRegistry.registerCustomItemStack("buffer", buffer);
 
 		return true;
 	}
@@ -329,6 +334,17 @@ public class BlockDevice extends BlockTEBase {
 					'X', "ingotInvar"
 			}));
 		}
+		if (enable[Types.BUFFER.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeAugmentable(buffer, defaultAugments, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Blocks.hopper,
+					'I', tinPart,
+					'P', TEItems.pneumaticServo,
+					'X', "gearCopper"
+			}));
+		}
 		// @formatter:on
 
 		// TECraftingHandler.addSecureRecipe(collector);
@@ -336,6 +352,7 @@ public class BlockDevice extends BlockTEBase {
 		TECraftingHandler.addSecureRecipe(breaker);
 		// TECraftingHandler.addSecureRecipe(extender);
 		TECraftingHandler.addSecureRecipe(nullifier);
+		TECraftingHandler.addSecureRecipe(buffer);
 
 		return true;
 	}
@@ -347,10 +364,11 @@ public class BlockDevice extends BlockTEBase {
 		breaker = ItemBlockDevice.setDefaultTag(breaker);
 		// extender = ItemBlockDevice.setDefaultTag(extender);
 		nullifier = ItemBlockDevice.setDefaultTag(nullifier);
+		buffer = ItemBlockDevice.setDefaultTag(buffer);
 	}
 
 	public static enum Types {
-		WORKBENCH_FALSE, COLLECTOR, ACTIVATOR, BREAKER, EXTENDER, NULLIFIER
+		WORKBENCH_FALSE, COLLECTOR, ACTIVATOR, BREAKER, EXTENDER, NULLIFIER, BUFFER
 	}
 
 	public static IIcon deviceSide;
@@ -358,7 +376,7 @@ public class BlockDevice extends BlockTEBase {
 	public static IIcon[] deviceFace = new IIcon[Types.values().length];
 	public static IIcon[] deviceActive = new IIcon[Types.values().length];
 
-	public static final String[] NAMES = { "workbench", "collector", "activator", "breaker", "extender", "nullifier" };
+	public static final String[] NAMES = { "workbench", "collector", "activator", "breaker", "extender", "nullifier", "buffer" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
 
@@ -378,6 +396,7 @@ public class BlockDevice extends BlockTEBase {
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.WORKBENCH_FALSE.ordinal()]));
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.COLLECTOR.ordinal()]));
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.EXTENDER.ordinal()]));
+		// ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.BUFFER.ordinal()]));
 	}
 
 	public static ItemStack collector;
@@ -385,5 +404,6 @@ public class BlockDevice extends BlockTEBase {
 	public static ItemStack breaker;
 	public static ItemStack extender;
 	public static ItemStack nullifier;
+	public static ItemStack buffer;
 
 }

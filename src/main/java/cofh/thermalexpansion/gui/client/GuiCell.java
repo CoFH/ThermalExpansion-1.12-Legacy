@@ -34,10 +34,10 @@ public class GuiCell extends GuiBaseAdv {
 	ElementButton decSend;
 	ElementButton incSend;
 
-	public GuiCell(InventoryPlayer inventory, TileEntity theTile) {
+	public GuiCell(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerTEBase(inventory, theTile), TEXTURE);
-		myTile = (TileCell) theTile;
+		super(new ContainerTEBase(inventory, tile), TEXTURE);
+		myTile = (TileCell) tile;
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 
@@ -233,25 +233,6 @@ public class GuiCell extends GuiBaseAdv {
 		if (myTile.energySend >= 100000) {
 			xSend -= 3;
 		}
-
-		// if (myTile.energyReceive < 10) {
-		// xRecv = 32;
-		// } else if (myTile.energyReceive < 100) {
-		// xRecv = 26;
-		// } else if (myTile.energyReceive >= 10000) {
-		// xRecv = 14;
-		// } else if (myTile.energyReceive >= 1000) {
-		// xRecv = 17;
-		// }
-		// if (myTile.energySend < 10) {
-		// xSend = 122;
-		// } else if (myTile.energySend < 100) {
-		// xSend = 116;
-		// } else if (myTile.energySend >= 10000) {
-		// xSend = 104;
-		// } else if (myTile.energySend >= 1000) {
-		// xSend = 107;
-		// }
 		fontRendererObj.drawString(recv, xRecv, 44, 0x404040);
 		fontRendererObj.drawString(send, xSend, 44, 0x404040);
 

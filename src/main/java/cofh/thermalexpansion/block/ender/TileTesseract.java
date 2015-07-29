@@ -340,6 +340,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getRegistry().getLinkedItemOutputs(this);
 
 		if (validOutputs != null) {
+			System.out.println(validOutputs.size());
+
 			isSendingItems = true;
 			IEnderItemHandler handler;
 			itemTrackerRemote++;

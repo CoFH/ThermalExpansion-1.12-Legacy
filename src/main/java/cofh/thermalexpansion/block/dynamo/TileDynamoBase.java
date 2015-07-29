@@ -709,7 +709,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return augmentCoilDuct || side != facing;
+		return augmentCoilDuct || side != facing ? isItemValidForSlot(slot, stack) : false;
 	}
 
 	@Override

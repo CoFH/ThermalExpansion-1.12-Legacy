@@ -105,20 +105,20 @@ public class GuiTransposer extends GuiAugmentableBase {
 
 		if (myTile.reverse) {
 			if (!myTile.reverseFlag) {
-				mode.setToolTip("info.thermalexpansion.toggleWait");
+				mode.setToolTip("info.thermalexpansion.transposer.toggleWait");
 				mode.setDisabled();
 			} else {
-				mode.setToolTip("info.thermalexpansion.toggleFill");
+				mode.setToolTip("info.thermalexpansion.transposer.toggleFill");
 				mode.setSheetX(192);
 				mode.setHoverX(192);
 				mode.setActive();
 			}
 		} else {
 			if (myTile.reverseFlag) {
-				mode.setToolTip("info.thermalexpansion.toggleWait");
+				mode.setToolTip("info.thermalexpansion.transposer.toggleWait");
 				mode.setDisabled();
 			} else {
-				mode.setToolTip("info.thermalexpansion.toggleEmpty");
+				mode.setToolTip("info.thermalexpansion.transposer.toggleEmpty");
 				mode.setSheetX(176);
 				mode.setHoverX(176);
 				mode.setActive();

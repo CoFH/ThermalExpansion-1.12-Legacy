@@ -88,6 +88,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 				}
 				for (int i = 0; i < slots.length && amount > 0; i++) {
 					ItemStack queryStack = sidedInv.getStackInSlot(slots[i]);
+					if (queryStack == null) {
+						continue;
+					}
 					if (sidedInv.canExtractItem(slots[i], queryStack, side ^ 1)) {
 						if (stack == null) {
 							if (isItemValidForSlot(slot, queryStack)) {
