@@ -91,7 +91,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		case POWERED_SIGNAL:
 			return new TilePlateCharger();
 		case POWERED_IMPULSE:
-			return new TilePlateExcursion();
+			return world.isRemote ? new TilePlateExcursionClient() : new TilePlateExcursion();
 		case POWERED_TRANSLOCATE:
 			return new TilePlateTeleporter();
 		default:
@@ -102,7 +102,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < Types.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -276,7 +276,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TilePlateImpulse.initialize();
 		TilePlateTranslocate.initialize();
 		TilePlateCharger.initialize();
-		//
+		TilePlateExcursion.initialize();
 		TilePlateTeleporter.initialize();
 
 		plateFrame = new ItemStack(this, 1, Types.FRAME.ordinal());
@@ -284,7 +284,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		plateImpulse = new ItemStack(this, 1, Types.IMPULSE.ordinal());
 		plateTranslocate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
 		plateCharge = new ItemStack(this, 1, Types.POWERED_SIGNAL.ordinal());
-		plateImpulse2 = new ItemStack(this, 1, Types.POWERED_IMPULSE.ordinal());
+		plateExcursion = new ItemStack(this, 1, Types.POWERED_IMPULSE.ordinal());
 		plateTeleport = new ItemStack(this, 1, Types.POWERED_TRANSLOCATE.ordinal());
 
 		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
@@ -292,7 +292,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		GameRegistry.registerCustomItemStack("plateImpulse", plateImpulse);
 		GameRegistry.registerCustomItemStack("plateTranslocate", plateTranslocate);
 		GameRegistry.registerCustomItemStack("plateCharge", plateCharge);
-		//
+		GameRegistry.registerCustomItemStack("plateExcursion", plateExcursion);
 		GameRegistry.registerCustomItemStack("plateTeleport", plateTeleport);
 
 		return true;
@@ -325,7 +325,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			TransposerManager.addTEFillRecipe(2000, plateFrame, plateTranslocate, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
 
-		if (enable[Types.POWERED_SIGNAL.ordinal()] && false) {
+		if (enable[Types.POWERED_SIGNAL.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateCharge, new Object[] {
 					"EGE",
 					"IPI",
@@ -334,6 +334,18 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 					'G', "gemDiamond",
 					'I', TEItems.powerCoilSilver,
 					'P', plateSignal,
+					'C', TEItems.powerCoilGold,
+			}));
+		}
+
+		if (enable[Types.POWERED_IMPULSE.ordinal()] && false) {
+			ItemHelper.addRecipe(new RecipeUpgrade(5, plateExcursion, new Object[] {
+					"EGE",
+					"GPG",
+					"ECE",
+					'E', "ingotElectrum",
+					'G', "blockQuartz",
+					'P', plateImpulse,
 					'C', TEItems.powerCoilGold,
 			}));
 		}
@@ -355,7 +367,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TECraftingHandler.addSecureRecipe(plateTranslocate);
 
 		TECraftingHandler.addSecureRecipe(plateCharge);
-		//
+		TECraftingHandler.addSecureRecipe(plateExcursion);
 		TECraftingHandler.addSecureRecipe(plateTeleport);
 
 		return true;
@@ -386,7 +398,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public static ItemStack plateImpulse;
 	public static ItemStack plateTranslocate;
 	public static ItemStack plateCharge;
-	public static ItemStack plateImpulse2;
+	public static ItemStack plateExcursion;
 	public static ItemStack plateTeleport;
 
 }
