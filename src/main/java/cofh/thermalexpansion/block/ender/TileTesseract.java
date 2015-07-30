@@ -55,7 +55,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	protected static final int[] SLOTS = { 0 };
 
 	public enum PacketInfoID {
-		NAME_LIST, ALTER_NAME_LIST, TILE_INFO
+		ALTER_NAME_LIST, TILE_INFO
 	}
 
 	public enum TransferMode {
@@ -229,7 +229,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
-					.addString(access.isPublic() ? "_public_" : owner.getName().toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+					.addString(getChannelString()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
@@ -237,7 +237,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
-					.addString(access.isPublic() ? "_public_" : owner.getName().toLowerCase()).addString(String.valueOf(theFreq)).addString(freqName));
+					.addString(getChannelString()).addString(String.valueOf(theFreq)).addString(freqName));
 		}
 	}
 
@@ -666,9 +666,25 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (PacketInfoID.values()[payload.getByte()]) {
-		case NAME_LIST:
-			return;
 		case ALTER_NAME_LIST:
+			boolean remove = payload.getBool();
+			String channel = payload.getString();
+			int freq = payload.getInt();
+			String name = payload.getString();
+			for (int i = 0; i < worldObj.playerEntities.size(); ++i) {
+				EntityPlayer player = (EntityPlayer) worldObj.playerEntities.get(i);
+				if (isUseable(player) && player.openContainer instanceof ContainerTEBase) {
+					ContainerTEBase container = (ContainerTEBase) player.openContainer;
+					if (container.baseTile == this) {
+						if (remove) {
+							RegistryEnderAttuned.removeChannelFrequency(player, channel, freq);
+						} else {
+							RegistryEnderAttuned.updateChannelFrequency(player, channel, freq, name);
+						}
+					}
+				}
+			}
+
 			return;
 		case TILE_INFO:
 			removeFromRegistry();
@@ -722,7 +738,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public String getChannelString() {
 
-		return access.isPublic() ? "_public_" : owner.getName();
+		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase();
 	}
 
 	@Override

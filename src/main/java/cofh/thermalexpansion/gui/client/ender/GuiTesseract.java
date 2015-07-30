@@ -111,6 +111,7 @@ public class GuiTesseract extends GuiBaseAdv {
 
 				int tempFreq = Integer.parseInt(freq.getText());
 				RegistryEnderAttuned.getChannels(false).setFrequency(myTile.getChannelString(), tempFreq, GuiTesseract.this.name.getText());
+				myTile.addEntry(tempFreq, GuiTesseract.this.name.getText());
 			}
 		}.setToolTip("info.cofh.addFrequency"));
 		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 192, 92, TEX_PATH) {
@@ -120,6 +121,7 @@ public class GuiTesseract extends GuiBaseAdv {
 
 				int tempFreq = Integer.parseInt(freq.getText());
 				RegistryEnderAttuned.getChannels(false).removeFrequency(myTile.getChannelString(), tempFreq);
+				myTile.removeEntry(tempFreq, GuiTesseract.this.name.getText());
 			}
 		}.setToolTip("info.cofh.removeFrequency"));
 
