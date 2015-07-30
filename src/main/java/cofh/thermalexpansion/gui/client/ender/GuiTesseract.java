@@ -94,7 +94,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				int tempFreq = Integer.parseInt(freq.getText());
 				myTile.setTileInfo(tempFreq);
 			}
-		}.setToolTip("info.cofh.setFrequency").setToolTipLocalized(true));
+		}.setToolTip("info.cofh.setFrequency"));
 		addElement(clear = new ElementButton(this, 151, 18, 20, 20, 228, 192, 228, 212, 196, 40, TEX_PATH) {
 
 			@Override
@@ -102,7 +102,7 @@ public class GuiTesseract extends GuiBaseAdv {
 
 				myTile.setTileInfo(-1);
 			}
-		}.setToolTip("info.cofh.disable").setToolTipLocalized(true));
+		}.setToolTip("info.cofh.disable"));
 
 		addElement(add = new ElementButton(this, 139, 40, 16, 16, 208, 128, 208, 144, 176, 92, TEX_PATH) {
 
@@ -112,7 +112,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				int tempFreq = Integer.parseInt(freq.getText());
 				RegistryEnderAttuned.getChannels(false).setFrequency(myTile.getChannelString(), tempFreq, GuiTesseract.this.name.getText());
 			}
-		}.setToolTip("info.cofh.addFrequency").setToolTipLocalized(true));
+		}.setToolTip("info.cofh.addFrequency"));
 		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 192, 92, TEX_PATH) {
 
 			@Override
@@ -121,7 +121,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				int tempFreq = Integer.parseInt(freq.getText());
 				RegistryEnderAttuned.getChannels(false).removeFrequency(myTile.getChannelString(), tempFreq);
 			}
-		}.setToolTip("info.cofh.removeFrequency").setToolTipLocalized(true));
+		}.setToolTip("info.cofh.removeFrequency"));
 
 		addElement(frequencies = new ElementListBox(this, 7, 57, 130, 104) {
 
@@ -207,7 +207,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		}
 
 		boolean hasFreq = freq.getContentLength() > 0, hasName = name.getContentLength() > 0;
-		assign.setEnabled(hasFreq);
+		assign.setEnabled(hasFreq && !String.valueOf(myTile.getFrequency()).equals(freq.getText()));
 		clear.setEnabled(myTile.getFrequency() != -1);
 		add.setEnabled(hasName && hasFreq && !name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
 		remove.setEnabled(hasFreq && hasName && name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
