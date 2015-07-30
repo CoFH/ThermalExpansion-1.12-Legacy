@@ -21,6 +21,7 @@ import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.Proxy;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.TECreativeTab;
 import cofh.thermalexpansion.gui.TECreativeTabFlorbs;
@@ -62,6 +63,7 @@ import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
 import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
 import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -147,6 +149,7 @@ public class ThermalExpansion extends BaseMod {
 		TEItems.initialize();
 		TEBlocks.initialize();
 		TEPlugins.initialize();
+		TeleportChannelRegistry.initialize();
 
 		if (TEProps.enableAchievements) {
 			TEAchievements.initialize();
@@ -210,6 +213,12 @@ public class ThermalExpansion extends BaseMod {
 		configClient.cleanUp(false, true);
 
 		log.info("Load Complete.");
+	}
+
+	@EventHandler
+	public void serverStart(FMLServerAboutToStartEvent event) {
+
+		TeleportChannelRegistry.serverStart(event);
 	}
 
 	@EventHandler

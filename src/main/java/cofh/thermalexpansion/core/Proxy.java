@@ -7,6 +7,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
+import net.minecraftforge.event.world.WorldEvent.Save;
 
 public class Proxy {
 
@@ -17,6 +18,14 @@ public class Proxy {
 
 	public void registerRenderInformation() {
 
+	}
+
+	@SubscribeEvent
+	public void save(Save evt) {
+
+		if (evt.world.provider.dimensionId == 0) {
+			TeleportChannelRegistry.save();
+		}
 	}
 
 	@SideOnly(Side.CLIENT)

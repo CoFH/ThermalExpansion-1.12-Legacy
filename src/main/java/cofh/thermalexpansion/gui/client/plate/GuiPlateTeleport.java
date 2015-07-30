@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.gui.client.plate;
 
-import cofh.core.RegistryEnderAttuned;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
@@ -17,6 +16,7 @@ import cofh.lib.transport.IEnderChannelRegistry.Frequency;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.plate.TilePlateTeleporter;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.ListBoxElementEnderText;
 
@@ -41,6 +41,12 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	ElementSlider slider;
 	ElementTextField freq;
 	ElementTextField name;
+	ElementTextField title;
+
+	ElementButton assign;
+	ElementButton clear;
+	ElementButton add;
+	ElementButton remove;
 
 	public GuiPlateTeleport(InventoryPlayer inventory, TileEntity theTile) {
 
@@ -67,40 +73,44 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		}
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(freq = new ElementTextFieldLimited(this, 102, 40, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
+		addElement(freq = new ElementTextFieldLimited(this, 102, 34, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
 				.setText(String.valueOf(myTile.getFrequency())));
-		addElement(name = new ElementTextField(this, 28, 56, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
+		addElement(title = new ElementTextField(this, 28, 18, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
 
-		addElement(new ElementButton(this, 131, 32, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {
+		addElement(name = new ElementTextField(this, 28, 56, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
 
-			@Override
-			public void onClick() {
-
-				// TODO: prompt for name? alternate tab? popup?
-				myTile.setFrequency(Integer.parseInt(freq.getText()));
-			}
-		});
-		addElement(new ElementButton(this, 151, 32, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
+		addElement(assign = new ElementButton(this, 131, 22, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				myTile.clearFrequency();
+				if (myTile.setFrequency(Integer.parseInt(freq.getText()))) {
+					TeleportChannelRegistry.getChannels(false).setFrequency(myTile.getChannelString(), myTile.getFrequency(),
+						GuiPlateTeleport.this.title.getText());
+				}
 			}
 		});
-
-		addElement(new ElementButton(this, 139, 54, 16, 16, 176, 60, 176, 76, 176, 92, TEX_PATH) {
+		addElement(clear = new ElementButton(this, 151, 22, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				@SuppressWarnings("unused")
-				String name = null; // (String) frequencies.getSelectedElement().getValue();
-				// TODO: name<->freq lookup
-				myTile.setDestination(0);
+				int freq = myTile.getFrequency();
+				if (myTile.clearFrequency()) {
+					TeleportChannelRegistry.getChannels(false).removeFrequency(myTile.getChannelString(), freq);
+				}
 			}
 		});
-		addElement(new ElementButton(this, 155, 54, 16, 16, 192, 60, 192, 76, 192, 92, TEX_PATH) {
+
+		addElement(add = new ElementButton(this, 139, 54, 16, 16, 176, 60, 176, 76, 176, 92, TEX_PATH) {
+
+			@Override
+			public void onClick() {
+
+				myTile.setDestination(((Frequency) frequencies.getSelectedElement().getValue()).freq);
+			}
+		});
+		addElement(remove = new ElementButton(this, 155, 54, 16, 16, 192, 60, 192, 76, 192, 92, TEX_PATH) {
 
 			@Override
 			public void onClick() {
@@ -114,6 +124,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			@Override
 			protected void onElementClicked(IListBoxElement element) {
 
+				Frequency freq = (Frequency) element.getValue();
+				GuiPlateTeleport.this.name.setText(freq.name);
 			}
 
 			@Override
@@ -124,13 +136,15 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 		}.setBackgroundColor(0, 0).setSelectionColor(1));
 		frequencies.setSelectedIndex(-1);
-		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		IEnderChannelRegistry data = TeleportChannelRegistry.getChannels(false);
 		updated = data.updated();
 		for (Frequency freq : data.getFrequencyList(null)) {
 			frequencies.add(new ListBoxElementEnderText(freq));
-			if (freq.freq == myTile.getFrequency()) {
+			if (freq.freq == myTile.getDestination()) {
 				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
 				this.name.setText(freq.name);
+			} else if (freq.freq == myTile.getFrequency()) {
+				title.setText(freq.name);
 			}
 		}
 		addElement(slider = new SliderVertical(this, 140, 73, 14, 87, frequencies.getLastScrollPosition()) {
@@ -162,14 +176,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	}
 
 	@Override
-	public void handleElementButtonClick(String buttonName, int mouseButton) {
-
-	}
-
-	@Override
 	protected void updateElementInformation() {
 
-		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		IEnderChannelRegistry data = TeleportChannelRegistry.getChannels(false);
 		if (updated != data.updated()) {
 			updated = data.updated();
 			IListBoxElement ele = frequencies.getSelectedElement();
@@ -181,19 +190,21 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				frequencies.add(new ListBoxElementEnderText(freq));
 				if (freq.freq == sel) {
 					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-					this.freq.setText(String.valueOf(freq.freq));
 					this.name.setText(freq.name);
+				} else if (freq.freq == myTile.getFrequency()) {
+					title.setText(freq.name);
 				}
 			}
 			slider.setLimits(0, frequencies.getLastScrollPosition());
 			slider.setValue(pos);
 		}
-	}
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int x, int y) {
-
-		super.drawGuiContainerForegroundLayer(x, y);
+		boolean hasFreq = freq.getContentLength() > 0, hasName = title.getContentLength() > 0;
+		assign.setEnabled(hasFreq && hasName && myTile.getFrequency() == -1);
+		clear.setEnabled(myTile.getFrequency() != -1);
+		IListBoxElement ele = frequencies.getSelectedElement();
+		add.setEnabled(myTile.getDestination() == -1 && name.getContentLength() > 0 && ele != null && myTile.getFrequency() != ((Frequency)ele.getValue()).freq);
+		remove.setEnabled(myTile.getDestination() != -1);
 	}
 
 }
