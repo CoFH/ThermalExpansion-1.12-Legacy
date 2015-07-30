@@ -20,7 +20,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTEBase extends Container implements IAugmentableContainer {
 
-	TileCoFHBase baseTile;
+	public final TileCoFHBase baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];
@@ -32,6 +32,7 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 	public ContainerTEBase() {
 
+		baseTile = null;
 	}
 
 	public ContainerTEBase(TileEntity tile) {
@@ -48,6 +49,8 @@ public class ContainerTEBase extends Container implements IAugmentableContainer 
 
 		if (tile instanceof TileCoFHBase) {
 			baseTile = (TileCoFHBase) tile;
+		} else {
+			baseTile = null;
 		}
 		hasAugSlots = augSlots;
 		hasPlayerInvSlots = playerInvSlots;
