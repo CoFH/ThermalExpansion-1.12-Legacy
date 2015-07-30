@@ -380,7 +380,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		public int texture = name().startsWith("POWERED") ? 7 : 2;
 	}
 
-	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "impulse", "teleport" };
+	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "excursion", "teleport" };
 	public static boolean[] enable = new boolean[Types.values().length];
 
 	static {
@@ -389,8 +389,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		for (int i = 0; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
-		ThermalExpansion.config.removeCategory(category + "Charge");
-		ThermalExpansion.config.removeCategory(category + "Teleport");
 	}
 
 	public static ItemStack plateFrame;

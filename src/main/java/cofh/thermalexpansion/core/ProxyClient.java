@@ -3,7 +3,6 @@ package cofh.thermalexpansion.core;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.ItemRenderRegistry;
 import cofh.core.render.RenderItemModular;
-import cofh.thermalexpansion.gui.client.ender.GuiTesseract;
 import cofh.thermalexpansion.item.TEFlorbs;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderCache;
@@ -23,7 +22,6 @@ import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.client.event.TextureStitchEvent;
 
@@ -81,14 +79,6 @@ public class ProxyClient extends Proxy {
 			RenderItemFlorb.initialize();
 
 			RenderEntityFlorb.initialize();
-		}
-	}
-
-	@Override
-	public void updateTesseractGui() {
-
-		if (Minecraft.getMinecraft().currentScreen instanceof GuiTesseract) {
-			((GuiTesseract) Minecraft.getMinecraft().currentScreen).updateNames();
 		}
 	}
 

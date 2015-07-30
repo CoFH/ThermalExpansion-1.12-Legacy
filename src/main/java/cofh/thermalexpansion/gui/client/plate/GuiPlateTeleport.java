@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.gui.client.plate;
 
+import cofh.core.RegistryEnderAttuned;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
@@ -11,10 +12,13 @@ import cofh.lib.gui.element.ElementTextField;
 import cofh.lib.gui.element.ElementTextFieldLimited;
 import cofh.lib.gui.element.listbox.IListBoxElement;
 import cofh.lib.gui.element.listbox.SliderVertical;
+import cofh.lib.transport.IEnderChannelRegistry;
+import cofh.lib.transport.IEnderChannelRegistry.Frequency;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.plate.TilePlateTeleporter;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.element.ListBoxElementEnderText;
 
 import java.util.UUID;
 
@@ -27,10 +31,11 @@ import org.lwjgl.input.Keyboard;
 public class GuiPlateTeleport extends GuiBaseAdv {
 
 	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Teleport.png";
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTeleporter myTile;
 	UUID playerName;
+
+	int updated;
 
 	ElementListBox frequencies;
 	ElementSlider slider;
@@ -119,12 +124,21 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 		}.setBackgroundColor(0, 0).setSelectionColor(1));
 		frequencies.setSelectedIndex(-1);
-		addElement(slider = new SliderVertical(this, 140, 73, 14, 87, 0) {
+		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		updated = data.updated();
+		for (Frequency freq : data.getFrequencyList(null)) {
+			frequencies.add(new ListBoxElementEnderText(freq));
+			if (freq.freq == myTile.getFrequency()) {
+				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
+				this.name.setText(freq.name);
+			}
+		}
+		addElement(slider = new SliderVertical(this, 140, 73, 14, 87, frequencies.getLastScrollPosition()) {
 
 			@Override
 			public void onValueChanged(int value) {
 
-				frequencies.setSelectedIndex(value);
+				frequencies.scrollToV(value);
 			}
 
 		}.setColor(0, 0));
@@ -155,6 +169,25 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	@Override
 	protected void updateElementInformation() {
 
+		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		if (updated != data.updated()) {
+			updated = data.updated();
+			IListBoxElement ele = frequencies.getSelectedElement();
+			int sel = ele != null ? ((Frequency) ele.getValue()).freq : -1;
+			int pos = slider.getSliderY();
+			frequencies.removeAll();
+			frequencies.setSelectedIndex(-1);
+			for (Frequency freq : data.getFrequencyList(null)) {
+				frequencies.add(new ListBoxElementEnderText(freq));
+				if (freq.freq == sel) {
+					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
+					this.freq.setText(String.valueOf(freq.freq));
+					this.name.setText(freq.name);
+				}
+			}
+			slider.setLimits(0, frequencies.getLastScrollPosition());
+			slider.setValue(pos);
+		}
 	}
 
 	@Override

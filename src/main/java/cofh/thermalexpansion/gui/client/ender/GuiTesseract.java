@@ -1,198 +1,164 @@
 package cofh.thermalexpansion.gui.client.ender;
 
-import cofh.api.transport.RegistryEnderAttuned;
+import cofh.api.tileentity.ISecurable.AccessMode;
+import cofh.core.RegistryEnderAttuned;
 import cofh.core.gui.GuiBaseAdv;
-import cofh.core.gui.GuiLimitedTextField;
-import cofh.core.gui.GuiTextList;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabRedstone;
 import cofh.core.gui.element.TabSecurity;
 import cofh.core.gui.element.TabTutorial;
+import cofh.lib.gui.element.ElementButton;
+import cofh.lib.gui.element.ElementListBox;
+import cofh.lib.gui.element.ElementSlider;
+import cofh.lib.gui.element.ElementTextField;
+import cofh.lib.gui.element.ElementTextFieldLimited;
+import cofh.lib.gui.element.listbox.IListBoxElement;
+import cofh.lib.gui.element.listbox.SliderVertical;
+import cofh.lib.transport.IEnderChannelRegistry;
+import cofh.lib.transport.IEnderChannelRegistry.Frequency;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ender.TileTesseract;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.element.ListBoxElementEnderText;
 import cofh.thermalexpansion.gui.element.TabConfigTesseract;
-import cofh.thermalfoundation.fluid.TFFluids;
 
-import java.util.LinkedList;
-import java.util.List;
 import java.util.UUID;
 
-import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 
 public class GuiTesseract extends GuiBaseAdv {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_ENDER + "Tesseract.png");
+	static final String TEX_PATH = TEProps.PATH_GUI_ENDER + "Tesseract.png";
 
 	static final int TB_HEIGHT = 12;
 
 	TileTesseract myTile;
+	AccessMode tileAccess;
+	boolean requested;
 	UUID playerName;
 
-	GuiTextField tbName;
-	GuiLimitedTextField tbFreq;
-	GuiTextList taNamesList;
+	int updated;
 
-	int tempFreq = -1;
-	String tempName = "";
+	ElementListBox frequencies;
+	ElementSlider slider;
+	ElementTextField freq;
+	ElementTextField name;
 
-	int tbNameX = 0;
-	int tbNameY = 0;
-	int tbFreqX = 0;
-	int tbFreqY = 0;
-	int taX = 0;
-	int taY = 0;
+	ElementButton assign;
+	ElementButton clear;
+	ElementButton add;
+	ElementButton remove;
 
 	public GuiTesseract(InventoryPlayer inventory, TileEntity theTile) {
 
-		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
+		super(new ContainerTEBase(inventory, theTile, false, false), new ResourceLocation(TEX_PATH));
 		myTile = (TileTesseract) theTile;
-		name = myTile.getInventoryName();
-		drawInventory = false;
+		super.name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
-
-		tempFreq = myTile.frequency;
-
-		generateInfo("tab.thermalexpansion.ender.tesseract", 2);
+		drawInventory = false;
 	}
 
 	@Override
 	public void initGui() {
 
 		super.initGui();
+		Keyboard.enableRepeatEvents(true);
+		tileAccess = myTile.getAccess();
+		RegistryEnderAttuned.requestChannelList(myTile.getChannelString());
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigTesseract(this, myTile));
 
+		generateInfo("tab.thermalexpansion.ender.tesseract", 2);
 		addTab(new TabInfo(this, myInfo));
 		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfigurationOperation()));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
-		tbFreqX = guiLeft + 102 + 4;
-		tbFreqY = guiTop + 26 + 2;
+		addElement(freq = new ElementTextFieldLimited(this, 102, 27, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
+				.setText(String.valueOf(myTile.getFrequency())));
+		addElement(name = new ElementTextField(this, 8, 42, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
 
-		tbNameX = guiLeft + 8 + 4;
-		tbNameY = guiTop + 42 + 2;
+		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 176, 40, TEX_PATH) {
 
-		taX = guiLeft + 8;
-		taY = guiTop + 58;
+			@Override
+			public void onClick() {
 
-		// Setup Text Box
-		String temp = "";
-		if (tbName != null) { // Stops GUI resize deleting text.
-			temp = tbName.getText();
-		}
-		tbName = new GuiTextField(this.fontRendererObj, tbNameX, tbNameY, 128, TB_HEIGHT);
-		tbName.setMaxStringLength(20);
-		tbName.setText(temp);
-		tbName.setEnableBackgroundDrawing(false);
+				int tempFreq = Integer.parseInt(freq.getText());
+				myTile.setTileInfo(tempFreq);
+			}
+		}.setToolTip("info.cofh.setFrequency").setToolTipLocalized(true));
+		addElement(clear = new ElementButton(this, 151, 18, 20, 20, 228, 192, 228, 212, 196, 40, TEX_PATH) {
 
-		// Setup Freq Text Box
-		temp = String.valueOf(tempFreq);
-		if (tbFreq != null) { // Stops GUI resize deleting text.
-			temp = tbFreq.getText();
-		}
-		tbFreq = new GuiLimitedTextField(this.fontRendererObj, tbFreqX, tbFreqY, 26, TB_HEIGHT, "0123456789");
-		tbFreq.setMaxStringLength(3);
-		tbFreq.setFocused(true);
-		tbFreq.setEnableBackgroundDrawing(false);
+			@Override
+			public void onClick() {
 
-		// Setup Text Area
-		List<String> temp2 = new LinkedList<String>();
-		if (taNamesList != null) { // Again stops GUI Resize deleting the text
-			temp2 = taNamesList.textLines;
-		}
-		taNamesList = new GuiTextList(this.fontRendererObj, taX, taY, 128, 10);
-		taNamesList.textLines = temp2;
-		taNamesList.drawBackground = false;
-		taNamesList.drawBorder = false;
+				myTile.setTileInfo(-1);
+			}
+		}.setToolTip("info.cofh.disable").setToolTipLocalized(true));
 
-		Keyboard.enableRepeatEvents(true);
-		updateNames();
-	}
+		addElement(add = new ElementButton(this, 139, 40, 16, 16, 208, 128, 208, 144, 176, 92, TEX_PATH) {
 
-	@Override
-	protected void drawGuiContainerBackgroundLayer(float f, int x, int y) {
+			@Override
+			public void onClick() {
 
-		super.drawGuiContainerBackgroundLayer(f, x, y);
-		mc.renderEngine.bindTexture(TEXTURE);
+				int tempFreq = Integer.parseInt(freq.getText());
+				RegistryEnderAttuned.getChannels(false).setFrequency(myTile.getChannelString(), tempFreq, GuiTesseract.this.name.getText());
+			}
+		}.setToolTip("info.cofh.addFrequency").setToolTipLocalized(true));
+		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 192, 92, TEX_PATH) {
 
-		if (canSet()) {
-			if (131 <= mouseX && mouseX < 151 && 18 <= mouseY && mouseY < 38) {
-				drawTexturedModalRect(guiLeft + 131, guiTop + 18, 208, 212, 20, 20);
-			} else {
-				drawTexturedModalRect(guiLeft + 131, guiTop + 18, 208, 192, 20, 20);
+			@Override
+			public void onClick() {
+
+				int tempFreq = Integer.parseInt(freq.getText());
+				RegistryEnderAttuned.getChannels(false).removeFrequency(myTile.getChannelString(), tempFreq);
+			}
+		}.setToolTip("info.cofh.removeFrequency").setToolTipLocalized(true));
+
+		addElement(frequencies = new ElementListBox(this, 7, 57, 130, 104) {
+
+			@Override
+			protected void onElementClicked(IListBoxElement element) {
+
+				Frequency freq = (Frequency) element.getValue();
+				GuiTesseract.this.name.setText(freq.name);
+				GuiTesseract.this.freq.setText(String.valueOf(freq.freq));
+			}
+
+			@Override
+			protected void onScrollV(int newStartIndex) {
+
+				slider.setValue(newStartIndex);
+			}
+
+		}.setBackgroundColor(0, 0).setSelectionColor(1));
+		frequencies.setSelectedIndex(-1);
+		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		updated = data.updated();
+		for (Frequency freq : data.getFrequencyList(null)) {
+			frequencies.add(new ListBoxElementEnderText(freq));
+			if (freq.freq == myTile.getFrequency()) {
+				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
+				this.name.setText(freq.name);
 			}
 		}
-		if (canDisable()) {
-			if (151 <= mouseX && mouseX < 171 && 18 <= mouseY && mouseY < 38) {
-				drawTexturedModalRect(guiLeft + 151, guiTop + 18, 228, 212, 20, 20);
-			} else {
-				drawTexturedModalRect(guiLeft + 151, guiTop + 18, 228, 192, 20, 20);
-			}
-		}
-		if (canAddEntry()) {
-			if (139 <= mouseX && mouseX < 155 && 40 <= mouseY && mouseY < 56) {
-				drawTexturedModalRect(guiLeft + 139, guiTop + 40, 208, 144, 16, 16);
-			} else {
-				drawTexturedModalRect(guiLeft + 139, guiTop + 40, 208, 128, 16, 16);
-			}
-		}
-		if (canRemoveEntry()) {
-			if (155 <= mouseX && mouseX < 171 && 40 <= mouseY && mouseY < 56) {
-				drawTexturedModalRect(guiLeft + 155, guiTop + 40, 224, 144, 16, 16);
-			} else {
-				drawTexturedModalRect(guiLeft + 155, guiTop + 40, 224, 128, 16, 16);
-			}
-		}
-		if (canScrollUp()) {
-			if (147 <= mouseX && mouseX < 163 && 65 <= mouseY && mouseY < 81) {
-				drawTexturedModalRect(guiLeft + 147, guiTop + 65, 208, 80, 16, 16);
-			} else {
-				drawTexturedModalRect(guiLeft + 147, guiTop + 65, 208, 64, 16, 16);
-			}
-		}
-		if (canScrollDown()) {
-			if (147 <= mouseX && mouseX < 163 && 137 <= mouseY && mouseY < 153) {
-				drawTexturedModalRect(guiLeft + 147, guiTop + 137, 224, 80, 16, 16);
-			} else {
-				drawTexturedModalRect(guiLeft + 147, guiTop + 137, 224, 64, 16, 16);
-			}
-		}
+		addElement(slider = new SliderVertical(this, 137, 58, 14, 102, frequencies.getLastScrollPosition()) {
 
-		tbName.drawTextBox();
-		tbFreq.drawTextBox();
+			@Override
+			public void onValueChanged(int value) {
 
-		taNamesList.drawBackground();
-		if (canDisable()) {
-			int yHighlight = taNamesList.getSelectedLineYPos();
-			if (yHighlight > -1) {
-				drawFluid(taX, yHighlight, new FluidStack(TFFluids.fluidEnder, 1000), taNamesList.width, taNamesList.lineHeight);
+				frequencies.scrollToV(value);
 			}
-		}
-		taNamesList.drawText();
-	}
 
-	@Override
-	protected void drawGuiContainerForegroundLayer(int x, int y) {
-
-		if (myTile.frequency == -1) {
-			fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.inactive"), 8, 28, 0x404040);
-		} else {
-			fontRendererObj.drawString(StringHelper.localize("info.cofh.frequency") + ": " + myTile.frequency, 8, 28, 0x404040);
-		}
-		super.drawGuiContainerForegroundLayer(x, y);
+		}.setColor(0, 0));
 	}
 
 	@Override
@@ -210,234 +176,41 @@ public class GuiTesseract extends GuiBaseAdv {
 		if (!myTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
-		tbName.updateCursorCounter();
-		tbFreq.updateCursorCounter();
 	}
 
 	@Override
-	protected void keyTyped(char i, int j) {
+	protected void updateElementInformation() {
 
-		this.tbName.textboxKeyTyped(i, j);
-		this.tbFreq.textboxKeyTyped(i, j);
-		if (j == 1) { // esc
-			this.mc.thePlayer.closeScreen();
-			return;
-		}
-		if (this.tbFreq.isFocused()) {
-			if (RegistryEnderAttuned.clientFrequencyNames.get(this.tbFreq.getText()) != null) {
-				tbName.setText(RegistryEnderAttuned.clientFrequencyNames.get(tbFreq.getText()));
-			}
-
-			if (j == 18) {
-				this.mc.thePlayer.closeScreen();
-			}
-
-			if (j == 28 && canSet()) { // enter
-
-				tempFreq = Integer.parseInt(tbFreq.getText());
-				myTile.setTileInfo(tempFreq);
-				playSound("random.click", 1.0F, 0.8F);
-			}
-		} else if (this.tbName.isFocused()) {
-
-			if (j == 28 && canAddEntry()) { // enter
-
-				tempFreq = Integer.parseInt(tbFreq.getText());
-				myTile.addEntry(tempFreq, tbName.getText());
-				playSound("random.click", 1.0F, 0.7F);
-			}
-		}
-	}
-
-	@Override
-	protected void mouseClicked(int mX, int mY, int mButton) {
-
-		int textAreaX = taNamesList.xPos - guiLeft;
-		int textAreaY = taNamesList.yPos - guiTop;
-
-		if (textAreaX <= mouseX && mouseX < textAreaX + taNamesList.width && mouseY >= textAreaY && mouseY < textAreaY + taNamesList.height) {
-			if (!taNamesList.mouseClicked(mouseX, mouseY, mButton, textAreaY).equalsIgnoreCase(tbName.getText())) {
-				tbName.setText(taNamesList.mouseClicked(mouseX, mouseY, mButton, textAreaY));
-
-				if (RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()) != null) {
-					tempFreq = Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()));
-					tbFreq.setText(String.valueOf(tempFreq));
+		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
+		if (updated != data.updated()) {
+			updated = data.updated();
+			requested = false;
+			IListBoxElement ele = frequencies.getSelectedElement();
+			int sel = ele != null ? ((Frequency) ele.getValue()).freq : -1;
+			int pos = slider.getSliderY();
+			frequencies.removeAll();
+			frequencies.setSelectedIndex(-1);
+			for (Frequency freq : data.getFrequencyList(null)) {
+				frequencies.add(new ListBoxElementEnderText(freq));
+				if (freq.freq == sel) {
+					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
+					this.freq.setText(String.valueOf(freq.freq));
+					this.name.setText(freq.name);
 				}
 			}
-		} else if (tbNameX - guiLeft <= mouseX && mouseX < tbNameX - guiLeft + tbName.getWidth() && mouseY >= tbNameY - guiTop
-				&& mouseY < tbNameY - guiTop + 12) {
-			tbName.setFocused(true);
-			tbFreq.setFocused(false);
-
-		} else if (tbFreqX - guiLeft <= mouseX && mouseX < tbFreqX - guiLeft + tbFreq.getWidth() && mouseY >= tbFreqY - guiTop
-				&& mouseY < tbFreqY - guiTop + 12) {
-			tbName.setFocused(false);
-			tbFreq.setFocused(true);
-
-		} else if (131 <= mouseX && mouseX < 151 && 18 <= mouseY && mouseY < 38 && canSet()) {
-
-			tempFreq = Integer.parseInt(tbFreq.getText());
-			myTile.setTileInfo(tempFreq);
-			playSound("random.click", 1.0F, 0.8F);
-
-		} else if (151 <= mouseX && mouseX < 171 && 18 <= mouseY && mouseY < 38 && canDisable()) {
-
-			myTile.setTileInfo(-1);
-			playSound("random.click", 1.0F, 0.6F);
-
-		} else if (139 <= mouseX && mouseX < 155 && 40 <= mouseY && mouseY < 56 && canAddEntry()) {
-
-			tempFreq = Integer.parseInt(tbFreq.getText());
-			myTile.addEntry(tempFreq, tbName.getText());
-			playSound("random.click", 1.0F, 0.7F);
-
-		} else if (155 <= mouseX && mouseX < 171 && 40 <= mouseY && mouseY < 56 && canRemoveEntry()) {
-
-			tempFreq = Integer.parseInt(tbFreq.getText());
-			myTile.removeEntry(tempFreq, tbName.getText());
-			taNamesList.selectedLine = -1;
-			playSound("random.click", 1.0F, 0.5F);
-
-		} else if (147 <= mouseX && mouseX < 163 && 65 <= mouseY && mouseY < 81) {
-
-			taNamesList.scrollDown();
-
-		} else if (147 <= mouseX && mouseX < 163 && 137 <= mouseY && mouseY < 153) {
-
-			taNamesList.scrollUp();
-
-		} else {
-			super.mouseClicked(mX, mY, mButton);
-		}
-	}
-
-	@Override
-	public void handleMouseInput() {
-
-		super.handleMouseInput();
-
-		int textAreaX = taNamesList.xPos - guiLeft;
-		int textAreaY = taNamesList.yPos - guiTop;
-
-		if (textAreaX <= mouseX && mouseX < textAreaX + taNamesList.width && mouseY >= textAreaY && mouseY < textAreaY + taNamesList.height) {
-			int wheelDir = Mouse.getEventDWheel();
-
-			if (wheelDir < 0) {
-				taNamesList.scrollUp();
-			}
-
-			if (wheelDir > 0) {
-				taNamesList.scrollDown();
-			}
-		}
-	}
-
-	@Override
-	public void addTooltips(List<String> tooltip) {
-
-		if (131 <= mouseX && mouseX < 151 && 18 <= mouseY && mouseY < 38 && canSet()) {
-			tooltip.add("Set Frequency");
-			return;
-		}
-		if (151 <= mouseX && mouseX < 171 && 18 <= mouseY && mouseY < 38 && canDisable()) {
-			tooltip.add("Disable");
-			return;
-		}
-		if (139 <= mouseX && mouseX < 155 && 40 <= mouseY && mouseY < 56 && canAddEntry()) {
-			tooltip.add("Save Frequency");
-			return;
-		}
-		if (155 <= mouseX && mouseX < 171 && 40 <= mouseY && mouseY < 56 && canRemoveEntry()) {
-			tooltip.add("Delete Frequency");
-			return;
-		}
-		super.addTooltips(tooltip);
-	}
-
-	public void updateNames() {
-
-		taNamesList.textLines = new LinkedList<String>();
-		taNamesList.selectedLine = -1;
-
-		if (RegistryEnderAttuned.clientFrequencyNames != null && RegistryEnderAttuned.clientFrequencyNames.size() > 0) {
-			if (RegistryEnderAttuned.clientFrequencyNames.get(String.valueOf(myTile.frequency)) != null) {
-				tbName.setText(RegistryEnderAttuned.clientFrequencyNames.get(String.valueOf(myTile.frequency)));
-				tempFreq = Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()));
-				tbFreq.setText(String.valueOf(tempFreq));
-			}
-			int i = 0;
-			RegistryEnderAttuned.sortClientNames();
-			for (String curName : RegistryEnderAttuned.clientFrequencyNames.values()) {
-				taNamesList.addLine(curName);
-				if (curName.equals(tbName.getText())
-						&& myTile.frequency == Integer.valueOf(RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText()))) {
-					taNamesList.selectedLine = i;
-				}
-				i++;
-			}
-		}
-	}
-
-	/* CONDITIONAL HELPERS */
-	private boolean canSet() {
-
-		if (tbFreq.getText().length() == 0) {
-			return false;
-		}
-		if (Integer.valueOf(tbFreq.getText()) == -1) {
-			return false;
-		}
-		return true;
-	}
-
-	private boolean canDisable() {
-
-		return myTile.frequency != -1;
-	}
-
-	private boolean canAddEntry() {
-
-		if (tbName.getText().length() == 0) {
-			return false;
-		}
-		if (tbFreq.getText().length() == 0) {
-			return false;
-		}
-		String curFreq = RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText());
-		if (curFreq == null || curFreq.equals(tbFreq.getText())) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean canRemoveEntry() {
-
-		if (tbName.getText().length() == 0) {
-			return false;
-		}
-		if (tbFreq.getText().length() == 0) {
-			return false;
-		}
-		String curFreq = RegistryEnderAttuned.clientFrequencyNamesReversed.get(tbName.getText());
-
-		if (curFreq == null) {
-			return false;
+			slider.setLimits(0, frequencies.getLastScrollPosition());
+			slider.setValue(pos);
+		} else if (!requested && tileAccess != myTile.getAccess()) {
+			requested = true;
+			tileAccess = myTile.getAccess();
+			RegistryEnderAttuned.requestChannelList(myTile.getChannelString());
 		}
 
-		if (curFreq.equals(tbFreq.getText())) {
-			return true;
-		}
-		return false;
-	}
-
-	private boolean canScrollUp() {
-
-		return taNamesList.startLine != 0;
-	}
-
-	private boolean canScrollDown() {
-
-		return taNamesList.textLines.size() > taNamesList.displayLines && taNamesList.startLine < taNamesList.textLines.size() - taNamesList.displayLines;
+		boolean hasFreq = freq.getContentLength() > 0, hasName = name.getContentLength() > 0;
+		assign.setEnabled(hasFreq);
+		clear.setEnabled(myTile.getFrequency() != -1);
+		add.setEnabled(hasName && hasFreq && !name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
+		remove.setEnabled(hasFreq && hasName && name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
 	}
 
 }

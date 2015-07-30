@@ -6,8 +6,8 @@ import cofh.api.inventory.IInventoryConnection;
 import cofh.api.transport.IEnderEnergyHandler;
 import cofh.api.transport.IEnderFluidHandler;
 import cofh.api.transport.IEnderItemHandler;
-import cofh.api.transport.RegistryEnderAttuned;
 import cofh.core.CoFHProps;
+import cofh.core.RegistryEnderAttuned;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -28,10 +28,8 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import java.util.List;
-import java.util.Map;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
@@ -40,7 +38,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -246,12 +243,12 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	public void addToRegistry() {
 
-		RegistryEnderAttuned.add(this);
+		RegistryEnderAttuned.getRegistry().add(this);
 	}
 
 	public void removeFromRegistry() {
 
-		RegistryEnderAttuned.remove(this);
+		RegistryEnderAttuned.getRegistry().remove(this);
 	}
 
 	public void setTileInfo(int theFreq) {
@@ -266,7 +263,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	/* SEND METHODS */
 	int sendEnergy(int energy, boolean simulate) {
 
-		List<IEnderEnergyHandler> validOutputs = RegistryEnderAttuned.getLinkedEnergyOutputs(this);
+		List<IEnderEnergyHandler> validOutputs = RegistryEnderAttuned.getRegistry().getLinkedEnergyOutputs(this);
 		int startAmount = energy;
 
 		if (startAmount <= 0) {
@@ -303,7 +300,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	int sendFluid(FluidStack fluid, boolean doFill) {
 
-		List<IEnderFluidHandler> validOutputs = RegistryEnderAttuned.getLinkedFluidOutputs(this);
+		List<IEnderFluidHandler> validOutputs = RegistryEnderAttuned.getRegistry().getLinkedFluidOutputs(this);
 		int startAmount = fluid.amount;
 
 		if (startAmount <= 0) {
@@ -340,7 +337,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	void sendItem(ItemStack item) {
 
-		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getLinkedItemOutputs(this);
+		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getRegistry().getLinkedItemOutputs(this);
 
 		if (validOutputs != null) {
 			isSendingItems = true;
@@ -573,9 +570,6 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return true;
 		}
 		if (canPlayerAccess(player)) {
-			if (ServerHelper.isServerWorld(worldObj)) {
-				sendNamesList((EntityPlayerMP) player);
-			}
 			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
@@ -673,21 +667,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		switch (PacketInfoID.values()[payload.getByte()]) {
 		case NAME_LIST:
-			RegistryEnderAttuned.clearClientNames();
-			int nameCount = payload.getInt();
-			for (int i = 0; i < nameCount; i++) {
-				RegistryEnderAttuned.addClientNames(payload.getString(), payload.getString());
-			}
-			ThermalExpansion.proxy.updateTesseractGui();
 			return;
 		case ALTER_NAME_LIST:
-			if (payload.getBool()) { // If Remove
-				RegistryEnderAttuned.linkConf.getCategory(payload.getString()).remove(payload.getString());
-			} else {
-				RegistryEnderAttuned.linkConf.get(payload.getString(), payload.getString(), "").set(payload.getString());
-			}
-			sendNamesList((EntityPlayerMP) thePlayer);
-			RegistryEnderAttuned.linkConf.save();
 			return;
 		case TILE_INFO:
 			removeFromRegistry();
@@ -702,34 +683,8 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			callNeighborTileChange();
-
-			sendNamesList((EntityPlayerMP) thePlayer);
 			return;
 		}
-	}
-
-	/**
-	 * WARNING - Only sends to player
-	 */
-	public void sendNamesList(EntityPlayerMP thePlayer) {
-
-		String lookupName = access.isPublic() ? "_public_" : owner.getName();
-		Map<String, Property> curList = RegistryEnderAttuned.linkConf.getCategory(lookupName.toLowerCase());
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		if (curList != null) {
-			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			payload.addInt(curList.size());
-
-			for (Property curProp : curList.values()) {
-				payload.addString(curProp.getName());
-				payload.addString(curProp.getString());
-			}
-		} else {
-			payload.addByte((byte) PacketInfoID.NAME_LIST.ordinal());
-			payload.addInt(0);
-		}
-		PacketHandler.sendTo(payload, thePlayer);
 	}
 
 	/* IInventory */

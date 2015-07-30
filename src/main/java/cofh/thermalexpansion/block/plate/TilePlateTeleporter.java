@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
 import cofh.api.transport.IEnderDestination;
-import cofh.api.transport.RegistryEnderAttuned;
+import cofh.core.RegistryEnderAttuned;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.util.CoreUtils;
@@ -13,6 +13,10 @@ import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.registry.GameRegistry;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.EntityFireworkSparkFX;
+import net.minecraft.client.particle.EntityPortalFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -58,12 +62,12 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 
-		if (destination == -1 || !RegistryEnderAttuned.hasDestination(this)) {
+		if (destination == -1 || !RegistryEnderAttuned.getRegistry().hasDestination(this)) {
 			return;
 		}
 
 		int teleportCost = TELEPORT_COST;
-		IEnderDestination dest = RegistryEnderAttuned.getDestination(this);
+		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this);
 		if (dest.dimension() != dimension()) {
 			teleportCost = DIMENSION_TELEPORT_COST;
 		}
@@ -145,7 +149,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer()
+						.getConfigurationManager());
 			}
 			CoreUtils.teleportEntityTo(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
@@ -153,44 +158,45 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 	protected void addZapParticles(int time, double x, double y, double z) {
 
-		// time += 2;
-		// double dv = time / 2;
-		//
-		// for (int i = time; i-- > 0;) {
-		// for (int k = time; k-- > 0;) {
-		// double yV = Math.cos(k * Math.PI / dv), xV, zV;
-		// xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
-		// zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
-		// yV = Math.pow(Math.sin(k * Math.PI / dv) * 1., 1) * 2;
-		// EntityFX spark = new EntityPortalFX(worldObj, x, y, z, xV, yV, zV);
-		// Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-		// }
-		// }
+		time += 2;
+		double dv = time / 2;
+
+		for (int i = time; i-- > 0;) {
+			for (int k = time; k-- > 0;) {
+				double yV = Math.cos(k * Math.PI / dv), xV, zV;
+				xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
+				zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
+				yV = Math.pow(Math.sin(k * Math.PI / dv) * 1., 1) * 2;
+				EntityFX spark = new EntityPortalFX(worldObj, x, y, z, xV, yV, zV);
+				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+			}
+		}
 	}
 
 	protected void addTeleportParticles(double x, double y, double z, boolean trail) {
 
-		// for (int i = 15; i-- > 0;) {
-		// for (int k = 15; k-- > 0;) {
-		// double yV = Math.cos(k * Math.PI / 7.5), xV, zV;
-		// xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
-		// zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
-		// yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-		// EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
-		//
-		// @Override
-		// public void moveEntity(double x, double y, double z) {
-		//
-		// motionY += 0.004;
-		// super.moveEntity(x, y + 0.004, z);
-		// }
-		// };
-		// spark.setTrail(trail);
-		// spark.setColour(0xE54CFF);
-		// spark.setFadeColour(0x750C9F);
-		// Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-		// }
-		// }
+		for (int i = 15; i-- > 0;) {
+			for (int k = 15; k-- > 0;) {
+				double yV = Math.cos(k * Math.PI / 7.5), xV, zV;
+				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
+				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
+				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
+				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV,
+						Minecraft.getMinecraft().effectRenderer) {
+
+					@Override
+					public void moveEntity(double x, double y, double z) {
+
+						motionY += 0.004;
+						super.moveEntity(x, y + 0.004, z);
+					}
+				};
+				spark.setTrail(trail);
+				spark.setColour(0xE54CFF);
+				spark.setFadeColour(0x750C9F);
+				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+			}
+		}
 	}
 
 	@Override
@@ -244,16 +250,16 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return false;
 		}
 		if (frequency != this.frequency) {
-			RegistryEnderAttuned.removeDestination(this);
+			RegistryEnderAttuned.getRegistry().removeDestination(this);
 			int old = this.frequency;
 			this.frequency = frequency;
 			isActive = frequency != -1;
 			if (isActive) {
-				if (RegistryEnderAttuned.hasDestination(this, false)) {
+				if (RegistryEnderAttuned.getRegistry().hasDestination(this, false)) {
 					this.frequency = old;
 					return false;
 				}
-				RegistryEnderAttuned.addDestination(this);
+				RegistryEnderAttuned.getRegistry().addDestination(this);
 			}
 
 			markDirty();
@@ -284,7 +290,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			int old = destination;
 			destination = frequency;
 			if (destination != -1) {
-				if (!RegistryEnderAttuned.hasDestination(this, false)) {
+				if (!RegistryEnderAttuned.getRegistry().hasDestination(this, false)) {
 					// TODO: ???
 					destination = old;
 					return false;
