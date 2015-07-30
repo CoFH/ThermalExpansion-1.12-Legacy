@@ -139,7 +139,22 @@ public class GuiTesseract extends GuiBaseAdv {
 				slider.setValue(newStartIndex);
 			}
 
-		}.setBackgroundColor(0, 0).setSelectionColor(1));
+			@Override
+			protected int drawElement(int elementIndex, int x, int y) {
+
+				IListBoxElement element = _elements.get(elementIndex);
+				if (((Frequency) element.getValue()).freq == myTile.getFrequency()) {
+					element.draw(this, x, y, 1, selectedTextColor);
+				} else if (elementIndex == _selectedIndex) {
+					element.draw(this, x, y, selectedLineColor, selectedTextColor);
+				} else {
+					element.draw(this, x, y, backgroundColor, textColor);
+				}
+
+				return element.getHeight();
+			}
+
+		}.setBackgroundColor(0, 0));
 		frequencies.setSelectedIndex(-1);
 		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
 		updated = data.updated();
