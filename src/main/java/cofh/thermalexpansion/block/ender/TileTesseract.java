@@ -229,7 +229,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(false)
-					.addString(getChannelString()).addString(String.valueOf(theFreq)).addString(freqName));
+					.addString(getChannelString()).addInt(theFreq).addString(freqName));
 		}
 	}
 
@@ -237,7 +237,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addByte(PacketInfoID.ALTER_NAME_LIST.ordinal()).addBool(true)
-					.addString(getChannelString()).addString(String.valueOf(theFreq)).addString(freqName));
+					.addString(getChannelString()).addInt(theFreq).addString(freqName));
 		}
 	}
 

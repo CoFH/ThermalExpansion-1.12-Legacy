@@ -82,9 +82,10 @@ public class GuiTesseract extends GuiBaseAdv {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
+		int tempFreq = myTile.getFrequency();
 		addElement(freq = new ElementTextFieldLimited(this, 102, 27, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
-				.setText(String.valueOf(myTile.getFrequency())));
-		addElement(name = new ElementTextField(this, 8, 42, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
+				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
+		addElement(name = new ElementTextField(this, 8, 42, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
 
 		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 176, 40, TEX_PATH) {
 
@@ -209,7 +210,7 @@ public class GuiTesseract extends GuiBaseAdv {
 			frequencies.setSelectedIndex(-1);
 			for (Frequency freq : data.getFrequencyList(null)) {
 				frequencies.add(new ListBoxElementEnderText(freq));
-				if (freq.freq == sel) {
+				if (freq.freq == sel && String.valueOf(sel).equals(this.freq.getText())) {
 					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
 					this.freq.setText(String.valueOf(freq.freq));
 					this.name.setText(freq.name);
