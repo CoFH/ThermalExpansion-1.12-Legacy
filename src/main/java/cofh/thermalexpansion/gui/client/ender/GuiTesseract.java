@@ -87,7 +87,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
 		addElement(name = new ElementTextField(this, 8, 42, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
 
-		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 176, 40, TEX_PATH) {
+		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 208, 232, TEX_PATH) {
 
 			@Override
 			public void onClick() {
@@ -96,7 +96,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				myTile.setTileInfo(tempFreq);
 			}
 		}.setToolTip("info.cofh.setFrequency"));
-		addElement(clear = new ElementButton(this, 151, 18, 20, 20, 228, 192, 228, 212, 196, 40, TEX_PATH) {
+		addElement(clear = new ElementButton(this, 151, 18, 20, 20, 228, 192, 228, 212, 228, 232, TEX_PATH) {
 
 			@Override
 			public void onClick() {
@@ -105,7 +105,7 @@ public class GuiTesseract extends GuiBaseAdv {
 			}
 		}.setToolTip("info.cofh.disable"));
 
-		addElement(add = new ElementButton(this, 139, 40, 16, 16, 208, 128, 208, 144, 176, 92, TEX_PATH) {
+		addElement(add = new ElementButton(this, 139, 40, 16, 16, 208, 128, 208, 144, 208, 160, TEX_PATH) {
 
 			@Override
 			public void onClick() {
@@ -115,7 +115,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				myTile.addEntry(tempFreq, GuiTesseract.this.name.getText());
 			}
 		}.setToolTip("info.cofh.addFrequency"));
-		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 192, 92, TEX_PATH) {
+		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 224, 160, TEX_PATH) {
 
 			@Override
 			public void onClick() {
@@ -168,7 +168,7 @@ public class GuiTesseract extends GuiBaseAdv {
 				this.name.setText(freq.name);
 			}
 		}
-		addElement(slider = new SliderVertical(this, 137, 58, 14, 102, frequencies.getLastScrollPosition()) {
+		addElement(slider = new SliderVertical(this, 140, 58, 14, 102, frequencies.getLastScrollPosition()) {
 
 			@Override
 			public void onValueChanged(int value) {
