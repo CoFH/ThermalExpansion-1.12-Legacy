@@ -7,6 +7,7 @@ import cofh.core.network.PacketHandler;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.EntityHelper;
+import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import com.mojang.authlib.GameProfile;
@@ -40,6 +41,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	protected static final int PARTICLE_DELAY = 80;
 	protected static final int TELEPORT_DELAY = PARTICLE_DELAY + 50;
 
+	private ThreadLocal<Boolean> internalSet = new ThreadLocal<Boolean>();
+	private Integer pendingFrequency;
 	protected int frequency = -1;
 	protected int destination = -1;
 
@@ -232,9 +235,75 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	}
 
 	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addInt(frequency);
+		payload.addInt(destination);
+		payload.addByte(access.ordinal());
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			frequency = payload.getInt();
+			destination = payload.getInt();
+			access = AccessMode.values()[payload.getByte()];
+		}
+
+		isActive = destination != -1;
+
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
+
+		if (isServer) {
+			if (!canPlayerAccess(thePlayer)) {
+				return;
+			}
+			internalSet.set(Boolean.TRUE);
+			if (payload.getBool()) {
+				if (payload.getBool()) {
+					int freq = payload.getInt();
+					String channel = payload.getString();
+					String name = payload.getString();
+					if (setFrequency(freq)) {
+						if (freq == -1) {
+							TeleportChannelRegistry.getChannels(true).removeFrequency(channel, freq);
+						} else {
+							TeleportChannelRegistry.getChannels(true).setFrequency(channel, freq, name);
+						}
+					}
+				} else {
+					setDestination(payload.getInt());
+				}
+			} else {
+				AccessMode newMode = AccessMode.values()[payload.getByte()];
+				if (frequency != -1 && access != newMode) {
+					if (setFrequency(-1)) {
+						TeleportChannelRegistry.getChannels(true).removeFrequency(getChannelString(), frequency);
+					}
+				}
+				access = newMode;
+			}
+			internalSet.set(null);
+		} else {
+			super.handleTileInfoPacket(payload, isServer, thePlayer);
+		}
+	}
+
+	@Override
 	public String getChannelString() {
 
-		return access.isPublic() ? "_public_" : owner.getName();
+		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase();
 	}
 
 	@Override
@@ -246,15 +315,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public boolean setFrequency(int frequency) {
 
-		if (!access.isPublic()) {
+		if (internalSet.get() == null && !access.isPublic()) {
 			return false;
 		}
-		if (frequency != this.frequency) {
+		if (!inWorld || frequency != this.frequency) {
 			RegistryEnderAttuned.getRegistry().removeDestination(this);
 			int old = this.frequency;
 			this.frequency = frequency;
-			isActive = frequency != -1;
-			if (isActive) {
+			if (frequency != -1) {
 				if (RegistryEnderAttuned.getRegistry().hasDestination(this, false)) {
 					this.frequency = old;
 					return false;
@@ -283,16 +351,18 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public boolean setDestination(int frequency) {
 
-		if (!access.isPublic()) {
+		if (internalSet.get() == null && !access.isPublic()) {
 			return false;
 		}
 		if (frequency != destination) {
 			int old = destination;
 			destination = frequency;
-			if (destination != -1) {
-				if (!RegistryEnderAttuned.getRegistry().hasDestination(this, false)) {
+			isActive = frequency != -1;
+			if (isActive) {
+				if (!RegistryEnderAttuned.getRegistry().hasDestination(this, true)) {
 					// TODO: ???
 					destination = old;
+					isActive = old != -1;
 					return false;
 				}
 			}
@@ -328,14 +398,33 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		return true;
 	}
 
+	@Override
+	public void blockBroken() {
+
+		RegistryEnderAttuned.getRegistry().removeDestination(this);
+	}
+
+	@Override
+	public void cofh_validate() {
+
+		if (pendingFrequency != null) {
+			if (!setFrequency(frequency = pendingFrequency.intValue())) {
+				frequency = -1;
+			}
+			pendingFrequency = null;
+		}
+
+		super.cofh_validate();
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
 
-		setFrequency(nbt.getInteger("Frequency"));
-		destination = nbt.getInteger("Destination");
+		pendingFrequency = nbt.hasKey("Frequency") ? new Integer(nbt.getInteger("Frequency")) : null;
+		destination = nbt.hasKey("Destination") ? nbt.getInteger("Destination") : -1;
 
 	}
 

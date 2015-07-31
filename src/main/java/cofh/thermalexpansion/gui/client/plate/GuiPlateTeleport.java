@@ -3,6 +3,8 @@ package cofh.thermalexpansion.gui.client.plate;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabSecurity;
+import cofh.core.network.PacketHandler;
+import cofh.core.network.PacketTileInfo;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementListBox;
@@ -64,6 +66,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 		super.initGui();
 		Keyboard.enableRepeatEvents(true);
+		TeleportChannelRegistry.requestChannelList(myTile.getChannelString());
 
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
@@ -73,21 +76,22 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		}
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+
+		int tempFreq = myTile.getFrequency();
 		addElement(freq = new ElementTextFieldLimited(this, 102, 34, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
-				.setText(String.valueOf(myTile.getFrequency())));
+				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
 		addElement(title = new ElementTextField(this, 28, 18, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
 
-		addElement(name = new ElementTextField(this, 28, 56, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
+		addElement(name = new ElementTextField(this, 28, 57, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
 
 		addElement(assign = new ElementButton(this, 131, 22, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				if (myTile.setFrequency(Integer.parseInt(freq.getText()))) {
-					TeleportChannelRegistry.getChannels(false).setFrequency(myTile.getChannelString(), myTile.getFrequency(),
-						GuiPlateTeleport.this.title.getText());
-				}
+				int tempFreq = Integer.parseInt(freq.getText());
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).
+					addString(myTile.getChannelString()).addString(GuiPlateTeleport.this.title.getText()));
 			}
 		});
 		addElement(clear = new ElementButton(this, 151, 22, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
@@ -95,10 +99,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			@Override
 			public void onClick() {
 
-				int freq = myTile.getFrequency();
-				if (myTile.clearFrequency()) {
-					TeleportChannelRegistry.getChannels(false).removeFrequency(myTile.getChannelString(), freq);
-				}
+				int tempFreq = -1;
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).
+					addString(myTile.getChannelString()).addString(""));
 			}
 		});
 
@@ -107,7 +110,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			@Override
 			public void onClick() {
 
-				myTile.setDestination(((Frequency) frequencies.getSelectedElement().getValue()).freq);
+				int tempFreq = ((Frequency) frequencies.getSelectedElement().getValue()).freq;
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(false).addInt(tempFreq));
 			}
 		});
 		addElement(remove = new ElementButton(this, 155, 54, 16, 16, 192, 60, 192, 76, 192, 92, TEX_PATH) {
@@ -115,7 +119,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			@Override
 			public void onClick() {
 
-				myTile.clearDestination();
+				int tempFreq = -1;
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(false).addInt(tempFreq));
 			}
 		});
 
@@ -134,7 +139,22 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				slider.setValue(newStartIndex);
 			}
 
-		}.setBackgroundColor(0, 0).setSelectionColor(1));
+			@Override
+			protected int drawElement(int elementIndex, int x, int y) {
+
+				IListBoxElement element = _elements.get(elementIndex);
+				if (((Frequency) element.getValue()).freq == myTile.getFrequency()) {
+					element.draw(this, x, y, 1, selectedTextColor);
+				} else if (elementIndex == _selectedIndex) {
+					element.draw(this, x, y, selectedLineColor, selectedTextColor);
+				} else {
+					element.draw(this, x, y, backgroundColor, textColor);
+				}
+
+				return element.getHeight();
+			}
+
+		}.setBackgroundColor(0, 0));
 		frequencies.setSelectedIndex(-1);
 		IEnderChannelRegistry data = TeleportChannelRegistry.getChannels(false);
 		updated = data.updated();
@@ -193,6 +213,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 					this.name.setText(freq.name);
 				} else if (freq.freq == myTile.getFrequency()) {
 					title.setText(freq.name);
+				}
+				if (freq.freq == myTile.getDestination()) {
+					name.setText(freq.name);
 				}
 			}
 			slider.setLimits(0, frequencies.getLastScrollPosition());
