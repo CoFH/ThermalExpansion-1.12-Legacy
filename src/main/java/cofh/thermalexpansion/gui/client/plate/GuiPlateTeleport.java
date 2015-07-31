@@ -57,14 +57,14 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		super.name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
-
-		// generateInfo("tab.thermalexpansion.plate.translocate", 2);
 	}
 
 	@Override
 	public void initGui() {
 
 		super.initGui();
+
+		// generateInfo("tab.thermalexpansion.plate.translocate", 2);
 		Keyboard.enableRepeatEvents(true);
 		TeleportChannelRegistry.requestChannelList(myTile.getChannelString());
 
