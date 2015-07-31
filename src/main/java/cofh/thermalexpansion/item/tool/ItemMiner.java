@@ -106,7 +106,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 				for (x = pos.blockX - 1; x <= pos.blockX + 1; x++) {
 					for (z = pos.blockZ - 1; z <= pos.blockZ + 1; z++) {
 						if (block.getPlayerRelativeBlockHardness(player, world, x, y, z) > -1F) {
-							drops.addAll(BlockHelper.breakBlock(world, x, y, z, block, 0, true, false));
+							drops.addAll(BlockHelper.breakBlock(world, player, x, y, z, block, 0, true, false));
 						}
 					}
 				}
@@ -116,7 +116,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 				for (x = pos.blockX - 1; x <= pos.blockX + 1; x++) {
 					for (y = pos.blockY - 1; y <= pos.blockY + 1; y++) {
 						if (block.getPlayerRelativeBlockHardness(player, world, x, y, z) > -1F) {
-							drops.addAll(BlockHelper.breakBlock(world, x, y, z, block, 0, true, false));
+							drops.addAll(BlockHelper.breakBlock(world, player, x, y, z, block, 0, true, false));
 						}
 					}
 				}
@@ -125,7 +125,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 				for (y = pos.blockY - 1; y <= pos.blockY + 1; y++) {
 					for (z = pos.blockZ - 1; z <= pos.blockZ + 1; z++) {
 						if (block.getPlayerRelativeBlockHardness(player, world, x, y, z) > -1F) {
-							drops.addAll(BlockHelper.breakBlock(world, x, y, z, block, 0, true, false));
+							drops.addAll(BlockHelper.breakBlock(world, player, x, y, z, block, 0, true, false));
 						}
 					}
 				}

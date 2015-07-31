@@ -45,8 +45,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 
 	int areaMajor = 2;
 	int areaMinor = 1;
-
-	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
 	public TileCollector() {
 
@@ -63,8 +62,10 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 	@Override
 	public void updateEntity() {
 
-		super.updateEntity();
-		if (ServerHelper.isServerWorld(worldObj) && worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 			if (!isEmpty()) {
 				outputBuffer();
 			}

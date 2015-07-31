@@ -46,14 +46,21 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
 	}
 
-	boolean needsWorld = true;
 	CoFHFakePlayer myFakePlayer;
-
-	public LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
 	public TileBreaker() {
 
 		super(Types.BREAKER);
+	}
+
+	@Override
+	public void cofh_validate() {
+
+		if (ServerHelper.isServerWorld(worldObj)) {
+			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
+		}
+		super.cofh_validate();
 	}
 
 	@Override
@@ -74,7 +81,6 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 				outputBuffer();
 			}
 			if (isEmpty()) {
-				updateFakePlayer();
 				breakBlock();
 			}
 		}
@@ -98,7 +104,7 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 			}
 			worldObj.setBlockToAir(coords[0], coords[1], coords[2]);
 		} else if (CoFHFakePlayer.isBlockBreakable(myFakePlayer, worldObj, coords[0], coords[1], coords[2])) {
-			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, coords[0], coords[1], coords[2], block, 0, true, false));
+			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, myFakePlayer, coords[0], coords[1], coords[2], block, 0, true, false));
 		}
 	}
 
@@ -124,14 +130,6 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 					stuffedItems = newStuffed;
 				}
 			}
-		}
-	}
-
-	public void updateFakePlayer() {
-
-		if (needsWorld) {
-			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
-			needsWorld = false;
 		}
 	}
 

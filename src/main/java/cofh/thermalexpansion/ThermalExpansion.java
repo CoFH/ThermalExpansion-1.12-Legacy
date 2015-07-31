@@ -237,18 +237,14 @@ public class ThermalExpansion extends BaseMod {
 
 		handleIdMapping();
 
-		TileCell.enableSecurity = payload.getBool();
-
-		// TileActivator.enableSecurity = payload.getBool();
-		// TileBreaker.enableSecurity = payload.getBool();
-		// TileNullifier.enableSecurity = payload.getBool();
-
-		TileDynamoBase.enableSecurity = payload.getBool();
-
+		for (int i = 0; i < TileDeviceBase.enableSecurity.length; i++) {
+			TileDeviceBase.enableSecurity[i] = payload.getBool();
+		}
 		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
 			TileMachineBase.enableSecurity[i] = payload.getBool();
 		}
-
+		TileDynamoBase.enableSecurity = payload.getBool();
+		TileCell.enableSecurity = payload.getBool();
 		TileStrongbox.enableSecurity = payload.getBool();
 		TileWorkbench.enableSecurity = payload.getBool();
 
@@ -261,16 +257,14 @@ public class ThermalExpansion extends BaseMod {
 
 		PacketCoFHBase payload = PacketTEBase.getPacket(PacketTypes.CONFIG_SYNC);
 
-		payload.addBool(TileCell.enableSecurity);
-
 		for (int i = 0; i < TileDeviceBase.enableSecurity.length; i++) {
 			payload.addBool(TileDeviceBase.enableSecurity[i]);
 		}
-		payload.addBool(TileDynamoBase.enableSecurity);
-
 		for (int i = 0; i < TileMachineBase.enableSecurity.length; i++) {
 			payload.addBool(TileMachineBase.enableSecurity[i]);
 		}
+		payload.addBool(TileDynamoBase.enableSecurity);
+		payload.addBool(TileCell.enableSecurity);
 		payload.addBool(TileStrongbox.enableSecurity);
 		payload.addBool(TileWorkbench.enableSecurity);
 

@@ -45,8 +45,8 @@ public class GuiBuffer extends GuiAugmentableBase {
 		decOutput = new ElementButton(this, 127, 56, "DecOutput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incOutput = new ElementButton(this, 143, 56, "IncOutput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 
-		enableInput = new ElementButton(this, 26, 17, "EnInput", 176, 42, 176, 58, 176, 74, 16, 16, TEX_PATH).setToolTipLocalized(true);
-		enableOutput = new ElementButton(this, 134, 17, "EnOutput", 208, 42, 208, 58, 208, 74, 16, 16, TEX_PATH).setToolTipLocalized(true);
+		enableInput = new ElementButton(this, 26, 17, "EnInput", 176, 42, 176, 58, 176, 74, 16, 16, TEX_PATH);
+		enableOutput = new ElementButton(this, 134, 17, "EnOutput", 208, 42, 208, 58, 208, 74, 16, 16, TEX_PATH);
 
 		addElement(decInput);
 		addElement(incInput);
@@ -73,11 +73,11 @@ public class GuiBuffer extends GuiAugmentableBase {
 		}
 
 		if (myTile.enableOutput) {
-			enableInput.setToolTip("info.thermalexpansion.buffer.disableOutput");
+			enableOutput.setToolTip("info.thermalexpansion.buffer.disableOutput");
 			enableOutput.setSheetX(208);
 			enableOutput.setHoverX(208);
 		} else {
-			enableInput.setToolTip("info.thermalexpansion.buffer.enableOutput");
+			enableOutput.setToolTip("info.thermalexpansion.buffer.enableOutput");
 			enableOutput.setSheetX(224);
 			enableOutput.setHoverX(224);
 		}

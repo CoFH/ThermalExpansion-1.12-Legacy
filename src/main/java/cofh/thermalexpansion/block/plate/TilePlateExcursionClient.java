@@ -6,7 +6,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.util.MathHelper;
 
-
 public class TilePlateExcursionClient extends TilePlateExcursion {
 
 	@Override
@@ -33,11 +32,12 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 				double rad = radPer * (i * 6 + ticksElapsed * 0.4);
 				Vector3 vecRot = vecMag.copy().crossProduct(Vector3.one).multiply(mul).rotate(rad, vecMag).add(vecTip);
 				vecTip.add(vecMag);
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, vecRot.x, vecRot.y, vecRot.z,
-						vecMag.x, vecMag.y, vecMag.z,
+				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, vecRot.x, vecRot.y, vecRot.z, vecMag.x, vecMag.y, vecMag.z,
 						Minecraft.getMinecraft().effectRenderer) {
 
-					{ particleMaxAge = MathHelper.ceiling_double_int(dist); }
+					{
+						particleMaxAge = MathHelper.ceiling_double_int(dist);
+					}
 
 					@Override
 					public void onUpdate() {

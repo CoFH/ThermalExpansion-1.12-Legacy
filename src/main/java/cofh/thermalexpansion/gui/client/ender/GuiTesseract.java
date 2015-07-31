@@ -227,8 +227,10 @@ public class GuiTesseract extends GuiBaseAdv {
 		boolean hasFreq = freq.getContentLength() > 0, hasName = name.getContentLength() > 0;
 		assign.setEnabled(hasFreq && !String.valueOf(myTile.getFrequency()).equals(freq.getText()));
 		clear.setEnabled(myTile.getFrequency() != -1);
-		add.setEnabled(hasName && hasFreq && !name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
-		remove.setEnabled(hasFreq && hasName && name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
+		add.setEnabled(hasName && hasFreq
+				&& !name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
+		remove.setEnabled(hasFreq && hasName
+				&& name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
 	}
 
 }

@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.config.Configuration;
 
-
 public class TeleportChannelRegistry {
 
 	static ServerEnderChannelRegistry serverChannels;
@@ -54,7 +53,8 @@ public class TeleportChannelRegistry {
 				return super.removeFrequency(hostedChannel, freq);
 			}
 		};
-		serverChannels = new ServerEnderChannelRegistry(new Configuration(new File(DimensionManager.getCurrentSaveRootDirectory(), "/cofh/TeleportFrequencies.cfg")));
+		serverChannels = new ServerEnderChannelRegistry(new Configuration(new File(DimensionManager.getCurrentSaveRootDirectory(),
+				"/cofh/TeleportFrequencies.cfg")));
 	}
 
 	static void save() {

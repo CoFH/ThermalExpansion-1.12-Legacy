@@ -22,12 +22,10 @@ public class BlockAirForce extends BlockAirBase {
 
 		int meta = world.getBlockMetadata(x, y, z);
 		/*
-		 * Meta maps to ForgeDirection:
-		 * ^ move entity to last position, then move pos and last pos by a specified amount (anti-gravity)
-		 * ^ can we dampen sound effects for an entity collided with this?
-		 * ^ display tick may be removed, depending on if i can do something interesting
-		 * ^ display tick is aux particles to the main effect rendering done by the TE
-		 * ^ on random update ticks (?) check to see if we should remove ourself if the block behind is not this or a 'source' ?
+		 * Meta maps to ForgeDirection: ^ move entity to last position, then move pos and last pos by a specified amount (anti-gravity) ^ can we dampen sound
+		 * effects for an entity collided with this? ^ display tick may be removed, depending on if i can do something interesting ^ display tick is aux
+		 * particles to the main effect rendering done by the TE ^ on random update ticks (?) check to see if we should remove ourself if the block behind is
+		 * not this or a 'source' ?
 		 */
 	}
 

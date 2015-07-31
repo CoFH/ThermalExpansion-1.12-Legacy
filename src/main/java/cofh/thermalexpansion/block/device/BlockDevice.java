@@ -57,18 +57,18 @@ public class BlockDevice extends BlockTEBase {
 		switch (Types.values()[metadata]) {
 		case WORKBENCH_FALSE:
 			return new TileWorkbenchFalse();
-		case COLLECTOR:
-			return new TileCollector();
 		case ACTIVATOR:
 			return new TileActivator();
 		case BREAKER:
 			return new TileBreaker();
-		case EXTENDER:
-			return new TileExtender();
+		case COLLECTOR:
+			return new TileCollector();
 		case NULLIFIER:
 			return new TileNullifier();
 		case BUFFER:
 			return new TileBuffer();
+		case EXTENDER:
+			return new TileExtender();
 		default:
 			return null;
 		}
@@ -188,7 +188,7 @@ public class BlockDevice extends BlockTEBase {
 
 		// Face Textures
 		for (int i = 0; i < Types.values().length; i++) {
-			if (i == 0 || i == 1 || i == 4) {
+			if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
 				continue;
 			}
 			deviceFace[i] = ir.registerIcon("thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]));
@@ -243,12 +243,12 @@ public class BlockDevice extends BlockTEBase {
 		TileDeviceBase.configure();
 		// TODO: Remove Workbench :)
 		TileWorkbenchFalse.initialize();
-		TileCollector.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
-		TileExtender.initialize();
+		TileCollector.initialize();
 		TileNullifier.initialize();
 		TileBuffer.initialize();
+		TileExtender.initialize();
 
 		if (defaultAutoTransfer) {
 			// defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
@@ -259,19 +259,20 @@ public class BlockDevice extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		// collector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.COLLECTOR.ordinal()));
+
 		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
 		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
-		// extender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.EXTENDER.ordinal()));
+		collector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.COLLECTOR.ordinal()));
 		nullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.NULLIFIER.ordinal()));
 		buffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BUFFER.ordinal()));
+		// extender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.EXTENDER.ordinal()));
 
-		// GameRegistry.registerCustomItemStack("collector", collector);
 		GameRegistry.registerCustomItemStack("activator", activator);
 		GameRegistry.registerCustomItemStack("breaker", breaker);
-		// GameRegistry.registerCustomItemStack("extender", extender);
+		GameRegistry.registerCustomItemStack("collector", collector);
 		GameRegistry.registerCustomItemStack("nullifier", nullifier);
 		GameRegistry.registerCustomItemStack("buffer", buffer);
+		// GameRegistry.registerCustomItemStack("extender", extender);
 
 		return true;
 	}
@@ -287,17 +288,6 @@ public class BlockDevice extends BlockTEBase {
 		String tinPart = "thermalexpansion:machineTin";
 
 		// @formatter:off
-		if (enable[Types.COLLECTOR.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeAugmentable(collector, defaultAugments, new Object[] {
-//					" X ",
-//					"ICI",
-//					" P ",
-//					'C', Blocks.piston,
-//					'I', tinPart,
-//					'P', TEItems.pneumaticServo,
-//					'X', Blocks.hopper
-//			}));
-		}
 		if (enable[Types.ACTIVATOR.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeAugmentable(activator, defaultAugments, new Object[] {
 					" X ",
@@ -320,8 +310,16 @@ public class BlockDevice extends BlockTEBase {
 					'X', pickaxe
 			}));
 		}
-		if (enable[Types.EXTENDER.ordinal()]) {
-
+		if (enable[Types.COLLECTOR.ordinal()]) {
+			GameRegistry.addRecipe(new RecipeAugmentable(collector, defaultAugments, new Object[] {
+					" X ",
+					"ICI",
+					" P ",
+					'C', Blocks.piston,
+					'I', tinPart,
+					'P', TEItems.pneumaticServo,
+					'X', Blocks.hopper
+			}));
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeAugmentable(nullifier, defaultAugments, new Object[] {
@@ -345,30 +343,41 @@ public class BlockDevice extends BlockTEBase {
 					'X', "gearCopper"
 			}));
 		}
+		if (enable[Types.EXTENDER.ordinal()]) {
+//			GameRegistry.addRecipe(new RecipeAugmentable(extender, defaultAugments, new Object[] {
+//					" X ",
+//					"ICI",
+//					" P ",
+//					'C', Blocks.hopper,
+//					'I', tinPart,
+//					'P', TEItems.pneumaticServo,
+//					'X', "gearCopper"
+//			}));
+		}
 		// @formatter:on
 
-		// TECraftingHandler.addSecureRecipe(collector);
 		TECraftingHandler.addSecureRecipe(activator);
 		TECraftingHandler.addSecureRecipe(breaker);
-		// TECraftingHandler.addSecureRecipe(extender);
+		TECraftingHandler.addSecureRecipe(collector);
 		TECraftingHandler.addSecureRecipe(nullifier);
 		TECraftingHandler.addSecureRecipe(buffer);
+		// TECraftingHandler.addSecureRecipe(extender);
 
 		return true;
 	}
 
 	public static void refreshItemStacks() {
 
-		// collector = ItemBlockDevice.setDefaultTag(collector);
 		activator = ItemBlockDevice.setDefaultTag(activator);
 		breaker = ItemBlockDevice.setDefaultTag(breaker);
-		// extender = ItemBlockDevice.setDefaultTag(extender);
+		collector = ItemBlockDevice.setDefaultTag(collector);
 		nullifier = ItemBlockDevice.setDefaultTag(nullifier);
 		buffer = ItemBlockDevice.setDefaultTag(buffer);
+		// extender = ItemBlockDevice.setDefaultTag(extender);
 	}
 
 	public static enum Types {
-		WORKBENCH_FALSE, COLLECTOR, ACTIVATOR, BREAKER, EXTENDER, NULLIFIER, BUFFER
+		WORKBENCH_FALSE, PUMP, ACTIVATOR, BREAKER, COLLECTOR, NULLIFIER, BUFFER, EXTENDER
 	}
 
 	public static IIcon deviceSide;
@@ -376,7 +385,7 @@ public class BlockDevice extends BlockTEBase {
 	public static IIcon[] deviceFace = new IIcon[Types.values().length];
 	public static IIcon[] deviceActive = new IIcon[Types.values().length];
 
-	public static final String[] NAMES = { "workbench", "collector", "activator", "breaker", "extender", "nullifier", "buffer" };
+	public static final String[] NAMES = { "workbench", "pump", "activator", "breaker", "collector", "nullifier", "buffer", "extender" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
 
@@ -391,19 +400,20 @@ public class BlockDevice extends BlockTEBase {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 		enable[Types.WORKBENCH_FALSE.ordinal()] = false;
-		enable[Types.COLLECTOR.ordinal()] = false;
+		enable[Types.PUMP.ordinal()] = false;
 		enable[Types.EXTENDER.ordinal()] = false;
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.WORKBENCH_FALSE.ordinal()]));
-		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.COLLECTOR.ordinal()]));
+		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.PUMP.ordinal()]));
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.EXTENDER.ordinal()]));
 		// ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.BUFFER.ordinal()]));
 	}
 
-	public static ItemStack collector;
+	public static ItemStack pump;
 	public static ItemStack activator;
 	public static ItemStack breaker;
-	public static ItemStack extender;
+	public static ItemStack collector;
 	public static ItemStack nullifier;
 	public static ItemStack buffer;
+	public static ItemStack extender;
 
 }
