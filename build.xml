@@ -338,8 +338,6 @@
 		<!-- Change executables' permissions -->
 		<chmod file="${forge.dir}/gradlew" perm="+x"/>
 
-		<move-transformers/>
-
 		<!-- Install forge -->
 		<exec executable="./gradlew" failonerror="true" dir="${forge.dir}/" vmlauncher="false">
 			<arg line="-g ../.gradle"/>
