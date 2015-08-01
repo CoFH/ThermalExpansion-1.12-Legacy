@@ -276,8 +276,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					if (setFrequency(freq)) {
 						if (freq == -1) {
 							TeleportChannelRegistry.getChannels(true).removeFrequency(channel, freq);
+							TeleportChannelRegistry.removeChannelFrequency(thePlayer, channel, freq);
 						} else {
 							TeleportChannelRegistry.getChannels(true).setFrequency(channel, freq, name);
+							TeleportChannelRegistry.updateChannelFrequency(thePlayer, channel, freq, name);
 						}
 					}
 				} else {
