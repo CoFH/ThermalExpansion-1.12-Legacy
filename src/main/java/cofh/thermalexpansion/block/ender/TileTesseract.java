@@ -664,6 +664,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	/* ITileInfoPacketHandler */
+	@SuppressWarnings("unused")
 	@Override
 	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
@@ -673,7 +674,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			String channel = payload.getString();
 			int freq = payload.getInt();
 			String name = payload.getString();
-			for (int i = 0; i < worldObj.playerEntities.size(); ++i) {
+			if (remove) {
+				RegistryEnderAttuned.removeChannelFrequency(thePlayer, channel, freq);
+			} else {
+				RegistryEnderAttuned.updateChannelFrequency(thePlayer, channel, freq, name);
+			}
+			// FIXME: the below logic only covers a single World.
+			// FIXME: players need to register to the channel handler to get these updates
+			/*for (int i = 0; i < worldObj.playerEntities.size(); ++i) {
 				EntityPlayer player = (EntityPlayer) worldObj.playerEntities.get(i);
 				if (isUseable(player) && player.openContainer instanceof ContainerTEBase) {
 					ContainerTEBase container = (ContainerTEBase) player.openContainer;
@@ -685,7 +693,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 						}
 					}
 				}
-			}
+			}//*/
 
 			return;
 		case TILE_INFO:
