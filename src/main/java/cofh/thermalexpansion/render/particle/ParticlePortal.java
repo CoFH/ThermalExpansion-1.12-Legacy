@@ -21,7 +21,7 @@ public class ParticlePortal extends EntityFX {
 		particleRed = r;
 		particleGreen = g;
 		particleBlue = b;
-		particleScale = ((float) (0.2000000029802322D + 0.2000000029802322D * Math.random()));
+		particleScale = ((float) (0.2 + 0.2  * Math.random()));
 		motionY = (0.2 * (1.0D + Math.random()) / 4.75D);
 		//particleIcon =
 		particleMaxAge = ((int) (80.0D / (Math.random() * 0.6D + 0.4D)));
@@ -33,7 +33,8 @@ public class ParticlePortal extends EntityFX {
 
 		particleAlpha = (1.0F - (particleAge + subTick) / particleMaxAge);
 
-		float size = 0.1F * particleScale;
+		float hScale = 0.03F * particleScale;
+		float vScale = 0.1F * particleScale;
 
 		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
         double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * subTick;
@@ -59,10 +60,10 @@ public class ParticlePortal extends EntityFX {
 		GL11.glDisable(GL11.GL_TEXTURE_2D);
         tessellator.startDrawingQuads();
 		tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha);
-		tessellator.addVertex(x - rX * size - rYZ * size, sy - rXZ * size, z - rZ * size - rXY * size);
-		tessellator.addVertex(x - rX * size + rYZ * size, y + rXZ * size, z - rZ * size + rXY * size);
-		tessellator.addVertex(x + rX * size + rYZ * size, y + rXZ * size, z + rZ * size + rXY * size);
-		tessellator.addVertex(x + rX * size - rYZ * size, sy - rXZ * size, z + rZ * size - rXY * size);
+		tessellator.addVertex(x - rX * hScale - rYZ * hScale, sy - rXZ * vScale, z - rZ * hScale - rXY * hScale);
+		tessellator.addVertex(x - rX * hScale + rYZ * hScale,  y + rXZ * vScale, z - rZ * hScale + rXY * hScale);
+		tessellator.addVertex(x + rX * hScale + rYZ * hScale,  y + rXZ * vScale, z + rZ * hScale + rXY * hScale);
+		tessellator.addVertex(x + rX * hScale - rYZ * hScale, sy - rXZ * vScale, z + rZ * hScale - rXY * hScale);
 		tessellator.draw();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
         GL11.glDisable(GL11.GL_BLEND);
