@@ -9,9 +9,14 @@ import cofh.lib.util.helpers.EntityHelper;
 import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.render.particle.ParticlePortal;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import java.util.Random;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFX;
@@ -162,6 +167,18 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			}
 			teleportEntity(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, Random r) {
+
+		if (!isActive || (world.getTotalWorldTime() % 6) != 0) {
+			return;
+		}
+	    double dx = .5 + 0.15D * r.nextGaussian();
+	    double dz = .5 + 0.15D * r.nextGaussian();
+	    Minecraft.getMinecraft().effectRenderer.addEffect(new ParticlePortal(world, xCoord + dx, yCoord, zCoord + dz, 1.0F, 1.0F, 1.0F));
 	}
 
 	protected void addZapParticles(int time, double x, double y, double z) {

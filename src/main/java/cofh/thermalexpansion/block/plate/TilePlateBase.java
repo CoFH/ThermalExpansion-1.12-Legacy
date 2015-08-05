@@ -6,8 +6,11 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.plate.BlockPlate.Types;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -73,6 +76,11 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	}
 
 	public void rotated() {
+
+	}
+
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World world, Random r) {
 
 	}
 

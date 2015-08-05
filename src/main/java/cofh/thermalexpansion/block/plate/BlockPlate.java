@@ -20,6 +20,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -132,6 +133,17 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			world.markBlockForUpdate(x, y, z);
 		}
 		return r;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+    public void randomDisplayTick(World world, int x, int y, int z, Random r) {
+
+		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
+		if (tile == null) {
+			return;
+		}
+		tile.randomDisplayTick(world, r);
 	}
 
 	@Override
