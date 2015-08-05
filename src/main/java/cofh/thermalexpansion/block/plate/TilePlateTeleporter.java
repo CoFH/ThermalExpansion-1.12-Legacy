@@ -4,7 +4,6 @@ import cofh.api.transport.IEnderDestination;
 import cofh.core.RegistryEnderAttuned;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
-import cofh.core.util.CoreUtils;
 import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.EntityHelper;
 import cofh.thermalexpansion.core.TeleportChannelRegistry;
@@ -53,8 +52,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		super(BlockPlate.Types.POWERED_TRANSLOCATE, 2000000);
 	}
 
-	protected void teleportEntity(Entity entity) {
+	protected void teleportEntity(Entity entity, double x, double y, double z) {
 
+		if (entity instanceof EntityLivingBase) {
+			((EntityLivingBase)entity).setPositionAndUpdate(x, y, z);
+		} else {
+			entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
+		}
+		entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 1.0F, 1.0F);
 	}
 
 	@Override
@@ -152,9 +157,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer()
+						.getConfigurationManager());
 			}
-			CoreUtils.teleportEntityTo(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
+			teleportEntity(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
 	}
 
@@ -183,7 +189,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
 				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
 				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
+				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV,
+						Minecraft.getMinecraft().effectRenderer) {
 
 					@Override
 					public void moveEntity(double x, double y, double z) {
