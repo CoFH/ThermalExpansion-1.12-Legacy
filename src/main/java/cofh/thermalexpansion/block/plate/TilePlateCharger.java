@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.plate;
 import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateCharger;
-import cofh.thermalexpansion.gui.container.plate.ContainerChargePlate;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -41,9 +41,9 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 	}
 
 	@Override
-	public Object getGuiServer(InventoryPlayer inventory) {
+	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerChargePlate(inventory, this);
+		return new ContainerTEBase(inventory, this);
 	}
 
 	@Override

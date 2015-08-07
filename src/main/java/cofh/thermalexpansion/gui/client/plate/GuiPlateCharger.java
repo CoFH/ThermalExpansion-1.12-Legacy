@@ -7,7 +7,6 @@ import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.plate.TilePlateCharger;
 import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.gui.container.plate.ContainerChargePlate;
 
 import java.util.UUID;
 
@@ -25,7 +24,7 @@ public class GuiPlateCharger extends GuiBaseAdv {
 
 	public GuiPlateCharger(InventoryPlayer inventory, TilePlateCharger theTile) {
 
-		super(new ContainerChargePlate(inventory, theTile), TEXTURE);
+		super(theTile.getGuiServer(inventory), TEXTURE);
 		myTile = theTile;
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);

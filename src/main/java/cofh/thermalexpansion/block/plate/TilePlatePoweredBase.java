@@ -7,12 +7,14 @@ import cofh.core.network.PacketCoFHBase;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiver {
 
 	protected EnergyStorage storage;
+	protected ItemStack energySlot;
 
 	protected TilePlatePoweredBase(BlockPlate.Types type, int storage) {
 
@@ -38,6 +40,7 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 
 		super.readFromNBT(nbt);
 		storage.readFromNBT(nbt);
+		energySlot = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("stack"));
 	}
 
 	@Override
@@ -45,6 +48,17 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
+		nbt.setTag("stack", energySlot.writeToNBT(new NBTTagCompound()));
+	}
+
+	public ItemStack getEnergySlot() {
+
+		return energySlot;
+	}
+
+	public void setEnergySlot(ItemStack stack) {
+
+		energySlot = stack;
 	}
 
 	@Override
