@@ -70,17 +70,29 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public void onEntityCollidedWithBlock(Entity entity) {
 
-		if (entity.worldObj.isRemote || entity.timeUntilPortal > TELEPORT_DELAY) {
+		if (!isActive || destination == -1 || entity.worldObj.isRemote) {
+			return;
+		}
+
+		if (entity.timeUntilPortal > TELEPORT_DELAY) {
 			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 			return;
 		}
 
-		if (destination == -1 || !RegistryEnderAttuned.getRegistry().hasDestination(this)) {
+		if (!RegistryEnderAttuned.getRegistry().hasDestination(this)) {
+			if (destination != -1) {
+				internalSet.set(Boolean.FALSE);
+				clearDestination();
+				internalSet.set(null);
+			}
 			return;
+		}
+		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this);
+		if (dest == null) {
+			return; // destination is invalid (deleted outside of game). next collision will clear destination
 		}
 
 		int teleportCost = TELEPORT_COST;
-		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this);
 		if (dest.dimension() != dimension()) {
 			teleportCost = DIMENSION_TELEPORT_COST;
 		}
@@ -431,15 +443,20 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	public void blockBroken() {
 
 		RegistryEnderAttuned.getRegistry().removeDestination(this);
+		if (frequency != -1) {
+			TeleportChannelRegistry.getChannels(!worldObj.isRemote).removeFrequency(getChannelString(), frequency);
+		}
 	}
 
 	@Override
 	public void cofh_validate() {
 
 		if (pendingFrequency != null) {
+			internalSet.set(Boolean.FALSE);
 			if (!setFrequency(frequency = pendingFrequency.intValue())) {
 				frequency = -1;
 			}
+			internalSet.set(null);
 			pendingFrequency = null;
 		}
 
