@@ -87,9 +87,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			}
 			return;
 		}
-		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this);
+		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this, true);
 		if (dest == null) {
-			return; // destination is invalid (deleted outside of game). next collision will clear destination
+			return; // destination is invalid (deleted) or never loaded. augment to load destination?
 		}
 
 		int teleportCost = TELEPORT_COST;
