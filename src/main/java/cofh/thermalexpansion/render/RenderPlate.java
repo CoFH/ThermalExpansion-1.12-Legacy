@@ -68,13 +68,15 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public void render(int alignment, int direction, int type, double x, double y, double z) {
 
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		int flip = alignment == 1 ? ((direction >> 1) & 1) ^ 1 : 1;
-		// top plates need north/south inverted specially (otherwise flip would always be 1)
-		int off = (alignment > 1 & (direction >> 1 == alignment >> 1)) ? 1 : flip ^ 1;
-		// if the alignment and direction are the same class and not up/down, invert. apply special case from above
-		int s = (alignment & 1) ^ flip;
-		// if the alignment needs inversion
-		direction ^= s & off;
+		if (direction < 6) {
+			int flip = alignment == 1 ? ((direction >> 1) & 1) ^ 1 : 1;
+			// top plates need north/south inverted specially (otherwise flip would always be 1)
+			int off = (alignment > 1 & (direction >> 1 == alignment >> 1)) ? 1 : flip ^ 1;
+			// if the alignment and direction are the same class and not up/down, invert. apply special case from above
+			int s = (alignment & 1) ^ flip;
+			// if the alignment needs inversion
+			direction ^= s & off;
+		}
 
 		CCModel model = side_model[alignment];
 		if (type > 0) {
