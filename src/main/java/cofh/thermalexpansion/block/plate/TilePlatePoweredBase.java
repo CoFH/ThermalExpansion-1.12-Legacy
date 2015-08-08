@@ -48,7 +48,9 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
-		nbt.setTag("stack", energySlot.writeToNBT(new NBTTagCompound()));
+		if (energySlot != null) {
+			nbt.setTag("stack", energySlot.writeToNBT(new NBTTagCompound()));
+		}
 	}
 
 	public ItemStack getEnergySlot() {

@@ -178,7 +178,12 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 	    double dx = .5 + 0.15D * r.nextGaussian();
 	    double dz = .5 + 0.15D * r.nextGaussian();
-	    Minecraft.getMinecraft().effectRenderer.addEffect(new ParticlePortal(world, xCoord + dx, yCoord, zCoord + dz, 1.0F, 1.0F, 1.0F));
+	    double[] m = fixPosition(dx, 0, dz);
+	    ParticlePortal p = new ParticlePortal(world, xCoord + m[0], yCoord + m[1], zCoord + m[2], 1.0F, 1.0F, 1.0F);
+	    m = fixVector(p.motionX, p.motionY, p.motionZ);
+	    p.setVelocity(m[0], m[1], m[2]);
+	    p.setScale(fixVector(0.03,0.1,0.03));
+	    Minecraft.getMinecraft().effectRenderer.addEffect(p);
 	}
 
 	protected void addZapParticles(int time, double x, double y, double z) {

@@ -306,6 +306,34 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		return a;
 	}
 
+	protected double[] fixPosition(double x, double y, double z) {
+
+		double[] a = { x, y, z };
+		double t;
+		switch (alignment) {
+		case 0:
+			break;
+		case 1:
+			a[1] = 1 - a[1];
+			break;
+		case 2:
+			a[1] = 1 - a[1];
+		case 3:
+			t = a[2];
+			a[2] = 1 - a[1];
+			a[1] = t;
+			break;
+		case 4:
+			a[1] = 1 - a[1];
+		case 5:
+			t = a[0];
+			a[0] = 1 - a[1];
+			a[1] = t;
+			break;
+		}
+		return a;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
