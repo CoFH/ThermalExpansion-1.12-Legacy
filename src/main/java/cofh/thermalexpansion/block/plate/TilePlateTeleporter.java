@@ -70,7 +70,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public void onEntityCollidedWithBlock(Entity entity) {
 
-		if (!isActive || destination == -1 || entity.worldObj.isRemote) {
+		if (destination == -1 || entity.worldObj.isRemote) {
 			return;
 		}
 
@@ -89,7 +89,11 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 		IEnderDestination dest = RegistryEnderAttuned.getRegistry().getDestination(this, true);
 		if (dest == null) {
-			return; // destination is invalid (deleted) or never loaded. augment to load destination?
+			return; // destination is invalid (deleted)
+		}
+
+		if (dest.isNotValid()) {
+			; // augment to reach these areas?
 		}
 
 		int teleportCost = TELEPORT_COST;
