@@ -28,6 +28,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -748,7 +749,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public String getChannelString() {
 
-		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase();
+		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase(Locale.US);
 	}
 
 	@Override

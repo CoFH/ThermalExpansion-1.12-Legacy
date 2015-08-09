@@ -16,6 +16,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
@@ -348,7 +349,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public String getChannelString() {
 
-		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase();
+		return access.isPublic() ? "_public_" : String.valueOf(owner.getName()).toLowerCase(Locale.US);
 	}
 
 	@Override
