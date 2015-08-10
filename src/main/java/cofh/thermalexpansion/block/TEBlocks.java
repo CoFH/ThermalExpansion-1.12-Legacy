@@ -18,6 +18,7 @@ import cofh.thermalexpansion.block.machine.ItemBlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.plate.ItemBlockPlate;
 import cofh.thermalexpansion.block.simple.BlockAirBarrier;
+import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.block.simple.BlockAirLight;
 import cofh.thermalexpansion.block.simple.BlockAirSignal;
 import cofh.thermalexpansion.block.simple.BlockFrame;
@@ -72,6 +73,7 @@ public class TEBlocks {
 
 		blockAirSignal = new BlockAirSignal();
 		blockAirLight = new BlockAirLight();
+		blockAirForce = new BlockAirForce();
 		blockAirBarrier = new BlockAirBarrier();
 
 		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
@@ -92,6 +94,7 @@ public class TEBlocks {
 
 		GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
 		GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
+		GameRegistry.registerBlock(blockAirForce, null, "FakeAirForce");
 		GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
 
 		for (IInitializer initializer : blockList) {
@@ -131,6 +134,7 @@ public class TEBlocks {
 
 	public static Block blockAirSignal;
 	public static Block blockAirLight;
+	public static Block blockAirForce;
 	public static Block blockAirBarrier;
 
 }

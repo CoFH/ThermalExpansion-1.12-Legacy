@@ -15,6 +15,7 @@ public class BlockAirForce extends BlockAirBase {
 	public BlockAirForce() {
 
 		super(materialBarrier);
+		disableStats();
 	}
 
 	@Override
@@ -22,10 +23,12 @@ public class BlockAirForce extends BlockAirBase {
 
 		int meta = world.getBlockMetadata(x, y, z);
 		/*
-		 * Meta maps to ForgeDirection: ^ move entity to last position, then move pos and last pos by a specified amount (anti-gravity) ^ can we dampen sound
-		 * effects for an entity collided with this? ^ display tick may be removed, depending on if i can do something interesting ^ display tick is aux
-		 * particles to the main effect rendering done by the TE ^ on random update ticks (?) check to see if we should remove ourself if the block behind is
-		 * not this or a 'source' ?
+		 * Meta maps to ForgeDirection:
+		 * ^ move entity to last position, then move pos and last pos by a specified amount (anti-gravity)
+		 * ^ can we dampen sound effects for an entity collided with this?
+		 * ^ display tick may be removed, depending on if i can do something interesting
+		 * ^ display tick is aux particles to the main effect rendering done by the TE
+		 * ^ on random update ticks (?) check to see if we should remove ourself if the block behind is not this or a 'source' ?
 		 */
 	}
 
@@ -33,16 +36,17 @@ public class BlockAirForce extends BlockAirBase {
 	@Override
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 
-		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5 + rand.nextGaussian() * 0.6, y + 0.5 + rand.nextGaussian() * 0.55, z + 0.5
-				+ rand.nextGaussian() * 0.55, 0, 0, 0, Minecraft.getMinecraft().effectRenderer) {
+		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5 + rand.nextGaussian() * 0.1, y + 0.5 + rand.nextGaussian() * 0.1, z + 0.5
+				+ rand.nextGaussian() * 0.1, 0, 0, 0, Minecraft.getMinecraft().effectRenderer) {
 
 			@Override
 			public void moveEntity(double x, double y, double z) {
 
 			}
 		};
-		spark.setColour(0xFFFF66);
-		spark.setFadeColour(0xFFFFAA);
+		spark.setColour(0xFF66FF);
+		spark.setFadeColour(0xFFAAFF);
+		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 	}
 
 }

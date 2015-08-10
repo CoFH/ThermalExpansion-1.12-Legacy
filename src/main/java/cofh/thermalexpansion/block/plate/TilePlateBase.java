@@ -158,6 +158,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		}
 		switch (direction >> 1) {
 		case 0:
+		case 3:
 			y = distance;
 			break;
 		case 1:
@@ -236,6 +237,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		}
 		switch (direction >> 1) {
 		case 0:
+		case 3:
 			y = distance;
 			break;
 		case 1:
