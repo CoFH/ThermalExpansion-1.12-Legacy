@@ -70,6 +70,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			int[] v = getVector(i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
+			if (!worldObj.blockExists(x, y, z)) {
+				return;
+			}
 			Block block = worldObj.getBlock(x, y, z);
 			if (!block.equals(TEBlocks.blockAirForce)) {
 				if (!block.isAir(worldObj, x, y, z) &&
