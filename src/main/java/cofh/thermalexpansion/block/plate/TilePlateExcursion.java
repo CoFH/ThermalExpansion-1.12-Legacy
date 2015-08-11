@@ -5,9 +5,15 @@ import cofh.thermalexpansion.block.TEBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateExcursion extends TilePlatePoweredBase {
 
@@ -28,6 +34,23 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	public TilePlateExcursion() {
 
 		super(BlockPlate.Types.POWERED_IMPULSE, 200000);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(Entity ent) {
+
+		if (!(ent instanceof EntityLivingBase) || (ent instanceof EntityPlayer && !worldObj.isRemote))
+			return;
+
+		double l = .1;
+		EntityLivingBase entity = (EntityLivingBase) ent;
+		int meta = alignment;
+		ForgeDirection dir = ForgeDirection.getOrientation(meta^1);
+		if (AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).isVecInside(Vec3.createVectorHelper(entity.prevPosX, entity.prevPosY - entity.yOffset, entity.prevPosZ))) {
+			entity.setPositionAndUpdate(ent.prevPosX + dir.offsetX * l, ent.prevPosY - entity.yOffset + dir.offsetY * l, ent.prevPosZ + dir.offsetZ * l);
+			entity.motionY = 0;
+			entity.onGround = false;
+		}
 	}
 
 	@Override

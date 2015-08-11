@@ -8,7 +8,12 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockAirForce extends BlockAirBase {
 
@@ -21,14 +26,23 @@ public class BlockAirForce extends BlockAirBase {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
 
+		if (!(ent instanceof EntityLivingBase) || (ent instanceof EntityPlayer && !world.isRemote))
+			return;
+
 		int meta = world.getBlockMetadata(x, y, z);
+		EntityLivingBase entity = (EntityLivingBase) ent;
+		ForgeDirection dir = ForgeDirection.getOrientation(meta^1);
+		double l = .1, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
+		xO += entity.motionX * l;
+		zO += entity.motionZ * l;
+		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(entity.prevPosX, entity.prevPosY - entity.yOffset, entity.prevPosZ))) {
+			entity.setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - entity.yOffset + yO, ent.prevPosZ + zO);
+			entity.motionY = 0;
+		}
 		/*
 		 * Meta maps to ForgeDirection:
 		 * ^ move entity to last position, then move pos and last pos by a specified amount (anti-gravity)
 		 * ^ can we dampen sound effects for an entity collided with this?
-		 * ^ display tick may be removed, depending on if i can do something interesting
-		 * ^ display tick is aux particles to the main effect rendering done by the TE
-		 * ^ on random update ticks (?) check to see if we should remove ourself if the block behind is not this or a 'source' ?
 		 */
 	}
 
