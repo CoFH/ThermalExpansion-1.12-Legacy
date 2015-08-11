@@ -67,7 +67,7 @@ public class PulverizerManager {
 		boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
 		boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
 
-		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.cobblestone));
+		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.gravel), new ItemStack(Blocks.sand), 15);
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 15);
 		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 15);
 		addRecipe(3200, new ItemStack(Blocks.glass), new ItemStack(Blocks.sand));

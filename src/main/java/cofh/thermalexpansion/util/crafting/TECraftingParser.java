@@ -738,7 +738,7 @@ public class TECraftingParser {
 				ThermalExpansion.log.error("Fluid entry missing valid name!");
 				return null;
 			}
-			stack = new FluidStack(FluidRegistry.getFluid(fluidElement.getAsString()), amount);
+			stack = new FluidStack(FluidRegistry.getFluid(fluid.get("name").getAsString()), amount);
 
 			if (fluid.has("nbt")) {
 				try {
