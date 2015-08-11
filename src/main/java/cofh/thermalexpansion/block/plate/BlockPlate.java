@@ -191,7 +191,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 		float A = 1 / 16f;
 		float B = 15 / 16f;
-		float O = (theTile.direction == 6 ? 16 : 2) / 16f;
+		float O = (theTile.direction == 7 ? 16 : 2) / 16f;
 		AxisAlignedBB bb = null;
 		switch (theTile.alignment) {
 		case 0:

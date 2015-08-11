@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.block.plate;
 
-import cofh.repack.codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.block.TEBlocks;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -39,17 +39,22 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if (!(ent instanceof EntityLivingBase) || (ent instanceof EntityPlayer && !worldObj.isRemote))
+		if ((ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
 			return;
 
-		double l = .1;
-		EntityLivingBase entity = (EntityLivingBase) ent;
+		int x = xCoord, y = yCoord, z = zCoord;
 		int meta = alignment;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta^1);
-		if (AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).isVecInside(Vec3.createVectorHelper(entity.prevPosX, entity.prevPosY - entity.yOffset, entity.prevPosZ))) {
-			entity.setPositionAndUpdate(ent.prevPosX + dir.offsetX * l, ent.prevPosY - entity.yOffset + dir.offsetY * l, ent.prevPosZ + dir.offsetZ * l);
-			entity.motionY = 0;
-			entity.onGround = false;
+		double l = .1, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
+		xO += ent.motionX * l;
+		zO += ent.motionZ * l;
+		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
+			if (ent instanceof EntityLivingBase) {
+				((EntityLivingBase)ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
+			} else {
+				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
+			}
+			ent.motionY = 0;
 		}
 	}
 
@@ -113,9 +118,10 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			worldObj.setBlockMetadataWithNotify(x, y, z, alignment, 3);
 		}
 
+		int prevDist = realDist;
 		realDist = i - 1;
 
-		for (++i; i <= distance; ++i) {
+		for (; i <= prevDist; ++i) {
 			int[] v = getVector(i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
@@ -153,12 +159,6 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Dist", distance);
-	}
-
-	public Vector3 getMovementVector() {
-
-	    double[] m = fixVector(0, realDist + .65, 0);
-		return new Vector3(m[0], m[1], m[2]);
 	}
 
 }

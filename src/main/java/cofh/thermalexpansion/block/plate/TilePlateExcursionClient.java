@@ -21,9 +21,9 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 
 		super.updateEntity();
 		if (realDist > -1) {
-			ticksElapsed++;// += bindY / Math.PI;
+			ticksElapsed++;
 
-			Vector3 vec = getMovementVector();
+			Vector3 vec = new Vector3(fixVector(0, realDist + .65, 0));
 
 			Vector3 vecMag = vec.copy().normalize().multiply(.1);
 			final double dist = vec.mag() / vecMag.mag();
