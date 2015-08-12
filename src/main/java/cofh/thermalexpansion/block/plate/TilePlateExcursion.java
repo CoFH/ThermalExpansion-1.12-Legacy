@@ -1,6 +1,9 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.gui.client.plate.GuiPlateExcursion;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
@@ -8,6 +11,7 @@ import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
@@ -16,6 +20,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateExcursion extends TilePlatePoweredBase {
+
+	public static final byte MIN_DISTANCE = 0;
+	public static final byte MAX_DISTANCE = 24;
 
 	public static void initialize() {
 
@@ -28,8 +35,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		return block == null || block.getBlockHardness(world, x, y, z) == 0 || block.isAir(world, x, y, z);
 	}
 
-	byte distance = 24;
-	int realDist = 24;
+	public byte distance = 24;
+	public int realDist = -1;
 
 	public TilePlateExcursion() {
 
@@ -39,20 +46,23 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if ((ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
+		if (storage.getEnergyStored() == 0 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
 			return;
 
 		int x = xCoord, y = yCoord, z = zCoord;
 		int meta = alignment;
-		ForgeDirection dir = ForgeDirection.getOrientation(meta^1);
+		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
 		double l = .1, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
 		xO += ent.motionX * l;
 		zO += ent.motionZ * l;
-		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
+		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(
+			Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
 			if (ent instanceof EntityLivingBase) {
-				((EntityLivingBase)ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
+				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ +
+						zO);
 			} else {
-				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
+				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw,
+					ent.rotationPitch);
 			}
 			ent.motionY = 0;
 		}
@@ -84,18 +94,21 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		if (shouldCheckBeam()) {
 			updateBeam();
 		}
+		if (realDist > -1) {
+			storage.extractEnergy(realDist, false);
+		}
 	}
 
 	private boolean shouldCheckBeam() {
 
-		return realDist == 0 || (worldObj.getTotalWorldTime() & 31) == 0;
+		return realDist <= 0 || (worldObj.getTotalWorldTime() & 31) == 0;
 	}
 
 	private void updateBeam() {
 
-		int i;
-		for (i = 1; i <= distance; ++i) {
-			int[] v = getVector(i);
+		int i, e = Math.min(storage.getEnergyStored(), distance + 1);
+		for (i = 0; i < e; ) {
+			int[] v = getVector(++i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
 			if (!worldObj.blockExists(x, y, z)) {
@@ -129,6 +142,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 				worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
 			}
 		}
+		if (realDist != prevDist) {
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
 	}
 
 	private void removeBeam() {
@@ -141,6 +157,31 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 				worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
 			}
 		}
+		realDist = -1;
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addByte(distance);
+		payload.addByte(realDist);
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		if (!isServer) {
+			distance = payload.getByte();
+			realDist = payload.getByte();
+		}
+
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
@@ -161,4 +202,16 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		nbt.setByte("Dist", distance);
 	}
 
+	/* GUI METHODS */
+	@Override
+	public Object getGuiClient(InventoryPlayer inventory) {
+
+		return new GuiPlateExcursion(inventory, this);
+	}
+
+	@Override
+	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
+
+		return new ContainerTEBase(inventory, this, false, false);
+	}
 }

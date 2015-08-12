@@ -19,7 +19,6 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 	@Override
 	public void updateEntity() {
 
-		super.updateEntity();
 		if (realDist > -1) {
 			ticksElapsed++;
 
