@@ -43,7 +43,7 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 	@Override
 	public ContainerTEBase getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTEBase(inventory, this, false, false);
 	}
 
 	@Override
