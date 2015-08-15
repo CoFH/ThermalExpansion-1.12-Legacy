@@ -46,7 +46,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if (storage.getEnergyStored() == 0 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
+		if (realDist == -1 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
 			return;
 
 		int x = xCoord, y = yCoord, z = zCoord;
