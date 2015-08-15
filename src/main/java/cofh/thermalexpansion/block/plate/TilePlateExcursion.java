@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.plate;
 
 import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateExcursion;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -9,20 +10,17 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	public static final byte MIN_DISTANCE = 0;
-	public static final byte MAX_DISTANCE = 24;
+	public static final byte MAX_DISTANCE = 26;
 
 	public static void initialize() {
 
@@ -49,23 +47,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		if (realDist == -1 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
 			return;
 
-		int x = xCoord, y = yCoord, z = zCoord;
 		int meta = alignment;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
-		double l = .1, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
-		xO += ent.motionX * l;
-		zO += ent.motionZ * l;
-		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(
-			Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
-			if (ent instanceof EntityLivingBase) {
-				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ +
-						zO);
-			} else {
-				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw,
-					ent.rotationPitch);
-			}
-			ent.motionY = 0;
-		}
+		BlockAirForce.repositionEntity(worldObj, xCoord, yCoord, zCoord, ent, dir, .1);
 	}
 
 	@Override
@@ -101,7 +85,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	private boolean shouldCheckBeam() {
 
-		return realDist <= 0 || (worldObj.getTotalWorldTime() & 31) == 0;
+		return realDist < 0 || (worldObj.getTotalWorldTime() & 31) == 0;
 	}
 
 	private void updateBeam() {
@@ -127,15 +111,16 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 				if (!worldObj.isAirBlock(x, y, z)) {
 					break;
 				}
-				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce);
+				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, alignment, 2|4);
+			} else if (worldObj.getBlockMetadata(x, y, z) != alignment) {
+				break;
 			}
-			worldObj.setBlockMetadataWithNotify(x, y, z, alignment, 3);
 		}
 
 		int prevDist = realDist + 1;
 		realDist = --i;
 
-		for (++i; i <= prevDist; ) {
+		for (++i; i < prevDist; ) {
 			int[] v = getVector(++i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
