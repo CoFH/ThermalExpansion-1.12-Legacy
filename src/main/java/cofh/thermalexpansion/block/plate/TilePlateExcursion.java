@@ -36,7 +36,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	}
 
 	public byte distance = 24;
-	public int realDist = -1;
+	public byte realDist = -1;
 
 	public TilePlateExcursion() {
 
@@ -106,7 +106,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	private void updateBeam() {
 
-		int i, e = Math.min(storage.getEnergyStored(), distance + 1);
+		byte i;
+		int e = Math.min(storage.getEnergyStored(), distance);
 		for (i = 0; i < e; ) {
 			int[] v = getVector(++i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
@@ -131,11 +132,11 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			worldObj.setBlockMetadataWithNotify(x, y, z, alignment, 3);
 		}
 
-		int prevDist = realDist;
-		realDist = i - 1;
+		int prevDist = realDist + 1;
+		realDist = --i;
 
-		for (; i <= prevDist; ++i) {
-			int[] v = getVector(i);
+		for (++i; i <= prevDist; ) {
+			int[] v = getVector(++i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
 			if (worldObj.getBlock(x, y, z).equals(TEBlocks.blockAirForce)) {
@@ -192,6 +193,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		super.readFromNBT(nbt);
 
 		distance = nbt.getByte("Dist");
+		realDist = nbt.getByte("rDist");
 	}
 
 	@Override
@@ -200,6 +202,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Dist", distance);
+		nbt.setByte("rDist", realDist);
 	}
 
 	/* GUI METHODS */
