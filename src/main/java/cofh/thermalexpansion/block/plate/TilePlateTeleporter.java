@@ -203,6 +203,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	    Minecraft.getMinecraft().effectRenderer.addEffect(p);
 	}
 
+	@SideOnly(Side.CLIENT)
 	protected void addZapParticles(int time, double x, double y, double z) {
 
 		time += 2;
@@ -220,6 +221,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 	}
 
+	@SideOnly(Side.CLIENT)
 	protected void addTeleportParticles(double x, double y, double z, boolean trail) {
 
 		for (int i = 15; i-- > 0;) {
@@ -247,6 +249,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
