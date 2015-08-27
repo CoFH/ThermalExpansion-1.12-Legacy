@@ -57,14 +57,23 @@ public class BlockAirForce extends BlockAirBase {
 					zO += (z - (ent.prevPosZ - .5)) / 20;
 					break;
 				}
+			} else if (false) {
+				double a = Math.atan2(ent.motionX, ent.motionZ), s = Math.sqrt(ent.motionX * ent.motionX + ent.motionZ * ent.motionZ);
+				System.out.format(a + " " + ((ent.rotationYaw * Math.PI / 180) % Math.PI) + "\n");
+				double a2 = ent.rotationPitch * Math.PI / 180 * (1-Math.abs(Math.sin(((ent.rotationYaw * Math.PI / 180) % Math.PI) - a)));
+				// FIXME: get correct pitch, when movement is sideways (a/d) don't apply vertical movement
+				double v = Math.cos(a2);
+				xO += s * Math.sin(a) * v;
+				zO += s * Math.cos(a) * v;
+				yO += s * Math.sin(a2);
+			} else {
+				xO += ent.motionX;
+				zO += ent.motionZ;
 			}
-			xO += ent.motionX;
-			zO += ent.motionZ;
 			if (ent instanceof EntityLivingBase) {
 				((EntityLivingBase)ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
 			} else {
 				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
-				ent.motionX = ent.motionZ = 0;
 			}
 			ent.motionX *= .5;
 			ent.motionZ *= .5;
