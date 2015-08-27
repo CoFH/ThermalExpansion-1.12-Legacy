@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateExcursion;
@@ -91,11 +92,14 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	private void updateBeam() {
 
 		byte i;
-		int e = Math.min(storage.getEnergyStored(), distance);
-		for (i = 0; i < e; ) {
-			int[] v = getVector(++i);
+		int e = Math.min(storage.getEnergyStored() - 1, distance);
+		for (i = 0; i <= e; ++i) {
+			int[] v = getVector(i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
+			if (i == 0) {
+				continue;
+			}
 			if (!worldObj.blockExists(x, y, z)) {
 				return;
 			}
@@ -135,7 +139,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	private void removeBeam() {
 
-		for (int i = 1; i <= distance; ++i) {
+		for (int i = 1; i <= realDist; ++i) {
 			int[] v = getVector(i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 
@@ -169,6 +173,45 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		}
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		byte newDist = payload.getByte();
+
+		if (newDist != distance) {
+			removeBeam();
+			distance = (byte) MathHelper.clampI(newDist, MIN_DISTANCE, MAX_DISTANCE);
+		}
+	}
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		distance = tag.getByte("Dist");
+
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		tag.setByte("Dist", distance);
+
+		return true;
 	}
 
 	/* NBT METHODS */
