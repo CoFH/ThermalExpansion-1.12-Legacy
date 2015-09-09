@@ -115,13 +115,15 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public void blockBroken() {
 
-		removeFromRegistry();
+		if (ServerHelper.isServerWorld(worldObj))
+			removeFromRegistry();
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		removeFromRegistry();
+		if (ServerHelper.isServerWorld(worldObj))
+			removeFromRegistry();
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	public void validate() {
 
 		super.validate();
-		if (frequency != -1) {
+		if (ServerHelper.isServerWorld(worldObj) && frequency != -1) {
 			addToRegistry();
 		}
 	}
