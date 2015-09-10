@@ -61,7 +61,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	protected void teleportEntity(Entity entity, double x, double y, double z) {
 
 		if (entity instanceof EntityLivingBase) {
-			((EntityLivingBase)entity).setPositionAndUpdate(x, y, z);
+			((EntityLivingBase) entity).setPositionAndUpdate(x, y, z);
 		} else {
 			entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
 		}
@@ -179,8 +179,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer()
-						.getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
 			}
 			teleportEntity(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
@@ -193,14 +192,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (!isActive || (world.getTotalWorldTime() % 6) != 0) {
 			return;
 		}
-	    double dx = .5 + 0.15D * r.nextGaussian();
-	    double dz = .5 + 0.15D * r.nextGaussian();
-	    double[] m = fixPosition(dx, 0, dz);
-	    ParticlePortal p = new ParticlePortal(world, xCoord + m[0], yCoord + m[1], zCoord + m[2], 1.0F, 1.0F, 1.0F);
-	    m = fixVector(p.motionX, p.motionY, p.motionZ);
-	    p.setVelocity(m[0], m[1], m[2]);
-	    p.setScale(fixVector(0.03,0.1,0.03));
-	    Minecraft.getMinecraft().effectRenderer.addEffect(p);
+		double dx = .5 + 0.15D * r.nextGaussian();
+		double dz = .5 + 0.15D * r.nextGaussian();
+		double[] m = fixPosition(dx, 0, dz);
+		ParticlePortal p = new ParticlePortal(world, xCoord + m[0], yCoord + m[1], zCoord + m[2], 1.0F, 1.0F, 1.0F);
+		m = fixVector(p.motionX, p.motionY, p.motionZ);
+		p.setVelocity(m[0], m[1], m[2]);
+		p.setScale(fixVector(0.03, 0.1, 0.03));
+		Minecraft.getMinecraft().effectRenderer.addEffect(p);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -230,8 +229,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
 				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
 				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV,
-						Minecraft.getMinecraft().effectRenderer) {
+				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
 
 					@Override
 					public void moveEntity(double x, double y, double z) {

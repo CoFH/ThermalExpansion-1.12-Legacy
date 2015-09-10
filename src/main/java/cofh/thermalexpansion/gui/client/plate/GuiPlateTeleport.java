@@ -90,8 +90,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			public void onClick() {
 
 				int tempFreq = Integer.parseInt(freq.getText());
-				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).
-					addString(myTile.getChannelString()).addString(GuiPlateTeleport.this.title.getText()));
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).addString(myTile.getChannelString())
+						.addString(GuiPlateTeleport.this.title.getText()));
 			}
 		});
 		addElement(clear = new ElementButton(this, 151, 22, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
@@ -100,8 +100,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			public void onClick() {
 
 				int tempFreq = -1;
-				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).
-					addString(myTile.getChannelString()).addString(""));
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).addString(myTile.getChannelString())
+						.addString(""));
 			}
 		});
 
@@ -226,7 +226,8 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		assign.setEnabled(hasFreq && hasName && myTile.getFrequency() == -1);
 		clear.setEnabled(myTile.getFrequency() != -1);
 		IListBoxElement ele = frequencies.getSelectedElement();
-		add.setEnabled(myTile.getDestination() == -1 && name.getContentLength() > 0 && ele != null && myTile.getFrequency() != ((Frequency)ele.getValue()).freq);
+		add.setEnabled(myTile.getDestination() == -1 && name.getContentLength() > 0 && ele != null
+				&& myTile.getFrequency() != ((Frequency) ele.getValue()).freq);
 		remove.setEnabled(myTile.getDestination() != -1);
 	}
 

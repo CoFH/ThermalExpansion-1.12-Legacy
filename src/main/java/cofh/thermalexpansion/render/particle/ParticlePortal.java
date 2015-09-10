@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL11;
 public class ParticlePortal extends EntityFX {
 
 	private static final CCModel model = CCModel.newModel(7, 24);
-	private static final Cuboid6 cuboid = new Cuboid6(0,0,0, 0,0,0);
+	private static final Cuboid6 cuboid = new Cuboid6(0, 0, 0, 0, 0, 0);
 	private static final Vector3 vector = new Vector3();
 
 	public double startX, startY, startZ;
@@ -35,7 +35,7 @@ public class ParticlePortal extends EntityFX {
 		particleBlue = b;
 		particleScale = ((float) (0.2 + 0.2 * Math.random()));
 		motionY = (0.2 * (1.0D + Math.random()) / 4.75D);
-		//particleIcon =
+		// particleIcon =
 		particleMaxAge = ((int) (80.0D / (Math.random() * 0.6D + 0.4D)));
 		particleGravity = 0;
 	}
@@ -109,10 +109,10 @@ public class ParticlePortal extends EntityFX {
 		tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha);
 		CCRenderState.reset();
 		model.generateBlock(0, cuboid.set(sx, sy, sz, _x, _y, _z).expand(vector.set(xScale, yScale, zScale).multiply(particleScale))).render();
-		//tessellator.addVertex(sx - rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz - rZ * hScale - rXY * hScale);
-		//tessellator.addVertex(_x - rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z - rZ * hScale + rXY * hScale);
-		//tessellator.addVertex(_x + rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z + rZ * hScale + rXY * hScale);
-		//tessellator.addVertex(sx + rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz + rZ * hScale - rXY * hScale);
+		// tessellator.addVertex(sx - rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz - rZ * hScale - rXY * hScale);
+		// tessellator.addVertex(_x - rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z - rZ * hScale + rXY * hScale);
+		// tessellator.addVertex(_x + rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z + rZ * hScale + rXY * hScale);
+		// tessellator.addVertex(sx + rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz + rZ * hScale - rXY * hScale);
 		tessellator.draw();
 
 		GL11.glEnable(GL11.GL_TEXTURE_2D);

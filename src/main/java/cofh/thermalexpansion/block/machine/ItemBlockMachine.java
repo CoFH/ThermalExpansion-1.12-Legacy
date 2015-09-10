@@ -88,9 +88,10 @@ public class ItemBlockMachine extends ItemBlockBase {
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, list);
-		// RSControlHelper.addRSControlInformation(stack, list);
 
 		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)]));
+
+		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 
 	public static final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };

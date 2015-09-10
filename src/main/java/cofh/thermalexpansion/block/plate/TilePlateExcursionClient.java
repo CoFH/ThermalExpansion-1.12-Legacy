@@ -29,12 +29,12 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 
 			double radPer = Math.PI / 6;
 			float mul = 2.4F;
-		    double[] m = fixPosition(.5, .025, .5);
+			double[] m = fixPosition(.5, .025, .5);
 			Vector3 vecTip = vecMag.copy().add(xCoord + m[0], yCoord + m[1], zCoord + m[2]);
 			for (int i = 0; i < 2; ++i) {
 				double rad = radPer * (i * 6 + ticksElapsed * 0.4);
 				Vector3 vecRot = vecMag.copy().crossProduct(Vector3.one).multiply(mul).rotate(rad, vecMag).add(vecTip);
-				//vecTip.add(vecMag);
+				// vecTip.add(vecMag);
 				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, vecRot.x, vecRot.y, vecRot.z, vecMag.x, vecMag.y, vecMag.z,
 						Minecraft.getMinecraft().effectRenderer) {
 

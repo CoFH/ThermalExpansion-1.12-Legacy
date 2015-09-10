@@ -272,7 +272,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (startAmount <= 0) {
 			return 0;
 		}
-		if (validOutputs != null) {
+		if (validOutputs != null && validOutputs.size() > 0) {
 			isSendingEnergy = true;
 			IEnderEnergyHandler handler;
 			energyTrackerRemote++;
@@ -309,7 +309,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (startAmount <= 0) {
 			return 0;
 		}
-		if (validOutputs != null) {
+		if (validOutputs != null && validOutputs.size() > 0) {
 			isSendingFluid = true;
 			IEnderFluidHandler handler;
 			fluidTrackerRemote++;
@@ -342,9 +342,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		List<IEnderItemHandler> validOutputs = RegistryEnderAttuned.getRegistry().getLinkedItemOutputs(this);
 
-		if (validOutputs != null) {
-			System.out.println(validOutputs.size());
-
+		if (validOutputs != null && validOutputs.size() > 0) {
 			isSendingItems = true;
 			IEnderItemHandler handler;
 			itemTrackerRemote++;
@@ -684,19 +682,12 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			}
 			// FIXME: the below logic only covers a single World.
 			// FIXME: players need to register to the channel handler to get these updates
-			/*for (int i = 0; i < worldObj.playerEntities.size(); ++i) {
-				EntityPlayer player = (EntityPlayer) worldObj.playerEntities.get(i);
-				if (isUseable(player) && player.openContainer instanceof ContainerTEBase) {
-					ContainerTEBase container = (ContainerTEBase) player.openContainer;
-					if (container.baseTile == this) {
-						if (remove) {
-							RegistryEnderAttuned.removeChannelFrequency(player, channel, freq);
-						} else {
-							RegistryEnderAttuned.updateChannelFrequency(player, channel, freq, name);
-						}
-					}
-				}
-			}//*/
+			/*
+			 * for (int i = 0; i < worldObj.playerEntities.size(); ++i) { EntityPlayer player = (EntityPlayer) worldObj.playerEntities.get(i); if
+			 * (isUseable(player) && player.openContainer instanceof ContainerTEBase) { ContainerTEBase container = (ContainerTEBase) player.openContainer; if
+			 * (container.baseTile == this) { if (remove) { RegistryEnderAttuned.removeChannelFrequency(player, channel, freq); } else {
+			 * RegistryEnderAttuned.updateChannelFrequency(player, channel, freq, name); } } } }//
+			 */
 
 			return;
 		case TILE_INFO:
@@ -844,6 +835,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		if (!redstoneControlOrDisable()) {
 			return fluid;
 		}
+
 		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
 			if (adjacentFluidHandlers[side] != null) {
 				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
@@ -854,6 +846,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
 			}
 		}
+
 		incrFluidTrackerAdjacent();
 		return fluid;
 	}

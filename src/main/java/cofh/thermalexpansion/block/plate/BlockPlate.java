@@ -137,7 +137,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 	@Override
 	@SideOnly(Side.CLIENT)
-    public void randomDisplayTick(World world, int x, int y, int z, Random r) {
+	public void randomDisplayTick(World world, int x, int y, int z, Random r) {
 
 		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
 		if (tile == null) {
