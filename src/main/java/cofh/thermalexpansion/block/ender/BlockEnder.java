@@ -177,7 +177,7 @@ public class BlockEnder extends BlockTEBase {
 	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
 
 		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
-		if (ServerHelper.isServerWorld(world) && tile != null) {
+		if (tile != null) {
 			tile.removeFromRegistry();
 			tile.inventory = new ItemStack[0];
 		}
