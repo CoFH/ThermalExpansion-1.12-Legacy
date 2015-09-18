@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.plate;
 
-import cofh.core.util.SocialRegistry;
+import cofh.core.RegistrySocial;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateCharger;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -76,7 +76,7 @@ public class TilePlateCharger extends TilePlatePoweredBase {
 				if (name == null) {
 					break o;
 				}
-				if (getAccess().isRestricted() && SocialRegistry.playerHasAccess(name, getOwner())) {
+				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
 					break l;
 				}
 				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);

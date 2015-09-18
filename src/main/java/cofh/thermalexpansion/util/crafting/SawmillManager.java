@@ -39,7 +39,18 @@ public class SawmillManager {
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(new ComparableItemStackSawmill(input));
+		if (input == null) {
+			return null;
+		}
+		ComparableItemStackSawmill query = new ComparableItemStackSawmill(input);
+
+		RecipeSawmill recipe = recipeMap.get(query);
+
+		if (recipe == null) {
+			query.metadata = OreDictionary.WILDCARD_VALUE;
+			recipe = recipeMap.get(query);
+		}
+		return recipe;
 	}
 
 	public static boolean recipeExists(ItemStack input) {

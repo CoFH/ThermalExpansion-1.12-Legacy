@@ -39,7 +39,18 @@ public class PulverizerManager {
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMap.get(new ComparableItemStackPulverizer(input));
+		if (input == null) {
+			return null;
+		}
+		ComparableItemStackPulverizer query = new ComparableItemStackPulverizer(input);
+
+		RecipePulverizer recipe = recipeMap.get(query);
+
+		if (recipe == null) {
+			query.metadata = OreDictionary.WILDCARD_VALUE;
+			recipe = recipeMap.get(query);
+		}
+		return recipe;
 	}
 
 	public static boolean recipeExists(ItemStack input) {

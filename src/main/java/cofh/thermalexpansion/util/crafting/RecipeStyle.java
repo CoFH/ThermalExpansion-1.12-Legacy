@@ -17,7 +17,6 @@ public class RecipeStyle extends ShapedRecipes {
 		for (int i = 0; i < size; ++i) {
 			r[i] = d;
 		}
-
 		return r;
 	}
 
@@ -27,6 +26,7 @@ public class RecipeStyle extends ShapedRecipes {
 	public RecipeStyle(int width, int height, ItemStack input, int style, ItemStack output) {
 
 		super(width, height, copy(width * height, input, style), output.copy());
+
 		this.style = (byte) style;
 		this.input = input;
 	}
@@ -41,7 +41,6 @@ public class RecipeStyle extends ShapedRecipes {
 				}
 			}
 		}
-
 		return false;
 	}
 
@@ -67,7 +66,6 @@ public class RecipeStyle extends ShapedRecipes {
 				}
 			}
 		}
-
 		return true;
 	}
 

@@ -17,6 +17,7 @@ import java.util.Set;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
@@ -26,8 +27,8 @@ import net.minecraftforge.fluids.FluidStack;
 public class TransposerManager {
 
 	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<List<Integer>, RecipeTransposer>();
-	private static Map<ComparableItemStack, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStack, RecipeTransposer>();
-	private static Set<ComparableItemStack> validationSet = new THashSet<ComparableItemStack>();
+	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStackTransposer, RecipeTransposer>();
+	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<ComparableItemStackTransposer>();
 	private static boolean allowOverwrite = false;
 	public static final int DEFAULT_ENERGY = 1600;
 
@@ -37,13 +38,13 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStack(input).hashCode(),
-				fluid.getFluid().hashCode()));
+		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(
+				new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
 	public static RecipeTransposer getExtractionRecipe(ItemStack input) {
 
-		return input == null ? null : recipeMapExtraction.get(new ComparableItemStack(input));
+		return input == null ? null : recipeMapExtraction.get(new ComparableItemStackTransposer(input));
 	}
 
 	public static boolean fillRecipeExists(ItemStack input, FluidStack fluid) {
@@ -68,7 +69,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(new ComparableItemStack(input));
+		return input == null ? false : validationSet.contains(new ComparableItemStackTransposer(input));
 	}
 
 	public static void addDefaultRecipes() {
@@ -135,20 +136,21 @@ public class TransposerManager {
 	public static void refreshRecipes() {
 
 		Map<List<Integer>, RecipeTransposer> tempFillMap = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
-		Map<ComparableItemStack, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStack, RecipeTransposer>(recipeMapExtraction.size());
-		Set<ComparableItemStack> tempSet = new THashSet<ComparableItemStack>();
+		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStackTransposer, RecipeTransposer>(
+				recipeMapExtraction.size());
+		Set<ComparableItemStackTransposer> tempSet = new THashSet<ComparableItemStackTransposer>();
 		RecipeTransposer tempRecipe;
 
 		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStack inputStack = new ComparableItemStack(tempRecipe.input);
+			ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
 			tempFillMap.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
 			tempSet.add(inputStack);
 		}
-		for (Entry<ComparableItemStack, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
+		for (Entry<ComparableItemStackTransposer, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStack inputStack = new ComparableItemStack(tempRecipe.input);
+			ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(tempRecipe.input);
 			tempExtractMap.put(inputStack, tempRecipe);
 			tempSet.add(inputStack);
 		}
@@ -168,7 +170,7 @@ public class TransposerManager {
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
 
-		ComparableItemStack inputStack = new ComparableItemStack(input);
+		ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(input);
 		recipeMapFill.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), recipeFill);
 		validationSet.add(inputStack);
 
@@ -188,7 +190,7 @@ public class TransposerManager {
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
 
-		ComparableItemStack inputStack = new ComparableItemStack(input);
+		ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(input);
 		recipeMapExtraction.put(inputStack, recipeExtraction);
 		validationSet.add(inputStack);
 
@@ -207,8 +209,8 @@ public class TransposerManager {
 			return false;
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
-		recipeMapFill.put(Arrays.asList(new ComparableItemStack(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
-		validationSet.add(new ComparableItemStack(input));
+		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
+		validationSet.add(new ComparableItemStackTransposer(input));
 
 		if (reversible) {
 			addExtractionRecipe(energy, output, input, fluid, 100, false, overwrite);
@@ -228,8 +230,8 @@ public class TransposerManager {
 			return false;
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
-		recipeMapExtraction.put(new ComparableItemStack(input), recipeExtraction);
-		validationSet.add(new ComparableItemStack(input));
+		recipeMapExtraction.put(new ComparableItemStackTransposer(input), recipeExtraction);
+		validationSet.add(new ComparableItemStackTransposer(input));
 
 		if (reversible) {
 			addFillRecipe(energy, output, input, fluid, false, overwrite);
@@ -240,12 +242,12 @@ public class TransposerManager {
 	/* REMOVE RECIPES */
 	public static boolean removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStack(input).hashCode(), fluid.getFluid().hashCode())) != null;
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode())) != null;
 	}
 
 	public static boolean removeExtractionRecipe(ItemStack input) {
 
-		return recipeMapExtraction.remove(new ComparableItemStack(input)) != null;
+		return recipeMapExtraction.remove(new ComparableItemStackTransposer(input)) != null;
 	}
 
 	/* HELPER FUNCTIONS */
@@ -310,6 +312,59 @@ public class TransposerManager {
 			return chance;
 		}
 
+	}
+
+	/* ITEMSTACK CLASS */
+	public static class ComparableItemStackTransposer extends ComparableItemStack {
+
+		static final String ORE = "ore";
+		static final String INGOT = "ingot";
+		static final String NUGGET = "nugget";
+		static final String GEM = "gem";
+
+		public static boolean safeOreType(String oreName) {
+
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(GEM);
+		}
+
+		public static int getOreID(ItemStack stack) {
+
+			int id = ItemHelper.oreProxy.getOreID(stack);
+
+			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+				return -1;
+			}
+			return id;
+		}
+
+		public static int getOreID(String oreName) {
+
+			if (!safeOreType(oreName)) {
+				return -1;
+			}
+			return ItemHelper.oreProxy.getOreID(oreName);
+		}
+
+		public ComparableItemStackTransposer(ItemStack stack) {
+
+			super(stack);
+			oreID = getOreID(stack);
+		}
+
+		public ComparableItemStackTransposer(Item item, int damage, int stackSize) {
+
+			super(item, damage, stackSize);
+			this.oreID = getOreID(this.toItemStack());
+		}
+
+		@Override
+		public ComparableItemStackTransposer set(ItemStack stack) {
+
+			super.set(stack);
+			oreID = getOreID(stack);
+
+			return this;
+		}
 	}
 
 }

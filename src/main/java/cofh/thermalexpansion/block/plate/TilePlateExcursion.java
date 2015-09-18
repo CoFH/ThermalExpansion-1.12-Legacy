@@ -28,8 +28,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		GameRegistry.registerTileEntity(TilePlateExcursion.class, "cofh.thermalexpansion.PlateExcursion");
 	}
 
-	public static boolean canReplaceBlock(Block block, World world, int x, int y, int z)
-	{
+	public static boolean canReplaceBlock(Block block, World world, int x, int y, int z) {
 
 		return block == null || block.getBlockHardness(world, x, y, z) == 0 || block.isAir(world, x, y, z);
 	}
@@ -45,8 +44,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if (realDist == -1 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote))
+		if (realDist == -1 || (ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote)) {
 			return;
+		}
 
 		int meta = alignment;
 		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
@@ -105,8 +105,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			}
 			Block block = worldObj.getBlock(x, y, z);
 			if (!block.equals(TEBlocks.blockAirForce)) {
-				if (!block.isAir(worldObj, x, y, z) &&
-						canReplaceBlock(block, worldObj, x, y, z)) {
+				if (!block.isAir(worldObj, x, y, z) && canReplaceBlock(block, worldObj, x, y, z)) {
 					if (!worldObj.func_147480_a(x, y, z, true)) {
 						break;
 					}
@@ -115,7 +114,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 				if (!worldObj.isAirBlock(x, y, z)) {
 					break;
 				}
-				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, alignment, 2|4);
+				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, alignment, 2 | 4);
 			} else if (worldObj.getBlockMetadata(x, y, z) != alignment) {
 				break;
 			}
@@ -124,7 +123,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		int prevDist = realDist + 1;
 		realDist = --i;
 
-		for (++i; i < prevDist; ) {
+		for (++i; i < prevDist;) {
 			int[] v = getVector(++i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
 

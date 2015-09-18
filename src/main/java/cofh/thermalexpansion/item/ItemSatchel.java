@@ -3,10 +3,10 @@ package cofh.thermalexpansion.item;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.api.tileentity.ISecurable.AccessMode;
 import cofh.core.CoFHProps;
+import cofh.core.RegistrySocial;
 import cofh.core.enchantment.CoFHEnchantment;
 import cofh.core.item.ItemBase;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -190,8 +190,7 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		if (ownerID.equals(otherID)) {
 			return true;
 		}
-
-		return access.isRestricted() && SocialRegistry.playerHasAccess(name, profile);
+		return access.isRestricted() && RegistrySocial.playerHasAccess(name, profile);
 	}
 
 	public static boolean isEnchanted(ItemStack container) {

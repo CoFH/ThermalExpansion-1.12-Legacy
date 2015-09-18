@@ -115,15 +115,17 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	@Override
 	public void blockBroken() {
 
-		if (ServerHelper.isServerWorld(worldObj))
+		if (ServerHelper.isServerWorld(worldObj)) {
 			removeFromRegistry();
+		}
 	}
 
 	@Override
 	public void onChunkUnload() {
 
-		if (ServerHelper.isServerWorld(worldObj))
+		if (ServerHelper.isServerWorld(worldObj)) {
 			removeFromRegistry();
+		}
 	}
 
 	@Override

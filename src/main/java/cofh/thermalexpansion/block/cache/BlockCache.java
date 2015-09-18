@@ -77,6 +77,10 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
 
+		if (world.getBlockMetadata(x, y, z) == 0 && !enable[0]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
 		if (stack.stackTagCompound != null) {
 			TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 			tile.locked = stack.stackTagCompound.getBoolean("Lock");

@@ -2,9 +2,9 @@ package cofh.thermalexpansion.block.plate;
 
 import cofh.api.transport.IEnderDestination;
 import cofh.core.RegistryEnderAttuned;
+import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
-import cofh.core.util.SocialRegistry;
 import cofh.lib.util.helpers.EntityHelper;
 import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
@@ -125,7 +125,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				if (name == null) {
 					break o;
 				}
-				if (getAccess().isRestricted() && SocialRegistry.playerHasAccess(name, getOwner())) {
+				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
 					break l;
 				}
 				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);

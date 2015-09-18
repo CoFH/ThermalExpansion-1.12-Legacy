@@ -53,13 +53,10 @@ public class GuiPlateExcursion extends GuiBaseAdv {
 
 		addElement(new ElementEnergyStored(this, 8, 18, myTile.getEnergyStorage()));
 
-		addElement(new ElementSimpleToolTip(this, 49, 24).setToolTip("info.cofh.distance").setSize(24, 24)
-				.setTexture(TEX_INFO_DISTANCE, 32, 32));
+		addElement(new ElementSimpleToolTip(this, 49, 24).setToolTip("info.cofh.distance").setSize(24, 24).setTexture(TEX_INFO_DISTANCE, 32, 32));
 
-		decDistance = new ElementButton(this, 46, 66, "decDistance", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH)
-				.setToolTipLocalized(true);
-		incDistance = new ElementButton(this, 62, 66, "incDistance", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH)
-				.setToolTipLocalized(true);
+		decDistance = new ElementButton(this, 46, 66, "decDistance", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
+		incDistance = new ElementButton(this, 62, 66, "incDistance", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 
 		addElement(decDistance);
 		addElement(incDistance);

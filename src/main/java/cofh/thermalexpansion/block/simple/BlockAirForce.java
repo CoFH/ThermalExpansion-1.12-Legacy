@@ -20,11 +20,12 @@ public class BlockAirForce extends BlockAirBase {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
 
-		if ((ent instanceof EntityFX) || (ent instanceof EntityPlayer && !world.isRemote))
+		if ((ent instanceof EntityFX) || (ent instanceof EntityPlayer && !world.isRemote)) {
 			return;
+		}
 
 		int meta = world.getBlockMetadata(x, y, z);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta^1);
+		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
 		repositionEntity(world, x, y, z, ent, dir, .1);
 		/*
 		 * can we dampen sound effects for an entity collided with this?
@@ -38,7 +39,8 @@ public class BlockAirForce extends BlockAirBase {
 			ent.fallDistance *= 0.4;
 			ent.motionY = 0;
 		}
-		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
+		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(
+				Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
 			if (!world.func_147461_a(ent.boundingBox).isEmpty() || !world.func_147461_a(ent.boundingBox.getOffsetBoundingBox(xO * 2, yO * 2, zO * 2)).isEmpty()) {
 				xO = yO = zO = 0;
 			}
@@ -60,7 +62,7 @@ public class BlockAirForce extends BlockAirBase {
 			} else if (false) {
 				double a = Math.atan2(ent.motionX, ent.motionZ), s = Math.sqrt(ent.motionX * ent.motionX + ent.motionZ * ent.motionZ);
 				System.out.format(a + " " + ((ent.rotationYaw * Math.PI / 180) % Math.PI) + "\n");
-				double a2 = ent.rotationPitch * Math.PI / 180 * (1-Math.abs(Math.sin(((ent.rotationYaw * Math.PI / 180) % Math.PI) - a)));
+				double a2 = ent.rotationPitch * Math.PI / 180 * (1 - Math.abs(Math.sin(((ent.rotationYaw * Math.PI / 180) % Math.PI) - a)));
 				// FIXME: get correct pitch, when movement is sideways (a/d) don't apply vertical movement
 				double v = Math.cos(a2);
 				xO += s * Math.sin(a) * v;
@@ -71,7 +73,7 @@ public class BlockAirForce extends BlockAirBase {
 				zO += ent.motionZ;
 			}
 			if (ent instanceof EntityLivingBase) {
-				((EntityLivingBase)ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
+				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
 			} else {
 				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
 			}

@@ -38,74 +38,6 @@ public class TabConfigTesseract extends TabBase {
 
 	public static final String[] buttonNames = { "IconSendOnly", "IconRecvOnly", "IconSendRecv", "IconBlocked" };
 
-	@Override
-	public void draw() {
-
-		drawBackground();
-		drawTabIcon("IconConfigTesseract");
-		if (!isFullyOpened()) {
-			return;
-		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posXOffset() + 18, posY + 6, headerColor);
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posXOffset() + 6, posY + 42, subheaderColor);
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posXOffset() + 6, posY + 66, subheaderColor);
-
-		gui.drawButton(buttonNames[myTile.modeItem], posX() + 24, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeFluid], posX() + 42, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeEnergy], posX() + 60, posY + 20, 1, 0);
-
-		String sending = "";
-		String receiving = "";
-
-		if (modeReceiveAll()) {
-			receiving = StringHelper.localize("info.cofh.all");
-		} else {
-			if (myTile.modeReceiveItems()) {
-				receiving += StringHelper.localize("info.cofh.items");
-			}
-			if (myTile.modeReceiveFluid()) {
-				if (myTile.modeReceiveItems()) {
-					receiving += ", ";
-				}
-				receiving += StringHelper.localize("info.cofh.fluid");
-			}
-			if (myTile.modeReceiveEnergy()) {
-				if (myTile.modeReceiveItems() || myTile.modeReceiveFluid()) {
-					receiving += ", ";
-				}
-				receiving += StringHelper.localize("info.cofh.energy");
-			}
-			if (receiving.isEmpty()) {
-				receiving = StringHelper.localize("info.cofh.none");
-			}
-		}
-		if (modeSendAll()) {
-			sending = StringHelper.localize("info.cofh.all");
-		} else {
-			if (myTile.modeSendItems()) {
-				sending += StringHelper.localize("info.cofh.items");
-			}
-			if (myTile.modeSendFluid()) {
-				if (myTile.modeSendItems()) {
-					sending += ", ";
-				}
-				sending += StringHelper.localize("info.cofh.fluid");
-			}
-			if (myTile.modeSendEnergy()) {
-				if (myTile.modeSendItems() || myTile.modeSendFluid()) {
-					sending += ", ";
-				}
-				sending += StringHelper.localize("info.cofh.energy");
-			}
-			if (sending.isEmpty()) {
-				sending = StringHelper.localize("info.cofh.none");
-			}
-		}
-		getFontRenderer().drawString(sending, posXOffset() + 14, posY + 54, textColor);
-		getFontRenderer().drawString(receiving, posXOffset() + 14, posY + 78, textColor);
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	}
-
 	private boolean modeReceiveAll() {
 
 		return myTile.modeReceiveItems() && myTile.modeReceiveFluid() && myTile.modeReceiveEnergy();
@@ -192,6 +124,73 @@ public class TabConfigTesseract extends TabBase {
 		float colorB = (backgroundColor & 255) / 255.0F * 0.6F;
 		GL11.glColor4f(colorR, colorG, colorB, 1.0F);
 		gui.drawTexturedModalRect(posX() + 18, posY + 16, 16, 20, 64, 24);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	protected void drawForeground() {
+
+		drawTabIcon("IconConfigTesseract");
+		if (!isFullyOpened()) {
+			return;
+		}
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posXOffset() + 18, posY + 6, headerColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posXOffset() + 6, posY + 42, subheaderColor);
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posXOffset() + 6, posY + 66, subheaderColor);
+
+		gui.drawButton(buttonNames[myTile.modeItem], posX() + 24, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeFluid], posX() + 42, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeEnergy], posX() + 60, posY + 20, 1, 0);
+
+		String sending = "";
+		String receiving = "";
+
+		if (modeReceiveAll()) {
+			receiving = StringHelper.localize("info.cofh.all");
+		} else {
+			if (myTile.modeReceiveItems()) {
+				receiving += StringHelper.localize("info.cofh.items");
+			}
+			if (myTile.modeReceiveFluid()) {
+				if (myTile.modeReceiveItems()) {
+					receiving += ", ";
+				}
+				receiving += StringHelper.localize("info.cofh.fluid");
+			}
+			if (myTile.modeReceiveEnergy()) {
+				if (myTile.modeReceiveItems() || myTile.modeReceiveFluid()) {
+					receiving += ", ";
+				}
+				receiving += StringHelper.localize("info.cofh.energy");
+			}
+			if (receiving.isEmpty()) {
+				receiving = StringHelper.localize("info.cofh.none");
+			}
+		}
+		if (modeSendAll()) {
+			sending = StringHelper.localize("info.cofh.all");
+		} else {
+			if (myTile.modeSendItems()) {
+				sending += StringHelper.localize("info.cofh.items");
+			}
+			if (myTile.modeSendFluid()) {
+				if (myTile.modeSendItems()) {
+					sending += ", ";
+				}
+				sending += StringHelper.localize("info.cofh.fluid");
+			}
+			if (myTile.modeSendEnergy()) {
+				if (myTile.modeSendItems() || myTile.modeSendFluid()) {
+					sending += ", ";
+				}
+				sending += StringHelper.localize("info.cofh.energy");
+			}
+			if (sending.isEmpty()) {
+				sending = StringHelper.localize("info.cofh.none");
+			}
+		}
+		getFontRenderer().drawString(sending, posXOffset() + 14, posY + 54, textColor);
+		getFontRenderer().drawString(receiving, posXOffset() + 14, posY + 78, textColor);
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

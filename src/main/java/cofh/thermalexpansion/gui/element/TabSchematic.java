@@ -45,24 +45,6 @@ public class TabSchematic extends TabBase {
 	}
 
 	@Override
-	public void draw() {
-
-		drawBackground();
-		drawTabIcon("IconSchematic");
-		if (!isFullyOpened()) {
-			return;
-		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"), posXOffset() + 18, posY + 6, headerColor);
-
-		if (myContainer.canWriteSchematic()) {
-			gui.drawButton("IconAccept", posX() + 77, posY + 60, 1, 0);
-		} else {
-			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 1, 2);
-		}
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	@Override
 	public void addTooltip(List<String> list) {
 
 		if (!isFullyOpened()) {
@@ -115,6 +97,23 @@ public class TabSchematic extends TabBase {
 		gui.drawSizedTexturedModalRect(posX() + 13, posY + 25, 5, 5, 54, 54, 64, 64);
 		RenderHelper.bindTexture(OUTPUT_TEXTURE);
 		gui.drawSizedTexturedModalRect(posX() + 72, posY + 25, 3, 3, 26, 26, 32, 32);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	protected void drawForeground() {
+
+		drawTabIcon("IconSchematic");
+		if (!isFullyOpened()) {
+			return;
+		}
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"), posXOffset() + 18, posY + 6, headerColor);
+
+		if (myContainer.canWriteSchematic()) {
+			gui.drawButton("IconAccept", posX() + 77, posY + 60, 1, 0);
+		} else {
+			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 1, 2);
+		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

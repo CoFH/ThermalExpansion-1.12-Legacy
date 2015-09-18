@@ -38,35 +38,6 @@ public class TabConfigCell extends TabBase {
 	}
 
 	@Override
-	public void draw() {
-
-		drawBackground();
-		drawTabIcon("IconConfig");
-		if (!isFullyOpened()) {
-			return;
-		}
-		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posXOffset() + 18, posY + 6, headerColor);
-		RenderHelper.setBlockTextureSheet();
-
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-
-		for (int i = 0; i < 3; i++) {
-			gui.drawIcon(myTile.getTexture(1, i), posX() + 40, posY + 24, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_LEFT[myTile.getFacing()], i), posX() + 20, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(myTile.getFacing(), i), posX() + 40, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_RIGHT[myTile.getFacing()], i), posX() + 60, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(0, i), posX() + 40, posY + 64, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_OPPOSITE[myTile.getFacing()], i), posX() + 60, posY + 64, 0);
-		}
-		gui.drawIcon(myTile.getTexture(myTile.getFacing(), 3), posX() + 40, posY + 44, 0);
-
-		GL11.glDisable(GL11.GL_BLEND);
-		RenderHelper.setDefaultFontTextureSheet();
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-	}
-
-	@Override
 	public void addTooltip(List<String> list) {
 
 		if (!isFullyOpened()) {
@@ -118,6 +89,34 @@ public class TabConfigCell extends TabBase {
 		float colorB = (backgroundColor & 255) / 255.0F * 0.6F;
 		GL11.glColor4f(colorR, colorG, colorB, 1.0F);
 		gui.drawTexturedModalRect(posX() + 16, posY + 20, 16, 20, 64, 64);
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+	}
+
+	@Override
+	protected void drawForeground() {
+
+		drawTabIcon("IconConfig");
+		if (!isFullyOpened()) {
+			return;
+		}
+		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.configuration"), posXOffset() + 18, posY + 6, headerColor);
+		RenderHelper.setBlockTextureSheet();
+
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+		for (int i = 0; i < 3; i++) {
+			gui.drawIcon(myTile.getTexture(1, i), posX() + 40, posY + 24, 0);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_LEFT[myTile.getFacing()], i), posX() + 20, posY + 44, 0);
+			gui.drawIcon(myTile.getTexture(myTile.getFacing(), i), posX() + 40, posY + 44, 0);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_RIGHT[myTile.getFacing()], i), posX() + 60, posY + 44, 0);
+			gui.drawIcon(myTile.getTexture(0, i), posX() + 40, posY + 64, 0);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_OPPOSITE[myTile.getFacing()], i), posX() + 60, posY + 64, 0);
+		}
+		gui.drawIcon(myTile.getTexture(myTile.getFacing(), 3), posX() + 40, posY + 44, 0);
+
+		GL11.glDisable(GL11.GL_BLEND);
+		RenderHelper.setDefaultFontTextureSheet();
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 

@@ -212,7 +212,7 @@ public class ThermalExpansion extends BaseMod {
 		config.cleanUp(false, true);
 		configClient.cleanUp(false, true);
 
-		log.info("Load Complete.");
+		log.info("Thermal Expansion: Load Complete.");
 	}
 
 	@EventHandler

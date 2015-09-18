@@ -22,6 +22,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -68,6 +69,23 @@ public class BlockWorkbench extends BlockTEBase {
 		for (int i = 1; i < Types.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+
+		if (world.getBlockMetadata(x, y, z) == 0 && !enable[0]) {
+			world.setBlockToAir(x, y, z);
+			return;
+		}
+		if (stack.stackTagCompound != null) {
+			TileWorkbench tile = (TileWorkbench) world.getTileEntity(x, y, z);
+
+			if (stack.stackTagCompound.hasKey("Inventory")) {
+				tile.readInventoryFromNBT(stack.stackTagCompound);
+			}
+		}
+		super.onBlockPlacedBy(world, x, y, z, living, stack);
 	}
 
 	@Override

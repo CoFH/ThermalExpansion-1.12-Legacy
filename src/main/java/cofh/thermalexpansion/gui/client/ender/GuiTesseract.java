@@ -45,10 +45,10 @@ public class GuiTesseract extends GuiBaseAdv {
 
 	int updated;
 
-	ElementListBox frequencies;
-	ElementSlider slider;
-	ElementTextField freq;
-	ElementTextField name;
+	ElementListBox box_freq;
+	ElementSlider sl_freq;
+	ElementTextField tf_freq;
+	ElementTextField tf_name;
 
 	ElementButton assign;
 	ElementButton clear;
@@ -58,41 +58,44 @@ public class GuiTesseract extends GuiBaseAdv {
 	public GuiTesseract(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile, false, false), new ResourceLocation(TEX_PATH));
+
 		myTile = (TileTesseract) theTile;
-		super.name = myTile.getInventoryName();
+		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
+
+		generateInfo("tab.thermalexpansion.ender.tesseract", 2);
 	}
 
 	@Override
 	public void initGui() {
 
 		super.initGui();
+
 		Keyboard.enableRepeatEvents(true);
 		tileAccess = myTile.getAccess();
 		RegistryEnderAttuned.requestChannelList(myTile.getChannelString());
 
 		addTab(new TabRedstone(this, myTile));
 		addTab(new TabConfigTesseract(this, myTile));
-
-		generateInfo("tab.thermalexpansion.ender.tesseract", 2);
 		addTab(new TabInfo(this, myInfo));
 		addTab(new TabTutorial(this, StringHelper.tutorialTabRedstone() + "\n\n" + StringHelper.tutorialTabConfigurationOperation()));
+
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
 
 		int tempFreq = myTile.getFrequency();
-		addElement(freq = new ElementTextFieldLimited(this, 102, 27, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
+		addElement(tf_freq = new ElementTextFieldLimited(this, 102, 27, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
 				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
-		addElement(name = new ElementTextField(this, 8, 42, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
+		addElement(tf_name = new ElementTextField(this, 8, 42, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
 
 		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 208, 232, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				int tempFreq = Integer.parseInt(freq.getText());
+				int tempFreq = Integer.parseInt(tf_freq.getText());
 				myTile.setTileInfo(tempFreq);
 			}
 		}.setToolTip("info.cofh.setFrequency"));
@@ -110,9 +113,9 @@ public class GuiTesseract extends GuiBaseAdv {
 			@Override
 			public void onClick() {
 
-				int tempFreq = Integer.parseInt(freq.getText());
-				RegistryEnderAttuned.getChannels(false).setFrequency(myTile.getChannelString(), tempFreq, GuiTesseract.this.name.getText());
-				myTile.addEntry(tempFreq, GuiTesseract.this.name.getText());
+				int tempFreq = Integer.parseInt(tf_freq.getText());
+				RegistryEnderAttuned.getChannels(false).setFrequency(myTile.getChannelString(), tempFreq, GuiTesseract.this.tf_name.getText());
+				myTile.addEntry(tempFreq, GuiTesseract.this.tf_name.getText());
 			}
 		}.setToolTip("info.cofh.addFrequency"));
 		addElement(remove = new ElementButton(this, 155, 40, 16, 16, 224, 128, 224, 144, 224, 160, TEX_PATH) {
@@ -120,26 +123,26 @@ public class GuiTesseract extends GuiBaseAdv {
 			@Override
 			public void onClick() {
 
-				int tempFreq = Integer.parseInt(freq.getText());
+				int tempFreq = Integer.parseInt(tf_freq.getText());
 				RegistryEnderAttuned.getChannels(false).removeFrequency(myTile.getChannelString(), tempFreq);
-				myTile.removeEntry(tempFreq, GuiTesseract.this.name.getText());
+				myTile.removeEntry(tempFreq, GuiTesseract.this.tf_name.getText());
 			}
 		}.setToolTip("info.cofh.removeFrequency"));
 
-		addElement(frequencies = new ElementListBox(this, 7, 57, 130, 104) {
+		addElement(box_freq = new ElementListBox(this, 7, 57, 130, 104) {
 
 			@Override
 			protected void onElementClicked(IListBoxElement element) {
 
 				Frequency freq = (Frequency) element.getValue();
-				GuiTesseract.this.name.setText(freq.name);
-				GuiTesseract.this.freq.setText(String.valueOf(freq.freq));
+				GuiTesseract.this.tf_name.setText(freq.name);
+				GuiTesseract.this.tf_freq.setText(String.valueOf(freq.freq));
 			}
 
 			@Override
 			protected void onScrollV(int newStartIndex) {
 
-				slider.setValue(newStartIndex);
+				sl_freq.setValue(newStartIndex);
 			}
 
 			@Override
@@ -153,27 +156,26 @@ public class GuiTesseract extends GuiBaseAdv {
 				} else {
 					element.draw(this, x, y, backgroundColor, textColor);
 				}
-
 				return element.getHeight();
 			}
 
 		}.setBackgroundColor(0, 0));
-		frequencies.setSelectedIndex(-1);
+		box_freq.setSelectedIndex(-1);
 		IEnderChannelRegistry data = RegistryEnderAttuned.getChannels(false);
 		updated = data.updated();
 		for (Frequency freq : data.getFrequencyList(null)) {
-			frequencies.add(new ListBoxElementEnderText(freq));
+			box_freq.add(new ListBoxElementEnderText(freq));
 			if (freq.freq == myTile.getFrequency()) {
-				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-				this.name.setText(freq.name);
+				box_freq.setSelectedIndex(box_freq.getElementCount() - 1);
+				this.tf_name.setText(freq.name);
 			}
 		}
-		addElement(slider = new SliderVertical(this, 140, 58, 14, 102, frequencies.getLastScrollPosition()) {
+		addElement(sl_freq = new SliderVertical(this, 140, 58, 14, 102, box_freq.getLastScrollPosition()) {
 
 			@Override
 			public void onValueChanged(int value) {
 
-				frequencies.scrollToV(value);
+				box_freq.scrollToV(value);
 			}
 
 		}.setColor(0, 0));
@@ -189,9 +191,9 @@ public class GuiTesseract extends GuiBaseAdv {
 	@Override
 	public void updateScreen() {
 
-		super.updateScreen();
+		// super.updateScreen();
 
-		if (!myTile.canAccess()) {
+		if (!this.mc.thePlayer.isEntityAlive() || this.mc.thePlayer.isDead || !myTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
 	}
@@ -203,34 +205,34 @@ public class GuiTesseract extends GuiBaseAdv {
 		if (updated != data.updated()) {
 			updated = data.updated();
 			requested = false;
-			IListBoxElement ele = frequencies.getSelectedElement();
+			IListBoxElement ele = box_freq.getSelectedElement();
 			int sel = ele != null ? ((Frequency) ele.getValue()).freq : -1;
-			int pos = slider.getSliderY();
-			frequencies.removeAll();
-			frequencies.setSelectedIndex(-1);
+			int pos = sl_freq.getSliderY();
+			box_freq.removeAll();
+			box_freq.setSelectedIndex(-1);
 			for (Frequency freq : data.getFrequencyList(null)) {
-				frequencies.add(new ListBoxElementEnderText(freq));
-				if (freq.freq == sel && String.valueOf(sel).equals(this.freq.getText())) {
-					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-					this.freq.setText(String.valueOf(freq.freq));
-					this.name.setText(freq.name);
+				box_freq.add(new ListBoxElementEnderText(freq));
+				if (freq.freq == sel && String.valueOf(sel).equals(this.tf_freq.getText())) {
+					box_freq.setSelectedIndex(box_freq.getElementCount() - 1);
+					this.tf_freq.setText(String.valueOf(freq.freq));
+					this.tf_name.setText(freq.name);
 				}
 			}
-			slider.setLimits(0, frequencies.getLastScrollPosition());
-			slider.setValue(pos);
+			sl_freq.setLimits(0, box_freq.getLastScrollPosition());
+			sl_freq.setValue(pos);
 		} else if (!requested && tileAccess != myTile.getAccess()) {
 			requested = true;
 			tileAccess = myTile.getAccess();
 			RegistryEnderAttuned.requestChannelList(myTile.getChannelString());
 		}
 
-		boolean hasFreq = freq.getContentLength() > 0, hasName = name.getContentLength() > 0;
-		assign.setEnabled(hasFreq && !String.valueOf(myTile.getFrequency()).equals(freq.getText()));
+		boolean hasFreq = tf_freq.getContentLength() > 0, hasName = tf_name.getContentLength() > 0;
+		assign.setEnabled(hasFreq && !String.valueOf(myTile.getFrequency()).equals(tf_freq.getText()));
 		clear.setEnabled(myTile.getFrequency() != -1);
 		add.setEnabled(hasName && hasFreq
-				&& !name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
+				&& !tf_name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(tf_freq.getText()))));
 		remove.setEnabled(hasFreq && hasName
-				&& name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(freq.getText()))));
+				&& tf_name.getText().equals(RegistryEnderAttuned.getChannels(false).getFrequency(null, Integer.parseInt(tf_freq.getText()))));
 	}
 
 }
