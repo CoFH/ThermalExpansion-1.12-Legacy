@@ -609,8 +609,6 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		energyTrackerRemote = nbt.getInteger("Energy.Rem");
 
 		frequency = nbt.getInteger("Frequency");
-
-		addToRegistry();
 	}
 
 	@Override
