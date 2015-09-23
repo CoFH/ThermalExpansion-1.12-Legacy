@@ -46,7 +46,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	protected static final int PARTICLE_DELAY = 80;
 	protected static final int TELEPORT_DELAY = PARTICLE_DELAY + 50;
 
-	private ThreadLocal<Boolean> internalSet = new ThreadLocal<Boolean>();
+	private final ThreadLocal<Boolean> internalSet = new ThreadLocal<Boolean>();
 	private Integer pendingFrequency;
 	protected int frequency = -1;
 	protected int destination = -1;
@@ -74,12 +74,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (destination == -1 || entity.worldObj.isRemote) {
 			return;
 		}
-
 		if (entity.timeUntilPortal > TELEPORT_DELAY) {
 			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 			return;
 		}
-
 		if (!RegistryEnderAttuned.getRegistry().hasDestination(this)) {
 			if (destination != -1) {
 				internalSet.set(Boolean.FALSE);
@@ -92,7 +90,6 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (dest == null) {
 			return; // destination is invalid (deleted)
 		}
-
 		if (dest.isNotValid()) {
 			; // augment to reach these areas?
 		}
@@ -101,24 +98,19 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (dest.dimension() != dimension()) {
 			teleportCost = DIMENSION_TELEPORT_COST;
 		}
-
 		if (entity instanceof EntityEnderman) {
 			teleportCost *= 2;
 		}
-
 		if (storage.getEnergyStored() < teleportCost) {
 			return;
 		}
-
 		Class<? extends Entity> comp = Entity.class;
 		if (!getAccess().isPublic()) {
 			comp = EntityPlayer.class;
 		}
-
 		if (!comp.isInstance(entity)) {
 			return;
 		}
-
 		l: if (!getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
 				String name = ((EntityItem) entity).func_145800_j();
@@ -137,7 +129,6 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			}
 			return;
 		}
-
 		if (entity instanceof EntityLivingBase) {
 			if (entity.timeUntilPortal++ <= TELEPORT_DELAY) {
 				if (!(entity instanceof EntityPlayerMP)) {
@@ -176,7 +167,6 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			}
 			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 		}
-
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
 			if (dest.dimension() != dimension()) {
 				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
@@ -413,7 +403,6 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					return false;
 				}
 			}
-
 			markDirty();
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
@@ -465,7 +454,6 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			internalSet.set(null);
 			pendingFrequency = null;
 		}
-
 		super.cofh_validate();
 	}
 
