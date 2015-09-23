@@ -101,7 +101,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		// combinedSign >> 63 = 0000 0000 0000 0000
 	}
 
-	private void updateForce() {
+	protected void updateForce() {
 
 		double fAngle = angle * Math.PI / 1800D;
 		if ((direction >> 1) == 0) {

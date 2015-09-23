@@ -202,4 +202,5 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 
 		GL11.glPopMatrix();
 	}
+
 }

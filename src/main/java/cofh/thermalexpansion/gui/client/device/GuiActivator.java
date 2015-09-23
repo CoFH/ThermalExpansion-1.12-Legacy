@@ -18,10 +18,10 @@ public class GuiActivator extends GuiAugmentableBase {
 
 	TileActivator myTile;
 
-	public ElementButton settingClick;
-	public ElementButton settingSneak;
-	public ElementButton settingSlot;
-	public ElementButton settingAngle;
+	ElementButton settingClick;
+	ElementButton settingSneak;
+	ElementButton settingSlot;
+	ElementButton settingAngle;
 
 	public GuiActivator(InventoryPlayer inventory, TileEntity tile) {
 

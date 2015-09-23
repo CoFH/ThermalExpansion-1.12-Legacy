@@ -55,7 +55,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 	public TilePlateTeleporter() {
 
-		super(BlockPlate.Types.POWERED_TRANSLOCATE, 2000000);
+		super(BlockPlate.Types.TELEPORT, 2000000);
 	}
 
 	protected void teleportEntity(Entity entity, double x, double y, double z) {

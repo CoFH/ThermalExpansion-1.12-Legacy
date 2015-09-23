@@ -36,6 +36,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 	public GuiPlateTranslocate(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
+
 		myTile = (TilePlateTranslocate) theTile;
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);

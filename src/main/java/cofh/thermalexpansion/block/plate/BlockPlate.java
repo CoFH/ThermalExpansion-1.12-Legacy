@@ -89,11 +89,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			return new TilePlateImpulse();
 		case TRANSLOCATE:
 			return new TilePlateTranslocate();
-		case POWERED_SIGNAL:
-			return new TilePlateCharger();
-		case POWERED_IMPULSE:
+		case CHARGE:
+			return new TilePlateCharge();
+		case EXCURSION:
 			return world.isRemote ? new TilePlateExcursionClient() : new TilePlateExcursion();
-		case POWERED_TRANSLOCATE:
+		case TELEPORT:
 			return new TilePlateTeleporter();
 		default:
 			return null;
@@ -287,7 +287,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TilePlateSignal.initialize();
 		TilePlateImpulse.initialize();
 		TilePlateTranslocate.initialize();
-		TilePlateCharger.initialize();
+		TilePlateCharge.initialize();
 		TilePlateExcursion.initialize();
 		TilePlateTeleporter.initialize();
 
@@ -295,9 +295,9 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		plateSignal = new ItemStack(this, 1, Types.SIGNAL.ordinal());
 		plateImpulse = new ItemStack(this, 1, Types.IMPULSE.ordinal());
 		plateTranslocate = new ItemStack(this, 1, Types.TRANSLOCATE.ordinal());
-		plateCharge = new ItemStack(this, 1, Types.POWERED_SIGNAL.ordinal());
-		plateExcursion = new ItemStack(this, 1, Types.POWERED_IMPULSE.ordinal());
-		plateTeleport = new ItemStack(this, 1, Types.POWERED_TRANSLOCATE.ordinal());
+		plateCharge = new ItemStack(this, 1, Types.CHARGE.ordinal());
+		plateExcursion = new ItemStack(this, 1, Types.EXCURSION.ordinal());
+		plateTeleport = new ItemStack(this, 1, Types.TELEPORT.ordinal());
 
 		GameRegistry.registerCustomItemStack("plateFrame", plateFrame);
 		GameRegistry.registerCustomItemStack("plateSignal", plateSignal);
@@ -337,7 +337,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			TransposerManager.addTEFillRecipe(2000, plateFrame, plateTranslocate, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
 
-		if (enable[Types.POWERED_SIGNAL.ordinal()]) {
+		if (enable[Types.CHARGE.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateCharge, new Object[] {
 					"EGE",
 					"IPI",
@@ -350,7 +350,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}));
 		}
 
-		if (enable[Types.POWERED_IMPULSE.ordinal()]) {
+		if (enable[Types.EXCURSION.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateExcursion, new Object[] {
 					"EGE",
 					"GPG",
@@ -362,7 +362,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			}));
 		}
 
-		if (enable[Types.POWERED_TRANSLOCATE.ordinal()]) {
+		if (enable[Types.TELEPORT.ordinal()]) {
 			ItemHelper.addRecipe(new RecipeUpgrade(5, plateTeleport, new Object[] {
 					"EIE",
 					"IPI",
@@ -377,7 +377,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TECraftingHandler.addSecureRecipe(plateSignal);
 		TECraftingHandler.addSecureRecipe(plateImpulse);
 		TECraftingHandler.addSecureRecipe(plateTranslocate);
-
 		TECraftingHandler.addSecureRecipe(plateCharge);
 		TECraftingHandler.addSecureRecipe(plateExcursion);
 		TECraftingHandler.addSecureRecipe(plateTeleport);
@@ -387,9 +386,9 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	public static enum Types {
-		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, POWERED_SIGNAL, POWERED_IMPULSE, POWERED_TRANSLOCATE;
+		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, CHARGE, EXCURSION, TELEPORT;
 
-		public int texture = name().startsWith("POWERED") ? 7 : 2;
+		public int texture = ordinal() > 3 ? 7 : 2;
 	}
 
 	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "excursion", "teleport" };

@@ -9,6 +9,7 @@ import cofh.lib.gui.element.ElementSimpleToolTip;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.plate.TilePlateExcursion;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.gui.container.ContainerTEBase;
 
 import java.util.UUID;
 
@@ -29,7 +30,8 @@ public class GuiPlateExcursion extends GuiBaseAdv {
 
 	public GuiPlateExcursion(InventoryPlayer inventory, TilePlateExcursion theTile) {
 
-		super(theTile.getGuiServer(inventory), TEXTURE);
+		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
+
 		myTile = theTile;
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);

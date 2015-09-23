@@ -67,8 +67,8 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 						this.moveEntity(this.motionX, this.motionY, this.motionZ);
 					}
 				};
-				spark.setColour(0x6666FF);
-				spark.setFadeColour(0xAAAAFF);
+				spark.setColour(0xFF7700);
+				spark.setFadeColour(0xFFBB88);
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}
 		}

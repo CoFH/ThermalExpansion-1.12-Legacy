@@ -39,6 +39,7 @@ public class GuiPlateImpulse extends GuiBaseAdv {
 	public GuiPlateImpulse(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
+
 		myTile = (TilePlateImpulse) theTile;
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);

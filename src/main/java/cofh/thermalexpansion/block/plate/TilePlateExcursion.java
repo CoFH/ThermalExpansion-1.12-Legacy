@@ -20,15 +20,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateExcursion extends TilePlatePoweredBase {
 
-	public static final byte MIN_DISTANCE = 0;
-	public static final byte MAX_DISTANCE = 26;
-
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TilePlateExcursion.class, "cofh.thermalexpansion.PlateExcursion");
 	}
 
-	public static boolean canReplaceBlock(Block block, World world, int x, int y, int z) {
+	public static final byte MIN_DISTANCE = 0;
+	public static final byte MAX_DISTANCE = 26;
+
+	public static boolean canFunnelReplaceBlock(Block block, World world, int x, int y, int z) {
 
 		return block == null || block.getBlockHardness(world, x, y, z) == 0 || block.isAir(world, x, y, z);
 	}
@@ -38,7 +38,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 	public TilePlateExcursion() {
 
-		super(BlockPlate.Types.POWERED_IMPULSE, 200000);
+		super(BlockPlate.Types.EXCURSION, 200000);
 	}
 
 	@Override
@@ -105,7 +105,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			}
 			Block block = worldObj.getBlock(x, y, z);
 			if (!block.equals(TEBlocks.blockAirForce)) {
-				if (!block.isAir(worldObj, x, y, z) && canReplaceBlock(block, worldObj, x, y, z)) {
+				if (!block.isAir(worldObj, x, y, z) && canFunnelReplaceBlock(block, worldObj, x, y, z)) {
 					if (!worldObj.func_147480_a(x, y, z, true)) {
 						break;
 					}

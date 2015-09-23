@@ -32,7 +32,8 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiPlateTeleport extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Teleport.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Plate.png";
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTeleporter myTile;
 	UUID playerName;
@@ -42,7 +43,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	ElementListBox frequencies;
 	ElementSlider slider;
 	ElementTextField freq;
-	ElementTextField name;
+	ElementTextField plate_name;
 	ElementTextField title;
 
 	ElementButton assign;
@@ -53,8 +54,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	public GuiPlateTeleport(InventoryPlayer inventory, TileEntity theTile) {
 
 		super(new ContainerTEBase(inventory, theTile, false, false), new ResourceLocation(TEX_PATH));
+
 		myTile = (TilePlateTeleporter) theTile;
-		super.name = myTile.getInventoryName();
+		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 	}
@@ -82,7 +84,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
 		addElement(title = new ElementTextField(this, 28, 18, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
 
-		addElement(name = new ElementTextField(this, 28, 57, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
+		addElement(plate_name = new ElementTextField(this, 28, 57, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
 
 		addElement(assign = new ElementButton(this, 131, 22, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {
 
@@ -130,7 +132,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			protected void onElementClicked(IListBoxElement element) {
 
 				Frequency freq = (Frequency) element.getValue();
-				GuiPlateTeleport.this.name.setText(freq.name);
+				GuiPlateTeleport.this.plate_name.setText(freq.name);
 			}
 
 			@Override
@@ -162,7 +164,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			frequencies.add(new ListBoxElementEnderText(freq));
 			if (freq.freq == myTile.getDestination()) {
 				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-				this.name.setText(freq.name);
+				this.plate_name.setText(freq.name);
 			} else if (freq.freq == myTile.getFrequency()) {
 				title.setText(freq.name);
 			}
@@ -210,12 +212,12 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				frequencies.add(new ListBoxElementEnderText(freq));
 				if (freq.freq == sel) {
 					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-					this.name.setText(freq.name);
+					this.plate_name.setText(freq.name);
 				} else if (freq.freq == myTile.getFrequency()) {
 					title.setText(freq.name);
 				}
 				if (freq.freq == myTile.getDestination()) {
-					name.setText(freq.name);
+					plate_name.setText(freq.name);
 				}
 			}
 			slider.setLimits(0, frequencies.getLastScrollPosition());
@@ -226,7 +228,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		assign.setEnabled(hasFreq && hasName && myTile.getFrequency() == -1);
 		clear.setEnabled(myTile.getFrequency() != -1);
 		IListBoxElement ele = frequencies.getSelectedElement();
-		add.setEnabled(myTile.getDestination() == -1 && name.getContentLength() > 0 && ele != null
+		add.setEnabled(myTile.getDestination() == -1 && plate_name.getContentLength() > 0 && ele != null
 				&& myTile.getFrequency() != ((Frequency) ele.getValue()).freq);
 		remove.setEnabled(myTile.getDestination() != -1);
 	}
