@@ -20,7 +20,7 @@ public class BlockAirForce extends BlockAirBase {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
 
-		if ((world.isRemote && ent instanceof EntityFX) || (ent instanceof EntityPlayer && !world.isRemote)) {
+		if (world.isRemote ? ent instanceof EntityFX : ent instanceof EntityPlayer) {
 			return;
 		}
 
@@ -76,6 +76,9 @@ public class BlockAirForce extends BlockAirBase {
 			} else {
 				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
 			}
+			ent.lastTickPosX = ent.posX - xO;
+			ent.lastTickPosY = ent.posY - yO;
+			ent.lastTickPosZ = ent.posZ - zO;
 			ent.motionX *= .5;
 			ent.motionZ *= .5;
 			ent.motionY = 0;

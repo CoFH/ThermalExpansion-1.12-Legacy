@@ -44,7 +44,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if (realDist == -1 || (worldObj.isRemote && ent instanceof EntityFX) || (ent instanceof EntityPlayer && !worldObj.isRemote)) {
+		if (realDist == -1 || (worldObj.isRemote ? ent instanceof EntityFX : ent instanceof EntityPlayer)) {
 			return;
 		}
 
