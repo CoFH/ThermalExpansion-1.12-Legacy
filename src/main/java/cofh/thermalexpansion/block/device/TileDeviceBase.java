@@ -9,6 +9,7 @@ import cofh.thermalexpansion.core.TEProps;
 import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 
 public abstract class TileDeviceBase extends TileAugmentable {
@@ -45,6 +46,9 @@ public abstract class TileDeviceBase extends TileAugmentable {
 
 		sideConfig = defaultSideConfig[this.type];
 		setDefaultSides();
+
+		augmentStatus = new boolean[4];
+		augments = new ItemStack[4];
 	}
 
 	@Override

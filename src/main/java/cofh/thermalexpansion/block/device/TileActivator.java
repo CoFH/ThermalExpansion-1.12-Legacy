@@ -76,6 +76,15 @@ public class TileActivator extends TileDeviceBase {
 	int slotTracker = 0;
 	int[] tracker;
 
+	static final IEntitySelector selectAttackable = new IEntitySelector() {
+
+		@Override
+		public boolean isEntityApplicable(Entity e) {
+
+			return e.canAttackWithItem();
+		}
+	};
+
 	public TileActivator() {
 
 		super(Types.ACTIVATOR);
@@ -340,15 +349,7 @@ public class TileActivator extends TileDeviceBase {
 			myFakePlayer.theItemInWorldManager.cancelDestroyingBlock(coords[0], coords[1], coords[2]);
 			myFakePlayer.theItemInWorldManager.durabilityRemainingOnBlock = -1;
 			List<Entity> entities = worldObj.selectEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(xCoord, yCoord, zCoord, facing),
-					new IEntitySelector() {
-
-						@Override
-						public boolean isEntityApplicable(Entity e) {
-
-							return e.canAttackWithItem();
-						}
-
-					});
+					selectAttackable);
 
 			if (entities.size() == 0) {
 				return false;

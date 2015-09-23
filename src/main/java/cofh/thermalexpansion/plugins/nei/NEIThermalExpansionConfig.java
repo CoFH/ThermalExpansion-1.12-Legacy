@@ -5,7 +5,6 @@ import codechicken.nei.api.IConfigureNEI;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.GuiWorkbench;
-import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCharger;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingMachine;
 import cofh.thermalexpansion.plugins.nei.handlers.RecipeHandlerCraftingSecure;
@@ -64,8 +63,6 @@ public class NEIThermalExpansionConfig implements IConfigureNEI {
 		API.hideItem(new ItemStack(TEBlocks.blockAirBarrier));
 		API.hideItem(new ItemStack(TEBlocks.blockAirLight));
 		API.hideItem(new ItemStack(TEBlocks.blockAirSignal));
-
-		API.hideItem(TEItems.satchelCreative);
 	}
 
 	@Override

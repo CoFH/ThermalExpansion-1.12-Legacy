@@ -49,6 +49,8 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 	CoFHFakePlayer myFakePlayer;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
+	public boolean augmentFluid;
+
 	public TileBreaker() {
 
 		super(Types.BREAKER);
@@ -95,7 +97,7 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 		Block block = worldObj.getBlock(coords[0], coords[1], coords[2]);
-		FluidStack theStack = FluidHelper.getFluidFromWorld(worldObj, coords[0], coords[1], coords[2], true);
+		FluidStack theStack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, coords[0], coords[1], coords[2], true) : null;
 		if (theStack != null) {
 			for (int i = 0; i < 6 && theStack.amount > 0; i++) {
 				if (sideCache[i] == 1) {

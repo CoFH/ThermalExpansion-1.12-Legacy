@@ -8,6 +8,7 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.gui.slot.SlotViewOnly;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.SecurityHelper;
+import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.network.PacketTEBase;
 import com.mojang.authlib.GameProfile;
@@ -48,7 +49,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
 
 		if (storageIndex == 0) {
-			addSlotToContainer(new SlotValidated(this, containerWrapper, 0, 80, 26));
+			addSlotToContainer(new SlotSatchelCreative(this, containerWrapper, 0, 80, 26));
 			rowSize = 1;
 		} else if (storageIndex == 1) {
 			yOffset += 9;

@@ -88,7 +88,7 @@ public class GuiTesseract extends GuiBaseAdv {
 		int tempFreq = myTile.getFrequency();
 		addElement(tf_freq = new ElementTextFieldLimited(this, 102, 27, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
 				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
-		addElement(tf_name = new ElementTextField(this, 8, 42, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
+		addElement(tf_name = new ElementTextField(this, 8, 43, 128, 11, (short) 30).setBackgroundColor(0, 0, 0));
 
 		addElement(assign = new ElementButton(this, 131, 18, 20, 20, 208, 192, 208, 212, 208, 232, TEX_PATH) {
 
@@ -129,7 +129,7 @@ public class GuiTesseract extends GuiBaseAdv {
 			}
 		}.setToolTip("info.cofh.removeFrequency"));
 
-		addElement(box_freq = new ElementListBox(this, 7, 57, 130, 104) {
+		addElement(box_freq = new ElementListBox(this, 7, 58, 130, 104) {
 
 			@Override
 			protected void onElementClicked(IListBoxElement element) {

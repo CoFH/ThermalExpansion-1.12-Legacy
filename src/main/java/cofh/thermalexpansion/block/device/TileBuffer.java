@@ -96,7 +96,7 @@ public class TileBuffer extends TileDeviceBase {
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 2) {
-				for (int j = 0; j < inventory.length; j++) {
+				for (int j = inventory.length - 1; j >= 0; j--) {
 					if (transferItem(j, quantityOutput, side)) {
 						outputTracker = side;
 						return;

@@ -2,8 +2,10 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.api.inventory.IInventoryConnection;
 import cofh.core.CoFHProps;
+import cofh.core.RegistrySocial;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiCollector;
@@ -13,8 +15,12 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -46,6 +52,13 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 	int areaMajor = 2;
 	int areaMinor = 1;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+
+	static float[] defaultDropChances = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+
+	boolean ignoreFriends = true;
+	boolean ignoreOwner = true;
+
+	public boolean augmentEntityCollection;
 
 	public TileCollector() {
 
@@ -80,10 +93,26 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		return stuffedItems.size() == 0;
 	}
 
+	public boolean doNotCollectItemsFrom(EntityPlayer player) {
+
+		String name = player.getCommandSenderName();
+
+		UUID ownerID = owner.getId();
+		UUID otherID = SecurityHelper.getID(player);
+		if (ownerID.equals(otherID)) {
+			return ignoreOwner;
+		}
+		return ignoreFriends && RegistrySocial.playerHasAccess(name, owner);
+	}
+
 	public void collectItems() {
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 		stuffedItems.addAll(collectItemsInArea(worldObj, coords[0], coords[1], coords[2], facing, areaMajor, areaMinor));
+
+		if (augmentEntityCollection) {
+			stuffedItems.addAll(collectItemsFromEntities(worldObj, coords[0], coords[1], coords[2], facing, areaMajor, areaMinor));
+		}
 	}
 
 	public void outputBuffer() {
@@ -111,10 +140,9 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		}
 	}
 
-	public static List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
+	public List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
 
 		int areaMajor2 = 1 + areaMajor;
-
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
 		List<EntityItem> result;
 
@@ -141,6 +169,50 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 			}
 			stacks.add(entity.getEntityItem());
 			entity.worldObj.removeEntity(entity);
+		}
+		return stacks;
+	}
+
+	public List<ItemStack> collectItemsFromEntities(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
+
+		int areaMajor2 = 1 + areaMajor;
+		List<ItemStack> stacks = new ArrayList<ItemStack>();
+		List<EntityLivingBase> result;
+
+		switch (side) {
+		case 0:
+		case 1:
+			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+					AxisAlignedBB.getBoundingBox(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+			break;
+		case 2:
+		case 3:
+			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+					AxisAlignedBB.getBoundingBox(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+			break;
+		default:
+			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
+					AxisAlignedBB.getBoundingBox(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+			break;
+		}
+		for (int i = 0; i < result.size(); i++) {
+			EntityLivingBase entity = result.get(i);
+			float[] dropChances = defaultDropChances;
+
+			if (entity instanceof EntityLiving) {
+				dropChances = ((EntityLiving) entity).equipmentDropChances;
+			} else if (isSecured() && entity instanceof EntityPlayer) {
+				if (doNotCollectItemsFrom((EntityPlayer) entity)) {
+					continue;
+				}
+			}
+			for (int j = 0; j < 5; j++) {
+				ItemStack equipmentInSlot = entity.getEquipmentInSlot(j);
+				if (equipmentInSlot != null && dropChances[j] > 0) {
+					stacks.add(equipmentInSlot);
+					entity.setCurrentItemOrArmor(j, null);
+				}
+			}
 		}
 		return stacks;
 	}

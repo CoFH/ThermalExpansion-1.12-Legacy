@@ -87,17 +87,19 @@ public class TEPlugins {
 	static {
 		// addPlugin("cc.CCPlugin", "ComputerCraft");
 		addPlugin("mfr.MFRPlugin", "MineFactoryReloaded");
-		addPlugin("thaumcraft.ThaumcraftPlugin", "Thaumcraft");
 		addPlugin("ee3.EE3Plugin", "EE3");
+		addPlugin("eio.EIOPlugin", "EnderIO");
+		addPlugin("forestry.ForestryPlugin", "Forestry");
+		addPlugin("thaumcraft.ThaumcraftPlugin", "Thaumcraft");
 	}
 
 	public static void preInit() {
 
-		ThermalExpansion.log.info("Loading Plugins...");
+		ThermalExpansion.log.info("ThermalExpansion: Loading Plugins...");
 		for (int i = 0; i < pluginList.size(); i++) {
 			pluginList.get(i).preInit();
 		}
-		ThermalExpansion.log.info("Finished Loading Plugins.");
+		ThermalExpansion.log.info("Thermal Expansion: Finished Loading Plugins.");
 	}
 
 	public static void initialize() {

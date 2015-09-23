@@ -153,8 +153,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 			if (initialAmount != amount) {
 				inventory[slot] = stack;
 				adjInv.markDirty();
+				return true;
 			}
-			return true;
 		}
 		return false;
 	}

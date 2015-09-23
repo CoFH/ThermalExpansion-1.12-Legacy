@@ -521,7 +521,6 @@ public class BlockMachine extends BlockTEBase {
 		for (int i = 0; i < Types.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
-
 		category = "Machine.All";
 
 		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Basic", false);

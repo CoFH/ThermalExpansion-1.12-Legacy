@@ -250,16 +250,12 @@ public class BlockDevice extends BlockTEBase {
 		TileBuffer.initialize();
 		TileExtender.initialize();
 
-		if (defaultAutoTransfer) {
-			// defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoTransfer);
-		}
 		if (defaultRedstoneControl) {
-			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
+			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
 		}
 		if (defaultReconfigSides) {
-			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
+			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-
 		activator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.ACTIVATOR.ordinal()));
 		breaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BREAKER.ordinal()));
 		collector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.COLLECTOR.ordinal()));
@@ -387,9 +383,8 @@ public class BlockDevice extends BlockTEBase {
 
 	public static final String[] NAMES = { "workbench", "pump", "activator", "breaker", "collector", "nullifier", "buffer", "extender" };
 	public static boolean[] enable = new boolean[Types.values().length];
-	public static ItemStack[] defaultAugments = new ItemStack[3];
+	public static ItemStack[] defaultAugments = new ItemStack[4];
 
-	public static boolean defaultAutoTransfer = true;
 	public static boolean defaultRedstoneControl = true;
 	public static boolean defaultReconfigSides = true;
 
@@ -405,7 +400,6 @@ public class BlockDevice extends BlockTEBase {
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.WORKBENCH_FALSE.ordinal()]));
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.PUMP.ordinal()]));
 		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.EXTENDER.ordinal()]));
-		// ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.BUFFER.ordinal()]));
 	}
 
 	public static ItemStack pump;

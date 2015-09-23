@@ -318,13 +318,16 @@ public class TransposerManager {
 	public static class ComparableItemStackTransposer extends ComparableItemStack {
 
 		static final String ORE = "ore";
+		static final String CROP = "crop";
+		static final String DUST = "dust";
 		static final String INGOT = "ingot";
 		static final String NUGGET = "nugget";
 		static final String GEM = "gem";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(GEM);
+			return oreName.startsWith(ORE) || oreName.startsWith(CROP) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
+					|| oreName.startsWith(GEM);
 		}
 
 		public static int getOreID(ItemStack stack) {

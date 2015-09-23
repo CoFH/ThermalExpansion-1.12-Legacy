@@ -169,19 +169,19 @@ public class TEItems {
 		}
 
 		/* Satchels */
-		if (ItemSatchel.ENABLE[ItemSatchel.Types.BASIC.ordinal()]) {
+		if (ItemSatchel.enable[ItemSatchel.Types.BASIC.ordinal()]) {
 			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
 			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
 		}
-		if (ItemSatchel.ENABLE[ItemSatchel.Types.HARDENED.ordinal()]) {
+		if (ItemSatchel.enable[ItemSatchel.Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y',
 					"nuggetTin" }));
 		}
-		if (ItemSatchel.ENABLE[ItemSatchel.Types.REINFORCED.ordinal()]) {
+		if (ItemSatchel.enable[ItemSatchel.Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened,
 					'Y', "nuggetInvar" }));
 		}
-		if (ItemSatchel.ENABLE[ItemSatchel.Types.RESONANT.ordinal()]) {
+		if (ItemSatchel.enable[ItemSatchel.Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y',
 					"nuggetElectrum" }));
 		}

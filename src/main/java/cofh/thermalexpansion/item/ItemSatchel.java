@@ -66,7 +66,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 	@Override
 	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
-		// TODO: Creative Satchel
+		if (enable[0]) {
+			list.add(setDefaultInventoryTag(new ItemStack(item, 1, 0)));
+		}
 		for (int i = 1; i < Types.values().length; i++) {
 			list.add(setDefaultInventoryTag(new ItemStack(item, 1, i)));
 		}
@@ -224,20 +226,14 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 
-	public static boolean[] ENABLE = { false, true, true, true, true };
+	public static boolean[] enable = { true, true, true, true, true };
 
 	static {
-		String category2 = "Item.Satchel.";
-		String category = category2 + StringHelper.titleCase(NAMES[0]);
+		String category = "Item.Satchel.";
 
-		// TODO: Implement Creative Satchel.
-		String comment = "Not yet implemented. This option does not work.";
-		ENABLE[0] = ThermalExpansion.config.get(category, "Enable", ENABLE[0]);
-		ENABLE[0] = false;
-
+		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", enable[0]);
 		for (int i = 1; i < Types.values().length; i++) {
-			category = category2 + StringHelper.titleCase(NAMES[i]);
-			ENABLE[i] = ThermalExpansion.config.get(category, "Recipe", ENABLE[i]);
+			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe", enable[i]);
 		}
 	}
 
