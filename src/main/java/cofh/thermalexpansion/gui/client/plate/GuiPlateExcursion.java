@@ -111,12 +111,6 @@ public class GuiPlateExcursion extends GuiBaseAdv {
 		}
 		fontRendererObj.drawString(strDistance, xDistance, 56, 0x404040);
 
-		if (myTile.distance >= 9 && myTile.realDist < 10) {
-			xDistance += 6;
-		}
-		strDistance = String.format("%-8s", "" + (myTile.realDist & (~myTile.realDist >> 31)));
-		fontRendererObj.drawString(strDistance, xDistance, 84, 0xA0A0A0);
-
 		super.drawGuiContainerForegroundLayer(x, y);
 	}
 
