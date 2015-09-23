@@ -20,7 +20,7 @@ public class BlockAirForce extends BlockAirBase {
 	@Override
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
 
-		if ((ent instanceof EntityFX) || (ent instanceof EntityPlayer && !world.isRemote)) {
+		if ((world.isRemote && ent instanceof EntityFX) || (ent instanceof EntityPlayer && !world.isRemote)) {
 			return;
 		}
 
@@ -31,7 +31,6 @@ public class BlockAirForce extends BlockAirBase {
 		 * can we dampen sound effects for an entity collided with this?
 		 */
 	}
-
 	public static void repositionEntity(World world, int x, int y, int z, Entity ent, ForgeDirection dir, double amount) {
 
 		double l = amount, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
