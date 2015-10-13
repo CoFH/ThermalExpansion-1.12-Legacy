@@ -38,12 +38,17 @@ public class BlockAirForce extends BlockAirBase {
 			ent.fallDistance *= 0.4;
 			ent.motionY = 0;
 		}
-		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(
-				Vec3.createVectorHelper(ent.prevPosX, ent.prevPosY - ent.yOffset, ent.prevPosZ))) {
+
+		if (ent.getEntityData().getLong("te:conveyor") == world.getTotalWorldTime()) {
+			return;
+		}
+		ent.getEntityData().setLong("te:conveyor", world.getTotalWorldTime());
+
+		{
 			if (!world.func_147461_a(ent.boundingBox).isEmpty() || !world.func_147461_a(ent.boundingBox.getOffsetBoundingBox(xO * 2, yO * 2, zO * 2)).isEmpty()) {
 				xO = yO = zO = 0;
 			}
-			if (ent.motionX == 0 && ent.motionZ == 0) {
+			if (isZero(ent.motionX) && isZero(ent.motionZ)) {
 				switch (dir.ordinal() >> 1) {
 				case 0:
 					xO += (x - (ent.prevPosX - .5)) / 20;
@@ -83,6 +88,11 @@ public class BlockAirForce extends BlockAirBase {
 			ent.motionZ *= .5;
 			ent.motionY = 0;
 		}
+	}
+
+	private static boolean isZero(double x) {
+
+		return -1e-5 <= x & x <= 1e-5;
 	}
 
 }
