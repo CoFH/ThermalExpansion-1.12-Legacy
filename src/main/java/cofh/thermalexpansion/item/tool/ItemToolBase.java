@@ -52,7 +52,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		}
 	}
 
-	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		list.add(StringHelper.getInfoText("info.thermalexpansion.tool." + itemName));
 	}

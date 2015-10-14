@@ -41,7 +41,7 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	}
 
 	@Override
-	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		super.addInformationDelegate(stack, player, list, check);
 
