@@ -31,6 +31,8 @@ public class BlockAirForce extends BlockAirBase {
 		 * can we dampen sound effects for an entity collided with this?
 		 */
 	}
+
+	@SuppressWarnings("unused")
 	public static void repositionEntity(World world, int x, int y, int z, Entity ent, ForgeDirection dir, double amount) {
 
 		double l = amount, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;

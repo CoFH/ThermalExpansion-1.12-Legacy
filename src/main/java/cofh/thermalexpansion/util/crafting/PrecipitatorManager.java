@@ -13,6 +13,7 @@ import net.minecraftforge.fluids.FluidStack;
 public class PrecipitatorManager { // TODO
 
 	private static Map<Fluid, RecipePrecipitator> recipeMap = new THashMap<Fluid, RecipePrecipitator>();
+	@SuppressWarnings("unused")
 	private static boolean allowOverwrite = false;
 
 	static {

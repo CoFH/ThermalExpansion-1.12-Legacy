@@ -30,6 +30,7 @@ public class TileWorkbenchCreative extends TileWorkbench {
 		ItemStack[] invCopy = InventoryHelper.cloneInventory(inventory);
 		ItemStack recipeSlot;
 		String recipeOreName;
+		@SuppressWarnings("unused")
 		boolean found = false;
 
 		for (int i = 0; i < 9; i++) {
@@ -88,6 +89,7 @@ public class TileWorkbenchCreative extends TileWorkbench {
 		ItemStack recipeSlot;
 		String recipeOreName;
 		boolean found = false;
+		@SuppressWarnings("unused")
 		boolean masterFound = true;
 		missingItem = new boolean[] { false, false, false, false, false, false, false, false, false };
 

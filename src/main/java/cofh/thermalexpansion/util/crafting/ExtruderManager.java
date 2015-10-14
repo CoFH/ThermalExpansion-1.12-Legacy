@@ -12,7 +12,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class ExtruderManager { // TODO
 
-	private static Map<List, RecipeExtruder> recipeMap = new THashMap<List, RecipeExtruder>();
+	private static Map<List<?>, RecipeExtruder> recipeMap = new THashMap<List<?>, RecipeExtruder>();
+	@SuppressWarnings("unused")
 	private static boolean allowOverwrite = false;
 
 	static {

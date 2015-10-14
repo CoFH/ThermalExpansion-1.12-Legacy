@@ -111,12 +111,12 @@ public class EE3Plugin {
 	public static void addTE3Machine(ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, ItemStack... inputs) throws Throwable {
 
 		if (secondaryOutput == null) {
-			EE3Helper.addRecipe(primaryOutput, inputs);
+			EE3Helper.addRecipe(primaryOutput, (Object[]) inputs);
 		} else if (ItemHelper.itemsEqualWithMetadata(primaryOutput, secondaryOutput)) {
 			double prob = primaryOutput.stackSize + secondaryOutput.stackSize * getTE3Prob(secondaryChance);
 			EE3Helper.addProbabilisticRecipe(ItemHelper.cloneStack(primaryOutput, 1), prob, inputs);
 		} else {
-			EE3Helper.addRecipe(primaryOutput, inputs);
+			EE3Helper.addRecipe(primaryOutput, (Object[]) inputs);
 			EE3Helper.addProbabilisticRecipe(secondaryOutput, getTE3Prob(secondaryChance), inputs);
 		}
 	}

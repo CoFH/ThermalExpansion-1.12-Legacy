@@ -74,7 +74,6 @@ public class TransposerManager {
 
 	public static void addDefaultRecipes() {
 
-		String comment;
 		String category = "RecipeManagers.Transposer.Recipes";
 
 		boolean recipeMossyCobble = ThermalExpansion.config.get(category, "MossyCobblestone", true);
