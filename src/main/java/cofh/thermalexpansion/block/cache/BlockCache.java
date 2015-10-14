@@ -103,7 +103,6 @@ public class BlockCache extends BlockTEBase {
 		}
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 		boolean playSound = false;
-		int insertCount = 0;
 
 		if (ItemHelper.isPlayerHoldingNothing(player)) {
 			if (player.isSneaking()) {
