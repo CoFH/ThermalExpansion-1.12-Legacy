@@ -89,6 +89,7 @@ public class BlockAirForce extends BlockAirBase {
 			ent.motionX *= .5;
 			ent.motionZ *= .5;
 			ent.motionY = 0;
+			ent.onGround = false;
 		}
 	}
 
