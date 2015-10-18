@@ -77,12 +77,9 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	}
 
 	@Override
-	public ItemStack transferStackInSlot(EntityPlayer player, int i) {
+	protected boolean supportsShiftClick(int slotIndex) {
 
-		if (myTile.getType() == BlockStrongbox.Types.CREATIVE.ordinal()) {
-			return null;
-		}
-		return super.transferStackInSlot(player, i);
+		return myTile.getType() != BlockStrongbox.Types.CREATIVE.ordinal();
 	}
 
 	public TileStrongbox getTile() {
