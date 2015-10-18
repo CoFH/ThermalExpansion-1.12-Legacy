@@ -63,6 +63,12 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		}
 	}
 
+	@Override
+	protected int getPlayerInventoryVerticalOffset() {
+
+		return 84;
+	}
+
 	private void addPlayerSlotsToContainer(InventoryPlayer inventory, int invOffset, int rows) {
 
 		for (int i = 0; i < 3; i++) {

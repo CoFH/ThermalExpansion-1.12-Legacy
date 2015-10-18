@@ -86,9 +86,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForDetails());
-		}
-		if (!StringHelper.isShiftKeyDown()) {
-			return;
+			if (!StringHelper.isShiftKeyDown()) {
+				return;
+			}
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 		ItemHelper.addInventoryInformation(stack, list);
