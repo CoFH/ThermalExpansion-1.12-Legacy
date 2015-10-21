@@ -1,14 +1,17 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.transport.IEnderDestination;
 import cofh.core.RegistryEnderAttuned;
 import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.lib.util.helpers.EntityHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTeleport;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.render.particle.ParticlePortal;
 import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
@@ -34,7 +37,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
-public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderDestination {
+public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderDestination, IRedstoneControl {
 
 	public static void initialize() {
 
@@ -52,6 +55,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	protected int destination = -1;
 
 	protected boolean isActive;
+
+	protected boolean isPowered;
+
+	protected ControlMode rsMode = ControlMode.DISABLED;
 
 	public TilePlateTeleporter() {
 
@@ -74,6 +81,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		if (destination == -1 || entity.worldObj.isRemote) {
 			return;
 		}
+		if (!redstoneControlOrDisable()) {
+			return;
+		}
+
 		if (entity.timeUntilPortal > TELEPORT_DELAY) {
 			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 			return;
@@ -179,7 +190,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, Random r) {
 
-		if (!isActive || (world.getTotalWorldTime() % 6) != 0) {
+		if (!isActive || (world.getTotalWorldTime() % 6) != 0 || !redstoneControlOrDisable()) {
 			return;
 		}
 		double dx = .5 + 0.15D * r.nextGaussian();
@@ -518,6 +529,58 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this, false, false);
+	}
+
+	@Override
+	public void onNeighborBlockChange() {
+
+		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+	}
+
+	public final boolean redstoneControlOrDisable() {
+
+		return rsMode.isDisabled() || isPowered == rsMode.getState();
+	}
+
+	/* IRedstoneControl */
+	@Override
+	public final void setPowered(boolean powered) {
+
+		boolean wasPowered = isPowered;
+		isPowered = powered;
+		if (wasPowered != isPowered) {
+			if (ServerHelper.isClientWorld(worldObj)) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			} else {
+				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			}
+		}
+	}
+
+	@Override
+	public final boolean isPowered() {
+
+		return isPowered;
+	}
+
+	@Override
+	public final void setControl(ControlMode control) {
+
+		rsMode = control;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+			boolean powered = isPowered;
+			isPowered = !powered;
+			setPowered(powered);
+		}
+	}
+
+	@Override
+	public final ControlMode getControl() {
+
+		return rsMode;
 	}
 
 }

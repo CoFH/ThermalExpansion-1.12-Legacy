@@ -2,6 +2,7 @@ package cofh.thermalexpansion.gui.client.plate;
 
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
+import cofh.core.gui.element.TabRedstone;
 import cofh.core.gui.element.TabSecurity;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -73,6 +74,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
+		addTab(new TabRedstone(this, myTile));
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}

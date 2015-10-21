@@ -1,11 +1,15 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTranslocate;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.network.PacketTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -14,7 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TilePlateTranslocate extends TilePlateBase {
+public class TilePlateTranslocate extends TilePlateBase implements IRedstoneControl {
 
 	public static void initialize() {
 
@@ -31,8 +35,16 @@ public class TilePlateTranslocate extends TilePlateBase {
 
 	public byte distance = 16;
 
+	protected boolean isPowered;
+
+	protected ControlMode rsMode = ControlMode.DISABLED;
+
 	@Override
 	public void onEntityCollidedWithBlock(Entity entity) {
+
+		if (!redstoneControlOrDisable()) {
+			return;
+		}
 
 		int[] v = getVector(distance);
 		double x = xCoord + v[0] + .5;
@@ -168,6 +180,58 @@ public class TilePlateTranslocate extends TilePlateBase {
 		} else {
 			payload.getByte();
 		}
+	}
+
+	@Override
+	public void onNeighborBlockChange() {
+
+		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+	}
+
+	public final boolean redstoneControlOrDisable() {
+
+		return rsMode.isDisabled() || isPowered == rsMode.getState();
+	}
+
+	/* IRedstoneControl */
+	@Override
+	public final void setPowered(boolean powered) {
+
+		boolean wasPowered = isPowered;
+		isPowered = powered;
+		if (wasPowered != isPowered) {
+			if (ServerHelper.isClientWorld(worldObj)) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			} else {
+				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			}
+		}
+	}
+
+	@Override
+	public final boolean isPowered() {
+
+		return isPowered;
+	}
+
+	@Override
+	public final void setControl(ControlMode control) {
+
+		rsMode = control;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+			boolean powered = isPowered;
+			isPowered = !powered;
+			setPowered(powered);
+		}
+	}
+
+	@Override
+	public final ControlMode getControl() {
+
+		return rsMode;
 	}
 
 }
