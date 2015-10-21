@@ -1,12 +1,16 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateExcursion;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.network.PacketTEBase;
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.particle.EntityFX;
@@ -18,7 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TilePlateExcursion extends TilePlatePoweredBase {
+public class TilePlateExcursion extends TilePlatePoweredBase implements IRedstoneControl {
 
 	public static void initialize() {
 
@@ -36,6 +40,10 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 	public byte distance = 24;
 	public byte realDist = -1;
 
+	protected boolean isPowered;
+
+	protected ControlMode rsMode = ControlMode.DISABLED;
+
 	public TilePlateExcursion() {
 
 		super(BlockPlate.Types.EXCURSION, 200000);
@@ -48,7 +56,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 			return;
 		}
 
-		int meta = alignment;
+		int meta = alignment ^ (redstoneControlOrDisable() ? 0 : 1);
 		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
 		BlockAirForce.repositionEntity(worldObj, xCoord, yCoord, zCoord, ent, dir, .1);
 	}
@@ -93,6 +101,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 		byte i;
 		int e = Math.min(storage.getEnergyStored() - 1, distance);
+		int forceDir = alignment ^ (redstoneControlOrDisable() ? 0 : 1);
 		for (i = 0; i <= e; ++i) {
 			int[] v = getVector(i);
 			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
@@ -114,8 +123,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 				if (!worldObj.isAirBlock(x, y, z)) {
 					break;
 				}
-				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, alignment, 2 | 4);
-			} else if (worldObj.getBlockMetadata(x, y, z) != alignment) {
+				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, forceDir, 2 | 4);
+			} else if (worldObj.getBlockMetadata(x, y, z) != forceDir) {
 				break;
 			}
 		}
@@ -158,6 +167,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		payload.addByte(distance);
 		payload.addByte(realDist);
 
+		payload.addBool(isPowered);
+		payload.addByte(rsMode.ordinal());
+
 		return payload;
 	}
 
@@ -169,6 +181,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 		if (!isServer) {
 			distance = payload.getByte();
 			realDist = payload.getByte();
+
+			isPowered = payload.getBool();
+			rsMode = ControlMode.values()[payload.getByte()];
 		}
 
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
@@ -221,6 +236,10 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 		distance = nbt.getByte("Dist");
 		realDist = nbt.getByte("rDist");
+		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
+
+		isPowered = rsTag.getBoolean("Power");
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
 	@Override
@@ -230,6 +249,11 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 		nbt.setByte("Dist", distance);
 		nbt.setByte("rDist", realDist);
+		NBTTagCompound rsTag = new NBTTagCompound();
+
+		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		nbt.setTag("RS", rsTag);
 	}
 
 	/* GUI METHODS */
@@ -244,4 +268,58 @@ public class TilePlateExcursion extends TilePlatePoweredBase {
 
 		return new ContainerTEBase(inventory, this, false, false);
 	}
+
+	@Override
+	public void onNeighborBlockChange() {
+
+		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+	}
+
+	public final boolean redstoneControlOrDisable() {
+
+		return rsMode.isDisabled() || isPowered == rsMode.getState();
+	}
+
+	/* IRedstoneControl */
+	@Override
+	public final void setPowered(boolean powered) {
+
+		boolean wasPowered = isPowered;
+		isPowered = powered;
+		if (wasPowered != isPowered) {
+			if (ServerHelper.isClientWorld(worldObj)) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			} else {
+				removeBeam();
+				updateBeam();
+			}
+		}
+	}
+
+	@Override
+	public final boolean isPowered() {
+
+		return isPowered;
+	}
+
+	@Override
+	public final void setControl(ControlMode control) {
+
+		rsMode = control;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+			boolean powered = isPowered;
+			isPowered = !powered;
+			setPowered(powered);
+		}
+	}
+
+	@Override
+	public final ControlMode getControl() {
+
+		return rsMode;
+	}
+
 }
