@@ -53,6 +53,16 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 				        this.particleBlue = blue = p_70538_3_;
 				    }
 
+				    @Override
+				    public void setEating(boolean a) {
+
+						if (this.hasFadeColour) {
+							this.particleRed = this.fadeColourRed;
+							this.particleGreen = this.fadeColourGreen;
+							this.particleBlue = this.fadeColourBlue;
+						}
+				    }
+
 					@Override
 					public void onUpdate() {
 
@@ -90,6 +100,9 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 				};
 				spark.setColour(0xFF7700);
 				spark.setFadeColour(0xFFBB88);
+				if (!redstoneControlOrDisable()) {
+					spark.setEating(true);
+				}
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}
 		}
