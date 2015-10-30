@@ -318,13 +318,18 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			internalSet.set(Boolean.TRUE);
 			if (payload.getBool()) {
 				if (payload.getBool()) {
-					int freq = payload.getInt();
+					int freq = payload.getByte();
 					String channel = payload.getString();
 					String name = payload.getString();
+					int oldFreq = frequency;
+					if (freq == 0) {
+						freq = TeleportChannelRegistry.getRegistry().findFreeFrequency(channel);
+					}
 					if (setFrequency(freq)) {
+						PacketHandler.sendTo(getPacket(), thePlayer);
 						if (freq == -1) {
-							TeleportChannelRegistry.getChannels(true).removeFrequency(channel, freq);
-							TeleportChannelRegistry.removeChannelFrequency(thePlayer, channel, freq);
+							TeleportChannelRegistry.getChannels(true).removeFrequency(channel, oldFreq);
+							TeleportChannelRegistry.removeChannelFrequency(thePlayer, channel, oldFreq);
 						} else {
 							TeleportChannelRegistry.getChannels(true).setFrequency(channel, freq, name);
 							TeleportChannelRegistry.updateChannelFrequency(thePlayer, channel, freq, name);

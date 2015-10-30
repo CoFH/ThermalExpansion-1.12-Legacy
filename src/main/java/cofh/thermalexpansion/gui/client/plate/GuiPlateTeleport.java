@@ -11,7 +11,6 @@ import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementListBox;
 import cofh.lib.gui.element.ElementSlider;
 import cofh.lib.gui.element.ElementTextField;
-import cofh.lib.gui.element.ElementTextFieldLimited;
 import cofh.lib.gui.element.listbox.IListBoxElement;
 import cofh.lib.gui.element.listbox.SliderVertical;
 import cofh.lib.transport.IEnderChannelRegistry;
@@ -33,7 +32,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiPlateTeleport extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Plate.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Teleport.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTeleporter myTile;
@@ -43,7 +42,6 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 	ElementListBox frequencies;
 	ElementSlider slider;
-	ElementTextField freq;
 	ElementTextField plate_name;
 	ElementTextField title;
 
@@ -81,33 +79,28 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 
-		int tempFreq = myTile.getFrequency();
-		addElement(freq = new ElementTextFieldLimited(this, 102, 34, 26, 11, (short) 3).setFilter("0123456789", false).setBackgroundColor(0, 0, 0)
-				.setText(tempFreq >= 0 ? String.valueOf(tempFreq) : ""));
-		addElement(title = new ElementTextField(this, 28, 18, 108, 11, (short) 15).setBackgroundColor(0, 0, 0));
+		addElement(title = new ElementTextField(this, 28, 27, 100, 11, (short) 20).setBackgroundColor(0, 0, 0));
 
-		addElement(plate_name = new ElementTextField(this, 28, 57, 108, 11, (short) 15).setBackgroundColor(0, 0, 0).setFocusable(false));
+		addElement(plate_name = new ElementTextField(this, 28, 57, 108, 11, (short) 25).setBackgroundColor(0, 0, 0).setFocusable(false));
 
 		addElement(assign = new ElementButton(this, 131, 22, 20, 20, 176, 0, 176, 20, 176, 40, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				int tempFreq = Integer.parseInt(freq.getText());
-				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).addString(myTile.getChannelString())
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addByte(0).addString(myTile.getChannelString())
 						.addString(GuiPlateTeleport.this.title.getText()));
 			}
-		});
+		}.setToolTip("info.cofh.setDestination"));
 		addElement(clear = new ElementButton(this, 151, 22, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
 
 			@Override
 			public void onClick() {
 
-				int tempFreq = -1;
-				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addInt(tempFreq).addString(myTile.getChannelString())
+				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addByte(-1).addString(myTile.getChannelString())
 						.addString(""));
 			}
-		});
+		}.setToolTip("info.cofh.disable"));
 
 		addElement(add = new ElementButton(this, 139, 54, 16, 16, 176, 60, 176, 76, 176, 92, TEX_PATH) {
 
@@ -117,7 +110,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				int tempFreq = ((Frequency) frequencies.getSelectedElement().getValue()).freq;
 				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(false).addInt(tempFreq));
 			}
-		});
+		}.setToolTip("info.cofh.setDestination"));
 		addElement(remove = new ElementButton(this, 155, 54, 16, 16, 192, 60, 192, 76, 192, 92, TEX_PATH) {
 
 			@Override
@@ -126,9 +119,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				int tempFreq = -1;
 				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(false).addInt(tempFreq));
 			}
-		});
+		}.setToolTip("info.cofh.removeDestination"));
 
-		addElement(frequencies = new ElementListBox(this, 6, 73, 130, 87) {
+		addElement(frequencies = new ElementListBox(this, 7, 73, 130, 87) {
 
 			@Override
 			protected void onElementClicked(IListBoxElement element) {
@@ -147,7 +140,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			protected int drawElement(int elementIndex, int x, int y) {
 
 				IListBoxElement element = _elements.get(elementIndex);
-				if (((Frequency) element.getValue()).freq == myTile.getFrequency()) {
+				if (((Frequency) element.getValue()).freq == myTile.getDestination()) {
 					element.draw(this, x, y, 1, selectedTextColor);
 				} else if (elementIndex == _selectedIndex) {
 					element.draw(this, x, y, selectedLineColor, selectedTextColor);
@@ -164,11 +157,15 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		updated = data.updated();
 		for (Frequency freq : data.getFrequencyList(null)) {
 			frequencies.add(new ListBoxElementEnderText(freq));
+			boolean isSelf = freq.freq == myTile.getFrequency();
+			if (isSelf) {
+				title.setText(freq.name);
+			}
 			if (freq.freq == myTile.getDestination()) {
 				frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-				this.plate_name.setText(freq.name);
-			} else if (freq.freq == myTile.getFrequency()) {
-				title.setText(freq.name);
+				plate_name.setText(freq.name);
+			} else if (isSelf) {
+				frequencies.removeAt(frequencies.getElementCount() - 1);
 			}
 		}
 		addElement(slider = new SliderVertical(this, 140, 73, 14, 87, frequencies.getLastScrollPosition()) {
@@ -214,20 +211,24 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				frequencies.add(new ListBoxElementEnderText(freq));
 				if (freq.freq == sel) {
 					frequencies.setSelectedIndex(frequencies.getElementCount() - 1);
-					this.plate_name.setText(freq.name);
-				} else if (freq.freq == myTile.getFrequency()) {
+					plate_name.setText(freq.name);
+				}
+				boolean isSelf = freq.freq == myTile.getFrequency();
+				if (isSelf) {
 					title.setText(freq.name);
 				}
 				if (freq.freq == myTile.getDestination()) {
 					plate_name.setText(freq.name);
+				} else if (isSelf) {
+					frequencies.removeAt(frequencies.getElementCount() - 1);
 				}
 			}
 			slider.setLimits(0, frequencies.getLastScrollPosition());
 			slider.setValue(pos);
 		}
 
-		boolean hasFreq = freq.getContentLength() > 0, hasName = title.getContentLength() > 0;
-		assign.setEnabled(hasFreq && hasName && myTile.getFrequency() == -1);
+		boolean hasName = title.getContentLength() > 0;
+		assign.setEnabled(hasName && myTile.getFrequency() == -1);
 		clear.setEnabled(myTile.getFrequency() != -1);
 		IListBoxElement ele = frequencies.getSelectedElement();
 		add.setEnabled(myTile.getDestination() == -1 && plate_name.getContentLength() > 0 && ele != null
