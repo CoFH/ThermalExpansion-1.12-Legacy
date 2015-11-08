@@ -53,16 +53,16 @@ public class BlockAirForce extends BlockAirBase {
 			if (isZero(ent.motionX) && isZero(ent.motionZ)) {
 				switch (dir.ordinal() >> 1) {
 				case 0:
-					xO += (x - (ent.prevPosX - .5)) / 20;
-					zO += (z - (ent.prevPosZ - .5)) / 20;
+					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, ForgeDirection.EAST);
+					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, ForgeDirection.SOUTH);
 					break;
 				case 1:
-					xO += (x - (ent.prevPosX - .5)) / 20;
-					yO += (y - (ent.prevPosY - ent.yOffset - .1)) / 20;
+					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, ForgeDirection.EAST);
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.yOffset - .1)) / 20, ForgeDirection.UP);
 					break;
 				case 2:
-					yO += (y - (ent.prevPosY - ent.yOffset - .1)) / 20;
-					zO += (z - (ent.prevPosZ - .5)) / 20;
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.yOffset - .1)) / 20, ForgeDirection.UP);
+					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, ForgeDirection.SOUTH);
 					break;
 				}
 			} else if (false) {
@@ -91,6 +91,15 @@ public class BlockAirForce extends BlockAirBase {
 			ent.motionY = 0;
 			ent.onGround = false;
 		}
+	}
+
+	private static double clampOffset(World world, Entity ent, double offset, ForgeDirection axis) {
+
+		double xO = axis.offsetX * offset, yO = axis.offsetY * offset, zO = axis.offsetZ * offset;
+		if (!world.func_147461_a(ent.boundingBox).isEmpty() || !world.func_147461_a(ent.boundingBox.getOffsetBoundingBox(xO, yO, zO)).isEmpty()) {
+			return 0;
+		}
+		return offset;
 	}
 
 	private static boolean isZero(double x) {

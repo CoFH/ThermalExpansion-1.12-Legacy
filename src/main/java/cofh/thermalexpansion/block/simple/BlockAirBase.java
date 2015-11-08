@@ -53,6 +53,12 @@ public class BlockAirBase extends Block {
 	}
 
 	@Override
+	public boolean isNormalCube() {
+
+		return false;
+	}
+
+	@Override
 	public boolean isReplaceable(IBlockAccess world, int x, int y, int z) {
 
 		return true;
