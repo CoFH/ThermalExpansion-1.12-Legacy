@@ -15,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class ItemChiller extends ItemEnergyContainerBase {
 
@@ -54,7 +55,8 @@ public class ItemChiller extends ItemEnergyContainerBase {
 						success = world.setBlock(pos.blockX, pos.blockY, pos.blockZ, Blocks.ice, 0, 3);
 					} else if (world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && (block == Blocks.lava || block == Blocks.flowing_lava)) {
 						success = world.setBlock(pos.blockX, pos.blockY, pos.blockZ, Blocks.obsidian, 0, 3);
-					} else if (Blocks.snow_layer.canPlaceBlockAt(world, coords[0], coords[1], coords[2])) {
+					} else if (block2 != Blocks.snow_layer && block.isSideSolid(world, pos.blockX, pos.blockY, pos.blockZ, ForgeDirection.UP)
+							&& (block2.isAir(world, coords[0], coords[1], coords[2]) || block2.getMaterial().isReplaceable())) {
 						success = world.setBlock(coords[0], coords[1], coords[2], Blocks.snow_layer, 0, 3);
 					}
 				}
@@ -71,5 +73,4 @@ public class ItemChiller extends ItemEnergyContainerBase {
 		}
 		return stack;
 	}
-
 }
