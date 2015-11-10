@@ -48,9 +48,6 @@ public class TEProps {
 	public static String textureSelection = TEXTURE_DEFAULT;
 	public static boolean useAlternateStarfieldShader = false;
 
-	/* Holidays */
-	public static boolean holidayChristmas = true;
-
 	/* Render Ids */
 	public static int renderIdCell = -1;
 	public static int renderIdDynamo = -1;

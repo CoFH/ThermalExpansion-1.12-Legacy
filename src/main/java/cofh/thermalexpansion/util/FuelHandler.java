@@ -20,15 +20,6 @@ public class FuelHandler {
 
 	static {
 		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/fuels.cfg"), true));
-
-		configFuels.renameCategory("fuels.steam", "Fuels.Steam");
-		configFuels.renameCategory("fuels.magmatic", "Fuels.Magmatic");
-		configFuels.renameCategory("fuels.compression", "Fuels.Compression");
-		configFuels.renameCategory("fuels.reactant", "Fuels.Reactant");
-		configFuels.renameCategory("fuels.enervation", "Fuels.Enervation");
-		configFuels.renameCategory("coolants", "Coolants");
-
-		configFuels.removeCategory("fuels");
 	}
 
 	private FuelHandler() {

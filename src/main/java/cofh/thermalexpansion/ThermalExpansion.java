@@ -16,6 +16,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
+import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.Proxy;
@@ -315,7 +316,7 @@ public class ThermalExpansion extends BaseMod {
 		String category;
 		String comment;
 
-		/* General */
+		/* GENERAL */
 		category = "General";
 		comment = "If enabled, ingots are used instead of gears in many default recipes.";
 		String iPrefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
@@ -328,7 +329,7 @@ public class ThermalExpansion extends BaseMod {
 			}
 		}
 
-		/* Graphics */
+		/* GRAPHICS */
 		if (CoFHProps.enableColorBlindTextures) {
 			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
 			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
@@ -338,12 +339,7 @@ public class ThermalExpansion extends BaseMod {
 		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
 				"Set to TRUE for Tesseracts to use an alternate starfield shader.");
 
-		/* Holidays */
-		category = "Holiday";
-		comment = "Set this to true to disable Christmas cheer. Scrooge. :(";
-		TEProps.holidayChristmas = !config.get(category, "HoHoNo", false, comment);
-
-		/* Interface */
+		/* INTERFACE */
 		category = "Interface.CreativeTab";
 		boolean blockTab = false;
 		boolean itemTab = false;
@@ -367,11 +363,11 @@ public class ThermalExpansion extends BaseMod {
 		}
 		tabBlocks = blockTab ? tabCommon : new TECreativeTab("Blocks") {
 
-			// @Override
-			// protected ItemStack getStack() {
-			//
-			// return BlockFrame.frameCellReinforcedFull;
-			// }
+			@Override
+			protected ItemStack getStack() {
+
+				return BlockFrame.frameCellReinforcedFull;
+			}
 		};
 		tabItems = itemTab ? tabCommon : new TECreativeTab("Items") {
 
@@ -397,14 +393,7 @@ public class ThermalExpansion extends BaseMod {
 	void cleanConfig(boolean preInit) {
 
 		if (preInit) {
-			// BEGIN TEMP CODE
-			// TODO: Remove after 4.1
 
-			config.renameCategory("security", "Security");
-			config.removeCategory("world");
-			config.removeCategory("World");
-
-			// END TEMP CODE
 		}
 		String prefix = "config.thermalexpansion.";
 		String[] categoryNames = config.getCategoryNames().toArray(new String[config.getCategoryNames().size()]);

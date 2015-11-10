@@ -270,9 +270,6 @@ public class TEItems {
 
 		category = category2 + "BattleWrench";
 		enableBattleWrench = ThermalExpansion.config.get(category, "BattleWrench", true);
-
-		// TODO: Remove someday.
-		ThermalExpansion.config.removeCategory("Equipment");
 	}
 
 	public static ItemWrench itemWrench;

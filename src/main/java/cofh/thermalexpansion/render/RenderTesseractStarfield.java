@@ -185,7 +185,6 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer {
 			renderTileEntityAt((TileTesseract) tile, x, y, z, 1 - f);
 			return;
 		}
-
 		GL11.glPushMatrix();
 
 		CCRenderState.changeTexture(ShaderStarfield.starsTexture);
