@@ -169,6 +169,15 @@ public class FurnaceManager {
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
 				addRecipe(energy * 10 / 16, key, output, false);
 			} else {
+				if (ItemHelper.getItemDamage(key) == OreDictionary.WILDCARD_VALUE) {
+					ItemStack testKey = ItemHelper.cloneStack(key);
+					testKey.setItemDamage(0);
+
+					if (ItemHelper.hasOreName(testKey) && ComparableItemStackFurnace.safeOreType(ItemHelper.getOreName(testKey))) {
+						addRecipe(energy, testKey, output, false);
+						continue;
+					}
+				}
 				addRecipe(energy, key, output, false);
 			}
 		}

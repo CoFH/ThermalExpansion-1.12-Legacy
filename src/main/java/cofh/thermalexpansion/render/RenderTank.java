@@ -114,7 +114,7 @@ public class RenderTank implements ISimpleBlockRenderingHandler, IItemRenderer {
 		if (fluid.isGaseous(stack)) {
 			CCRenderState.alphaOverride = 32 + 192 * stack.amount / TileTank.CAPACITY[metadata];
 		} else {
-			level = Math.min(TileTank.RENDER_LEVELS - 1, stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]);
+			level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]);
 		}
 		modelFluid[level].render(x, y, z, RenderUtils.getIconTransformation(fluidTex));
 	}

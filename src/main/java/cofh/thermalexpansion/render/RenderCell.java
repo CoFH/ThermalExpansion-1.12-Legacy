@@ -99,7 +99,7 @@ public class RenderCell implements ISimpleBlockRenderingHandler, IItemRenderer {
 
 		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
 
-		return containerItem.getEnergyStored(container) * scale / containerItem.getMaxEnergyStored(container);
+		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
 	}
 
 	/* ISimpleBlockRenderingHandler */
