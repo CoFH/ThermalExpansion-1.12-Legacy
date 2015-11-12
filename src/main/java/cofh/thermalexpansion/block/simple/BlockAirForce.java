@@ -1,5 +1,8 @@
 package cofh.thermalexpansion.block.simple;
 
+import cofh.lib.util.helpers.MathHelper;
+import cofh.thermalexpansion.block.TEBlocks;
+
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -77,6 +80,11 @@ public class BlockAirForce extends BlockAirBase {
 			} else {
 				xO += ent.motionX;
 				zO += ent.motionZ;
+			}
+			if (dir == ForgeDirection.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.yOffset  + yO) != y) {
+				if (world.getBlock(x, y + 1, z) != TEBlocks.blockAirForce) {
+					yO = 0;
+				}
 			}
 			if (ent instanceof EntityLivingBase) {
 				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);

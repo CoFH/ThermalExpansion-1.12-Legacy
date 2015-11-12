@@ -30,7 +30,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	}
 
 	public static final byte MIN_DISTANCE = 0;
-	public static final byte MAX_DISTANCE = 26;
+	public static final byte MAX_DISTANCE = 25;
 
 	public static boolean canFunnelReplaceBlock(Block block, World world, int x, int y, int z) {
 
