@@ -16,7 +16,6 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
-import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.Proxy;
@@ -363,11 +362,11 @@ public class ThermalExpansion extends BaseMod {
 		}
 		tabBlocks = blockTab ? tabCommon : new TECreativeTab("Blocks") {
 
-			@Override
-			protected ItemStack getStack() {
-
-				return BlockFrame.frameCellReinforcedFull;
-			}
+			//	@Override
+			//	protected ItemStack getStack() {
+			//
+			//		return BlockFrame.frameCellReinforcedFull;
+			//	}
 		};
 		tabItems = itemTab ? tabCommon : new TECreativeTab("Items") {
 

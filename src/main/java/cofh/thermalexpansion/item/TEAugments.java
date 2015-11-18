@@ -74,7 +74,7 @@ public class TEAugments {
 
 		/* GENERAL */
 		GameRegistry.addRecipe(ShapedRecipe(generalAutoOutput, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', TEItems.pneumaticServo }));
-		GameRegistry.addRecipe(ShapedRecipe(generalAutoInput, new Object[] { "I I", "IXI", " I ", 'I', "ingotIron", 'X', TEItems.pneumaticServo }));
+		GameRegistry.addRecipe(ShapedRecipe(generalAutoInput, new Object[] { " I ", "IXI", " I ", 'I', "nuggetIron", 'X', TEItems.pneumaticServo }));
 		GameRegistry.addRecipe(ShapedRecipe(generalReconfigSides, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', "ingotGold" }));
 		GameRegistry.addRecipe(ShapedRecipe(generalRedstoneControl, new Object[] { " I ", "IXI", " I ", 'I', "nuggetTin", 'X', "dustRedstone" }));
 
