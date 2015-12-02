@@ -37,7 +37,7 @@ public class GuiPlateCharge extends GuiBaseAdv {
 		name = myTile.getInventoryName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
-		this.height = 100;
+		this.ySize = 100;
 
 		generateInfo("tab.thermalexpansion.plate.charge", 2);
 	}
