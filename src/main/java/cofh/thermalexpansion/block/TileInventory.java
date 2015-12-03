@@ -123,6 +123,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 				IInventory inv = (IInventory) adjInv;
 				for (int i = 0; i < inv.getSizeInventory() && amount > 0; i++) {
 					ItemStack queryStack = inv.getStackInSlot(i);
+					if (queryStack == null) {
+						continue;
+					}
 					if (stack == null) {
 						if (isItemValidForSlot(slot, queryStack)) {
 							int toExtract = Math.min(amount, queryStack.stackSize);
