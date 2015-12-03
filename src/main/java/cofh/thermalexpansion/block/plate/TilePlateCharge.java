@@ -29,9 +29,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 	protected long worldTime;
 	protected int chargeLeft;
 
-	public boolean chargeOwner = true;
-	public boolean chargeFriends = true;
-	public boolean chargePublic = true;
 	public boolean chargeItems = true;
 
 	public TilePlateCharge() {
@@ -51,7 +48,7 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 			comp = EntityPlayer.class;
 		}
 
-		if (!comp.isInstance(entity) && !(entity instanceof EntityItem)) {
+		if (!comp.isInstance(entity) && !(chargeItems && entity instanceof EntityItem)) {
 			return;
 		}
 
@@ -59,9 +56,11 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 			worldTime = entity.worldObj.getTotalWorldTime();
 			chargeLeft = Math.min(CHARGE_RATE, storage.getEnergyStored());
 		}
+
 		if (chargeLeft <= 0) {
 			return;
 		}
+
 		l: if (!getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
 				String name = ((EntityItem) entity).func_145800_j();
@@ -80,6 +79,7 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 			}
 			return;
 		}
+
 		if (entity instanceof EntityItem) {
 			ItemStack item = ((EntityItem) entity).getEntityItem();
 			if (chargeItem(item)) {
@@ -119,9 +119,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		super.readFromNBT(nbt);
 
-		chargeOwner = nbt.getBoolean("chargeOwner");
-		chargeFriends = nbt.getBoolean("chargeFriends");
-		chargePublic = nbt.getBoolean("chargePublic");
 		chargeItems = nbt.getBoolean("chargeItems");
 	}
 
@@ -130,9 +127,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		super.writeToNBT(nbt);
 
-		nbt.setBoolean("chargeOwner", chargeOwner);
-		nbt.setBoolean("chargeFriends", chargeFriends);
-		nbt.setBoolean("chargePublic", chargePublic);
 		nbt.setBoolean("chargeItems", chargeItems);
 	}
 
@@ -142,9 +136,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		PacketCoFHBase payload = super.getPacket();
 
-		payload.addBool(chargeOwner);
-		payload.addBool(chargeFriends);
-		payload.addBool(chargePublic);
 		payload.addBool(chargeItems);
 
 		return payload;
@@ -155,9 +146,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addBool(chargeOwner);
-		payload.addBool(chargeFriends);
-		payload.addBool(chargePublic);
 		payload.addBool(chargeItems);
 
 		return payload;
@@ -168,9 +156,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addBool(chargeOwner);
-		payload.addBool(chargeFriends);
-		payload.addBool(chargePublic);
 		payload.addBool(chargeItems);
 
 		return payload;
@@ -181,9 +166,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		super.handleGuiPacket(payload);
 
-		chargeOwner = payload.getBool();
-		chargeFriends = payload.getBool();
-		chargePublic = payload.getBool();
 		chargeItems = payload.getBool();
 	}
 
@@ -192,9 +174,6 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		super.handleModePacket(payload);
 
-		chargeOwner = payload.getBool();
-		chargeFriends = payload.getBool();
-		chargePublic = payload.getBool();
 		chargeItems = payload.getBool();
 
 		sendDescPacket();
@@ -207,14 +186,8 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 		super.handleTilePacket(payload, isServer);
 
 		if (!isServer) {
-			chargeOwner = payload.getBool();
-			chargeFriends = payload.getBool();
-			chargePublic = payload.getBool();
 			chargeItems = payload.getBool();
 		} else {
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
 			payload.getBool();
 		}
 	}

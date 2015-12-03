@@ -24,9 +24,6 @@ public class GuiPlateCharge extends GuiBaseAdv {
 	TilePlateCharge myTile;
 	UUID playerName;
 
-	ElementButton settingOwner;
-	ElementButton settingFriends;
-	ElementButton settingPublic;
 	ElementButton settingItems;
 
 	public GuiPlateCharge(InventoryPlayer inventory, TileEntity theTile) {
@@ -53,14 +50,8 @@ public class GuiPlateCharge extends GuiBaseAdv {
 		}
 		addElement(new ElementEnergyStored(this, 16, 25, myTile.getEnergyStorage()));
 
-		settingOwner = new ElementButton(this, 48, 36, "Owner", 176, 42, 176, 62, 176, 82, 20, 20, TEX_PATH);
-		settingFriends = new ElementButton(this, 72, 36, "Friends", 196, 42, 196, 62, 196, 82, 20, 20, TEX_PATH);
-		settingPublic = new ElementButton(this, 96, 36, "Public", 216, 42, 216, 62, 216, 82, 20, 20, TEX_PATH);
-		settingItems = new ElementButton(this, 120, 36, "Items", 236, 42, 236, 62, 236, 82, 20, 20, TEX_PATH);
+		settingItems = new ElementButton(this, 120, 36, "Items", 176, 42, 176, 62, 176, 82, 20, 20, TEX_PATH);
 
-		addElement(settingOwner);
-		addElement(settingFriends);
-		addElement(settingPublic);
 		addElement(settingItems);
 	}
 
@@ -75,21 +66,20 @@ public class GuiPlateCharge extends GuiBaseAdv {
 	}
 
 	@Override
+	protected void updateElementInformation() {
+
+		int x = !myTile.chargeItems ? 196 : 176;
+		settingItems.setDisabledX(x);
+		settingItems.setHoverX(x);
+		settingItems.setSheetX(x);
+
+		settingItems.setToolTip("info.thermalexpansion.plate.charge." + (myTile.chargeItems ? "anything" : "playersOnly"));
+	}
+
+	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		if (buttonName.equalsIgnoreCase("Owner")) {
-			myTile.chargeOwner = !myTile.chargeOwner;
-
-			playSound("random.click", 1.0F, myTile.chargeOwner ? 0.8F : 0.6F);
-		} else if (buttonName.equalsIgnoreCase("Friends")) {
-			myTile.chargeFriends = !myTile.chargeFriends;
-
-			playSound("random.click", 1.0F, myTile.chargeFriends ? 0.8F : 0.6F);
-		} else if (buttonName.equalsIgnoreCase("Public")) {
-			myTile.chargePublic = !myTile.chargePublic;
-
-			playSound("random.click", 1.0F, myTile.chargePublic ? 0.8F : 0.6F);
-		} else if (buttonName.equalsIgnoreCase("Items")) {
+		if (buttonName.equalsIgnoreCase("Items")) {
 			myTile.chargeItems = !myTile.chargeItems;
 
 			playSound("random.click", 1.0F, myTile.chargeItems ? 0.8F : 0.6F);
