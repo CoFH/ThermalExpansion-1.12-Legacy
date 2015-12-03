@@ -4,10 +4,13 @@ import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
+import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.simple.BlockRockwool;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class RecipeHandlerFurnace extends RecipeHandlerBase {
@@ -77,6 +80,14 @@ public class RecipeHandlerFurnace extends RecipeHandlerBase {
 		for (FurnaceManager.RecipeFurnace recipe : recipes) {
 			if (NEIServerUtils.areStacksSameType(recipe.getOutput(), result)) {
 				arecipes.add(new NEIRecipeFurnace(recipe));
+			}
+		}
+		if (result.getItem() == Item.getItemFromBlock(TEBlocks.blockRockwool) && result.getItemDamage() != BlockRockwool.DEFAULT_META) {
+			result = new ItemStack(TEBlocks.blockRockwool, 1, BlockRockwool.DEFAULT_META);
+			for (FurnaceManager.RecipeFurnace recipe : recipes) {
+				if (NEIServerUtils.areStacksSameType(recipe.getOutput(), result)) {
+					arecipes.add(new NEIRecipeFurnace(recipe));
+				}
 			}
 		}
 	}
