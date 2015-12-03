@@ -91,7 +91,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 				PacketHandler.sendToServer(PacketTileInfo.newPacket(myTile).addBool(true).addBool(true).addByte(0).addString(myTile.getChannelString())
 						.addString(GuiPlateTeleport.this.title.getText()));
 			}
-		}.setToolTip("info.cofh.setDestination"));
+		}.setToolTip("info.cofh.enable"));
 		addElement(clear = new ElementButton(this, 151, 22, 20, 20, 196, 0, 196, 20, 196, 40, TEX_PATH) {
 
 			@Override
