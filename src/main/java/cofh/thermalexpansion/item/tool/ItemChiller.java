@@ -49,7 +49,6 @@ public class ItemChiller extends ItemEnergyContainerBase {
 					success = true;
 				} else {
 					Block block = world.getBlock(pos.blockX, pos.blockY, pos.blockZ);
-					Block block2 = world.getBlock(coords[0], coords[1], coords[2]);
 
 					if (world.getBlockMetadata(pos.blockX, pos.blockY, pos.blockZ) == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
 						success = world.setBlock(pos.blockX, pos.blockY, pos.blockZ, Blocks.ice, 0, 3);
