@@ -29,7 +29,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileWorkbench.class, "thermalexpansion.Workbench");
+		GameRegistry.registerTileEntity(TileWorkbench.class, "thermalexpansion.NewWorkbench");
 		configure();
 	}
 
