@@ -208,7 +208,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 			}
 			for (int j = 0; j < 5; j++) {
 				ItemStack equipmentInSlot = entity.getEquipmentInSlot(j);
-				if (equipmentInSlot != null && dropChances[j] > 0) {
+				if (equipmentInSlot != null && dropChances[j] >= 1) {
 					stacks.add(equipmentInSlot);
 					entity.setCurrentItemOrArmor(j, null);
 				}
