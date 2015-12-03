@@ -5,6 +5,7 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.ICrucibleRecipe;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cofh.thermalfoundation.item.TFItems;
 
@@ -155,7 +156,7 @@ public class CrucibleManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCrucible {
+	public static class RecipeCrucible implements ICrucibleRecipe {
 
 		final ItemStack input;
 		final FluidStack output;

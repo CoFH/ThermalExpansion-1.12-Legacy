@@ -28,52 +28,11 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
 
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
-
 	FluidTankAdv fuelTank = new FluidTankAdv(MAX_FLUID);
 	FluidTankAdv coolantTank = new FluidTankAdv(MAX_FLUID);
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int coolantRF;
-
-	public static int getCoolantEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : coolants.get(stack.getFluid());
-	}
-
-	public static int getFuelEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static boolean isValidCoolant(FluidStack stack) {
-
-		return stack == null ? false : coolants.containsKey(stack.getFluid());
-	}
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean registerCoolant(Fluid fluid, int cooling) {
-
-		if (fluid == null || cooling < 10000 || cooling > 200000000) {
-			return false;
-		}
-		coolants.put(fluid, cooling / 20);
-		return true;
-	}
-
-	public static boolean registerFuel(Fluid fluid, int energy) {
-
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(fluid, energy / 20);
-		return true;
-	}
 
 	@Override
 	public int getType() {
@@ -257,6 +216,60 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { fuelTank.getInfo(), coolantTank.getInfo() };
+	}
+
+	/* FUEL MANAGER */
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
+
+	public static boolean isValidFuel(FluidStack stack) {
+
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
+	}
+
+	public static boolean isValidCoolant(FluidStack stack) {
+
+		return stack == null ? false : coolants.containsKey(stack.getFluid());
+	}
+
+	public static boolean addFuel(Fluid fluid, int energy) {
+
+		if (fluid == null || energy < 10000 || energy > 200000000) {
+			return false;
+		}
+		fuels.put(fluid, energy / 20);
+		return true;
+	}
+
+	public static boolean addCoolant(Fluid fluid, int cooling) {
+
+		if (fluid == null || cooling < 10000 || cooling > 200000000) {
+			return false;
+		}
+		coolants.put(fluid, cooling / 20);
+		return true;
+	}
+
+	public static boolean removeFuel(Fluid fluid) {
+
+		fuels.remove(fluid);
+		return true;
+	}
+
+	public static boolean removeCoolant(Fluid fluid) {
+
+		coolants.remove(fluid);
+		return true;
+	}
+
+	public static int getFuelEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid());
+	}
+
+	public static int getCoolantEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : coolants.get(stack.getFluid());
 	}
 
 }

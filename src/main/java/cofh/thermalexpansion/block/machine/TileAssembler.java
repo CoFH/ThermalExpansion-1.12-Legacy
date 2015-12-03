@@ -12,9 +12,8 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
 import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
-import cofh.thermalexpansion.util.SchematicHelper;
+import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;

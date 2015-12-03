@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util;
+package cofh.thermalexpansion.util.helpers;
 
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.StringHelper;

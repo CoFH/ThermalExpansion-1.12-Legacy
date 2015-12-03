@@ -5,9 +5,8 @@ import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cpw.mods.fml.relauncher.Side;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.IIcon;

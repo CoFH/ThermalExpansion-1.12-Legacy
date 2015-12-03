@@ -28,29 +28,8 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-
 	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean registerFuel(Fluid fluid, int energy) {
-
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(fluid, energy / 20);
-		return true;
-	}
-
-	public static int getFuelEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
 
 	@Override
 	public int getType() {
@@ -210,6 +189,34 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
+	}
+
+	/* FUEL MANAGER */
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+
+	public static boolean isValidFuel(FluidStack stack) {
+
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
+	}
+
+	public static boolean addFuel(Fluid fluid, int energy) {
+
+		if (fluid == null || energy < 10000 || energy > 200000000) {
+			return false;
+		}
+		fuels.put(fluid, energy / 20);
+		return true;
+	}
+
+	public static boolean removeFuel(Fluid fluid) {
+
+		fuels.remove(fluid);
+		return true;
+	}
+
+	public static int getFuelEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid());
 	}
 
 }

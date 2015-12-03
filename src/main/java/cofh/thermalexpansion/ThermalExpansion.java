@@ -32,7 +32,7 @@ import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.plugins.TEPlugins;
 import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.FMLEventHandler;
-import cofh.thermalexpansion.util.FuelHandler;
+import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
@@ -206,7 +206,7 @@ public class ThermalExpansion extends BaseMod {
 		ChargerManager.loadRecipes();
 		InsolatorManager.loadRecipes();
 
-		FuelHandler.parseFuels();
+		FuelManager.parseFuels();
 
 		TEPlugins.loadComplete();
 

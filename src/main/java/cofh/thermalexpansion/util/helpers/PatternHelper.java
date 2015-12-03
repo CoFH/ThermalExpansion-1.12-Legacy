@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util;
+package cofh.thermalexpansion.util.helpers;
 
 public class PatternHelper {
 

@@ -4,6 +4,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.ISawmillRecipe;
 import cofh.thermalexpansion.item.TEItems;
 
 import gnu.trove.map.hash.THashMap;
@@ -227,7 +228,7 @@ public class SawmillManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSawmill {
+	public static class RecipeSawmill implements ISawmillRecipe {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;

@@ -204,8 +204,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (FuelHandler.registerMagmaticFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("Fuels.Magmatic", fluidName, energy);
+						if (FuelManager.addMagmaticFuel(fluidName, energy)) {
+							FuelManager.configFuels.get("Fuels.Magmatic", fluidName, energy);
 						}
 						continue;
 					}
@@ -214,8 +214,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("Fuels.Compression", fluidName, energy);
+						if (FuelManager.addCompressionFuel(fluidName, energy)) {
+							FuelManager.configFuels.get("Fuels.Compression", fluidName, energy);
 						}
 						continue;
 					}
@@ -224,8 +224,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (FuelHandler.registerCompressionFuel(fluidName, energy)) {
-							FuelHandler.configFuels.get("Fuels.Reactant", fluidName, energy);
+						if (FuelManager.addCompressionFuel(fluidName, energy)) {
+							FuelManager.configFuels.get("Fuels.Reactant", fluidName, energy);
 						}
 						continue;
 					}
@@ -234,8 +234,8 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (FuelHandler.registerCoolant(fluidName, energy)) {
-							FuelHandler.configFuels.get("Coolants", fluidName, energy);
+						if (FuelManager.addCoolant(fluidName, energy)) {
+							FuelManager.configFuels.get("Coolants", fluidName, energy);
 						}
 						continue;
 					}

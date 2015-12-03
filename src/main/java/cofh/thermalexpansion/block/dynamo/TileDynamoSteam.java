@@ -3,12 +3,15 @@ package cofh.thermalexpansion.block.dynamo;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
-import cofh.thermalexpansion.util.FuelHandler;
+import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import gnu.trove.map.hash.TObjectIntHashMap;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -35,52 +38,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	static final int STEAM_MIN = 2000;
-
-	static int coalRF = 48000;
-	static int charcoalRF = 32000;
-	static int woodRF = 4500;
-	static int blockCoalRF = coalRF * 10;
-	static int otherRF = woodRF / 3;
-
-	static ItemStack coal = new ItemStack(Items.coal, 1, 0);
-	static ItemStack charcoal = new ItemStack(Items.coal, 1, 1);
-	static ItemStack blockCoal = new ItemStack(Blocks.coal_block);
-
-	static {
-		String category = "Fuels.Steam";
-		FuelHandler.configFuels.getCategory(category).setComment(
-				"You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
-		coalRF = FuelHandler.configFuels.get(category, "coal", coalRF);
-		charcoalRF = FuelHandler.configFuels.get(category, "charcoal", charcoalRF);
-		woodRF = FuelHandler.configFuels.get(category, "wood", woodRF);
-		blockCoalRF = coalRF * 10;
-		otherRF = woodRF / 3;
-	}
-
-	public static int getEnergyValue(ItemStack fuel) {
-
-		if (fuel == null) {
-			return 0;
-		}
-		if (fuel.isItemEqual(coal)) {
-			return coalRF;
-		}
-		if (fuel.isItemEqual(charcoal)) {
-			return charcoalRF;
-		}
-		if (fuel.isItemEqual(blockCoal)) {
-			return blockCoalRF;
-		}
-		Item item = fuel.getItem();
-
-		if (fuel.getItem() instanceof ItemBlock && ((ItemBlock) item).field_150939_a.getMaterial() == Material.wood) {
-			return woodRF;
-		}
-		if (item == Items.stick || item instanceof ItemBlock && ((ItemBlock) item).field_150939_a == Blocks.sapling) {
-			return otherRF;
-		}
-		return GameRegistry.getFuelValue(fuel) * CoFHProps.RF_PER_MJ * 3 / 2;
-	}
 
 	FluidTankAdv steamTank = new FluidTankAdv(MAX_FLUID);
 	FluidTankAdv waterTank = new FluidTankAdv(MAX_FLUID);
@@ -334,6 +291,64 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	public int[] getAccessibleSlotsFromSide(int side) {
 
 		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+	}
+
+	/* FUEL MANAGER */
+	static int coalRF = 48000;
+	static int charcoalRF = 32000;
+	static int woodRF = 4500;
+	static int blockCoalRF = coalRF * 10;
+	static int otherRF = woodRF / 3;
+
+	static ItemStack coal = new ItemStack(Items.coal, 1, 0);
+	static ItemStack charcoal = new ItemStack(Items.coal, 1, 1);
+	static ItemStack blockCoal = new ItemStack(Blocks.coal_block);
+
+	static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
+
+	static {
+		String category = "Fuels.Steam";
+		FuelManager.configFuels.getCategory(category).setComment(
+				"You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
+		coalRF = FuelManager.configFuels.get(category, "coal", coalRF);
+		charcoalRF = FuelManager.configFuels.get(category, "charcoal", charcoalRF);
+		woodRF = FuelManager.configFuels.get(category, "wood", woodRF);
+		blockCoalRF = coalRF * 10;
+		otherRF = woodRF / 3;
+	}
+
+	public static boolean addFuel(ItemStack stack, int energy) {
+
+		if (stack == null || energy < 640 || energy > 200000000) {
+			return false;
+		}
+		fuels.put(new ComparableItemStack(stack), energy);
+		return true;
+	}
+
+	public static int getEnergyValue(ItemStack stack) {
+
+		if (stack == null) {
+			return 0;
+		}
+		if (stack.isItemEqual(coal)) {
+			return coalRF;
+		}
+		if (stack.isItemEqual(charcoal)) {
+			return charcoalRF;
+		}
+		if (stack.isItemEqual(blockCoal)) {
+			return blockCoalRF;
+		}
+		Item item = stack.getItem();
+
+		if (stack.getItem() instanceof ItemBlock && ((ItemBlock) item).field_150939_a.getMaterial() == Material.wood) {
+			return woodRF;
+		}
+		if (item == Items.stick || item instanceof ItemBlock && ((ItemBlock) item).field_150939_a == Blocks.sapling) {
+			return otherRF;
+		}
+		return GameRegistry.getFuelValue(stack) * CoFHProps.RF_PER_MJ * 3 / 2;
 	}
 
 }

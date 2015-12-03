@@ -10,10 +10,11 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.GuiWorkbench;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
-import cofh.thermalexpansion.util.SchematicHelper;
+import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,6 +27,22 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 
 public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, IInventoryRetainer {
+
+	// Conversion Code
+	@Override
+	public void cofh_validate() {
+
+		if (worldObj.getBlock(xCoord, yCoord, zCoord) != TEBlocks.blockWorkbench) {
+			worldObj.setBlock(xCoord, yCoord, zCoord, TEBlocks.blockWorkbench, 1, 3);
+			NBTTagCompound tag = new NBTTagCompound();
+			writeToNBT(tag);
+			tag.setByte("Type", (byte) 1);
+			TileWorkbench tile = (TileWorkbench) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+			tile.readFromNBT(tag);
+			worldObj.func_147451_t(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
 
 	public static void initialize() {
 

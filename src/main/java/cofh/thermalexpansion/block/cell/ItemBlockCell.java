@@ -8,10 +8,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
-
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;

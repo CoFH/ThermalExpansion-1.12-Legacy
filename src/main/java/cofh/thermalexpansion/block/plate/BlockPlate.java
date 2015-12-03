@@ -330,7 +330,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		}
 
 		if (enable[Types.IMPULSE.ordinal()]) {
-			TransposerManager.addTEFillRecipe(2000, plateFrame, plateImpulse, new FluidStack(TFFluids.fluidAerotheum, 1000), false);
+			TransposerManager.addTEFillRecipe(2000, plateFrame, plateImpulse, new FluidStack(TFFluids.fluidGlowstone, 1000), false);
 		}
 
 		if (enable[Types.TRANSLOCATE.ordinal()]) {

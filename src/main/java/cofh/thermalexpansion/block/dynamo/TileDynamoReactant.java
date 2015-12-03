@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.dynamo;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
@@ -32,20 +33,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
-	static int sugarRF = 16000;
-	static int gunpowderRF = 160000;
-	static int blazePowderRF = 640000;
-	static int ghastTearRF = 1600000;
-	static int netherStarRF = 6400000;
-
-	static ItemStack sugar = new ItemStack(Items.sugar, 1, 0);
-	static ItemStack gunpowder = new ItemStack(Items.gunpowder, 1, 0);
-	static ItemStack blazePowder = new ItemStack(Items.blaze_powder, 1, 0);
-	static ItemStack ghastTear = new ItemStack(Items.ghast_tear, 1, 0);
-	static ItemStack netherStar = new ItemStack(Items.nether_star, 1, 0);
-
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-
 	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
@@ -57,56 +44,6 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 		super();
 		inventory = new ItemStack[1];
-	}
-
-	public static int getFuelEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static int getReactantEnergy(ItemStack reactant) {
-
-		if (reactant == null) {
-			return 0;
-		}
-		if (reactant.isItemEqual(sugar)) {
-			return sugarRF;
-		}
-		if (reactant.isItemEqual(gunpowder)) {
-			return gunpowderRF;
-		}
-		if (reactant.isItemEqual(blazePowder)) {
-			return blazePowderRF;
-		}
-		if (reactant.isItemEqual(ghastTear)) {
-			return ghastTearRF;
-		}
-		if (reactant.isItemEqual(netherStar)) {
-			return netherStarRF;
-		}
-		return 0;
-	}
-
-	public static int getReactantMod(ItemStack reactant) {
-
-		if (reactant == null) {
-			return 0;
-		}
-		return FUEL_MOD;
-	}
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean registerFuel(Fluid fluid, int energy) {
-
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(fluid, energy / 20);
-		return true;
 	}
 
 	@Override
@@ -311,6 +248,82 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	public int[] getAccessibleSlotsFromSide(int side) {
 
 		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+	}
+
+	/* FUEL MANAGER */
+	static int sugarRF = 16000;
+	static int gunpowderRF = 160000;
+	static int blazePowderRF = 640000;
+	static int ghastTearRF = 1600000;
+	static int netherStarRF = 6400000;
+
+	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
+
+	static {
+		addReactant(new ItemStack(Items.sugar, 1, 0), 16000);
+		addReactant(new ItemStack(Items.gunpowder, 1, 0), 160000);
+		addReactant(new ItemStack(Items.blaze_powder, 1, 0), 640000);
+		addReactant(new ItemStack(Items.ghast_tear, 1, 0), 1600000);
+		addReactant(new ItemStack(Items.nether_star, 1, 0), 6400000);
+	}
+
+	public static boolean isValidFuel(FluidStack stack) {
+
+		return stack == null ? false : fuels.containsKey(stack.getFluid());
+	}
+
+	public static boolean isValidReactant(ItemStack stack) {
+
+		return stack == null ? false : reactants.containsKey(new ComparableItemStack(stack));
+	}
+
+	public static boolean addFuel(Fluid fluid, int energy) {
+
+		if (fluid == null || energy < 10000 || energy > 200000000) {
+			return false;
+		}
+		fuels.put(fluid, energy / 20);
+		return true;
+	}
+
+	public static boolean addReactant(ItemStack stack, int energy) {
+
+		if (stack == null || energy < 10000 || energy > 200000000) {
+			return false;
+		}
+		reactants.put(new ComparableItemStack(stack), energy);
+		return true;
+	}
+
+	public static boolean removeFuel(Fluid fluid) {
+
+		fuels.remove(fluid);
+		return true;
+	}
+
+	public static boolean removeReactant(ItemStack stack) {
+
+		reactants.remove(stack);
+		return true;
+	}
+
+	public static int getFuelEnergy(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid());
+	}
+
+	public static int getReactantEnergy(ItemStack stack) {
+
+		return stack == null ? 0 : reactants.get(new ComparableItemStack(stack));
+	}
+
+	public static int getReactantMod(ItemStack stack) {
+
+		if (stack == null) {
+			return 0;
+		}
+		return FUEL_MOD;
 	}
 
 }

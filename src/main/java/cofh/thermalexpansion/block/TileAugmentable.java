@@ -9,10 +9,9 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.item.TEAugments;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.Utils;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cpw.mods.fml.relauncher.Side;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;

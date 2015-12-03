@@ -39,11 +39,11 @@ public class RenderPlate implements ISimpleBlockRenderingHandler {
 	public static void initialize() {
 
 		texture_fluid[0] = IconRegistry.getIcon("FluidRedstone");
-		texture_fluid[1] = IconRegistry.getIcon("FluidAerotheum");
+		texture_fluid[1] = IconRegistry.getIcon("FluidGlowstone");
 		texture_fluid[2] = IconRegistry.getIcon("FluidEnder");
 		texture_fluid[3] = IconRegistry.getIcon("FluidRedstone");
-		texture_fluid[4] = IconRegistry.getIcon("FluidAerotheum");
-		texture_fluid[5] = IconRegistry.getIcon("FluidMana");
+		texture_fluid[4] = IconRegistry.getIcon("FluidGlowstone");
+		texture_fluid[5] = IconRegistry.getIcon("FluidEnder");
 
 		texture_frame[6] = IconRegistry.getIcon("PlateBottom");
 		texture_frame[7] = IconRegistry.getIcon("PlateTopO");

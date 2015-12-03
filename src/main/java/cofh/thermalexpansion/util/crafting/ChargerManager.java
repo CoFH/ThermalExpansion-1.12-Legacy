@@ -5,6 +5,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.IChargerRecipe;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -120,7 +121,7 @@ public class ChargerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCharger {
+	public static class RecipeCharger implements IChargerRecipe {
 
 		final ItemStack input;
 		final ItemStack output;

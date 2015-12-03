@@ -3,13 +3,18 @@ package cofh.thermalexpansion.block.dynamo;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
-import cofh.thermalexpansion.util.FuelHandler;
+import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cpw.mods.fml.common.registry.GameRegistry;
+
+import gnu.trove.map.hash.THashMap;
+
+import java.util.Map;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -25,36 +30,6 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.DynamoEnervation");
-	}
-
-	static int redstoneRF = 64000;
-	static int blockRedstoneRF = redstoneRF * 10;
-
-	static ItemStack redstone = new ItemStack(Items.redstone);
-	static ItemStack blockRedstone = new ItemStack(Blocks.redstone_block);
-
-	static {
-		String category = "Fuels.Enervation";
-		redstoneRF = FuelHandler.configFuels.get(category, "redstone", redstoneRF);
-		blockRedstoneRF = redstoneRF * 10;
-	}
-
-	public static int getEnergyValue(ItemStack fuel) {
-
-		if (fuel == null) {
-			return 0;
-		}
-		if (fuel.isItemEqual(redstone)) {
-			return redstoneRF;
-		}
-		if (fuel.isItemEqual(blockRedstone)) {
-			return blockRedstoneRF;
-		}
-		if (EnergyHelper.isEnergyContainerItem(fuel)) {
-			IEnergyContainerItem container = (IEnergyContainerItem) fuel.getItem();
-			return container.extractEnergy(fuel, container.getEnergyStored(fuel), true);
-		}
-		return 0;
 	}
 
 	int currentFuelRF = getEnergyValue(redstone);
@@ -192,6 +167,39 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public int[] getAccessibleSlotsFromSide(int side) {
 
 		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+	}
+
+	/* FUEL MANAGER */
+	static int redstoneRF = 64000;
+	static int blockRedstoneRF = redstoneRF * 10;
+
+	static ItemStack redstone = new ItemStack(Items.redstone);
+	static ItemStack blockRedstone = new ItemStack(Blocks.redstone_block);
+
+	static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
+
+	static {
+		String category = "Fuels.Enervation";
+		redstoneRF = FuelManager.configFuels.get(category, "redstone", redstoneRF);
+		blockRedstoneRF = redstoneRF * 10;
+	}
+
+	public static int getEnergyValue(ItemStack fuel) {
+
+		if (fuel == null) {
+			return 0;
+		}
+		if (fuel.isItemEqual(redstone)) {
+			return redstoneRF;
+		}
+		if (fuel.isItemEqual(blockRedstone)) {
+			return blockRedstoneRF;
+		}
+		if (EnergyHelper.isEnergyContainerItem(fuel)) {
+			IEnergyContainerItem container = (IEnergyContainerItem) fuel.getItem();
+			return container.extractEnergy(fuel, container.getEnergyStored(fuel), true);
+		}
+		return 0;
 	}
 
 }

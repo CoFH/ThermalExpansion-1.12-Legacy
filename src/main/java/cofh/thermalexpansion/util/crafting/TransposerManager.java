@@ -3,6 +3,7 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.ITransposerRecipe;
 import cofh.thermalfoundation.fluid.TFFluids;
 import cofh.thermalfoundation.item.TFItems;
 
@@ -266,7 +267,7 @@ public class TransposerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeTransposer {
+	public static class RecipeTransposer implements ITransposerRecipe {
 
 		final ItemStack input;
 		final ItemStack output;

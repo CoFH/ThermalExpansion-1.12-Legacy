@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util;
+package cofh.thermalexpansion.util.helpers;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.InventoryCraftingFalse;

@@ -5,6 +5,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.IInsolatorRecipe;
 import cofh.thermalexpansion.item.TEItems;
 
 import gnu.trove.map.hash.THashMap;
@@ -298,7 +299,7 @@ public class InsolatorManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeInsolator {
+	public static class RecipeInsolator implements IInsolatorRecipe {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;

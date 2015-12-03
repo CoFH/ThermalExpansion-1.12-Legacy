@@ -4,12 +4,10 @@ import cofh.core.render.RenderUtils;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalexpansion.util.SchematicHelper;
-
+import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
-
 import org.lwjgl.opengl.GL11;
 
 public class RenderSchematic implements IItemRenderer {

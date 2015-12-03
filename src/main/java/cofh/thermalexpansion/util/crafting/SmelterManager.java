@@ -5,6 +5,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.ISmelterRecipe;
 import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
@@ -428,7 +429,7 @@ public class SmelterManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSmelter {
+	public static class RecipeSmelter implements ISmelterRecipe {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;

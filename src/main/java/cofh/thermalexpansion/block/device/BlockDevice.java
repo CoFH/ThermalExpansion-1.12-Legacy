@@ -9,11 +9,12 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,7 +57,7 @@ public class BlockDevice extends BlockTEBase {
 		}
 		switch (Types.values()[metadata]) {
 		case WORKBENCH_FALSE:
-			return new TileWorkbenchFalse();
+			return new TileWorkbench();
 		case ACTIVATOR:
 			return new TileActivator();
 		case BREAKER:
@@ -241,8 +242,7 @@ public class BlockDevice extends BlockTEBase {
 	public boolean initialize() {
 
 		TileDeviceBase.configure();
-		// TODO: Remove Workbench :)
-		TileWorkbenchFalse.initialize();
+
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		TileCollector.initialize();

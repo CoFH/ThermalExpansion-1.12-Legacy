@@ -4,6 +4,8 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.IFurnaceHandler;
+import cofh.thermalexpansion.api.crafting.recipes.IFurnaceRecipe;
 import cofh.thermalfoundation.item.TFItems;
 
 import gnu.trove.map.hash.THashMap;
@@ -244,7 +246,7 @@ public class FurnaceManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeFurnace {
+	public static class RecipeFurnace implements IFurnaceRecipe {
 
 		final ItemStack input;
 		final ItemStack output;
@@ -269,21 +271,25 @@ public class FurnaceManager {
 			}
 		}
 
+		@Override
 		public boolean isOutputFood() {
 
 			return isOutputFood;
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public ItemStack getOutput() {
 
 			return output.copy();
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

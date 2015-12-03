@@ -6,6 +6,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
 
@@ -438,7 +439,7 @@ public class PulverizerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipePulverizer {
+	public static class RecipePulverizer implements IPulverizerRecipe {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;

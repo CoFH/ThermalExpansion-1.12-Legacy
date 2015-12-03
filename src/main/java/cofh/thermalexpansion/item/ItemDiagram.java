@@ -6,11 +6,9 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.RedprintHelper;
-import cofh.thermalexpansion.util.SchematicHelper;
-
+import cofh.thermalexpansion.util.helpers.RedprintHelper;
+import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import java.util.List;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
