@@ -111,6 +111,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 		if (entity instanceof EntityEnderman) {
 			teleportCost *= 2;
+		} else if (entity instanceof EntityItem) {
+			teleportCost /= 1000;
 		}
 		if (storage.getEnergyStored() < teleportCost) {
 			return;
