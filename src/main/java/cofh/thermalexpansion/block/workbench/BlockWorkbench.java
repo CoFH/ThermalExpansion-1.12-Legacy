@@ -218,7 +218,7 @@ public class BlockWorkbench extends BlockTEBase {
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(workbenchHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', workbenchBasic }));
-			GameRegistry.addRecipe(new RecipeUpgrade(7, workbenchBasic, new Object[] { "IPI", "CTC", "IBI", 'T', Blocks.crafting_table, 'C', "ingotCopper",
+			GameRegistry.addRecipe(new RecipeUpgrade(7, workbenchHardened, new Object[] { "IPI", "CTC", "IBI", 'T', Blocks.crafting_table, 'C', "ingotCopper",
 					'B', BlockStrongbox.strongboxBasic, 'P', Items.paper, 'I', "ingotInvar" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
