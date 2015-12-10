@@ -150,7 +150,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 				callNeighborTileChange();
 			}
 		}
-		if (worldObj.getTotalWorldTime() % 4 == 0) {
+		if (timeCheckEighth()) {
 			updateRender();
 		}
 		super.updateEntity();
@@ -241,6 +241,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	public void updateRender() {
 
 		int curDisplayLevel = 0;
+		int oldLight = getLightValue();
 
 		if (tank.getFluidAmount() > 0) {
 			curDisplayLevel = (int) (tank.getFluidAmount() / (float) CAPACITY[type] * (RENDER_LEVELS - 1));
@@ -250,7 +251,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 			if (lastDisplayLevel == 0) {
 				lastDisplayLevel = curDisplayLevel;
 				sendUpdatePacket(Side.CLIENT);
-				return;
 			}
 		} else if (lastDisplayLevel != 0) {
 			lastDisplayLevel = 0;
@@ -262,6 +262,9 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		} else if (curDisplayLevel >= lastDisplayLevel + UPDATE_FACTOR) {
 			lastDisplayLevel = curDisplayLevel;
 			sendUpdatePacket(Side.CLIENT);
+		}
+		if (oldLight != getLightValue()) {
+			updateLighting();
 		}
 	}
 

@@ -18,6 +18,7 @@ import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -177,6 +178,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 			if (meterTracker != curScale) {
 				meterTracker = (byte) curScale;
+				updateLighting();
 				sendUpdatePacket(Side.CLIENT);
 			}
 		}

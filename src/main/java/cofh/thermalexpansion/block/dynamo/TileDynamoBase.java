@@ -199,9 +199,11 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	protected void updateIfChanged(boolean curActive) {
 
 		if (curActive != isActive && !wasActive) {
+			updateLighting();
 			sendUpdatePacket(Side.CLIENT);
 		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
+			updateLighting();
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}

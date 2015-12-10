@@ -27,7 +27,7 @@ public class TileLightFalse extends TileLight {
 		invalidate();
 		TileLight tile = (TileLight) worldObj.getTileEntity(xCoord, yCoord, zCoord);
 		tile.readFromNBT(tag);
-		worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		updateLighting();
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 

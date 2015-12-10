@@ -94,6 +94,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		if (wasPowered != isPowered || oldPower != inputPower) {
 			markDirty();
+			if (!dim) {
+				updateLighting();
+			}
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}
@@ -176,7 +179,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (tag.hasKey("Color")) {
 			setColor(tag.getInteger("Color"));
 		}
-		worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		updateLighting();
 		return true;
 	}
 
@@ -271,7 +274,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (!isServer) {
 			lightValue = payload.getByte();
 			setRenderColor();
-			worldObj.func_147451_t(xCoord, yCoord, zCoord);
+		} else {
+			updateLighting();
 		}
 	}
 
