@@ -71,7 +71,7 @@ public class GuiLight extends GuiBaseAdv {
 		myTile = theTile;
 		name = myTile.getName();
 		drawInventory = false;
-		this.height = 100;
+		this.ySize = 100;
 
 		generateInfo("tab.thermalexpansion.light", 3);
 	}
