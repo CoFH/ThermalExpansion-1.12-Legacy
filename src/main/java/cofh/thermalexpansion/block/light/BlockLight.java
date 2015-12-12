@@ -149,14 +149,17 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
 		switch (tile.style) {
 		case 5:
+			double m = 0;
 			switch (tile.alignment) {
-			case 2:
 			case 3:
-				ret.expand(new Vector3(0.1, 0, 0));
+				m = 0.12;
+			case 2:
+				ret.expand(new Vector3(0.1, 0, m));
 				break;
-			case 4:
 			case 5:
-				ret.expand(new Vector3(0, 0, 0.1));
+				m = 0.12;
+			case 4:
+				ret.expand(new Vector3(m, 0, 0.1));
 				break;
 			default:
 				ret.expand(0.05);
