@@ -26,7 +26,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
 	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
 	protected static final boolean[] enableSound = new boolean[BlockMachine.Types.values().length];
-	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 0, 0, 14, 0, 0, 7, 15 };
+	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 1, 0, 14, 0, 0, 7, 15 };
 	public static final boolean[] enableSecurity = new boolean[BlockMachine.Types.values().length];
 
 	protected static final int RATE = 500;
