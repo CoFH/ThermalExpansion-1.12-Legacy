@@ -327,6 +327,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		if (debug) {
 			info.add(new ChatComponentText("Dim: " + dim));
+			info.add(new ChatComponentText("Alingment: " + alignment));
 		}
 		info.add(new ChatComponentTranslation("chat.thermalexpansion.light." + mode));
 	}
