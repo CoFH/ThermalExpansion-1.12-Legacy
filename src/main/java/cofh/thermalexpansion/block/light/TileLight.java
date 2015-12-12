@@ -85,6 +85,12 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	}
 
 	@Override
+	public void blockPlaced() {
+
+		updateLighting();
+	}
+
+	@Override
 	public void onNeighborBlockChange() {
 
 		boolean wasPowered = isPowered;
@@ -274,9 +280,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		if (!isServer) {
 			lightValue = payload.getByte();
 			setRenderColor();
-		} else {
-			updateLighting();
 		}
+		updateLighting();
 	}
 
 	/* NBT METHODS */
