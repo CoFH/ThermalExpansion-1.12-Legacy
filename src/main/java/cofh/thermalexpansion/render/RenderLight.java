@@ -105,7 +105,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 		for (; i >= 0; --i) {
 			modelFrame[i] = CCModel.quadModel(24).generateBlock(0, BlockLight.models[i]);
-			modelFrame[i].computeNormals();
+			modelFrame[i].computeNormals().shrinkUVs(1. / 256);
 			modelCenter[i].computeNormals();
 			modelHalo[i].computeNormals().shrinkUVs(d3);
 		}
@@ -135,11 +135,11 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 	public boolean renderWorldIlluminator(int pass, int style, int color, boolean modified, Transformation t) {
 
 		if (pass == 0) {
-			return false;
+			renderFrame(style, -1, 0, t);
+			return true;
 		}
 		renderCenter(style, color, modified, t);
 
-		renderFrame(style, -1, 0, t);
 		return true;
 	}
 
