@@ -106,6 +106,12 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
+	public int getLightValue() {
+
+		return super.getLightValue() != 0 ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
+	}
+
+	@Override
 	protected int getMaxInputSlot() {
 
 		// This is a hack to prevent super() logic from working.
