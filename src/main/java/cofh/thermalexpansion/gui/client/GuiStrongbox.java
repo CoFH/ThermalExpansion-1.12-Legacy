@@ -32,8 +32,8 @@ public class GuiStrongbox extends GuiBaseAdv {
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
 		name = myTile.getInventoryName();
 
-		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
-		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
+		xSize = 14 + 18 * MathHelper.clamp(storageIndex + 1, 9, 13);
+		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 8);
 
 		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.creative");

@@ -219,9 +219,9 @@ public class TilePlateSignal extends TilePlateBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
-		payload.addByte(MathHelper.clampI(intensity, MIN_INTENSITY, MAX_INTENSITY));
-		payload.addByte(MathHelper.clampI(duration, MIN_DURATION, MAX_DURATION));
+		payload.addByte(MathHelper.clamp(distance, MIN_DISTANCE, MAX_DISTANCE));
+		payload.addByte(MathHelper.clamp(intensity, MIN_INTENSITY, MAX_INTENSITY));
+		payload.addByte(MathHelper.clamp(duration, MIN_DURATION, MAX_DURATION));
 
 		return payload;
 	}

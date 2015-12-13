@@ -14,6 +14,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
 import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import cpw.mods.fml.common.registry.GameRegistry;
+
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -48,7 +49,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Assembler";
-		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
+		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);

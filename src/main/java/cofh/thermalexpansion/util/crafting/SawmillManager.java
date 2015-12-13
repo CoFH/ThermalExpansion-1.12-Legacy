@@ -35,7 +35,7 @@ public class SawmillManager {
 
 		String category = "RecipeManagers.Sawmill.Log";
 		String comment = "This sets the default rate for Log->Plank conversion. This number is used in all automatically generated recipes.";
-		logMultiplier = MathHelper.clampF((float) ThermalExpansion.config.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
+		logMultiplier = MathHelper.clamp((float) ThermalExpansion.config.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
 	}
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
@@ -255,16 +255,19 @@ public class SawmillManager {
 			}
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -273,11 +276,13 @@ public class SawmillManager {
 			return secondaryOutput.copy();
 		}
 
+		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

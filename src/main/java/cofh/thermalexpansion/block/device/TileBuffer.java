@@ -128,8 +128,8 @@ public class TileBuffer extends TileDeviceBase {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		quantityInput = MathHelper.clampI(nbt.getInteger("Input"), 0, 64);
-		quantityOutput = MathHelper.clampI(nbt.getInteger("Output"), 0, 64);
+		quantityInput = MathHelper.clamp(nbt.getInteger("Input"), 0, 64);
+		quantityOutput = MathHelper.clamp(nbt.getInteger("Output"), 0, 64);
 		enableInput = nbt.getBoolean("EnableIn");
 		enableOutput = nbt.getBoolean("EnableOut");
 	}
@@ -179,8 +179,8 @@ public class TileBuffer extends TileDeviceBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addInt(MathHelper.clampI(quantityInput, 0, 64));
-		payload.addInt(MathHelper.clampI(quantityOutput, 0, 64));
+		payload.addInt(MathHelper.clamp(quantityInput, 0, 64));
+		payload.addInt(MathHelper.clamp(quantityOutput, 0, 64));
 		payload.addBool(enableInput);
 		payload.addBool(enableOutput);
 

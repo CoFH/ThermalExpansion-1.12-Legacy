@@ -35,8 +35,8 @@ public class GuiSatchel extends GuiBaseAdv {
 		name = container.getInventoryName();
 		allowUserInput = false;
 
-		xSize = 14 + 18 * MathHelper.clampI(storageIndex + 1, 9, 13);
-		ySize = 112 + 18 * MathHelper.clampI(storageIndex, 2, 8);
+		xSize = 14 + 18 * MathHelper.clamp(storageIndex + 1, 9, 13);
+		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 8);
 
 		if (storageIndex == ItemSatchel.Types.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.satchel.creative");

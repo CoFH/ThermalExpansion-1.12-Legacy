@@ -46,7 +46,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 		for (int i = 0; i < BlockDynamo.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockDynamo.NAMES[i]);
-			int maxPower = MathHelper.clampI(ThermalExpansion.config.get("Dynamo." + name, "BasePower", 80), 10, 160);
+			int maxPower = MathHelper.clamp(ThermalExpansion.config.get("Dynamo." + name, "BasePower", 80), 10, 160);
 			ThermalExpansion.config.set("Dynamo." + name, "BasePower", maxPower);
 			maxPower /= 10;
 			maxPower *= 10;

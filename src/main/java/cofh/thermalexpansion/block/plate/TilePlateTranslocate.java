@@ -144,7 +144,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
+		payload.addByte(MathHelper.clamp(distance, MIN_DISTANCE, MAX_DISTANCE));
 
 		return payload;
 	}

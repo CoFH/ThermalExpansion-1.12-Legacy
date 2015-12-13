@@ -37,7 +37,7 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Charger";
-		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 8000), 100, 20000);
+		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 8000), 100, 20000);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParams(1, basePower, Math.max(400000, basePower * 50));

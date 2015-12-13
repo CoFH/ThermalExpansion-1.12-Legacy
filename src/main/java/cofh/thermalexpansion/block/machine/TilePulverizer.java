@@ -31,7 +31,7 @@ public class TilePulverizer extends TileMachineBase {
 		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Pulverizer";
-		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
+		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);

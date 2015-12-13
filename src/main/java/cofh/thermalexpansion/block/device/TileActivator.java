@@ -54,13 +54,13 @@ public class TileActivator extends TileDeviceBase {
 		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		String category = "Device.Activator";
-		int maxPower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 20), 0, 500);
+		int maxPower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 20), 0, 500);
 		ThermalExpansion.config.set("Device.Activator", "BasePower", maxPower);
 		energyConfig = new EnergyConfig();
 		energyConfig.setParamsPower(maxPower);
 
 		String comment = "This value sets how much energy the Activator uses when it actually does something. Set to 0 to disable it requiring energy.";
-		maxPower = MathHelper.clampI(ThermalExpansion.config.get(category, "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
+		maxPower = MathHelper.clamp(ThermalExpansion.config.get(category, "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
 		ThermalExpansion.config.set("Device.Activator", "ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
 

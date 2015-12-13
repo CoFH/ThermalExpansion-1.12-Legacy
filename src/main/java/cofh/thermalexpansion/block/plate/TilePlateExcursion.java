@@ -194,7 +194,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addByte(MathHelper.clampI(distance, MIN_DISTANCE, MAX_DISTANCE));
+		payload.addByte(MathHelper.clamp(distance, MIN_DISTANCE, MAX_DISTANCE));
 
 		return payload;
 	}
@@ -208,7 +208,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		if (newDist != distance) {
 			removeBeam();
-			distance = (byte) MathHelper.clampI(newDist, MIN_DISTANCE, MAX_DISTANCE);
+			distance = (byte) MathHelper.clamp(newDist, MIN_DISTANCE, MAX_DISTANCE);
 		}
 	}
 

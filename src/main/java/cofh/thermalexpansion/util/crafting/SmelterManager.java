@@ -46,10 +46,10 @@ public class SmelterManager {
 
 		String category = "RecipeManagers.Smelter.Ore";
 		String comment = "This sets the default rate for Ore->Ingot conversion. This number is used in all automatically generated recipes.";
-		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
+		oreMultiplier = MathHelper.clamp(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
 
 		comment = "This sets the boosted rate for Ore->Ingot conversion - when Rich Slag or Cinnabar Crystals are used. This number is used in all automatically generated recipes.";
-		oreMultiplierSpecial = MathHelper.clampI(ThermalExpansion.config.get(category, "SpecialMultiplier", oreMultiplierSpecial, comment), 1, 64);
+		oreMultiplierSpecial = MathHelper.clamp(ThermalExpansion.config.get(category, "SpecialMultiplier", oreMultiplierSpecial, comment), 1, 64);
 
 		blastList.add("mithril");
 		blastList.add("enderium");
@@ -461,21 +461,25 @@ public class SmelterManager {
 			}
 		}
 
+		@Override
 		public ItemStack getPrimaryInput() {
 
 			return primaryInput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryInput() {
 
 			return secondaryInput.copy();
 		}
 
+		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -484,11 +488,13 @@ public class SmelterManager {
 			return secondaryOutput.copy();
 		}
 
+		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

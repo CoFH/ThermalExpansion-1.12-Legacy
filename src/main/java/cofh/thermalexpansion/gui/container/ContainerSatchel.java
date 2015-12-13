@@ -40,9 +40,9 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 		super(stack, inventory);
 
 		storageIndex = ItemSatchel.getStorageIndex(stack);
-		rowSize = MathHelper.clampI(storageIndex + 1, 9, 13);
+		rowSize = MathHelper.clamp(storageIndex + 1, 9, 13);
 
-		int rows = MathHelper.clampI(storageIndex, 2, 8);
+		int rows = MathHelper.clamp(storageIndex, 2, 8);
 		int slots = rowSize * rows;
 		int yOffset = 17;
 

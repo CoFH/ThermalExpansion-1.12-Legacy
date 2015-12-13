@@ -38,13 +38,13 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	static {
 		String category = "Cache.";
-		CAPACITY[4] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]),
+		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]),
 				CAPACITY[4] / 8, 1000000 * 1000);
-		CAPACITY[3] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]),
+		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]),
 				CAPACITY[3] / 8, CAPACITY[4]);
-		CAPACITY[2] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]),
+		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]),
 				CAPACITY[2] / 8, CAPACITY[3]);
-		CAPACITY[1] = MathHelper.clampI(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]),
+		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]),
 				CAPACITY[1] / 8, CAPACITY[2]);
 	}
 

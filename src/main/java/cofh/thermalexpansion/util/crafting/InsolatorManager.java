@@ -41,7 +41,7 @@ public class InsolatorManager {
 
 		String category = "RecipeManagers.Insolator.Crop";
 		String comment = "This sets the boosted rate for Crop growth - when Rich Phyto-Gro is used. This number is used in all automatically generated recipes.";
-		cropMultiplierSpecial = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
+		cropMultiplierSpecial = MathHelper.clamp(ThermalExpansion.config.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
 	}
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -339,21 +339,25 @@ public class InsolatorManager {
 			}
 		}
 
+		@Override
 		public ItemStack getPrimaryInput() {
 
 			return primaryInput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryInput() {
 
 			return secondaryInput.copy();
 		}
 
+		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -362,11 +366,13 @@ public class InsolatorManager {
 			return secondaryOutput.copy();
 		}
 
+		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

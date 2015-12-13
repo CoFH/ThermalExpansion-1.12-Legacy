@@ -191,8 +191,8 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addInt(MathHelper.clampI(intensity, MIN_INTENSITY, MAX_INTENSITY));
-		payload.addInt(MathHelper.clampI(angle, MIN_ANGLE, MAX_ANGLE));
+		payload.addInt(MathHelper.clamp(intensity, MIN_INTENSITY, MAX_INTENSITY));
+		payload.addInt(MathHelper.clamp(angle, MIN_ANGLE, MAX_ANGLE));
 
 		return payload;
 	}

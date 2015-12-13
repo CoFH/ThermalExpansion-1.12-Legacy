@@ -35,7 +35,7 @@ public class PulverizerManager {
 
 		String category = "RecipeManagers.Pulverizer.Ore";
 		String comment = "This sets the default rate for Ore->Dust conversion. This number is used in all automatically generated recipes.";
-		oreMultiplier = MathHelper.clampI(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
+		oreMultiplier = MathHelper.clamp(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
 	}
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
@@ -143,7 +143,7 @@ public class PulverizerManager {
 
 			category = "RecipeManagers.Pulverizer.Wool.Dye";
 			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
-				dyeChance[i] = MathHelper.clampI(ThermalExpansion.config.get(category, ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
+				dyeChance[i] = MathHelper.clamp(ThermalExpansion.config.get(category, ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
 
 				if (dyeChance[i] > 0) {
 					addTERecipe(1600, new ItemStack(Blocks.wool, 1, i), stringStack, new ItemStack(Items.dye, 1, 15 - i), dyeChance[i]);
@@ -466,16 +466,19 @@ public class PulverizerManager {
 			}
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
+		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -484,11 +487,13 @@ public class PulverizerManager {
 			return secondaryOutput.copy();
 		}
 
+		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

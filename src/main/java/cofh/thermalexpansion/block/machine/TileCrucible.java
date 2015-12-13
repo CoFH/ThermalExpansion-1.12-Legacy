@@ -45,7 +45,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Crucible";
-		int basePower = MathHelper.clampI(ThermalExpansion.config.get(category, "BasePower", 400), 10, 500);
+		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 400), 10, 500);
 		ThermalExpansion.config.set(category, "BasePower", basePower);
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
