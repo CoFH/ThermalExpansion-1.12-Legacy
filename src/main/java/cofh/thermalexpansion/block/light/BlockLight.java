@@ -6,10 +6,12 @@ import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.repack.codechicken.lib.vec.Cuboid6;
 import cofh.repack.codechicken.lib.vec.Rotation;
+import cofh.repack.codechicken.lib.vec.SwapYZ;
 import cofh.repack.codechicken.lib.vec.Transformation;
 import cofh.repack.codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -165,7 +167,16 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 				ret.expand(0.05);
 			}
 		}
-		ret.setBlockBounds(this);
+		ret.apply(new SwapYZ() {
+
+			@Override
+			public void apply(Vector3 vec) {
+				vec.x = MathHelper.clamp(vec.x, 0, 1);
+				vec.y = MathHelper.clamp(vec.y, 0, 1);
+				vec.z = MathHelper.clamp(vec.z, 0, 1);
+			}
+
+		}).setBlockBounds(this);
 	}
 
 	@Override
@@ -173,10 +184,8 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 		if (super.canReplace(world, x, y, z, side, stack)) {
 			if (stack.stackTagCompound != null) {
+				@SuppressWarnings("unused")
 				int style = stack.stackTagCompound.getByte("Style");
-				if (style == 5 && side == 0) {
-					return false;
-				}
 			}
 			return true;
 		}

@@ -9,8 +9,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TorchTransformation extends Transformation {
 
-	public static Transformation[] sideTransformations = { new RedundantTransformation(), new RedundantTransformation(), new TorchTransformation(2),
-			new TorchTransformation(3), new TorchTransformation(4), new TorchTransformation(5), };
+	public static Transformation[] sideTransformations = { new RedundantTransformation(), new TorchTransformation(1),
+		new TorchTransformation(2), new TorchTransformation(3), new TorchTransformation(4), new TorchTransformation(5), };
 
 	int alignment;
 
@@ -53,6 +53,9 @@ public class TorchTransformation extends Transformation {
 				break;
 			}
 			vec.y += 3. / 16;
+		} else if (alignment == 1) {
+			vec.y = .5 - vec.y + .5;
+			vec.z = .5 - vec.z + .5;
 		}
 	}
 
@@ -77,7 +80,7 @@ public class TorchTransformation extends Transformation {
 	@Override
 	public boolean isRedundant() {
 
-		return alignment <= 1 || alignment >= 6;
+		return alignment <= 0 || alignment >= 6;
 	}
 
 	@Override
