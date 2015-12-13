@@ -2,7 +2,6 @@ package cofh.thermalexpansion.block.workbench;
 
 import cofh.api.core.ICustomInventory;
 import cofh.api.inventory.IInventoryRetainer;
-import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -41,6 +40,18 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	public static int[] INVENTORY = { 36, 18, 27, 33, 36 };
 	public static int[] SCHEMATICS = { 12, 3, 6, 9, 12 };
+
+	private static int[][] SLOTS;
+	static {
+		SLOTS = new int[INVENTORY.length][];
+		for (int i = 0; i < SLOTS.length; ++i) {
+			int[] data = new int[INVENTORY[i]];
+			for (int j = 0, k = SCHEMATICS[i]; j < data.length; ++j) {
+				data[j] = k++;
+			}
+			SLOTS[i] = data;
+		}
+	}
 
 	public static enum PacketInfoID {
 		CLEAR_GRID, SET_GRID, NEI_SUP
@@ -414,19 +425,19 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
 
-		return CoFHProps.EMPTY_INVENTORY;
+		return SLOTS[type];
 	}
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, int side) {
 
-		return false;
+		return slot >= SCHEMATICS[type];
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 
-		return false;
+		return slot >= SCHEMATICS[type];
 	}
 
 }
