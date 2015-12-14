@@ -9,11 +9,14 @@ import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+
 import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.StatCollector;
 
 public class ItemBlockMachine extends ItemBlockBase {
 
@@ -53,13 +56,20 @@ public class ItemBlockMachine extends ItemBlockBase {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion." + NAMES[getLevel(stack)]) + ")";
+		String unloc = getUnlocalizedNameInefficiently(stack);
+		String unloc2 = '.' + NAMES[getLevel(stack)];
+
+		if (StatCollector.canTranslate(unloc + unloc2 + ".name")) {
+			return StringHelper.localize(unloc + unloc2 + ".name");
+		}
+
+		return StringHelper.localize(unloc + ".name") + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
+		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)];
 	}
 
 	@Override

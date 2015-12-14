@@ -13,6 +13,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.StatCollector;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -30,20 +31,26 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		String dispName = "";
+		String unloc = getUnlocalizedNameInefficiently(stack);
+		String dispName, unloc2;
 
 		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Fluid")) {
-			dispName += StringHelper.localize("info.cofh.dry") + " ";
+			unloc2 = ".dry";
+			dispName = "info.cofh.dry";
 		} else {
-			dispName += StringHelper.localize("info.cofh.soaked") + " ";
+			unloc2 = ".wet";
+			dispName = "info.cofh.soaked";
 		}
-		return dispName + StringHelper.localize(getUnlocalizedName(stack));
+		if (StatCollector.canTranslate(unloc + unloc2 + ".name")) {
+			return StringHelper.localize(unloc + unloc2 + ".name");
+		}
+		return StringHelper.localize(dispName) + " " + StringHelper.localize(unloc + ".name");
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[ItemHelper.getItemDamage(stack)] + ".name";
+		return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[ItemHelper.getItemDamage(stack)];
 	}
 
 	@Override
