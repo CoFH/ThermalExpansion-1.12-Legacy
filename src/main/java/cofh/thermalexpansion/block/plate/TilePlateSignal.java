@@ -138,6 +138,7 @@ public class TilePlateSignal extends TilePlateBase {
 		distance = tag.getByte("Dist");
 		intensity = tag.getByte("Int");
 		duration = tag.getByte("Time");
+		collisionMode = tag.getByte("Mode");
 
 		return true;
 	}
@@ -148,6 +149,7 @@ public class TilePlateSignal extends TilePlateBase {
 		tag.setByte("Dist", distance);
 		tag.setByte("Int", intensity);
 		tag.setByte("Time", duration);
+		tag.setByte("Mode", collisionMode);
 
 		return true;
 	}
@@ -175,6 +177,7 @@ public class TilePlateSignal extends TilePlateBase {
 		intensity = nbt.getByte("Int");
 		duration = nbt.getByte("Time");
 		collided = nbt.getByte("Col");
+		collisionMode = nbt.getByte("cMode");
 	}
 
 	@Override
@@ -186,6 +189,7 @@ public class TilePlateSignal extends TilePlateBase {
 		nbt.setByte("Int", intensity);
 		nbt.setByte("Time", duration);
 		nbt.setByte("Col", collided);
+		nbt.setByte("cMode", collisionMode);
 	}
 
 	/* NETWORK METHODS */
@@ -198,6 +202,7 @@ public class TilePlateSignal extends TilePlateBase {
 		payload.addByte(intensity);
 		payload.addByte(duration);
 		payload.addByte(collided);
+		payload.addByte(collisionMode);
 
 		return payload;
 	}
@@ -222,6 +227,7 @@ public class TilePlateSignal extends TilePlateBase {
 		payload.addByte(MathHelper.clamp(distance, MIN_DISTANCE, MAX_DISTANCE));
 		payload.addByte(MathHelper.clamp(intensity, MIN_INTENSITY, MAX_INTENSITY));
 		payload.addByte(MathHelper.clamp(duration, MIN_DURATION, MAX_DURATION));
+		payload.addByte(collisionMode);
 
 		return payload;
 	}
@@ -249,6 +255,7 @@ public class TilePlateSignal extends TilePlateBase {
 		}
 		intensity = payload.getByte();
 		duration = payload.getByte();
+		collisionMode = payload.getByte();
 	}
 
 	/* ITilePacketHandler */
@@ -261,7 +268,9 @@ public class TilePlateSignal extends TilePlateBase {
 			distance = payload.getByte();
 			intensity = payload.getByte();
 			duration = payload.getByte();
+			collisionMode = payload.getByte();
 		} else {
+			payload.getByte();
 			payload.getByte();
 			payload.getByte();
 			payload.getByte();
