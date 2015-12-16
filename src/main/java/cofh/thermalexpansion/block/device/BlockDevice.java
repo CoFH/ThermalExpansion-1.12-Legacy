@@ -242,6 +242,7 @@ public class BlockDevice extends BlockTEBase {
 
 		TileDeviceBase.configure();
 
+		TileWorkbenchFalse.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		TileCollector.initialize();
