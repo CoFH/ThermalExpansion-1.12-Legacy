@@ -149,6 +149,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	@Override
 	public void onFallenUpon(World world, int x, int y, int z, Entity entity, float distance) {
 
+		// TODO: this method is literally never called on this block by anything
+		// because mojang couldn't so much as design a wet paper bag to save their lives
+		// ASM to change the magic "get the block below us" value of 0.2 to 0.02 "works"
+		// but will probably break several other things since the fall calculation is performed
+		// after the new position is known but is still stored only in local variables in moveEntity
 		l: {
 			TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
 			if (tile == null) {
