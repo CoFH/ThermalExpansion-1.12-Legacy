@@ -32,6 +32,7 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
 		setUnlocalizedName("thermalexpansion.tool.battleWrench");
 		setTextureName("thermalexpansion:tool/BattleWrench");
 		setCreativeTab(ThermalExpansion.tabTools);
+		setHarvestLevel("wrench", 1);
 	}
 
 	@Override

@@ -32,6 +32,7 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 
 		super("wrench");
 		setHasSubtypes(true);
+		setHarvestLevel("wrench", 1);
 	}
 
 	@Override
