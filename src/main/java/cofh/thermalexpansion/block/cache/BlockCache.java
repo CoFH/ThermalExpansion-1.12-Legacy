@@ -116,29 +116,41 @@ public class BlockCache extends BlockTEBase {
 				return true;
 			}
 			if (tile.getStoredItemType() != null) {
-				for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-					if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
-						player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
-						playSound = true;
-					}
-				}
-				if (playSound) {
-					world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.7F);
-				}
+				insertAllItemsFromPlayer(tile, player);
 			}
 			return true;
 		}
 		ItemStack heldStack = player.getCurrentEquippedItem();
 		ItemStack ret = tile.insertItem(ForgeDirection.UNKNOWN, heldStack, false);
+		long time = player.getEntityData().getLong("TE:lastCacheClick"), currentTime = world.getTotalWorldTime();
+		player.getEntityData().setLong("TE:lastCacheClick", currentTime);
 
-		if (!player.capabilities.isCreativeMode && ret != heldStack) {
-			player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
-			playSound = true;
+		if (!player.capabilities.isCreativeMode) {
+			if (tile.getStoredItemType() != null && currentTime - time < 15) {
+				insertAllItemsFromPlayer(tile, player);
+			} else if (ret != heldStack) {
+				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
+				playSound = true;
+			}
 		}
 		if (playSound) {
 			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.7F);
 		}
 		return true;
+	}
+
+	private static void insertAllItemsFromPlayer(TileCache tile, EntityPlayer player) {
+
+		boolean playSound = false;
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+				player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+				playSound = true;
+			}
+		}
+		if (playSound) {
+			player.worldObj.playSoundEffect(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, "random.orb", 0.1F, 0.7F);
+		}
 	}
 
 	@Override
