@@ -28,7 +28,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 
 public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
 
@@ -224,8 +224,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 			return hasGui();
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure.1") + " " + getOwnerName() + "! "
-					+ StringHelper.localize("chat.cofh.secure.2")));
+			player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", getOwnerName()));
 		}
 		return false;
 	}

@@ -17,7 +17,6 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
 import cofh.thermalexpansion.gui.GuiHandler;
@@ -38,7 +37,7 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -579,8 +578,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.cofh.secure.1") + " " + getOwnerName() + "! "
-					+ StringHelper.localize("chat.cofh.secure.2")));
+			player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", getOwnerName()));
 		}
 		return true;
 	}
