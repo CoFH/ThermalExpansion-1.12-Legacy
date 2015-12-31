@@ -295,10 +295,10 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		if (tile.dim) {
 			tag.setBoolean("Dim", tile.dim);
 		}
-		tag.setByte("Mode", tile.mode);
-		if (tile.style != 0) {
-			tag.setByte("Style", tile.style);
+		if (tile.mode != 0) {
+			tag.setByte("Mode", tile.mode);
 		}
+		tag.setByte("Style", tile.style);
 		return tag.hasNoTags() ? null : tag;
 	}
 
