@@ -255,9 +255,6 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
-		if (resource.getFluid() == steam.getFluid()) {
-			return steamTank.drain(resource.amount, doDrain);
-		}
 		if (resource.getFluid() == FluidRegistry.WATER) {
 			return waterTank.drain(resource.amount, doDrain);
 		}
