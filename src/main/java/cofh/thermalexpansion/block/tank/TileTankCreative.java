@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.tank;
 
 import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -45,6 +46,7 @@ public class TileTankCreative extends TileTank {
 			return 0;
 		}
 		tank.setFluid(new FluidStack(resource.getFluid(), FluidContainerRegistry.BUCKET_VOLUME));
+		sendUpdatePacket(Side.CLIENT);
 		updateRender();
 		return 0;
 	}
