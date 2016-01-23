@@ -6,13 +6,11 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.item.ItemDiagram;
 import cofh.thermalexpansion.item.TEItems;
-
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
-
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -39,11 +37,16 @@ public class SchematicHelper {
 				craftSlots.getStackInSlot(i).writeToNBT(itemTag);
 				nbt.setTag("Slot" + i, itemTag);
 				nbt.setString("Name" + i, craftSlots.getStackInSlot(i).getDisplayName());
-				String oreName = ItemHelper.getOreName(craftSlots.getStackInSlot(i));
 
-				if (!oreName.equals(OreDictionaryArbiter.UNKNOWN) && !ItemHelper.isBlacklist(output)) {
-					nbt.setString("Ore" + i, oreName);
+				if (craftSlots.getStackInSlot(i) != null) {
+					ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(craftSlots.getStackInSlot(i));
+					for (String oreName : oreNames) {
+						if (!oreName.startsWith("list") && !oreName.equals(OreDictionaryArbiter.UNKNOWN) && !ItemHelper.isBlacklist(output)) {
+							nbt.setString("Ore" + i, oreName);
+						}
+					}
 				}
+
 			}
 		}
 		nbt.setString("Output", output.stackSize + "x " + output.getDisplayName());
@@ -96,8 +99,9 @@ public class SchematicHelper {
 
 	public static boolean isSchematic(ItemStack stack) {
 
-		return stack == null ? false : stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
-				&& ItemHelper.getItemDamage(stack) == ItemDiagram.Types.SCHEMATIC.ordinal();
+		return stack == null ? false
+				: stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
+						&& ItemHelper.getItemDamage(stack) == ItemDiagram.Types.SCHEMATIC.ordinal();
 	}
 
 	/**
