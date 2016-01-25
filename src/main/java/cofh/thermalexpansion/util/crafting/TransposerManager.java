@@ -284,11 +284,13 @@ public class TransposerManager {
 			this.chance = chance;
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public ItemStack getOutput() {
 
 			if (output != null) {
@@ -297,16 +299,19 @@ public class TransposerManager {
 			return null;
 		}
 
+		@Override
 		public FluidStack getFluid() {
 
 			return fluid.copy();
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;
 		}
 
+		@Override
 		public int getChance() {
 
 			return chance;

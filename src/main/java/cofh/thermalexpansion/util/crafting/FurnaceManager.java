@@ -4,7 +4,6 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.api.crafting.IFurnaceHandler;
 import cofh.thermalexpansion.api.crafting.recipes.IFurnaceRecipe;
 import cofh.thermalfoundation.item.TFItems;
 

@@ -134,16 +134,19 @@ public class ChargerManager {
 			this.energy = energy;
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public ItemStack getOutput() {
 
 			return output.copy();
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;

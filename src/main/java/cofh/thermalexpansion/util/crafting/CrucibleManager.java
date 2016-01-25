@@ -169,16 +169,19 @@ public class CrucibleManager {
 			this.energy = energy;
 		}
 
+		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
+		@Override
 		public FluidStack getOutput() {
 
 			return output.copy();
 		}
 
+		@Override
 		public int getEnergy() {
 
 			return energy;
