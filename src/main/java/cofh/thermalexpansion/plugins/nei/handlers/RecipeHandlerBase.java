@@ -331,6 +331,9 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
 		protected void incrementPrimary() {
 
+			if (inputList == null || inputList.size() <= 0) {
+				return;
+			}
 			if (cycleInput && !inputOreName.equals("Unknown")) {
 				inputOrePosition++;
 				inputOrePosition %= inputList.size();
@@ -346,6 +349,9 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 
 		protected void incrementSecondary() {
 
+			if (secondaryList == null || secondaryList.size() <= 0) {
+				return;
+			}
 			if (cycleSecondary && !secondaryInputOreName.equals("Unknown")) {
 				secondaryOrePosition++;
 				secondaryOrePosition %= secondaryList.size();

@@ -45,7 +45,7 @@ public class GuiPlateExcursion extends GuiBaseAdv {
 
 		super.initGui();
 
-		// generateInfo("tab.thermalexpansion.plate.excursion", 2);
+		generateInfo("tab.thermalexpansion.plate.excursion", 2);
 
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
