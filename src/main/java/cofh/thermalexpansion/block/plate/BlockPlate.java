@@ -123,8 +123,10 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			tile.rotated();
 			int axis = axis_fd.ordinal();
 			if ((axis >> 1) == (tile.alignment >> 1)) {
-				tile.direction = (byte) ((tile.direction + 1) % 6);
-				r = true;
+				if (tile.canRotate()) {
+					tile.direction = (byte) ((tile.direction + 1) % 6);
+					r = true;
+				}
 			} else {
 				// TODO: rotate to next valid alignment
 			}

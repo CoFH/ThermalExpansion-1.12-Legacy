@@ -75,6 +75,11 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 	}
 
+	public boolean canRotate() {
+
+		return true;
+	}
+
 	public void rotated() {
 
 	}

@@ -36,6 +36,12 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 	}
 
 	@Override
+	public boolean canRotate() {
+
+		return false;
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
