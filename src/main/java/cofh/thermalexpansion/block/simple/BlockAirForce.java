@@ -24,6 +24,9 @@ public class BlockAirForce extends BlockAirBase {
 	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
 
 		if (world.isRemote ? ent instanceof EntityFX : ent instanceof EntityPlayer) {
+			if (!world.isRemote) {
+				absorbFallDamage(ent, x, y, z);
+			}
 			return;
 		}
 
@@ -35,14 +38,19 @@ public class BlockAirForce extends BlockAirBase {
 		 */
 	}
 
-	@SuppressWarnings("unused")
-	public static void repositionEntity(World world, int x, int y, int z, Entity ent, ForgeDirection dir, double amount) {
+	private static void absorbFallDamage(Entity ent, int x, int y, int z) {
 
-		double l = amount, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
 		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(ent.posX, ent.posY - ent.yOffset, ent.posZ))) {
 			ent.fallDistance *= 0.4;
 			ent.motionY = 0;
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public static void repositionEntity(World world, int x, int y, int z, Entity ent, ForgeDirection dir, double amount) {
+
+		double l = amount, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
+		absorbFallDamage(ent, x, y, z);
 
 		if (ent.getEntityData().getLong("te:conveyor") == world.getTotalWorldTime()) {
 			return;
@@ -81,7 +89,7 @@ public class BlockAirForce extends BlockAirBase {
 				xO += ent.motionX;
 				zO += ent.motionZ;
 			}
-			if (dir == ForgeDirection.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.yOffset  + yO) != y) {
+			if (dir == ForgeDirection.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.yOffset + yO) != y) {
 				if (world.getBlock(x, y + 1, z) != TEBlocks.blockAirForce) {
 					yO = 0;
 				}
