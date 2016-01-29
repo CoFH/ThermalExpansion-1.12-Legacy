@@ -148,6 +148,7 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void initialize(FMLInitializationEvent event) {
 
+		registerMachineOreDict();
 		TEItems.initialize();
 		TEBlocks.initialize();
 		TEPlugins.initialize();
@@ -310,7 +311,7 @@ public class ThermalExpansion extends BaseMod {
 	}
 
 	/* LOADING FUNCTIONS */
-	void configOptions() {
+	void registerMachineOreDict() {
 
 		String category;
 		String comment;
@@ -320,13 +321,20 @@ public class ThermalExpansion extends BaseMod {
 		comment = "If enabled, ingots are used instead of gears in many default recipes.";
 		String iPrefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
 		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
-				"Signalum", "Lumium", "Enderium")) {
+			"Signalum", "Lumium", "Enderium")) {
 			String prefix = "thermalexpansion:machine";
 			ArrayList<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
 			for (int i = 0; i < partList.size(); i++) {
 				OreDictionary.registerOre(prefix + entry, partList.get(i));
 			}
 		}
+	}
+
+	void configOptions() {
+
+		String category;
+		@SuppressWarnings("unused")
+		String comment;
 
 		/* GRAPHICS */
 		if (CoFHProps.enableColorBlindTextures) {
@@ -336,7 +344,7 @@ public class ThermalExpansion extends BaseMod {
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
 		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
-				"Set to TRUE for Tesseracts to use an alternate starfield shader.");
+			"Set to TRUE for Tesseracts to use an alternate starfield shader.");
 
 		/* INTERFACE */
 		category = "Interface.CreativeTab";
