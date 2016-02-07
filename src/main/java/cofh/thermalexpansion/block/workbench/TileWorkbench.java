@@ -184,7 +184,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 						if (invCopy[j].getItem().hasContainerItem(invCopy[j])) {
 							ItemStack containerStack = invCopy[j].getItem().getContainerItem(invCopy[j]);
 
-							if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
+							if (containerStack == null || containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
 							if (containerStack != null
