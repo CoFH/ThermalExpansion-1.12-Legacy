@@ -15,16 +15,14 @@ import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.item.TEAugments;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-import java.util.Arrays;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.config.Property;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -44,31 +42,25 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		processItems[1] = new ItemStack(Blocks.stone);
 		processItems[2] = new ItemStack(Blocks.obsidian);
 
-		String category = "RecipeManagers.Extruder.Recipes.";
+		String category = "RecipeManagers.Extruder.Recipes";
 
-		int selection = 0;
-		for (String subCat : Arrays.asList("Cobblestone", "Stone", "Obsidian")) {
+		processLava[0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
 
-			ThermalExpansion.config.removeProperty(category.substring(0, category.length() - 1), subCat + ".Water");
-			ThermalExpansion.config.removeProperty(category.substring(0, category.length() - 1), subCat + ".Lava");
-			ThermalExpansion.config.removeProperty(category.substring(0, category.length() - 1), subCat + ".Time");
-			String realCat = category + subCat;
+		processWater[0][0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[0][1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[0][2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
 
-			Property prop = ThermalExpansion.config.getProperty(realCat, "Lava", processLava[selection]).setMinValue(0).setMaxValue(TEProps.MAX_FLUID_SMALL);
-			processLava[selection] = MathHelper.clamp(prop.getInt(), 0, TEProps.MAX_FLUID_SMALL);
-
-			realCat += ".Level";
-			for (int level = 0; level < 4; ++level) {
-				prop = ThermalExpansion.config.getProperty(realCat + level, "Water", processWater[level][selection]).setMinValue(0).setMaxValue(TEProps.MAX_FLUID_SMALL);
-				processWater[level][selection] = MathHelper.clamp(prop.getInt(), 0, TEProps.MAX_FLUID_SMALL);
-
-				int minTime = 4, maxTime = 72000;
-				prop = ThermalExpansion.config.getProperty(realCat + level, "Time", processTime[level][selection]).setMinValue(minTime).setMaxValue(maxTime);
-				processTime[level][selection] = MathHelper.clamp(prop.getInt(), minTime, maxTime);
+		for (int i = 1; i < 3; i++) {
+			for (int j = 0; j < 2; j++) {
+				processWater[i][j] = processWater[i - 1][j] / 2;
 			}
-
-			++selection;
 		}
+
+		ThermalExpansion.config.removeProperty(category, "Cobblestone.Time");
+		ThermalExpansion.config.removeProperty(category, "Stone.Time");
+		ThermalExpansion.config.removeProperty(category, "Obsidian.Time");
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 4;
@@ -152,10 +144,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < 1 || coldTank.getFluidAmount() < 1) {
-			return false;
-		}
-		if (hotTank.getFluidAmount() < processLava[prevSelection] || coldTank.getFluidAmount() < processWater[processLevel][prevSelection]) {
+		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME, processLava[curSelection])
+				|| coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME, processWater[processLevel][curSelection])) {
 			return false;
 		}
 		if (inventory[0] == null) {
