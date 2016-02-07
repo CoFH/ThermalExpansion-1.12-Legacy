@@ -221,7 +221,8 @@ public class ThermalExpansion extends BaseMod {
 	@EventHandler
 	public void serverStart(FMLServerAboutToStartEvent event) {
 
-		TeleportChannelRegistry.serverStart(event);
+		TeleportChannelRegistry.createServerRegistry();
+		TeleportChannelRegistry.createClientRegistry();
 	}
 
 	@EventHandler
@@ -254,6 +255,7 @@ public class ThermalExpansion extends BaseMod {
 		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info("Receiving Server Configuration...");
+		TeleportChannelRegistry.createClientRegistry();
 	}
 
 	public PacketCoFHBase getConfigSync() {
