@@ -11,12 +11,16 @@ import cofh.thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
 import cpw.mods.fml.common.Optional;
+
 import gnu.trove.map.hash.THashMap;
+
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
+
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -180,7 +184,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 
 		if (schematic != null && craftResult.getStackInSlot(0) != null) {
 			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
+					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorldObj(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(myTile.selectedSchematic, newSchematic);
 		}

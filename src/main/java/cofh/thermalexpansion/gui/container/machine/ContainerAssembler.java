@@ -13,6 +13,7 @@ import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -85,7 +86,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 
 		if (schematic != null && resultSlot.getHasStack()) {
 			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, craftResult.getStackInSlot(0)));
+					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorldObj(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(0, newSchematic);
 			for (int i = 0; i < 9; i++) {

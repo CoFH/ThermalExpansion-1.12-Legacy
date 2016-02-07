@@ -6,14 +6,19 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.item.ItemDiagram;
 import cofh.thermalexpansion.item.TEItems;
+
 import gnu.trove.map.TMap;
 import gnu.trove.map.hash.THashMap;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 
@@ -21,6 +26,84 @@ public class SchematicHelper {
 
 	private SchematicHelper() {
 
+	}
+
+	private static void copyInventory(IInventory src, IInventory dest) {
+
+		for (int i = 0; i < src.getSizeInventory() && i < dest.getSizeInventory(); ++i) {
+			dest.setInventorySlotContents(i, ItemHelper.cloneStack(src.getStackInSlot(i)));
+		}
+	}
+
+	/* MUST BE PASSED AN INVENTORY WITH 9 SLOTS! */
+	public static NBTTagCompound getNBTForSchematic(InventoryCrafting craftSlots, World world, ItemStack output) {
+
+		NBTTagCompound nbt = new NBTTagCompound();
+		IRecipe recipe = null;
+		InventoryCrafting workingSet = new InventoryCraftingFalse(3, 3);
+		copyInventory(craftSlots, workingSet); // defensive copy
+		{
+			List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+			for (int i = 0, e = recipes.size(); i < e; ++i) {
+				IRecipe irecipe = recipes.get(i);
+				if (irecipe.matches(workingSet, world)) {
+					if (ItemHelper.itemsIdentical(output, irecipe.getCraftingResult(workingSet))) {
+						recipe = irecipe;
+						break;
+					} else {
+						copyInventory(craftSlots, workingSet); // defensive copy
+					}
+				}
+			}
+		}
+		if (recipe == null) {
+			// no recipe for the exact output? use the dumb search
+			return getNBTForSchematic(craftSlots, output);
+		}
+		for (int i = 0; i < 9 && i < craftSlots.getSizeInventory(); i++) {
+			if (craftSlots.getStackInSlot(i) == null) {
+				nbt.removeTag("Slot" + i);
+				nbt.removeTag("Name" + i);
+				nbt.removeTag("Ore" + i);
+			} else {
+				NBTTagCompound itemTag = new NBTTagCompound();
+				craftSlots.getStackInSlot(i).writeToNBT(itemTag);
+				nbt.setTag("Slot" + i, itemTag);
+				nbt.setString("Name" + i, craftSlots.getStackInSlot(i).getDisplayName());
+
+				ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(craftSlots.getStackInSlot(i));
+				if (oreNames != null) {
+					String validName = "";
+					int validSize = 0;
+					for (String oreName : oreNames) {
+						if (oreName.equals(OreDictionaryArbiter.UNKNOWN)) {
+							continue;
+						}
+						l: {
+							copyInventory(craftSlots, workingSet);
+							int size = 0;
+							for (ItemStack stack : OreDictionaryArbiter.getOres(oreName)) {
+								workingSet.setInventorySlotContents(i, ItemHelper.cloneStack(stack));
+								if (!recipe.matches(workingSet, world)) {
+									break l;
+								}
+								++size;
+							}
+							if (size > validSize) {
+								validName = oreName;
+								validSize = size;
+							}
+						}
+					}
+					if (validSize > 1) { // don't use ore names for single registrations. might break in the future.
+						nbt.setString("Ore" + i, validName);
+					}
+				}
+
+			}
+		}
+		nbt.setString("Output", output.stackSize + "x " + output.getDisplayName());
+		return nbt;
 	}
 
 	/* MUST BE PASSED AN INVENTORY WITH 9 SLOTS! */
@@ -38,8 +121,8 @@ public class SchematicHelper {
 				nbt.setTag("Slot" + i, itemTag);
 				nbt.setString("Name" + i, craftSlots.getStackInSlot(i).getDisplayName());
 
-				if (craftSlots.getStackInSlot(i) != null) {
-					ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(craftSlots.getStackInSlot(i));
+				ArrayList<String> oreNames = OreDictionaryArbiter.getAllOreNames(craftSlots.getStackInSlot(i));
+				if (oreNames != null) {
 					for (String oreName : oreNames) {
 						if (!oreName.startsWith("list") && !oreName.equals(OreDictionaryArbiter.UNKNOWN) && !ItemHelper.isBlacklist(output)) {
 							nbt.setString("Ore" + i, oreName);
