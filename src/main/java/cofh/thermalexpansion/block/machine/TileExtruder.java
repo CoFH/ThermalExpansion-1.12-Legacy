@@ -144,8 +144,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME, processLava[curSelection])
-				|| coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME, processWater[processLevel][curSelection])) {
+		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processLava[curSelection])
+				|| coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
 			return false;
 		}
 		if (inventory[0] == null) {
