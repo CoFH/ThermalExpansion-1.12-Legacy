@@ -53,7 +53,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		processWater[0][2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
 
 		for (int i = 1; i < 3; i++) {
-			for (int j = 0; j < 2; j++) {
+			for (int j = 0; j < 3; j++) {
 				processWater[i][j] = processWater[i - 1][j] / 2;
 			}
 		}
