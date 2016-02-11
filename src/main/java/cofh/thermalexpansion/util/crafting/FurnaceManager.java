@@ -155,7 +155,7 @@ public class FurnaceManager {
 		ItemStack output;
 
 		for (ItemStack key : smeltingList.keySet()) {
-			if (key == null || recipeExists(key)) {
+			if (key == null || key.getItem() == null || recipeExists(key)) {
 				continue;
 			}
 			output = smeltingList.get(key);
