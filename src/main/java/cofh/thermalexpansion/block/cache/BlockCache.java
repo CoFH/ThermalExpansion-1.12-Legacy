@@ -109,9 +109,9 @@ public class BlockCache extends BlockTEBase {
 				tile.toggleLock();
 
 				if (tile.locked) {
-					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.8F);
+					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.2F, 0.8F);
 				} else {
-					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.1F, 0.6F);
+					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.5F);
 				}
 				return true;
 			}
