@@ -126,11 +126,12 @@ public class BlockCache extends BlockTEBase {
 		player.getEntityData().setLong("TE:lastCacheClick", currentTime);
 
 		if (!player.capabilities.isCreativeMode) {
-			if (tile.getStoredItemType() != null && currentTime - time < 15) {
-				insertAllItemsFromPlayer(tile, player);
-			} else if (ret != heldStack) {
+			if (ret != heldStack) {
 				player.inventory.setInventorySlotContents(player.inventory.currentItem, ret);
 				playSound = true;
+			}
+			if (tile.getStoredItemType() != null && currentTime - time < 15) {
+				playSound &= !insertAllItemsFromPlayer(tile, player);
 			}
 		}
 		if (playSound) {
@@ -139,7 +140,7 @@ public class BlockCache extends BlockTEBase {
 		return true;
 	}
 
-	private static void insertAllItemsFromPlayer(TileCache tile, EntityPlayer player) {
+	private static boolean insertAllItemsFromPlayer(TileCache tile, EntityPlayer player) {
 
 		boolean playSound = false;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
@@ -151,6 +152,7 @@ public class BlockCache extends BlockTEBase {
 		if (playSound) {
 			player.worldObj.playSoundEffect(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, "random.orb", 0.1F, 0.7F);
 		}
+		return playSound;
 	}
 
 	@Override
