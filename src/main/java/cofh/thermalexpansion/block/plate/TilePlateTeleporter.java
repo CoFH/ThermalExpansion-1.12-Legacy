@@ -484,6 +484,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		pendingFrequency = nbt.hasKey("Frequency") ? new Integer(nbt.getInteger("Frequency")) : null;
 		destination = nbt.hasKey("Destination") ? nbt.getInteger("Destination") : -1;
 
+		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
+		isPowered = rsTag.getBoolean("Power");
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
 	@Override
@@ -493,6 +496,11 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		nbt.setInteger("Frequency", frequency);
 		nbt.setInteger("Destination", destination);
+
+		NBTTagCompound rsTag = new NBTTagCompound();
+		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		nbt.setTag("RS", rsTag);
 	}
 
 	@Override

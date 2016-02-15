@@ -236,8 +236,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		distance = nbt.getByte("Dist");
 		realDist = nbt.getByte("rDist");
-		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
+		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 		isPowered = rsTag.getBoolean("Power");
 		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
@@ -249,8 +249,8 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		nbt.setByte("Dist", distance);
 		nbt.setByte("rDist", realDist);
-		NBTTagCompound rsTag = new NBTTagCompound();
 
+		NBTTagCompound rsTag = new NBTTagCompound();
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
