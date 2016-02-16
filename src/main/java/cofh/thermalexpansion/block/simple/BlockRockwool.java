@@ -19,6 +19,8 @@ import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockRockwool extends Block implements IInitializer {
@@ -57,6 +59,22 @@ public class BlockRockwool extends Block implements IInitializer {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
+	}
+
+	@Override
+	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int colour) {
+
+		int meta = world.getBlockMetadata(x, y, z);
+		if (meta != colour) {
+			return world.setBlockMetadataWithNotify(x, y, z, colour, 3);
+		}
+		return false;
+	}
+
+	@Override
+	public MapColor getMapColor(int p_149728_1_) {
+
+		return MapColor.getMapColorForBlockColored(p_149728_1_);
 	}
 
 	/* IInitializer */
