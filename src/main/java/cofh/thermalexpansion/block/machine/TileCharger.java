@@ -5,7 +5,6 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.mod.updater.ModVersion;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
@@ -341,24 +340,6 @@ public class TileCharger extends TileMachineBase {
 
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
-
-		// TODO:
-		/** PATCH LOGIC for B9 Slot Addition - to be removed in RELEASE */
-		String version = nbt.getString("Version");
-
-		if (new ModVersion("", version).compareTo(new ModVersion("", "1.7.10R4.0.0B9")) < 0) {
-			inventory[2] = ItemHelper.cloneStack(inventory[1]);
-			inventory[1] = null;
-
-			if (inventory[0] != null) {
-				inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-				inventory[0].stackSize--;
-
-				if (inventory[0].stackSize <= 0) {
-					inventory[0] = null;
-				}
-			}
-		}
 	}
 
 	@Override

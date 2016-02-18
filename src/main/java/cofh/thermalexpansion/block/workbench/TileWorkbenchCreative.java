@@ -23,7 +23,6 @@ public class TileWorkbenchCreative extends TileWorkbench {
 		super(metadata);
 	}
 
-	// TODO: crafting stuff~
 	@Override
 	public boolean createItem(boolean doCreate, ItemStack output) {
 

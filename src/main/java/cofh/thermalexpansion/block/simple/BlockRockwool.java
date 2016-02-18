@@ -90,7 +90,6 @@ public class BlockRockwool extends Block implements IInitializer {
 		rockWool = new ItemStack(this);
 
 		GameRegistry.registerCustomItemStack("clothRock", rockWool);
-
 		OreDictionary.registerOre("blockClothRock", new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE));
 
 		return true;
