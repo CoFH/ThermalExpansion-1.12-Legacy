@@ -65,7 +65,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 
 		super.initGui();
 
-		generateInfo("tab.thermalexpansion.plate.translocate", 2);
+		generateInfo("tab.thermalexpansion.plate.teleport", 2);
 
 		Keyboard.enableRepeatEvents(true);
 		TeleportChannelRegistry.requestChannelList(myTile.getChannelString());
