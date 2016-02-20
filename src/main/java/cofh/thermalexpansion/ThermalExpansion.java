@@ -345,7 +345,7 @@ public class ThermalExpansion extends BaseMod {
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
-		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", false,
+		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", true,
 			"Set to TRUE for Tesseracts to use an alternate starfield shader.");
 
 		/* INTERFACE */
