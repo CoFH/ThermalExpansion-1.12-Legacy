@@ -21,6 +21,7 @@ import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class SchematicHelper {
 
@@ -83,7 +84,18 @@ public class SchematicHelper {
 							copyInventory(craftSlots, workingSet);
 							int size = 0;
 							for (ItemStack stack : OreDictionaryArbiter.getOres(oreName)) {
-								workingSet.setInventorySlotContents(i, ItemHelper.cloneStack(stack));
+								NBTTagCompound tag = stack.getTagCompound();
+								int damage = Math.max(0, stack.getItemDamage());
+								if (damage == OreDictionary.WILDCARD_VALUE) {
+									damage = 0;
+									// may or may not work. woo. can't iterate, may crash. could be 37k valid values. could have invalid values in the middle.
+									// wish net.minecraft.item.Item.getSubItems worked on server
+								}
+								stack = new ItemStack(stack.getItem(), 1, damage);
+								if (tag != null) {
+									stack.setTagCompound((NBTTagCompound) tag.copy());
+								}
+								workingSet.setInventorySlotContents(i, stack);
 								if (!recipe.matches(workingSet, world)) {
 									break l;
 								}
