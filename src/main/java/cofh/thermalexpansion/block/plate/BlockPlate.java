@@ -30,6 +30,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MovingObjectPosition;
@@ -72,6 +73,21 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	public boolean openConfigGui(IBlockAccess world, int x, int y, int z, ForgeDirection side, EntityPlayer player) {
 
 		return ((TilePlateBase) world.getTileEntity(x, y, z)).openGui(player);
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+
+		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
+		TilePlateBase tile = (TilePlateBase) world.getTileEntity(x, y, z);
+
+		if (tile instanceof TilePlatePoweredBase) {
+			if (tag == null) {
+				tag = new NBTTagCompound();
+			}
+			tag.setInteger("Energy", ((TilePlatePoweredBase) tile).getEnergyStored(ForgeDirection.UNKNOWN));
+		}
+		return tag;
 	}
 
 	@Override
@@ -393,7 +409,13 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	public static enum Types {
-		FRAME, SIGNAL, IMPULSE, TRANSLOCATE, CHARGE, EXCURSION, TELEPORT;
+		FRAME,
+		SIGNAL,
+		IMPULSE,
+		TRANSLOCATE,
+		CHARGE,
+		EXCURSION,
+		TELEPORT;
 
 		public int texture = ordinal() > 3 ? 7 : 2;
 	}
