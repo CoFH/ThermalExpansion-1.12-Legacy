@@ -11,6 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -466,6 +467,13 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 			setStoredItemCount(getStoredCount() - ret.stackSize);
 		}
 		return ret;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldRenderInPass(int pass) {
+
+		return pass == 0 ? storedStack != null : false;
 	}
 
 }
