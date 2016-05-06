@@ -177,6 +177,7 @@ public class BlockCache extends BlockTEBase {
 			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
 		}
 		if (playSound) {
+			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.pop", 0.4F, 0.8F);
 		}
 	}
 
