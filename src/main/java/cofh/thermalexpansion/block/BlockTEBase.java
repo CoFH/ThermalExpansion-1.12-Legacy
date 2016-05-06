@@ -80,10 +80,13 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 			Utils.usedWrench(player, x, y, z);
 			return true;
 		}
-		if (basicGui && ServerHelper.isServerWorld(world)) {
-			return tile.openGui(player);
+		if (basicGui) {
+			if (ServerHelper.isServerWorld(world)) {
+				return tile.openGui(player);
+			}
+			return tile.hasGui();
 		}
-		return basicGui;
+		return false;
 	}
 
 	@Override
