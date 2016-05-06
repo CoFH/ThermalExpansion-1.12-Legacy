@@ -10,7 +10,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 
 public class ItemBlockLight extends ItemBlock {
@@ -74,23 +73,7 @@ public class ItemBlockLight extends ItemBlock {
 			field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
 			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
 			side = Math.min(6, side ^ 1);
-			switch (tile.style) {
-			case 1: // plate
-			case 2: // button
-			case 3: // tall
-				tile.alignment = (byte) side;
-				break;
-			case 4: // wide
-				int l = MathHelper.floor_float(player.rotationYaw * 4.0F / 360.0F + 0.5f) & 1;
-				tile.alignment = (byte) (side | (l << 3));
-				break;
-			case 5: // torch
-				tile.alignment = (byte) side;
-				break;
-			case 0:
-			default:
-				break;
-			}
+			BlockLight.setTileAlignment(tile, player, stack, side, hitX, hitY, hitZ);
 		}
 		return true;
 	}

@@ -49,30 +49,43 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 	static {
 
-		double d1 = 0;
-		models = new Cuboid6[6];
+		final double d1 = 0;
+		models = new Cuboid6[9];
+		int i = 0;
 		{ // full block
-			models[0] = new Cuboid6(d1, d1, d1, 1 - d1, 1 - d1, 1 - d1);
+			models[i++] = new Cuboid6(d1, d1, d1, 1 - d1, 1 - d1, 1 - d1);
 		}
 		{ // flat lamp
 			double d4 = 1. / 16, d5 = 15. / 16, d6 = 2. / 16;
-			models[1] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
 		}
 		{ // button lamp
 			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
-			models[2] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
 		}
 		{ // tall lamp
 			double d4 = 0.5 - 3. / 16, d5 = 0.5 + 3. / 16, d6 = 7. / 16;
-			models[3] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
 		}
 		{ // wide lamp
 			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
-			models[4] = new Cuboid6(d4 + d1, d1, d1, d5 - d1, d6 - d1, 1 - d1);
+			models[i++] = new Cuboid6(d4 + d1, d1, d1, d5 - d1, d6 - d1, 1 - d1);
 		}
 		{ // torch lamp
 			double d4 = 0.5 - 1. / 16, d5 = 0.5 + 1. / 16, d6 = 10. / 16;
-			models[5] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+		{ // display lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
+			models[i++] = new Cuboid6(d4 + d1, d1, 4. / 16 + d1, d5 - d1, d6 - d1, 12. / 16 - d1);
+		}
+		{ // pole lamp
+			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 1;
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
+		}
+		{ // slab lamp
+			double d4 = 0, d5 = 1, d6 = 0.5;
+			models[i++] = new Cuboid6(d4 + d1, d1, d4 + d1, d5 - d1, d6 - d1, d5 - d1);
 		}
 	}
 
@@ -80,15 +93,18 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 		Transformation ret = TorchTransformation.sideTransformations[0];
 		switch (style) {
-		case 1:
-		case 2:
-		case 3:
+		case 1: // plate
+		case 2: // button
+		case 3: // tall
+		case 7: // pole
+		case 8: // slab
 			ret = Rotation.sideRotations[alignment].at(Vector3.center);
 			break;
-		case 4:
+		case 4: // wide
+		case 6: // display
 			ret = Rotation.quarterRotations[alignment >> 3].with(Rotation.sideRotations[alignment & 7]).at(Vector3.center);
 			break;
-		case 5:
+		case 5: // torch
 			ret = TorchTransformation.sideTransformations[alignment];
 			break;
 		case 0:
@@ -97,6 +113,42 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 
 		return ret;
+	}
+
+	public static void setTileAlignment(TileLight tile, EntityPlayer player, ItemStack stack, int side, float hitX, float hitY, float hitZ) {
+
+		switch (tile.style) {
+		case 1: // plate
+		case 2: // button
+		case 3: // tall
+		case 7: // pole
+		case 8: // slab
+			tile.alignment = (byte) side;
+			break;
+		case 4: // wide
+		case 6: // display
+			int l = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5f) & 1;
+			tile.alignment = (byte) (side | (l << 3));
+			break;
+		case 5: // torch
+			tile.alignment = (byte) side;
+			break;
+		case 0:
+		default:
+			break;
+		}
+	}
+
+	private static void addRecipes(ItemStack lamp) {
+
+		GameRegistry.addRecipe(new RecipeStyle(2, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 1))); // plate
+		GameRegistry.addRecipe(new RecipeStyle(1, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 2))); // button
+		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 2, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 3))); // tall
+		GameRegistry.addRecipe(new RecipeStyle(3, 1, lamp, 7, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 3), 4))); // wide
+		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 4), 5))); // torch
+		GameRegistry.addRecipe(new RecipeStyle(2, 1, lamp, 2, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 6))); // display
+		GameRegistry.addRecipe(new RecipeStyle(1, 3, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 3), 7))); // pole
+		GameRegistry.addRecipe(new RecipeStyle(3, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 6), 8))); // slab
 	}
 
 	public BlockLight() {
@@ -299,7 +351,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			tag.setByte("Mode", tile.mode);
 		}
 		tag.setByte("Style", tile.style);
-		return tag.hasNoTags() ? null : tag;
+		return tag;
 	}
 
 	/* IInitializer */
@@ -338,15 +390,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			addRecipes(lampLumium);
 		}
 		return true;
-	}
-
-	private static void addRecipes(ItemStack lamp) {
-
-		GameRegistry.addRecipe(new RecipeStyle(2, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 1)));
-		GameRegistry.addRecipe(new RecipeStyle(1, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 2)));
-		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 2, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 3)));
-		GameRegistry.addRecipe(new RecipeStyle(3, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 6), 4)));
-		GameRegistry.addRecipe(new RecipeStyle(1, 2, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 4), 5)));
 	}
 
 	public static enum Types {

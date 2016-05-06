@@ -6,6 +6,7 @@ import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.repack.codechicken.lib.render.CCModel;
 import cofh.repack.codechicken.lib.render.CCRenderState;
+import cofh.repack.codechicken.lib.vec.Cuboid6;
 import cofh.repack.codechicken.lib.vec.Transformation;
 import cofh.repack.codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.block.TEBlocks;
@@ -64,49 +65,18 @@ public class RenderLight implements ISimpleBlockRenderingHandler, IItemRenderer 
 
 	private static void generateModels() {
 
-		double d1 = RenderHelper.RENDER_OFFSET;
-		double d2 = 2.0D * d1;
-		double d3 = 0.0625D - d1;
+		final double d1 = RenderHelper.RENDER_OFFSET;
+		final double d2 = 2.0D * d1;
+		final double d3 = 0.0625D - d1;
 
-		int i = 0;
-		modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d2, d2, d2, 1 - d2, 1 - d2, 1 - d2);
-		modelHalo[i] = CCModel.quadModel(24).generateBlock(0, -d3, -d3, -d3, 1 + d3, 1 + d3, 1 + d3);
-
-		{ // flat lamp
-			double d4 = 1. / 16, d5 = 15. / 16, d6 = 2. / 16;
-			++i;
-			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
-			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
-		}
-		{ // button lamp
-			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
-			++i;
-			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
-			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
-		}
-		{ // tall lamp
-			double d4 = 0.5 - 3. / 16, d5 = 0.5 + 3. / 16, d6 = 7. / 16;
-			++i;
-			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
-			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
-		}
-		{ // wide lamp
-			double d4 = 0.5 - 2. / 16, d5 = 0.5 + 2. / 16, d6 = 2. / 16;
-			++i;
-			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d2, d5 - d2, d6 - d2, 1 - d2);
-			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, -d3, d5 + d3, d6 + d3, 1 + d3);
-		}
-		{ // torch lamp
-			double d4 = 0.5 - 1. / 16, d5 = 0.5 + 1. / 16, d6 = 10. / 16;
-			++i;
-			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, d4 + d2, d2, d4 + d2, d5 - d2, d6 - d2, d5 - d2);
-			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, d4 - d3, -d3, d4 - d3, d5 + d3, d6 + d3, d5 + d3);
-		}
-
-		for (; i >= 0; --i) {
-			modelFrame[i] = CCModel.quadModel(24).generateBlock(0, BlockLight.models[i]);
-			modelFrame[i].computeNormals().shrinkUVs(1. / 256);
+		Cuboid6 model = new Cuboid6(Cuboid6.full);
+		for (int i = BlockLight.models.length; i-- > 0; ) {
+			model.set(BlockLight.models[i]);
+			modelFrame[i] = CCModel.quadModel(24).generateBlock(0, model);
+			modelFrame[i].computeNormals().shrinkUVs(d1);
+			modelCenter[i] = CCModel.quadModel(24).generateBlock(0, model.expand(-d2));
 			modelCenter[i].computeNormals();
+			modelHalo[i] = CCModel.quadModel(24).generateBlock(0, model.expand(d2 + d3));
 			modelHalo[i].computeNormals().shrinkUVs(d3);
 		}
 	}
