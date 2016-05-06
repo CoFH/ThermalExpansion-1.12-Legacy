@@ -23,6 +23,15 @@ public class ItemBlockCache extends ItemBlockBase {
 	}
 
 	@Override
+	public int getItemStackLimit(ItemStack stack) {
+
+		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Item")) {
+			return super.getItemStackLimit(stack);
+		}
+		return 64;
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.cache." + BlockCache.NAMES[ItemHelper.getItemDamage(stack)] + ".name";

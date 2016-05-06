@@ -15,6 +15,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.util.Constants;
 
 public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryContainerItem {
 
@@ -25,6 +26,16 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 		setMaxDamage(0);
 		setMaxStackSize(1);
 		setNoRepair();
+	}
+
+	@Override
+	public int getItemStackLimit(ItemStack stack) {
+
+		if (stack.stackTagCompound != null && !(!stack.stackTagCompound.hasKey("Inventory", Constants.NBT.TAG_LIST)
+				|| stack.stackTagCompound.getTagList("Inventory", stack.stackTagCompound.getId()).tagCount() <= 0)) {
+			return super.getItemStackLimit(stack);
+		}
+		return 64;
 	}
 
 	@Override
