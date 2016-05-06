@@ -164,7 +164,7 @@ public class BlockCache extends BlockTEBase {
 		boolean playSound = false;
 		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
 
-		int extractAmount = player.isSneaking() ? 1 : 64;
+		int extractAmount = !player.isSneaking() ? 1 : 64;
 		ItemStack extract = tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, true);
 
 		if (!player.capabilities.isCreativeMode) {
