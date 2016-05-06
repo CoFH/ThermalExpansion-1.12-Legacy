@@ -123,7 +123,7 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 
 		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
 
-		if (nbt != null) {
+		if (nbt != null && !nbt.hasNoTags()) {
 			dropBlock.setTagCompound(nbt);
 		}
 		if (!simulate) {

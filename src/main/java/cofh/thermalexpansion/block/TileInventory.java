@@ -310,7 +310,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 				list.appendTag(tag);
 			}
 		}
-		nbt.setTag("Inventory", list);
+		if (list.tagCount() > 0) {
+			nbt.setTag("Inventory", list);
+		}
 	}
 
 	/* NETWORK METHODS */
