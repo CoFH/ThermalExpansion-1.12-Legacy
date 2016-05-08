@@ -85,6 +85,12 @@ public class SawmillManager {
 		addRecipe(1600, new ItemStack(Items.wooden_pickaxe), new ItemStack(Blocks.planks, 3), TEItems.sawdust);
 		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 3), TEItems.sawdust);
 		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
+
+		addRecipe(800, new ItemStack(Items.item_frame), new ItemStack(Items.leather, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
+		addRecipe(1600, new ItemStack(Items.leather_helmet), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 10);
+		addRecipe(2400, new ItemStack(Items.leather_chestplate), new ItemStack(Items.leather, 6), new ItemStack(Items.leather, 1), 25);
+		addRecipe(2000, new ItemStack(Items.leather_leggings), new ItemStack(Items.leather, 5), new ItemStack(Items.leather, 1), 15);
+		addRecipe(1600, new ItemStack(Items.leather_boots), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 5);
 	}
 
 	public static void loadRecipes() {
