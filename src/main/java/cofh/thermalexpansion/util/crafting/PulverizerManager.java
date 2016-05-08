@@ -102,7 +102,7 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.glowstone), new ItemStack(Items.glowstone_dust, 4));
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 12, 4), TFItems.dustSulfur, 20);
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, 25);
-		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 2), TFItems.dustSulfur, 15);
+		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 3), TFItems.dustSulfur, 15);
 
 		for (int i = 0; i < 3; i++) {
 			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
