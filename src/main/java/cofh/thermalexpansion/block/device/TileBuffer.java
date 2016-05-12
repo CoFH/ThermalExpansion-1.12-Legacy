@@ -237,7 +237,6 @@ public class TileBuffer extends TileDeviceBase {
 		}
 		facing = (byte) side;
 		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 2;
 		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
