@@ -72,7 +72,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	public ItemStack getStack() {
 
 		myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
-		myContainer.onCraftMatrixChanged(null);
+		//myContainer.onCraftMatrixChanged(null);
 		return this.inventory.getStackInSlot(getSlotIndex());
 	}
 
