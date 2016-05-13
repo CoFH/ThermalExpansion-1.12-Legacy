@@ -73,14 +73,14 @@ public class ItemPump extends ItemEnergyContainerBase {
 		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == INPUT);
 
 		if (pos != null) {
-			if (ServerHelper.isServerWorld(world)) {
-				TileEntity tile = world.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
-				ForgeDirection fd = ForgeDirection.values()[pos.sideHit];
-				FluidStack resource;
-				boolean success = false;
+			TileEntity tile = world.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
+			ForgeDirection fd = ForgeDirection.values()[pos.sideHit];
+			FluidStack resource;
+			boolean success = false;
 
-				if (getMode(stack) == INPUT) {
-					if (FluidHelper.isFluidHandler(tile)) {
+			if (getMode(stack) == INPUT) {
+				if (FluidHelper.isFluidHandler(tile)) {
+					if (ServerHelper.isServerWorld(world)) {
 						IFluidHandler handler = (IFluidHandler) tile;
 						resource = handler.drain(fd, FluidContainerRegistry.BUCKET_VOLUME, false);
 
@@ -90,20 +90,47 @@ public class ItemPump extends ItemEnergyContainerBase {
 						} else {
 							handler.drain(fd, fillFluidContainerItems(resource, player.inventory, true), true);
 						}
-						success = true;
-					} else {
-						resource = FluidHelper.getFluidFromWorld(world, pos.blockX, pos.blockY, pos.blockZ, false);
-						if (canFillFluidContainerItems(resource, player.inventory)) {
+					}
+					success = true;
+				} else {
+					resource = FluidHelper.getFluidFromWorld(world, pos.blockX, pos.blockY, pos.blockZ, false);
+					if (canFillFluidContainerItems(resource, player.inventory)) {
+						if (ServerHelper.isServerWorld(world)) {
 							fillFluidContainerItems(resource, player.inventory, true);
 							world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+						}
+						success = true;
+					}
+				}
+			} else if (getMode(stack) == OUTPUT) {
+				if (FluidHelper.isFluidHandler(tile)) {
+					IFluidHandler handler = (IFluidHandler) tile;
+					FluidTankInfo[] tankInfo = handler.getTankInfo(fd);
+
+					if (tankInfo != null) {
+						ItemStack container = null;
+						for (int i = 0; i < tankInfo.length; i++) {
+							resource = tankInfo[i].fluid;
+							container = findDrainContainerItem(resource, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+							if (container != null) {
+								break;
+							}
+						}
+						if (container != null) {
+							if (ServerHelper.isServerWorld(world)) {
+								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME);
+
+								if (handler.fill(fd, fillStack, false) > 0) {
+									containerItem.drain(container, handler.fill(fd, fillStack, true), true);
+								} else {
+									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, fillStack, true), true);
+								}
+							}
 							success = true;
 						}
-					}
-				} else if (getMode(stack) == OUTPUT) {
-					if (FluidHelper.isFluidHandler(tile)) {
-						IFluidHandler handler = (IFluidHandler) tile;
-						FluidTankInfo[] tankInfo = handler.getTankInfo(fd);
-
+					} else {
+						tankInfo = handler.getTankInfo(ForgeDirection.UNKNOWN);
 						if (tankInfo != null) {
 							ItemStack container = null;
 							for (int i = 0; i < tankInfo.length; i++) {
@@ -114,80 +141,63 @@ public class ItemPump extends ItemEnergyContainerBase {
 								}
 							}
 							if (container != null) {
-								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME);
-
-								if (handler.fill(fd, fillStack, false) > 0) {
-									containerItem.drain(container, handler.fill(fd, fillStack, true), true);
-								} else {
-									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, fillStack, true), true);
-								}
-								success = true;
-							}
-						} else {
-							tankInfo = handler.getTankInfo(ForgeDirection.UNKNOWN);
-							if (tankInfo != null) {
-								ItemStack container = null;
-								for (int i = 0; i < tankInfo.length; i++) {
-									resource = tankInfo[i].fluid;
-									container = findDrainContainerItem(resource, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
-									if (container != null) {
-										break;
-									}
-								}
-								if (container != null) {
+								if (ServerHelper.isServerWorld(world)) {
 									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
 									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, new FluidStack(containerItem.getFluid(container),
 											FluidContainerRegistry.BUCKET_VOLUME), true), true);
-									success = true;
 								}
+								success = true;
 							}
 						}
-					} else {
-						Block block = null;
-						ItemStack container = null;
-						container = findDrainContainerItem(null, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+					}
+				} else {
+					Block block = null;
+					ItemStack container = null;
+					container = findDrainContainerItem(null, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
 
-						if (container != null) {
-							IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-							Fluid fluid = containerItem.getFluid(container).getFluid();
-							block = fluid.getBlock();
+					if (container != null) {
+						IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+						Fluid fluid = containerItem.getFluid(container).getFluid();
+						block = fluid.getBlock();
 
-							if (fluid.getName() == "water") {
-								block = Blocks.flowing_water;
-							} else if (fluid.getName() == "lava") {
-								block = Blocks.flowing_lava;
-							}
-							if (block != null) {
-								int[] coords = BlockHelper.getAdjacentCoordinatesForSide(pos);
-								Block worldBlock = world.getBlock(coords[0], coords[1], coords[2]);
+						if (fluid.getName() == "water") {
+							block = Blocks.flowing_water;
+						} else if (fluid.getName() == "lava") {
+							block = Blocks.flowing_lava;
+						}
+						if (block != null) {
+							int[] coords = BlockHelper.getAdjacentCoordinatesForSide(pos);
+							Block worldBlock = world.getBlock(coords[0], coords[1], coords[2]);
 
-								if (world.getBlockMetadata(coords[0], coords[1], coords[2]) == 0 && worldBlock.getMaterial() instanceof MaterialLiquid) {
-									// do not replace source blocks
-								} else {
-									if (world.isAirBlock(coords[0], coords[1], coords[2]) || worldBlock.getMaterial().isReplaceable()
-											|| worldBlock == Blocks.snow_layer) {
+							if (world.getBlockMetadata(coords[0], coords[1], coords[2]) == 0 && worldBlock.getMaterial() instanceof MaterialLiquid) {
+								// do not replace source blocks
+							} else {
+								if (world.isAirBlock(coords[0], coords[1], coords[2]) || worldBlock.getMaterial().isReplaceable()
+										|| worldBlock == Blocks.snow_layer) {
+									if (ServerHelper.isServerWorld(world)) {
 										world.setBlock(coords[0], coords[1], coords[2], block, 0, 3);
 										world.markBlockForUpdate(coords[0], coords[1], coords[2]);
 										containerItem.drain(container, FluidContainerRegistry.BUCKET_VOLUME, true);
-										success = true;
 									}
+									success = true;
 								}
 							}
 						}
 					}
 				}
-				if (success) {
+			}
+			if (success) {
+				player.swingItem();
+				if (ServerHelper.isServerWorld(world)) {
 					player.openContainer.detectAndSendChanges();
 					((EntityPlayerMP) player).sendContainerAndContentsToPlayer(player.openContainer, player.openContainer.getInventory());
 
 					if (!player.capabilities.isCreativeMode) {
 						extractEnergy(stack, energyPerUse, false);
 					}
-					return true;
 				}
+				return true;
 			}
-			player.swingItem();
 		}
 		return false;
 	}
