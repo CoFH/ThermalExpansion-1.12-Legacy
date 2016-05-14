@@ -126,6 +126,8 @@ public class SmelterManager {
 		addTERecipe(4000, new ItemStack(Blocks.cobblestone, 2), blockSand, new ItemStack(Blocks.stonebrick, 1), TEItems.slag, 100);
 		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
 		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
+		addTERecipe(4000, new ItemStack(Blocks.quartz_ore), blockSoulSand, new ItemStack(Blocks.quartz_block), TEItems.slagRich, 25);
+		// sulfur? rich sulfur? what do we even do here?
 
 		ItemStack blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardened, 2);
 		addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 4, blockGlass);
