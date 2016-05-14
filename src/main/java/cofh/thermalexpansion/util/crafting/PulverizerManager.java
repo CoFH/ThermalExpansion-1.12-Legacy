@@ -78,6 +78,7 @@ public class PulverizerManager {
 		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
 		boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
 		boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
+		boolean recipeHorseArmor = ThermalExpansion.config.get(category, "HorseArmor", true);
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.gravel), new ItemStack(Blocks.sand), 15);
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 15);
@@ -103,6 +104,12 @@ public class PulverizerManager {
 		addRecipe(2400, new ItemStack(Blocks.lapis_ore), new ItemStack(Items.dye, 12, 4), TFItems.dustSulfur, 20);
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, 25);
 		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 3), TFItems.dustSulfur, 15);
+
+		if (recipeHorseArmor) {
+			addRecipe(4800, new ItemStack(Items.iron_horse_armor), ItemHelper.cloneStack(TFItems.dustIron, 5));
+			addRecipe(4800, new ItemStack(Items.golden_horse_armor), ItemHelper.cloneStack(TFItems.dustGold, 5));
+			addRecipe(4800, new ItemStack(Items.diamond_horse_armor), new ItemStack(Items.diamond, 5, 0));
+		}
 
 		for (int i = 0; i < 3; i++) {
 			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
