@@ -80,11 +80,11 @@ public class SawmillManager {
 		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 8));
 
 		addRecipe(2400, new ItemStack(Items.boat), new ItemStack(Blocks.planks, 5));
-		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
-		addRecipe(1600, new ItemStack(Items.wooden_shovel), new ItemStack(Blocks.planks, 1), TEItems.sawdust);
-		addRecipe(1600, new ItemStack(Items.wooden_pickaxe), new ItemStack(Blocks.planks, 3), TEItems.sawdust);
-		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 3), TEItems.sawdust);
-		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
+		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
+		addRecipe(1600, new ItemStack(Items.wooden_shovel), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.wooden_pickaxe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
 
 		addRecipe(800, new ItemStack(Items.item_frame), new ItemStack(Items.leather, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
 		addRecipe(1600, new ItemStack(Items.leather_helmet), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 10);
