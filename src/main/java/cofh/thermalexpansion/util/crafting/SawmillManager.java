@@ -66,6 +66,11 @@ public class SawmillManager {
 
 	public static void addDefaultRecipes() {
 
+		/*
+		 * For future recipes, we convert sticks to sawdust at a rate of 4 sticks per sawdust,
+		 * so 1 stick is a 12.5% chance for 1 sawdust, and 8 is a 100% chance for 2 sawdust
+		 */
+
 		addRecipe(2400, new ItemStack(Blocks.noteblock), new ItemStack(Blocks.planks, 8), new ItemStack(Items.redstone, 1));
 		addRecipe(2400, new ItemStack(Items.bed), new ItemStack(Blocks.planks, 3), new ItemStack(Blocks.wool, 3));
 		addRecipe(2400, new ItemStack(Blocks.bookshelf), new ItemStack(Blocks.planks, 6), new ItemStack(Items.book, 3));
@@ -77,7 +82,7 @@ public class SawmillManager {
 		addRecipe(2400, new ItemStack(Blocks.jukebox), new ItemStack(Blocks.planks, 8), new ItemStack(Items.diamond, 1));
 		addRecipe(2400, new ItemStack(Blocks.trapdoor), new ItemStack(Blocks.planks, 3));
 		addRecipe(2400, new ItemStack(Blocks.fence_gate), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
-		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 8));
+		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 9));
 
 		addRecipe(2400, new ItemStack(Items.boat), new ItemStack(Blocks.planks, 5));
 		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
@@ -86,6 +91,7 @@ public class SawmillManager {
 		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
 		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
 
+		addRecipe(800, new ItemStack(Items.painting), new ItemStack(Blocks.wool, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
 		addRecipe(800, new ItemStack(Items.item_frame), new ItemStack(Items.leather, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
 		addRecipe(1600, new ItemStack(Items.leather_helmet), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 10);
 		addRecipe(2400, new ItemStack(Items.leather_chestplate), new ItemStack(Items.leather, 6), new ItemStack(Items.leather, 1), 25);
