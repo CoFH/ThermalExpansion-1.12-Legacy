@@ -72,13 +72,13 @@ public class ItemPump extends ItemEnergyContainerBase {
 		}
 		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == INPUT);
 
-		if (pos != null) {
+		if (pos != null && world.canMineBlock(player, pos.blockX, pos.blockY, pos.blockZ)) {
 			TileEntity tile = world.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
 			ForgeDirection fd = ForgeDirection.values()[pos.sideHit];
 			FluidStack resource;
 			boolean success = false;
 
-			if (getMode(stack) == INPUT) {
+			if (getMode(stack) == INPUT && player.canPlayerEdit(pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, stack)) {
 				if (FluidHelper.isFluidHandler(tile)) {
 					if (ServerHelper.isServerWorld(world)) {
 						IFluidHandler handler = (IFluidHandler) tile;
@@ -253,6 +253,12 @@ public class ItemPump extends ItemEnergyContainerBase {
 		int filled = amount - resource.amount;
 		resource.amount = amount;
 		return filled;
+	}
+
+	@Override
+	public boolean canItemEditBlocks() {
+
+		return true;
 	}
 
 	@Override
