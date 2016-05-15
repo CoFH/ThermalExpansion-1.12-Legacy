@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 public class TabSchematic extends TabBase {
 
-	public static int defaultSide = 1;
+	public static int defaultSide = TabBase.LEFT;
 	public static ResourceLocation GRID_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Grid_Schematic.png");
 	public static ResourceLocation OUTPUT_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Output_Schematic.png");
 
