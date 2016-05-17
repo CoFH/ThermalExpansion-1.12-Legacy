@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
+import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -9,6 +10,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
+import cofh.thermalfoundation.item.VanillaEquipment;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -79,17 +82,76 @@ public class PulverizerManager {
 		boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
 		boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
 		boolean recipeHorseArmor = ThermalExpansion.config.get(category, "HorseArmor", true);
+		boolean recipeRedstoneLamp = ThermalExpansion.config.get(category, "RedstoneLamp", true);
+		boolean recipeGlassBottle = ThermalExpansion.config.get(category, "GlassBottle", true);
+
+		{ /* RECYCLING */
+			addRecipe(3200, new ItemStack(Blocks.glass), new ItemStack(Blocks.sand));
+			for (int i = 0; i < 16; ++i) {
+				addRecipe(3200, new ItemStack(Blocks.stained_glass, 1, i), new ItemStack(Blocks.sand));
+			}
+
+			if (recipeRedstoneLamp) {
+				addRecipe(3200, new ItemStack(Blocks.redstone_lamp), new ItemStack(Items.glowstone_dust, 4), new ItemStack(Items.redstone, 4));
+			}
+
+			addRecipe(1800, new ItemStack(Blocks.brick_block), new ItemStack(Items.brick, 4));
+			addRecipe(1800, new ItemStack(Blocks.nether_brick), new ItemStack(Items.netherbrick, 4));
+			for (int i = 0; i < 3; i++) {
+				addRecipe(1800, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
+			}
+
+			addRecipe(2400, new ItemStack(Blocks.brick_stairs), new ItemStack(Items.brick, 6));
+			addRecipe(2400, new ItemStack(Blocks.nether_brick_stairs), new ItemStack(Items.netherbrick, 6));
+			addRecipe(2400, new ItemStack(Blocks.quartz_stairs), new ItemStack(Items.quartz, 6));
+
+			addRecipe(1200, new ItemStack(Blocks.stone_slab, 1, 4), new ItemStack(Items.brick, 2));
+			addRecipe(1200, new ItemStack(Blocks.stone_slab, 1, 6), new ItemStack(Items.netherbrick, 2));
+			addRecipe(1200, new ItemStack(Blocks.stone_slab, 1, 7), new ItemStack(Items.quartz, 2));
+
+			if (recipeSandstone) {
+				for (int i = 0; i < 3; i++) {
+					addTERecipe(3200, new ItemStack(Blocks.sandstone, 1, i), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 50);
+				}
+				addRecipe(4800, new ItemStack(Blocks.sandstone_stairs), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 75);
+				addRecipe(2400, new ItemStack(Blocks.stone_slab, 1, 1), new ItemStack(Blocks.sand, 1), TFItems.dustNiter, 25);
+			}
+
+			addRecipe(800, new ItemStack(Items.flower_pot), new ItemStack(Items.brick, 3));
+
+			if (recipeGlassBottle) {
+				addRecipe(800, new ItemStack(Items.glass_bottle), new ItemStack(Blocks.sand, 1));
+			}
+
+			if (recipeHorseArmor) {
+				addRecipe(4800, new ItemStack(Items.iron_horse_armor), ItemHelper.cloneStack(TFItems.dustIron, 5));
+				addRecipe(4800, new ItemStack(Items.golden_horse_armor), ItemHelper.cloneStack(TFItems.dustGold, 5));
+				addRecipe(4800, new ItemStack(Items.diamond_horse_armor), new ItemStack(Items.diamond, 5, 0));
+			}
+
+			// TODO:
+			// significant_ingredient * 600 + (stick/string) * 300 ?
+			// i like the feel of these values. re-do other recycle recipes for tools/armor?
+			addRecipe(1500, new ItemStack(Items.diamond_sword), new ItemStack(Items.diamond, 2));
+			addRecipe(2400, new ItemStack(Items.diamond_pickaxe), new ItemStack(Items.diamond, 3));
+			addRecipe(2400, new ItemStack(Items.diamond_axe), new ItemStack(Items.diamond, 3));
+			addRecipe(1200, new ItemStack(Items.diamond_shovel), new ItemStack(Items.diamond, 1));
+			addRecipe(1800, new ItemStack(Items.diamond_hoe), new ItemStack(Items.diamond, 2));
+			addRecipe(3000, new ItemStack(Items.diamond_helmet), new ItemStack(Items.diamond, 5));
+			addRecipe(4800, new ItemStack(Items.diamond_chestplate), new ItemStack(Items.diamond, 8));
+			addRecipe(4200, new ItemStack(Items.diamond_leggings), new ItemStack(Items.diamond, 7));
+			addRecipe(2400, new ItemStack(Items.diamond_boots), new ItemStack(Items.diamond, 4));
+			addRecipe(2400, VanillaEquipment.Diamond.toolBow, new ItemStack(Items.diamond, 2));
+			addRecipe(2100, VanillaEquipment.Diamond.toolFishingRod, new ItemStack(Items.diamond, 2));
+			addRecipe(1200, VanillaEquipment.Diamond.toolShears, new ItemStack(Items.diamond, 2));
+			addRecipe(2100, VanillaEquipment.Diamond.toolSickle, new ItemStack(Items.diamond, 3));
+		}
 
 		addRecipe(3200, new ItemStack(Blocks.stone), new ItemStack(Blocks.gravel), new ItemStack(Blocks.sand), 15);
 		addRecipe(3200, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.sand), new ItemStack(Blocks.gravel), 15);
 		addRecipe(3200, new ItemStack(Blocks.gravel), new ItemStack(Items.flint), new ItemStack(Blocks.sand), 15);
-		addRecipe(3200, new ItemStack(Blocks.glass), new ItemStack(Blocks.sand));
 		addRecipe(800, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 2));
-		addRecipe(800, new ItemStack(Blocks.brick_block), new ItemStack(Items.brick, 4));
 
-		if (recipeSandstone) {
-			addTERecipe(3200, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.sand, 2), TFItems.dustNiter, 50);
-		}
 		addRecipe(2400, new ItemStack(Items.coal, 1, 0), TFItems.dustCoal, TFItems.dustSulfur, 15);
 		addRecipe(2400, new ItemStack(Items.coal, 1, 1), TFItems.dustCharcoal);
 		addRecipe(4000, new ItemStack(Blocks.obsidian), ItemHelper.cloneStack(TFItems.dustObsidian, 4));
@@ -105,16 +167,6 @@ public class PulverizerManager {
 		addTERecipe(3200, new ItemStack(Blocks.redstone_ore), new ItemStack(Items.redstone, 6), TFItems.crystalCinnabar, 25);
 		addRecipe(2400, new ItemStack(Blocks.quartz_ore), new ItemStack(Items.quartz, 3), TFItems.dustSulfur, 15);
 
-		if (recipeHorseArmor) {
-			addRecipe(4800, new ItemStack(Items.iron_horse_armor), ItemHelper.cloneStack(TFItems.dustIron, 5));
-			addRecipe(4800, new ItemStack(Items.golden_horse_armor), ItemHelper.cloneStack(TFItems.dustGold, 5));
-			addRecipe(4800, new ItemStack(Items.diamond_horse_armor), new ItemStack(Items.diamond, 5, 0));
-		}
-
-		for (int i = 0; i < 3; i++) {
-			addRecipe(2400, new ItemStack(Blocks.quartz_block, 1, i), new ItemStack(Items.quartz, 4));
-		}
-		addRecipe(2400, new ItemStack(Blocks.quartz_stairs), new ItemStack(Items.quartz, 6));
 		addRecipe(1600, new ItemStack(Blocks.log), ItemHelper.cloneStack(TEItems.sawdust, 8));
 
 		addRecipe(1600, new ItemStack(Blocks.yellow_flower), new ItemStack(Items.dye, 4, 11));
@@ -230,7 +282,7 @@ public class PulverizerManager {
 		/* APATITE */
 		if (ItemHelper.oreNameExists("oreApatite") && ItemHelper.oreNameExists("gemApatite")) {
 			addRecipe(2400, OreDictionary.getOres("oreApatite").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite").get(0), 12),
-					TFItems.dustSulfur, 10);
+				TFItems.dustSulfur, 10);
 		}
 		/* AMETHYST */
 		if (ItemHelper.oreNameExists("oreAmethyst") && ItemHelper.oreNameExists("gemAmethyst")) {
@@ -263,7 +315,7 @@ public class PulverizerManager {
 		/* APPLIED ENERGISTICS 2 */
 		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
 			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2),
-					OreDictionary.getOres("dustCertusQuartz").get(0), 10);
+				OreDictionary.getOres("dustCertusQuartz").get(0), 10);
 			addRecipe(1600, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
 		}
 		if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
@@ -341,6 +393,7 @@ public class PulverizerManager {
 		String oreName = "ore" + StringHelper.titleCase(oreType);
 		String dustName = "dust" + StringHelper.titleCase(oreType);
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
+		String relatedName = null;
 
 		ArrayList<ItemStack> registeredOre = OreDictionary.getOres(oreName);
 		ArrayList<ItemStack> registeredDust = OreDictionary.getOres(dustName);
@@ -351,11 +404,18 @@ public class PulverizerManager {
 		ArrayList<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
 
 		if (relatedType != "") {
-			String relatedName = "dust" + StringHelper.titleCase(relatedType);
+			relatedName = "dust" + StringHelper.titleCase(relatedType);
 			registeredRelated = OreDictionary.getOres(relatedName);
 		}
 		if (registeredDust.isEmpty()) {
 			return;
+		}
+		ItemStack dust = GameRegistry.findItemStack("ThermalFoundation", dustName, 1);
+		if (dust != null && !OreDictionaryArbiter.getAllOreNames(dust).contains(dustName)) {
+			dust = null;
+		}
+		if (dust == null) {
+			dust = registeredDust.get(0);
 		}
 		if (registeredIngot.isEmpty()) {
 			ingotName = null;
@@ -366,16 +426,19 @@ public class PulverizerManager {
 		if (registeredCluster.isEmpty()) {
 			clusterName = null;
 		}
-		if (!registeredRelated.isEmpty()) {
-			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier),
-					ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
-			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier),
-					ItemHelper.cloneStack(registeredRelated.get(0), 1), 5);
-		} else {
-			addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier), null, 0);
-			addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(registeredDust.get(0), oreMultiplier), null, 0);
+		ItemStack related = null;
+		if (relatedName != null) {
+			related = GameRegistry.findItemStack("ThermalFoundation", relatedName, 1);
+			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
+				related = null;
+			}
 		}
-		addIngotNameToDustRecipe(2400, ingotName, ItemHelper.cloneStack(registeredDust.get(0), 1));
+		if (related == null && !registeredRelated.isEmpty()) {
+			related = registeredRelated.get(0);
+		}
+		addOreNameToDustRecipe(4000, oreName, ItemHelper.cloneStack(dust, oreMultiplier), related, 5);
+		addOreNameToDustRecipe(4800, clusterName, ItemHelper.cloneStack(dust, oreMultiplier), related, 5);
+		addIngotNameToDustRecipe(2400, ingotName, ItemHelper.cloneStack(dust, 1));
 	}
 
 	public static void addOreNameToDustRecipe(int energy, String oreName, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
@@ -387,7 +450,7 @@ public class PulverizerManager {
 
 		if (!registeredOres.isEmpty()) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, oreMultiplier), secondaryOutput,
-					secondaryChance);
+				secondaryChance);
 		}
 	}
 

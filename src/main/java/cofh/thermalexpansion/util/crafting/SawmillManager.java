@@ -71,18 +71,19 @@ public class SawmillManager {
 		 * so 1 stick is a 12.5% chance for 1 sawdust, and 8 is a 100% chance for 2 sawdust
 		 */
 
-		addRecipe(2400, new ItemStack(Blocks.noteblock), new ItemStack(Blocks.planks, 8), new ItemStack(Items.redstone, 1));
-		addRecipe(2400, new ItemStack(Items.bed), new ItemStack(Blocks.planks, 3), new ItemStack(Blocks.wool, 3));
-		addRecipe(2400, new ItemStack(Blocks.bookshelf), new ItemStack(Blocks.planks, 6), new ItemStack(Items.book, 3));
 		addRecipe(2400, new ItemStack(Blocks.chest), new ItemStack(Blocks.planks, 8));
 		addRecipe(2400, new ItemStack(Blocks.crafting_table), new ItemStack(Blocks.planks, 4));
 		addRecipe(2400, new ItemStack(Items.sign), new ItemStack(Blocks.planks, 2));
 		addRecipe(2400, new ItemStack(Items.wooden_door), new ItemStack(Blocks.planks, 6));
 		addRecipe(2400, new ItemStack(Blocks.wooden_pressure_plate), new ItemStack(Blocks.planks, 2));
-		addRecipe(2400, new ItemStack(Blocks.jukebox), new ItemStack(Blocks.planks, 8), new ItemStack(Items.diamond, 1));
 		addRecipe(2400, new ItemStack(Blocks.trapdoor), new ItemStack(Blocks.planks, 3));
 		addRecipe(2400, new ItemStack(Blocks.fence_gate), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
-		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 9));
+		addRecipe(800, new ItemStack(Blocks.wooden_button), new ItemStack(Blocks.planks, 1));
+		addRecipe(1200, new ItemStack(Items.bowl, 2), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
+		addRecipe(2400, new ItemStack(Items.bed), new ItemStack(Blocks.planks, 3), new ItemStack(Blocks.wool, 3));
+		addRecipe(2400, new ItemStack(Blocks.bookshelf), new ItemStack(Blocks.planks, 6), new ItemStack(Items.book, 3));
+		addRecipe(2400, new ItemStack(Blocks.noteblock), new ItemStack(Blocks.planks, 8), new ItemStack(Items.redstone, 1));
+		addRecipe(2400, new ItemStack(Blocks.jukebox), new ItemStack(Blocks.planks, 8), new ItemStack(Items.diamond, 1));
 
 		addRecipe(2400, new ItemStack(Items.boat), new ItemStack(Blocks.planks, 5));
 		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
@@ -91,6 +92,16 @@ public class SawmillManager {
 		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
 		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
 
+		addRecipe(3200, new ItemStack(Blocks.oak_stairs, 2), new ItemStack(Blocks.planks, 3, 0));
+		addRecipe(3200, new ItemStack(Blocks.spruce_stairs, 2), new ItemStack(Blocks.planks, 3, 1));
+		addRecipe(3200, new ItemStack(Blocks.birch_stairs, 2), new ItemStack(Blocks.planks, 3, 2));
+		addRecipe(3200, new ItemStack(Blocks.jungle_stairs, 2), new ItemStack(Blocks.planks, 3, 3));
+		addRecipe(3200, new ItemStack(Blocks.acacia_stairs, 2), new ItemStack(Blocks.planks, 3, 4));
+		addRecipe(3200, new ItemStack(Blocks.dark_oak_stairs, 2), new ItemStack(Blocks.planks, 3, 5));
+
+		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 9));
+		addRecipe(800, new ItemStack(Blocks.lever), new ItemStack(Blocks.cobblestone, 1), TEItems.sawdust, 12); // yeah. well. fun on resource limited maps?
+		addRecipe(800, new ItemStack(Blocks.redstone_torch), new ItemStack(Items.redstone, 1), TEItems.sawdust, 12);
 		addRecipe(800, new ItemStack(Items.painting), new ItemStack(Blocks.wool, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
 		addRecipe(800, new ItemStack(Items.item_frame), new ItemStack(Items.leather, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
 		addRecipe(1600, new ItemStack(Items.leather_helmet), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 10);
