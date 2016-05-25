@@ -169,7 +169,12 @@ public class BlockCache extends BlockTEBase {
 
 		if (!player.capabilities.isCreativeMode) {
 			if (!player.inventory.addItemStackToInventory(extract)) {
-				return;
+				// apparently this returns false if it succeeds but doesn't have room for all.
+				// apparently designed for inserts of single items but supports >1 inserts because notch
+				if (extract.stackSize == extractAmount) {
+					return;
+				}
+				extractAmount -= extract.stackSize;
 			}
 			playSound = true;
 			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
