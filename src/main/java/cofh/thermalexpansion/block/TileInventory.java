@@ -105,7 +105,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 								}
 								amount -= toExtract;
 							}
-						} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack)) {
+						} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
 							int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
 							stack.stackSize += toExtract;
 							queryStack.stackSize -= toExtract;
@@ -139,7 +139,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 							}
 							amount -= toExtract;
 						}
-					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack)) {
+					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
 						int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
 						stack.stackSize += toExtract;
 						queryStack.stackSize -= toExtract;
