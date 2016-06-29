@@ -119,7 +119,8 @@ public class TileActivator extends TileDeviceBase {
 		}
 		if (!redstoneControlOrDisable() && myFakePlayer.itemInUse != null) {
 			myFakePlayer.stopUsingItem();
-		} else {
+		} else if (myFakePlayer.ping != worldObj.getTotalWorldTime()) {
+			myFakePlayer.ping = (int)(worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
 			Block block = worldObj.getBlock(coords[0], coords[1], coords[2]);
 
@@ -138,6 +139,7 @@ public class TileActivator extends TileDeviceBase {
 			cofh_validate();
 		}
 		if (hasEnergy(ACTIVATION_ENERGY)) {
+			myFakePlayer.ping = (int)(worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			if (!isActive) {
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			}
