@@ -78,6 +78,9 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		distance = tag.getByte("Dist");
+		NBTTagCompound rsTag = tag.getCompoundTag("RS");
+
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 		return true;
 	}
 
@@ -85,6 +88,10 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setByte("Dist", distance);
+		NBTTagCompound rsTag = new NBTTagCompound();
+
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		tag.setTag("RS", rsTag);
 		return true;
 	}
 
@@ -108,6 +115,10 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		super.readFromNBT(nbt);
 
 		distance = nbt.getByte("Dist");
+		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
+
+		isPowered = rsTag.getBoolean("Power");
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
 	@Override
@@ -116,6 +127,11 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Dist", distance);
+		NBTTagCompound rsTag = new NBTTagCompound();
+
+		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		nbt.setTag("RS", rsTag);
 	}
 
 	/* NETWORK METHODS */

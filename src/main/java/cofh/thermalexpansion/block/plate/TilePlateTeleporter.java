@@ -441,6 +441,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return false;
 		}
 		setDestination(tag.getInteger("Destination"));
+		NBTTagCompound rsTag = tag.getCompoundTag("RS");
+
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 		return true;
 	}
 
@@ -449,6 +452,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		tag.setString("Channel", getChannelString());
 		tag.setInteger("Destination", destination);
+		NBTTagCompound rsTag = new NBTTagCompound();
+
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		tag.setTag("RS", rsTag);
 		return true;
 	}
 

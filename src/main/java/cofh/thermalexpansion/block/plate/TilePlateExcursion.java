@@ -216,6 +216,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		distance = tag.getByte("Dist");
+		NBTTagCompound rsTag = tag.getCompoundTag("RS");
+
+		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 
 		return true;
 	}
@@ -224,6 +227,10 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setByte("Dist", distance);
+		NBTTagCompound rsTag = new NBTTagCompound();
+
+		rsTag.setByte("Mode", (byte) rsMode.ordinal());
+		tag.setTag("RS", rsTag);
 
 		return true;
 	}
