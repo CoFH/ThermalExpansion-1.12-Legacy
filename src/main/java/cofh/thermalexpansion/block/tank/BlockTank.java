@@ -223,18 +223,25 @@ public class BlockTank extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
+		final String basicMaterial = "ingotCopper";
+		final String hardenedMaterial = "ingotInvar";
+		final String reinforcedMaterial = "blockGlassHardened";
+		final String resonantMaterial = "ingotEnderium";
+
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(tankBasic, new Object[] { " G ", "GXG", " G ", 'G', "blockGlass", 'X', "ingotCopper" }));
+			GameRegistry.addRecipe(ShapedRecipe(tankBasic, new Object[] { " G ", "GXG", " G ", 'G', "blockGlass", 'X', basicMaterial }));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', tankBasic }));
-			GameRegistry.addRecipe(ShapedRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'X', "ingotCopper", 'G', "blockGlass" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankHardened, new Object[] { " I ", "IXI", " I ", 'I', hardenedMaterial, 'X', tankBasic }));
+			GameRegistry.addRecipe(ShapedRecipe(tankHardened, new Object[] { "IGI", "GXG", "IGI", 'I', hardenedMaterial, 'X', basicMaterial, 'G', "blockGlass" }));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', "blockGlassHardened", 'X', tankHardened }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { " G ", "GXG", " G ", 'G', reinforcedMaterial, 'X', tankHardened }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankReinforced, new Object[] { "IGI", "GXG", "IGI", 'G', reinforcedMaterial, 'I', hardenedMaterial, 'X', tankBasic }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', tankReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { " I ", "IXI", " I ", 'I', resonantMaterial, 'X', tankReinforced }));
+			GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { "GIG", "IXI", "GIG", 'I', resonantMaterial, 'G', reinforcedMaterial, 'X', tankHardened }));
 		}
 		return true;
 	}
