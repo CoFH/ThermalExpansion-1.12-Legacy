@@ -588,12 +588,17 @@ public class PulverizerManager {
 
 		public static int getOreID(ItemStack stack) {
 
-			int id = ItemHelper.oreProxy.getOreID(stack);
+			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
-			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-				return -1;
+			if (ids != null) {
+				for (int i = 0, e = ids.size(); i < e; ) {
+					int id = ids.get(i++);
+					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+						return id;
+					}
+				}
 			}
-			return id;
+			return -1;
 		}
 
 		public static int getOreID(String oreName) {

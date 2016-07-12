@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
+import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -10,6 +11,7 @@ import cofh.thermalfoundation.item.TFItems;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -337,12 +339,17 @@ public class TransposerManager {
 
 		public static int getOreID(ItemStack stack) {
 
-			int id = ItemHelper.oreProxy.getOreID(stack);
+			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
-			if (id == -1 || !safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-				return -1;
+			if (ids != null) {
+				for (int i = 0, e = ids.size(); i < e; ) {
+					int id = ids.get(i++);
+					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
+						return id;
+					}
+				}
 			}
-			return id;
+			return -1;
 		}
 
 		public static int getOreID(String oreName) {
