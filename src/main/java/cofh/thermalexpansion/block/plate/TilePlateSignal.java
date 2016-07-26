@@ -1,19 +1,23 @@
 package cofh.thermalexpansion.block.plate;
 
+import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateSignal;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import com.mojang.authlib.GameProfile;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.IMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.server.MinecraftServer;
 
 //import thermalexpansion.gui.client.plate.GuiPlateSignal;
 
@@ -111,6 +115,25 @@ public class TilePlateSignal extends TilePlateBase {
 		case 0:
 		default:
 			break;
+		}
+
+		l: if (filterSecure && !getAccess().isPublic()) {
+			o: if (entity instanceof EntityItem) {
+				String name = ((EntityItem) entity).func_145800_j();
+				if (name == null) {
+					break o;
+				}
+				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
+					break l;
+				}
+				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+				if (getOwner().getId().equals(i.getId())) {
+					break l;
+				}
+			} else if (canPlayerAccess((EntityPlayer) entity)) {
+				break l;
+			}
+			return;
 		}
 
 		if (collided > 0) {

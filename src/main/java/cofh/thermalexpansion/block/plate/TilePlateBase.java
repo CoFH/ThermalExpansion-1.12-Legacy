@@ -39,6 +39,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	byte alignment;
 	byte direction;
 	protected final byte type;
+	protected boolean filterSecure = false;
 
 	public TilePlateBase() {
 
@@ -349,6 +350,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 		alignment = nbt.getByte("Align");
 		direction = nbt.getByte("Dir");
+		filterSecure = nbt.getBoolean("SecureFilter");
 	}
 
 	@Override
@@ -358,6 +360,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 		nbt.setByte("Align", alignment);
 		nbt.setByte("Dir", direction);
+		nbt.setBoolean("SecureFilter", filterSecure);
 	}
 
 	/* NETWORK METHODS */
@@ -368,6 +371,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 
 		payload.addByte(alignment);
 		payload.addByte(direction);
+		payload.addBool(filterSecure);
 
 		return payload;
 	}
@@ -405,9 +409,11 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		if (!isServer) {
 			alignment = payload.getByte();
 			direction = payload.getByte();
+			filterSecure = payload.getBool();
 		} else {
 			payload.getByte();
 			payload.getByte();
+			payload.getBool();
 		}
 	}
 

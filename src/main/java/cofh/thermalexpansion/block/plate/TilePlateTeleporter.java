@@ -58,11 +58,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 	protected boolean isPowered;
 
+	protected boolean playerOnly = false;
+
 	protected ControlMode rsMode = ControlMode.DISABLED;
 
 	public TilePlateTeleporter() {
 
 		super(BlockPlate.Types.TELEPORT, 2000000);
+		filterSecure = true;
 	}
 
 	protected void teleportEntity(Entity entity, double x, double y, double z) {
@@ -118,13 +121,13 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 		Class<? extends Entity> comp = Entity.class;
-		if (!getAccess().isPublic()) {
+		if (playerOnly) {
 			comp = EntityPlayer.class;
 		}
 		if (!comp.isInstance(entity)) {
 			return;
 		}
-		l: if (!getAccess().isPublic()) {
+		l: if (filterSecure && !getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
 				String name = ((EntityItem) entity).func_145800_j();
 				if (name == null) {
@@ -494,6 +497,10 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 		isPowered = rsTag.getBoolean("Power");
 		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
+
+		if (!nbt.hasKey("FilterSecure")) {
+			filterSecure = true;
+		}
 	}
 
 	@Override

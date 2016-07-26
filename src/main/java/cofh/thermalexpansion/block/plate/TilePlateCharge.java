@@ -35,6 +35,7 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		super(BlockPlate.Types.CHARGE, 80000);
 		storage.setMaxTransfer(CHARGE_RATE);
+		filterSecure = true;
 	}
 
 	@Override
@@ -61,7 +62,7 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 			return;
 		}
 
-		l: if (!getAccess().isPublic()) {
+		l: if (filterSecure && !getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
 				String name = ((EntityItem) entity).func_145800_j();
 				if (name == null) {
@@ -120,6 +121,10 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 		super.readFromNBT(nbt);
 
 		chargeItems = nbt.getBoolean("chargeItems");
+
+		if (!nbt.hasKey("FilterSecure")) {
+			filterSecure = true;
+		}
 	}
 
 	@Override
