@@ -89,7 +89,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 
 		if (entity.timeUntilPortal > TELEPORT_DELAY) {
-			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
+			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY + 5;
 			return;
 		}
 		if (!RegistryEnderAttuned.getRegistry().hasDestination(this)) {
@@ -146,9 +146,12 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 		if (entity instanceof EntityLivingBase) {
-			if (entity.timeUntilPortal++ <= TELEPORT_DELAY) {
-				if (!(entity instanceof EntityPlayerMP)) {
+			if (entity.timeUntilPortal <= TELEPORT_DELAY) {
+				if (entity.timeUntilPortal < TELEPORT_DELAY) {
 					entity.timeUntilPortal++;
+					if (!(entity instanceof EntityPlayerMP)) {
+						entity.timeUntilPortal++;
+					}
 				}
 				World world = entity.worldObj;
 				int i = entity.timeUntilPortal >= TELEPORT_DELAY ? 100 : 99;
@@ -181,13 +184,15 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					return;
 				}
 			}
-			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
 		}
 		if (storage.extractEnergy(teleportCost, false) == teleportCost) {
+			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY + 5;
+			double x = dest.x() + .5, y = dest.y() + .2, z = dest.z() + .5;
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(entity, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, x, y, z, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+			} else {
+				teleportEntity(entity, x, y, z);
 			}
-			teleportEntity(entity, dest.x() + .5, dest.y() + .2, dest.z() + .5);
 		}
 	}
 
