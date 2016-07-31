@@ -192,9 +192,6 @@
 		<jar destfile="${download.dir}/MineFactoryReloaded.jar" compress="true" level="9" basedir="${compile.dir}"/>
 		<delete dir="${compile.dir}" failonerror="false"/>
 		<!-- End hack -->
-
-		<echo message="Downloading InvTweaks API..." />
-		<get src="http://build.technicpack.net/job/Inventory-Tweaks/77/artifact/build/out/InventoryTweaks-MC1.6.2-1.56-b77.jar" dest="${download.dir}/InvTweaks.jar"/>
 	</target>
 
 	<target name="extract-dependencies" depends="setup-forge,get-dependencies" unless="have.libs">
@@ -217,7 +214,7 @@
 		<copy file="${download.dir}/Buildcraft.jar" todir="${lib.dir}"/>
 
 		<echo message="Extracting InvTweaks API... " />
-		<copy file="${download.dir}/InvTweaks.jar" todir="${lib.dir}"/>
+		<copy file="${api.dir}/../resources/InventoryTweaks-1.57-116-Dev-Api.jar" tofile="${lib.dir}/InvTweaks.jar"/>
 
 		<echo message="Extracting MineFactoryReloaded..."/>
 		<copy file="${download.dir}/MineFactoryReloaded.jar" todir="${lib.dir}"/>
