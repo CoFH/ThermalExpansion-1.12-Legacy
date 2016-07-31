@@ -40,6 +40,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	byte direction;
 	protected final byte type;
 	protected boolean filterSecure = false;
+	// TODO: gui option for filtering on friends api ^
 
 	public TilePlateBase() {
 
