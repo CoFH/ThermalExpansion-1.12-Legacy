@@ -6,6 +6,7 @@ import cofh.core.RegistryEnderAttuned;
 import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
+import cofh.core.network.PacketTileInfo;
 import cofh.lib.util.helpers.EntityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.core.TeleportChannelRegistry;
@@ -78,6 +79,17 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 1.0F, 1.0F);
 	}
 
+	private static boolean posEquals(double x, double y, double z, double X, double Y, double Z) {
+		long a = (long) (x * 64);
+		long b = (long) (y * 64);
+		long c = (long) (z * 64);
+		long A = (long) (X * 64);
+		long B = (long) (Y * 64);
+		long C = (long) (Z * 64);
+
+		return a == A & b == B & c == C;
+	}
+
 	@Override
 	public void onEntityCollidedWithBlock(Entity entity) {
 
@@ -88,8 +100,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 
-		if (entity.timeUntilPortal > TELEPORT_DELAY) {
-			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY + 5;
+		if (entity.timeUntilPortal > 0) {
+			if (entity.timeUntilPortal >= entity.getPortalCooldown()) {
+				entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY;
+				return;
+			}
+		}
+		if (!posEquals(entity.lastTickPosX, entity.lastTickPosY, entity.lastTickPosZ, entity.posX, entity.posY, entity.posZ)) {
+			entity.timeUntilPortal = 0;
 			return;
 		}
 		if (!RegistryEnderAttuned.getRegistry().hasDestination(this)) {
@@ -146,20 +164,20 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return;
 		}
 		if (entity instanceof EntityLivingBase) {
-			if (entity.timeUntilPortal <= TELEPORT_DELAY) {
-				if (entity.timeUntilPortal < TELEPORT_DELAY) {
-					entity.timeUntilPortal++;
-					if (!(entity instanceof EntityPlayerMP)) {
+			if (entity.timeUntilPortal >= -TELEPORT_DELAY) {
+				if (entity.timeUntilPortal > -TELEPORT_DELAY) {
+					entity.timeUntilPortal--;
+					if (entity instanceof EntityPlayerMP && (worldObj.getTotalWorldTime() & 1) == 0) {
 						entity.timeUntilPortal++;
 					}
 				}
 				World world = entity.worldObj;
-				int i = entity.timeUntilPortal >= TELEPORT_DELAY ? 100 : 99;
+				int i = entity.timeUntilPortal <= -TELEPORT_DELAY ? 100 : 99;
 				double x = entity.posX, z = entity.posZ, y = entity.posY;
 				y += entity.height * .75;
-				int amt = entity.timeUntilPortal * 5 / PARTICLE_DELAY;
-				l: if (i == 100 || amt != ((entity.timeUntilPortal - 2) * 5 / PARTICLE_DELAY)) {
-					if (i != 100 && entity.timeUntilPortal > PARTICLE_DELAY) {
+				int amt = -entity.timeUntilPortal * 5 / PARTICLE_DELAY;
+				l: if (i == 100 || amt != ((-entity.timeUntilPortal - 2) * 5 / PARTICLE_DELAY)) {
+					if (i != 100 && entity.timeUntilPortal < -PARTICLE_DELAY) {
 						break l;
 					}
 					PacketCoFHBase packet = getModePacket();
@@ -351,8 +369,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			} else {
 				AccessMode newMode = AccessMode.values()[payload.getByte()];
 				if (frequency != -1 && access != newMode) {
+					int freq = frequency;
 					if (setFrequency(-1)) {
-						TeleportChannelRegistry.getChannels(true).removeFrequency(getChannelString(), frequency);
+						TeleportChannelRegistry.getChannels(true).removeFrequency(getChannelString(), freq);
 					}
 				}
 				access = newMode;
@@ -574,6 +593,18 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	public final boolean redstoneControlOrDisable() {
 
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
+	}
+
+	/* ISecurable */
+
+	@Override
+	public boolean setAccess(AccessMode access) {
+
+		if (worldObj.isRemote && this.access != access) {
+			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addBool(false).addByte(access.ordinal()));
+		}
+		this.access = access;
+		return true;
 	}
 
 	/* IRedstoneControl */

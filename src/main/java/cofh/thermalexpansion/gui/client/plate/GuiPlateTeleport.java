@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.gui.client.plate;
 
+import cofh.api.tileentity.ISecurable.AccessMode;
 import cofh.core.gui.GuiBaseAdv;
 import cofh.core.gui.element.TabInfo;
 import cofh.core.gui.element.TabRedstone;
@@ -39,6 +40,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	UUID playerName;
 
 	int updated;
+	AccessMode mode;
 
 	ElementListBox frequencies;
 	ElementSlider slider;
@@ -74,6 +76,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			addTab(new TabInfo(this, myInfo));
 		}
 		addTab(new TabRedstone(this, myTile));
+		mode = myTile.getAccess();
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
@@ -200,6 +203,9 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 	@Override
 	protected void updateElementInformation() {
 
+		if (mode != (mode = myTile.getAccess())) {
+			TeleportChannelRegistry.requestChannelList(myTile.getChannelString());
+		}
 		IEnderChannelRegistry data = TeleportChannelRegistry.getChannels(false);
 		if (updated != data.updated()) {
 			updated = data.updated();
@@ -227,7 +233,6 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 			slider.setLimits(0, frequencies.getLastScrollPosition());
 			slider.setValue(pos);
 		}
-
 		boolean hasName = title.getContentLength() > 0;
 		assign.setEnabled(hasName && myTile.getFrequency() == -1);
 		clear.setEnabled(myTile.getFrequency() != -1);
