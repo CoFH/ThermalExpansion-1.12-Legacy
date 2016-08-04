@@ -166,6 +166,9 @@ public class BlockCache extends BlockTEBase {
 
 		int extractAmount = !player.isSneaking() ? 1 : 64;
 		ItemStack extract = tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, true);
+		if (extract == null) {
+			return;
+		}
 
 		if (!player.capabilities.isCreativeMode) {
 			if (!player.inventory.addItemStackToInventory(extract)) {
