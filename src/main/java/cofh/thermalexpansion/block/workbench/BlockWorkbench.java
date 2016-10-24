@@ -9,9 +9,12 @@ import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -37,6 +40,8 @@ import net.minecraft.world.World;
 
 public class BlockWorkbench extends BlockTEBase {
 
+    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+
 	public BlockWorkbench() {
 
 		super(Material.IRON);
@@ -45,14 +50,29 @@ public class BlockWorkbench extends BlockTEBase {
 		setUnlocalizedName("thermalexpansion.workbench");
 	}
 
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
+
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= Types.values().length) {
+		if (metadata >= EnumType.values().length) {
 			return null;
 		}
-		if (metadata == Types.CREATIVE.ordinal()) {
-			if (!enable[Types.CREATIVE.ordinal()]) {
+		if (metadata == EnumType.CREATIVE.ordinal()) {
+			if (!enable[EnumType.CREATIVE.ordinal()]) {
 				return null;
 			}
 			return new TileWorkbenchCreative(metadata);
@@ -66,7 +86,7 @@ public class BlockWorkbench extends BlockTEBase {
 		if (enable[0]) {
 			list.add(new ItemStack(item, 1, 0));
 		}
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -178,7 +198,7 @@ public class BlockWorkbench extends BlockTEBase {
 	@Override
 	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
         IBlockState state = world.getBlockState(pos);
-		if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+		if (state.getBlock().getMetaFromState(state) == EnumType.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
 			return false;
 		}
 		return super.canDismantle(player, world, pos);
@@ -191,11 +211,11 @@ public class BlockWorkbench extends BlockTEBase {
 		TileWorkbench.initialize();
 		TileWorkbenchCreative.initialize();
 
-		workbenchCreative = new ItemStack(this, 1, Types.CREATIVE.ordinal());
-		workbenchBasic = new ItemStack(this, 1, Types.BASIC.ordinal());
-		workbenchHardened = new ItemStack(this, 1, Types.HARDENED.ordinal());
-		workbenchReinforced = new ItemStack(this, 1, Types.REINFORCED.ordinal());
-		workbenchResonant = new ItemStack(this, 1, Types.RESONANT.ordinal());
+		workbenchCreative = new ItemStack(this, 1, EnumType.CREATIVE.ordinal());
+		workbenchBasic = new ItemStack(this, 1, EnumType.BASIC.ordinal());
+		workbenchHardened = new ItemStack(this, 1, EnumType.HARDENED.ordinal());
+		workbenchReinforced = new ItemStack(this, 1, EnumType.REINFORCED.ordinal());
+		workbenchResonant = new ItemStack(this, 1, EnumType.RESONANT.ordinal());
 
 		ItemStackRegistry.registerCustomItemStack("workbenchCreative", workbenchCreative);
         ItemStackRegistry.registerCustomItemStack("workbenchBasic", workbenchBasic);
@@ -209,20 +229,20 @@ public class BlockWorkbench extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		if (enable[Types.BASIC.ordinal()]) {
+		if (enable[EnumType.BASIC.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(7, workbenchBasic, new Object[] { " X ", "ICI", " P ", 'C', Blocks.CRAFTING_TABLE, 'I', "ingotCopper",
 					'P', BlockStrongbox.strongboxBasic, 'X', Items.PAPER }));
 			GameRegistry.addRecipe(ShapedRecipe(workbenchBasic, "YXY", "ICI", "YPY", 'C', Blocks.CRAFTING_TABLE, 'I', "ingotCopper", 'P', Blocks.CHEST, 'X', Items.PAPER, 'Y', "ingotTin"));
 		}
-		if (enable[Types.HARDENED.ordinal()]) {
+		if (enable[EnumType.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(workbenchHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', workbenchBasic }));
 			GameRegistry.addRecipe(new RecipeUpgrade(7, workbenchHardened, new Object[] { "IPI", "CTC", "IBI", 'T', Blocks.CRAFTING_TABLE, 'C', "ingotCopper",
 					'B', BlockStrongbox.strongboxBasic, 'P', Items.PAPER, 'I', "ingotInvar" }));
 		}
-		if (enable[Types.REINFORCED.ordinal()]) {
+		if (enable[EnumType.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(workbenchReinforced, new Object[] { " I ", "IXI", " I ", 'I', "ingotSignalum", 'X', workbenchHardened }));
 		}
-		if (enable[Types.RESONANT.ordinal()]) {
+		if (enable[EnumType.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(workbenchResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', workbenchReinforced }));
 		}
 		TECraftingHandler.addSecureRecipe(workbenchCreative);
@@ -234,20 +254,16 @@ public class BlockWorkbench extends BlockTEBase {
 		return true;
 	}
 
-	public enum Types {
-		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
-	}
-
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 	public static final float[] HARDNESS = { -1.0F, 5.0F, 15.0F, 20.0F, 20.0F };
 	public static final int[] RESISTANCE = { 1200, 15, 90, 120, 120 };
-	public static boolean[] enable = new boolean[Types.values().length];
+	public static boolean[] enable = new boolean[EnumType.values().length];
 
 	static {
 		String category = "Workbench.";
 
 		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}

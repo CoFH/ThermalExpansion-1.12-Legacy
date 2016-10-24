@@ -6,6 +6,7 @@ import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 
+import cofh.thermalexpansion.block.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -40,7 +41,7 @@ public class ItemBlockCache extends ItemBlockBase {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockCache.Types.values()[ItemHelper.getItemDamage(stack)]) {
+		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.EPIC;
 		case RESONANT:

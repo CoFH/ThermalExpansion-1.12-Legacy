@@ -10,6 +10,7 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
@@ -35,7 +36,7 @@ public class RenderCell //implements ISimpleBlockRenderingHandler, IItemRenderer
 	public static final RenderCell instance = new RenderCell();
 
 	static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
-	static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[BlockCell.Types.values().length * 2];
+	static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[EnumType.values().length * 2];
 	static CCModel modelCenter = CCModel.quadModel(24);
 	static CCModel modelFrame = CCModel.quadModel(48);
 

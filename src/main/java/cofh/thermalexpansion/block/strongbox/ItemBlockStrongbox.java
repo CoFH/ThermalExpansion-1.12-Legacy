@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
 
+import cofh.thermalexpansion.block.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -47,7 +48,7 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockStrongbox.Types.values()[ItemHelper.getItemDamage(stack)]) {
+		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.EPIC;
 		case RESONANT:

@@ -391,7 +391,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	public enum Types {
-		ILLUMINATOR, LAMP_LUMIUM_RADIANT, LAMP_LUMIUM;
+		ILLUMINATOR,
+        LAMP_LUMIUM_RADIANT,
+        LAMP_LUMIUM;
 
 		public static Types getType(int meta) {
 

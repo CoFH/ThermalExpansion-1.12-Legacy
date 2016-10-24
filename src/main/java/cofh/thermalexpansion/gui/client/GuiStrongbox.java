@@ -7,6 +7,7 @@ import cofh.core.gui.element.TabSecurity;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerStrongbox;
@@ -35,7 +36,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		xSize = 14 + 18 * MathHelper.clamp(storageIndex + 1, 9, 13);
 		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 8);
 
-		if (myTile.type == BlockStrongbox.Types.CREATIVE.ordinal()) {
+		if (myTile.type == EnumType.CREATIVE.ordinal()) {
 			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.creative");
 		} else {
 			myInfo = StringHelper.localize("tab.thermalexpansion.strongbox.0");

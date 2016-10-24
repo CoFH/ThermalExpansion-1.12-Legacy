@@ -6,12 +6,18 @@ import codechicken.lib.item.ItemStackRegistry;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.device.BlockDevice;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.material.Material;
@@ -28,6 +34,8 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class BlockSponge extends BlockTEBase {
 
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
 	public BlockSponge() {
 
 		super(Material.SPONGE);
@@ -35,6 +43,21 @@ public class BlockSponge extends BlockTEBase {
 		setSoundType(SoundType.PLANT);
 		setUnlocalizedName("thermalexpansion.sponge");
 	}
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).meta();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
@@ -168,8 +191,28 @@ public class BlockSponge extends BlockTEBase {
 		return true;
 	}
 
-	public enum Types {
-		CREATIVE, BASIC, MAGMATIC
+	public enum Types implements IStringSerializable {
+		CREATIVE,
+        BASIC,
+        MAGMATIC;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
+
 	}
 
 	public static final String[] NAMES = { "creative", "basic", "magmatic" };

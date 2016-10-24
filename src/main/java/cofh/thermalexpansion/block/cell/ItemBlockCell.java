@@ -8,6 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import java.util.List;
 import net.minecraft.block.Block;
@@ -20,7 +21,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 
 		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, ItemHelper.getItemDamage(container) == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
+		ReconfigurableHelper.setSideCache(container, ItemHelper.getItemDamage(container) == EnumType.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
 				: TileCell.DEFAULT_SIDES);
 		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		EnergyHelper.setDefaultEnergyTag(container, energy);
@@ -63,13 +64,13 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public boolean isDamaged(ItemStack stack) {
 
-		return ItemHelper.getItemDamage(stack) != BlockCell.Types.CREATIVE.ordinal();
+		return ItemHelper.getItemDamage(stack) != EnumType.CREATIVE.ordinal();
 	}
 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
+		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.EPIC;
 		case RESONANT:
@@ -96,7 +97,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		if (ItemHelper.getItemDamage(stack) == BlockCell.Types.CREATIVE.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == EnumType.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
 			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / "
@@ -117,7 +118,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		int metadata = ItemHelper.getItemDamage(container);
 
-		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
+		if (metadata == EnumType.CREATIVE.ordinal()) {
 			return 0;
 		}
 		int stored = container.getTagCompound().getInteger("Energy");
@@ -138,7 +139,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 		int metadata = ItemHelper.getItemDamage(container);
 
-		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
+		if (metadata == EnumType.CREATIVE.ordinal()) {
 			return maxExtract;
 		}
 		int stored = container.getTagCompound().getInteger("Energy");

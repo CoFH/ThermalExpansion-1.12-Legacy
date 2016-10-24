@@ -6,6 +6,7 @@ import cofh.core.gui.element.TabSecurity;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.TEProps;
@@ -82,7 +83,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		generateInfo("tab.thermalexpansion.workbench", 3);
 
-		if (myTile.type == BlockWorkbench.Types.CREATIVE.ordinal()) {
+		if (myTile.type == EnumType.CREATIVE.ordinal()) {
 			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.workbench.creative");
 		}
 
@@ -213,7 +214,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 		int offset = 144;
 
-		if (myTile.type == BlockWorkbench.Types.CREATIVE.ordinal()) {
+		if (myTile.type == EnumType.CREATIVE.ordinal()) {
 			offset = 160;
 		}
 		for (int i = 0; i < 3; i++) {

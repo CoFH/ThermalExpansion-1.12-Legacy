@@ -4,6 +4,7 @@ import cofh.api.item.IInventoryContainerItem;
 import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.util.helpers.MathHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import net.minecraftforge.fml.common.Optional;
@@ -79,7 +80,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	@Override
 	protected boolean supportsShiftClick(int slotIndex) {
 
-		return myTile.getType() != BlockStrongbox.Types.CREATIVE.ordinal();
+		return myTile.getType() != EnumType.CREATIVE.ordinal();
 	}
 
 	public TileStrongbox getTile() {

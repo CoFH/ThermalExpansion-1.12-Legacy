@@ -8,9 +8,12 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.core.TEProps;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
@@ -36,6 +39,8 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockTank extends BlockTEBase {
 
+    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+
     public BlockTank() {
 
         super(Material.GLASS);
@@ -44,6 +49,21 @@ public class BlockTank extends BlockTEBase {
         setResistance(120.0F);
         setSoundType(SoundType.GLASS);
         setUnlocalizedName("thermalexpansion.tank");
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
     }
 
     @Override
@@ -112,7 +132,6 @@ public class BlockTank extends BlockTEBase {
 
     @Override
     public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-
         return HARDNESS[blockState.getBlock().getMetaFromState(blockState)];
     }
 

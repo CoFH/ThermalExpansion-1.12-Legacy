@@ -50,6 +50,7 @@ import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TECraftingParser;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.ThermalFoundation;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.CustomProperty;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -92,7 +93,7 @@ public class ThermalExpansion {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.7.10R4.1.5B1";
 	public static final String version_max = "1.7.10R4.2.0";
-	public static final String dependencies = CoFHCore.version_group + ThermalFoundation.version_group;
+	public static final String dependencies = "required-after:ThermalFoundation";//CoFHCore.version_group + ThermalFoundation.version_group;
 	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	public static final String version_group = "required-after:" + modId + "@[" + version + "," + version_max + ");";
@@ -123,6 +124,7 @@ public class ThermalExpansion {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
+        FMLLog.info("ThermalExpansion");
 
 		//UpdateManager.registerUpdater(new UpdateManager(this, releaseURL, CoFHProps.DOWNLOAD_URL));
 		config.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/common.cfg"), true));

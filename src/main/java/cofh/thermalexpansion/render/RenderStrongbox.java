@@ -3,6 +3,7 @@ package cofh.thermalexpansion.render;
 import codechicken.lib.render.item.IItemRenderer;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongboxCreative;
@@ -26,7 +27,7 @@ import java.util.List;
 public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
 
     public static final RenderStrongbox instance = new RenderStrongbox();
-    static ResourceLocation[] texture = new ResourceLocation[BlockStrongbox.Types.values().length];
+    static ResourceLocation[] texture = new ResourceLocation[EnumType.values().length];
 
     static ModelStrongbox model = new ModelStrongbox();
 
@@ -39,11 +40,11 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
     public static void initialize() {
 
-        texture[BlockStrongbox.Types.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Basic.png");
-        texture[BlockStrongbox.Types.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Hardened.png");
-        texture[BlockStrongbox.Types.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Reinforced.png");
-        texture[BlockStrongbox.Types.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Resonant.png");
-        texture[BlockStrongbox.Types.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Creative.png");
+        texture[EnumType.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Basic.png");
+        texture[EnumType.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Hardened.png");
+        texture[EnumType.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Reinforced.png");
+        texture[EnumType.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Resonant.png");
+        texture[EnumType.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Creative.png");
     }
 
     public void render(int metadata, int access, int facing, double x, double y, double z) {

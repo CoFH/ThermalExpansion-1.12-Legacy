@@ -11,14 +11,20 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.cell.BlockCell;
+import cofh.thermalexpansion.block.ender.BlockEnder;
+import cofh.thermalexpansion.block.ender.BlockEnder.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -28,6 +34,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.block.material.MapColor;
@@ -63,6 +70,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	public static final Material material = new PlateMaterial(MapColor.IRON);
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
 	public BlockPlate() {
 
@@ -74,7 +82,24 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		basicGui = false;
 	}
 
-	@Override
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).meta();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
+
+
+    @Override
 	public boolean openConfigGui(IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player) {
 
 		return ((TilePlateBase) world.getTileEntity(pos)).openGui(player);
@@ -409,7 +434,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		// @formatter:on
 	}
 
-	public enum Types {
+	public enum Types implements IStringSerializable {
 		FRAME,
 		SIGNAL,
 		IMPULSE,
@@ -419,6 +444,23 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		TELEPORT;
 
 		public int texture = ordinal() > 3 ? 7 : 2;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
 	}
 
 	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "excursion", "teleport" };

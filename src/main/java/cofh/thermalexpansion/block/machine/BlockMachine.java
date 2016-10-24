@@ -17,15 +17,20 @@ import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
+import java.util.Locale;
+
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -44,6 +49,8 @@ import javax.annotation.Nullable;
 
 public class BlockMachine extends BlockTEBase {
 
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
 	public BlockMachine() {
 
 		super(Material.IRON);
@@ -52,7 +59,24 @@ public class BlockMachine extends BlockTEBase {
 		setUnlocalizedName("thermalexpansion.machine");
 	}
 
-	@Override
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).meta();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
+
+
+    @Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
@@ -89,7 +113,7 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -493,8 +517,41 @@ public class BlockMachine extends BlockTEBase {
 		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
-	public enum Types {
-		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR
+	public enum Types implements IStringSerializable {
+		FURNACE,
+        PULVERIZER,
+        SAWMILL,
+        SMELTER,
+        CRUCIBLE,
+        TRANSPOSER,
+        PRECIPITATOR,
+        EXTRUDER,
+        ACCUMULATOR,
+        ASSEMBLER,
+        CHARGER,
+        INSOLATOR;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
+
+        public static int meta(Types type) {
+            return type.ordinal();
+        }
+
 	}
 
 	public static TextureAtlasSprite machineBottom;

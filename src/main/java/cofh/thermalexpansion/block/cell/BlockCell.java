@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
@@ -18,6 +19,8 @@ import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.TFItems;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
@@ -39,22 +42,40 @@ import net.minecraft.world.World;
 
 public class BlockCell extends BlockTEBase {
 
+    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+
 	public BlockCell() {
 
 		super(Material.IRON);
 		setHardness(20.0F);
 		setResistance(120.0F);
 		setUnlocalizedName("thermalexpansion.cell");
+        setDefaultState(getDefaultState().withProperty(TYPES, EnumType.BASIC));
 	}
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
-
-		if (metadata >= Types.values().length) {
+		if (metadata >= EnumType.values().length) {
 			return null;
 		}
-		if (metadata == Types.CREATIVE.ordinal()) {
-			if (!enable[Types.CREATIVE.ordinal()]) {
+		EnumType type = EnumType.fromMeta(metadata);
+		if (type == EnumType.CREATIVE) {
+			if (!enable[EnumType.CREATIVE.meta()]) {
 				return null;
 			}
 			return new TileCellCreative(metadata);
@@ -63,12 +84,12 @@ public class BlockCell extends BlockTEBase {
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable[0]) {
 			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), -1));
 		}
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), 0));
 			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, i), TileCell.CAPACITY[i]));
 		}
@@ -199,8 +220,8 @@ public class BlockCell extends BlockTEBase {
 	/* IDismantleable */
 	@Override
 	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
-		if (getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+        EnumType type = world.getBlockState(pos).getValue(TYPES);
+		if (type == EnumType.CREATIVE && !CoreUtils.isOp(player)) {
 			return false;
 		}
 		return super.canDismantle(player, world, pos);
@@ -213,11 +234,11 @@ public class BlockCell extends BlockTEBase {
 		TileCell.initialize();
 		TileCellCreative.initialize();
 
-		cellCreative = new ItemStack(this, 1, Types.CREATIVE.ordinal());
-		cellBasic = new ItemStack(this, 1, Types.BASIC.ordinal());
-		cellHardened = new ItemStack(this, 1, Types.HARDENED.ordinal());
-		cellReinforced = new ItemStack(this, 1, Types.REINFORCED.ordinal());
-		cellResonant = new ItemStack(this, 1, Types.RESONANT.ordinal());
+		cellCreative = new ItemStack(this, 1, EnumType.CREATIVE.meta());
+		cellBasic = new ItemStack(this, 1, EnumType.BASIC.meta());
+		cellHardened = new ItemStack(this, 1, EnumType.HARDENED.meta());
+		cellReinforced = new ItemStack(this, 1, EnumType.REINFORCED.meta());
+		cellResonant = new ItemStack(this, 1, EnumType.RESONANT.meta());
 
 		ItemBlockCell.setDefaultTag(cellCreative, 0);
 		ItemBlockCell.setDefaultTag(cellBasic, 0);
@@ -237,21 +258,21 @@ public class BlockCell extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		if (enable[Types.BASIC.ordinal()]) {
+		if (enable[EnumType.BASIC.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellBasic, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellBasic, 'P', TEItems.powerCoilElectrum));
 			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 		}
-		if (enable[Types.HARDENED.ordinal()]) {
+		if (enable[EnumType.HARDENED.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened, 'P', TEItems.powerCoilElectrum));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger(
 					"Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic, 'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
 		}
-		if (enable[Types.REINFORCED.ordinal()]) {
+		if (enable[EnumType.REINFORCED.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellReinforced, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellReinforcedFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));
 		}
-		if (enable[Types.RESONANT.ordinal()]) {
+		if (enable[EnumType.RESONANT.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellResonant, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
 					.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
@@ -265,20 +286,16 @@ public class BlockCell extends BlockTEBase {
 		return true;
 	}
 
-	public enum Types {
-		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
-	}
-
 	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 	public static final float[] HARDNESS = { -1.0F, 5.0F, 15.0F, 20.0F, 20.0F };
 	public static final int[] RESISTANCE = { 1200, 15, 90, 120, 120 };
-	public static boolean[] enable = new boolean[Types.values().length];
+	public static boolean[] enable = new boolean[EnumType.values().length];
 
 	static {
 		String category = "Cell.";
 
 		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}

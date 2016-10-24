@@ -13,7 +13,10 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.util.Utils;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.util.EnumFacing;
@@ -41,22 +44,39 @@ import javax.annotation.Nullable;
 
 public class BlockCache extends BlockTEBase {
 
-	public BlockCache() {
+    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
 
+	public BlockCache() {
 		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setUnlocalizedName("thermalexpansion.cache");
 		setHarvestLevel("pickaxe", 1);
+        setDefaultState(getDefaultState().withProperty(TYPES, EnumType.BASIC));
 	}
 
-	@Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
 
-		if (metadata >= Types.values().length) {
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
+
+    @Override
+	public TileEntity createNewTileEntity(World world, int metadata) {
+		if (metadata >= EnumType.values().length) {
 			return null;
 		}
-		if (metadata == Types.CREATIVE.ordinal() && !enable[Types.CREATIVE.ordinal()]) {
+		EnumType type = EnumType.fromMeta(metadata);
+		if (type == EnumType.CREATIVE && !enable[EnumType.CREATIVE.meta()]) {
 			return null;
 		}
 		return new TileCache(metadata);
@@ -68,7 +88,7 @@ public class BlockCache extends BlockTEBase {
 		if (enable[0]) {
 			list.add(new ItemStack(item, 1, 0));
 		}
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -80,8 +100,8 @@ public class BlockCache extends BlockTEBase {
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
-
-        if (getMetaFromState(state) == 0 && !enable[0]) {
+        EnumType type = state.getValue(TYPES);
+        if (type == EnumType.CREATIVE && !enable[EnumType.CREATIVE.meta()]) {
 			world.setBlockToAir(pos);
 			return;
 		}
@@ -299,7 +319,7 @@ public class BlockCache extends BlockTEBase {
 
     @Override
     public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-		if (getMetaFromState(world.getBlockState(pos)) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+		if (getMetaFromState(world.getBlockState(pos)) == EnumType.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
 			return false;
 		}
 		return super.canDismantle(player, world, pos);
@@ -311,11 +331,11 @@ public class BlockCache extends BlockTEBase {
 
 		TileCache.initialize();
 
-		cacheCreative = new ItemStack(this, 1, Types.CREATIVE.ordinal());
-		cacheBasic = new ItemStack(this, 1, Types.BASIC.ordinal());
-		cacheHardened = new ItemStack(this, 1, Types.HARDENED.ordinal());
-		cacheReinforced = new ItemStack(this, 1, Types.REINFORCED.ordinal());
-		cacheResonant = new ItemStack(this, 1, Types.RESONANT.ordinal());
+		cacheCreative = new ItemStack(this, 1, EnumType.CREATIVE.ordinal());
+		cacheBasic = new ItemStack(this, 1, EnumType.BASIC.ordinal());
+		cacheHardened = new ItemStack(this, 1, EnumType.HARDENED.ordinal());
+		cacheReinforced = new ItemStack(this, 1, EnumType.REINFORCED.ordinal());
+		cacheResonant = new ItemStack(this, 1, EnumType.RESONANT.ordinal());
 
 		return true;
 	}
@@ -323,34 +343,30 @@ public class BlockCache extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		if (enable[Types.BASIC.ordinal()]) {
+		if (enable[EnumType.BASIC.ordinal()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cacheBasic, " I ", "IXI", " I ", 'I', "ingotTin", 'X', "logWood"));
 		}
-		if (enable[Types.HARDENED.ordinal()]) {
+		if (enable[EnumType.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
 			GameRegistry.addRecipe(ShapedRecipe(cacheHardened, "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin"));
 		}
-		if (enable[Types.REINFORCED.ordinal()]) {
+		if (enable[EnumType.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "blockGlassHardened" }));
 		}
-		if (enable[Types.RESONANT.ordinal()]) {
+		if (enable[EnumType.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cacheReinforced }));
 		}
 		return true;
 	}
 
-	public enum Types {
-		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
-	}
-
-	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
-	public static boolean[] enable = new boolean[Types.values().length];
+    public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
+	public static boolean[] enable = new boolean[EnumType.values().length];
 
 	static {
 		String category = "Cache.";
 
 		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
-		for (int i = 1; i < Types.values().length; i++) {
+		for (int i = 1; i < EnumType.values().length; i++) {
 			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}

@@ -5,6 +5,7 @@ import cofh.core.item.ItemBlockBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.cell.BlockCell;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class ItemBlockWorkbench extends ItemBlockBase implements IInventoryConta
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
+		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
 			return EnumRarity.EPIC;
 		case RESONANT:

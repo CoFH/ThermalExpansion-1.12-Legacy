@@ -12,13 +12,19 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.EnumType;
+import cofh.thermalexpansion.block.device.BlockDevice;
+import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -26,6 +32,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -45,6 +52,7 @@ import javax.annotation.Nullable;
 public class BlockDynamo extends BlockTEBase {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
 	static {
 		Cuboid6 bb = new Cuboid6(0, 0, 0, 1, 10 / 16., 1);
@@ -70,6 +78,22 @@ public class BlockDynamo extends BlockTEBase {
 		setResistance(25.0F);
 		setUnlocalizedName("thermalexpansion.dynamo");
 	}
+
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).meta();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
+    }
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
@@ -270,8 +294,33 @@ public class BlockDynamo extends BlockTEBase {
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
-	public enum Types {
-		STEAM, MAGMATIC, COMPRESSION, REACTANT, ENERVATION
+	public enum Types implements IStringSerializable {
+		STEAM,
+        MAGMATIC,
+        COMPRESSION,
+        REACTANT,
+        ENERVATION;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
+
+        public static int meta(Types type) {
+            return type.ordinal();
+        }
 	}
 
 	public static final String[] NAMES = { "steam", "magmatic", "compression", "reactant", "enervation" };
