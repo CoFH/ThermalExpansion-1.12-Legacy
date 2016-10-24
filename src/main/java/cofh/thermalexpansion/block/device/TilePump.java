@@ -8,12 +8,12 @@ import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -72,13 +72,13 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 		return BlockDevice.Types.EXTENDER.ordinal();
 	}
 
-	@Override
+	/*@Override
 	public void updateEntity() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-	}
+	}*/
 
 	@Override
 	public void invalidate() {
@@ -129,13 +129,14 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("Tracker", outputTracker);
 		nbt.setBoolean("Rev", reverse);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* IReconfigurableSides */
@@ -147,59 +148,59 @@ public class TilePump extends TileAugmentable implements IFluidHandler {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		return null;
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (!reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 1) {
+		if (!reverse || from == null || sideCache[from.ordinal()] != 1) {
 			return 0;
 		}
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 2) {
+		if (reverse || from == null || sideCache[from.ordinal()] != 2) {
 			return null;
 		}
 		return tank.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (reverse || from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] != 2) {
+		if (reverse || from == null || sideCache[from.ordinal()] != 2) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
-		if (from == ForgeDirection.UNKNOWN) {
+		if (from == null) {
 			return false;
 		}
 		return !reverse && sideCache[from.ordinal()] == 1;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
-		if (from == ForgeDirection.UNKNOWN) {
+		if (from == null) {
 			return false;
 		}
 		return reverse && sideCache[from.ordinal()] == 2;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}

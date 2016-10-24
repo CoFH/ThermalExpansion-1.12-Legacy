@@ -6,10 +6,13 @@ import cofh.lib.util.helpers.StringHelper;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemBlockLight extends ItemBlock {
@@ -61,18 +64,16 @@ public class ItemBlockLight extends ItemBlock {
 		list.add(StringHelper.getNoticeText("info.thermalexpansion.multimeter"));
 	}
 
-	@Override
-	public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ,
-			int metadata) {
-
-		if (!world.setBlock(x, y, z, field_150939_a, metadata, 3)) {
+    @Override
+    public boolean placeBlockAt(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, IBlockState newState) {
+		if (!world.setBlockState(pos, newState, 3)) {
 			return false;
 		}
-		if (world.getBlock(x, y, z) == field_150939_a) {
-			field_150939_a.onBlockPlacedBy(world, x, y, z, player, stack);
-			field_150939_a.onPostBlockPlaced(world, x, y, z, metadata);
-			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
-			side = Math.min(6, side ^ 1);
+		if (world.getBlockState(pos) == block) {
+            block.onBlockPlacedBy(world, pos, newState, player, stack);
+            //block.onPostBlockPlaced(world, x, y, z, metadata);
+			TileLight tile = (TileLight) world.getTileEntity(pos);
+			side = EnumFacing.VALUES[Math.min(6, side.ordinal() ^ 1)];
 			BlockLight.setTileAlignment(tile, player, stack, side, hitX, hitY, hitZ);
 		}
 		return true;

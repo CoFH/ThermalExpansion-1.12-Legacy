@@ -16,17 +16,19 @@ import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.gui.client.GuiCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileCell extends TileReconfigurable implements IEnergyHandler {
+public class TileCell extends TileReconfigurable implements ITickable, IEnergyHandler {
 
 	public static void initialize() {
 
@@ -111,7 +113,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	}
 
 	@Override
-	public int getComparatorInput(int side) {
+	public int getComparatorInput() {
 
 		return compareTracker;
 	}
@@ -142,14 +144,14 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	}
 
 	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+	public void onNeighborTileChange(BlockPos pos) {
 
-		super.onNeighborTileChange(tileX, tileY, tileZ);
-		updateAdjacentHandler(tileX, tileY, tileZ);
+		super.onNeighborTileChange(pos);
+		updateAdjacentHandler(pos);
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -199,7 +201,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(EnumFacing.VALUES[bSide ^ 1],
 				Math.min(energySend, energyStorage.getEnergyStored()), false));
 	}
 
@@ -211,7 +213,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		for (int i = 0; i < 6; i++) {
 			TileEntity tile = BlockHelper.getAdjacentTileEntity(this, i);
 
-			if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
+			if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[i ^ 1])) {
 				adjacentHandlers[i] = (IEnergyReceiver) tile;
 			} else {
 				adjacentHandlers[i] = null;
@@ -220,16 +222,16 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		cached = true;
 	}
 
-	protected void updateAdjacentHandler(int x, int y, int z) {
+	protected void updateAdjacentHandler(BlockPos pos) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		int side = BlockHelper.determineAdjacentSide(this, x, y, z);
+		int side = BlockHelper.determineAdjacentSide(this, pos);
 
-		TileEntity tile = worldObj.getTileEntity(x, y, z);
+		TileEntity tile = worldObj.getTileEntity(pos);
 
-		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[side ^ 1])) {
 			adjacentHandlers[side] = (IEnergyReceiver) tile;
 		} else {
 			adjacentHandlers[side] = null;
@@ -303,7 +305,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -311,6 +313,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 		nbt.setByte("Tracker", outputTracker);
 		nbt.setInteger("Send", energySend);
 		nbt.setInteger("Recv", energyReceive);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -385,27 +388,27 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	/* IEnergyHandler */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 2) {
+		if (from == null || sideCache[from.ordinal()] == 2) {
 			return energyStorage.receiveEnergy(Math.min(maxReceive, energyReceive), simulate);
 		}
 		return 0;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 1) {
+		if (from == null || sideCache[from.ordinal()] == 1) {
 			return energyStorage.extractEnergy(Math.min(maxExtract, energySend), simulate);
 		}
 		return 0;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
-		if (from == ForgeDirection.UNKNOWN) {
+		if (from == null) {
 			return false;
 		}
 		return sideCache[from.ordinal()] > 0;
@@ -471,7 +474,7 @@ public class TileCell extends TileReconfigurable implements IEnergyHandler {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return type < 2 ? IconRegistry.getIcon("StorageRedstone") : IconRegistry.getIcon("FluidRedstone");

@@ -78,7 +78,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 			schematicPerRow = 4;
 			break;
 		}
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 
 		generateInfo("tab.thermalexpansion.workbench", 3);
 
@@ -206,7 +206,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	protected boolean hasValidSchematic() {
 
-		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null && myTile.inventory[myTile.getCurrentSchematicSlot()].stackTagCompound != null;
+		return myTile.inventory[myTile.getCurrentSchematicSlot()] != null && myTile.inventory[myTile.getCurrentSchematicSlot()].getTagCompound() != null;
 	}
 
 	protected void drawCurMissing() {

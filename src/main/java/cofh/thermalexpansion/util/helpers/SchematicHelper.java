@@ -93,7 +93,7 @@ public class SchematicHelper {
 								}
 								stack = new ItemStack(stack.getItem(), 1, damage);
 								if (tag != null) {
-									stack.setTagCompound((NBTTagCompound) tag.copy());
+									stack.setTagCompound(tag.copy());
 								}
 								workingSet.setInventorySlotContents(i, stack);
 								if (!recipe.matches(workingSet, world)) {
@@ -152,14 +152,14 @@ public class SchematicHelper {
 
 		ItemStack returnStack = schematic.copy();
 		returnStack.setTagCompound(new NBTTagCompound());
-		returnStack.stackTagCompound = nbt;
+		returnStack.setTagCompound(nbt);
 		return returnStack;
 	}
 
 	public static String getOutputName(ItemStack stack) {
 
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Output")) {
-			return ": " + stack.stackTagCompound.getString("Output");
+		if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Output")) {
+			return ": " + stack.getTagCompound().getString("Output");
 		}
 		return "";
 	}
@@ -178,25 +178,23 @@ public class SchematicHelper {
 		if (schematic == null) {
 			return null;
 		}
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Slot" + slot)) {
-			return ItemStack.loadItemStackFromNBT(schematic.stackTagCompound.getCompoundTag("Slot" + slot));
+		if (schematic.getTagCompound() != null && schematic.getTagCompound().hasKey("Slot" + slot)) {
+			return ItemStack.loadItemStackFromNBT(schematic.getTagCompound().getCompoundTag("Slot" + slot));
 		}
 		return null;
 	}
 
 	public static String getSchematicOreSlot(ItemStack schematic, int slot) {
 
-		if (schematic.stackTagCompound != null && schematic.stackTagCompound.hasKey("Ore" + slot)) {
-			return schematic.stackTagCompound.getString("Ore" + slot);
+		if (schematic.getTagCompound() != null && schematic.getTagCompound().hasKey("Ore" + slot)) {
+			return schematic.getTagCompound().getString("Ore" + slot);
 		}
 		return null;
 	}
 
 	public static boolean isSchematic(ItemStack stack) {
 
-		return stack == null ? false
-				: stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName())
-						&& ItemHelper.getItemDamage(stack) == ItemDiagram.Types.SCHEMATIC.ordinal();
+		return stack != null && (stack.getUnlocalizedName().contentEquals(TEItems.diagramSchematic.getUnlocalizedName()) && ItemHelper.getItemDamage(stack) == ItemDiagram.Types.SCHEMATIC.ordinal());
 	}
 
 	/**
@@ -204,7 +202,7 @@ public class SchematicHelper {
 	 */
 	public static void addSchematicInformation(ItemStack stack, List<String> list) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			list.add(StringHelper.getInfoText("info.cofh.blank"));
 			return;
 		}
@@ -214,11 +212,11 @@ public class SchematicHelper {
 		String curName;
 
 		for (int i = 0; i < 9; i++) {
-			if (stack.stackTagCompound.hasKey("Name" + i)) {
-				if (stack.stackTagCompound.hasKey("Ore" + i)) {
+			if (stack.getTagCompound().hasKey("Name" + i)) {
+				if (stack.getTagCompound().hasKey("Ore" + i)) {
 					hasOre = true;
 					if (StringHelper.isShiftKeyDown()) {
-						curName = stack.stackTagCompound.getString("Ore" + i);
+						curName = stack.getTagCompound().getString("Ore" + i);
 						if (aMap.containsKey(curName)) {
 							aMap.put(curName, aMap.get(curName) + 1);
 						} else {
@@ -226,7 +224,7 @@ public class SchematicHelper {
 						}
 					}
 				} else {
-					curName = stack.stackTagCompound.getString("Name" + i);
+					curName = stack.getTagCompound().getString("Name" + i);
 					if (aMap.containsKey(curName)) {
 						aMap.put(curName, aMap.get(curName) + 1);
 					} else {

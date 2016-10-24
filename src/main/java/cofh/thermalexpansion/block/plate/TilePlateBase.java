@@ -1,25 +1,27 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.plate.BlockPlate.Types;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateBase extends TileInventory implements ITileInfo {
 
@@ -59,12 +61,6 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	public int getType() {
 
 		return type;
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
 	}
 
 	@Override
@@ -355,13 +351,14 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Align", alignment);
 		nbt.setByte("Dir", direction);
 		nbt.setBoolean("SecureFilter", filterSecure);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -397,7 +394,7 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		if (newDir != direction) {
 			rotated();
 			direction = newDir;
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(worldObj, pos);
 		}
 	}
 
@@ -418,19 +415,19 @@ public class TilePlateBase extends TileInventory implements ITileInfo {
 		}
 	}
 
-	@Override
-	public boolean shouldRefresh(Block oldBlock, Block newBlock, int oldMeta, int newMeta, World world, int x, int y, int z) {
+    @Override
+    public boolean shouldRefresh(World world, BlockPos pos, IBlockState oldState, IBlockState newSate) {
 
-		return oldBlock != newBlock || newMeta != type;
+		return oldState.getBlock() != newSate.getBlock() || newSate.getBlock().getMetaFromState(newSate) != type;
 	}
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
-			info.add(new ChatComponentText("Alignment: " + alignment + ":" + ForgeDirection.getOrientation(alignment)));
-			info.add(new ChatComponentText("Direction: " + direction + ":" + ForgeDirection.getOrientation(direction)));
+			info.add(new TextComponentString("Alignment: " + alignment + ":" + EnumFacing.VALUES[alignment]));
+			info.add(new TextComponentString("Direction: " + direction + ":" + EnumFacing.VALUES[direction]));
 		}
 	}
 

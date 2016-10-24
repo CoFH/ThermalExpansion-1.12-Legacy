@@ -57,7 +57,7 @@ public class GuiPlateTeleport extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), new ResourceLocation(TEX_PATH));
 
 		myTile = (TilePlateTeleporter) theTile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 	}

@@ -1,5 +1,8 @@
 package cofh.thermalexpansion.item.tool;
 
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.util.SoundUtils;
+import codechicken.lib.vec.Vector3;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Implementable;
@@ -8,7 +11,15 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cpw.mods.fml.common.eventhandler.Event.Result;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 import java.util.List;
 
@@ -18,9 +29,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 
 @Implementable("buildcraft.api.tools.IToolWrench")
 public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
@@ -30,7 +39,7 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
 		super(toolMaterial);
 
 		setUnlocalizedName("thermalexpansion.tool.battleWrench");
-		setTextureName("thermalexpansion:tool/BattleWrench");
+		//setTextureName("thermalexpansion:tool/BattleWrench");
 		setCreativeTab(ThermalExpansion.tabTools);
 		setHarvestLevel("wrench", 1);
 	}
@@ -50,42 +59,42 @@ public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
 		return true;
 	}
 
-	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+        IBlockState state = world.getBlockState(pos);
+		Block block = state.getBlock();
 
-		Block block = world.getBlock(x, y, z);
-
-		if (block == null) {
-			return false;
+		if (state == null) {
+			return EnumActionResult.PASS;
 		}
-		PlayerInteractEvent event = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, x, y, z, hitSide, world);
-		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY || event.useBlock == Result.DENY || event.useItem == Result.DENY) {
-			return false;
+        RayTraceResult traceResult = RayTracer.retrace(player);
+		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(player, hand, stack, pos, side, traceResult.hitVec);
+		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY  ) {
+			return EnumActionResult.FAIL;
 		}
 		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
-				&& ((IDismantleable) block).canDismantle(player, world, x, y, z)) {
-			((IDismantleable) block).dismantleBlock(player, world, x, y, z, false);
-			return true;
+				&& ((IDismantleable) block).canDismantle(player, world, pos)) {
+			((IDismantleable) block).dismantleBlock(player, world, pos, false);
+			return EnumActionResult.SUCCESS;
 		}
 		if (BlockHelper.canRotate(block)) {
 			if (player.isSneaking()) {
-				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlockAlt(world, block, x, y, z), 3);
-				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.6F);
+				world.setBlockState(pos, BlockHelper.rotateVanillaBlockAlt(world, state, pos), 3);
+                SoundUtils.playSoundAt(new Vector3(pos).add(0.5), world, SoundCategory.BLOCKS, block.getSoundType(state, world, pos, player).getBreakSound(), 1.0F, 0.6F);
 			} else {
-				world.setBlockMetadataWithNotify(x, y, z, BlockHelper.rotateVanillaBlock(world, block, x, y, z), 3);
-				world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, block.stepSound.getBreakSound(), 1.0F, 0.8F);
+				world.setBlockState(pos, BlockHelper.rotateVanillaBlock(world, state, pos), 3);
+                SoundUtils.playSoundAt(new Vector3(pos).add(0.5), world, SoundCategory.BLOCKS, block.getSoundType(state, world, pos, player).getBreakSound(), 1.0F, 0.8F);
 			}
-			return ServerHelper.isServerWorld(world);
-		} else if (!player.isSneaking() && block.rotateBlock(world, x, y, z, ForgeDirection.getOrientation(hitSide))) {
-			player.swingItem();
-			return ServerHelper.isServerWorld(world);
+			return ServerHelper.isServerWorld(world) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
+		} else if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
+			player.swingArm(hand);
+			return ServerHelper.isServerWorld(world) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 		}
-		return false;
+		return EnumActionResult.PASS;
 	}
 
-	@Override
-	public boolean doesSneakBypassUse(World world, int x, int y, int z, EntityPlayer player) {
-
+    @Override
+    public boolean doesSneakBypassUse(ItemStack stack, IBlockAccess world, BlockPos pos, EntityPlayer player) {
 		return true;
 	}
 

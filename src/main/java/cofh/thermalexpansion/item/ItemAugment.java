@@ -48,7 +48,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForDetails());
@@ -116,13 +116,13 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 		/* MACHINE - EXTRUDER */
 		else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.cobblestone.getLocalizedName() + " "
+					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.COBBLESTONE.getLocalizedName() + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[1][level] + " " + Blocks.stone.getLocalizedName() + " "
+					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[1][level] + " " + Blocks.STONE.getLocalizedName() + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
 			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[2][level] + " " + Blocks.obsidian.getLocalizedName() + " "
+					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[2][level] + " " + Blocks.OBSIDIAN.getLocalizedName() + " "
 					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
 			list.add(StringHelper.BRIGHT_GREEN + "-" + (1000 - TEAugments.MACHINE_EXTRUDER_WATER_MOD[level]) / 10D + "% "
 					+ StringHelper.localize("info.thermalexpansion.augment.waterConsumed") + StringHelper.END);

@@ -6,7 +6,7 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
-import cpw.mods.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -36,7 +36,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		super(tile);
 
 		myTile = (TileStrongbox) tile;
-		myTile.openInventory();
+		myTile.openInventory(inventory.player);
 
 		storageIndex = myTile.getStorageIndex();
 		rowSize = MathHelper.clamp(storageIndex + 1, 9, 13);
@@ -73,7 +73,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	public void onContainerClosed(EntityPlayer player) {
 
 		super.onContainerClosed(player);
-		myTile.closeInventory();
+		myTile.closeInventory(player);
 	}
 
 	@Override

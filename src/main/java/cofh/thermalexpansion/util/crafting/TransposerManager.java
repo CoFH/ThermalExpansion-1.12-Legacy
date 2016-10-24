@@ -72,7 +72,7 @@ public class TransposerManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(new ComparableItemStackTransposer(input));
+		return input != null && validationSet.contains(new ComparableItemStackTransposer(input));
 	}
 
 	public static void addDefaultRecipes() {
@@ -86,39 +86,39 @@ public class TransposerManager {
 		boolean recipeNetherBrick = ThermalExpansion.config.get(category, "NetherBrick", false);
 
 		if (recipeMossyCobble) {
-			addFillRecipe(8000, new ItemStack(Blocks.cobblestone), new ItemStack(Blocks.mossy_cobblestone), new FluidStack(FluidRegistry.WATER, 250), false);
+			addFillRecipe(8000, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.MOSSY_COBBLESTONE), new FluidStack(FluidRegistry.WATER, 250), false);
 		}
 		if (recipeMossyStoneBrick) {
-			addFillRecipe(8000, new ItemStack(Blocks.stonebrick), new ItemStack(Blocks.stonebrick, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
+			addFillRecipe(8000, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
 		}
 		if (recipeEndStone) {
-			addFillRecipe(8000, new ItemStack(Blocks.sandstone), new ItemStack(Blocks.end_stone), new FluidStack(TFFluids.fluidEnder, 250), false);
+			addFillRecipe(8000, new ItemStack(Blocks.SANDSTONE), new ItemStack(Blocks.END_STONE), new FluidStack(TFFluids.fluidEnder, 250), false);
 		}
 		if (recipePackedIce) {
-			addFillRecipe(8000, new ItemStack(Blocks.ice), new ItemStack(Blocks.packed_ice), new FluidStack(TFFluids.fluidCryotheum, 250), false);
+			addFillRecipe(8000, new ItemStack(Blocks.ICE), new ItemStack(Blocks.PACKED_ICE), new FluidStack(TFFluids.fluidCryotheum, 250), false);
 		}
 		if (recipeNetherBrick) {
-			addFillRecipe(4000, new ItemStack(Items.brick), new ItemStack(Items.netherbrick), new FluidStack(FluidRegistry.LAVA, 250), false);
+			addFillRecipe(4000, new ItemStack(Items.BRICK), new ItemStack(Items.NETHERBRICK), new FluidStack(FluidRegistry.LAVA, 250), false);
 		}
-		addTEFillRecipe(4000, new ItemStack(Items.glowstone_dust), new ItemStack(Items.blaze_powder), new FluidStack(TFFluids.fluidRedstone, 200), false);
-		addTEFillRecipe(4000, new ItemStack(Items.snowball), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
-		addTEFillRecipe(4000, new ItemStack(Blocks.sand), ItemHelper.cloneStack(TFItems.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		addTEFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		addTEFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		addTEFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(TFItems.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addTEFillRecipe(4000, ItemHelper.cloneStack(TFItems.dustObsidian, 1), ItemHelper.cloneStack(TFItems.dustBasalz, 1), new FluidStack(
 				TFFluids.fluidRedstone, 200), false);
 
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketGlowstone, 1), new FluidStack(TFFluids.fluidGlowstone, 1000),
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketGlowstone, 1), new FluidStack(TFFluids.fluidGlowstone, 1000),
 				true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketEnder, 1), new FluidStack(TFFluids.fluidEnder, 1000), true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketPyrotheum, 1), new FluidStack(TFFluids.fluidPyrotheum, 1000),
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketEnder, 1), new FluidStack(TFFluids.fluidEnder, 1000), true);
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketPyrotheum, 1), new FluidStack(TFFluids.fluidPyrotheum, 1000),
 				true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketCryotheum, 1), new FluidStack(TFFluids.fluidCryotheum, 1000),
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketCryotheum, 1), new FluidStack(TFFluids.fluidCryotheum, 1000),
 				true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketAerotheum, 1), new FluidStack(TFFluids.fluidAerotheum, 1000),
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketAerotheum, 1), new FluidStack(TFFluids.fluidAerotheum, 1000),
 				true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketPetrotheum, 1), new FluidStack(TFFluids.fluidPetrotheum, 1000),
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketPetrotheum, 1), new FluidStack(TFFluids.fluidPetrotheum, 1000),
 				true);
-		addTEFillRecipe(800, new ItemStack(Items.bucket), ItemHelper.cloneStack(TFItems.bucketCoal, 1), new FluidStack(TFFluids.fluidCoal, 1000), true);
+		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketCoal, 1), new FluidStack(TFFluids.fluidCoal, 1000), true);
 	}
 
 	public static void loadRecipes() {

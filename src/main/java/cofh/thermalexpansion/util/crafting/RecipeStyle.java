@@ -59,8 +59,8 @@ public class RecipeStyle extends ShapedRecipes {
 				ItemStack itemstack1 = inv.getStackInRowAndColumn(left, top);
 				if (itemstack != itemstack1 && !ItemHelper.itemsEqualForCrafting(itemstack, itemstack1)) {
 					return false;
-				} else if (itemstack1 != null && itemstack1.stackTagCompound != null) {
-					if (itemstack1.stackTagCompound.getByte("Style") != style) {
+				} else if (itemstack1 != null && itemstack1.getTagCompound() != null) {
+					if (itemstack1.getTagCompound().getByte("Style") != style) {
 						return false;
 					}
 				}

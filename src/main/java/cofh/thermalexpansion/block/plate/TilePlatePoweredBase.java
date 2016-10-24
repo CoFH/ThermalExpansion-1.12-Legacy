@@ -4,12 +4,12 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import cofh.core.network.PacketCoFHBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiver {
 
@@ -50,13 +50,14 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 		storage.writeToNBT(nbt);
 		if (energySlot != null) {
 			nbt.setTag("stack", energySlot.writeToNBT(new NBTTagCompound()));
 		}
+		return nbt;
 	}
 
 	public ItemStack getEnergySlot() {
@@ -89,25 +90,25 @@ public class TilePlatePoweredBase extends TilePlateBase implements IEnergyReceiv
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
 		return from.ordinal() == alignment;
 	}
 
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
 		return storage.receiveEnergy(maxReceive, simulate);
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		return storage.getEnergyStored();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		return storage.getMaxEnergyStored();
 	}

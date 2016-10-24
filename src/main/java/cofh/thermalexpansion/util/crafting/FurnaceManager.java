@@ -36,15 +36,15 @@ public class FurnaceManager {
 	static {
 		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Furnace", "AllowRecipeOverwrite", false);
 
-		handledBlocks.add(Blocks.cactus);
-		handledBlocks.add(Blocks.gold_ore);
-		handledBlocks.add(Blocks.iron_ore);
-		handledBlocks.add(Blocks.coal_ore);
-		handledBlocks.add(Blocks.diamond_ore);
-		handledBlocks.add(Blocks.emerald_ore);
-		handledBlocks.add(Blocks.lapis_ore);
-		handledBlocks.add(Blocks.redstone_ore);
-		handledBlocks.add(Blocks.quartz_ore);
+		handledBlocks.add(Blocks.CACTUS);
+		handledBlocks.add(Blocks.GOLD_ORE);
+		handledBlocks.add(Blocks.IRON_ORE);
+		handledBlocks.add(Blocks.COAL_ORE);
+		handledBlocks.add(Blocks.DIAMOND_ORE);
+		handledBlocks.add(Blocks.EMERALD_ORE);
+		handledBlocks.add(Blocks.LAPIS_ORE);
+		handledBlocks.add(Blocks.REDSTONE_ORE);
+		handledBlocks.add(Blocks.QUARTZ_ORE);
 	}
 
 	public static RecipeFurnace getRecipe(ItemStack input) {
@@ -89,22 +89,22 @@ public class FurnaceManager {
 
 	public static void addDefaultRecipes() {
 
-		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.cactus), new ItemStack(Items.dye, 1, 2));
-		addTERecipe(DEFAULT_ENERGY * 2, new ItemStack(Blocks.hay_block), new ItemStack(Items.coal, 1, 1));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.CACTUS), new ItemStack(Items.DYE, 1, 2));
+		addTERecipe(DEFAULT_ENERGY * 2, new ItemStack(Blocks.HAY_BLOCK), new ItemStack(Items.COAL, 1, 1));
 
-		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop));
-		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.beef), new ItemStack(Items.cooked_beef));
-		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.chicken), new ItemStack(Items.cooked_chicken));
-		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.potato), new ItemStack(Items.baked_potato));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.PORKCHOP), new ItemStack(Items.COOKED_PORKCHOP));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.BEEF), new ItemStack(Items.COOKED_BEEF));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.CHICKEN), new ItemStack(Items.COOKED_CHICKEN));
+		addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.POTATO), new ItemStack(Items.BAKED_POTATO));
 
-		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.porkchop)));
-		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.beef)));
-		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.chicken)));
-		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.potato)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.PORKCHOP)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.BEEF)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.CHICKEN)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.POTATO)));
 
 		for (int i = 0; i < 2; i++) {
-			addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.fish, 1, i), new ItemStack(Items.cooked_fished, 1, i));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.fish, 1, i)));
+			addTERecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.FISH, 1, i), new ItemStack(Items.COOKED_FISH, 1, i));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, i)));
 		}
 		int energy = DEFAULT_ENERGY;
 
@@ -117,12 +117,12 @@ public class FurnaceManager {
 		addOreDictRecipe("oreNickel", TFItems.ingotNickel);
 		addOreDictRecipe("orePlatinum", TFItems.ingotPlatinum);
 
-		addOreDictRecipe("oreCoal", new ItemStack(Items.coal, 1, 0));
-		addOreDictRecipe("oreDiamond", new ItemStack(Items.diamond, 1, 0));
-		addOreDictRecipe("oreEmerald", new ItemStack(Items.emerald, 1, 0));
-		addOreDictRecipe("oreLapis", new ItemStack(Items.dye, 6, 4));
-		addOreDictRecipe("oreRedstone", new ItemStack(Items.redstone, 4, 0));
-		addOreDictRecipe("oreQuartz", new ItemStack(Items.quartz, 1, 0));
+		addOreDictRecipe("oreCoal", new ItemStack(Items.COAL, 1, 0));
+		addOreDictRecipe("oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
+		addOreDictRecipe("oreEmerald", new ItemStack(Items.EMERALD, 1, 0));
+		addOreDictRecipe("oreLapis", new ItemStack(Items.DYE, 6, 4));
+		addOreDictRecipe("oreRedstone", new ItemStack(Items.REDSTONE, 4, 0));
+		addOreDictRecipe("oreQuartz", new ItemStack(Items.QUARTZ, 1, 0));
 
 		energy = DEFAULT_ENERGY * 10 / 16;
 
@@ -152,7 +152,7 @@ public class FurnaceManager {
 
 	public static void loadRecipes() {
 
-		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
+		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.instance().getSmeltingList();
 		ItemStack output;
 
 		for (ItemStack key : smeltingList.keySet()) {

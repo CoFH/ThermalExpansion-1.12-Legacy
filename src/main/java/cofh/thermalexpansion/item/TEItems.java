@@ -2,6 +2,7 @@ package cofh.thermalexpansion.item;
 
 import static cofh.lib.util.helpers.ItemHelper.*;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.item.ItemBase;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.EnergyHelper;
@@ -17,7 +18,7 @@ import cofh.thermalexpansion.item.tool.ItemWrench;
 import cofh.thermalexpansion.item.tool.ItemWrenchBattle;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalfoundation.item.Equipment;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -25,6 +26,87 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class TEItems {
+
+
+    public static ItemWrench itemWrench;
+    public static ItemWrenchBattle itemBattleWrench;
+    public static ItemMultimeter itemMultimeter;
+    public static ItemIgniter itemIgniter;
+    public static ItemChiller itemChiller;
+    public static ItemPump itemPump;
+    public static ItemTransfuser itemTransfuser;
+    public static ItemMiner itemMiner;
+    public static ItemDiagram itemDiagram;
+    public static ItemBase itemMaterial;
+
+    public static ItemCapacitor itemCapacitor;
+    public static ItemSatchel itemSatchel;
+
+    public static ItemStack toolWrench;
+    public static ItemStack toolBattleWrench;
+    public static ItemStack toolMultimeter;
+    public static ItemStack toolDebugger;
+    public static ItemStack toolIgniter;
+    public static ItemStack toolChiller;
+    public static ItemStack toolPump;
+    public static ItemStack toolTransfuser;
+    public static ItemStack toolMiner;
+
+    public static ItemStack diagramSchematic;
+    public static ItemStack diagramRedprint;
+    public static ItemStack diagramPattern;
+
+    public static ItemStack capacitorPotato;
+    public static ItemStack capacitorBasic;
+    public static ItemStack capacitorHardened;
+    public static ItemStack capacitorReinforced;
+    public static ItemStack capacitorResonant;
+    public static ItemStack capacitorCreative;
+
+    public static ItemStack satchelBasic;
+    public static ItemStack satchelHardened;
+    public static ItemStack satchelReinforced;
+    public static ItemStack satchelResonant;
+    public static ItemStack satchelCreative;
+
+    public static ItemStack pneumaticServo;
+    public static ItemStack powerCoilGold;
+    public static ItemStack powerCoilSilver;
+    public static ItemStack powerCoilElectrum;
+
+    public static ItemStack lock;
+
+    public static ItemStack sawdust;
+    public static ItemStack sawdustCompressed;
+    public static ItemStack slag;
+    public static ItemStack slagRich;
+    public static ItemStack fertilizer;
+    public static ItemStack fertilizerRich;
+
+
+    public static boolean enableIgniter = true;
+    public static boolean enableChiller = true;
+    public static boolean enablePump = true;
+    public static boolean enableTransfuser = true;
+    public static boolean enableBattleWrench = true;
+
+    static {
+        String category2 = "Item.Tool.";
+        String category = category2 + "Igniter";
+        enableIgniter = ThermalExpansion.config.get(category, "Recipe", true);
+
+        category = category2 + "Chiller";
+        enableChiller = ThermalExpansion.config.get(category, "Recipe", true);
+
+        category = category2 + "Pump";
+        enablePump = ThermalExpansion.config.get(category, "Recipe", true);
+
+        category = category2 + "Transfuser";
+        enableTransfuser = ThermalExpansion.config.get(category, "Recipe", true);
+
+        category = category2 + "BattleWrench";
+        enableBattleWrench = ThermalExpansion.config.get(category, "BattleWrench", true);
+    }
 
 	private TEItems() {
 
@@ -57,7 +139,7 @@ public class TEItems {
 		/* Tools */
 		toolWrench = new ItemStack(itemWrench);
 		toolBattleWrench = new ItemStack(itemBattleWrench);
-		GameRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
+		ItemStackRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
 		toolMultimeter = itemMultimeter.addItem(0, "multimeter");
 		toolDebugger = itemMultimeter.addItem(1, "debugger");
 		toolIgniter = new ItemStack(itemIgniter);
@@ -122,38 +204,32 @@ public class TEItems {
 	public static void postInit() {
 
 		/* Tools */
-		GameRegistry.addRecipe(ShapedRecipe(toolWrench, new Object[] { "I I", " T ", " I ", 'I', "ingotIron", 'T', "ingotTin" }));
-		GameRegistry.addRecipe(ShapedRecipe(toolMultimeter, new Object[] { "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P', powerCoilElectrum,
-				'G', "gearElectrum" }));
+		GameRegistry.addRecipe(ShapedRecipe(toolWrench, "I I", " T ", " I ", 'I', "ingotIron", 'T', "ingotTin"));
+		GameRegistry.addRecipe(ShapedRecipe(toolMultimeter, "C C", "LPL", " G ", 'C', "ingotCopper", 'L', "ingotLead", 'P', powerCoilElectrum, 'G', "gearElectrum"));
 
 		if (enableBattleWrench) {
-			GameRegistry.addRecipe(ShapedRecipe(toolBattleWrench, new Object[] { "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W', toolWrench }));
+			GameRegistry.addRecipe(ShapedRecipe(toolBattleWrench, "I I", " G ", " W ", 'I', "ingotInvar", 'G', "gearInvar", 'W', toolWrench));
 		}
 		if (enableIgniter) {
-			GameRegistry.addRecipe(ShapedRecipe(toolIgniter, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic,
-					'G', Items.flint }));
+			GameRegistry.addRecipe(ShapedRecipe(toolIgniter, " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic, 'G', Items.FLINT));
 		}
 		if (enableChiller) {
-			GameRegistry.addRecipe(ShapedRecipe(toolChiller, new Object[] { " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic,
-					'G', Items.snowball }));
+			GameRegistry.addRecipe(ShapedRecipe(toolChiller, " R ", "IXI", " G ", 'I', "ingotIron", 'R', "dustRedstone", 'X', capacitorBasic, 'G', Items.SNOWBALL));
 		}
 		if (enablePump) {
-			GameRegistry.addRecipe(ShapedRecipe(toolPump, new Object[] { "RR ", "RGI", " XY", 'I', "ingotInvar", 'R', "dustRedstone", 'X', capacitorBasic, 'Y',
-					Items.bucket, 'G', "gearBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(toolPump, "RR ", "RGI", " XY", 'I', "ingotInvar", 'R', "dustRedstone", 'X', capacitorBasic, 'Y', Items.BUCKET, 'G', "gearBronze"));
 		}
 		if (enableTransfuser) {
-			GameRegistry.addRecipe(ShapedRecipe(toolTransfuser, new Object[] { "RR ", "RGI", " IY", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
-					"ingotSignalum", 'Y', powerCoilElectrum, 'G', "gearElectrum" }));
+			GameRegistry.addRecipe(ShapedRecipe(toolTransfuser, "RR ", "RGI", " IY", 'I', "ingotInvar", 'R', "dustRedstone", 'X', "ingotSignalum", 'Y', powerCoilElectrum, 'G', "gearElectrum"));
 		}
 
 		/* Capacitors */
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.POTATO.ordinal()]) {
-			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, new Object[] { Items.potato, "dustRedstone", "nuggetLead" }));
-			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, new Object[] { Items.poisonous_potato, "dustRedstone", "nuggetLead" }));
+			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, Items.POTATO, "dustRedstone", "nuggetLead"));
+			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, Items.POISONOUS_POTATO, "dustRedstone", "nuggetLead"));
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(capacitorBasic, new Object[] { " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X', "ingotCopper",
-					'Y', "dustSulfur" }));
+			GameRegistry.addRecipe(ShapedRecipe(capacitorBasic, " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X', "ingotCopper", 'Y', "dustSulfur"));
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X',
@@ -161,7 +237,7 @@ public class TEItems {
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X',
-					capacitorHardened, 'Y', Items.diamond }));
+					capacitorHardened, 'Y', Items.DIAMOND }));
 		}
 		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X',
@@ -170,8 +246,8 @@ public class TEItems {
 
 		/* Satchels */
 		if (ItemSatchel.enable[ItemSatchel.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.leather }));
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock" }));
+			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.LEATHER));
+			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock"));
 		}
 		if (ItemSatchel.enable[ItemSatchel.Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y',
@@ -193,8 +269,8 @@ public class TEItems {
 		TECraftingHandler.addSecureRecipe(satchelResonant);
 
 		/* Diagrams */
-		GameRegistry.addRecipe(ShapelessRecipe(diagramSchematic, new Object[] { Items.paper, Items.paper, "dyeBlue" }));
-		GameRegistry.addRecipe(ShapelessRecipe(diagramRedprint, new Object[] { Items.paper, Items.paper, "dustRedstone" }));
+		GameRegistry.addRecipe(ShapelessRecipe(diagramSchematic, Items.PAPER, Items.PAPER, "dyeBlue"));
+		GameRegistry.addRecipe(ShapelessRecipe(diagramRedprint, Items.PAPER, Items.PAPER, "dustRedstone"));
 
 		/* Parts */
 		String category = "General";
@@ -203,128 +279,45 @@ public class TEItems {
 		boolean servosAllowBronze = ThermalExpansion.config.get(category, "PneumaticServo.AllowBronze", false);
 		boolean servosAllowSteel = ThermalExpansion.config.get(category, "PneumaticServo.AllowSteel", false);
 
-		GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron" }));
+		GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron"));
 
 		if (servosAllowSilver) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo,
-					new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSilver" }));
+			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSilver"));
 		}
 		if (servosAllowInvar) {
 			GameRegistry
-					.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotInvar" }));
+					.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotInvar"));
 		}
 		if (servosAllowBronze) {
-			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo,
-					new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotBronze"));
 		}
 		if (servosAllowSteel) {
 			GameRegistry
-					.addRecipe(ShapedRecipe(pneumaticServo, new Object[] { " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSteel" }));
+					.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotSteel"));
 		}
-		GameRegistry.addRecipe(ShapedRecipe(powerCoilGold, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotGold" }));
-		GameRegistry.addRecipe(ShapedRecipe(powerCoilSilver, new Object[] { "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotSilver" }));
-		GameRegistry.addRecipe(ShapedRecipe(powerCoilElectrum, new Object[] { "R  ", " G ", "  R", 'R', "dustRedstone", 'G', "ingotElectrum" }));
+		GameRegistry.addRecipe(ShapedRecipe(powerCoilGold, "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotGold"));
+		GameRegistry.addRecipe(ShapedRecipe(powerCoilSilver, "  R", " G ", "R  ", 'R', "dustRedstone", 'G', "ingotSilver"));
+		GameRegistry.addRecipe(ShapedRecipe(powerCoilElectrum, "R  ", " G ", "  R", 'R', "dustRedstone", 'G', "ingotElectrum"));
 
-		GameRegistry.addRecipe(ShapedRecipe(lock, new Object[] { " S ", "SBS", "SSS", 'B', "ingotBronze", 'S', "nuggetSignalum" }));
+		GameRegistry.addRecipe(ShapedRecipe(lock, " S ", "SBS", "SSS", 'B', "ingotBronze", 'S', "nuggetSignalum"));
 
 		/* Misc Items */
-		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2), new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCoal" }));
-		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.gunpowder, 2),
-				new Object[] { "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCharcoal" }));
+		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.GUNPOWDER, 2), "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCoal"));
+		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.GUNPOWDER, 2), "dustSaltpeter", "dustSaltpeter", "dustSulfur", "dustCharcoal"));
 
-		ItemHelper.addGearRecipe(new ItemStack(Items.paper, 2), "dustWood", new ItemStack(Items.water_bucket));
-		GameRegistry.addRecipe(ShapedRecipe(sawdustCompressed, new Object[] { "###", "# #", "###", '#', "dustWood" }));
-		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.clay_ball, 4), new Object[] { slag, slag, Blocks.dirt, Items.water_bucket }));
+		ItemHelper.addGearRecipe(new ItemStack(Items.PAPER, 2), "dustWood", new ItemStack(Items.WATER_BUCKET));
+		GameRegistry.addRecipe(ShapedRecipe(sawdustCompressed, "###", "# #", "###", '#', "dustWood"));
+		GameRegistry.addRecipe(ShapelessRecipe(new ItemStack(Items.CLAY_BALL, 4), slag, slag, Blocks.DIRT, Items.WATER_BUCKET));
 
-		GameRegistry.addSmelting(sawdustCompressed, new ItemStack(Items.coal, 1, 1), 0.15F);
+		GameRegistry.addSmelting(sawdustCompressed, new ItemStack(Items.COAL, 1, 1), 0.15F);
 
-		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter", slag }));
-		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slag }));
-		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 8), new Object[] { "dustWood", "dustWood", "dustSaltpeter", slagRich }));
-		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 32), new Object[] { "dustCharcoal", "dustSaltpeter", slagRich }));
+		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 8), "dustWood", "dustWood", "dustSaltpeter", slag));
+		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizer, 32), "dustCharcoal", "dustSaltpeter", slag));
+		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 8), "dustWood", "dustWood", "dustSaltpeter", slagRich));
+		GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 32), "dustCharcoal", "dustSaltpeter", slagRich));
 
 		TEAugments.postInit();
 		TEEquipment.postInit();
 		TEFlorbs.postInit();
 	}
-
-	public static boolean enableIgniter = true;
-	public static boolean enableChiller = true;
-	public static boolean enablePump = true;
-	public static boolean enableTransfuser = true;
-	public static boolean enableBattleWrench = true;
-
-	static {
-		String category2 = "Item.Tool.";
-		String category = category2 + "Igniter";
-		enableIgniter = ThermalExpansion.config.get(category, "Recipe", true);
-
-		category = category2 + "Chiller";
-		enableChiller = ThermalExpansion.config.get(category, "Recipe", true);
-
-		category = category2 + "Pump";
-		enablePump = ThermalExpansion.config.get(category, "Recipe", true);
-
-		category = category2 + "Transfuser";
-		enableTransfuser = ThermalExpansion.config.get(category, "Recipe", true);
-
-		category = category2 + "BattleWrench";
-		enableBattleWrench = ThermalExpansion.config.get(category, "BattleWrench", true);
-	}
-
-	public static ItemWrench itemWrench;
-	public static ItemWrenchBattle itemBattleWrench;
-	public static ItemMultimeter itemMultimeter;
-	public static ItemIgniter itemIgniter;
-	public static ItemChiller itemChiller;
-	public static ItemPump itemPump;
-	public static ItemTransfuser itemTransfuser;
-	public static ItemMiner itemMiner;
-	public static ItemDiagram itemDiagram;
-	public static ItemBase itemMaterial;
-
-	public static ItemCapacitor itemCapacitor;
-	public static ItemSatchel itemSatchel;
-
-	public static ItemStack toolWrench;
-	public static ItemStack toolBattleWrench;
-	public static ItemStack toolMultimeter;
-	public static ItemStack toolDebugger;
-	public static ItemStack toolIgniter;
-	public static ItemStack toolChiller;
-	public static ItemStack toolPump;
-	public static ItemStack toolTransfuser;
-	public static ItemStack toolMiner;
-
-	public static ItemStack diagramSchematic;
-	public static ItemStack diagramRedprint;
-	public static ItemStack diagramPattern;
-
-	public static ItemStack capacitorPotato;
-	public static ItemStack capacitorBasic;
-	public static ItemStack capacitorHardened;
-	public static ItemStack capacitorReinforced;
-	public static ItemStack capacitorResonant;
-	public static ItemStack capacitorCreative;
-
-	public static ItemStack satchelBasic;
-	public static ItemStack satchelHardened;
-	public static ItemStack satchelReinforced;
-	public static ItemStack satchelResonant;
-	public static ItemStack satchelCreative;
-
-	public static ItemStack pneumaticServo;
-	public static ItemStack powerCoilGold;
-	public static ItemStack powerCoilSilver;
-	public static ItemStack powerCoilElectrum;
-
-	public static ItemStack lock;
-
-	public static ItemStack sawdust;
-	public static ItemStack sawdustCompressed;
-	public static ItemStack slag;
-	public static ItemStack slagRich;
-	public static ItemStack fertilizer;
-	public static ItemStack fertilizerRich;
-
 }

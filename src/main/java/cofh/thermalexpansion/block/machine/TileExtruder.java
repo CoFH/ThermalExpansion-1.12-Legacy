@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
 import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
@@ -13,14 +14,14 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.item.TEAugments;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -38,9 +39,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		processItems = new ItemStack[3];
 
-		processItems[0] = new ItemStack(Blocks.cobblestone);
-		processItems[1] = new ItemStack(Blocks.stone);
-		processItems[2] = new ItemStack(Blocks.obsidian);
+		processItems[0] = new ItemStack(Blocks.COBBLESTONE);
+		processItems[1] = new ItemStack(Blocks.STONE);
+		processItems[2] = new ItemStack(Blocks.OBSIDIAN);
 
 		String category = "RecipeManagers.Extruder.Recipes";
 
@@ -104,7 +105,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -208,7 +209,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], side)) {
+				if (transferItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -304,7 +305,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -314,6 +315,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -382,7 +384,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		super.handleFluidPacket(payload);
 		hotRenderFluid = payload.getFluidStack();
 		coldRenderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(getWorld(), getPos());
 	}
 
 	@Override
@@ -432,7 +434,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 			}
 			installed = true;
 		}
-		return installed ? true : super.installAugment(slot);
+		return installed || super.installAugment(slot);
 	}
 
 	@Override
@@ -477,9 +479,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
+		if (from != null && sideCache[from.ordinal()] != 1) {
 			return 0;
 		}
 		if (resource.getFluid() == FluidRegistry.LAVA) {
@@ -491,31 +493,31 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { hotTank.getInfo(), coldTank.getInfo() };
 	}

@@ -34,7 +34,7 @@ public class RecipeMachine extends ShapedOreRecipe {
 		}
 		ItemStack retStack = getRecipeOutput().copy();
 		AugmentHelper.writeAugments(retStack, augments);
-		retStack.stackTagCompound.setByte("Level", getLevel(craftMatrix.getStackInSlot(targetSlot)));
+		retStack.getTagCompound().setByte("Level", getLevel(craftMatrix.getStackInSlot(targetSlot)));
 
 		return retStack;
 	}

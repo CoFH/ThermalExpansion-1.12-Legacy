@@ -138,9 +138,9 @@ public class TabConfigTesseract extends TabBase {
 		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.sending") + ":", posXOffset() + 6, posY + 42, subheaderColor);
 		getFontRenderer().drawStringWithShadow(StringHelper.localize("info.cofh.receiving") + ":", posXOffset() + 6, posY + 66, subheaderColor);
 
-		gui.drawButton(buttonNames[myTile.modeItem], posX() + 24, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeFluid], posX() + 42, posY + 20, 1, 0);
-		gui.drawButton(buttonNames[myTile.modeEnergy], posX() + 60, posY + 20, 1, 0);
+		gui.drawButton(buttonNames[myTile.modeItem], posX() + 24, posY + 20, 0);
+		gui.drawButton(buttonNames[myTile.modeFluid], posX() + 42, posY + 20, 0);
+		gui.drawButton(buttonNames[myTile.modeEnergy], posX() + 60, posY + 20, 0);
 
 		String sending = "";
 		String receiving = "";

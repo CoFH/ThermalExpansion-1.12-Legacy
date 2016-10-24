@@ -6,10 +6,10 @@ import cofh.api.tileentity.ISidedTexture;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 
 public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
 
@@ -59,12 +59,13 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Facing", facing);
 		nbt.setByteArray("SideCache", sideCache);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -244,6 +245,6 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 
 	/* ISidedTexture */
 	@Override
-	public abstract IIcon getTexture(int side, int pass);
+	public abstract TextureAtlasSprite getTexture(int side, int pass);
 
 }

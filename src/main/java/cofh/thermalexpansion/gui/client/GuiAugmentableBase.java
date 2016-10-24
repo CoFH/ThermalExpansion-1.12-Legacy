@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
@@ -37,7 +36,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 		super(container, texture);
 
 		myTile = (TileAugmentable) tile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(player);
 
 		if (myTile.enableSecurity() && myTile.isSecured()) {
@@ -49,7 +48,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 		if (myTile.augmentReconfigSides) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabConfiguration();
 		}
-		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
+		if (myTile.getMaxEnergyStored(null) > 0) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
 		}
 	}
@@ -66,7 +65,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 		redstoneTab = addTab(new TabRedstone(this, myTile));
 		configTab = addTab(new TabConfiguration(this, myTile));
 
-		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
+		if (myTile.getMaxEnergyStored(null) > 0) {
 			addTab(new TabEnergy(this, myTile, false));
 		}
 		if (!myInfo.isEmpty()) {

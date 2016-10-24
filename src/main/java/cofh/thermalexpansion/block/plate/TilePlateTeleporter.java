@@ -1,5 +1,8 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.BlockUtils;
+import codechicken.lib.util.ServerUtils;
+import codechicken.lib.util.SoundUtils;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.transport.IEnderDestination;
 import cofh.core.RegistryEnderAttuned;
@@ -15,18 +18,19 @@ import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.render.particle.ParticlePortal;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.particle.ParticleFirework;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraftforge.fml.common.network.NetworkRegistry.TargetPoint;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Locale;
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
-import net.minecraft.client.particle.EntityPortalFX;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
@@ -35,7 +39,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
 public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderDestination, IRedstoneControl {
@@ -72,11 +75,11 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	protected void teleportEntity(Entity entity, double x, double y, double z) {
 
 		if (entity instanceof EntityLivingBase) {
-			((EntityLivingBase) entity).setPositionAndUpdate(x, y, z);
+			entity.setPositionAndUpdate(x, y, z);
 		} else {
 			entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
 		}
-		entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 1.0F, 1.0F);
+        SoundUtils.playSoundAt(entity, SoundCategory.BLOCKS, SoundEvents.ENTITY_ENDERMEN_TELEPORT, 1F, 1F);
 	}
 
 	private static boolean posEquals(double x, double y, double z, double X, double Y, double Z) {
@@ -123,7 +126,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			return; // destination is invalid (deleted)
 		}
 		if (dest.isNotValid()) {
-			; // augment to reach these areas?
+            // augment to reach these areas?
 		}
 
 		int teleportCost = TELEPORT_COST;
@@ -147,14 +150,14 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		}
 		l: if (filterSecure && !getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
-				String name = ((EntityItem) entity).func_145800_j();
+				String name = ((EntityItem) entity).getThrower();
 				if (name == null) {
 					break o;
 				}
 				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
 					break l;
 				}
-				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+				GameProfile i = ServerUtils.mc().getPlayerProfileCache().getGameProfileForUsername(name);
 				if (getOwner().getId().equals(i.getId())) {
 					break l;
 				}
@@ -195,7 +198,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 						packet.addInt(dest.z());
 						packet.addInt(dest.dimension());
 					}
-					TargetPoint targ = new TargetPoint(world.provider.dimensionId, xCoord, yCoord, zCoord, 50);
+					TargetPoint targ = new TargetPoint(world.provider.getDimension(), pos.getX(), pos.getY(), pos.getZ(), 50);
 					PacketHandler.sendToAllAround(packet, targ);
 				}
 				if (i == 99) {
@@ -207,7 +210,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			entity.timeUntilPortal = entity.getPortalCooldown() + TELEPORT_DELAY + 5;
 			double x = dest.x() + .5, y = dest.y() + .2, z = dest.z() + .5;
 			if (dest.dimension() != dimension()) {
-				EntityHelper.transferEntityToDimension(entity, x, y, z, dest.dimension(), MinecraftServer.getServer().getConfigurationManager());
+				EntityHelper.transferEntityToDimension(entity, x, y, z, dest.dimension(), ServerUtils.mc().getPlayerList());
 			} else {
 				teleportEntity(entity, x, y, z);
 			}
@@ -224,9 +227,12 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		double dx = .5 + 0.15D * r.nextGaussian();
 		double dz = .5 + 0.15D * r.nextGaussian();
 		double[] m = fixPosition(dx, 0, dz);
-		ParticlePortal p = new ParticlePortal(world, xCoord + m[0], yCoord + m[1], zCoord + m[2], 1.0F, 1.0F, 1.0F);
+		ParticlePortal p = new ParticlePortal(world, pos.getX() + m[0], pos.getY() + m[1], pos.getZ() + m[2], 1.0F, 1.0F, 1.0F);
 		m = fixVector(p.motionX, p.motionY, p.motionZ);
-		p.setVelocity(m[0], m[1], m[2]);
+		//p.setVelocity(m[0], m[1], m[2]);
+        p.motionX = m[0];
+        p.motionY = m[1];
+        p.motionZ = m[2];
 		p.setScale(fixVector(0.03, 0.1, 0.03));
 		Minecraft.getMinecraft().effectRenderer.addEffect(p);
 	}
@@ -243,7 +249,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				xV = Math.pow(Math.sin(i * Math.PI / dv) * yV, 1) * 2;
 				zV = Math.pow(Math.cos(i * Math.PI / dv) * yV, 1) * 2;
 				yV = Math.pow(Math.sin(k * Math.PI / dv) * 1., 1) * 2;
-				EntityFX spark = new EntityPortalFX(worldObj, x, y, z, xV, yV, zV);
+				Particle spark = new net.minecraft.client.particle.ParticlePortal(worldObj, x, y, z, xV, yV, zV);
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}
 		}
@@ -258,7 +264,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				xV = Math.pow(Math.sin(i * Math.PI / 7.5) * yV, 3) * .15;
 				zV = Math.pow(Math.cos(i * Math.PI / 7.5) * yV, 3) * .15;
 				yV = Math.pow(Math.sin(k * Math.PI / 7.5) * 1., 3) * .15;
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
+				ParticleFirework.Spark spark = new ParticleFirework.Spark(worldObj, x, y, z, xV, yV, zV, Minecraft.getMinecraft().effectRenderer) {
 
 					@Override
 					public void moveEntity(double x, double y, double z) {
@@ -268,8 +274,8 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 					}
 				};
 				spark.setTrail(trail);
-				spark.setColour(0xE54CFF);
-				spark.setFadeColour(0x750C9F);
+				spark.setColor(0xE54CFF);
+				spark.setColorFade(0x750C9F);
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}
 		}
@@ -333,7 +339,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		isActive = destination != -1;
 
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(worldObj,getPos());
 	}
 
 	@Override
@@ -413,7 +419,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 			}
 
 			markDirty();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(worldObj,getPos());
 		}
 		return true;
 	}
@@ -449,7 +455,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				}
 			}
 			markDirty();
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(worldObj,getPos());
 		}
 		return true;
 	}
@@ -528,7 +534,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -539,6 +545,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
+        return nbt;
 	}
 
 	@Override
@@ -550,25 +557,25 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public int x() {
 
-		return xCoord;
+		return getPos().getX();
 	}
 
 	@Override
 	public int y() {
 
-		return yCoord;
+		return getPos().getY();
 	}
 
 	@Override
 	public int z() {
 
-		return zCoord;
+		return getPos().getZ();
 	}
 
 	@Override
 	public int dimension() {
 
-		return worldObj.provider.dimensionId;
+		return worldObj.provider.getDimension();
 	}
 
 	/* GUI METHODS */
@@ -587,7 +594,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public void onNeighborBlockChange() {
 
-		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+		setPowered(worldObj.isBlockPowered(getPos()));
 	}
 
 	public final boolean redstoneControlOrDisable() {
@@ -615,9 +622,9 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 		isPowered = powered;
 		if (wasPowered != isPowered) {
 			if (ServerHelper.isClientWorld(worldObj)) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                BlockUtils.fireBlockUpdate(worldObj,getPos());
 			} else {
-				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, getPos());
 			}
 		}
 	}
@@ -633,7 +640,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, getPos());
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 			boolean powered = isPowered;

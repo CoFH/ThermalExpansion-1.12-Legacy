@@ -54,7 +54,7 @@ public class InsolatorManager {
 		ComparableItemStackInsolator querySecondary = new ComparableItemStackInsolator(secondaryInput);
 
 		RecipeInsolator recipe = recipeMap.get(Arrays.asList(query, querySecondary));
-		return recipe != null ? false : recipeMap.get(Arrays.asList(querySecondary, query)) != null;
+		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
 	public static RecipeInsolator getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -88,12 +88,12 @@ public class InsolatorManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(new ComparableItemStackInsolator(input));
+		return input != null && validationSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static boolean isItemFertilizer(ItemStack input) {
 
-		return input == null ? false : lockSet.contains(new ComparableItemStackInsolator(input));
+		return input != null && lockSet.contains(new ComparableItemStackInsolator(input));
 	}
 
 	public static void addDefaultRecipes() {
@@ -111,30 +111,30 @@ public class InsolatorManager {
 		addFertilizer(TEItems.fertilizer);
 		addFertilizer(TEItems.fertilizerRich);
 
-		addDefaultRecipe(new ItemStack(Items.wheat_seeds), new ItemStack(Items.wheat), new ItemStack(Items.wheat_seeds), 150);
-		addDefaultRecipe(new ItemStack(Items.potato), new ItemStack(Items.potato, 3), new ItemStack(Items.poisonous_potato), 2);
-		addDefaultRecipe(new ItemStack(Items.carrot), new ItemStack(Items.carrot, 3), null, 0);
+		addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
+		addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 2);
+		addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), null, 0);
 
 		if (recipeCocoaBean) {
-			addDefaultRecipe(new ItemStack(Items.dye, 1, 3), new ItemStack(Items.dye, 3, 3), null, 0);
+			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), null, 0);
 		}
 		if (recipeReeds) {
-			addDefaultRecipe(new ItemStack(Items.reeds), new ItemStack(Items.reeds, 2), null, 0);
+			addDefaultRecipe(new ItemStack(Items.REEDS), new ItemStack(Items.REEDS, 2), null, 0);
 		}
 		if (recipeCactus) {
-			addDefaultRecipe(new ItemStack(Blocks.cactus), new ItemStack(Blocks.cactus, 2), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), null, 0);
 		}
 		if (recipeVine) {
-			addDefaultRecipe(new ItemStack(Blocks.vine), new ItemStack(Blocks.vine, 2), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), null, 0);
 		}
 		if (recipeLilyPad) {
-			addDefaultRecipe(new ItemStack(Blocks.waterlily), new ItemStack(Blocks.waterlily, 2), null, 0);
+			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), null, 0);
 		}
 		if (recipePumpkin) {
-			addDefaultRecipe(new ItemStack(Items.pumpkin_seeds), new ItemStack(Blocks.pumpkin), null, 0);
+			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), null, 0);
 		}
 		if (recipeMelon) {
-			addDefaultRecipe(new ItemStack(Items.melon_seeds), new ItemStack(Blocks.melon_block), null, 0);
+			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
 		}
 	}
 
@@ -227,8 +227,8 @@ public class InsolatorManager {
 		String seedName = "seed" + StringHelper.titleCase(oreType);
 		String cropName = "crop" + StringHelper.titleCase(oreType);
 
-		ArrayList<ItemStack> registeredSeed = OreDictionary.getOres(seedName);
-		ArrayList<ItemStack> registeredCrop = OreDictionary.getOres(cropName);
+		List<ItemStack> registeredSeed = OreDictionary.getOres(seedName);
+		List<ItemStack> registeredCrop = OreDictionary.getOres(cropName);
 
 		if (registeredSeed.isEmpty() || registeredCrop.isEmpty()) {
 			return;

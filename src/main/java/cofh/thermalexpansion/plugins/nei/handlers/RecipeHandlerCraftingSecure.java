@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.nei.handlers;
 
-import codechicken.nei.NEIServerUtils;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+import codechicken.nei.util.NEIServerUtils;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper.RecipeType;
 
@@ -22,7 +22,7 @@ public class RecipeHandlerCraftingSecure extends ShapedRecipeHandler {
 	public void loadCraftingRecipes(String outputId, Object... results) {
 
 		if (outputId.equals("crafting")) {
-			for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+			for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 				if (r.getClass() != NEIRecipeWrapper.class) {
 					continue;
 				}
@@ -54,7 +54,7 @@ public class RecipeHandlerCraftingSecure extends ShapedRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
 
-		for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+		for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 			if (r.getClass() != NEIRecipeWrapper.class) {
 				continue;
 			}
@@ -85,7 +85,7 @@ public class RecipeHandlerCraftingSecure extends ShapedRecipeHandler {
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 
-		for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+		for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 			if (r.getClass() != NEIRecipeWrapper.class) {
 				continue;
 			}

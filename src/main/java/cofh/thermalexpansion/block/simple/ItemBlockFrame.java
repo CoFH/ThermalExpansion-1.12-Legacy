@@ -27,12 +27,12 @@ public class ItemBlockFrame extends ItemBlockBase {
 		case MACHINE_RESONANT:
 		case CELL_RESONANT_FULL:
 		case TESSERACT_FULL:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case MACHINE_REINFORCED:
 		case CELL_REINFORCED_FULL:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 

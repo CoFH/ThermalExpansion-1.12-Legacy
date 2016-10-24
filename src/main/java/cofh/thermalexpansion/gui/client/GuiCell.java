@@ -38,7 +38,7 @@ public class GuiCell extends GuiBaseAdv {
 
 		super(new ContainerTEBase(inventory, tile), TEXTURE);
 		myTile = (TileCell) tile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 
 		generateInfo("tab.thermalexpansion.cell", 2);

@@ -7,18 +7,18 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TileTEBase;
 import cofh.thermalexpansion.gui.client.GuiLight;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileLight extends TileTEBase implements ITileInfo {
 
@@ -40,11 +40,6 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	public int color = 0xFFFFFF;
 	int renderColor = 0xAAAAAAFF;
 
-	@Override
-	public boolean canUpdate() {
-
-		return false;
-	}
 
 	@Override
 	public String getName() {
@@ -95,8 +90,8 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		boolean wasPowered = isPowered;
 		byte oldPower = inputPower;
-		isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
-		inputPower = (byte) worldObj.getBlockPowerInput(xCoord, yCoord, zCoord);
+		isPowered = worldObj.isBlockPowered(getPos());
+		inputPower = (byte) worldObj.getStrongPower(getPos());
 
 		if (wasPowered != isPowered || oldPower != inputPower) {
 			markDirty();
@@ -114,7 +109,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		switch (style) {
 		case 0:
 			mode = (byte) (++mode % 6);
-			player.addChatMessage(new ChatComponentText(StringHelper.localize("chat.thermalexpansion.light." + mode)));
+			player.addChatMessage(new TextComponentString(StringHelper.localize("chat.thermalexpansion.light." + mode)));
 			break;
 		case 1:
 			break;
@@ -304,7 +299,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -319,17 +314,18 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		nbt.setByte("Style", style);
 		nbt.setByte("Align", alignment);
+        return nbt;
 	}
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
-			info.add(new ChatComponentText("Dim: " + dim));
-			info.add(new ChatComponentText("Alignment: " + alignment));
+			info.add(new TextComponentString("Dim: " + dim));
+			info.add(new TextComponentString("Alignment: " + alignment));
 		}
-		info.add(new ChatComponentTranslation("chat.thermalexpansion.light." + mode));
+		info.add(new TextComponentTranslation("chat.thermalexpansion.light." + mode));
 	}
 
 }

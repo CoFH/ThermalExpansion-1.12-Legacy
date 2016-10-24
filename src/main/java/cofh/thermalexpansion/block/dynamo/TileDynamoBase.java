@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
@@ -22,7 +23,12 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.Utils;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,13 +37,11 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public abstract class TileDynamoBase extends TileRSControl implements IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	public static void configure() {
 
@@ -100,7 +104,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	@Override
-	public int getComparatorInput(int side) {
+	public int getComparatorInput() {
 
 		return compareTracker;
 	}
@@ -148,9 +152,9 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+	public void onNeighborTileChange(BlockPos pos) {
 
-		super.onNeighborTileChange(tileX, tileY, tileZ);
+		super.onNeighborTileChange(pos);
 		updateAdjacentHandlers();
 	}
 
@@ -160,7 +164,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -271,7 +275,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		if (adjacentHandler == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1],
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(EnumFacing.VALUES[bSide ^ 1],
 				Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
 	}
 
@@ -282,7 +286,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		}
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, facing);
 
-		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[facing ^ 1])) {
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[facing ^ 1])) {
 			adjacentHandler = (IEnergyReceiver) tile;
 		} else {
 			adjacentHandler = null;
@@ -290,9 +294,9 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		cached = true;
 	}
 
-	public IIcon getActiveIcon() {
+	public TextureAtlasSprite getActiveIcon() {
 
-		return FluidRegistry.WATER.getIcon();
+		return TextureUtils.getTexture(FluidRegistry.WATER.getStill());
 	}
 
 	@Override
@@ -349,7 +353,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -359,6 +363,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Active", isActive);
 		nbt.setInteger("Fuel", fuelRF);
+        return nbt;
 	}
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
@@ -585,25 +590,25 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 	/* IEnergyProvider */
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
 		return from.ordinal() != facing ? 0 : energyStorage.extractEnergy(Math.min(config.maxPower * 2, maxExtract), simulate);
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		return energyStorage.getEnergyStored();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		return energyStorage.getMaxEnergyStored();
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
 		return from.ordinal() == facing;
 	}
@@ -634,12 +639,12 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 	}
 
 	/* IFluidHandler */
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return augmentCoilDuct || from.ordinal() != facing;
 	}
 
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return augmentCoilDuct || from.ordinal() != facing;
 	}
@@ -670,7 +675,7 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return false;
 		}
-		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getCollisionBoundingBoxFromPool(worldObj, xCoord, yCoord, zCoord)).size() != 0) {
+		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
 			return false;
 		}
 		if (adjacentHandler != null) {
@@ -703,21 +708,21 @@ public abstract class TileDynamoBase extends TileRSControl implements IEnergyPro
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
 		return CoFHProps.EMPTY_INVENTORY;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return augmentCoilDuct || side != facing ? isItemValidForSlot(slot, stack) : false;
+		return (augmentCoilDuct || side.ordinal() != facing) && isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return augmentCoilDuct || side != facing;
+		return augmentCoilDuct || side.ordinal() != facing;
 	}
 
 }

@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.light;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
@@ -9,11 +10,11 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.repack.codechicken.lib.vec.Cuboid6;
-import cofh.repack.codechicken.lib.vec.Rotation;
-import cofh.repack.codechicken.lib.vec.SwapYZ;
-import cofh.repack.codechicken.lib.vec.Transformation;
-import cofh.repack.codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.SwapYZ;
+import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
@@ -22,14 +23,19 @@ import cofh.thermalexpansion.render.transformation.TorchTransformation;
 import cofh.thermalexpansion.util.crafting.RecipeStyle;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.SoundType;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -37,11 +43,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
+
+import javax.annotation.Nullable;
 
 public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
@@ -115,7 +121,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		return ret;
 	}
 
-	public static void setTileAlignment(TileLight tile, EntityPlayer player, ItemStack stack, int side, float hitX, float hitY, float hitZ) {
+	public static void setTileAlignment(TileLight tile, EntityPlayer player, ItemStack stack, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		switch (tile.style) {
 		case 1: // plate
@@ -123,15 +129,15 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		case 3: // tall
 		case 7: // pole
 		case 8: // slab
-			tile.alignment = (byte) side;
+			tile.alignment = (byte) side.ordinal();
 			break;
 		case 4: // wide
 		case 6: // display
 			int l = MathHelper.floor(player.rotationYaw * 4.0F / 360.0F + 0.5f) & 1;
-			tile.alignment = (byte) (side | (l << 3));
+			tile.alignment = (byte) (side.ordinal() | (l << 3));
 			break;
 		case 5: // torch
-			tile.alignment = (byte) side;
+			tile.alignment = (byte) side.ordinal();
 			break;
 		case 0:
 		default:
@@ -153,11 +159,11 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 
 	public BlockLight() {
 
-		super(Material.redstoneLight);
+		super(Material.REDSTONE_LIGHT);
 		setHardness(3.0F);
 		setResistance(150.0F);
-		setStepSound(soundTypeGlass);
-		setBlockName("thermalexpansion.light");
+		setSoundType(SoundType.GLASS);
+		setUnlocalizedName("thermalexpansion.light");
 		basicGui = false;
 	}
 
@@ -168,9 +174,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 	}
 
 	@Override
-	public boolean openConfigGui(IBlockAccess world, int x, int y, int z, ForgeDirection side, EntityPlayer player) {
+	public boolean openConfigGui(IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player) {
 
-		return ((TileLight) world.getTileEntity(x, y, z)).openGui(player);
+		return ((TileLight) world.getTileEntity(pos)).openGui(player);
 	}
 
 	@Override
@@ -183,20 +189,20 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		}
 	}
 
-	@Override
-	public AxisAlignedBB getBoundingBox(World world, int x, int y, int z) {
+	//@Override
+	public AxisAlignedBB getBoundingBox(World world, BlockPos pos) {
 
-		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
+		TileLight tile = (TileLight) world.getTileEntity(pos);
 		switch (tile.style) {
 		case 2:
 		case 5:
 			return null;
 		}
 		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
-		return ret.add(new Vector3(x, y, z)).toAABB();
+		return ret.aabb();
 	}
 
-	@Override
+	/*@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess world, int x, int y, int z) {
 
 		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
@@ -229,114 +235,108 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			}
 
 		}).setBlockBounds(this);
-	}
+	}*/
 
-	@Override
-	public boolean canReplace(World world, int x, int y, int z, int side, ItemStack stack) {
-
-		if (super.canReplace(world, x, y, z, side, stack)) {
-			if (stack.stackTagCompound != null) {
+    @Override
+    public boolean canReplace(World world, BlockPos pos, EnumFacing side, @Nullable ItemStack stack) {
+		if (super.canReplace(world, pos, side, stack)) {
+			if (stack.getTagCompound() != null) {
 				@SuppressWarnings("unused")
-				int style = stack.stackTagCompound.getByte("Style");
+				int style = stack.getTagCompound().getByte("Style");
 			}
 			return true;
 		}
 		return false;
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		if (stack.getTagCompound() != null) {
+			TileLight tile = (TileLight) world.getTileEntity(pos);
 
-		if (stack.stackTagCompound != null) {
-			TileLight tile = (TileLight) world.getTileEntity(x, y, z);
-
-			if (stack.stackTagCompound.hasKey("Color")) {
+			if (stack.getTagCompound().hasKey("Color")) {
 				tile.modified = true;
-				tile.setColor(stack.stackTagCompound.getInteger("Color"));
+				tile.setColor(stack.getTagCompound().getInteger("Color"));
 			}
-			tile.dim = stack.stackTagCompound.getBoolean("Dim");
-			tile.mode = stack.stackTagCompound.getByte("Mode");
-			tile.style = stack.stackTagCompound.getByte("Style");
+			tile.dim = stack.getTagCompound().getBoolean("Dim");
+			tile.mode = stack.getTagCompound().getByte("Mode");
+			tile.style = stack.getTagCompound().getByte("Style");
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public void onNeighborChange(IBlockAccess world, int x, int y, int z, int tileX, int tileY, int tileZ) {
+    @Override
+    public void onNeighborChange(IBlockAccess world, BlockPos pos, BlockPos neighbor) {
 
 	}
 
-	@Override
-	public boolean recolourBlock(World world, int x, int y, int z, ForgeDirection side, int color) {
-
-		TileLight theTile = (TileLight) world.getTileEntity(x, y, z);
+    @Override
+    public boolean recolorBlock(World world, BlockPos pos, EnumFacing side, EnumDyeColor color) {
+		TileLight theTile = (TileLight) world.getTileEntity(pos);
 
 		if (ServerHelper.isServerWorld(world)) {
-			return theTile.setColor(ColorHelper.getDyeColor(15 - color));
+			return theTile.setColor(ColorHelper.getDyeColor(15 - color.ordinal()));
 		}
 		return false;
 	}
 
-	@Override
-	public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side) {
-
-		return true;
+    @Override
+    public boolean shouldCheckWeakPower(IBlockState state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+        return true;
 	}
 
 	@Override
-	public boolean isNormalCube() {
+	public boolean isNormalCube(IBlockState state) {
 
 		return false;
 	}
 
-	@Override
+	//@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdLight;
 	}
 
-	@Override
 	@SideOnly(Side.CLIENT)
-	public int getMixedBrightnessForBlock(IBlockAccess world, int x, int y, int z) {
-
-		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
-		return world.getLightBrightnessForSkyBlocks(x, y, z, tile.getInternalLight());
+    @Override
+    public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
+		TileLight tile = (TileLight) source.getTileEntity(pos);
+		return source.getCombinedLight(pos, tile.getInternalLight());
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
 		return pass < 2;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
+	//@Override
+	//@SideOnly(Side.CLIENT)
+	//public void registerBlockIcons(IIconRegister ir) {
+    //
+	//	IconRegistry.addIcon("Light0", "thermalexpansion:light/Illuminator_Frame", ir);
+	//	IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Effect", ir);
+	//	IconRegistry.addIcon("LightEffect", "thermalexpansion:light/Illuminator_Effect", ir);
+	//	IconRegistry.addIcon("LightHalo", "thermalexpansion:light/Lamp_Halo", ir);
+	//}
+
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		IconRegistry.addIcon("Light0", "thermalexpansion:light/Illuminator_Frame", ir);
-		IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Effect", ir);
-		IconRegistry.addIcon("LightEffect", "thermalexpansion:light/Illuminator_Effect", ir);
-		IconRegistry.addIcon("LightHalo", "thermalexpansion:light/Lamp_Halo", ir);
-	}
-
-	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
-
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileLight tile = (TileLight) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileLight tile = (TileLight) world.getTileEntity(pos);
 
 		if (tag == null) {
 			tag = new NBTTagCompound();
@@ -365,9 +365,9 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		lampLumiumRadiant = ItemBlockLight.setDefaultTag(new ItemStack(this, 1, 1), 0);
 		lampLumium = ItemBlockLight.setDefaultTag(new ItemStack(this, 1, 2), 0);
 
-		GameRegistry.registerCustomItemStack("illuminator", illuminator);
-		GameRegistry.registerCustomItemStack("lampLumiumRadiant", lampLumiumRadiant);
-		GameRegistry.registerCustomItemStack("lampLumium", lampLumium);
+        ItemStackRegistry.registerCustomItemStack("illuminator", illuminator);
+		ItemStackRegistry.registerCustomItemStack("lampLumiumRadiant", lampLumiumRadiant);
+        ItemStackRegistry.registerCustomItemStack("lampLumium", lampLumium);
 
 		return true;
 	}
@@ -380,19 +380,17 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 			addRecipes(illuminator);
 		}
 		if (enable[Types.LAMP_LUMIUM_RADIANT.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), new Object[] { " L ", "GLG", " S ", 'L', "ingotLumium", 'G',
-					"blockGlassHardened", 'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumiumRadiant, 4), " L ", "GLG", " S ", 'L', "ingotLumium", 'G', "blockGlassHardened", 'S', "ingotSignalum"));
 			addRecipes(lampLumiumRadiant);
 		}
 		if (enable[Types.LAMP_LUMIUM.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumium, 4), new Object[] { " L ", "GLG", " S ", 'L', "dustLumium", 'G',
-					"blockGlassHardened", 'S', "ingotSignalum" }));
+			GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(lampLumium, 4), " L ", "GLG", " S ", 'L', "dustLumium", 'G', "blockGlassHardened", 'S', "ingotSignalum"));
 			addRecipes(lampLumium);
 		}
 		return true;
 	}
 
-	public static enum Types {
+	public enum Types {
 		ILLUMINATOR, LAMP_LUMIUM_RADIANT, LAMP_LUMIUM;
 
 		public static Types getType(int meta) {

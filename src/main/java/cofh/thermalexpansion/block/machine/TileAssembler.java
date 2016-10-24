@@ -13,13 +13,13 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
 import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -78,7 +78,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -116,7 +116,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_TRANSFER[level], side)) {
+				if (transferItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -182,7 +182,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 									containerStack = null;
 								}
 								if (containerStack != null
-										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+										&& (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(
 												invCopy, containerStack, 3))) {
 									if (invCopy[j].stackSize <= 0) {
 										invCopy[j] = containerStack;
@@ -304,11 +304,12 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 		nbt.setInteger("Output", outputTracker);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -340,7 +341,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public ItemStack decrStackSize(int slot, int amount) {
 
 		needsCraft = true;
-		needsCache = needsCache ? true : slot == 0;
+		needsCache = needsCache || slot == 0;
 		return super.decrStackSize(slot, amount);
 	}
 
@@ -348,7 +349,7 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
 		needsCraft = true;
-		needsCache = needsCache ? true : slot == 0;
+		needsCache = needsCache || slot == 0;
 
 		inventory[slot] = stack;
 
@@ -359,9 +360,9 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
+		if (from != null && !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
 			return 0;
 		}
 		int filled = tank.fill(resource, doFill);
@@ -373,9 +374,9 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+		if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -385,28 +386,28 @@ public class TileAssembler extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+		if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}

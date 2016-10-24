@@ -11,7 +11,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -62,7 +63,7 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			if (inventory[1] == null) {
@@ -84,7 +85,7 @@ public class TileCharger extends TileMachineBase {
 			updateIfChanged(curActive);
 			chargeEnergy();
 		} else {
-			super.updateEntity();
+			super.update();
 		}
 	}
 
@@ -153,7 +154,7 @@ public class TileCharger extends TileMachineBase {
 			return true;
 		}
 		RecipeCharger recipe = ChargerManager.getRecipe(inventory[1]);
-		return recipe == null ? false : recipe.getInput().stackSize <= inventory[1].stackSize;
+		return recipe != null && recipe.getInput().stackSize <= inventory[1].stackSize;
 	}
 
 	@Override
@@ -202,7 +203,7 @@ public class TileCharger extends TileMachineBase {
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -243,7 +244,7 @@ public class TileCharger extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(2, AUTO_TRANSFER[level], side)) {
+				if (transferItem(2, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -343,12 +344,13 @@ public class TileCharger extends TileMachineBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
+        return nbt;
 	}
 
 	/* IInventory */
@@ -402,7 +404,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? EnergyHelper.isEnergyContainerItem(stack) || ChargerManager.recipeExists(stack) : true;
+		return slot != 0 || (EnergyHelper.isEnergyContainerItem(stack) || ChargerManager.recipeExists(stack));
 	}
 
 	/* IEnergyInfo */

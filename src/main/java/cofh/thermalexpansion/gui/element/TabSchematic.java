@@ -8,6 +8,7 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
 
+import java.io.IOException;
 import java.util.List;
 
 import net.minecraft.util.ResourceLocation;
@@ -53,7 +54,7 @@ public class TabSchematic extends TabBase {
 	}
 
 	@Override
-	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) {
+	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) throws IOException{
 
 		if (!isFullyOpened()) {
 			return false;
@@ -110,9 +111,9 @@ public class TabSchematic extends TabBase {
 		getFontRenderer().drawStringWithShadow(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"), posXOffset() + 18, posY + 6, headerColor);
 
 		if (myContainer.canWriteSchematic()) {
-			gui.drawButton("IconAccept", posX() + 77, posY + 60, 1, 0);
+			gui.drawButton("IconAccept", posX() + 77, posY + 60, 0);
 		} else {
-			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 1, 2);
+			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 2);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}

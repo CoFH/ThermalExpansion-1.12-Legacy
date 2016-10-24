@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.network.PacketTEBase;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.Optional;
+import net.minecraftforge.fml.common.Optional;
 
 import gnu.trove.map.hash.THashMap;
 

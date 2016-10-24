@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.BlockUtils;
+import codechicken.lib.util.SoundUtils;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
@@ -8,8 +10,12 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateTranslocate;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
@@ -47,21 +53,21 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		}
 
 		int[] v = getVector(distance);
-		double x = xCoord + v[0] + .5;
-		double y = yCoord + v[1] + .125;
-		double z = zCoord + v[2] + .5;
-		if (!(entity instanceof EntityLivingBase) && entity.getBoundingBox() == null) {
+		double x = pos.getX() + v[0] + .5;
+		double y = pos.getY() + v[1] + .125;
+		double z = pos.getZ() + v[2] + .5;
+		if (!(entity instanceof EntityLivingBase) && entity.boundingBox == null) {
 			x = entity.posX + v[0];
 			y = entity.posY + v[1];
 			z = entity.posZ + v[2];
 		}
 
-		int x2 = xCoord + v[0];
-		int y2 = yCoord + v[1];
-		int z2 = zCoord + v[2];
+		int x2 = pos.getX() + v[0];
+		int y2 = pos.getY() + v[1];
+		int z2 = pos.getZ() + v[2];
 
-		Block block = worldObj.getBlock(x2, y2, z2);
-		if (!(block.isOpaqueCube() || block.getMaterial().isSolid())) {
+		IBlockState state = worldObj.getBlockState(new BlockPos(x2, y2, z2));
+		if (!(state.isOpaqueCube() || state.getMaterial().isSolid())) {
 			if (entity instanceof EntityLivingBase) {
 				if (worldObj.isRemote) {
 					return;
@@ -69,7 +75,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 				CoreUtils.teleportEntityTo((EntityLivingBase) entity, x, y, z, true);
 			} else {
 				entity.setLocationAndAngles(x, y, z, entity.rotationYaw, entity.rotationPitch);
-				entity.worldObj.playSoundAtEntity(entity, "mob.endermen.portal", 0.5F, 1.0F);
+                SoundUtils.playSoundAt(entity, SoundCategory.BLOCKS, SoundEvents.ENTITY_ENDERMEN_TELEPORT, 0.5F, 1.0F);
 			}
 		}
 	}
@@ -122,7 +128,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -132,6 +138,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -201,7 +208,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 	@Override
 	public void onNeighborBlockChange() {
 
-		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+		setPowered(worldObj.isBlockPowered(getPos()));
 	}
 
 	public final boolean redstoneControlOrDisable() {
@@ -217,9 +224,9 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		isPowered = powered;
 		if (wasPowered != isPowered) {
 			if (ServerHelper.isClientWorld(worldObj)) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                BlockUtils.fireBlockUpdate(worldObj,getPos());
 			} else {
-				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+				PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, getPos());
 			}
 		}
 	}
@@ -235,7 +242,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, getPos());
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 			boolean powered = isPowered;

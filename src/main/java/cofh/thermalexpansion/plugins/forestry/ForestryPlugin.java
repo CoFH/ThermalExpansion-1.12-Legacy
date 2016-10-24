@@ -4,7 +4,7 @@ import cofh.asm.relauncher.Strippable;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -44,7 +44,7 @@ public class ForestryPlugin {
 		}
 		if (juice != null) {
 			/* FORESTRY */
-			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.apple, 1), mulch, new FluidStack(juice, 200), 20, false);
+			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.APPLE, 1), mulch, new FluidStack(juice, 200), 20, false);
 			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropApple"), 1), mulch, new FluidStack(juice, 200), 20, false);
 			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropDate"), 1), mulch, new FluidStack(juice, 50), 50, false);
 			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropLemon"), 1), mulch, new FluidStack(juice, 400), 10, false);
@@ -110,9 +110,9 @@ public class ForestryPlugin {
 		}
 		if (seedoil != null) {
 			/* FORESTRY */
-			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.wheat_seeds, 1), null, new FluidStack(seedoil, 10), 0, false);
-			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.pumpkin_seeds, 1), null, new FluidStack(seedoil, 10), 0, false);
-			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.melon_seeds, 1), null, new FluidStack(seedoil, 10), 0, false);
+			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.WHEAT_SEEDS, 1), null, new FluidStack(seedoil, 10), 0, false);
+			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.PUMPKIN_SEEDS, 1), null, new FluidStack(seedoil, 10), 0, false);
+			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(Items.MELON_SEEDS, 1), null, new FluidStack(seedoil, 10), 0, false);
 			TransposerManager
 					.addExtractionRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropCherry"), 1), mulch, new FluidStack(seedoil, 50), 5, false);
 			TransposerManager.addExtractionRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropChestnut"), 1), mulch, new FluidStack(seedoil, 220), 2,

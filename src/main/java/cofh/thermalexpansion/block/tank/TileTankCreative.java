@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.tank;
 
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -29,12 +29,12 @@ public class TileTankCreative extends TileTank {
 		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
 			return;
 		}
-		adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1], new FluidStack(tank.getFluid(), FluidContainerRegistry.BUCKET_VOLUME * 64), true);
+		adjacentHandlers[0].fill(EnumFacing.UP, new FluidStack(tank.getFluid(), FluidContainerRegistry.BUCKET_VOLUME * 64), true);
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		if (from.ordinal() == 0 && mode == 1) {
 			return 0;
@@ -52,7 +52,7 @@ public class TileTankCreative extends TileTank {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;
@@ -67,7 +67,7 @@ public class TileTankCreative extends TileTank {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;

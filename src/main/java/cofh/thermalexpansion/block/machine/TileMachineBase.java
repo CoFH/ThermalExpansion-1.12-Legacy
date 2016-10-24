@@ -13,14 +13,15 @@ import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.util.IIcon;
 
-public abstract class TileMachineBase extends TileAugmentable {
+public abstract class TileMachineBase extends TileAugmentable implements ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
@@ -106,7 +107,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -176,7 +177,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	protected boolean canFinish() {
 
-		return processRem > 0 ? false : hasValidInput();
+		return processRem <= 0 && hasValidInput();
 	}
 
 	protected boolean hasValidInput() {
@@ -258,12 +259,13 @@ public abstract class TileMachineBase extends TileAugmentable {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("ProcMax", processMax);
 		nbt.setInteger("ProcRem", processRem);
+        return nbt;
 	}
 
 	@Override
@@ -543,7 +545,7 @@ public abstract class TileMachineBase extends TileAugmentable {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {

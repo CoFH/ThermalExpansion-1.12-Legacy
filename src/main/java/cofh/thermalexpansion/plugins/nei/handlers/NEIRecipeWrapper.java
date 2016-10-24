@@ -1,7 +1,8 @@
 package cofh.thermalexpansion.plugins.nei.handlers;
 
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +17,9 @@ public class NEIRecipeWrapper implements IRecipe {
 
 	public enum RecipeType {
 		MACHINE, UPGRADE, SECURE
-	};
+	}
 
-	private final IRecipe recipe;
+    private final IRecipe recipe;
 
 	public final RecipeType type;
 
@@ -88,5 +89,10 @@ public class NEIRecipeWrapper implements IRecipe {
 
 		return recipe.getRecipeOutput();
 	}
+
+    @Override
+    public ItemStack[] getRemainingItems(InventoryCrafting inv) {
+        return ForgeHooks.defaultRecipeGetRemainingItems(inv);
+    }
 
 }

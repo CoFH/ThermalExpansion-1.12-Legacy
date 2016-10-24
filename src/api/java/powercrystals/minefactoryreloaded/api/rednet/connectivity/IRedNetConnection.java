@@ -1,7 +1,7 @@
 package powercrystals.minefactoryreloaded.api.rednet.connectivity;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 /**
  * Defines a Block that can connect to RedNet cables. This must be implemented on your Block class.
@@ -22,5 +22,5 @@ public interface IRedNetConnection
 	 * @param side The side that connection information is required for.
 	 * @return The connection type.
 	 */
-	public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side);
+	public RedNetConnectionType getConnectionType(World world, int x, int y, int z, EnumFacing side);
 }

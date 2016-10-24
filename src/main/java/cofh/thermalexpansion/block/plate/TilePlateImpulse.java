@@ -4,7 +4,8 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateImpulse;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
@@ -153,7 +153,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -161,6 +161,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 		nbt.setInteger("Angle", angle);
 
 		updateForce();
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -235,14 +236,14 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 	}
 
 	// @Override
-	public ItemStack insertItem(ForgeDirection from, ItemStack item) {
+	public ItemStack insertItem(EnumFacing from, ItemStack item) {
 
 		if (from.ordinal() >> 1 == alignment >> 1) {
 			return item;
 		}
 
 		double v[] = fixVector(0, -0.25, 0);
-		EntityItem ent = new EntityItem(worldObj, xCoord + .5, yCoord + .5, zCoord + .5, item);
+		EntityItem ent = new EntityItem(worldObj, getPos().getX() + .5, getPos().getY() + .5, getPos().getZ() + .5, item);
 		ent.delayBeforeCanPickup = 10;
 		ent.motionX = v[0];
 		ent.motionY = v[1];

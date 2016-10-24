@@ -1,106 +1,137 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.render.item.IItemRenderer;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
-import cofh.repack.codechicken.lib.render.CCRenderState;
-import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongboxCreative;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
-import cpw.mods.fml.client.registry.ClientRegistry;
-
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL12;
+import javax.annotation.Nullable;
+import java.util.List;
 
-public class RenderStrongbox extends TileEntitySpecialRenderer implements IItemRenderer {
+public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
 
-	public static final RenderStrongbox instance = new RenderStrongbox();
-	static ResourceLocation[] texture = new ResourceLocation[BlockStrongbox.Types.values().length];
+    public static final RenderStrongbox instance = new RenderStrongbox();
+    static ResourceLocation[] texture = new ResourceLocation[BlockStrongbox.Types.values().length];
 
-	static ModelStrongbox model = new ModelStrongbox();
+    static ModelStrongbox model = new ModelStrongbox();
 
-	static {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
-		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
+    static {
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
+        ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
 
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
-	}
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
+    }
 
-	public static void initialize() {
+    public static void initialize() {
 
-		texture[BlockStrongbox.Types.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Basic.png");
-		texture[BlockStrongbox.Types.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Hardened.png");
-		texture[BlockStrongbox.Types.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Reinforced.png");
-		texture[BlockStrongbox.Types.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Resonant.png");
-		texture[BlockStrongbox.Types.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Creative.png");
-	}
+        texture[BlockStrongbox.Types.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Basic.png");
+        texture[BlockStrongbox.Types.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Hardened.png");
+        texture[BlockStrongbox.Types.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Reinforced.png");
+        texture[BlockStrongbox.Types.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Resonant.png");
+        texture[BlockStrongbox.Types.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Creative.png");
+    }
 
-	public void render(int metadata, int access, int facing, double x, double y, double z) {
+    public void render(int metadata, int access, int facing, double x, double y, double z) {
 
-		RenderHelper.bindTexture(texture[metadata]);
+        RenderHelper.bindTexture(texture[metadata]);
 
-		GL11.glPushMatrix();
-		GL11.glTranslated(x, y + 1.0, z + 1.0);
-		GL11.glScalef(1.0F, -1F, -1F);
-		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
-		GL11.glRotatef(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-		model.render(access);
-		GL11.glDisable(GL12.GL_RESCALE_NORMAL);
-		GL11.glPopMatrix();
-	}
+        GlStateManager.pushMatrix();
+        GlStateManager.translate(x, y + 1.0, z + 1.0);
+        GlStateManager.scale(1.0F, -1F, -1F);
+        GlStateManager.translate(0.5F, 0.5F, 0.5F);
+        GlStateManager.rotate(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
+        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+        GlStateManager.enableRescaleNormal();
+        model.render(access);
+        GlStateManager.disableRescaleNormal();
+        GlStateManager.popMatrix();
+    }
 
-	@Override
-	public void renderTileEntityAt(TileEntity entity, double x, double y, double z, float f) {
+    @Override
+    public void renderTileEntityAt(TileStrongbox strongbox, double x, double y, double z, float f, int destroyStage) {
 
-		CCRenderState.reset();
-		CCRenderState.pullLightmap();
-		CCRenderState.setDynamic();
+        //CCRenderState.reset();
+        //CCRenderState.pullLightmap();
+        //CCRenderState.setDynamic();
 
-		TileStrongbox strongbox = (TileStrongbox) entity;
-		model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
-		render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
-	}
+        model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
+        render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
+    }
 
 	/* IItemRenderer */
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    //@Override
+    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    //	return true;
+    //}
 
-		return true;
-	}
+    //@Override
+    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    //	return true;
+    //}
 
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    @Override
+    public void renderItem(ItemStack item) {
+        double offset = -0.5;
+        //if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+        //	offset = 0;
+        //}
+        int access = 0;
 
-		return true;
-	}
+        if (item.getTagCompound() != null) {
+            access = item.getTagCompound().getByte("Access");
+        }
+        model.boxLid.rotateAngleX = 0;
+        render(item.getItemDamage(), access, 5, offset, offset, offset);
+        GlStateManager.enableRescaleNormal();
+    }
 
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    @Override
+    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+        return null;
+    }
 
-		double offset = -0.5;
-		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-			offset = 0;
-		}
-		int access = 0;
+    @Override
+    public boolean isAmbientOcclusion() {
+        return false;
+    }
 
-		if (item.stackTagCompound != null) {
-			access = item.stackTagCompound.getByte("Access");
-		}
-		model.boxLid.rotateAngleX = 0;
-		render(item.getItemDamage(), access, 5, offset, offset, offset);
-		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-	}
+    @Override
+    public boolean isGui3d() {
+        return false;
+    }
 
+    @Override
+    public boolean isBuiltInRenderer() {
+        return true;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return null;
+    }
+
+    @Override
+    public ItemCameraTransforms getItemCameraTransforms() {
+        return ItemCameraTransforms.DEFAULT;
+    }
+
+    @Override
+    public ItemOverrideList getOverrides() {
+        return ItemOverrideList.NONE;
+    }
 }

@@ -11,9 +11,4 @@ public class BlockAirBarrier extends BlockAirBase {
 		super(materialBarrier);
 	}
 
-	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-
-	}
-
 }

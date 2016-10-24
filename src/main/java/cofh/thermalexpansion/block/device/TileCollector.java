@@ -10,7 +10,12 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -26,11 +31,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileCollector extends TileDeviceBase implements IInventoryConnection {
+public class TileCollector extends TileDeviceBase implements IInventoryConnection, ITickable {
 
 	public static void initialize() {
 
@@ -53,7 +56,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 	int areaMinor = 1;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
-	static float[] defaultDropChances = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
+	static float[] defaultDropChances = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 
 	boolean ignoreFriends = true;
 	boolean ignoreOwner = true;
@@ -73,7 +76,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -95,7 +98,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 
 	public boolean doNotCollectItemsFrom(EntityPlayer player) {
 
-		String name = player.getCommandSenderName();
+		String name = player.getName();
 
 		UUID ownerID = owner.getId();
 		UUID otherID = SecurityHelper.getID(player);
@@ -107,7 +110,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 
 	public void collectItems() {
 
-		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
+		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(getPos().getX(), getPos().getY(), getPos().getZ(), facing);
 		stuffedItems.addAll(collectItemsInArea(worldObj, coords[0], coords[1], coords[2], facing, areaMajor, areaMinor));
 
 		if (augmentEntityCollection) {
@@ -117,10 +120,10 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 
 	public void outputBuffer() {
 
-		for (int i = 0; i < 6; i++) {
-			if (i != facing && sideCache[i] == 1) {
-				int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, i);
-				TileEntity theTile = worldObj.getTileEntity(coords[0], coords[1], coords[2]);
+		for (EnumFacing face : EnumFacing.VALUES) {
+			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {
+				BlockPos offset = getPos().offset(face);
+				TileEntity theTile = worldObj.getTileEntity(offset);
 
 				if (InventoryHelper.isInsertion(theTile)) {
 					LinkedList<ItemStack> newStuffed = new LinkedList<ItemStack>();
@@ -128,7 +131,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 						if (curItem == null || curItem.getItem() == null) {
 							curItem = null;
 						} else {
-							curItem = InventoryHelper.addToInsertion(theTile, i, curItem);
+							curItem = InventoryHelper.addToInsertion(theTile, face, curItem);
 						}
 						if (curItem != null) {
 							newStuffed.add(curItem);
@@ -150,16 +153,16 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		case 0:
 		case 1:
 			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-					AxisAlignedBB.getBoundingBox(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+                    new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
 			break;
 		case 2:
 		case 3:
 			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-					AxisAlignedBB.getBoundingBox(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+                    new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
 			break;
 		default:
 			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-					AxisAlignedBB.getBoundingBox(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+					new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
 			break;
 		}
 		for (int i = 0; i < result.size(); i++) {
@@ -183,16 +186,16 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		case 0:
 		case 1:
 			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+                    new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
 			break;
 		case 2:
 		case 3:
 			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+                    new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
 			break;
 		default:
 			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-					AxisAlignedBB.getBoundingBox(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+                    new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
 			break;
 		}
 		for (int i = 0; i < result.size(); i++) {
@@ -200,17 +203,21 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 			float[] dropChances = defaultDropChances;
 
 			if (entity instanceof EntityLiving) {
-				dropChances = ((EntityLiving) entity).equipmentDropChances;
+                EntityLiving living = ((EntityLiving) entity);
+                float[] handChances = living.inventoryHandsDropChances;
+                float[] armorChances = living.inventoryArmorDropChances;
+				dropChances = new float[]{handChances[0], handChances[1], armorChances[0], armorChances[1], armorChances[2], armorChances[3]};
 			} else if (isSecured() && entity instanceof EntityPlayer) {
 				if (doNotCollectItemsFrom((EntityPlayer) entity)) {
 					continue;
 				}
 			}
-			for (int j = 0; j < 5; j++) {
-				ItemStack equipmentInSlot = entity.getEquipmentInSlot(j);
+			for (int j = 0; j < 6; j++) {
+                EntityEquipmentSlot slot = EntityEquipmentSlot.values()[j];
+				ItemStack equipmentInSlot = entity.getItemStackFromSlot(slot);
 				if (equipmentInSlot != null && dropChances[j] >= 1) {
 					stacks.add(equipmentInSlot);
-					entity.setCurrentItemOrArmor(j, null);
+					entity.setItemStackToSlot(slot, null);
 				}
 			}
 		}
@@ -245,7 +252,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -259,13 +266,14 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 			}
 		}
 		nbt.setTag("StuffedInv", list);
+        return nbt;
 	}
 
 	/* IInventoryConnection */
 	@Override
-	public ConnectionType canConnectInventory(ForgeDirection from) {
+	public ConnectionType canConnectInventory(EnumFacing from) {
 
-		if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
+		if (from != null && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
 			return ConnectionType.FORCE;
 		} else {
 			return ConnectionType.DEFAULT;

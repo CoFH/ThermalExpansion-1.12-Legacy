@@ -45,10 +45,10 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 
 		super.addInformationDelegate(stack, player, list, check);
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.stackTagCompound.getInteger("Energy") + " / " + maxEnergy + " RF");
+		list.add(StringHelper.localize("info.cofh.charge") + ": " + stack.getTagCompound().getInteger("Energy") + " / " + maxEnergy + " RF");
 		list.add(StringHelper.ORANGE + energyPerUse + " RF " + StringHelper.localize("info.cofh.perUse") + StringHelper.END);
 	}
 
@@ -59,12 +59,11 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	}
 
 	@Override
-	public int getDisplayDamage(ItemStack stack) {
-
-		if (stack.stackTagCompound == null) {
+	public double getDurabilityForDisplay(ItemStack stack) {
+		if (stack.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		return 1 + maxEnergy - stack.stackTagCompound.getInteger("Energy");
+		return 1 + maxEnergy - stack.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
@@ -77,15 +76,15 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(maxEnergy - stored, maxTransfer));
 
 		if (!simulate) {
 			stored += receive;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return receive;
 	}
@@ -93,15 +92,15 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int extract = Math.min(maxExtract, stored);
 
 		if (!simulate) {
 			stored -= extract;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return extract;
 	}
@@ -109,10 +108,10 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		return container.stackTagCompound.getInteger("Energy");
+		return container.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
@@ -125,15 +124,15 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	@Override
 	public boolean isLastHeldItemEqual(ItemStack current, ItemStack previous) {
 
-		NBTTagCompound a = current.stackTagCompound, b = previous.stackTagCompound;
+		NBTTagCompound a = current.getTagCompound(), b = previous.getTagCompound();
 		if (a == b) {
 			return true;
 		}
 		if (a == null || b == null) {
 			return false;
 		}
-		a = (NBTTagCompound) a.copy();
-		b = (NBTTagCompound) b.copy();
+		a = a.copy();
+		b = b.copy();
 		a.removeTag("Energy");
 		b.removeTag("Energy");
 		return a.equals(b);

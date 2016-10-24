@@ -1,55 +1,50 @@
 package cofh.thermalexpansion.block.simple;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.particle.ParticleFirework;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
-import net.minecraft.world.IBlockAccess;
-import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+public class BlockAirSignal extends BlockAirBase /*implements IRedNetOutputNode*/ {
 
-import powercrystals.minefactoryreloaded.api.rednet.IRedNetOutputNode;
-import powercrystals.minefactoryreloaded.api.rednet.connectivity.RedNetConnectionType;
+    public BlockAirSignal() {
 
-public class BlockAirSignal extends BlockAirBase implements IRedNetOutputNode {
+        super(materialBarrier);
+        disableStats();
+        //setBlockTextureName("glowstone");
+        //setBlockBounds(0, 0, 0, 0, 0, 0);
+    }
 
-	public BlockAirSignal() {
+    @Override
+    public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return getMetaFromState(blockState);
+    }
 
-		super(materialBarrier);
-		disableStats();
-		setBlockTextureName("glowstone");
-		setBlockBounds(0, 0, 0, 0, 0, 0);
-	}
+    @Override
+    public boolean canProvidePower(IBlockState state) {
+        return true;
+    }
 
-	@Override
-	public int isProvidingWeakPower(IBlockAccess world, int x, int y, int z, int side) {
+    @SideOnly(Side.CLIENT)
+    @Override
+    public void randomDisplayTick(IBlockState state, World world, BlockPos pos, Random rand) {
 
-		return world.getBlockMetadata(x, y, z);
-	}
-
-	@Override
-	public boolean canProvidePower() {
-
-		return true;
-	}
-
-	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-
-		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5, y + 0.5, z + 0.5, rand.nextGaussian() / 10, rand.nextDouble() / 6,
-				rand.nextGaussian() / 10, Minecraft.getMinecraft().effectRenderer);
-		spark.setColour(0xFF0000);
-		spark.setFadeColour(0x660000);
-		spark.setTwinkle(true);
-		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
-	}
+        ParticleFirework.Spark spark = new ParticleFirework.Spark(world, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, rand.nextGaussian() / 10, rand.nextDouble() / 6, rand.nextGaussian() / 10, Minecraft.getMinecraft().effectRenderer);
+        spark.setColor(0xFF0000);
+        spark.setColorFade(0x660000);
+        spark.setTwinkle(true);
+        Minecraft.getMinecraft().effectRenderer.addEffect(spark);
+    }
 
 	/* IRedNetOutputNode */
-	@Override
+    /*@Override
 	public RedNetConnectionType getConnectionType(World world, int x, int y, int z, ForgeDirection side) {
 
 		return RedNetConnectionType.PlateSingle;
@@ -65,6 +60,6 @@ public class BlockAirSignal extends BlockAirBase implements IRedNetOutputNode {
 	public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet) {
 
 		return isProvidingWeakPower(world, x, y, z, side.ordinal());
-	}
+	}*/
 
 }

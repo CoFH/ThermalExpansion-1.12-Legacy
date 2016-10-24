@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.plugins.nei;
 
-import codechicken.nei.PositionedStack;
 import codechicken.nei.api.IOverlayHandler;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.IRecipeHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;

@@ -2,9 +2,9 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.util.NEIServerUtils;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;

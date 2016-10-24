@@ -50,23 +50,23 @@ import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TECraftingParser;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.ThermalFoundation;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.Mod.CustomProperty;
-import cpw.mods.fml.common.Mod.EventHandler;
-import cpw.mods.fml.common.Mod.Instance;
-import cpw.mods.fml.common.SidedProxy;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
-import cpw.mods.fml.common.event.FMLInterModComms;
-import cpw.mods.fml.common.event.FMLInterModComms.IMCEvent;
-import cpw.mods.fml.common.event.FMLLoadCompleteEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent;
-import cpw.mods.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
-import cpw.mods.fml.common.event.FMLPostInitializationEvent;
-import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
-import cpw.mods.fml.common.network.NetworkRegistry;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.Mod.CustomProperty;
+import net.minecraftforge.fml.common.Mod.EventHandler;
+import net.minecraftforge.fml.common.Mod.Instance;
+import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -86,7 +86,7 @@ import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
 		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
-public class ThermalExpansion extends BaseMod {
+public class ThermalExpansion {
 
 	public static final String modId = "ThermalExpansion";
 	public static final String modName = "Thermal Expansion";
@@ -118,13 +118,13 @@ public class ThermalExpansion extends BaseMod {
 	/* INIT SEQUENCE */
 	public ThermalExpansion() {
 
-		super(log);
+		super();
 	}
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		UpdateManager.registerUpdater(new UpdateManager(this, releaseURL, CoFHProps.DOWNLOAD_URL));
+		//UpdateManager.registerUpdater(new UpdateManager(this, releaseURL, CoFHProps.DOWNLOAD_URL));
 		config.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/common.cfg"), true));
 		configClient.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/client.cfg"), true));
 
@@ -325,7 +325,7 @@ public class ThermalExpansion extends BaseMod {
 		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
 			"Signalum", "Lumium", "Enderium")) {
 			String prefix = "thermalexpansion:machine";
-			ArrayList<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
+			List<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
 			for (int i = 0; i < partList.size(); i++) {
 				OreDictionary.registerOre(prefix + entry, partList.get(i));
 			}
@@ -446,19 +446,19 @@ public class ThermalExpansion extends BaseMod {
 	}
 
 	/* BaseMod */
-	@Override
+	//@Override
 	public String getModId() {
 
 		return modId;
 	}
 
-	@Override
+	//@Override
 	public String getModName() {
 
 		return modName;
 	}
 
-	@Override
+	//@Override
 	public String getModVersion() {
 
 		return version;

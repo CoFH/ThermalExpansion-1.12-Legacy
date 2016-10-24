@@ -1,30 +1,20 @@
 package cofh.thermalexpansion.render;
 
-import cofh.core.render.IconRegistry;
-import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.TEBlocks;
+public class RenderSponge //implements IItemRenderer
+{
 
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
+    public static final RenderSponge instance = new RenderSponge();
 
-public class RenderSponge implements IItemRenderer {
+    static {
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockSponge), instance);
+    }
 
-	public static final RenderSponge instance = new RenderSponge();
+    public static void initialize() {
 
-	static {
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockSponge), instance);
-	}
-
-	public static void initialize() {
-
-	}
+    }
 
 	/* IItemRenderer */
-	@Override
+    /*@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
 
 		return true;
@@ -51,6 +41,6 @@ public class RenderSponge implements IItemRenderer {
 			texture = IconRegistry.getIcon("Sponge", item.getItemDamage() + 8);
 		}
 		RenderHelper.renderTextureAsBlock((RenderBlocks) data[0], texture, offset, offset, offset);
-	}
+	}*/
 
 }

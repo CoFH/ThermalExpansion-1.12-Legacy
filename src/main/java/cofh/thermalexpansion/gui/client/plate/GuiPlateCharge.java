@@ -31,7 +31,7 @@ public class GuiPlateCharge extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 
 		myTile = (TilePlateCharge) theTile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 		this.ySize = 100;

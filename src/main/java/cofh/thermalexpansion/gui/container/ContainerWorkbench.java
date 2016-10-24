@@ -10,7 +10,8 @@ import cofh.thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import cofh.thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
-import cpw.mods.fml.common.Optional;
+import net.minecraft.inventory.ClickType;
+import net.minecraftforge.fml.common.Optional;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -131,11 +132,11 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
-		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorldObj()));
+		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorld()));
 	}
 
 	@Override
-	public ItemStack slotClick(int slotId, int mouseButton, int modifier, EntityPlayer player) {
+	public ItemStack slotClick(int slotId, int mouseButton, ClickType modifier, EntityPlayer player) {
 
 		myTile.updateClient = true;
 
@@ -144,17 +145,17 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 		int invTile = invSchematic + numInventory;
 
 		if (slotId == invTile) {
-			modifier = 0;
+			modifier = ClickType.PICKUP;
 		}
 		if (slotId >= invPlayer && slotId < invSchematic) {
-			Slot slot = (Slot) inventorySlots.get(slotId);
+			Slot slot = inventorySlots.get(slotId);
 			if (slot.getHasStack()) {
 				int schematic = myTile.getCurrentSchematicSlot();
 				myTile.setCurrentSchematicSlot(slot.getSlotIndex());
 
-				if (mouseButton == 1 && modifier == 1) {
+				if (mouseButton == 1 && modifier == ClickType.QUICK_MOVE) {
 					myTile.setCraftingGrid();
-					modifier = 0;
+					modifier = ClickType.PICKUP;
 					slotId = invTile;
 				} else if (schematic != myTile.getCurrentSchematicSlot()) {
 					return player.inventory.getItemStack();
@@ -184,7 +185,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 
 		if (schematic != null && craftResult.getStackInSlot(0) != null) {
 			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorldObj(), craftResult.getStackInSlot(0)));
+					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(myTile.selectedSchematic, newSchematic);
 		}

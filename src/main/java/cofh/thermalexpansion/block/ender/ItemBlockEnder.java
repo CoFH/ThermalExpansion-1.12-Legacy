@@ -18,10 +18,10 @@ public class ItemBlockEnder extends ItemBlockBase {
 	public static ItemStack setDefaultTag(ItemStack container) {
 
 		RedstoneControlHelper.setControl(container, ControlMode.LOW);
-		container.stackTagCompound.setInteger("Frequency", -1);
-		container.stackTagCompound.setByte("ModeItems", (byte) 1);
-		container.stackTagCompound.setByte("ModeFluid", (byte) 1);
-		container.stackTagCompound.setByte("ModeEnergy", (byte) 1);
+		container.getTagCompound().setInteger("Frequency", -1);
+		container.getTagCompound().setByte("ModeItems", (byte) 1);
+		container.getTagCompound().setByte("ModeFluid", (byte) 1);
+		container.getTagCompound().setByte("ModeEnergy", (byte) 1);
 
 		return container;
 	}
@@ -44,13 +44,13 @@ public class ItemBlockEnder extends ItemBlockBase {
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
-		return EnumRarity.rare;
+		return EnumRarity.RARE;
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
 		SecurityHelper.addOwnerInformation(stack, list);
@@ -66,11 +66,11 @@ public class ItemBlockEnder extends ItemBlockBase {
 		list.add(StringHelper.getInfoText("info.thermalexpansion.ender.tesseract.0"));
 		list.add(StringHelper.getInfoText("info.thermalexpansion.ender.tesseract.1"));
 
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
-			int frequency = stack.stackTagCompound.getInteger("Frequency");
-			byte modeItem = stack.stackTagCompound.getByte("ModeItems");
-			byte modeFluid = stack.stackTagCompound.getByte("ModeFluid");
-			byte modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
+		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("Frequency")) {
+			int frequency = stack.getTagCompound().getInteger("Frequency");
+			byte modeItem = stack.getTagCompound().getByte("ModeItems");
+			byte modeFluid = stack.getTagCompound().getByte("ModeFluid");
+			byte modeEnergy = stack.getTagCompound().getByte("ModeEnergy");
 
 			if (frequency < 0) {
 				list.add(StringHelper.localize("info.cofh.frequency") + ": " + StringHelper.localize("info.cofh.none"));

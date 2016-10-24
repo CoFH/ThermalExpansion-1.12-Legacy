@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
@@ -10,7 +11,9 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -21,7 +24,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
@@ -79,9 +81,9 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	@Override
-	public IIcon getActiveIcon() {
+	public TextureAtlasSprite getActiveIcon() {
 
-		return TFFluids.fluidRedstone.getIcon();
+		return TextureUtils.getTexture(TFFluids.fluidRedstone.getStill());
 	}
 
 	/* GUI METHODS */
@@ -122,11 +124,12 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("FuelMax", currentFuelRF);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -164,17 +167,17 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */
 	static int redstoneRF = 64000;
 	static int blockRedstoneRF = redstoneRF * 10;
 
-	static ItemStack redstone = new ItemStack(Items.redstone);
-	static ItemStack blockRedstone = new ItemStack(Blocks.redstone_block);
+	static ItemStack redstone = new ItemStack(Items.REDSTONE);
+	static ItemStack blockRedstone = new ItemStack(Blocks.REDSTONE_BLOCK);
 
 	static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
 

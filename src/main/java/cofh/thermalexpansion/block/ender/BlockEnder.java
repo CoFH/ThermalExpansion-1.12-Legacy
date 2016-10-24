@@ -14,15 +14,17 @@ import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,19 +33,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockEnder extends BlockTEBase {
 
 	public BlockEnder() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(2000.0F);
-		setBlockName("thermalexpansion.ender");
+		setUnlocalizedName("thermalexpansion.ender");
 	}
 
 	@Override
@@ -60,27 +60,25 @@ public class BlockEnder extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 		if (world.isRemote) {
 			return;
 		}
 
-		TileEntity aTile = world.getTileEntity(x, y, z);
+		TileEntity aTile = world.getTileEntity(pos);
 
 		if (aTile instanceof TileTesseract) {
-			TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
+			TileTesseract tile = (TileTesseract) world.getTileEntity(pos);
 
 			tile.setInvName(ItemHelper.getNameFromItemStack(stack));
 
 			if (SecurityHelper.isSecure(stack)) {
 				GameProfile stackOwner = SecurityHelper.getOwner(stack);
 
-				if (((ISecurable) tile).setOwner(stackOwner)) {
-					;
-				} else if (living instanceof ICommandSender) {
-					tile.setOwnerName(living.getCommandSenderName());
+				if (tile.setOwner(stackOwner)) {
+                } else if (living instanceof ICommandSender) {
+					tile.setOwnerName(living.getName());
 				}
 				tile.setAccessQuick(SecurityHelper.getAccess(stack));
 			}
@@ -89,15 +87,15 @@ public class BlockEnder extends BlockTEBase {
 			}
 			tile.onNeighborBlockChange();
 
-			if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Frequency")) {
+			if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("Frequency")) {
 				if (ServerHelper.isServerWorld(world)) {
 					tile.removeFromRegistry();
 				}
-				tile.modeItem = stack.stackTagCompound.getByte("ModeItems");
-				tile.modeFluid = stack.stackTagCompound.getByte("ModeFluid");
-				tile.modeEnergy = stack.stackTagCompound.getByte("ModeEnergy");
+				tile.modeItem = stack.getTagCompound().getByte("ModeItems");
+				tile.modeFluid = stack.getTagCompound().getByte("ModeFluid");
+				tile.modeEnergy = stack.getTagCompound().getByte("ModeEnergy");
 
-				tile.frequency = stack.stackTagCompound.getInteger("Frequency");
+				tile.frequency = stack.getTagCompound().getInteger("Frequency");
 				tile.isActive = tile.frequency != -1;
 
 				if (ServerHelper.isServerWorld(world)) {
@@ -106,37 +104,36 @@ public class BlockEnder extends BlockTEBase {
 				}
 			}
 		} else {
-			super.onBlockPlacedBy(world, x, y, z, living, stack);
+			super.onBlockPlacedBy(world, pos, state, living, stack);
 		}
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 
 		return TEProps.renderIdEnder;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
 		return pass < 2;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(int side, int metadata) {
 
 		return IconRegistry.getIcon("Tesseract");
@@ -151,13 +148,13 @@ public class BlockEnder extends BlockTEBase {
 		IconRegistry.addIcon("TesseractActive", "thermalexpansion:tesseract/Tesseract_Active", ir);
 		IconRegistry.addIcon("TesseractInnerActive", "thermalexpansion:tesseract/Tesseract_Inner_Active", ir);
 		IconRegistry.addIcon("SkyEnder", "thermalexpansion:tesseract/Sky_Ender", ir);
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileTesseract tile = (TileTesseract) world.getTileEntity(pos);
 
 		if (tile != null) {
 			if (tag == null) {
@@ -174,14 +171,14 @@ public class BlockEnder extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
 
-		TileTesseract tile = (TileTesseract) world.getTileEntity(x, y, z);
+		TileTesseract tile = (TileTesseract) world.getTileEntity(pos);
 		if (tile != null) {
 			tile.removeFromRegistry();
 			tile.inventory = new ItemStack[0];
 		}
-		return super.dismantleBlock(player, getItemStackTag(world, x, y, z), world, x, y, z, returnDrops, false);
+		return super.dismantleBlock(player, getItemStackTag(world, pos), world, pos, returnDrops, false);
 	}
 
 	/* IInitializer */
@@ -201,8 +198,7 @@ public class BlockEnder extends BlockTEBase {
 	public boolean postInit() {
 
 		if (recipe) {
-			GameRegistry.addRecipe(ShapedRecipe(tesseract, new Object[] { "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver", 'B',
-					"ingotBronze" }));
+			GameRegistry.addRecipe(ShapedRecipe(tesseract, "BIB", "ICI", "BIB", 'C', BlockFrame.frameTesseractFull, 'I', "ingotSilver", 'B', "ingotBronze"));
 		}
 		TECraftingHandler.addSecureRecipe(tesseract);
 

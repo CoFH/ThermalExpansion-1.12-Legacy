@@ -7,6 +7,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
@@ -29,7 +30,7 @@ public class ItemBlockRockwool extends ItemBlock {
 	@Override
 	public String getUnlocalizedName(ItemStack item) {
 
-		return "tile.thermalexpansion.rockwool." + ItemDye.field_150923_a[15 - item.getItemDamage()] + ".name";
+		return "tile.thermalexpansion.rockwool." + EnumDyeColor.byMetadata(item.getItemDamage()) + ".name";
 	}
 
 	@Override

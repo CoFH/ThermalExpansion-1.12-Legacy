@@ -3,14 +3,17 @@ package cofh.thermalexpansion.block.simple;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.block.state.IBlockState;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Vec3;
+import net.minecraft.util.EnumFacing;
+
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockAirForce extends BlockAirBase {
 
@@ -20,37 +23,39 @@ public class BlockAirForce extends BlockAirBase {
 		disableStats();
 	}
 
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity ent) {
-
-		if (world.isRemote ? ent instanceof EntityFX : ent instanceof EntityPlayer) {
-			if (!world.isRemote) {
-				absorbFallDamage(ent, x, y, z);
-			}
-			return;
+    @Override
+    public void onEntityCollidedWithBlock(World world, BlockPos pos, IBlockState state, Entity entity) {
+		if (!world.isRemote && entity instanceof EntityPlayer) {
+            absorbFallDamage(entity, pos);
+            return;
 		}
 
-		int meta = world.getBlockMetadata(x, y, z);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
-		repositionEntity(world, x, y, z, ent, dir, .1);
+		int meta = getMetaFromState(state);
+		EnumFacing dir = EnumFacing.VALUES[meta ^ 1];
+		repositionEntity(world, pos, entity, dir, .1);
 		/*
 		 * can we dampen sound effects for an entity collided with this?
 		 */
 	}
 
-	private static void absorbFallDamage(Entity ent, int x, int y, int z) {
+	private static void absorbFallDamage(Entity ent, BlockPos pos) {
 
-		if (AxisAlignedBB.getBoundingBox(x, y, z, x + 1, y + 1, z + 1).isVecInside(Vec3.createVectorHelper(ent.posX, ent.posY - ent.yOffset, ent.posZ))) {
+		if (new AxisAlignedBB(pos).isVecInside(new  Vec3d(ent.posX, ent.posY - ent.getEyeHeight(), ent.posZ))) {
 			ent.fallDistance *= 0.4;
 			ent.motionY = 0;
 		}
 	}
 
 	@SuppressWarnings("unused")
-	public static void repositionEntity(World world, int x, int y, int z, Entity ent, ForgeDirection dir, double amount) {
+	public static void repositionEntity(World world, BlockPos pos, Entity ent, EnumFacing dir, double amount) {
+        int x = pos.getX();
+        int y = pos.getY();
+        int z = pos.getZ();
 
-		double l = amount, xO = dir.offsetX * l, yO = dir.offsetY * l, zO = dir.offsetZ * l;
-		absorbFallDamage(ent, x, y, z);
+        double xO = dir.getFrontOffsetX() * amount;
+        double yO = dir.getFrontOffsetY() * amount;
+        double zO = dir.getFrontOffsetZ() * amount;
+        absorbFallDamage(ent, pos);
 
 		if (ent.getEntityData().getLong("te:conveyor") == world.getTotalWorldTime()) {
 			return;
@@ -58,22 +63,22 @@ public class BlockAirForce extends BlockAirBase {
 		ent.getEntityData().setLong("te:conveyor", world.getTotalWorldTime());
 
 		{
-			if (!world.func_147461_a(ent.boundingBox).isEmpty() || !world.func_147461_a(ent.boundingBox.getOffsetBoundingBox(xO * 2, yO * 2, zO * 2)).isEmpty()) {
+			if (!world.getCollisionBoxes(ent.boundingBox).isEmpty() || !world.getCollisionBoxes(ent.boundingBox.offset(xO * 2, yO * 2, zO * 2)).isEmpty()) {
 				xO = yO = zO = 0;
 			}
 			if (isZero(ent.motionX) && isZero(ent.motionZ)) {
 				switch (dir.ordinal() >> 1) {
 				case 0:
-					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, ForgeDirection.EAST);
-					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, ForgeDirection.SOUTH);
+					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, EnumFacing.EAST);
+					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, EnumFacing.SOUTH);
 					break;
 				case 1:
-					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, ForgeDirection.EAST);
-					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.yOffset - .1)) / 20, ForgeDirection.UP);
+					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, EnumFacing.EAST);
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.getEyeHeight() - .1)) / 20, EnumFacing.UP);
 					break;
 				case 2:
-					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.yOffset - .1)) / 20, ForgeDirection.UP);
-					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, ForgeDirection.SOUTH);
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.getEyeHeight() - .1)) / 20, EnumFacing.UP);
+					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, EnumFacing.SOUTH);
 					break;
 				}
 			} else if (false) {
@@ -89,15 +94,15 @@ public class BlockAirForce extends BlockAirBase {
 				xO += ent.motionX;
 				zO += ent.motionZ;
 			}
-			if (dir == ForgeDirection.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.yOffset + yO) != y) {
-				if (world.getBlock(x, y + 1, z) != TEBlocks.blockAirForce) {
+			if (dir == EnumFacing.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.getEyeHeight() + yO) != y) {
+				if (world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() != TEBlocks.blockAirForce) {
 					yO = 0;
 				}
 			}
 			if (ent instanceof EntityLivingBase) {
-				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO);
+				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.getEyeHeight() + yO, ent.prevPosZ + zO);
 			} else {
-				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.yOffset + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
+				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.getEyeHeight() + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
 			}
 			ent.lastTickPosX = ent.posX - xO;
 			ent.lastTickPosY = ent.posY - yO;
@@ -109,10 +114,12 @@ public class BlockAirForce extends BlockAirBase {
 		}
 	}
 
-	private static double clampOffset(World world, Entity ent, double offset, ForgeDirection axis) {
+	private static double clampOffset(World world, Entity ent, double offset, EnumFacing axis) {
 
-		double xO = axis.offsetX * offset, yO = axis.offsetY * offset, zO = axis.offsetZ * offset;
-		if (!world.func_147461_a(ent.boundingBox).isEmpty() || !world.func_147461_a(ent.boundingBox.getOffsetBoundingBox(xO, yO, zO)).isEmpty()) {
+		double xO = axis.getFrontOffsetX() * offset;
+        double yO = axis.getFrontOffsetY() * offset;
+        double zO = axis.getFrontOffsetZ() * offset;
+        if (!world.getCollisionBoxes(ent.boundingBox).isEmpty() || !world.getCollisionBoxes(ent.boundingBox.offset(xO, yO, zO)).isEmpty()) {
 			return 0;
 		}
 		return offset;

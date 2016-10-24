@@ -14,10 +14,10 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.light.TileLight;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
@@ -85,7 +85,7 @@ public class GuiLight extends GuiBaseAdv {
 
 		GuiColor tileColor = new GuiColor((byte) 255, myTile.color);
 		int type = myTile.getBlockMetadata();
-		IIcon icon;
+		TextureAtlasSprite icon;
 
 		switch (type) {
 		default:
@@ -363,7 +363,7 @@ public class GuiLight extends GuiBaseAdv {
 		if (buttonName == "Dim") {
 			playSound("random.click", 1.0F, myTile.dim ? 0.6F : 0.4F);
 			myTile.dim = !myTile.dim;
-			myTile.getWorldObj().func_147451_t(myTile.xCoord, myTile.yCoord, myTile.zCoord);
+			myTile.getWorld().checkLight(myTile.getPos());
 			myTile.sendUpdatePacket(Side.SERVER);
 		} else if (buttonName == "Reset") {
 			playSound("random.click", 1.0F, 0.8F);

@@ -13,12 +13,13 @@ import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.GuiWorkbench;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cofh.thermalexpansion.util.helpers.SchematicHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -53,7 +54,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		}
 	}
 
-	public static enum PacketInfoID {
+	public enum PacketInfoID {
 		CLEAR_GRID, SET_GRID, NEI_SUP
 	}
 
@@ -96,12 +97,6 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		return selectedSchematic;
 	}
 
-	@Override
-	public boolean canUpdate() {
-
-		return false;
-	}
-
 	public boolean createItem(boolean doCreate, ItemStack output) {
 
 		ItemStack[] invCopy = InventoryHelper.cloneInventory(inventory);
@@ -129,7 +124,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 									containerStack = null;
 								}
 								if (containerStack != null
-										&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+										&& (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(
 												invCopy, containerStack, SCHEMATICS[type]))) {
 									if (invCopy[j].stackSize <= 0) {
 										invCopy[j] = containerStack;
@@ -188,7 +183,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 								containerStack = null;
 							}
 							if (containerStack != null
-									&& (!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) || !InventoryHelper.addItemStackToInventory(
+									&& (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(
 											invCopy, containerStack, 2))) {
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
@@ -311,7 +306,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 			}
 			Container container = thePlayer.openContainer;
 			if (container != null) {
-				((ICrafting) thePlayer).sendContainerAndContentsToPlayer(container, container.getInventory());
+				((IContainerListener) thePlayer).updateCraftingInventory(container, container.getInventory());
 				container.onCraftMatrixChanged(null);
 			}
 		}
@@ -331,7 +326,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	}
 
 	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
+	public void sendGuiNetworkData(Container container, IContainerListener player) {
 
 		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
 	}
@@ -350,13 +345,14 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Type", type);
 		nbt.setByte("Mode", (byte) selectedSchematic);
 		writeCraftingToNBT(nbt);
+        return nbt;
 	}
 
 	public void readCraftingFromNBT(NBTTagCompound nbt) {
@@ -423,19 +419,19 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
 		return SLOTS[type];
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return slot >= SCHEMATICS[type];
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return slot >= SCHEMATICS[type];
 	}

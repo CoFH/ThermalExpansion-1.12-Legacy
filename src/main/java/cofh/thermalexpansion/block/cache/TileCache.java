@@ -9,9 +9,13 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
@@ -19,10 +23,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
@@ -83,7 +83,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	}
 
 	@Override
-	public int getComparatorInput(int side) {
+	public int getComparatorInput() {
 
 		return compareTracker;
 	}
@@ -91,12 +91,6 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	public int getScaledItemsStored(int scale) {
 
 		return MathHelper.round((long) getStoredCount() * scale / CAPACITY[type]);
-	}
-
-	@Override
-	public boolean canUpdate() {
-
-		return false;
 	}
 
 	public boolean toggleLock() {
@@ -189,7 +183,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -200,6 +194,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 		if (storedStack != null) {
 			nbt.setTag("Item", ItemHelper.writeItemStackToNBT(storedStack, new NBTTagCompound()));
 		}
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -368,26 +363,26 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
 		return SLOTS;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return slot == 0 && (storedStack == null || ItemHelper.itemsIdentical(stack, storedStack));
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return slot == 1;
 	}
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 1) {
 			if (side != facing) {
@@ -405,18 +400,18 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
 		}
 		if (storedStack != null) {
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + CAPACITY[type]));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + CAPACITY[type]));
 		} else {
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
-		info.add(new ChatComponentText(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+		info.add(new TextComponentString(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
 	}
 
 	/* Prototype Handler Stuff */
@@ -426,7 +421,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 				+ (inventory[1] == null ? 0 : inventory[1].stackSize);
 	}
 
-	public ItemStack insertItem(ForgeDirection from, ItemStack stack, boolean simulate) {
+	public ItemStack insertItem(EnumFacing from, ItemStack stack, boolean simulate) {
 
 		if (stack == null) {
 			return null;
@@ -456,7 +451,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 		return stack;
 	}
 
-	public ItemStack extractItem(ForgeDirection from, int maxExtract, boolean simulate) {
+	public ItemStack extractItem(EnumFacing from, int maxExtract, boolean simulate) {
 
 		if (storedStack == null) {
 			return null;
@@ -473,7 +468,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	@SideOnly(Side.CLIENT)
 	public boolean shouldRenderInPass(int pass) {
 
-		return pass == 0 ? storedStack != null : false;
+		return pass == 0 && storedStack != null;
 	}
 
 }

@@ -11,14 +11,14 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAccumulator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.biome.BiomeGenBase;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -93,7 +93,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -106,7 +106,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 				if (adjacentSources >= 2) {
 					tank.fillLocked(genRate * processMod, true);
 				} else {
-					if (worldObj.isRaining() && worldObj.canBlockSeeTheSky(xCoord, yCoord, zCoord)) {
+					if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
 						tank.fillLocked(genRate * processMod, true);
 					} else if (passiveGen) {
 						tank.fillLocked(genRatePassive * processMod, true);
@@ -135,43 +135,43 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	protected void updateAdjacentSources() {
 
-		inHell = worldObj.getBiomeGenForCoords(xCoord, zCoord) == BiomeGenBase.hell;
+		inHell = worldObj.getBiomeGenForCoords(getPos()) == Biomes.HELL;
 
 		adjacentSources = 0;
 
-		Block block = worldObj.getBlock(xCoord, yCoord - 1, zCoord);
-		int bMeta = worldObj.getBlockMetadata(xCoord, yCoord - 1, zCoord);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		IBlockState state = worldObj.getBlockState(getPos().down());
+		int bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 
-		block = worldObj.getBlock(xCoord, yCoord + 1, zCoord);
-		bMeta = worldObj.getBlockMetadata(xCoord, yCoord + 1, zCoord);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		state = worldObj.getBlockState(getPos().up());
+		bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 
-		block = worldObj.getBlock(xCoord - 1, yCoord, zCoord);
-		bMeta = worldObj.getBlockMetadata(xCoord - 1, yCoord, zCoord);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		state = worldObj.getBlockState(getPos().west());
+		bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 
-		block = worldObj.getBlock(xCoord + 1, yCoord, zCoord);
-		bMeta = worldObj.getBlockMetadata(xCoord + 1, yCoord, zCoord);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		state = worldObj.getBlockState(getPos().east());
+		bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 
-		block = worldObj.getBlock(xCoord, yCoord, zCoord - 1);
-		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord - 1);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		state = worldObj.getBlockState(getPos().north());
+		bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 
-		block = worldObj.getBlock(xCoord, yCoord, zCoord + 1);
-		bMeta = worldObj.getBlockMetadata(xCoord, yCoord, zCoord + 1);
-		if (bMeta == 0 && (block == Blocks.water || block == Blocks.flowing_water)) {
+		state = worldObj.getBlockState(getPos().south());
+		bMeta = state.getBlock().getMetaFromState(state);
+		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
 			++adjacentSources;
 		}
 	}
@@ -247,7 +247,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -255,6 +255,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		nbt.setInteger("Sources", adjacentSources);
 		nbt.setInteger("Tracker", outputTrackerFluid);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -278,15 +279,15 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] < 1) {
+		if (from != null && sideCache[from.ordinal()] < 1) {
 			return null;
 		}
 		if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
@@ -296,28 +297,28 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] < 1) {
+		if (from != null && sideCache[from.ordinal()] < 1) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}

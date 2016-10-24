@@ -5,11 +5,11 @@ import cofh.core.util.fluid.FluidTankAdv;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.core.TEProps;
 
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.ForgeChunkManager.Ticket;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -43,11 +43,6 @@ public class TileChunkLoader extends TileAugmentable implements IFluidHandler {
 		return 0;
 	}
 
-	@Override
-	public void updateEntity() {
-
-	}
-
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -69,44 +64,44 @@ public class TileChunkLoader extends TileAugmentable implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
-		super.writeToNBT(nbt);
+		return super.writeToNBT(nbt);
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		return tank.fill(resource, doFill);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return tank.drain(resource, doDrain);
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
@@ -128,7 +123,7 @@ public class TileChunkLoader extends TileAugmentable implements IFluidHandler {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		// TODO Auto-generated method stub
 		return null;

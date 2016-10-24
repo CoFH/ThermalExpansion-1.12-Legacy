@@ -10,7 +10,8 @@ import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -87,7 +88,7 @@ public class TileFurnace extends TileMachineBase {
 		if (foodBoost && !FurnaceManager.isFoodItem(inventory[0])) {
 			return false;
 		}
-		return recipe == null ? false : recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public class TileFurnace extends TileMachineBase {
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -160,7 +161,7 @@ public class TileFurnace extends TileMachineBase {
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_TRANSFER[level], side)) {
+				if (transferItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -192,12 +193,13 @@ public class TileFurnace extends TileMachineBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
+        return nbt;
 	}
 
 	/* AUGMENT HELPERS */
@@ -211,7 +213,7 @@ public class TileFurnace extends TileMachineBase {
 			foodBoost = true;
 			installed = true;
 		}
-		return installed ? true : super.installAugment(slot);
+		return installed || super.installAugment(slot);
 	}
 
 	@Override
@@ -226,7 +228,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? foodBoost ? FurnaceManager.isFoodItem(stack) : FurnaceManager.recipeExists(stack) : true;
+		return slot != 0 || (foodBoost ? FurnaceManager.isFoodItem(stack) : FurnaceManager.recipeExists(stack));
 	}
 
 }

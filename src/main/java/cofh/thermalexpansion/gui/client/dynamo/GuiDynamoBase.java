@@ -20,7 +20,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public abstract class GuiDynamoBase extends GuiBaseAdv {
 
@@ -37,7 +36,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		super(container, texture);
 
 		myTile = (TileDynamoBase) tile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(player);
 
 		if (myTile.augmentRedstoneControl) {
@@ -58,7 +57,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		}
 		redstoneTab = addTab(new TabRedstone(this, myTile));
 
-		if (myTile.getMaxEnergyStored(ForgeDirection.UNKNOWN) > 0) {
+		if (myTile.getMaxEnergyStored(null) > 0) {
 			addTab(new TabEnergy(this, myTile, true));
 		}
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));

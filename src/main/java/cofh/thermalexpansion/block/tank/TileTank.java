@@ -10,24 +10,26 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.IChatComponent;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
+public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, ITickable {
 
 	public static void initialize() {
 
@@ -84,9 +86,8 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		return type;
 	}
 
-	@Override
-	public int getComparatorInput(int side) {
-
+    @Override
+	public int getComparatorInput() {
 		return compareTracker;
 	}
 
@@ -125,14 +126,14 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	}
 
 	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+	public void onNeighborTileChange(BlockPos pos) {
 
-		super.onNeighborTileChange(tileX, tileY, tileZ);
+		super.onNeighborTileChange(pos);
 		updateAdjacentHandlers();
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -153,7 +154,6 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		if (timeCheckEighth()) {
 			updateRender();
 		}
-		super.updateEntity();
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 			return;
 		}
 		tank.drain(
-				adjacentHandlers[0].fill(ForgeDirection.VALID_DIRECTIONS[1],
+				adjacentHandlers[0].fill(EnumFacing.UP,
 						new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
 
 		if (tank.getFluidAmount() <= 0) {
@@ -204,11 +204,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		if (FluidHelper.isFluidHandler(tile)) {
 			adjacentHandlers[1] = (IFluidHandler) tile;
 
-			if (tile instanceof TileTank) {
-				adjacentTanks[1] = true;
-			} else {
-				adjacentTanks[1] = false;
-			}
+            adjacentTanks[1] = tile instanceof TileTank;
 		} else {
 			adjacentHandlers[1] = null;
 			adjacentTanks[1] = false;
@@ -289,7 +285,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -297,6 +293,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 		nbt.setByte("Mode", mode);
 
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -324,7 +321,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		if (from.ordinal() == 0 && mode == 1 && !adjacentTanks[0]) {
 			return 0;
@@ -333,18 +330,18 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 
 		if (from.ordinal() != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
 			if (amount == 0) {
-				return adjacentHandlers[1].fill(ForgeDirection.DOWN, resource, doFill);
+				return adjacentHandlers[1].fill(EnumFacing.DOWN, resource, doFill);
 			} else if (amount != resource.amount) {
 				FluidStack remaining = resource.copy();
 				remaining.amount -= amount;
-				return amount + adjacentHandlers[1].fill(ForgeDirection.DOWN, remaining, doFill);
+				return amount + adjacentHandlers[1].fill(EnumFacing.DOWN, remaining, doFill);
 			}
 		}
 		return amount;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;
@@ -353,7 +350,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		if (from.ordinal() == 0 && mode == 1) {
 			return null;
@@ -362,35 +359,35 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo {
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<IChatComponent> info, ForgeDirection side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
 		}
 		if (tank.getFluid() != null) {
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
 		} else {
-			info.add(new ChatComponentText(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
 	}
 

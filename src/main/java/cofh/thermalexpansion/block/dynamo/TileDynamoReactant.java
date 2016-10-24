@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
@@ -7,7 +8,9 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
 
@@ -15,8 +18,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -87,9 +88,9 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public IIcon getActiveIcon() {
+	public TextureAtlasSprite getActiveIcon() {
 
-		return renderFluid.getFluid().getIcon();
+		return TextureUtils.getTexture(renderFluid.getFluid().getStill());
 	}
 
 	/* GUI METHODS */
@@ -142,13 +143,14 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("ReactMax", currentReactantRF);
 		nbt.setInteger("React", reactantRF);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -198,7 +200,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return 0;
@@ -210,7 +212,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
@@ -222,7 +224,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		if (!augmentCoilDuct && from.ordinal() == facing) {
 			return null;
@@ -231,7 +233,7 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}
@@ -245,9 +247,9 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */
@@ -261,21 +263,21 @@ public class TileDynamoReactant extends TileDynamoBase implements IFluidHandler 
 	static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
 
 	static {
-		addReactant(new ItemStack(Items.sugar, 1, 0), 16000);
-		addReactant(new ItemStack(Items.gunpowder, 1, 0), 160000);
-		addReactant(new ItemStack(Items.blaze_powder, 1, 0), 640000);
-		addReactant(new ItemStack(Items.ghast_tear, 1, 0), 1600000);
-		addReactant(new ItemStack(Items.nether_star, 1, 0), 6400000);
+		addReactant(new ItemStack(Items.SUGAR, 1, 0), 16000);
+		addReactant(new ItemStack(Items.GUNPOWDER, 1, 0), 160000);
+		addReactant(new ItemStack(Items.BLAZE_POWDER, 1, 0), 640000);
+		addReactant(new ItemStack(Items.GHAST_TEAR, 1, 0), 1600000);
+		addReactant(new ItemStack(Items.NETHER_STAR, 1, 0), 6400000);
 	}
 
 	public static boolean isValidFuel(FluidStack stack) {
 
-		return stack == null ? false : fuels.containsKey(stack.getFluid());
+		return stack != null && fuels.containsKey(stack.getFluid());
 	}
 
 	public static boolean isValidReactant(ItemStack stack) {
 
-		return stack == null ? false : reactants.containsKey(new ComparableItemStack(stack));
+		return stack != null && reactants.containsKey(new ComparableItemStack(stack));
 	}
 
 	public static boolean addFuel(Fluid fluid, int energy) {

@@ -8,14 +8,14 @@ import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -51,12 +51,6 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canUpdate() {
-
-		return false;
-	}
-
-	@Override
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();
@@ -75,9 +69,9 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 		return true;
 	}
 
-	protected boolean isSideAccessible(int side) {
+	protected boolean isSideAccessible(EnumFacing side) {
 
-		return sideCache[side] == 1 && redstoneControlOrDisable();
+		return sideCache[side.ordinal()] == 1 && redstoneControlOrDisable();
 	}
 
 	/* GUI METHODS */
@@ -106,37 +100,37 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		return isSideAccessible(from.ordinal()) ? resource.amount : 0;
+		return isSideAccessible(from) ? resource.amount : 0;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return null;
 	}
@@ -166,7 +160,7 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		if (inventory[slot] == null) {
 			return null;
@@ -205,7 +199,7 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
@@ -219,19 +213,19 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
 		return isSideAccessible(side) ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return isSideAccessible(side);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return false;
 	}

@@ -9,7 +9,7 @@ import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraft.util.EnumFacing;
 
 public abstract class TilePowered extends TileRSControl implements IEnergyReceiver {
 
@@ -75,11 +75,12 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		energyStorage.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -108,25 +109,25 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 
 	/* IEnergyReceiver */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
 		return energyStorage.receiveEnergy(maxReceive, simulate);
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		return energyStorage.getEnergyStored();
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		return energyStorage.getMaxEnergyStored();
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
 		return energyStorage.getMaxEnergyStored() > 0;
 	}

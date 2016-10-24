@@ -2,11 +2,11 @@ package cofh.thermalexpansion.block.cell;
 
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ServerHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileCellCreative extends TileCell {
 
@@ -35,7 +35,7 @@ public class TileCellCreative extends TileCell {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -59,7 +59,7 @@ public class TileCellCreative extends TileCell {
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		adjacentHandlers[bSide].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[bSide ^ 1], energySend, false);
+		adjacentHandlers[bSide].receiveEnergy(EnumFacing.VALUES[bSide ^ 1], energySend, false);
 	}
 
 	/* NBT METHODS */
@@ -73,18 +73,18 @@ public class TileCellCreative extends TileCell {
 
 	/* IEnergyHandler */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 2) {
+		if (from == null || sideCache[from.ordinal()] == 2) {
 			return Math.min(maxReceive, energyReceive);
 		}
 		return 0;
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
-		if (from == ForgeDirection.UNKNOWN || sideCache[from.ordinal()] == 1) {
+		if (from == null || sideCache[from.ordinal()] == 1) {
 			return Math.min(maxExtract, energySend);
 		}
 		return 0;
@@ -92,7 +92,7 @@ public class TileCellCreative extends TileCell {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return IconRegistry.getIcon("FluidRedstone");

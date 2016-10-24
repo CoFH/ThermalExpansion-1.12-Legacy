@@ -1,21 +1,16 @@
 package cofh.thermalexpansion.render.item;
 
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
-import cofh.lib.render.RenderHelper;
 
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
 import org.lwjgl.opengl.GL11;
 
-public class RenderItemFlorb implements IItemRenderer {
+public class RenderItemFlorb //implements IItemRenderer
+{
 
-	static IIcon[] florbs = new IIcon[2];
-	static IIcon mask;
+	static TextureAtlasSprite[] florbs = new TextureAtlasSprite[2];
+	static TextureAtlasSprite mask;
 
 	public static void initialize() {
 
@@ -25,9 +20,8 @@ public class RenderItemFlorb implements IItemRenderer {
 	}
 
 	/* IItemRenderer */
-	@Override
+	/*@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-
 		return true;
 	}
 
@@ -79,6 +73,6 @@ public class RenderItemFlorb implements IItemRenderer {
 		}
 		RenderUtils.postItemRender();
 		GL11.glPopMatrix();
-	}
+	}*/
 
 }

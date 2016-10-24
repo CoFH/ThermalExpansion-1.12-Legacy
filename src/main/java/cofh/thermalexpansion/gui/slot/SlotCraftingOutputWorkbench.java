@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.slot;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
-import cpw.mods.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -87,26 +87,26 @@ public class SlotCraftingOutputWorkbench extends Slot {
 		stack.onCrafting(this.myPlayer.worldObj, this.myPlayer, this.amountCrafted);
 		this.amountCrafted = 0;
 
-		if (stack.getItem() == Item.getItemFromBlock(Blocks.crafting_table)) {
-			myPlayer.addStat(AchievementList.buildWorkBench, 1);
+		if (stack.getItem() == Item.getItemFromBlock(Blocks.CRAFTING_TABLE)) {
+			myPlayer.addStat(AchievementList.BUILD_WORK_BENCH, 1);
 		} else if (stack.getItem() instanceof ItemPickaxe) {
-			myPlayer.addStat(AchievementList.buildPickaxe, 1);
-		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.furnace)) {
-			myPlayer.addStat(AchievementList.buildFurnace, 1);
+			myPlayer.addStat(AchievementList.BUILD_PICKAXE, 1);
+		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.FURNACE)) {
+			myPlayer.addStat(AchievementList.BUILD_FURNACE, 1);
 		} else if (stack.getItem() instanceof ItemHoe) {
-			myPlayer.addStat(AchievementList.buildHoe, 1);
-		} else if (stack.getItem() == Items.bread) {
-			myPlayer.addStat(AchievementList.makeBread, 1);
-		} else if (stack.getItem() == Items.cake) {
-			myPlayer.addStat(AchievementList.bakeCake, 1);
-		} else if (stack.getItem() instanceof ItemPickaxe && ((ItemPickaxe) stack.getItem()).func_150913_i() != Item.ToolMaterial.WOOD) {
-			myPlayer.addStat(AchievementList.buildBetterPickaxe, 1);
+			myPlayer.addStat(AchievementList.BUILD_HOE, 1);
+		} else if (stack.getItem() == Items.BREAD) {
+			myPlayer.addStat(AchievementList.MAKE_BREAD, 1);
+		} else if (stack.getItem() == Items.CAKE) {
+			myPlayer.addStat(AchievementList.BAKE_CAKE, 1);
+		} else if (stack.getItem() instanceof ItemPickaxe && ((ItemPickaxe) stack.getItem()).getToolMaterial() != Item.ToolMaterial.WOOD) {
+			myPlayer.addStat(AchievementList.BUILD_BETTER_PICKAXE, 1);
 		} else if (stack.getItem() instanceof ItemSword) {
-			myPlayer.addStat(AchievementList.buildSword, 1);
-		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.enchanting_table)) {
-			myPlayer.addStat(AchievementList.enchantments, 1);
-		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.bookshelf)) {
-			myPlayer.addStat(AchievementList.bookcase, 1);
+			myPlayer.addStat(AchievementList.BUILD_SWORD, 1);
+		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.ENCHANTING_TABLE)) {
+			myPlayer.addStat(AchievementList.ENCHANTMENTS, 1);
+		} else if (stack.getItem() == Item.getItemFromBlock(Blocks.BOOKSHELF)) {
+			myPlayer.addStat(AchievementList.BOOKCASE, 1);
 		}
 	}
 

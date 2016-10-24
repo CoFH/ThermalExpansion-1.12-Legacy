@@ -16,7 +16,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 
 public class ItemBlockMachine extends ItemBlockBase {
 
@@ -31,7 +31,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 		ReconfigurableHelper.setSideCache(container, TileMachineBase.defaultSideConfig[container.getItemDamage()].defaultSides);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
-		container.stackTagCompound.setByte("Level", level);
+		container.getTagCompound().setByte("Level", level);
 		AugmentHelper.writeAugments(container, BlockMachine.defaultAugments);
 
 		return container;
@@ -39,10 +39,10 @@ public class ItemBlockMachine extends ItemBlockBase {
 
 	public static byte getLevel(ItemStack container) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			setDefaultTag(container);
 		}
-		return container.stackTagCompound.getByte("Level");
+		return container.getTagCompound().getByte("Level");
 	}
 
 	public ItemBlockMachine(Block block) {
@@ -59,7 +59,7 @@ public class ItemBlockMachine extends ItemBlockBase {
 		String unloc = getUnlocalizedNameInefficiently(stack);
 		String unloc2 = '.' + NAMES[getLevel(stack)];
 
-		if (StatCollector.canTranslate(unloc + unloc2 + ".name")) {
+		if (I18n.canTranslate(unloc + unloc2 + ".name")) {
 			return StringHelper.localize(unloc + unloc2 + ".name");
 		}
 
@@ -77,11 +77,11 @@ public class ItemBlockMachine extends ItemBlockBase {
 
 		switch (getLevel(stack)) {
 		case 3:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case 2:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 

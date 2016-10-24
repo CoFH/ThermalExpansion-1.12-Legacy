@@ -24,8 +24,8 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 				: TileCell.DEFAULT_SIDES);
 		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		EnergyHelper.setDefaultEnergyTag(container, energy);
-		container.stackTagCompound.setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
-		container.stackTagCompound.setInteger("Recv", TileCell.MAX_RECEIVE[container.getItemDamage()]);
+		container.getTagCompound().setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
+		container.getTagCompound().setInteger("Recv", TileCell.MAX_RECEIVE[container.getItemDamage()]);
 
 		return container;
 	}
@@ -46,12 +46,12 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	}
 
 	@Override
-	public int getDisplayDamage(ItemStack stack) {
+	public double getDurabilityForDisplay(ItemStack stack) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)];
 		}
-		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)] - stack.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
@@ -71,20 +71,20 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 
 		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		case RESONANT:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case REINFORCED:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack, 0);
 		}
 		SecurityHelper.addOwnerInformation(stack, list);
@@ -99,11 +99,11 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (ItemHelper.getItemDamage(stack) == BlockCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / "
 					+ StringHelper.getScaledNumber(TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
 		}
-		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.stackTagCompound.getInteger("Send")
-				+ "/" + stack.stackTagCompound.getInteger("Recv") + " RF/t");
+		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.getTagCompound().getInteger("Send")
+				+ "/" + stack.getTagCompound().getInteger("Recv") + " RF/t");
 
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
@@ -112,7 +112,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			setDefaultTag(container, 0);
 		}
 		int metadata = ItemHelper.getItemDamage(container);
@@ -120,12 +120,12 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
 			return 0;
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
 
 		if (!simulate) {
 			stored += receive;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return receive;
 	}
@@ -133,7 +133,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			setDefaultTag(container, 0);
 		}
 		int metadata = ItemHelper.getItemDamage(container);
@@ -141,12 +141,12 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
 			return maxExtract;
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[metadata]));
 
 		if (!simulate) {
 			stored -= extract;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return extract;
 	}
@@ -154,10 +154,10 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			setDefaultTag(container, 0);
 		}
-		return container.stackTagCompound.getInteger("Energy");
+		return container.getTagCompound().getInteger("Energy");
 	}
 
 	@Override

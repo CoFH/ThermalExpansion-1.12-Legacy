@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.ender;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.energy.IEnergyHandler;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.inventory.IInventoryConnection;
@@ -23,8 +24,13 @@ import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.client.ender.GuiTesseract;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.Utils;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 import java.util.Locale;
@@ -32,19 +38,16 @@ import java.util.Locale;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
+public class TileTesseract extends TileRSControl implements ITickable, IEnergyHandler, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
 		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
@@ -131,10 +134,10 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+	public void onNeighborTileChange(BlockPos pos) {
 
-		super.onNeighborTileChange(tileX, tileY, tileZ);
-		updateAdjacentHandler(tileX, tileY, tileZ);
+		super.onNeighborTileChange(pos);
+		updateAdjacentHandler(pos);
 	}
 
 	@Override
@@ -154,7 +157,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -188,7 +191,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			} else {
 				adjacentFluidHandlers[i] = null;
 			}
-			if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[i ^ 1])) {
+			if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[i ^ 1])) {
 				adjacentEnergyReceivers[i] = (IEnergyReceiver) tile;
 			} else {
 				adjacentEnergyReceivers[i] = null;
@@ -197,14 +200,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		cached = true;
 	}
 
-	protected void updateAdjacentHandler(int x, int y, int z) {
+	protected void updateAdjacentHandler(BlockPos pos) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		int side = BlockHelper.determineAdjacentSide(this, x, y, z);
+		int side = BlockHelper.determineAdjacentSide(this, pos);
 
-		TileEntity tile = worldObj.getTileEntity(x, y, z);
+		TileEntity tile = worldObj.getTileEntity(pos);
 		if (tile instanceof TileTesseract) {
 			return;
 		}
@@ -213,7 +216,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		} else {
 			adjacentFluidHandlers[side] = null;
 		}
-		if (EnergyHelper.isEnergyReceiverFromSide(tile, ForgeDirection.VALID_DIRECTIONS[side ^ 1])) {
+		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[side ^ 1])) {
 			adjacentEnergyReceivers[side] = (IEnergyReceiver) tile;
 		} else {
 			adjacentEnergyReceivers[side] = null;
@@ -222,7 +225,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	public boolean isOwner(String username) {
 
-		return username == null ? false : username.equals(owner);
+		return username != null && username.equals(owner);
 	}
 
 	public void addEntry(int theFreq, String freqName) {
@@ -370,7 +373,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		}
 		if (item != null && item.stackSize > 0) {
 			inventory[0] = item;
-			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+			worldObj.notifyBlockOfStateChange(getPos(), getBlockType());
 		}
 		isSendingItems = false;
 	}
@@ -418,14 +421,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		itemTrackerAdjacent++;
 		for (int side = itemTrackerAdjacent; side < 6; side++) {
-			if (Utils.isAdjacentOutput(this, side)) {
+			if (Utils.isAdjacentOutput(this, EnumFacing.VALUES[side])) {
 				itemTrackerAdjacent = side;
 				return;
 			}
 		}
 		itemTrackerAdjacent %= 6;
 		for (int side = 0; side < itemTrackerAdjacent; side++) {
-			if (Utils.isAdjacentOutput(this, side)) {
+			if (Utils.isAdjacentOutput(this, EnumFacing.VALUES[side])) {
 				itemTrackerAdjacent = side;
 				return;
 			}
@@ -434,7 +437,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	/* HELPER METHODS */
-	public int addToAdjInventory(TileEntity tile, int from, ItemStack stack) {
+	public int addToAdjInventory(TileEntity tile, EnumFacing from, ItemStack stack) {
 
 		TileEntity tileInventory = BlockHelper.getAdjacentTileEntity(tile, from);
 
@@ -444,10 +447,10 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		return Utils.addToAdjacentInsertion(this, from, stack);
 	}
 
-	public boolean isAdjacentInventory(int side) {
+	public boolean isAdjacentInventory(EnumFacing side) {
 
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, xCoord, yCoord, zCoord, side);
-		return tile instanceof TileTesseract ? false : Utils.isAccessibleOutput(tile, side);
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, getPos(), side);
+		return !(tile instanceof TileTesseract) && Utils.isAccessibleOutput(tile, side);
 	}
 
 	public boolean modeSendEnergy() {
@@ -574,17 +577,17 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return true;
 		}
 		if (canPlayerAccess(player)) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, getPos().getX(), getPos().getY(), getPos().getZ());
 			return true;
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", getOwnerName()));
+			player.addChatMessage(new TextComponentTranslation("chat.cofh.secure", getOwnerName()));
 		}
 		return true;
 	}
 
 	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
+	public void sendGuiNetworkData(Container container, IContainerListener player) {
 
 		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
 	}
@@ -610,7 +613,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -626,6 +629,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		nbt.setInteger("Energy.Rem", energyTrackerRemote);
 
 		nbt.setInteger("Frequency", frequency);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -659,7 +663,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		modeItem = payload.getByte();
 		frequency = payload.getInt();
 
-		isActive = frequency == -1 ? false : true;
+		isActive = frequency != -1;
 	}
 
 	/* ITileInfoPacketHandler */
@@ -697,9 +701,9 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			frequency = payload.getInt();
 			addToRegistry();
 
-			isActive = frequency == -1 ? false : true;
+			isActive = frequency != -1;
 
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(getWorld(), getPos());
 			callNeighborTileChange();
 			return;
 		}
@@ -725,7 +729,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		return null;
 	}
@@ -760,7 +764,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		addToRegistry();
 		isActive = true;
 
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(getWorld(), getPos());
 		markDirty();
 		return true;
 	}
@@ -776,7 +780,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		addToRegistry();
 		isActive = false;
 
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(getWorld(), getPos());
 		markDirty();
 		return true;
 	}
@@ -802,12 +806,12 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 		}
 		for (int side = energyTrackerAdjacent; side < 6 && energy > 0; side++) {
 			if (adjacentEnergyReceivers[side] != null) {
-				energy -= adjacentEnergyReceivers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+				energy -= adjacentEnergyReceivers[side].receiveEnergy(EnumFacing.VALUES[side ^ 1], energy, simulate);
 			}
 		}
 		for (int side = 0; side < energyTrackerAdjacent && side < 6 && energy > 0; side++) {
 			if (adjacentEnergyReceivers[side] != null) {
-				energy -= adjacentEnergyReceivers[side].receiveEnergy(ForgeDirection.VALID_DIRECTIONS[side ^ 1], energy, simulate);
+				energy -= adjacentEnergyReceivers[side].receiveEnergy(EnumFacing.VALUES[side ^ 1], energy, simulate);
 			}
 		}
 		incrEnergyTrackerAdjacent();
@@ -836,12 +840,12 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
 			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+				fluid.amount -= adjacentFluidHandlers[side].fill(EnumFacing.VALUES[side ^ 1], fluid, doFill);
 			}
 		}
 		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
 			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(ForgeDirection.VALID_DIRECTIONS[side ^ 1], fluid, doFill);
+				fluid.amount -= adjacentFluidHandlers[side].fill(EnumFacing.VALUES[side ^ 1], fluid, doFill);
 			}
 		}
 
@@ -869,13 +873,15 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 			return stack;
 		}
 		for (int side = itemTrackerAdjacent; side < 6 && stack != null && stack.stackSize > 0; side++) {
-			if (isAdjacentInventory(side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+            EnumFacing eSide = EnumFacing.VALUES[side];
+			if (isAdjacentInventory(eSide)) {
+				stack.stackSize = addToAdjInventory(this, eSide, stack.copy());
 			}
 		}
 		for (int side = 0; side < itemTrackerAdjacent && stack != null && stack.stackSize > 0; side++) {
-			if (isAdjacentInventory(side)) {
-				stack.stackSize = addToAdjInventory(this, side, stack.copy());
+            EnumFacing eSide = EnumFacing.VALUES[side];
+			if (isAdjacentInventory(eSide)) {
+				stack.stackSize = addToAdjInventory(this, eSide, stack.copy());
 			}
 		}
 		incrItemTrackerAdjacent();
@@ -884,7 +890,7 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	/* IEnergyHandler */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
 		if (frequency == -1 || !redstoneControlOrDisable() || !canSendEnergy() || ServerHelper.isClientWorld(worldObj)) {
 			return 0;
@@ -893,32 +899,32 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public int extractEnergy(ForgeDirection from, int maxExtract, boolean simulate) {
+	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
 		return 0;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		return 0;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		return 0;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
 		return true;
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		if (frequency == -1 || !redstoneControlOrDisable() || !canSendFluid() || ServerHelper.isClientWorld(worldObj) || resource == null) {
 			return 0;
@@ -927,31 +933,31 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return CoFHProps.EMPTY_TANK_INFO;
 	}
@@ -976,14 +982,14 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 
 	/* IInventoryConnection */
 	@Override
-	public ConnectionType canConnectInventory(ForgeDirection from) {
+	public ConnectionType canConnectInventory(EnumFacing from) {
 
 		return ConnectionType.FORCE;
 	}
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
 		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
 			return CoFHProps.EMPTY_INVENTORY;
@@ -992,16 +998,13 @@ public class TileTesseract extends TileRSControl implements IEnergyHandler, IEnd
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		if (frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null) {
-			return false;
-		}
-		return true;
-	}
+        return !(frequency == -1 || !redstoneControlOrDisable() || !canSendItems() || inventory[0] != null);
+    }
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return false;
 	}

@@ -7,14 +7,16 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 
-public class TileBuffer extends TileDeviceBase {
+public class TileBuffer extends TileDeviceBase implements ITickable {
 
 	public static void initialize() {
 
@@ -57,7 +59,7 @@ public class TileBuffer extends TileDeviceBase {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -78,7 +80,7 @@ public class TileBuffer extends TileDeviceBase {
 			side = i % 6;
 			if (sideCache[side] == 1) {
 				for (int j = 0; j < inventory.length; j++) {
-					if (extractItem(j, quantityInput, side)) {
+					if (extractItem(j, quantityInput, EnumFacing.VALUES[side])) {
 						inputTracker = side;
 						return;
 					}
@@ -97,7 +99,7 @@ public class TileBuffer extends TileDeviceBase {
 			side = i % 6;
 			if (sideCache[side] == 2) {
 				for (int j = inventory.length - 1; j >= 0; j--) {
-					if (transferItem(j, quantityOutput, side)) {
+					if (transferItem(j, quantityOutput, EnumFacing.VALUES[side])) {
 						outputTracker = side;
 						return;
 					}
@@ -135,7 +137,7 @@ public class TileBuffer extends TileDeviceBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -145,6 +147,7 @@ public class TileBuffer extends TileDeviceBase {
 		nbt.setInteger("Output", quantityOutput);
 		nbt.setBoolean("EnableIn", enableInput);
 		nbt.setBoolean("EnableOut", enableOutput);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */

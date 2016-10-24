@@ -3,8 +3,9 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 import static codechicken.lib.gui.GuiDraw.*;
 
 import codechicken.lib.gui.GuiDraw;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -18,11 +19,14 @@ import cofh.thermalexpansion.core.TEProps;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -141,11 +145,8 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			fluid = ((RecipeHandlerBase.NEIRecipeBase) this.arecipes.get(recipe)).fluid;
 		}
 
-		if ((fluid != null) && (fluid.amount > 0) && (usage ? GuiUsageRecipe.openRecipeGui("liquid", fluid) : GuiCraftingRecipe.openRecipeGui("liquid", fluid))) {
-			return true;
-		}
-		return false;
-	}
+        return (fluid != null) && (fluid.amount > 0) && (usage ? GuiUsageRecipe.openRecipeGui("liquid", fluid) : GuiCraftingRecipe.openRecipeGui("liquid", fluid));
+    }
 
 	private void resetCounters() {
 
@@ -259,14 +260,14 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 			for (int y = 0; y < height; y += 16) {
 				drawWidth = Math.min(width - x, 16);
 				drawHeight = Math.min(height - y, 16);
-				drawScaledTexturedModelRectFromIcon(j + x, k + y, fluid.getFluid().getIcon(), drawWidth, drawHeight);
+				drawScaledTexturedModelRectFromIcon(j + x, k + y, TextureUtils.getTexture(fluid.getFluid().getStill()), drawWidth, drawHeight);
 			}
 		}
 		GL11.glColor4f(1, 1, 1, 1);
 		changeTexture(getGuiTexture());
 	}
 
-	public static void drawScaledTexturedModelRectFromIcon(int i, int j, IIcon icon, int x, int y) {
+	public static void drawScaledTexturedModelRectFromIcon(int i, int j, TextureAtlasSprite icon, int x, int y) {
 
 		if (icon == null) {
 			return;
@@ -276,12 +277,13 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 		double minV = icon.getMinV();
 		double maxV = icon.getMaxV();
 
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.addVertexWithUV(i + 0, j + y, GuiDraw.gui.getZLevel(), minU, minV + (maxV - minV) * y / 16F);
-		tessellator.addVertexWithUV(i + x, j + y, GuiDraw.gui.getZLevel(), minU + (maxU - minU) * x / 16F, minV + (maxV - minV) * y / 16F);
-		tessellator.addVertexWithUV(i + x, j + 0, GuiDraw.gui.getZLevel(), minU + (maxU - minU) * x / 16F, minV);
-		tessellator.addVertexWithUV(i + 0, j + 0, GuiDraw.gui.getZLevel(), minU, minV);
+		Tessellator tessellator = Tessellator.getInstance();
+        VertexBuffer buffer = tessellator.getBuffer();
+		buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+        buffer.pos(i + 0, j + y, GuiDraw.gui.getZLevel()).tex( minU, minV + (maxV - minV) * y / 16F).endVertex();
+        buffer.pos(i + x, j + y, GuiDraw.gui.getZLevel()).tex( minU + (maxU - minU) * x / 16F, minV + (maxV - minV) * y / 16F).endVertex();
+        buffer.pos(i + x, j + 0, GuiDraw.gui.getZLevel()).tex( minU + (maxU - minU) * x / 16F, minV).endVertex();
+        buffer.pos(i + 0, j + 0, GuiDraw.gui.getZLevel()).tex( minU, minV).endVertex();
 
 		tessellator.draw();
 	}
@@ -295,9 +297,9 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 		PositionedStack secondaryOutput = null;
 
 		String inputOreName = "Unknown";
-		ArrayList<ItemStack> inputList = null;
+		List<ItemStack> inputList = null;
 		String secondaryInputOreName = "Unknown";
-		ArrayList<ItemStack> secondaryList = null;
+		List<ItemStack> secondaryList = null;
 		boolean cycleInput = true;
 		boolean cycleSecondary = true;
 

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
@@ -9,7 +10,8 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,7 +19,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -30,9 +31,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		int type = BlockMachine.Types.PRECIPITATOR.ordinal();
 
-		processItems[0] = new ItemStack(Items.snowball, 4, 0);
-		processItems[1] = new ItemStack(Blocks.snow);
-		processItems[2] = new ItemStack(Blocks.ice);
+		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
+		processItems[1] = new ItemStack(Blocks.SNOW);
+		processItems[2] = new ItemStack(Blocks.ICE);
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 4;
@@ -124,7 +125,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], side)) {
+				if (transferItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -218,7 +219,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -226,6 +227,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -290,7 +292,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(getWorld(), pos);
 	}
 
 	@Override
@@ -346,9 +348,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 1) {
+		if (from != null && sideCache[from.ordinal()] != 1) {
 			return 0;
 		}
 		if (resource.getFluid() != FluidRegistry.WATER) {
@@ -358,31 +360,31 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return true;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { tank.getInfo() };
 	}

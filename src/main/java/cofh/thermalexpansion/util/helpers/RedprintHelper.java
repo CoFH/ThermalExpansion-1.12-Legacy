@@ -15,7 +15,7 @@ public class RedprintHelper {
 
 	public static void addRedprintInformation(ItemStack stack, List<String> list) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			list.add(StringHelper.getActivationText("info.thermalexpansion.diagram.1"));
 			list.add(StringHelper.getInfoText("info.cofh.blank"));
 			return;
@@ -33,19 +33,19 @@ public class RedprintHelper {
 
 	public static boolean hasName(ItemStack stack) {
 
-		return stack.stackTagCompound == null ? false : stack.stackTagCompound.hasKey("Type");
+		return stack.getTagCompound() != null && stack.getTagCompound().hasKey("Type");
 	}
 
 	public static String getName(ItemStack stack) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			return "";
 		}
-		if (stack.stackTagCompound.hasKey("DisplayType")) {
-			return ": " + StringHelper.localize(stack.stackTagCompound.getString("Type")) + " ("
-					+ StringHelper.localize(stack.stackTagCompound.getString("DisplayType")) + ")";
+		if (stack.getTagCompound().hasKey("DisplayType")) {
+			return ": " + StringHelper.localize(stack.getTagCompound().getString("Type")) + " ("
+					+ StringHelper.localize(stack.getTagCompound().getString("DisplayType")) + ")";
 		}
-		return ": " + StringHelper.localize(stack.stackTagCompound.getString("Type"));
+		return ": " + StringHelper.localize(stack.getTagCompound().getString("Type"));
 	}
 
 }

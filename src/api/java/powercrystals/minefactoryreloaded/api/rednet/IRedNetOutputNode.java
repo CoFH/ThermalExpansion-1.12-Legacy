@@ -1,7 +1,7 @@
 package powercrystals.minefactoryreloaded.api.rednet;
 
+import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 import powercrystals.minefactoryreloaded.api.rednet.connectivity.IRedNetConnection;
 
@@ -33,7 +33,7 @@ public interface IRedNetOutputNode extends IRedNetConnection
 	 * @param side The side the output values are required for.
 	 * @return The output values.
 	 */
-	public int[] getOutputValues(World world, int x, int y, int z, ForgeDirection side);
+	public int[] getOutputValues(World world, int x, int y, int z, EnumFacing side);
 
 	/**
 	 * Returns the output value of this RedNet node for a given subnet.
@@ -47,5 +47,5 @@ public interface IRedNetOutputNode extends IRedNetConnection
 	 * @param subnet The subnet to get the output value for (0-15).
 	 * @return The output value.
 	 */
-	public int getOutputValue(World world, int x, int y, int z, ForgeDirection side, int subnet);
+	public int getOutputValue(World world, int x, int y, int z, EnumFacing side, int subnet);
 }

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
@@ -12,7 +13,6 @@ import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.Equipment;
 import cofh.thermalfoundation.item.TFItems;
 import cofh.thermalfoundation.item.VanillaEquipment;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -32,8 +32,8 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class SmelterManager {
 
-	public static ItemStack blockSand = new ItemStack(Blocks.sand);
-	public static ItemStack blockSoulSand = new ItemStack(Blocks.soul_sand);
+	public static ItemStack blockSand = new ItemStack(Blocks.SAND);
+	public static ItemStack blockSoulSand = new ItemStack(Blocks.SOUL_SAND);
 
 	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
@@ -73,7 +73,7 @@ public class SmelterManager {
 		ComparableItemStackSmelter querySecondary = new ComparableItemStackSmelter(secondaryInput);
 
 		RecipeSmelter recipe = recipeMap.get(Arrays.asList(query, querySecondary));
-		return recipe != null ? false : recipeMap.get(Arrays.asList(querySecondary, query)) != null;
+		return recipe == null && recipeMap.get(Arrays.asList(querySecondary, query)) != null;
 	}
 
 	public static RecipeSmelter getRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -107,12 +107,12 @@ public class SmelterManager {
 
 	public static boolean isItemValid(ItemStack input) {
 
-		return input == null ? false : validationSet.contains(new ComparableItemStackSmelter(input));
+		return input != null && validationSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static boolean isItemFlux(ItemStack input) {
 
-		return input == null ? false : lockSet.contains(new ComparableItemStackSmelter(input));
+		return input != null && lockSet.contains(new ComparableItemStackSmelter(input));
 	}
 
 	public static boolean isStandardOre(String oreName) {
@@ -128,10 +128,10 @@ public class SmelterManager {
 		addFlux(TFItems.crystalCinnabar);
 		addFlux(TFItems.dustPyrotheum);
 
-		addTERecipe(4000, new ItemStack(Blocks.cobblestone, 2), blockSand, new ItemStack(Blocks.stonebrick, 1), TEItems.slag, 100);
-		addTERecipe(4000, new ItemStack(Blocks.redstone_ore), blockSand, new ItemStack(Blocks.redstone_block), TEItems.slagRich, 50);
-		addTERecipe(4000, new ItemStack(Blocks.netherrack, 4), blockSoulSand, new ItemStack(Blocks.nether_brick, 2), TFItems.dustSulfur, 25);
-		addTERecipe(4000, new ItemStack(Blocks.quartz_ore), blockSoulSand, new ItemStack(Blocks.quartz_block), TEItems.slagRich, 25);
+		addTERecipe(4000, new ItemStack(Blocks.COBBLESTONE, 2), blockSand, new ItemStack(Blocks.STONEBRICK, 1), TEItems.slag, 100);
+		addTERecipe(4000, new ItemStack(Blocks.REDSTONE_ORE), blockSand, new ItemStack(Blocks.REDSTONE_BLOCK), TEItems.slagRich, 50);
+		addTERecipe(4000, new ItemStack(Blocks.NETHERRACK, 4), blockSoulSand, new ItemStack(Blocks.NETHER_BRICK_STAIRS, 2), TFItems.dustSulfur, 25);
+		addTERecipe(4000, new ItemStack(Blocks.QUARTZ_ORE), blockSoulSand, new ItemStack(Blocks.QUARTZ_BLOCK), TEItems.slagRich, 25);
 		// sulfur? rich sulfur? what do we even do here?
 
 		{ // variable locality (let's not accidentally use it elsewhere)
@@ -170,42 +170,42 @@ public class SmelterManager {
 		}
 
 		{ /* RECYCLING */
-			ItemStack ingot = new ItemStack(Items.iron_ingot, 1);
+			ItemStack ingot = new ItemStack(Items.IRON_INGOT, 1);
 			// no minecart, rails. Railcraft causes resource duplication there
-			addRecipe(5000, blockSand, new ItemStack(Items.compass), new ItemStack(Items.iron_ingot, 4), TEItems.slagRich, 10); // consumes redstone
-			addRecipe(5000, blockSand, new ItemStack(Items.flint_and_steel), new ItemStack(Items.iron_ingot, 1), TEItems.slag, 90); // make a use for flint: slag!
-			addRecycleRecipe(5000, new ItemStack(Items.iron_door), ingot, 6);
-			addRecycleRecipe(5000, new ItemStack(Items.bucket), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Items.cauldron), ingot, 7);
-			addRecycleRecipe(5000, new ItemStack(Blocks.hopper), ingot, 5);
-			addRecycleRecipe(5000, new ItemStack(Blocks.iron_bars, 8), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Blocks.heavy_weighted_pressure_plate), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_sword), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_pickaxe), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_axe), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_shovel), ingot, 1);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_hoe), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_helmet), ingot, 5);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_chestplate), ingot, 8);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_leggings), ingot, 7);
-			addRecycleRecipe(5000, new ItemStack(Items.iron_boots), ingot, 4);
+			addRecipe(5000, blockSand, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), TEItems.slagRich, 10); // consumes redstone
+			addRecipe(5000, blockSand, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT, 1), TEItems.slag, 90); // make a use for flint: slag!
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_DOOR), ingot, 6);
+			addRecycleRecipe(5000, new ItemStack(Items.BUCKET), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Items.CAULDRON), ingot, 7);
+			addRecycleRecipe(5000, new ItemStack(Blocks.HOPPER), ingot, 5);
+			addRecycleRecipe(5000, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_SWORD), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_PICKAXE), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_AXE), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_SHOVEL), ingot, 1);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_HOE), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_HELMET), ingot, 5);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_CHESTPLATE), ingot, 8);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_LEGGINGS), ingot, 7);
+			addRecycleRecipe(5000, new ItemStack(Items.IRON_BOOTS), ingot, 4);
 
 			for (int i = 0; i < 3; ++i) {
-				addRecycleRecipe(3800 + 1200 * (3 - i), new ItemStack(Blocks.anvil, 1, i), ingot, 4 + 9 * (3 - i));
+				addRecycleRecipe(3800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
 			}
 
-			ingot = new ItemStack(Items.gold_ingot);
-			addRecipe(5000, blockSand, new ItemStack(Items.clock), new ItemStack(Items.gold_ingot, 4), TEItems.slagRich, 10); // consumes redstone
-			addRecycleRecipe(5000, new ItemStack(Blocks.light_weighted_pressure_plate), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_sword), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_pickaxe), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_axe), ingot, 3);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_shovel), ingot, 1);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_hoe), ingot, 2);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_helmet), ingot, 5);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_chestplate), ingot, 8);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_leggings), ingot, 7);
-			addRecycleRecipe(5000, new ItemStack(Items.golden_boots), ingot, 4);
+			ingot = new ItemStack(Items.GOLD_INGOT);
+			addRecipe(5000, blockSand, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), TEItems.slagRich, 10); // consumes redstone
+			addRecycleRecipe(5000, new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_SWORD), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_PICKAXE), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_AXE), ingot, 3);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_SHOVEL), ingot, 1);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_HOE), ingot, 2);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_HELMET), ingot, 5);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_CHESTPLATE), ingot, 8);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 7);
+			addRecycleRecipe(5000, new ItemStack(Items.GOLDEN_BOOTS), ingot, 4);
 
 			for (VanillaEquipment e : new VanillaEquipment[] { VanillaEquipment.Iron, VanillaEquipment.Gold }) {
 
@@ -218,7 +218,7 @@ public class SmelterManager {
 
 			for (Equipment e : Equipment.values()) {
 
-				ingot = GameRegistry.findItemStack("ThermalFoundation", "ingot" + e.name(), 1); // suck it, oredict
+				ingot = ItemStackRegistry.findItemStack("ThermalFoundation", "ingot" + e.name(), 1); // suck it, oredict
 				addRecycleRecipe(5000, e.toolSword, ingot, 2);
 				addRecycleRecipe(5000, e.toolPickaxe, ingot, 3);
 				addRecycleRecipe(5000, e.toolAxe, ingot, 3);
@@ -373,10 +373,10 @@ public class SmelterManager {
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String relatedName = null;
 
-		ArrayList<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		ArrayList<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		ArrayList<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-		ArrayList<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
+        List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
+        List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+        List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
 
 		if (relatedType != "") {
 			relatedName = "ingot" + StringHelper.titleCase(relatedType);
@@ -385,7 +385,7 @@ public class SmelterManager {
 		if (registeredIngot.isEmpty()) {
 			return;
 		}
-		ItemStack ingot = GameRegistry.findItemStack("ThermalFoundation", ingotName, 1);
+		ItemStack ingot = ItemStackRegistry.findItemStack("ThermalFoundation", ingotName, 1);
 		if (ingot != null && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {
 			ingot = null;
 		}
@@ -400,7 +400,7 @@ public class SmelterManager {
 		}
 		ItemStack related = null;
 		if (relatedName != null) {
-			related = GameRegistry.findItemStack("ThermalFoundation", relatedName, 1);
+			related = ItemStackRegistry.findItemStack("ThermalFoundation", relatedName, 1);
 			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
 				related = null;
 			}
@@ -423,7 +423,7 @@ public class SmelterManager {
 
 	public static void addOreToIngotRecipe(String oreName, ItemStack ingot2, ItemStack ingot3, ItemStack ingotSecondary, int richSlagChance, int slagOreChance) {
 
-		ArrayList<ItemStack> registeredOres = OreDictionary.getOres(oreName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
 
 		if (registeredOres.size() > 0) {
 			ItemStack ore = registeredOres.get(0);
@@ -441,7 +441,7 @@ public class SmelterManager {
 
 	public static void addDustToIngotRecipe(String dustName, ItemStack ingot2, int slagDustChance) {
 
-		ArrayList<ItemStack> registeredOres = OreDictionary.getOres(dustName);
+        List<ItemStack> registeredOres = OreDictionary.getOres(dustName);
 
 		if (registeredOres.size() > 0) {
 			addRecipe(800, ItemHelper.cloneStack(registeredOres.get(0), 2), blockSand, ingot2, TEItems.slag, slagDustChance);
@@ -451,8 +451,8 @@ public class SmelterManager {
 	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount,
 			ItemStack primaryOutput) {
 
-		ArrayList<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
-		ArrayList<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
+        List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
+        List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
 
 		if (primaryOreList.size() > 0 && secondaryOreList.size() > 0) {
 			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount),
@@ -472,14 +472,14 @@ public class SmelterManager {
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
 		// if (OreDictionary.)
-		ArrayList<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		ArrayList<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		ArrayList<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+        List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
+        List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
+        List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
 
 		if (registeredIngot.isEmpty()) {
 			return;
 		}
-		ItemStack ingot = GameRegistry.findItemStack("ThermalFoundation", ingotName, 1);
+		ItemStack ingot = ItemStackRegistry.findItemStack("ThermalFoundation", ingotName, 1);
 		if (ingot == null) {
 			ingot = registeredIngot.get(0);
 			if (ingot != null && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {

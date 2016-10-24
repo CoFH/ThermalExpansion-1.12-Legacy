@@ -30,7 +30,7 @@ public class GuiStrongbox extends GuiBaseAdv {
 		playerName = SecurityHelper.getID(inventory.player);
 		storageIndex = myTile.getStorageIndex();
 		texture = CoFHProps.TEXTURE_STORAGE[storageIndex];
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 
 		xSize = 14 + 18 * MathHelper.clamp(storageIndex + 1, 9, 13);
 		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 8);

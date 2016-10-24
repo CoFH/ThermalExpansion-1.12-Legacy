@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -79,9 +79,9 @@ public class TEFlorbs {
 		if (!enable) {
 			return;
 		}
-		GameRegistry.addRecipe(ShapelessRecipe(florbStack, new Object[] { "dustWood", TEItems.slag, "slimeball" }));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, "slimeball", Items.blaze_powder }));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, new Object[] { "dustWood", TEItems.slag, Items.magma_cream }));
+		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", TEItems.slag, "slimeball"));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", TEItems.slag, "slimeball", Items.BLAZE_POWDER));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", TEItems.slag, Items.MAGMA_CREAM));
 	}
 
 	public static ItemFlorb itemFlorb;

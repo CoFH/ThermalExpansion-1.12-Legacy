@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block;
 
+import codechicken.lib.util.ServerUtils;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
@@ -13,13 +14,17 @@ import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.util.Utils;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.inventory.IContainerListener;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.UUID;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
-import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -28,7 +33,8 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatComponentTranslation;
+
+import javax.annotation.Nullable;
 
 public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
 
@@ -64,7 +70,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
-	public boolean extractItem(int slot, int amount, int side) {
+	public boolean extractItem(int slot, int amount, EnumFacing side) {
 
 		if (slot > inventory.length) {
 			return false;
@@ -81,7 +87,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (Utils.isAccessibleInput(adjInv, side)) {
 			if (adjInv instanceof ISidedInventory) {
 				ISidedInventory sidedInv = (ISidedInventory) adjInv;
-				int slots[] = sidedInv.getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]);
+				int slots[] = sidedInv.getSlotsForFace(side.getOpposite());
 
 				if (slots == null) {
 					return false;
@@ -91,7 +97,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 					if (queryStack == null) {
 						continue;
 					}
-					if (sidedInv.canExtractItem(slots[i], queryStack, side ^ 1)) {
+					if (sidedInv.canExtractItem(slots[i], queryStack, side.getOpposite())) {
 						if (stack == null) {
 							if (isItemValidForSlot(slot, queryStack)) {
 								int toExtract = Math.min(amount, queryStack.stackSize);
@@ -162,7 +168,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return false;
 	}
 
-	public boolean transferItem(int slot, int amount, int side) {
+	public boolean transferItem(int slot, int amount, EnumFacing side) {
 
 		if (inventory[slot] == null || slot > inventory.length) {
 			return false;
@@ -219,12 +225,12 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		if (canPlayerAccess(player)) {
 			if (hasGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, xCoord, yCoord, zCoord);
+				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, getPos().getX(), getPos().getY(), getPos().getZ());
 			}
 			return hasGui();
 		}
 		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new ChatComponentTranslation("chat.cofh.secure", getOwnerName()));
+			player.addChatMessage(new TextComponentTranslation("chat.cofh.secure", getOwnerName()));
 		}
 		return false;
 	}
@@ -232,15 +238,11 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public void receiveGuiNetworkData(int i, int j) {
 
-		if (j == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
+        canAccess = j != 0;
 	}
 
 	@Override
-	public void sendGuiNetworkData(Container container, ICrafting player) {
+	public void sendGuiNetworkData(Container container, IContainerListener player) {
 
 		super.sendGuiNetworkData(container, player);
 
@@ -271,7 +273,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -280,6 +282,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		nbt.setString("Owner", owner.getName());
 
 		writeInventoryToNBT(nbt);
+        return nbt;
 	}
 
 	public void readInventoryFromNBT(NBTTagCompound nbt) {
@@ -376,7 +379,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		if (inventory[slot] == null) {
 			return null;
@@ -400,13 +403,13 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public String getInventoryName() {
+	public String getName() {
 
 		return tileName.isEmpty() ? getName() : tileName;
 	}
 
 	@Override
-	public boolean hasCustomInventoryName() {
+	public boolean hasCustomName() {
 
 		return !tileName.isEmpty();
 	}
@@ -424,22 +427,45 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public void openInventory() {
+	public void openInventory(EntityPlayer player) {
 
 	}
 
 	@Override
-	public void closeInventory() {
+	public void closeInventory(EntityPlayer player) {
 
 	}
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-
 		return true;
 	}
 
-	/* ISecurable */
+    @Override
+    public int getField(int id) {
+        return 0;
+    }
+
+    @Override
+    public void setField(int id, int value) {
+    }
+
+    @Override
+    public int getFieldCount() {
+        return 0;
+    }
+
+    @Override
+    public void clear() {
+    }
+
+    @Nullable
+    @Override
+    public ITextComponent getDisplayName() {
+        return new TextComponentString(getName());
+    }
+
+    /* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 
@@ -456,14 +482,14 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	@Override
 	public boolean setOwnerName(String name) {
-
-		if (MinecraftServer.getServer() == null) {
+        MinecraftServer server = ServerUtils.mc();
+		if (server == null) {
 			return false;
 		}
 		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
 			return false;
 		}
-		String uuid = PreYggdrasilConverter.func_152719_a(name);
+		String uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(server, name);
 		if (Strings.isNullOrEmpty(uuid)) {
 			return false;
 		}
@@ -476,7 +502,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		if (SecurityHelper.isDefaultUUID(owner.getId())) {
 			owner = profile;
 			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
-				if (MinecraftServer.getServer() != null) {
+				if (ServerUtils.mc() != null) {
 					new Thread("CoFH User Loader") {
 
 						@Override

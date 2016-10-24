@@ -2,9 +2,9 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.GuiRecipe;
+import codechicken.nei.util.NEIServerUtils;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;

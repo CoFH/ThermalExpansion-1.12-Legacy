@@ -11,6 +11,7 @@ import cofh.thermalexpansion.item.TEItems;
 import gnu.trove.map.hash.THashMap;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -72,43 +73,57 @@ public class SawmillManager {
 		 * so 1 stick is a 12.5% chance for 1 sawdust, and 8 is a 100% chance for 2 sawdust
 		 */
 
-		addRecipe(2400, new ItemStack(Blocks.chest), new ItemStack(Blocks.planks, 8));
-		addRecipe(2400, new ItemStack(Blocks.crafting_table), new ItemStack(Blocks.planks, 4));
-		addRecipe(2400, new ItemStack(Items.sign), new ItemStack(Blocks.planks, 2));
-		addRecipe(2400, new ItemStack(Items.wooden_door), new ItemStack(Blocks.planks, 6));
-		addRecipe(2400, new ItemStack(Blocks.wooden_pressure_plate), new ItemStack(Blocks.planks, 2));
-		addRecipe(2400, new ItemStack(Blocks.trapdoor), new ItemStack(Blocks.planks, 3));
-		addRecipe(2400, new ItemStack(Blocks.fence_gate), new ItemStack(Blocks.planks, 2), TEItems.sawdust);
-		addRecipe(800, new ItemStack(Blocks.wooden_button), new ItemStack(Blocks.planks, 1));
-		addRecipe(1200, new ItemStack(Items.bowl, 2), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
-		addRecipe(2400, new ItemStack(Items.bed), new ItemStack(Blocks.planks, 3), new ItemStack(Blocks.wool, 3));
-		addRecipe(2400, new ItemStack(Blocks.bookshelf), new ItemStack(Blocks.planks, 6), new ItemStack(Items.book, 3));
-		addRecipe(2400, new ItemStack(Blocks.noteblock), new ItemStack(Blocks.planks, 8), new ItemStack(Items.redstone, 1));
-		addRecipe(2400, new ItemStack(Blocks.jukebox), new ItemStack(Blocks.planks, 8), new ItemStack(Items.diamond, 1));
+		addRecipe(2400, new ItemStack(Blocks.CHEST), new ItemStack(Blocks.PLANKS, 8));
+		addRecipe(2400, new ItemStack(Blocks.CRAFTING_TABLE), new ItemStack(Blocks.PLANKS, 4));
+		addRecipe(2400, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS, 2));
 
-		addRecipe(2400, new ItemStack(Items.boat), new ItemStack(Blocks.planks, 5));
-		addRecipe(1600, new ItemStack(Items.wooden_sword), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 12);
-		addRecipe(1600, new ItemStack(Items.wooden_shovel), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.wooden_pickaxe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.wooden_axe), new ItemStack(Blocks.planks, 2), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.wooden_hoe), new ItemStack(Blocks.planks, 1), TEItems.sawdust, 25);
+		addRecipe(2400, new ItemStack(Items.OAK_DOOR), new ItemStack(Blocks.PLANKS, 6, 0));
+        addRecipe(2400, new ItemStack(Items.SPRUCE_DOOR), new ItemStack(Blocks.PLANKS, 6, 1));
+        addRecipe(2400, new ItemStack(Items.BIRCH_BOAT), new ItemStack(Blocks.PLANKS, 6, 2));
+        addRecipe(2400, new ItemStack(Items.JUNGLE_DOOR), new ItemStack(Blocks.PLANKS, 6, 3));
+        addRecipe(2400, new ItemStack(Items.ACACIA_DOOR), new ItemStack(Blocks.PLANKS, 6, 4));
+        addRecipe(2400, new ItemStack(Items.DARK_OAK_DOOR), new ItemStack(Blocks.PLANKS, 6, 5));
 
-		addRecipe(3200, new ItemStack(Blocks.oak_stairs, 2), new ItemStack(Blocks.planks, 3, 0));
-		addRecipe(3200, new ItemStack(Blocks.spruce_stairs, 2), new ItemStack(Blocks.planks, 3, 1));
-		addRecipe(3200, new ItemStack(Blocks.birch_stairs, 2), new ItemStack(Blocks.planks, 3, 2));
-		addRecipe(3200, new ItemStack(Blocks.jungle_stairs, 2), new ItemStack(Blocks.planks, 3, 3));
-		addRecipe(3200, new ItemStack(Blocks.acacia_stairs, 2), new ItemStack(Blocks.planks, 3, 4));
-		addRecipe(3200, new ItemStack(Blocks.dark_oak_stairs, 2), new ItemStack(Blocks.planks, 3, 5));
+		addRecipe(2400, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 2));
+		addRecipe(2400, new ItemStack(Blocks.TRAPDOOR), new ItemStack(Blocks.PLANKS, 3));
 
-		addRecipe(800, new ItemStack(Blocks.melon_block), new ItemStack(Items.melon, 9));
-		addRecipe(800, new ItemStack(Blocks.lever), new ItemStack(Blocks.cobblestone, 1), TEItems.sawdust, 12); // yeah. well. fun on resource limited maps?
-		addRecipe(800, new ItemStack(Blocks.redstone_torch), new ItemStack(Items.redstone, 1), TEItems.sawdust, 12);
-		addRecipe(800, new ItemStack(Items.painting), new ItemStack(Blocks.wool, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
-		addRecipe(800, new ItemStack(Items.item_frame), new ItemStack(Items.leather, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
-		addRecipe(1600, new ItemStack(Items.leather_helmet), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 10);
-		addRecipe(2400, new ItemStack(Items.leather_chestplate), new ItemStack(Items.leather, 6), new ItemStack(Items.leather, 1), 25);
-		addRecipe(2000, new ItemStack(Items.leather_leggings), new ItemStack(Items.leather, 5), new ItemStack(Items.leather, 1), 15);
-		addRecipe(1600, new ItemStack(Items.leather_boots), new ItemStack(Items.leather, 3), new ItemStack(Items.leather, 1), 5);
+		addRecipe(2400, new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 0), TEItems.sawdust);
+        addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 1), TEItems.sawdust);
+        addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 2), TEItems.sawdust);
+        addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 3), TEItems.sawdust);
+        addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 4), TEItems.sawdust);
+        addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 5), TEItems.sawdust);
+
+		addRecipe(800, new ItemStack(Blocks.WOODEN_BUTTON), new ItemStack(Blocks.PLANKS, 1));
+		addRecipe(1200, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 12);
+		addRecipe(2400, new ItemStack(Items.BED), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Blocks.WOOL, 3));
+		addRecipe(2400, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 6), new ItemStack(Items.BOOK, 3));
+		addRecipe(2400, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.REDSTONE, 1));
+		addRecipe(2400, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.DIAMOND, 1));
+
+		addRecipe(2400, new ItemStack(Items.BOAT), new ItemStack(Blocks.PLANKS, 5));
+		addRecipe(1600, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 12);
+		addRecipe(1600, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 2), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 2), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 25);
+
+		addRecipe(3200, new ItemStack(Blocks.OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 0));
+		addRecipe(3200, new ItemStack(Blocks.SPRUCE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 1));
+		addRecipe(3200, new ItemStack(Blocks.BIRCH_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 2));
+		addRecipe(3200, new ItemStack(Blocks.JUNGLE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 3));
+		addRecipe(3200, new ItemStack(Blocks.ACACIA_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 4));
+		addRecipe(3200, new ItemStack(Blocks.DARK_OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 5));
+
+		addRecipe(800, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
+		addRecipe(800, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), TEItems.sawdust, 12); // yeah. well. fun on resource limited maps?
+		addRecipe(800, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), TEItems.sawdust, 12);
+		addRecipe(800, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
+		addRecipe(800, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
+		addRecipe(1600, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 10);
+		addRecipe(2400, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 6), new ItemStack(Items.LEATHER, 1), 25);
+		addRecipe(2000, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 5), new ItemStack(Items.LEATHER, 1), 15);
+		addRecipe(1600, new ItemStack(Items.LEATHER_BOOTS), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 5);
 	}
 
 	public static void loadRecipes() {
@@ -117,12 +132,12 @@ public class SawmillManager {
 
 		if (ItemHelper.oreNameExists("woodRubber")) {
 			if (ItemHelper.oreNameExists("itemRawRubber")) {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3), OreDictionary.getOres("itemRawRubber").get(0),
+				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRawRubber").get(0),
 						50);
 			} else if (ItemHelper.oreNameExists("itemRubber")) {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3), OreDictionary.getOres("itemRubber").get(0), 50);
+				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRubber").get(0), 50);
 			} else {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.planks, 5, 3));
+				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3));
 			}
 		}
 	}
@@ -184,8 +199,7 @@ public class SawmillManager {
 		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, null);
 		}
-		ArrayList<ItemStack> registeredOres;
-		registeredOres = OreDictionary.getOres("logWood");
+		List<ItemStack> registeredOres = OreDictionary.getOres("logWood");
 		for (int i = 0; i < registeredOres.size(); i++) {
 			ItemStack logEntry = registeredOres.get(i);
 

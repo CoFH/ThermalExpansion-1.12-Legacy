@@ -6,11 +6,11 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraftforge.fml.relauncher.Side;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
 
 public abstract class TileDeviceBase extends TileAugmentable {
 
@@ -102,7 +102,7 @@ public abstract class TileDeviceBase extends TileAugmentable {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];

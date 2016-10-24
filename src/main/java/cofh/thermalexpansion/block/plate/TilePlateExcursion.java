@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
@@ -9,20 +10,23 @@ import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateExcursion;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.particle.EntityFX;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
+
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
-public class TilePlateExcursion extends TilePlatePoweredBase implements IRedstoneControl {
+
+public class TilePlateExcursion extends TilePlatePoweredBase implements IRedstoneControl, ITickable {
 
 	public static void initialize() {
 
@@ -32,9 +36,9 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	public static final byte MIN_DISTANCE = 0;
 	public static final byte MAX_DISTANCE = 25;
 
-	public static boolean canFunnelReplaceBlock(Block block, World world, int x, int y, int z) {
+	public static boolean canFunnelReplaceBlock(World world, IBlockState state, BlockPos pos) {
 
-		return block == null || block.getBlockHardness(world, x, y, z) == 0 || block.isAir(world, x, y, z);
+		return state == null || state.getBlockHardness(world, pos) == 0 || state.getBlock().isAir(state, world, pos);
 	}
 
 	public byte distance = 24;
@@ -52,37 +56,28 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	@Override
 	public void onEntityCollidedWithBlock(Entity ent) {
 
-		if (realDist == -1 || (worldObj.isRemote ? ent instanceof EntityFX : ent instanceof EntityPlayer)) {
+		if (realDist == -1 || (!worldObj.isRemote && ent instanceof EntityPlayer)) {
 			return;
 		}
 
 		int meta = alignment ^ (redstoneControlOrDisable() ? 0 : 1);
-		ForgeDirection dir = ForgeDirection.getOrientation(meta ^ 1);
-		BlockAirForce.repositionEntity(worldObj, xCoord, yCoord, zCoord, ent, dir, .1);
+		EnumFacing dir = EnumFacing.VALUES[meta ^ 1];
+		BlockAirForce.repositionEntity(worldObj, getPos(), ent, dir, .1);
 	}
 
 	@Override
 	public void blockBroken() {
-
 		removeBeam();
 		super.blockBroken();
 	}
 
 	@Override
 	public void rotated() {
-
 		removeBeam();
 	}
 
 	@Override
-	public boolean canUpdate() {
-
-		// can this be done otherwise?
-		return true;
-	}
-
-	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (shouldCheckBeam()) {
 			updateBeam();
@@ -104,27 +99,27 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 		int forceDir = alignment ^ (redstoneControlOrDisable() ? 0 : 1);
 		for (i = 0; i <= e; ++i) {
 			int[] v = getVector(i);
-			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
+            BlockPos offsetPos = getPos().add(v[0], v[1], v[2]);
 
 			if (i == 0) {
 				continue;
 			}
-			if (!worldObj.blockExists(x, y, z)) {
+			if (!worldObj.isBlockLoaded(offsetPos)) {
 				return;
 			}
-			Block block = worldObj.getBlock(x, y, z);
-			if (!block.equals(TEBlocks.blockAirForce)) {
-				if (!block.isAir(worldObj, x, y, z) && canFunnelReplaceBlock(block, worldObj, x, y, z)) {
-					if (!worldObj.func_147480_a(x, y, z, true)) {
+			IBlockState state = worldObj.getBlockState(offsetPos);
+			if (!state.getBlock().equals(TEBlocks.blockAirForce)) {
+				if (!state.getBlock().isAir(state, worldObj, offsetPos) && canFunnelReplaceBlock(worldObj, state, offsetPos)) {
+					if (!worldObj.destroyBlock(offsetPos, true)) {
 						break;
 					}
 				}
 
-				if (!worldObj.isAirBlock(x, y, z)) {
+				if (!worldObj.isAirBlock(offsetPos)) {
 					break;
 				}
-				worldObj.setBlock(x, y, z, TEBlocks.blockAirForce, forceDir, 2 | 4);
-			} else if (worldObj.getBlockMetadata(x, y, z) != forceDir) {
+				worldObj.setBlockState(offsetPos, TEBlocks.blockAirForce.getStateFromMeta(forceDir), 2 | 4);
+			} else if (state.getBlock().getMetaFromState(state) != forceDir) {
 				break;
 			}
 		}
@@ -134,14 +129,14 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		for (++i; i < prevDist;) {
 			int[] v = getVector(++i);
-			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
+            BlockPos offsetPos = getPos().add(v[0], v[1], v[2]);
 
-			if (worldObj.getBlock(x, y, z).equals(TEBlocks.blockAirForce)) {
-				worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+			if (worldObj.getBlockState(offsetPos).getBlock().equals(TEBlocks.blockAirForce)) {
+                worldObj.setBlockToAir(offsetPos);
 			}
 		}
 		if (realDist != prevDist) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(worldObj, getPos());
 		}
 	}
 
@@ -149,14 +144,14 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		for (int i = 1; i <= realDist; ++i) {
 			int[] v = getVector(i);
-			int x = xCoord + v[0], y = yCoord + v[1], z = zCoord + v[2];
+            BlockPos offsetPos = getPos().add(v[0], v[1], v[2]);
 
-			if (worldObj.getBlock(x, y, z).equals(TEBlocks.blockAirForce)) {
-				worldObj.setBlock(x, y, z, Blocks.air, 0, 3);
+			if (worldObj.getBlockState(offsetPos).getBlock().equals(TEBlocks.blockAirForce)) {
+				worldObj.setBlockToAir(offsetPos);
 			}
 		}
 		realDist = -1;
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(worldObj, getPos());
 	}
 
 	@Override
@@ -186,7 +181,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 			rsMode = ControlMode.values()[payload.getByte()];
 		}
 
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(worldObj, getPos());
 	}
 
 	@Override
@@ -250,7 +245,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -261,6 +256,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
+        return nbt;
 	}
 
 	/* GUI METHODS */
@@ -279,7 +275,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 	@Override
 	public void onNeighborBlockChange() {
 
-		setPowered(worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord));
+		setPowered(worldObj.isBlockPowered(getPos()));
 	}
 
 	public final boolean redstoneControlOrDisable() {
@@ -295,7 +291,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 		isPowered = powered;
 		if (wasPowered != isPowered) {
 			if (ServerHelper.isClientWorld(worldObj)) {
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+                BlockUtils.fireBlockUpdate(worldObj, getPos());
 			} else {
 				removeBeam();
 				updateBeam();
@@ -314,7 +310,7 @@ public class TilePlateExcursion extends TilePlatePoweredBase implements IRedston
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, getPos());
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 			boolean powered = isPowered;

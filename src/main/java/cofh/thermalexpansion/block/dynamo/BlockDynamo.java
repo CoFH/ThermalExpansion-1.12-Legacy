@@ -1,28 +1,33 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.repack.codechicken.lib.vec.Cuboid6;
-import cofh.repack.codechicken.lib.vec.Rotation;
-import cofh.repack.codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Rotation;
+import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,11 +36,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import javax.annotation.Nullable;
 
 public class BlockDynamo extends BlockTEBase {
 
@@ -44,26 +49,26 @@ public class BlockDynamo extends BlockTEBase {
 	static {
 		Cuboid6 bb = new Cuboid6(0, 0, 0, 1, 10 / 16., 1);
 		Vector3 p = new Vector3(0.5, 0.5, 0.5);
-		boundingBox[1] = bb.toAABB();
-		boundingBox[0] = bb.apply(Rotation.sideRotations[1].at(p)).toAABB();
+		boundingBox[1] = bb.aabb();
+		boundingBox[0] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
 		for (int i = 2; i < 6; ++i) {
-			boundingBox[i] = bb.copy().apply(Rotation.sideRotations[i].at(p)).toAABB();
+			boundingBox[i] = bb.copy().apply(Rotation.sideRotations[i].at(p)).aabb();
 		}
 
 		bb = new Cuboid6(.25, .5, .25, .75, 1, .75);
-		boundingBox[1 + 6] = bb.toAABB();
-		boundingBox[0 + 6] = bb.apply(Rotation.sideRotations[1].at(p)).toAABB();
+		boundingBox[1 + 6] = bb.aabb();
+		boundingBox[0 + 6] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
 		for (int i = 2; i < 6; ++i) {
-			boundingBox[i + 6] = bb.copy().apply(Rotation.sideRotations[i].at(p)).toAABB();
+			boundingBox[i + 6] = bb.copy().apply(Rotation.sideRotations[i].at(p)).aabb();
 		}
 	}
 
 	public BlockDynamo() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(25.0F);
-		setBlockName("thermalexpansion.dynamo");
+		setUnlocalizedName("thermalexpansion.dynamo");
 	}
 
 	@Override
@@ -88,21 +93,20 @@ public class BlockDynamo extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB bb, List list, Entity entity) {
-
-		int facing = ((TileDynamoBase) world.getTileEntity(x, y, z)).facing;
+    @Override
+    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+		int facing = ((TileDynamoBase) world.getTileEntity(pos)).facing;
 
 		AxisAlignedBB base, coil;
-		base = boundingBox[facing].copy().offset(x, y, z);
-		coil = boundingBox[facing + 6].copy().offset(x, y, z);
+		base = boundingBox[facing].offset(pos);
+		coil = boundingBox[facing + 6].offset(pos);
 
-		if (coil.intersectsWith(bb)) {
-			list.add(coil);
+		if (coil.intersectsWith(entityBox)) {
+            collidingBoxes.add(coil);
 		}
 
-		if (base.intersectsWith(bb)) {
-			list.add(base);
+		if (base.intersectsWith(entityBox)) {
+            collidingBoxes.add(base);
 		}
 	}
 
@@ -114,54 +118,51 @@ public class BlockDynamo extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
-
-		if (stack.stackTagCompound != null) {
-			tile.readAugmentsFromNBT(stack.stackTagCompound);
+		if (stack.getTagCompound() != null) {
+			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.installAugments();
-			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
-
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (tile instanceof IFluidHandler) {
 			if (FluidHelper.fillHandlerWithContainer(world, (IFluidHandler) tile, player)) {
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
+		return super.onBlockActivated(world, pos,state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 0;
 	}
 
-	@Override
+	//@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdDynamo;
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride() {
+	public boolean hasComparatorInputOverride(IBlockState state) {
 
 		return true;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+		TileEntity tile = world.getTileEntity(pos);
 
 		if (!(tile instanceof TileDynamoBase)) {
 			return false;
@@ -170,7 +171,7 @@ public class BlockDynamo extends BlockTEBase {
 		return theTile.facing == BlockHelper.SIDE_OPPOSITE[side.ordinal()];
 	}
 
-	@Override
+	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
@@ -181,19 +182,19 @@ public class BlockDynamo extends BlockTEBase {
 		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:dynamo/Dynamo_Compression", ir);
 		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:dynamo/Dynamo_Reactant", ir);
 		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:dynamo/Dynamo_Enervation", ir);
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (tile != null) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
-			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tag.setInteger("Energy", tile.getEnergyStored(null));
 			tile.writeAugmentsToNBT(tag);
 		}
 		return tag;
@@ -219,11 +220,11 @@ public class BlockDynamo extends BlockTEBase {
 		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.REACTANT.ordinal()));
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.ENERVATION.ordinal()));
 
-		GameRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
-		GameRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
-		GameRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
-		GameRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
-		GameRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
+		ItemStackRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
+        ItemStackRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
+        ItemStackRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
+        ItemStackRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
+        ItemStackRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 
 		return true;
 	}
@@ -269,7 +270,7 @@ public class BlockDynamo extends BlockTEBase {
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
-	public static enum Types {
+	public enum Types {
 		STEAM, MAGMATIC, COMPRESSION, REACTANT, ENERVATION
 	}
 

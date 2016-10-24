@@ -1,20 +1,23 @@
 package cofh.thermalexpansion.render.particle;
 
-import cofh.repack.codechicken.lib.render.CCModel;
-import cofh.repack.codechicken.lib.render.CCRenderState;
-import cofh.repack.codechicken.lib.vec.Cuboid6;
-import cofh.repack.codechicken.lib.vec.Vector3;
 
+import codechicken.lib.colour.ColourRGBA;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Vector3;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFX;
+import net.minecraft.client.particle.Particle;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
-public class ParticlePortal extends EntityFX {
+public class ParticlePortal extends Particle {
 
 	private static final CCModel model = CCModel.newModel(7, 24);
 	private static final Cuboid6 cuboid = new Cuboid6(0, 0, 0, 0, 0, 0);
@@ -29,7 +32,7 @@ public class ParticlePortal extends EntityFX {
 		startX = x;
 		startY = y;
 		startZ = z;
-		noClip = true;
+		//noClip = true;
 		particleRed = r;
 		particleGreen = g;
 		particleBlue = b;
@@ -58,19 +61,18 @@ public class ParticlePortal extends EntityFX {
 		zScale = (float) d[2];
 	}
 
-	@Override
-	public void renderParticle(Tessellator tessellator, float subTick, float rX, float rXZ, float rZ, float rYZ, float rXY) {
+    @Override
+    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+		particleAlpha = (1.0F - (particleAge + partialTicks) / particleMaxAge);
 
-		particleAlpha = (1.0F - (particleAge + subTick) / particleMaxAge);
+		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
+		double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * partialTicks;
+		double interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * partialTicks;
+		double interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * partialTicks;
 
-		EntityLivingBase entity = Minecraft.getMinecraft().renderViewEntity;
-		double interpPosX = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * subTick;
-		double interpPosY = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * subTick;
-		double interpPosZ = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * subTick;
-
-		float _x = (float) (prevPosX + (posX - prevPosX) * subTick - interpPosX);
-		float _y = (float) (prevPosY + (posY - prevPosY) * subTick - interpPosY);
-		float _z = (float) (prevPosZ + (posZ - prevPosZ) * subTick - interpPosZ);
+		float _x = (float) (prevPosX + (posX - prevPosX) * partialTicks - interpPosX);
+		float _y = (float) (prevPosY + (posY - prevPosY) * partialTicks - interpPosY);
+		float _z = (float) (prevPosZ + (posZ - prevPosZ) * partialTicks - interpPosZ);
 		float sx = (float) (startX - interpPosX);
 		float sy = (float) (startY - interpPosY);
 		float sz = (float) (startZ - interpPosZ);
@@ -94,30 +96,33 @@ public class ParticlePortal extends EntityFX {
 			}
 		}
 
-		int i = this.getBrightnessForRender(subTick);
+		int i = this.getBrightnessForRender(partialTicks);
 		int j = i % 65536;
 		int k = i / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
 
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		GL11.glDepthMask(false);
-		GL11.glEnable(GL11.GL_BLEND);
-		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
-		GL11.glDisable(GL11.GL_TEXTURE_2D);
+        CCRenderState ccrs = CCRenderState.instance();
 
-		tessellator.startDrawingQuads();
-		tessellator.setColorRGBA_F(particleRed, particleGreen, particleBlue, particleAlpha);
-		CCRenderState.reset();
-		model.generateBlock(0, cuboid.set(sx, sy, sz, _x, _y, _z).expand(vector.set(xScale, yScale, zScale).multiply(particleScale))).render();
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+		GlStateManager.depthMask(false);
+		GlStateManager.enableBlend();
+		GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+		GlStateManager.disableTexture2D();
+
+		ccrs.reset();
+        ccrs.startDrawing(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+        ccrs.setColour(new ColourRGBA(particleRed, particleGreen, particleBlue, particleAlpha));
+        ccrs.pullLightmap();
+		model.generateBlock(0, cuboid.set(sx, sy, sz, _x, _y, _z).expand(vector.set(xScale, yScale, zScale).multiply(particleScale))).render(ccrs);
 		// tessellator.addVertex(sx - rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz - rZ * hScale - rXY * hScale);
 		// tessellator.addVertex(_x - rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z - rZ * hScale + rXY * hScale);
 		// tessellator.addVertex(_x + rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z + rZ * hScale + rXY * hScale);
 		// tessellator.addVertex(sx + rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz + rZ * hScale - rXY * hScale);
-		tessellator.draw();
+		ccrs.draw();
 
-		GL11.glEnable(GL11.GL_TEXTURE_2D);
-		GL11.glDisable(GL11.GL_BLEND);
-		GL11.glDepthMask(true);
+		GlStateManager.enableTexture2D();
+		GlStateManager.disableBlend();
+		GlStateManager.depthMask(true);
 	}
 
 	@Override

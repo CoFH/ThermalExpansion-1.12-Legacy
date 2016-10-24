@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.ServerUtils;
 import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateCharge;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -15,7 +17,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 
 public class TilePlateCharge extends TilePlatePoweredBase {
 
@@ -64,14 +65,14 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 
 		l: if (filterSecure && !getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
-				String name = ((EntityItem) entity).func_145800_j();
+				String name = ((EntityItem) entity).getThrower();
 				if (name == null) {
 					break o;
 				}
 				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
 					break l;
 				}
-				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+				GameProfile i = ServerUtils.mc().getPlayerProfileCache().getGameProfileForUsername(name);
 				if (i != null && getOwner().getId().equals(i.getId())) {
 					break l;
 				}
@@ -88,8 +89,8 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 			}
 			((EntityItem) entity).setEntityItemStack(item);
 		} else {
-			for (int i = 0; i < 5; ++i) {
-				chargeItem(((EntityLivingBase) entity).getEquipmentInSlot(i));
+			for (EntityEquipmentSlot slot : EntityEquipmentSlot.values()) {
+				chargeItem(((EntityLivingBase) entity).getItemStackFromSlot(slot));
 			}
 		}
 	}
@@ -128,11 +129,12 @@ public class TilePlateCharge extends TilePlatePoweredBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setBoolean("chargeItems", chargeItems);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
@@ -16,12 +17,16 @@ import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,20 +36,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+
+import javax.annotation.Nullable;
 
 public class BlockMachine extends BlockTEBase {
 
 	public BlockMachine() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(25.0F);
-		setBlockName("thermalexpansion.machine");
+		setUnlocalizedName("thermalexpansion.machine");
 	}
 
 	@Override
@@ -95,15 +100,14 @@ public class BlockMachine extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		if (stack.getTagCompound() != null) {
+			TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
-		if (stack.stackTagCompound != null) {
-			TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
-
-			tile.readAugmentsFromNBT(stack.stackTagCompound);
+			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.installAugments();
-			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
+			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -116,44 +120,41 @@ public class BlockMachine extends BlockTEBase {
 			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
-	}
+		super.onBlockPlacedBy(world, pos, state, living, stack);
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
 			if (FluidHelper.fillHandlerWithContainer(world, (IFluidHandler) tile, player)) {
 				return true;
 			}
 		}
-		return super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ);
+		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
 		return pass < 2;
 	}
 
-	@Override
-	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
-
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
@@ -163,7 +164,7 @@ public class BlockMachine extends BlockTEBase {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -215,20 +216,20 @@ public class BlockMachine extends BlockTEBase {
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:config/Config_Green_CB", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:config/Config_Purple_CB", ir);
 		IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:config/Config_Open", ir);
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileMachineBase tile = (TileMachineBase) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
 		if (tile != null) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
-			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tag.setInteger("Energy", tile.getEnergyStored(null));
 			tile.writeAugmentsToNBT(tag);
 		}
 		return tag;
@@ -274,18 +275,18 @@ public class BlockMachine extends BlockTEBase {
 		charger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.CHARGER.ordinal()));
 		insolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.INSOLATOR.ordinal()));
 
-		GameRegistry.registerCustomItemStack("furnace", furnace);
-		GameRegistry.registerCustomItemStack("pulverizer", pulverizer);
-		GameRegistry.registerCustomItemStack("sawmill", sawmill);
-		GameRegistry.registerCustomItemStack("smelter", smelter);
-		GameRegistry.registerCustomItemStack("crucible", crucible);
-		GameRegistry.registerCustomItemStack("transposer", transposer);
-		GameRegistry.registerCustomItemStack("precipitator", precipitator);
-		GameRegistry.registerCustomItemStack("extruder", extruder);
-		GameRegistry.registerCustomItemStack("accumulator", accumulator);
-		GameRegistry.registerCustomItemStack("assembler", assembler);
-		GameRegistry.registerCustomItemStack("charger", charger);
-		GameRegistry.registerCustomItemStack("insolator", insolator);
+		ItemStackRegistry.registerCustomItemStack("furnace", furnace);
+        ItemStackRegistry.registerCustomItemStack("pulverizer", pulverizer);
+        ItemStackRegistry.registerCustomItemStack("sawmill", sawmill);
+        ItemStackRegistry.registerCustomItemStack("smelter", smelter);
+        ItemStackRegistry.registerCustomItemStack("crucible", crucible);
+        ItemStackRegistry.registerCustomItemStack("transposer", transposer);
+        ItemStackRegistry.registerCustomItemStack("precipitator", precipitator);
+        ItemStackRegistry.registerCustomItemStack("extruder", extruder);
+        ItemStackRegistry.registerCustomItemStack("accumulator", accumulator);
+        ItemStackRegistry.registerCustomItemStack("assembler", assembler);
+        ItemStackRegistry.registerCustomItemStack("charger", charger);
+        ItemStackRegistry.registerCustomItemStack("insolator", insolator);
 
 		return true;
 	}
@@ -307,13 +308,13 @@ public class BlockMachine extends BlockTEBase {
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
 					'X', "dustRedstone",
-					'Y', Blocks.brick_block
+					'Y', Blocks.BRICK_BLOCK
 			}));
 		}
 		if (enable[Types.PULVERIZER.ordinal()]) {
 			String category = "Machine.Pulverizer";
 			String comment = "If enabled, the Pulverizer will require Diamonds instead of Flint.";
-			Item component = ThermalExpansion.config.get(category, "RequireDiamonds", false, comment) ? Items.diamond : Items.flint;
+			Item component = ThermalExpansion.config.get(category, "RequireDiamonds", false, comment) ? Items.DIAMOND : Items.FLINT;
 			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
@@ -321,7 +322,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
-					'X', Blocks.piston,
+					'X', Blocks.PISTON,
 					'Y', component
 			}));
 		}
@@ -333,7 +334,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
-					'X', Items.iron_axe,
+					'X', Items.IRON_AXE,
 					'Y', "plankWood"
 			}));
 		}
@@ -345,7 +346,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', invarPart,
 					'P', TEItems.powerCoilGold,
-					'X', Items.bucket,
+					'X', Items.BUCKET,
 					'Y', "ingotInvar"
 			}));
 		}
@@ -358,7 +359,7 @@ public class BlockMachine extends BlockTEBase {
 					'I', invarPart,
 					'P', TEItems.powerCoilGold,
 					'X', BlockFrame.frameCellBasic,
-					'Y', Blocks.nether_brick
+					'Y', Blocks.NETHER_BRICK
 			}));
 		}
 		if (enable[Types.TRANSPOSER.ordinal()]) {
@@ -369,7 +370,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
-					'X', Items.bucket,
+					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			}));
 		}
@@ -381,7 +382,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
-					'X', Blocks.piston,
+					'X', Blocks.PISTON,
 					'Y', "ingotInvar"
 			}));
 		}
@@ -393,7 +394,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.pneumaticServo,
-					'X', Blocks.piston,
+					'X', Blocks.PISTON,
 					'Y', "blockGlass"
 			}));
 		}
@@ -405,7 +406,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.pneumaticServo,
-					'X', Items.bucket,
+					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			}));
 		}
@@ -417,7 +418,7 @@ public class BlockMachine extends BlockTEBase {
 					'C', machineFrame,
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
-					'X', Blocks.chest,
+					'X', Blocks.CHEST,
 					'Y', "gearTin"
 			}));
 		}
@@ -442,7 +443,7 @@ public class BlockMachine extends BlockTEBase {
 					'I', copperPart,
 					'P', TEItems.powerCoilGold,
 					'X', "gearLumium",
-					'Y', Blocks.dirt
+					'Y', Blocks.DIRT
 			}));
 		}
 		// @formatter:on
@@ -492,16 +493,16 @@ public class BlockMachine extends BlockTEBase {
 		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
-	public static enum Types {
+	public enum Types {
 		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR
 	}
 
-	public static IIcon machineBottom;
-	public static IIcon machineTop;
-	public static IIcon machineSide;
+	public static TextureAtlasSprite machineBottom;
+	public static TextureAtlasSprite machineTop;
+	public static TextureAtlasSprite machineSide;
 
-	public static IIcon[] machineFace = new IIcon[Types.values().length];
-	public static IIcon[] machineActive = new IIcon[Types.values().length];
+	public static TextureAtlasSprite[] machineFace = new TextureAtlasSprite[Types.values().length];
+	public static TextureAtlasSprite[] machineActive = new TextureAtlasSprite[Types.values().length];
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger", "insolator" };

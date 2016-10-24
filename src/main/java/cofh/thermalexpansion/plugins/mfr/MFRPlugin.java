@@ -8,9 +8,6 @@ import cofh.thermalexpansion.item.TEItems;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
-import powercrystals.minefactoryreloaded.api.FactoryRegistry;
-import powercrystals.minefactoryreloaded.api.FertilizerType;
-import powercrystals.minefactoryreloaded.api.IFactoryFertilizer;
 
 public class MFRPlugin {
 
@@ -25,7 +22,7 @@ public class MFRPlugin {
 	@Strippable("mod:MineFactoryReloaded")
 	public static void postInit() {
 
-		FactoryRegistry.sendMessage("registerFertilizer", new IFactoryFertilizer() {
+		/*FactoryRegistry.sendMessage("registerFertilizer", new IFactoryFertilizer() {
 
 			@Override
 			public Item getFertilizer() {
@@ -57,7 +54,7 @@ public class MFRPlugin {
 				fertilizer.stackSize -= 1;
 			}
 
-		});
+		});*/
 	}
 
 	@Strippable("mod:MineFactoryReloaded")

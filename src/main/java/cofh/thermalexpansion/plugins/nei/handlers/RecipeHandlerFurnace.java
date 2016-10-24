@@ -2,8 +2,8 @@ package cofh.thermalexpansion.plugins.nei.handlers;
 
 import static codechicken.lib.gui.GuiDraw.*;
 
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.util.NEIServerUtils;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.simple.BlockRockwool;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;

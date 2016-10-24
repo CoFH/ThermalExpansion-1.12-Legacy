@@ -2,8 +2,10 @@ package cofh.thermalexpansion.block.cache;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-import cofh.api.tileentity.ISidedTexture;
-import cofh.core.render.IconRegistry;
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.util.ItemUtils;
+import codechicken.lib.util.SoundUtils;
+import codechicken.lib.vec.Vector3;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.ItemHelper;
@@ -12,15 +14,18 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.util.Utils;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,20 +33,20 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
-import net.minecraftforge.common.util.ForgeDirection;
+
+import javax.annotation.Nullable;
 
 public class BlockCache extends BlockTEBase {
 
 	public BlockCache() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(25.0F);
-		setBlockName("thermalexpansion.cache");
+		setUnlocalizedName("thermalexpansion.cache");
 		setHarvestLevel("pickaxe", 1);
 	}
 
@@ -69,39 +74,37 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride() {
-
+	public boolean hasComparatorInputOverride(IBlockState state) {
 		return true;
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
-		if (world.getBlockMetadata(x, y, z) == 0 && !enable[0]) {
-			world.setBlockToAir(x, y, z);
+        if (getMetaFromState(state) == 0 && !enable[0]) {
+			world.setBlockToAir(pos);
 			return;
 		}
-		if (stack.stackTagCompound != null) {
-			TileCache tile = (TileCache) world.getTileEntity(x, y, z);
-			tile.locked = stack.stackTagCompound.getBoolean("Lock");
+		if (stack.getTagCompound() != null) {
+			TileCache tile = (TileCache) world.getTileEntity(pos);
+			tile.locked = stack.getTagCompound().getBoolean("Lock");
 
-			if (stack.stackTagCompound.hasKey("Item")) {
-				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Item"));
+			if (stack.getTagCompound().hasKey("Item")) {
+				ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
 				tile.setStoredItemType(stored, stored.stackSize);
 			}
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
-
-		if (super.onBlockActivated(world, x, y, z, player, hitSide, hitX, hitY, hitZ)) {
-			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+		if (super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ)) {
+			if (Utils.isHoldingUsableWrench(player, RayTracer.retrace(player))) {
 				return true;
 			}
 		}
-		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+		TileCache tile = (TileCache) world.getTileEntity(pos);
 		boolean playSound = false;
 
 		if (ItemHelper.isPlayerHoldingNothing(player)) {
@@ -109,9 +112,9 @@ public class BlockCache extends BlockTEBase {
 				tile.toggleLock();
 
 				if (tile.locked) {
-					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.2F, 0.8F);
+                    SoundUtils.playSoundAt(Vector3.fromTileCenter(tile), world, SoundCategory.BLOCKS, SoundEvents.UI_BUTTON_CLICK, 0.2F, 0.8F);
 				} else {
-					world.playSoundEffect(x + 0.5D, y + 0.5D, z + 0.5D, "random.click", 0.3F, 0.5F);
+                    SoundUtils.playSoundAt(Vector3.fromTileCenter(tile), world, SoundCategory.BLOCKS, SoundEvents.UI_BUTTON_CLICK, 0.3F, 0.5F);
 				}
 				return true;
 			}
@@ -120,8 +123,8 @@ public class BlockCache extends BlockTEBase {
 			}
 			return true;
 		}
-		ItemStack heldStack = player.getCurrentEquippedItem();
-		ItemStack ret = tile.insertItem(ForgeDirection.UNKNOWN, heldStack, false);
+		ItemStack heldStack = ItemUtils.getHeldStack(player);
+        ItemStack ret = tile.insertItem(null, heldStack, false);
 		long time = player.getEntityData().getLong("TE:lastCacheClick"), currentTime = world.getTotalWorldTime();
 		player.getEntityData().setLong("TE:lastCacheClick", currentTime);
 
@@ -135,7 +138,7 @@ public class BlockCache extends BlockTEBase {
 			}
 		}
 		if (playSound) {
-			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.orb", 0.1F, 0.7F);
+            SoundUtils.playSoundAt(Vector3.fromTileCenter(tile), tile.getWorld(), SoundCategory.BLOCKS, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.1F, 0.7F);
 		}
 		return true;
 	}
@@ -144,28 +147,27 @@ public class BlockCache extends BlockTEBase {
 
 		boolean playSound = false;
 		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			if (tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
-				player.inventory.setInventorySlotContents(i, tile.insertItem(ForgeDirection.UNKNOWN, player.inventory.getStackInSlot(i), false));
+			if (tile.insertItem(null, player.inventory.getStackInSlot(i), true) != player.inventory.getStackInSlot(i)) {
+				player.inventory.setInventorySlotContents(i, tile.insertItem(null, player.inventory.getStackInSlot(i), false));
 				playSound = true;
 			}
 		}
 		if (playSound) {
-			player.worldObj.playSoundEffect(tile.xCoord + 0.5, tile.yCoord + 0.5, tile.zCoord + 0.5, "random.orb", 0.1F, 0.7F);
+            SoundUtils.playSoundAt(Vector3.fromTileCenter(tile), tile.getWorld(), SoundCategory.BLOCKS, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.1F, 0.7F);
 		}
 		return playSound;
 	}
 
-	@Override
-	public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
-
+    @Override
+    public void onBlockClicked(World world, BlockPos pos, EntityPlayer player) {
 		if (ServerHelper.isClientWorld(world)) {
 			return;
 		}
 		boolean playSound = false;
-		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+		TileCache tile = (TileCache) world.getTileEntity(pos);
 
 		int extractAmount = !player.isSneaking() ? 1 : 64;
-		ItemStack extract = tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, true);
+		ItemStack extract = tile.extractItem(null, extractAmount, true);
 		if (extract == null) {
 			return;
 		}
@@ -180,43 +182,41 @@ public class BlockCache extends BlockTEBase {
 				extractAmount -= extract.stackSize;
 			}
 			playSound = true;
-			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
+			tile.extractItem(null, extractAmount, false);
 		} else {
-			tile.extractItem(ForgeDirection.UNKNOWN, extractAmount, false);
+			tile.extractItem(null, extractAmount, false);
 		}
 		if (playSound) {
-			world.playSoundEffect(x + 0.5, y + 0.5, z + 0.5, "random.pop", 0.4F, 0.8F);
+            SoundUtils.playSoundAt(new Vector3(pos).add(0.5), world, SoundCategory.BLOCKS, SoundEvents.ENTITY_ITEM_PICKUP, 0.4F, 0.8F);
 		}
 	}
 
-	@Override
-	public boolean removedByPlayer(World world, EntityPlayer player, int x, int y, int z) {
-
+    @Override
+    public boolean removedByPlayer(IBlockState state, World world, BlockPos pos, EntityPlayer player, boolean willHarvest) {
 		if (player.capabilities.isCreativeMode && !player.isSneaking()) {
-			onBlockClicked(world, x, y, z, player);
+			onBlockClicked(world, pos, player);
 			return false;
 		} else {
-			return world.setBlockToAir(x, y, z);
+			return world.setBlockToAir(pos);
 		}
 	}
 
-	@Override
-	public float getPlayerRelativeBlockHardness(EntityPlayer player, World world, int x, int y, int z) {
-
-		ItemStack stack = player.getCurrentEquippedItem();
-		if (stack == null || !ForgeHooks.isToolEffective(stack, world.getBlock(x, y, z), world.getBlockMetadata(x, y, z))) {
+    @Override
+    public float getPlayerRelativeBlockHardness(IBlockState state, EntityPlayer player, World world, BlockPos pos) {
+		ItemStack stack = player.getHeldItemMainhand();
+		if (stack == null || !ForgeHooks.isToolEffective(world, pos, stack)) {
 			return -1;
 		}
-		return super.getPlayerRelativeBlockHardness(player, world, x, y, z);
+		return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
@@ -224,7 +224,7 @@ public class BlockCache extends BlockTEBase {
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 
 		return true;
 	}
@@ -235,7 +235,7 @@ public class BlockCache extends BlockTEBase {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -268,13 +268,13 @@ public class BlockCache extends BlockTEBase {
 			IconRegistry.addIcon("CacheFace" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Face", ir);
 		}
 		IconRegistry.addIcon("CacheBlank", "thermalexpansion:config/Config_None", ir);
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileCache tile = (TileCache) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileCache tile = (TileCache) world.getTileEntity(pos);
 
 		if (tile != null && tile.storedStack != null) {
 			tag = new NBTTagCompound();
@@ -286,24 +286,23 @@ public class BlockCache extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
 
-		NBTTagCompound tag = getItemStackTag(world, x, y, z);
+		NBTTagCompound tag = getItemStackTag(world, pos);
 
-		TileEntity tile = world.getTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileCache) {
 			((TileCache) tile).inventory = new ItemStack[((TileCache) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
+		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
 	}
 
-	@Override
-	public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
-
-		if (world.getBlockMetadata(x, y, z) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+    @Override
+    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
+		if (getMetaFromState(world.getBlockState(pos)) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
 			return false;
 		}
-		return super.canDismantle(player, world, x, y, z);
+		return super.canDismantle(player, world, pos);
 	}
 
 	/* IInitializer */
@@ -325,11 +324,11 @@ public class BlockCache extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(cacheBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', "logWood" }));
+			GameRegistry.addRecipe(ShapedRecipe(cacheBasic, " I ", "IXI", " I ", 'I', "ingotTin", 'X', "logWood"));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cacheBasic }));
-			GameRegistry.addRecipe(ShapedRecipe(cacheHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin" }));
+			GameRegistry.addRecipe(ShapedRecipe(cacheHardened, "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', "logWood", 'Y', "ingotTin"));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(cacheReinforced, new Object[] { " G ", "GXG", " G ", 'X', cacheHardened, 'G', "blockGlassHardened" }));
@@ -340,7 +339,7 @@ public class BlockCache extends BlockTEBase {
 		return true;
 	}
 
-	public static enum Types {
+	public enum Types {
 		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 

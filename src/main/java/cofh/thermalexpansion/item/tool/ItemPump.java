@@ -1,24 +1,28 @@
 package cofh.thermalexpansion.item.tool;
 
-import cofh.lib.util.helpers.BlockHelper;
+import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.util.BlockUtils;
+
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -28,8 +32,8 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 public class ItemPump extends ItemEnergyContainerBase {
 
-	IIcon fillIcon;
-	IIcon drainIcon;
+	//IIcon fillIcon;
+	//IIcon drainIcon;
 
 	static final int INPUT = 0;
 	static final int OUTPUT = 1;
@@ -37,67 +41,63 @@ public class ItemPump extends ItemEnergyContainerBase {
 	public ItemPump() {
 
 		super("pump");
-		setTextureName("thermalexpansion:tool/Pump");
+		//setTextureName("thermalexpansion:tool/Pump");
 
 		energyPerUse = 200;
 	}
 
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+        return EnumActionResult.SUCCESS;
+    }
 
-		return true;
-	}
-
-	@Override
-	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		boolean r = doItemUse(stack, world, player);
+    @Override
+    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		boolean r = doItemUse(stack, world, player, hand);
 		if (r) { // HACK: forge is fucking stupid with this method
-			ServerHelper.sendItemUsePacket(stack, player, world, x, y, z, hitSide, hitX, hitY, hitZ);
+			ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
 		}
-		return r;
+		return r ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 	}
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-
-		doItemUse(stack, world, player);
-		return stack;
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+		boolean success = doItemUse(stack, world, player, hand);
+		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
-	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player) {
+	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
 			return false;
 		}
-		MovingObjectPosition pos = BlockHelper.getCurrentMovingObjectPosition(player, getMode(stack) == INPUT);
+		RayTraceResult traceResult = RayTracer.retrace(player, getMode(stack) == INPUT);
 
-		if (pos != null && world.canMineBlock(player, pos.blockX, pos.blockY, pos.blockZ)) {
-			TileEntity tile = world.getTileEntity(pos.blockX, pos.blockY, pos.blockZ);
-			ForgeDirection fd = ForgeDirection.values()[pos.sideHit];
+		if (traceResult != null && world.isBlockModifiable(player, traceResult.getBlockPos())) {
+			TileEntity tile = world.getTileEntity(traceResult.getBlockPos());;
 			FluidStack resource;
 			boolean success = false;
 
-			if (getMode(stack) == INPUT && player.canPlayerEdit(pos.blockX, pos.blockY, pos.blockZ, pos.sideHit, stack)) {
+			if (getMode(stack) == INPUT && player.canPlayerEdit(traceResult.getBlockPos(), traceResult.sideHit, stack)) {
 				if (FluidHelper.isFluidHandler(tile)) {
 					if (ServerHelper.isServerWorld(world)) {
 						IFluidHandler handler = (IFluidHandler) tile;
-						resource = handler.drain(fd, FluidContainerRegistry.BUCKET_VOLUME, false);
+						resource = handler.drain(traceResult.sideHit, FluidContainerRegistry.BUCKET_VOLUME, false);
 
 						if (resource == null) {
-							resource = handler.drain(ForgeDirection.UNKNOWN, FluidContainerRegistry.BUCKET_VOLUME, false);
-							handler.drain(ForgeDirection.UNKNOWN, fillFluidContainerItems(resource, player.inventory, true), true);
+							resource = handler.drain(null, FluidContainerRegistry.BUCKET_VOLUME, false);
+							handler.drain(null, fillFluidContainerItems(resource, player.inventory, true), true);
 						} else {
-							handler.drain(fd, fillFluidContainerItems(resource, player.inventory, true), true);
+							handler.drain(traceResult.sideHit, fillFluidContainerItems(resource, player.inventory, true), true);
 						}
 					}
 					success = true;
 				} else {
-					resource = FluidHelper.getFluidFromWorld(world, pos.blockX, pos.blockY, pos.blockZ, false);
+					resource = FluidHelper.getFluidFromWorld(world, traceResult.getBlockPos(), false);
 					if (canFillFluidContainerItems(resource, player.inventory)) {
 						if (ServerHelper.isServerWorld(world)) {
 							fillFluidContainerItems(resource, player.inventory, true);
-							world.setBlockToAir(pos.blockX, pos.blockY, pos.blockZ);
+							world.setBlockToAir(traceResult.getBlockPos());
 						}
 						success = true;
 					}
@@ -105,7 +105,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 			} else if (getMode(stack) == OUTPUT) {
 				if (FluidHelper.isFluidHandler(tile)) {
 					IFluidHandler handler = (IFluidHandler) tile;
-					FluidTankInfo[] tankInfo = handler.getTankInfo(fd);
+					FluidTankInfo[] tankInfo = handler.getTankInfo(traceResult.sideHit);
 
 					if (tankInfo != null) {
 						ItemStack container = null;
@@ -121,16 +121,16 @@ public class ItemPump extends ItemEnergyContainerBase {
 								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
 								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME);
 
-								if (handler.fill(fd, fillStack, false) > 0) {
-									containerItem.drain(container, handler.fill(fd, fillStack, true), true);
+								if (handler.fill(traceResult.sideHit, fillStack, false) > 0) {
+									containerItem.drain(container, handler.fill(traceResult.sideHit, fillStack, true), true);
 								} else {
-									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, fillStack, true), true);
+									containerItem.drain(container, handler.fill(null, fillStack, true), true);
 								}
 							}
 							success = true;
 						}
 					} else {
-						tankInfo = handler.getTankInfo(ForgeDirection.UNKNOWN);
+						tankInfo = handler.getTankInfo(null);
 						if (tankInfo != null) {
 							ItemStack container = null;
 							for (int i = 0; i < tankInfo.length; i++) {
@@ -143,7 +143,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 							if (container != null) {
 								if (ServerHelper.isServerWorld(world)) {
 									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-									containerItem.drain(container, handler.fill(ForgeDirection.UNKNOWN, new FluidStack(containerItem.getFluid(container),
+									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container),
 											FluidContainerRegistry.BUCKET_VOLUME), true), true);
 								}
 								success = true;
@@ -160,23 +160,23 @@ public class ItemPump extends ItemEnergyContainerBase {
 						Fluid fluid = containerItem.getFluid(container).getFluid();
 						block = fluid.getBlock();
 
-						if (fluid.getName() == "water") {
-							block = Blocks.flowing_water;
-						} else if (fluid.getName() == "lava") {
-							block = Blocks.flowing_lava;
+						if (fluid.getName().equals("water")) {
+							block = Blocks.FLOWING_WATER;
+						} else if (fluid.getName().equals("lava")) {
+							block = Blocks.FLOWING_LAVA;
 						}
 						if (block != null) {
-							int[] coords = BlockHelper.getAdjacentCoordinatesForSide(pos);
-							Block worldBlock = world.getBlock(coords[0], coords[1], coords[2]);
+                            BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+							IBlockState worldState = world.getBlockState(offsetPos);
 
-							if (world.getBlockMetadata(coords[0], coords[1], coords[2]) == 0 && worldBlock.getMaterial() instanceof MaterialLiquid) {
+							if (worldState.getBlock().getMetaFromState(worldState) == 0 && worldState.getMaterial() instanceof MaterialLiquid) {
 								// do not replace source blocks
 							} else {
-								if (world.isAirBlock(coords[0], coords[1], coords[2]) || worldBlock.getMaterial().isReplaceable()
-										|| worldBlock == Blocks.snow_layer) {
+								if (world.isAirBlock(offsetPos) || worldState.getMaterial().isReplaceable()
+										|| worldState.getBlock() == Blocks.SNOW_LAYER) {
 									if (ServerHelper.isServerWorld(world)) {
-										world.setBlock(coords[0], coords[1], coords[2], block, 0, 3);
-										world.markBlockForUpdate(coords[0], coords[1], coords[2]);
+										world.setBlockState(offsetPos, block.getDefaultState(), 3);
+                                        BlockUtils.fireBlockUpdate(world, offsetPos);
 										containerItem.drain(container, FluidContainerRegistry.BUCKET_VOLUME, true);
 									}
 									success = true;
@@ -187,10 +187,10 @@ public class ItemPump extends ItemEnergyContainerBase {
 				}
 			}
 			if (success) {
-				player.swingItem();
+				player.swingArm(hand);
 				if (ServerHelper.isServerWorld(world)) {
 					player.openContainer.detectAndSendChanges();
-					((EntityPlayerMP) player).sendContainerAndContentsToPlayer(player.openContainer, player.openContainer.getInventory());
+					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
 
 					if (!player.capabilities.isCreativeMode) {
 						extractEnergy(stack, energyPerUse, false);
@@ -261,25 +261,22 @@ public class ItemPump extends ItemEnergyContainerBase {
 		return true;
 	}
 
-	@Override
-	public IIcon getIconIndex(ItemStack stack) {
+	//@Override
+	//public IIcon getIconIndex(ItemStack stack) {
+	//	return getIcon(stack, 0);
+	//}
 
-		return getIcon(stack, 0);
-	}
+	//@Override
+	//public IIcon getIcon(ItemStack stack, int pass) {
+	//	return getMode(stack) == INPUT ? this.fillIcon : this.drainIcon;
+	//}
 
-	@Override
-	public IIcon getIcon(ItemStack stack, int pass) {
-
-		return getMode(stack) == INPUT ? this.fillIcon : this.drainIcon;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IIconRegister ir) {
-
-		this.fillIcon = ir.registerIcon(this.getIconString() + "_Input");
-		this.drainIcon = ir.registerIcon(this.getIconString() + "_Output");
-	}
+	//@Override
+	//@SideOnly(Side.CLIENT)
+	//public void registerIcons(IIconRegister ir) {
+	//	this.fillIcon = ir.registerIcon(this.getIconString() + "_Input");
+	//	this.drainIcon = ir.registerIcon(this.getIconString() + "_Output");
+	//}
 
 	/* IMultiModeItem */
 	@Override

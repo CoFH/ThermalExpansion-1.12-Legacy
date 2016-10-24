@@ -25,7 +25,7 @@ public class ItemBlockCache extends ItemBlockBase {
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Item")) {
+		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("Item")) {
 			return super.getItemStackLimit(stack);
 		}
 		return 64;
@@ -42,13 +42,13 @@ public class ItemBlockCache extends ItemBlockBase {
 
 		switch (BlockCache.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		case RESONANT:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case REINFORCED:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
@@ -62,11 +62,11 @@ public class ItemBlockCache extends ItemBlockBase {
 			return;
 		}
 		list.add(StringHelper.localize("info.cofh.capacity") + ": " + TileCache.CAPACITY[ItemHelper.getItemDamage(stack)]);
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			list.add(StringHelper.localize("info.cofh.empty"));
 			return;
 		}
-		boolean lock = stack.stackTagCompound.getBoolean("Lock");
+		boolean lock = stack.getTagCompound().getBoolean("Lock");
 
 		if (lock) {
 			list.add(StringHelper.localize("info.cofh.locked"));
@@ -75,8 +75,8 @@ public class ItemBlockCache extends ItemBlockBase {
 		}
 		list.add(StringHelper.localize("info.cofh.contents") + ":");
 
-		if (stack.stackTagCompound.hasKey("Item")) {
-			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.stackTagCompound.getCompoundTag("Item"));
+		if (stack.getTagCompound().hasKey("Item")) {
+			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
 			list.add("    " + StringHelper.BRIGHT_GREEN + stored.stackSize + " " + StringHelper.getItemName(stored));
 		}
 	}

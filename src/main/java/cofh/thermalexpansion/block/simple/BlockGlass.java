@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.simple;
 
+import codechicken.lib.raytracer.RayTracer;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.core.util.CoreUtils;
@@ -7,200 +8,180 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.Utils;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 import net.minecraft.block.Block;
+import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.EntityLiving.SpawnPlacementType;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
 public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
-	public BlockGlass() {
+    public BlockGlass() {
 
-		super(Material.glass);
-		setHardness(3.0F);
-		setResistance(200.0F);
-		setStepSound(soundTypeGlass);
-		setCreativeTab(ThermalExpansion.tabBlocks);
-		setBlockName("thermalexpansion.glass");
-	}
+        super(Material.GLASS);
+        setHardness(3.0F);
+        setResistance(200.0F);
+        setSoundType(SoundType.GLASS);
+        setCreativeTab(ThermalExpansion.tabBlocks);
+        setUnlocalizedName("thermalexpansion.glass");
+    }
 
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return getMetaFromState(state) == 1 ? 15 : 0;
+    }
 
-		return world.getBlockMetadata(x, y, z) == 1 ? 15 : 0;
-	}
+    @Override
+    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+        for (int i = 0; i < 2; i++) {
+            list.add(new ItemStack(item, 1, i));
+        }
+    }
 
-		for (int i = 0; i < 2; i++) {
-			list.add(new ItemStack(item, 1, i));
-		}
-	}
+    @Override
+    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+        if (player.isSneaking()) {
+            RayTraceResult traceResult = RayTracer.retrace(player);
+            if (Utils.isHoldingUsableWrench(player, traceResult)) {
+                if (ServerHelper.isServerWorld(world)) {
+                    dismantleBlock(player, world, pos, false);
+                    Utils.usedWrench(player, traceResult);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
 
-	@Override
-	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int hitSide, float hitX, float hitY, float hitZ) {
+    @Override
+    public int damageDropped(IBlockState state) {
 
-		if (player.isSneaking()) {
-			if (Utils.isHoldingUsableWrench(player, x, y, z)) {
-				if (ServerHelper.isServerWorld(world)) {
-					dismantleBlock(player, world, x, y, z, false);
-					Utils.usedWrench(player, x, y, z);
-				}
-				return true;
-			}
-		}
-		return false;
-	}
+        return getMetaFromState(state);
+    }
 
-	@Override
-	public int damageDropped(int i) {
+    @Override
+    public int quantityDropped(Random random) {
+        return 0;
+    }
 
-		return i;
-	}
+    @Override
+    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
+        return false;
+    }
 
-	@Override
-	public int getRenderBlockPass() {
+    @Override
+    protected boolean canSilkHarvest() {
+        return true;
+    }
 
-		return 0;
-	}
+    @Override
+    public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-	@Override
-	public int quantityDropped(Random random) {
+        return true;
+    }
 
-		return 0;
-	}
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
 
-	@Override
-	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z) {
+        return false;
+    }
 
-		return false;
-	}
+    @Override
+    public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
+        return blockState.getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+    }
 
-	@Override
-	protected boolean canSilkHarvest() {
+    //@Override
+    //public IIcon getIcon(int side, int metadata) {
+    //	if (metadata == 1) {
+    //		return TEXTURE[1];
+    //	}
+    //	return TEXTURE[0];
+    //}
 
-		return true;
-	}
+    //@Override
+    //@SideOnly(Side.CLIENT)
+    //public void registerBlockIcons(IIconRegister ir) {
+    //	TEXTURE[0] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened");
+    //	TEXTURE[1] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened_Lumium");
+    //}
 
-	@Override
-	public boolean canPlaceTorchOnTop(World world, int x, int y, int z) {
+    /* IDismantleable */
+    @Override
+    public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
+        int metadata = getMetaFromState(world.getBlockState(pos));
+        ItemStack dropBlock = new ItemStack(this, 1, metadata);
+        world.setBlockToAir(pos);
 
-		return true;
-	}
+        if (!returnDrops) {
+            float f = 0.3F;
+            double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+            EntityItem entity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
+            entity.delayBeforeCanPickup = 10;
+            world.spawnEntityInWorld(entity);
 
-	@Override
-	public boolean isOpaqueCube() {
+            CoreUtils.dismantleLog(player.getName(), this, metadata, pos);
+        }
+        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+        ret.add(dropBlock);
+        return ret;
+    }
 
-		return false;
-	}
+    @Override
+    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
+        return true;
+    }
 
-	@Override
-	public boolean renderAsNormalBlock() {
+    /* IInitializer */
+    @Override
+    public boolean preInit() {
 
-		return false;
-	}
+        return true;
+    }
 
-	@Override
-	public boolean shouldSideBeRendered(IBlockAccess world, int x, int y, int z, int side) {
+    @Override
+    public boolean initialize() {
 
-		Block block = world.getBlock(x, y, z);
-		return block == this ? false : super.shouldSideBeRendered(world, x, y, z, side);
-	}
+        glassHardened = new ItemStack(this, 1, 0);
+        glassHardenedIlluminated = new ItemStack(this, 1, 1);
 
-	@Override
-	public IIcon getIcon(int side, int metadata) {
+        ItemHelper.registerWithHandlers("blockGlassHardened", glassHardened);
+        ItemHelper.registerWithHandlers("blockGlassHardenedIlluminated", glassHardenedIlluminated);
 
-		if (metadata == 1) {
-			return TEXTURE[1];
-		}
-		return TEXTURE[0];
-	}
+        OreDictionary.registerOre("blockGlassHardened", glassHardenedIlluminated);
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
+        return true;
+    }
 
-		TEXTURE[0] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened");
-		TEXTURE[1] = ir.registerIcon("thermalexpansion:glass/Glass_Hardened_Lumium");
-	}
+    @Override
+    public boolean postInit() {
 
-	/* IDismantleable */
-	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+        return true;
+    }
 
-		int metadata = world.getBlockMetadata(x, y, z);
-		ItemStack dropBlock = new ItemStack(this, 1, metadata);
-		world.setBlockToAir(x, y, z);
+    //public static IIcon TEXTURE[] = new IIcon[2];
 
-		if (!returnDrops) {
-			float f = 0.3F;
-			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-			double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-			EntityItem entity = new EntityItem(world, x + x2, y + y2, z + z2, dropBlock);
-			entity.delayBeforeCanPickup = 10;
-			world.spawnEntityInWorld(entity);
-
-			CoreUtils.dismantleLog(player.getCommandSenderName(), this, metadata, x, y, z);
-		}
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-		ret.add(dropBlock);
-		return ret;
-	}
-
-	@Override
-	public boolean canDismantle(EntityPlayer player, World world, int i, int j, int k) {
-
-		return true;
-	}
-
-	/* IInitializer */
-	@Override
-	public boolean preInit() {
-
-		return true;
-	}
-
-	@Override
-	public boolean initialize() {
-
-		glassHardened = new ItemStack(this, 1, 0);
-		glassHardenedIlluminated = new ItemStack(this, 1, 1);
-
-		ItemHelper.registerWithHandlers("blockGlassHardened", glassHardened);
-		ItemHelper.registerWithHandlers("blockGlassHardenedIlluminated", glassHardenedIlluminated);
-
-		OreDictionary.registerOre("blockGlassHardened", glassHardenedIlluminated);
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
-		return true;
-	}
-
-	public static IIcon TEXTURE[] = new IIcon[2];
-
-	public static ItemStack glassHardened;
-	public static ItemStack glassHardenedIlluminated;
+    public static ItemStack glassHardened;
+    public static ItemStack glassHardenedIlluminated;
 
 }

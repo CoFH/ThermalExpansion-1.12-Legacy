@@ -15,6 +15,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import java.io.IOException;
+
 public class GuiExtruder extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
@@ -84,7 +86,7 @@ public class GuiExtruder extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mouseButton) {
+	protected void mouseClicked(int mX, int mY, int mouseButton) throws IOException{
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {

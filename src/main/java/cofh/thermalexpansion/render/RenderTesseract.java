@@ -1,168 +1,218 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.lighting.LightModel;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.block.ICCBlockRenderer;
+import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.Translation;
 import cofh.core.block.BlockCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.core.render.ShaderHelper;
 import cofh.lib.render.RenderHelper;
-import cofh.repack.codechicken.lib.lighting.LightModel;
-import cofh.repack.codechicken.lib.render.CCModel;
-import cofh.repack.codechicken.lib.render.CCRenderState;
-import cofh.repack.codechicken.lib.vec.Cuboid6;
-import cofh.repack.codechicken.lib.vec.Translation;
-import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.ender.TileTesseract;
-import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.item.Item;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import org.lwjgl.opengl.GL11;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+
 @SideOnly(Side.CLIENT)
-public class RenderTesseract implements ISimpleBlockRenderingHandler, IItemRenderer {
+public class RenderTesseract implements ICCBlockRenderer, IItemRenderer {
 
-	public static final RenderTesseract instance = new RenderTesseract();
+    public static final RenderTesseract instance = new RenderTesseract();
 
-	static IIcon[] textureCenter = new IIcon[2];
-	static IIcon[] textureFrame = new IIcon[4];
-	static CCModel modelCenter = CCModel.quadModel(24);
-	static CCModel modelFrame = CCModel.quadModel(48);
+    static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
+    static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[4];
+    static CCModel modelCenter = CCModel.quadModel(24);
+    static CCModel modelFrame = CCModel.quadModel(48);
 
-	static {
-		TEProps.renderIdEnder = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(instance);
+    static {
+        //TEProps.renderIdEnder = RenderingRegistry.getNextAvailableRenderId();
+        //RenderingRegistry.registerBlockHandler(instance);
 
-		if (ShaderHelper.useShaders()) {
-			RenderTesseractStarfield.register();
-		}
+        if (ShaderHelper.useShaders()) {
+            RenderTesseractStarfield.register();
+        }
 
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTesseract), instance);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTesseract), instance);
 
-		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
+        modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
-		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
-		double inset = 0.1875;
-		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
-		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
-		modelFrame.computeNormals();
-		for (int i = 24; i < 48; i++) {
-			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
-		}
-		modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
-	}
+        Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
+        double inset = 0.1875;
+        modelFrame = CCModel.quadModel(48).generateBlock(0, box);
+        CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
+        modelFrame.computeNormals();
+        for (int i = 24; i < 48; i++) {
+            modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
+        }
+        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+    }
 
-	public static void initialize() {
+    public static void initialize() {
 
-		textureCenter[0] = IconRegistry.getIcon("FluidEnder");
-		textureCenter[1] = IconRegistry.getIcon("SkyEnder");
-		textureFrame[0] = IconRegistry.getIcon("Tesseract");
-		textureFrame[1] = IconRegistry.getIcon("TesseractInner");
-		textureFrame[2] = IconRegistry.getIcon("TesseractActive");
-		textureFrame[3] = IconRegistry.getIcon("TesseractInnerActive");
-	}
+        textureCenter[0] = IconRegistry.getIcon("FluidEnder");
+        textureCenter[1] = IconRegistry.getIcon("SkyEnder");
+        textureFrame[0] = IconRegistry.getIcon("Tesseract");
+        textureFrame[1] = IconRegistry.getIcon("TesseractInner");
+        textureFrame[2] = IconRegistry.getIcon("TesseractActive");
+        textureFrame[3] = IconRegistry.getIcon("TesseractInnerActive");
+    }
 
-	public void renderCenter(int metadata, TileTesseract tile, double x, double y, double z) {
+    public void renderCenter(CCRenderState ccrs, int metadata, TileTesseract tile, double x, double y, double z) {
 
-		if (tile != null && tile.isActive) {
-			modelCenter.render(x, y, z, RenderUtils.getIconTransformation(textureCenter[1]));
-		} else {
-			modelCenter.render(x, y, z, RenderUtils.getIconTransformation(textureCenter[0]));
-		}
-	}
+        if (tile != null && tile.isActive) {
+            modelCenter.render(ccrs, x, y, z, RenderUtils.getIconTransformation(textureCenter[1]));
+        } else {
+            modelCenter.render(ccrs, x, y, z, RenderUtils.getIconTransformation(textureCenter[0]));
+        }
+    }
 
-	public void renderFrame(int metadata, TileTesseract tile, double x, double y, double z) {
+    public void renderFrame(CCRenderState ccrs, int metadata, TileTesseract tile, double x, double y, double z) {
 
-		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		for (int i = 0; i < 6; i++) {
-			if (tile != null && tile.isActive && tile.redstoneControlOrDisable()) {
-				modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[2]));
-				modelFrame.render(i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[3]));
-			} else {
-				modelFrame.render(i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[0]));
-				modelFrame.render(i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[1]));
-			}
-		}
-	}
+        Translation trans = new Translation(x, y, z);
+        for (int i = 0; i < 6; i++) {
+            if (tile != null && tile.isActive && tile.redstoneControlOrDisable()) {
+                modelFrame.render(ccrs, i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[2]));
+                modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[3]));
+            } else {
+                modelFrame.render(ccrs, i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[0]));
+                modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[1]));
+            }
+        }
+    }
 
 	/* ISimpleBlockRenderingHandler */
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    //@Override
+    //public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    //}
 
-	}
+    @Override
+    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {
+    }
 
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    @Override
+    public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, VertexBuffer buffer) {
+        TileEntity tile = world.getTileEntity(pos);
+        if (!(tile instanceof TileTesseract)) {
+            return false;
+        }
+        TileTesseract theTile = (TileTesseract) tile;
 
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if (!(tile instanceof TileTesseract)) {
-			return false;
-		}
-		TileTesseract theTile = (TileTesseract) tile;
+        RenderUtils.preWorldRender(world, pos);
+        CCRenderState ccrs = CCRenderState.instance();
+        ccrs.bind(buffer);
 
-		RenderUtils.preWorldRender(world, x, y, z);
-		if (BlockCoFHBase.renderPass == 0) {
-			renderFrame(0, theTile, x, y, z);
-		} else {
-			renderCenter(0, theTile, x, y, z);
-		}
-		return true;
-	}
+        if (BlockCoFHBase.renderPass == 0) {
+            renderFrame(ccrs, 0, theTile, pos.getX(), pos.getY(), pos.getZ());
+        } else {
+            renderCenter(ccrs, 0, theTile, pos.getX(), pos.getY(), pos.getZ());
+        }
+        return true;
+    }
 
-	@Override
-	public boolean shouldRender3DInInventory(int modelId) {
+    @Override
+    public void renderBrightness(IBlockState state, float brightness) {
+    }
 
-		return true;
-	}
+    @Override
+    public void registerTextures(TextureMap map) {
+    }
 
-	@Override
-	public int getRenderId() {
+    //@Override
+    //public boolean shouldRender3DInInventory(int modelId) {
+    //	return true;
+    //}
 
-		return TEProps.renderIdEnder;
-	}
+    //@Override
+    //public int getRenderId() {
+    //	return TEProps.renderIdEnder;
+    //}
 
 	/* IItemRenderer */
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    //@Override
+    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    //	return true;
+    //}
 
-		return true;
-	}
+    //@Override
+    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    //	return true;
+    //}
 
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    @Override
+    public void renderItem(ItemStack item) {
 
-		return true;
-	}
+        GlStateManager.pushMatrix();
+        double offset = -0.5;
+        //if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+        //	offset = 0;
+        //}
+        int metadata = item.getItemDamage();
+        RenderUtils.preItemRender();
 
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+        CCRenderState ccrs = CCRenderState.instance();
 
-		GL11.glPushMatrix();
-		double offset = -0.5;
-		if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-			offset = 0;
-		}
-		int metadata = item.getItemDamage();
-		RenderUtils.preItemRender();
+        ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.ITEM);
+        renderFrame(ccrs, metadata, null, offset, offset, offset);
+        renderCenter(ccrs, metadata, null, offset, offset, offset);
+        ccrs.draw();
 
-		CCRenderState.startDrawing();
-		renderFrame(metadata, null, offset, offset, offset);
-		renderCenter(metadata, null, offset, offset, offset);
-		CCRenderState.draw();
+        RenderUtils.postItemRender();
+        GlStateManager.popMatrix();
+    }
 
-		RenderUtils.postItemRender();
-		GL11.glPopMatrix();
-	}
+    @Override
+    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+        return new ArrayList<BakedQuad>();
+    }
 
+    @Override
+    public boolean isAmbientOcclusion() {
+        return false;
+    }
+
+    @Override
+    public boolean isGui3d() {
+        return false;
+    }
+
+    @Override
+    public boolean isBuiltInRenderer() {
+        return true;
+    }
+
+    @Override
+    public TextureAtlasSprite getParticleTexture() {
+        return null;
+    }
+
+    @Override
+    public ItemCameraTransforms getItemCameraTransforms() {
+        return ItemCameraTransforms.DEFAULT;
+    }
+
+    @Override
+    public ItemOverrideList getOverrides() {
+        return ItemOverrideList.NONE;
+    }
 }

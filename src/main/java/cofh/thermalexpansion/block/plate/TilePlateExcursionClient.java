@@ -1,23 +1,19 @@
 package cofh.thermalexpansion.block.plate;
 
-import cofh.repack.codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.Vector3;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
-import net.minecraft.util.MathHelper;
+import net.minecraft.client.particle.ParticleFirework;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.MathHelper;
 
-public class TilePlateExcursionClient extends TilePlateExcursion {
+public class TilePlateExcursionClient extends TilePlateExcursion implements ITickable {
 
 	int ticksElapsed = 0;
 
-	@Override
-	public boolean canUpdate() {
-
-		return true;
-	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (realDist > -1) {
 			ticksElapsed++;
@@ -30,13 +26,13 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 			double radPer = Math.PI / 6;
 			float mul = 2.4F;
 			double[] m = fixPosition(.5, .025 + (redstoneControlOrDisable() ? 0 : realDist + .65), .5);
-			Vector3 vecTip = vecMag.copy().add(xCoord + m[0], yCoord + m[1], zCoord + m[2]);
+			Vector3 vecTip = vecMag.copy().add(getPos()).add(m[0], m[1], m[2]);
 			for (int i = 0; i < 2; ++i) {
 				if (((ticksElapsed + i * 2) & 3) == 3) continue;
 				double rad = radPer * (i * 6 + (ticksElapsed) * 0.4);
 				Vector3 vecRot = vecMag.copy().crossProduct(Vector3.one).multiply(mul).rotate(rad, vecMag).add(vecTip);
 				// vecTip.add(vecMag);
-				EntityFireworkSparkFX spark = new EntityFireworkSparkFX(worldObj, vecRot.x, vecRot.y, vecRot.z, vecMag.x, vecMag.y, vecMag.z,
+                ParticleFirework.Spark spark = new ParticleFirework.Spark(worldObj, vecRot.x, vecRot.y, vecRot.z, vecMag.x, vecMag.y, vecMag.z,
 						Minecraft.getMinecraft().effectRenderer) {
 
 					{
@@ -53,9 +49,8 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 				        this.particleBlue = blue = p_70538_3_;
 				    }
 
-				    @Override
+				    //@Override
 				    public void setEating(boolean a) {
-
 						if (this.hasFadeColour) {
 							this.particleRed = this.fadeColourRed;
 							this.particleGreen = this.fadeColourGreen;
@@ -71,7 +66,7 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 						this.prevPosZ = this.posZ;
 
 						if (this.particleAge >= this.particleMaxAge || this.isCollided) {
-							this.setDead();
+							this.setExpired();
 						}
 						int mult = TilePlateExcursionClient.this.redstoneControlOrDisable() ? 1 : -1;
 						this.particleAge += mult;
@@ -94,14 +89,14 @@ public class TilePlateExcursionClient extends TilePlateExcursion {
 							}
 						}
 
-						this.setParticleTextureIndex(this.baseTextureIndex + (7 - this.particleAge * 8 / this.particleMaxAge));
+						this.setParticleTextureIndex(this.textureIdx + (7 - this.particleAge * 8 / this.particleMaxAge));
 						this.moveEntity(mult * this.motionX, mult * this.motionY, mult * this.motionZ);
 					}
 				};
-				spark.setColour(0xFF7700);
-				spark.setFadeColour(0xFFBB88);
+				spark.setColor(0xFF7700);
+				spark.setColorFade(0xFFBB88);
 				if (!redstoneControlOrDisable()) {
-					spark.setEating(true);
+					//TODO spark.setEating(true);
 				}
 				Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 			}

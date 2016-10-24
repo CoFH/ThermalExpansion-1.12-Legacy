@@ -1,9 +1,10 @@
 package cofh.thermalexpansion.plugins.nei.handlers;
 
 import codechicken.nei.NEIClientConfig;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
+import codechicken.nei.api.stack.PositionedStack;
 import codechicken.nei.recipe.ShapedRecipeHandler;
+import codechicken.nei.util.LogHelper;
+import codechicken.nei.util.NEIServerUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.simple.BlockFrame;
@@ -23,14 +24,14 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 
 	public static RecipeHandlerCraftingMachine instance = new RecipeHandlerCraftingMachine();
 
-	public static PositionedStack output = new PositionedStack(new ItemStack(Blocks.stone), 119, 24);
+	public static PositionedStack output = new PositionedStack(new ItemStack(Blocks.STONE), 119, 24);
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 
 		if (outputId.equals("crafting")) {
-			for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+			for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 				if (r.getClass() != NEIRecipeWrapper.class) {
 					continue;
 				}
@@ -64,7 +65,7 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
 
-		for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+		for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 			if (r.getClass() != NEIRecipeWrapper.class) {
 				continue;
 			}
@@ -97,7 +98,7 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
 
-		for (IRecipe r : (List<IRecipe>) CraftingManager.getInstance().getRecipeList()) {
+		for (IRecipe r : CraftingManager.getInstance().getRecipeList()) {
 			if (r.getClass() != NEIRecipeWrapper.class) {
 				continue;
 			}
@@ -141,7 +142,7 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 			width = 3;
 			height = 3;
 		} catch (Exception e) {
-			NEIClientConfig.logger.error("Error loading recipe", e);
+			LogHelper.errorError("Error loading recipe", e);
 			return null;
 		}
 
@@ -188,13 +189,13 @@ public class RecipeHandlerCraftingMachine extends ShapedRecipeHandler {
 			ItemStack toDisplay = result.item.copy();
 
 			if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineBasic)) {
-				toDisplay.stackTagCompound.setByte("Level", (byte) 0);
+				toDisplay.getTagCompound().setByte("Level", (byte) 0);
 			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineHardened)) {
-				toDisplay.stackTagCompound.setByte("Level", (byte) 1);
+				toDisplay.getTagCompound().setByte("Level", (byte) 1);
 			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineReinforced)) {
-				toDisplay.stackTagCompound.setByte("Level", (byte) 2);
+				toDisplay.getTagCompound().setByte("Level", (byte) 2);
 			} else if (ItemHelper.itemsEqualWithMetadata(stack, BlockFrame.frameMachineResonant)) {
-				toDisplay.stackTagCompound.setByte("Level", (byte) 3);
+				toDisplay.getTagCompound().setByte("Level", (byte) 3);
 			}
 			output.item = toDisplay;
 			return output;

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
@@ -9,7 +10,9 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
 
@@ -21,8 +24,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -126,9 +127,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	@Override
-	public IIcon getActiveIcon() {
+	public TextureAtlasSprite getActiveIcon() {
 
-		return TFFluids.fluidSteam.getIcon();
+		return TextureUtils.getTexture(TFFluids.fluidSteam.getStill());
 	}
 
 	/* GUI METHODS */
@@ -179,13 +180,14 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("FuelMax", currentFuelRF);
 		nbt.setTag("SteamTank", steamTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("WaterTank", waterTank.writeToNBT(new NBTTagCompound()));
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -235,9 +237,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+		if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return 0;
 		}
 		if (resource.getFluid() == steam.getFluid()) {
@@ -250,9 +252,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+		if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
 		if (resource.getFluid() == FluidRegistry.WATER) {
@@ -262,7 +264,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		if (!augmentCoilDuct && from.ordinal() == facing) {
 			return null;
@@ -271,7 +273,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() };
 	}
@@ -285,9 +287,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */
@@ -297,9 +299,9 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	static int blockCoalRF = coalRF * 10;
 	static int otherRF = woodRF / 3;
 
-	static ItemStack coal = new ItemStack(Items.coal, 1, 0);
-	static ItemStack charcoal = new ItemStack(Items.coal, 1, 1);
-	static ItemStack blockCoal = new ItemStack(Blocks.coal_block);
+	static ItemStack coal = new ItemStack(Items.COAL, 1, 0);
+	static ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
+	static ItemStack blockCoal = new ItemStack(Blocks.COAL_BLOCK);
 
 	static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
 
@@ -339,10 +341,10 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 		}
 		Item item = stack.getItem();
 
-		if (stack.getItem() instanceof ItemBlock && ((ItemBlock) item).field_150939_a.getMaterial() == Material.wood) {
+		if (stack.getItem() instanceof ItemBlock && ((ItemBlock) item).block.blockMaterial == Material.WOOD) {
 			return woodRF;
 		}
-		if (item == Items.stick || item instanceof ItemBlock && ((ItemBlock) item).field_150939_a == Blocks.sapling) {
+		if (item == Items.STICK || item instanceof ItemBlock && ((ItemBlock) item).block == Blocks.SAPLING) {
 			return otherRF;
 		}
 		return GameRegistry.getFuelValue(stack) * CoFHProps.RF_PER_MJ * 3 / 2;

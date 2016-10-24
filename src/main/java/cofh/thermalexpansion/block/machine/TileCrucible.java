@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
@@ -15,13 +16,13 @@ import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -90,7 +91,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	protected boolean hasValidInput() {
 
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
-		return recipe == null ? false : recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
 
 	@Override
@@ -99,11 +100,11 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy();
 		processRem = processMax;
 
-		int prevID = renderFluid.getFluidID();
+		String prevID = renderFluid.getFluid().getName();
 		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
 		renderFluid.amount = 0;
 
-		if (prevID != renderFluid.getFluidID()) {
+		if (prevID != renderFluid.getFluid().getName()) {
 			sendFluidPacket();
 		}
 	}
@@ -138,7 +139,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -172,14 +173,14 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
 		transferOutputFluid();
 
-		super.updateEntity();
+		super.update();
 	}
 
 	@Override
@@ -233,13 +234,14 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -283,14 +285,14 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(getWorld(),getPos());
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? CrucibleManager.recipeExists(stack) : true;
+		return slot != 0 || CrucibleManager.recipeExists(stack);
 	}
 
 	/* ITilePacketHandler */
@@ -308,15 +310,15 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
+		if (from != null && sideCache[from.ordinal()] != 2) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -326,29 +328,29 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (from != ForgeDirection.UNKNOWN && sideCache[from.ordinal()] != 2) {
+		if (from != null && sideCache[from.ordinal()] != 2) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		// return sideCache[from.ordinal()] == 2;
 		return true;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		// if (sideCache[from.ordinal()] != 2) {
 		// return CoFHProps.EMPTY_TANK_INFO;
@@ -358,7 +360,7 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 
 	/* ISidedTexture */
 	@Override
-	public IIcon getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
 			if (side == 0) {

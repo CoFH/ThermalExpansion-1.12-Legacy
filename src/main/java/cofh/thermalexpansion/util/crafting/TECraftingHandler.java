@@ -15,12 +15,13 @@ import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -130,14 +131,14 @@ public class TECraftingHandler {
 				String oreName = "ore" + StringHelper.titleCase(oreType);
 				String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
-				ArrayList<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-				ArrayList<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+				List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
+                List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
 
 				if (registeredOre.size() <= 0 || registeredIngot.size() <= 0) {
 					continue;
 				}
 				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
-				GameRegistry.addRecipe(ShapelessRecipe(ingot, new Object[] { oreName, "dustPyrotheum" }));
+				GameRegistry.addRecipe(ShapelessRecipe(ingot, oreName, "dustPyrotheum"));
 			}
 		}
 	}

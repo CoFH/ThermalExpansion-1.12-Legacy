@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.strongbox;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.enchantment.CoFHEnchantment;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -10,7 +11,12 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +38,11 @@ public class BlockStrongbox extends BlockTEBase {
 
 	public BlockStrongbox() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(20.0F);
 		setResistance(120.0F);
-		setBlockName("thermalexpansion.strongbox");
-		setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+		setUnlocalizedName("thermalexpansion.strongbox");
+		//setBlockBounds(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
 	}
 
 	@Override
@@ -65,56 +71,53 @@ public class BlockStrongbox extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		if (world.getBlockMetadata(x, y, z) == 0 && !enable[0]) {
-			world.setBlockToAir(x, y, z);
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+        IBlockState state1 = world.getBlockState(pos);
+		if (getMetaFromState(state1) == 0 && !enable[0]) {
+			world.setBlockToAir(pos);
 			return;
 		}
-		if (stack.stackTagCompound != null) {
-			TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
+		if (stack.getTagCompound() != null) {
+			TileStrongbox tile = (TileStrongbox) world.getTileEntity(pos);
 
-			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, stack);
+			tile.enchant = (byte) EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding, stack);
 			tile.createInventory();
 
-			if (stack.stackTagCompound.hasKey("Inventory")) {
-				tile.readInventoryFromNBT(stack.stackTagCompound);
+			if (stack.getTagCompound().hasKey("Inventory")) {
+				tile.readInventoryFromNBT(stack.getTagCompound());
 			}
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public float getBlockHardness(World world, int x, int y, int z) {
-
-		return HARDNESS[world.getBlockMetadata(x, y, z)];
+    @Override
+    public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+		return HARDNESS[getMetaFromState(blockState)];
 	}
 
-	@Override
-	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-
-		return RESISTANCE[world.getBlockMetadata(x, y, z)];
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
 	}
 
+    @Override
+    public EnumBlockRenderType getRenderType(IBlockState state) {
+        return EnumBlockRenderType.INVISIBLE;
+    }
+
 	@Override
-	public int getRenderType() {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		return -1;
-	}
-
-	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
-
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileStrongbox tile = (TileStrongbox) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileStrongbox tile = (TileStrongbox) world.getTileEntity(pos);
 
 		if (tile != null) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			if (tile.enchant > 0) {
-				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.holding.effectId, tile.enchant);
+				CoFHEnchantment.addEnchantment(tag, CoFHEnchantment.holding, tile.enchant);
 			}
 			tile.writeInventoryToNBT(tag);
 		}
@@ -123,24 +126,26 @@ public class BlockStrongbox extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
 
-		NBTTagCompound tag = getItemStackTag(world, x, y, z);
+		NBTTagCompound tag = getItemStackTag(world, pos);
 
-		TileEntity tile = world.getTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileInventory) {
 			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
+		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
 	}
 
 	@Override
-	public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
+	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
 
-		if (world.getBlockMetadata(x, y, z) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+        IBlockState state = world.getBlockState(pos);
+
+		if (getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
 			return false;
 		}
-		return super.canDismantle(player, world, x, y, z);
+		return super.canDismantle(player, world, pos);
 	}
 
 	/* IInitializer */
@@ -156,11 +161,11 @@ public class BlockStrongbox extends BlockTEBase {
 		strongboxReinforced = new ItemStack(this, 1, Types.REINFORCED.ordinal());
 		strongboxResonant = new ItemStack(this, 1, Types.RESONANT.ordinal());
 
-		GameRegistry.registerCustomItemStack("strongboxCreative", strongboxCreative);
-		GameRegistry.registerCustomItemStack("strongboxBasic", strongboxBasic);
-		GameRegistry.registerCustomItemStack("strongboxHardened", strongboxHardened);
-		GameRegistry.registerCustomItemStack("strongboxReinforced", strongboxReinforced);
-		GameRegistry.registerCustomItemStack("strongboxResonant", strongboxResonant);
+		ItemStackRegistry.registerCustomItemStack("strongboxCreative", strongboxCreative);
+        ItemStackRegistry.registerCustomItemStack("strongboxBasic", strongboxBasic);
+        ItemStackRegistry.registerCustomItemStack("strongboxHardened", strongboxHardened);
+        ItemStackRegistry.registerCustomItemStack("strongboxReinforced", strongboxReinforced);
+        ItemStackRegistry.registerCustomItemStack("strongboxResonant", strongboxResonant);
 
 		return true;
 	}
@@ -169,16 +174,14 @@ public class BlockStrongbox extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(strongboxBasic, new Object[] { " I ", "IXI", " I ", 'I', "ingotTin", 'X', Blocks.chest }));
+			GameRegistry.addRecipe(ShapedRecipe(strongboxBasic, " I ", "IXI", " I ", 'I', "ingotTin", 'X', Blocks.CHEST));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', strongboxBasic }));
-			GameRegistry
-					.addRecipe(ShapedRecipe(strongboxHardened, new Object[] { "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.chest, 'Y', "ingotTin" }));
+			GameRegistry.addRecipe(ShapedRecipe(strongboxHardened, "IYI", "YXY", "IYI", 'I', "ingotInvar", 'X', Blocks.CHEST, 'Y', "ingotTin"));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced,
-					new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "blockGlassHardened" }));
+			GameRegistry.addRecipe(new RecipeUpgrade(strongboxReinforced, new Object[] { " G ", "GXG", " G ", 'X', strongboxHardened, 'G', "blockGlassHardened" }));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
 			GameRegistry.addRecipe(new RecipeUpgrade(strongboxResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', strongboxReinforced }));
@@ -191,7 +194,7 @@ public class BlockStrongbox extends BlockTEBase {
 		return true;
 	}
 
-	public static enum Types {
+	public enum Types {
 		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 

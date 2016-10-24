@@ -1,8 +1,7 @@
 package cofh.thermalexpansion.util;
 
-import buildcraft.api.tools.IToolWrench;
-import buildcraft.api.transport.IPipeTile;
 
+import codechicken.lib.util.ItemUtils;
 import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
 import cofh.api.transport.IItemDuct;
@@ -16,8 +15,11 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class Utils {
 
@@ -28,14 +30,14 @@ public class Utils {
 	}
 
 	/* TILE FUNCTIONS - INSERTION */
-	public static int addToAdjacentInsertion(TileEntity tile, int from, ItemStack stack) {
+	public static int addToAdjacentInsertion(TileEntity tile, EnumFacing from, ItemStack stack) {
 
-		return addToAdjacentInsertion(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), from, stack);
+		return addToAdjacentInsertion(tile.getPos(), tile.getWorld(), from, stack);
 	}
 
-	public static int addToAdjacentInsertion(int x, int y, int z, World worldObj, int from, ItemStack stack) {
+	public static int addToAdjacentInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
 
-		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, from);
+		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, pos, from);
 
 		if (!InventoryHelper.isInsertion(theTile)) {
 			return stack.stackSize;
@@ -44,7 +46,7 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInsertion(TileEntity theTile, int from, ItemStack stack) {
+	public static int addToInsertion(TileEntity theTile, EnumFacing from, ItemStack stack) {
 
 		if (!(InventoryHelper.isInsertion(theTile))) {
 			return stack.stackSize;
@@ -54,9 +56,9 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInsertion(int xCoord, int yCoord, int zCoord, World worldObj, int from, ItemStack stack) {
+	public static int addToInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
 
-		TileEntity theTile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		TileEntity theTile = worldObj.getTileEntity(pos);
 
 		if (!InventoryHelper.isInsertion(theTile)) {
 			return stack.stackSize;
@@ -66,7 +68,7 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInsertion(IInventory tile, int from, ItemStack stack) {
+	public static int addToInsertion(IInventory tile, EnumFacing from, ItemStack stack) {
 
 		if (!InventoryHelper.isInsertion(tile)) {
 			return stack.stackSize;
@@ -76,19 +78,19 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int canAddToInventory(int xCoord, int yCoord, int zCoord, World worldObj, int from, ItemStack stack) {
+	public static int canAddToInventory(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
 
-		TileEntity tile = worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		TileEntity tile = worldObj.getTileEntity(pos);
 
 		if (!InventoryHelper.isInventory(tile)) {
 			return stack.stackSize;
 		}
-		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from ^ 1);
+		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from.getOpposite());
 
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToPipeTile(TileEntity theTile, int side, ItemStack stack) {
+	public static int addToPipeTile(TileEntity theTile, EnumFacing side, ItemStack stack) {
 
 		if (bcPipeExists) {
 			return addToPipeTile_do(theTile, side, stack);
@@ -96,13 +98,13 @@ public class Utils {
 		return 0;
 	}
 
-	private static int addToPipeTile_do(TileEntity tile, int side, ItemStack stack) {
+	private static int addToPipeTile_do(TileEntity tile, EnumFacing side, ItemStack stack) {
 
-		if (tile instanceof IPipeTile) {
-			@SuppressWarnings("deprecation")
-			int used = ((IPipeTile) tile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
-			return used;
-		}
+		//if (tile instanceof IPipeTile) {
+		//	@SuppressWarnings("deprecation")
+		//	int used = ((IPipeTile) tile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
+		//	return used;
+		//}
 		return 0;
 	}
 
@@ -121,81 +123,96 @@ public class Utils {
 	// }
 
 	/* QUERY FUNCTIONS */
-	public static boolean isAdjacentInput(TileEntity tile, int side) {
+	public static boolean isAdjacentInput(TileEntity tile, EnumFacing side) {
 
-		return isAdjacentInput(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), side);
+		return isAdjacentInput(tile.getPos(), tile.getWorld(), side);
 	}
 
-	public static boolean isAdjacentInput(int x, int y, int z, World worldObj, int side) {
+	public static boolean isAdjacentInput(BlockPos pos, World worldObj, EnumFacing side) {
 
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
 
 		return isAccessibleInput(tile, side);
 	}
 
-	public static boolean isAdjacentOutput(TileEntity tile, int side) {
+	public static boolean isAdjacentOutput(TileEntity tile, EnumFacing side) {
 
-		return isAdjacentOutput(tile.xCoord, tile.yCoord, tile.zCoord, tile.getWorldObj(), side);
+		return isAdjacentOutput(tile.getPos(), tile.getWorld(), side);
 	}
 
-	public static boolean isAdjacentOutput(int x, int y, int z, World worldObj, int side) {
+	public static boolean isAdjacentOutput(BlockPos pos, World worldObj, EnumFacing side) {
 
-		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, x, y, z, side);
+		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
 
 		return isAccessibleOutput(tile, side);
 	}
 
-	public static boolean isAccessibleInput(TileEntity tile, int side) {
+	public static boolean isAccessibleInput(TileEntity tile, EnumFacing side) {
 
-		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]).length <= 0) {
+		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getSlotsForFace(side.getOpposite()).length <= 0) {
+			return false;
+		}
+        return tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0;
+    }
+
+	public static boolean isAccessibleOutput(TileEntity tile, EnumFacing side) {
+
+		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getSlotsForFace(side.getOpposite()).length <= 0) {
 			return false;
 		}
 		if (tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0) {
 			return true;
 		}
-		return false;
-	}
-
-	public static boolean isAccessibleOutput(TileEntity tile, int side) {
-
-		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getAccessibleSlotsFromSide(BlockHelper.SIDE_OPPOSITE[side]).length <= 0) {
-			return false;
-		}
-		if (tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0) {
-			return true;
-		}
-		if (tile instanceof IItemDuct) {
-			return true;
-		}
-		return false;
-	}
+        return tile instanceof IItemDuct;
+    }
 
 	public static boolean isHoldingBlock(EntityPlayer player) {
-
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
+        ItemStack held = ItemUtils.getHeldStack(player);
+        if (held == null){
+            return false;
+        }
+        Item equipped = held.getItem();
 		return equipped instanceof ItemBlock;
 	}
 
-	public static boolean isHoldingUsableWrench(EntityPlayer player, int x, int y, int z) {
+    public static boolean isHoldingUsableWrench(EntityPlayer player, RayTraceResult traceResult) {
 
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-		if (equipped instanceof IToolHammer) {
-			return ((IToolHammer) equipped).isUsable(player.getCurrentEquippedItem(), player, x, y, z);
-		} else if (bcWrenchExists) {
-			return canHandleBCWrench(equipped, player, x, y, z);
-		}
-		return false;
-	}
+        EnumHand hand = EnumHand.MAIN_HAND;
+        ItemStack stack = player.getHeldItem(hand);
+        if (stack == null) {
+            hand = EnumHand.OFF_HAND;
+            stack = player.getHeldItem(hand);
+        }
+        if (stack == null) {
+            return false;
+        }
+        if (stack.getItem() instanceof IToolHammer) {
+            BlockPos pos = traceResult.getBlockPos();
+            return ((IToolHammer) stack.getItem()).isUsable(stack, player, pos.getX(), pos.getY(), pos.getZ());
+        } else if (bcWrenchExists) {
+            return canHandleBCWrench(player, hand, stack, traceResult);
+        }
+        return false;
+    }
 
-	public static void usedWrench(EntityPlayer player, int x, int y, int z) {
+    public static void usedWrench(EntityPlayer player, RayTraceResult traceResult) {
 
-		Item equipped = player.getCurrentEquippedItem() != null ? player.getCurrentEquippedItem().getItem() : null;
-		if (equipped instanceof IToolHammer) {
-			((IToolHammer) equipped).toolUsed(player.getCurrentEquippedItem(), player, x, y, z);
-		} else if (bcWrenchExists) {
-			bcWrenchUsed(equipped, player, x, y, z);
-		}
-	}
+        EnumHand hand = EnumHand.MAIN_HAND;
+        ItemStack stack = player.getHeldItem(hand);
+        if (stack == null) {
+            hand = EnumHand.OFF_HAND;
+            stack = player.getHeldItem(hand);
+        }
+        if (stack == null) {
+            return;
+        }
+        if (stack.getItem() instanceof IToolHammer) {
+            BlockPos pos = traceResult.getBlockPos();
+            ((IToolHammer) stack.getItem()).toolUsed(stack, player, pos.getX(), pos.getY(), pos.getZ());
+        } else if (bcWrenchExists) {
+            bcWrenchUsed(player, hand, stack, traceResult);
+        }
+    }
 
 	// BCHelper {
 	private static boolean bcWrenchExists = false;
@@ -216,17 +233,17 @@ public class Utils {
 		}
 	}
 
-	private static boolean canHandleBCWrench(Item item, EntityPlayer p, int x, int y, int z) {
+    private static boolean canHandleBCWrench(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult result) {
 
-		return item instanceof IToolWrench && ((IToolWrench) item).canWrench(p, x, y, z);
-	}
+        return false;//wrench.getItem() instanceof IToolWrench && ((IToolWrench) wrench.getItem()).canWrench(player, hand, wrench, result);
+    }
 
-	private static void bcWrenchUsed(Item item, EntityPlayer p, int x, int y, int z) {
+    private static void bcWrenchUsed(EntityPlayer player, EnumHand hand, ItemStack wrench, RayTraceResult result) {
 
-		if (item instanceof IToolWrench) {
-			((IToolWrench) item).wrenchUsed(p, x, y, z);
-		}
-	}
+        //if (wrench.getItem() instanceof IToolWrench) {
+        //    ((IToolWrench) wrench.getItem()).wrenchUsed(player, hand, wrench, result);
+        //}
+    }
 
 	public static boolean isPipeTile(TileEntity tile) {
 
@@ -235,7 +252,7 @@ public class Utils {
 
 	private static boolean isPipeTile_do(TileEntity tile) {
 
-		return tile instanceof IPipeTile;
+		return false;//tile instanceof IPipeTile;
 	}
 
 	// }

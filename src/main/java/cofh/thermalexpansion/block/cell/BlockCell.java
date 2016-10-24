@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.cell;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+
+import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgradeOverride;
@@ -16,12 +18,13 @@ import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.TFItems;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.List;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -31,19 +34,17 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 
 public class BlockCell extends BlockTEBase {
 
 	public BlockCell() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(20.0F);
 		setResistance(120.0F);
-		setBlockName("thermalexpansion.cell");
+		setUnlocalizedName("thermalexpansion.cell");
 	}
 
 	@Override
@@ -73,19 +74,18 @@ public class BlockCell extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		if (world.getBlockMetadata(x, y, z) == 0 && !enable[0]) {
-			world.setBlockToAir(x, y, z);
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		if (getMetaFromState(state) == 0 && !enable[0]) {
+			world.setBlockToAir(pos);
 			return;
 		}
-		if (stack.stackTagCompound != null) {
-			TileCell tile = (TileCell) world.getTileEntity(x, y, z);
+		if (stack.getTagCompound() != null) {
+			TileCell tile = (TileCell) world.getTileEntity(pos);
 
-			tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
-			tile.energySend = stack.stackTagCompound.getInteger("Send");
-			tile.energyReceive = stack.stackTagCompound.getInteger("Recv");
+			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+			tile.energySend = stack.getTagCompound().getInteger("Send");
+			tile.energyReceive = stack.getTagCompound().getInteger("Recv");
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
 			int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -98,34 +98,32 @@ public class BlockCell extends BlockTEBase {
 			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public float getBlockHardness(World world, int x, int y, int z) {
-
-		return HARDNESS[world.getBlockMetadata(x, y, z)];
+    @Override
+    public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+		return HARDNESS[getMetaFromState(blockState)];
 	}
 
-	@Override
-	public float getExplosionResistance(Entity entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ) {
-
-		return RESISTANCE[world.getBlockMetadata(x, y, z)];
+    @Override
+    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
 	}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	public int getRenderType() {
 
 		return TEProps.renderIdCell;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
@@ -133,18 +131,17 @@ public class BlockCell extends BlockTEBase {
 	}
 
 	@Override
-	public boolean hasComparatorInputOverride() {
+	public boolean hasComparatorInputOverride(IBlockState state) {
 
 		return true;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(int side, int metadata) {
 
 		return IconRegistry.getIcon("Cell" + 2 * metadata);
@@ -178,13 +175,13 @@ public class BlockCell extends BlockTEBase {
 		IconRegistry.addIcon(TEXTURE_CB + 2, "thermalexpansion:cell/Cell_Config_Blue_CB", ir);
 
 		IconRegistry.addIcon("StorageRedstone", "thermalexpansion:cell/Cell_Center_Solid", ir);
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileCell tile = (TileCell) world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileCell tile = (TileCell) world.getTileEntity(pos);
 
 		if (tile != null) {
 			if (tag == null) {
@@ -192,7 +189,7 @@ public class BlockCell extends BlockTEBase {
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
 
-			tag.setInteger("Energy", tile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tag.setInteger("Energy", tile.getEnergyStored(null));
 			tag.setInteger("Send", tile.energySend);
 			tag.setInteger("Recv", tile.energyReceive);
 		}
@@ -201,12 +198,12 @@ public class BlockCell extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public boolean canDismantle(EntityPlayer player, World world, int x, int y, int z) {
-
-		if (world.getBlockMetadata(x, y, z) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
+        IBlockState state = world.getBlockState(pos);
+		if (getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
 			return false;
 		}
-		return super.canDismantle(player, world, x, y, z);
+		return super.canDismantle(player, world, pos);
 	}
 
 	/* IInitializer */
@@ -228,11 +225,11 @@ public class BlockCell extends BlockTEBase {
 		ItemBlockCell.setDefaultTag(cellReinforced, 0);
 		ItemBlockCell.setDefaultTag(cellResonant, 0);
 
-		GameRegistry.registerCustomItemStack("cellCreative", cellCreative);
-		GameRegistry.registerCustomItemStack("cellBasic", cellBasic);
-		GameRegistry.registerCustomItemStack("cellHardened", cellHardened);
-		GameRegistry.registerCustomItemStack("cellReinforced", cellReinforced);
-		GameRegistry.registerCustomItemStack("cellResonant", cellResonant);
+		ItemStackRegistry.registerCustomItemStack("cellCreative", cellCreative);
+        ItemStackRegistry.registerCustomItemStack("cellBasic", cellBasic);
+        ItemStackRegistry.registerCustomItemStack("cellHardened", cellHardened);
+        ItemStackRegistry.registerCustomItemStack("cellReinforced", cellReinforced);
+        ItemStackRegistry.registerCustomItemStack("cellResonant", cellResonant);
 
 		return true;
 	}
@@ -241,26 +238,21 @@ public class BlockCell extends BlockTEBase {
 	public boolean postInit() {
 
 		if (enable[Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(cellBasic, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellBasic, 'P',
-					TEItems.powerCoilElectrum }));
-			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
+			GameRegistry.addRecipe(ShapedRecipe(cellBasic, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellBasic, 'P', TEItems.powerCoilElectrum));
+			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(cellHardened, new Object[] { " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened, 'P',
-					TEItems.powerCoilElectrum }));
+			GameRegistry.addRecipe(ShapedRecipe(cellHardened, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened, 'P', TEItems.powerCoilElectrum));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger(
 					"Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
-			GameRegistry.addRecipe(ShapedRecipe(cellHardened, new Object[] { "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic, 'Y',
-					"ingotCopper", 'P', TEItems.powerCoilElectrum }));
-			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.redstone, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
+			GameRegistry.addRecipe(ShapedRecipe(cellHardened, "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic, 'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum));
+			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
 		}
 		if (enable[Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(cellReinforced, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameCellReinforcedFull, 'I', "ingotLead",
-					'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
+			GameRegistry.addRecipe(ShapedRecipe(cellReinforced, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellReinforcedFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));
 		}
 		if (enable[Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(cellResonant, new Object[] { " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I', "ingotLead", 'P',
-					TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum" }));
+			GameRegistry.addRecipe(ShapedRecipe(cellResonant, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
 					.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
 		}
@@ -273,7 +265,7 @@ public class BlockCell extends BlockTEBase {
 		return true;
 	}
 
-	public static enum Types {
+	public enum Types {
 		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 

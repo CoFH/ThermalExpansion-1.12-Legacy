@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block.simple;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleFirework;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Random;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.particle.EntityFireworkSparkFX;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -17,17 +19,15 @@ public class BlockAirLight extends BlockAirBase {
 		super(materialBarrier);
 	}
 
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z) {
-
-		return world.getBlockMetadata(x, y, z);
+    @Override
+    public int getLightValue(IBlockState state, IBlockAccess world, BlockPos pos) {
+		return getMetaFromState(state);
 	}
 
 	@SideOnly(Side.CLIENT)
-	@Override
-	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
-
-		EntityFireworkSparkFX spark = new EntityFireworkSparkFX(world, x + 0.5 + rand.nextGaussian() * 0.6, y + 0.5 + rand.nextGaussian() * 0.55, z + 0.5
+    @Override
+    public void randomDisplayTick(IBlockState stateIn, World world, BlockPos pos, Random rand) {
+        ParticleFirework.Spark spark = new ParticleFirework.Spark(world, pos.getX() + 0.5 + rand.nextGaussian() * 0.6, pos.getY() + 0.5 + rand.nextGaussian() * 0.55, pos.getZ() + 0.5
 				+ rand.nextGaussian() * 0.55, 0, 0, 0, Minecraft.getMinecraft().effectRenderer) {
 
 			@Override
@@ -35,8 +35,8 @@ public class BlockAirLight extends BlockAirBase {
 
 			}
 		};
-		spark.setColour(0xFFFF66);
-		spark.setFadeColour(0xFFFFAA);
+		spark.setColor(0xFFFF66);
+		spark.setColorFade(0xFFFFAA);
 		Minecraft.getMinecraft().effectRenderer.addEffect(spark);
 	}
 

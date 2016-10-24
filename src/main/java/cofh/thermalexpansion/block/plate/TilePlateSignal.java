@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.util.BlockUtils;
+import codechicken.lib.util.ServerUtils;
 import cofh.core.RegistrySocial;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
@@ -7,7 +9,9 @@ import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.gui.client.plate.GuiPlateSignal;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import com.mojang.authlib.GameProfile;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +25,7 @@ import net.minecraft.server.MinecraftServer;
 
 //import thermalexpansion.gui.client.plate.GuiPlateSignal;
 
-public class TilePlateSignal extends TilePlateBase {
+public class TilePlateSignal extends TilePlateBase implements ITickable {
 
 	public static void initialize() {
 
@@ -59,7 +63,7 @@ public class TilePlateSignal extends TilePlateBase {
 		removeSignal();
 	}
 
-	@Override
+	//@Override
 	public boolean canUpdate() {
 
 		// FIXME: in 1.8 we can differentiate random world ticks and update ticks on the block.
@@ -72,14 +76,14 @@ public class TilePlateSignal extends TilePlateBase {
 		int[] v = getVector(distance + 1);
 		int x = v[0], y = v[1], z = v[2];
 
-		if (worldObj.getBlock(xCoord + x, yCoord + y, zCoord + z).equals(TEBlocks.blockAirSignal)) {
-			worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, Blocks.air, 0, 3);
+		if (worldObj.getBlockState(getPos().add(x,y,z)).getBlock().equals(TEBlocks.blockAirSignal)) {
+			worldObj.setBlockState(getPos().add(x,y,z), Blocks.AIR.getDefaultState(), 3);
 		}
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(worldObj,getPos());
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (collided > 0) {
 			markChunkDirty();
@@ -119,14 +123,14 @@ public class TilePlateSignal extends TilePlateBase {
 
 		l: if (filterSecure && !getAccess().isPublic()) {
 			o: if (entity instanceof EntityItem) {
-				String name = ((EntityItem) entity).func_145800_j();
+				String name = ((EntityItem) entity).getThrower();
 				if (name == null) {
 					break o;
 				}
 				if (getAccess().isRestricted() && RegistrySocial.playerHasAccess(name, getOwner())) {
 					break l;
 				}
-				GameProfile i = MinecraftServer.getServer().func_152358_ax().func_152655_a(name);
+				GameProfile i = ServerUtils.mc().getPlayerProfileCache().getGameProfileForUsername(name);
 				if (getOwner().getId().equals(i.getId())) {
 					break l;
 				}
@@ -146,10 +150,12 @@ public class TilePlateSignal extends TilePlateBase {
 		int[] v = getVector(distance + 1);
 		int x = v[0], y = v[1], z = v[2];
 
-		if (worldObj.isAirBlock(xCoord + x, yCoord + y, zCoord + z)) {
-			if (worldObj.setBlock(xCoord + x, yCoord + y, zCoord + z, TEBlocks.blockAirSignal, intensity, 3)) {
+        BlockPos offsetPos = getPos().add(x,y,z);
+		if (worldObj.isAirBlock(offsetPos)) {
+			if (worldObj.setBlockState(offsetPos, TEBlocks.blockAirSignal.getStateFromMeta(intensity), 3)) {
 				markChunkDirty();
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+
+				BlockUtils.fireBlockUpdate(worldObj,pos);
 			}
 			collided = duration;
 		}
@@ -204,7 +210,7 @@ public class TilePlateSignal extends TilePlateBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -213,6 +219,7 @@ public class TilePlateSignal extends TilePlateBase {
 		nbt.setByte("Time", duration);
 		nbt.setByte("Col", collided);
 		nbt.setByte("cMode", collisionMode);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */

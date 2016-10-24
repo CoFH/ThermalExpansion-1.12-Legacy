@@ -34,7 +34,7 @@ public class GuiPlateExcursion extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 
 		myTile = theTile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 		this.ySize = 100;

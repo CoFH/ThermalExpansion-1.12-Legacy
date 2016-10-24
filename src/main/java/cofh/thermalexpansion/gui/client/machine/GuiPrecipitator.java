@@ -15,6 +15,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
+import java.io.IOException;
+
 public class GuiPrecipitator extends GuiAugmentableBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
@@ -77,7 +79,7 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mButton) {
+	protected void mouseClicked(int mX, int mY, int mButton) throws IOException{
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {

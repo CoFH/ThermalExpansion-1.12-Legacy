@@ -30,7 +30,7 @@ public class GuiCache extends GuiBaseAdv {
 
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 		myTile = (TilePlateImpulse) theTile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 		this.height = 100;

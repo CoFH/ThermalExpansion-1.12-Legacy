@@ -8,225 +8,226 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.TileTEBase;
 import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-
-import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.IIcon;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileSponge extends TileTEBase implements ISidedTexture {
 
-	public static void initialize() {
+    public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileSponge.class, "thermalexpansion.Sponge");
-	}
+        GameRegistry.registerTileEntity(TileSponge.class, "thermalexpansion.Sponge");
+    }
 
-	boolean full = false;
-	boolean fullOnPlace = false;
-	FluidStack myFluidStack;
+    boolean full = false;
+    boolean fullOnPlace = false;
+    FluidStack myFluidStack;
 
-	public TileSponge() {
+    public TileSponge() {
 
-	}
+    }
 
-	public TileSponge(int metadata) {
+    public TileSponge(int metadata) {
 
-	}
+    }
 
-	@Override
-	public String getName() {
+    @Override
+    public String getName() {
 
-		return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[getType()] + ".name";
-	}
+        return "tile.thermalexpansion.sponge." + BlockSponge.NAMES[getType()] + ".name";
+    }
 
-	@Override
-	public int getType() {
+    @Override
+    public int getType() {
 
-		return BlockSponge.Types.BASIC.ordinal();
-	}
+        return BlockSponge.Types.BASIC.ordinal();
+    }
 
-	@Override
-	public boolean canUpdate() {
+    @Override
+    public void blockBroken() {
 
-		return false;
-	}
+        IBlockState query;
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    BlockPos offsetPos = getPos().add(x, y, z);
+                    query = worldObj.getBlockState(offsetPos);
+                    if (query.getBlock() == TEBlocks.blockAirBarrier) {
+                        worldObj.setBlockToAir(offsetPos);
+                    } else if (query.getBlock() == TEBlocks.blockSponge) {
+                        worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+                    }
+                }
+            }
+        }
+        for (int x = -2; x <= 2; x += 4) {
+            for (int y = -2; y <= 2; y++) {
+                for (int z = -2; z <= 2; z++) {
+                    BlockPos offsetPos = getPos().add(x, y, z);
+                    query = worldObj.getBlockState(offsetPos);
+                    if (query.getBlock() == TEBlocks.blockSponge) {
+                        worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+                    }
+                }
+            }
+        }
+        for (int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 2; y += 4) {
+                for (int z = -2; z <= 2; z++) {
+                    BlockPos offsetPos = getPos().add(x, y, z);
+                    query = worldObj.getBlockState(offsetPos);
+                    if (query.getBlock() == TEBlocks.blockSponge) {
+                        worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+                    }
+                }
+            }
+        }
+        for (int x = -2; x <= 2; x++) {
+            for (int y = -2; y <= 2; y++) {
+                for (int z = -2; z <= 2; z += 4) {
+                    BlockPos offsetPos = getPos().add(x, y, z);
+                    query = worldObj.getBlockState(offsetPos);
+                    if (query.getBlock() == TEBlocks.blockSponge) {
+                        worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+                    }
+                }
+            }
+        }
+    }
 
-	@Override
-	public void blockBroken() {
+    public FluidStack getFluid() {
 
-		int i, j, k;
+        return myFluidStack;
+    }
 
-		Block query;
-		for (i = xCoord - 1; i <= xCoord + 1; i++) {
-			for (j = yCoord - 1; j <= yCoord + 1; j++) {
-				for (k = zCoord - 1; k <= zCoord + 1; k++) {
-					query = worldObj.getBlock(i, j, k);
-					if (query == TEBlocks.blockAirBarrier) {
-						worldObj.setBlockToAir(i, j, k);
-					} else if (query == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(i, j, k, TEBlocks.blockSponge, 1);
-					}
-				}
-			}
-		}
-		for (i = xCoord - 2; i <= xCoord + 2; i += 4) {
-			for (j = yCoord - 2; j <= yCoord + 2; j++) {
-				for (k = zCoord - 2; k <= zCoord + 2; k++) {
-					if (worldObj.getBlock(i, j, k) == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(i, j, k, TEBlocks.blockSponge, 1);
-					}
-				}
-			}
-		}
-		for (i = xCoord - 2; i <= xCoord + 2; i++) {
-			for (j = yCoord - 2; j <= yCoord + 2; j += 4) {
-				for (k = zCoord - 2; k <= zCoord + 2; k++) {
-					if (worldObj.getBlock(i, j, k) == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(i, j, k, TEBlocks.blockSponge, 1);
-					}
-				}
-			}
-		}
-		for (i = xCoord - 2; i <= xCoord + 2; i++) {
-			for (j = yCoord - 2; j <= yCoord + 2; j++) {
-				for (k = zCoord - 2; k <= zCoord + 2; k += 4) {
-					if (worldObj.getBlock(i, j, k) == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(i, j, k, TEBlocks.blockSponge, 1);
-					}
-				}
-			}
-		}
-	}
+    public void absorb() {
 
-	public FluidStack getFluid() {
+        placeAir();
+    }
 
-		return myFluidStack;
-	}
+    public void placeAir() {
 
-	public void absorb() {
+        if (ServerHelper.isClientWorld(worldObj)) {
+            return;
+        }
+        if (fullOnPlace) {
+            return;
+        }
+        IBlockState query;
+        int queryMeta;
+        Fluid queryFluid;
+        int bucketCounter = 0;
+        for (int x = -1; x <= 1; x++) {
+            for (int y = -1; y <= 1; y++) {
+                for (int z = -1; z <= 1; z++) {
+                    BlockPos offsetPos = getPos().add(x, y, z);
 
-		placeAir();
-	}
+                    query = worldObj.getBlockState(offsetPos);
+                    queryMeta = query.getBlock().getMetaFromState(query);
+                    queryFluid = FluidHelper.lookupFluidForBlock(query.getBlock());
+                    if (queryMeta == 0) {
+                        if (!full && queryFluid != null && queryFluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
+                            if (myFluidStack == null) {
+                                myFluidStack = new FluidStack(queryFluid, 1000);
+                                bucketCounter = 1;
+                                worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+                            } else if (myFluidStack.getFluid() == queryFluid) {
+                                bucketCounter++;
+                                worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+                            }
+                        } else if (query.getBlock().isAir(query, worldObj, offsetPos)) {
+                            worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+                        }
+                    } else if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
+                        if (queryFluid != null && queryFluid.getTemperature() >= TEProps.MAGMATIC_TEMPERATURE) {
+                            // do nothing
+                        } else {
+                            worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+                        }
+                    }
+                }
+            }
+        }
+        if (myFluidStack != null) {
+            myFluidStack.amount = bucketCounter * 1000;
+            full = true;
+            sendUpdatePacket(Side.CLIENT);
+        }
+    }
 
-	public void placeAir() {
+    public void setFluid(FluidStack stack) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		if (fullOnPlace) {
-			return;
-		}
-		Block query;
-		int queryMeta;
-		Fluid queryFluid;
-		int bucketCounter = 0;
-		for (int i = xCoord - 1; i <= xCoord + 1; i++) {
-			for (int j = yCoord - 1; j <= yCoord + 1; j++) {
-				for (int k = zCoord - 1; k <= zCoord + 1; k++) {
-					query = worldObj.getBlock(i, j, k);
-					queryMeta = worldObj.getBlockMetadata(i, j, k);
-					queryFluid = FluidHelper.lookupFluidForBlock(query);
-					if (queryMeta == 0) {
-						if (!full && queryFluid != null && queryFluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-							if (myFluidStack == null) {
-								myFluidStack = new FluidStack(queryFluid, 1000);
-								bucketCounter = 1;
-								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-							} else if (myFluidStack.getFluid() == queryFluid) {
-								bucketCounter++;
-								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-							}
-						} else if (query.isAir(worldObj, i, j, k)) {
-							worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-						}
-					} else if (query.isAir(worldObj, i, j, k) || query.getMaterial().isLiquid()) {
-						if (queryFluid != null && queryFluid.getTemperature() >= TEProps.MAGMATIC_TEMPERATURE) {
-							// do nothing
-						} else {
-							worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
-						}
-					}
-				}
-			}
-		}
-		if (myFluidStack != null) {
-			myFluidStack.amount = bucketCounter * 1000;
-			full = true;
-			sendUpdatePacket(Side.CLIENT);
-		}
-	}
+        this.myFluidStack = stack;
+        fullOnPlace = true;
+        full = true;
+    }
 
-	public void setFluid(FluidStack stack) {
+    /* GUI METHODS */
+    @Override
+    public boolean hasGui() {
 
-		this.myFluidStack = stack;
-		fullOnPlace = true;
-		full = true;
-	}
+        return false;
+    }
 
-	/* GUI METHODS */
-	@Override
-	public boolean hasGui() {
+    /* NBT METHODS */
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
 
-		return false;
-	}
+        super.readFromNBT(nbt);
 
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
+        fullOnPlace = nbt.getBoolean("PlaceFull");
+        myFluidStack = FluidStack.loadFluidStackFromNBT(nbt);
+        full = myFluidStack != null;
+    }
 
-		super.readFromNBT(nbt);
+    @Override
+    public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
-		fullOnPlace = nbt.getBoolean("PlaceFull");
-		myFluidStack = FluidStack.loadFluidStackFromNBT(nbt);
-		full = myFluidStack != null;
-	}
+        super.writeToNBT(nbt);
 
-	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+        nbt.setBoolean("PlaceFull", fullOnPlace);
+        if (myFluidStack != null) {
+            myFluidStack.writeToNBT(nbt);
+        }
+        return nbt;
+    }
 
-		super.writeToNBT(nbt);
+    /* NETWORK METHODS */
+    @Override
+    public PacketCoFHBase getPacket() {
 
-		nbt.setBoolean("PlaceFull", fullOnPlace);
-		if (myFluidStack != null) {
-			myFluidStack.writeToNBT(nbt);
-		}
-	}
+        PacketCoFHBase payload = super.getPacket();
 
-	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
+        payload.addBool(full);
+        payload.addFluidStack(myFluidStack);
 
-		PacketCoFHBase payload = super.getPacket();
+        return payload;
+    }
 
-		payload.addBool(full);
-		payload.addFluidStack(myFluidStack);
+    /* ITilePacketHandler */
+    @Override
+    public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
-		return payload;
-	}
+        super.handleTilePacket(payload, isServer);
 
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+        if (!isServer) {
+            full = payload.getBool();
+            myFluidStack = payload.getFluidStack();
+        } else {
+            payload.getBool();
+            payload.getFluidStack();
+        }
+    }
 
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-			full = payload.getBool();
-			myFluidStack = payload.getFluidStack();
-		} else {
-			payload.getBool();
-			payload.getFluidStack();
-		}
-	}
-
-	/* ISidedTexture */
-	@Override
-	public IIcon getTexture(int side, int pass) {
-
-		return IconRegistry.getIcon("Sponge", full ? getType() + 8 : getType());
-	}
+    /* ISidedTexture */
+    @Override
+    public TextureAtlasSprite getTexture(int side, int pass) {
+        return IconRegistry.getIcon("Sponge", full ? getType() + 8 : getType());
+    }
 
 }

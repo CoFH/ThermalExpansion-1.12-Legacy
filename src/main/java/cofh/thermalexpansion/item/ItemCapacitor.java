@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.item;
 
+import codechicken.lib.util.SoundUtils;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.item.ItemBase;
 import cofh.core.util.CoreUtils;
@@ -16,8 +17,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
@@ -31,7 +35,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (ENABLE[0]) {
 			list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, Types.CREATIVE.ordinal()), CAPACITY[Types.CREATIVE.ordinal()]));
@@ -50,12 +54,12 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForDetails());
 		}
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
 		if (!StringHelper.isShiftKeyDown()) {
@@ -66,7 +70,7 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[Types.CREATIVE.ordinal()]
 					+ " RF/t");
 		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.stackTagCompound.getInteger("Energy")) + " / "
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / "
 					+ StringHelper.getScaledNumber(CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
 			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
 					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
@@ -103,23 +107,22 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		}
 	}
 
-	@Override
-	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player) {
-
+    @Override
+    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
 		if (CoreUtils.isFakePlayer(player)) {
-			return stack;
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
 		}
 		if (player.isSneaking()) {
-			if (setActiveState(stack, !isActive(stack))) {
-				if (isActive(stack)) {
-					player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.8F);
+			if (setActiveState(itemStack, !isActive(itemStack))) {
+				if (isActive(itemStack)) {
+                    SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.8F);
 				} else {
-					player.worldObj.playSoundAtEntity(player, "random.orb", 0.2F, 0.5F);
+                    SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.5F);
 				}
 			}
 		}
-		player.swingItem();
-		return stack;
+		player.swingArm(hand);
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, itemStack);
 	}
 
 	@Override
@@ -146,19 +149,18 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		return ItemHelper.getItemDamage(stack) != Types.CREATIVE.ordinal();
 	}
 
-	@Override
-	public boolean onItemUse(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int hitSide, float hitX, float hitY, float hitZ) {
-
-		return false;
+    @Override
+    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+		return EnumActionResult.FAIL;
 	}
 
 	@Override
-	public int getDisplayDamage(ItemStack stack) {
+	public double getDurabilityForDisplay(ItemStack stack) {
 
-		if (stack.stackTagCompound == null) {
+		if (stack.getTagCompound() == null) {
 			return CAPACITY[ItemHelper.getItemDamage(stack)];
 		}
-		return CAPACITY[ItemHelper.getItemDamage(stack)] - stack.stackTagCompound.getInteger("Energy");
+		return CAPACITY[ItemHelper.getItemDamage(stack)] - stack.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
@@ -175,15 +177,15 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 		if (metadata <= Types.POTATO.ordinal()) {
 			return 0;
 		}
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int receive = Math.min(maxReceive, Math.min(CAPACITY[metadata] - stored, RECEIVE[metadata]));
 
 		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored += receive;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 		}
 		return receive;
 	}
@@ -191,18 +193,18 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		int stored = container.stackTagCompound.getInteger("Energy");
+		int stored = container.getTagCompound().getInteger("Energy");
 		int extract = Math.min(maxExtract, Math.min(stored, SEND[ItemHelper.getItemDamage(container)]));
 
 		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored -= extract;
-			container.stackTagCompound.setInteger("Energy", stored);
+			container.getTagCompound().setInteger("Energy", stored);
 
 			if (stored == 0 && container.getItemDamage() == Types.POTATO.ordinal()) {
-				container.func_150996_a(Items.baked_potato);
+				container.setItem(Items.BAKED_POTATO);
 			}
 		}
 		return extract;
@@ -211,10 +213,10 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
-		if (container.stackTagCompound == null) {
+		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
-		return container.stackTagCompound.getInteger("Energy");
+		return container.getTagCompound().getInteger("Energy");
 	}
 
 	@Override
@@ -226,20 +228,20 @@ public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
 	/* HELPERS */
 	public boolean isActive(ItemStack stack) {
 
-		return stack.stackTagCompound == null ? false : stack.stackTagCompound.getBoolean("Active");
+		return stack.getTagCompound() != null && stack.getTagCompound().getBoolean("Active");
 	}
 
 	public boolean setActiveState(ItemStack stack, boolean state) {
 
 		if (getEnergyStored(stack) > 0) {
-			stack.stackTagCompound.setBoolean("Active", state);
+			stack.getTagCompound().setBoolean("Active", state);
 			return true;
 		}
-		stack.stackTagCompound.setBoolean("Active", false);
+		stack.getTagCompound().setBoolean("Active", false);
 		return false;
 	}
 
-	public static enum Types {
+	public enum Types {
 		CREATIVE, POTATO, BASIC, HARDENED, REINFORCED, RESONANT
 	}
 

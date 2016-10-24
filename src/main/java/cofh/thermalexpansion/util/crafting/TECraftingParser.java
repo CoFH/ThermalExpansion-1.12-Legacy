@@ -6,7 +6,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import cpw.mods.fml.common.registry.GameData;
+import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fml.common.registry.ForgeRegistries;
+import net.minecraftforge.fml.common.registry.GameData;
 
 import java.io.File;
 import java.io.FileReader;
@@ -668,7 +670,7 @@ public class TECraftingParser {
 		ItemStack stack;
 
 		if (itemElement.isJsonPrimitive()) {
-			stack = new ItemStack(GameData.getItemRegistry().getObject(itemElement.getAsString()), 1, metadata);
+			stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemElement.getAsString())), 1, metadata);
 		} else {
 			JsonObject item = itemElement.getAsJsonObject();
 			if (item.has("meta")) {
@@ -694,11 +696,11 @@ public class TECraftingParser {
 					ThermalExpansion.log.error("Item entry missing valid name or oreName!");
 					return null;
 				}
-				stack = new ItemStack(GameData.getItemRegistry().getObject(item.get("name").getAsString()), stackSize, metadata);
+				stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.get("name").getAsString())), stackSize, metadata);
 			}
 			if (item.has("nbt")) {
 				try {
-					NBTBase nbtbase = JsonToNBT.func_150315_a(item.get("nbt").getAsString());
+					NBTBase nbtbase = JsonToNBT.getTagFromJson(item.get("nbt").getAsString());
 
 					if (!(nbtbase instanceof NBTTagCompound)) {
 						ThermalExpansion.log.error("Item has invalid NBT data.");
@@ -742,7 +744,7 @@ public class TECraftingParser {
 
 			if (fluid.has("nbt")) {
 				try {
-					NBTBase nbtbase = JsonToNBT.func_150315_a(fluid.get("nbt").getAsString());
+					NBTBase nbtbase = JsonToNBT.getTagFromJson(fluid.get("nbt").getAsString());
 
 					if (!(nbtbase instanceof NBTTagCompound)) {
 						ThermalExpansion.log.error("Fluid has invalid NBT data.");

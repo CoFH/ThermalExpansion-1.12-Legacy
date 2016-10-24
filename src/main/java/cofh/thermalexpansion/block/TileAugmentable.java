@@ -11,7 +11,8 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.Utils;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.relauncher.Side;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -105,11 +106,12 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		writeAugmentsToNBT(nbt);
+        return nbt;
 	}
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {
@@ -332,25 +334,25 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 	@Override
 	public boolean decrSide(int side) {
 
-		return augmentReconfigSides ? super.decrSide(side) : false;
+		return augmentReconfigSides && super.decrSide(side);
 	}
 
 	@Override
 	public boolean incrSide(int side) {
 
-		return augmentReconfigSides ? super.incrSide(side) : false;
+		return augmentReconfigSides && super.incrSide(side);
 	}
 
 	@Override
 	public boolean setSide(int side, int config) {
 
-		return augmentReconfigSides ? super.setSide(side, config) : false;
+		return augmentReconfigSides && super.setSide(side, config);
 	}
 
 	@Override
 	public boolean resetSides() {
 
-		return augmentReconfigSides ? super.resetSides() : false;
+		return augmentReconfigSides && super.resetSides();
 	}
 
 	@Override
@@ -361,21 +363,21 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		return sideConfig.slotGroups[sideCache[side]];
+		return sideConfig.slotGroups[sideCache[side.ordinal()]];
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return sideConfig.allowInsertionSide[sideCache[side]] && sideConfig.allowInsertionSlot[slot] ? isItemValidForSlot(slot, stack) : false;
+		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && sideConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return sideConfig.allowExtractionSide[sideCache[side]] && sideConfig.allowExtractionSlot[slot];
+		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && sideConfig.allowExtractionSlot[slot];
 	}
 
 }

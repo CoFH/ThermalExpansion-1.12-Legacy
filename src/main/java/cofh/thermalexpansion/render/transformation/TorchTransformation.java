@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.render.transformation;
 
-import cofh.repack.codechicken.lib.vec.Matrix4;
-import cofh.repack.codechicken.lib.vec.RedundantTransformation;
-import cofh.repack.codechicken.lib.vec.Transformation;
-import cofh.repack.codechicken.lib.vec.Vector3;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import codechicken.lib.vec.Matrix4;
+import codechicken.lib.vec.RedundantTransformation;
+import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.Vector3;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TorchTransformation extends Transformation {
 

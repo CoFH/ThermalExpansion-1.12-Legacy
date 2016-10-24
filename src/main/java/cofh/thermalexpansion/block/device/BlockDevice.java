@@ -1,7 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.api.tileentity.ISidedTexture;
-import cofh.core.render.IconRegistry;
+import codechicken.lib.item.ItemStackRegistry;
+
+
 import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -14,17 +15,21 @@ import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IIconRegister;
+
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
+
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -33,19 +38,19 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
+
 
 public class BlockDevice extends BlockTEBase {
 
 	public BlockDevice() {
 
-		super(Material.iron);
+		super(Material.IRON);
 		setHardness(15.0F);
 		setResistance(25.0F);
-		setBlockName("thermalexpansion.device");
+		setUnlocalizedName("thermalexpansion.device");
 	}
 
 	@Override
@@ -84,18 +89,17 @@ public class BlockDevice extends BlockTEBase {
 		}
 	}
 
-	@Override
-	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase living, ItemStack stack) {
-
-		if (stack.stackTagCompound != null) {
-			TileEntity aTile = world.getTileEntity(x, y, z);
+    @Override
+    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+		if (stack.getTagCompound() != null) {
+			TileEntity aTile = world.getTileEntity(pos);
 
 			if (aTile instanceof TileAugmentable) {
-				TileAugmentable tile = (TileAugmentable) world.getTileEntity(x, y, z);
+				TileAugmentable tile = ((TileAugmentable) aTile);
 
-				tile.readAugmentsFromNBT(stack.stackTagCompound);
-				tile.installAugments();
-				tile.setEnergyStored(stack.stackTagCompound.getInteger("Energy"));
+                tile.readAugmentsFromNBT(stack.getTagCompound());
+                tile.installAugments();
+                tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 				int facing = BlockHelper.determineXZPlaceFacing(living);
 				int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -109,47 +113,45 @@ public class BlockDevice extends BlockTEBase {
 				tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 			}
 		}
-		super.onBlockPlacedBy(world, x, y, z, living, stack);
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
+	//@Override
+	//public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
 
 		// TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(x, y, z);
 		// if (tile == null) {
 		// return;
 		// }
 		// tile.onEntityCollidedWithBlock(entity);
-	}
+	//}
 
-	@Override
+	//@Override
 	public int getRenderBlockPass() {
 
 		return 1;
 	}
 
-	@Override
+	//@Override
 	public boolean canRenderInPass(int pass) {
 
 		renderPass = pass;
 		return pass < 2;
 	}
 
-	@Override
-	public boolean isNormalCube(IBlockAccess world, int x, int y, int z) {
-
+    @Override
+    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
 	}
 
 	@Override
-	public boolean isOpaqueCube() {
+	public boolean isOpaqueCube(IBlockState state) {
 
 		return true;
 	}
 
-	@Override
-	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
-
+    @Override
+    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
 
@@ -159,7 +161,7 @@ public class BlockDevice extends BlockTEBase {
 		return true;
 	}
 
-	@Override
+	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
 		ISidedTexture theTile = (ISidedTexture) world.getTileEntity(x, y, z);
@@ -194,22 +196,22 @@ public class BlockDevice extends BlockTEBase {
 			deviceFace[i] = ir.registerIcon("thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]));
 			deviceActive[i] = ir.registerIcon("thermalexpansion:device/Device_Active_" + StringHelper.titleCase(NAMES[i]));
 		}
-	}
+	}*/
 
 	@Override
-	public NBTTagCompound getItemStackTag(World world, int x, int y, int z) {
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
-		NBTTagCompound tag = super.getItemStackTag(world, x, y, z);
-		TileEntity tile = world.getTileEntity(x, y, z);
+		NBTTagCompound tag = super.getItemStackTag(world, pos);
+		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileAugmentable) {
-			TileAugmentable theTile = (TileAugmentable) world.getTileEntity(x, y, z);
+			TileAugmentable theTile = (TileAugmentable) tile;
 
 			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, theTile);
-			tag.setInteger("Energy", theTile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tag.setInteger("Energy", theTile.getEnergyStored(null));
 
 			theTile.writeAugmentsToNBT(tag);
 		}
@@ -218,11 +220,11 @@ public class BlockDevice extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, int x, int y, int z, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
 
-		NBTTagCompound tag = getItemStackTag(world, x, y, z);
+		NBTTagCompound tag = getItemStackTag(world, pos);
 
-		TileEntity tile = world.getTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(pos);
 		if (tile instanceof TileAugmentable) {
 			if (tag == null) {
 				tag = new NBTTagCompound();
@@ -230,10 +232,10 @@ public class BlockDevice extends BlockTEBase {
 			TileAugmentable theTile = (TileAugmentable) tile;
 
 			ReconfigurableHelper.setItemStackTagReconfig(tag, theTile);
-			tag.setInteger("Energy", theTile.getEnergyStored(ForgeDirection.UNKNOWN));
+			tag.setInteger("Energy", theTile.getEnergyStored(null));
 			theTile.writeAugmentsToNBT(tag);
 		}
-		return super.dismantleBlock(player, tag, world, x, y, z, returnDrops, false);
+		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
 	}
 
 	/* IInitializer */
@@ -263,11 +265,11 @@ public class BlockDevice extends BlockTEBase {
 		buffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BUFFER.ordinal()));
 		// extender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.EXTENDER.ordinal()));
 
-		GameRegistry.registerCustomItemStack("activator", activator);
-		GameRegistry.registerCustomItemStack("breaker", breaker);
-		GameRegistry.registerCustomItemStack("collector", collector);
-		GameRegistry.registerCustomItemStack("nullifier", nullifier);
-		GameRegistry.registerCustomItemStack("buffer", buffer);
+        ItemStackRegistry.registerCustomItemStack("activator", activator);
+		ItemStackRegistry.registerCustomItemStack("breaker", breaker);
+        ItemStackRegistry.registerCustomItemStack("collector", collector);
+        ItemStackRegistry.registerCustomItemStack("nullifier", nullifier);
+        ItemStackRegistry.registerCustomItemStack("buffer", buffer);
 		// GameRegistry.registerCustomItemStack("extender", extender);
 
 		return true;
@@ -279,7 +281,7 @@ public class BlockDevice extends BlockTEBase {
 		String category = "Device.Breaker";
 		String comment = "If enabled, The Block Breaker will require a Diamond Pickaxe instead of an Invar Pickaxe.";
 		boolean breakerDiamondPickaxe = ThermalExpansion.config.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
-		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.diamond_pickaxe) : TEEquipment.toolInvarPickaxe;
+		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.DIAMOND_PICKAXE) : TEEquipment.toolInvarPickaxe;
 
 		String tinPart = "thermalexpansion:machineTin";
 
@@ -289,10 +291,10 @@ public class BlockDevice extends BlockTEBase {
 					" X ",
 					"ICI",
 					" P ",
-					'C', Blocks.piston,
+					'C', Blocks.PISTON,
 					'I', tinPart,
 					'P', TEItems.powerCoilGold,
-					'X', Blocks.chest
+					'X', Blocks.CHEST
 			}));
 		}
 		if (enable[Types.BREAKER.ordinal()]) {
@@ -300,7 +302,7 @@ public class BlockDevice extends BlockTEBase {
 					" X ",
 					"ICI",
 					" P ",
-					'C', Blocks.piston,
+					'C', Blocks.PISTON,
 					'I', tinPart,
 					'P', TEItems.pneumaticServo,
 					'X', pickaxe
@@ -311,10 +313,10 @@ public class BlockDevice extends BlockTEBase {
 					" X ",
 					"ICI",
 					" P ",
-					'C', Blocks.piston,
+					'C', Blocks.PISTON,
 					'I', tinPart,
 					'P', TEItems.pneumaticServo,
-					'X', Blocks.hopper
+					'X', Blocks.HOPPER
 			}));
 		}
 		if (enable[Types.NULLIFIER.ordinal()]) {
@@ -322,7 +324,7 @@ public class BlockDevice extends BlockTEBase {
 					" X ",
 					"ICI",
 					" P ",
-					'C', Items.lava_bucket,
+					'C', Items.LAVA_BUCKET,
 					'I', tinPart,
 					'P', TEItems.pneumaticServo,
 					'X', "ingotInvar"
@@ -333,7 +335,7 @@ public class BlockDevice extends BlockTEBase {
 					" X ",
 					"ICI",
 					" P ",
-					'C', Blocks.hopper,
+					'C', Blocks.HOPPER,
 					'I', tinPart,
 					'P', TEItems.pneumaticServo,
 					'X', "gearCopper"
@@ -372,14 +374,14 @@ public class BlockDevice extends BlockTEBase {
 		// extender = ItemBlockDevice.setDefaultTag(extender);
 	}
 
-	public static enum Types {
+	public enum Types {
 		WORKBENCH_FALSE, PUMP, ACTIVATOR, BREAKER, COLLECTOR, NULLIFIER, BUFFER, EXTENDER
 	}
 
-	public static IIcon deviceSide;
+	public static TextureAtlasSprite deviceSide;
 
-	public static IIcon[] deviceFace = new IIcon[Types.values().length];
-	public static IIcon[] deviceActive = new IIcon[Types.values().length];
+	public static TextureAtlasSprite[] deviceFace = new TextureAtlasSprite[Types.values().length];
+	public static TextureAtlasSprite[] deviceActive = new TextureAtlasSprite[Types.values().length];
 
 	public static final String[] NAMES = { "workbench", "pump", "activator", "breaker", "collector", "nullifier", "buffer", "extender" };
 	public static boolean[] enable = new boolean[Types.values().length];

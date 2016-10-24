@@ -10,24 +10,26 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.LinkedList;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInventoryConnection {
+public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInventoryConnection, ITickable {
 
 	public static void initialize() {
 
@@ -73,7 +75,7 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 	}
 
 	@Override
-	public void updateEntity() {
+	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -95,27 +97,28 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 
 	public void breakBlock() {
 
-		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, facing);
-		Block block = worldObj.getBlock(coords[0], coords[1], coords[2]);
-		FluidStack theStack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, coords[0], coords[1], coords[2], true) : null;
+        BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
+		IBlockState state = worldObj.getBlockState(offsetPos);
+		FluidStack theStack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, offsetPos, true) : null;
 		if (theStack != null) {
 			for (int i = 0; i < 6 && theStack.amount > 0; i++) {
 				if (sideCache[i] == 1) {
 					theStack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, i, theStack, true);
 				}
 			}
-			worldObj.setBlockToAir(coords[0], coords[1], coords[2]);
-		} else if (CoFHFakePlayer.isBlockBreakable(myFakePlayer, worldObj, coords[0], coords[1], coords[2])) {
-			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, myFakePlayer, coords[0], coords[1], coords[2], block, 0, true, false));
+			worldObj.setBlockToAir(offsetPos);
+		} else if (CoFHFakePlayer.isBlockBreakable(myFakePlayer, worldObj, offsetPos)) {
+			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, myFakePlayer, offsetPos, state, 0, true, false));
 		}
 	}
 
 	public void outputBuffer() {
 
-		for (int i = 0; i < 6; i++) {
-			if (i != facing && sideCache[i] == 1) {
-				int coords[] = BlockHelper.getAdjacentCoordinatesForSide(xCoord, yCoord, zCoord, i);
-				TileEntity theTile = worldObj.getTileEntity(coords[0], coords[1], coords[2]);
+		for (EnumFacing face : EnumFacing.VALUES) {
+			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {
+
+                BlockPos offsetPos = getPos().offset(face);
+				TileEntity theTile = worldObj.getTileEntity(offsetPos);
 
 				if (InventoryHelper.isInsertion(theTile)) {
 					LinkedList<ItemStack> newStuffed = new LinkedList<ItemStack>();
@@ -123,7 +126,7 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 						if (curItem == null || curItem.getItem() == null) {
 							curItem = null;
 						} else {
-							curItem = InventoryHelper.addToInsertion(theTile, i, curItem);
+							curItem = InventoryHelper.addToInsertion(theTile, face, curItem);
 						}
 						if (curItem != null) {
 							newStuffed.add(curItem);
@@ -163,7 +166,7 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -177,50 +180,51 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
 			}
 		}
 		nbt.setTag("StuffedInv", list);
+        return nbt;
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		return 0;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		return null;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		return false;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		return CoFHProps.EMPTY_TANK_INFO;
 	}
 
 	/* IInventoryConnection */
 	@Override
-	public ConnectionType canConnectInventory(ForgeDirection from) {
+	public ConnectionType canConnectInventory(EnumFacing from) {
 
-		if (from != ForgeDirection.UNKNOWN && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
+		if (from != null && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
 			return ConnectionType.FORCE;
 		} else {
 			return ConnectionType.DEFAULT;

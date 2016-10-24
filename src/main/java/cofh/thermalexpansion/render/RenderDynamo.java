@@ -3,36 +3,28 @@ package cofh.thermalexpansion.render;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
-import cofh.repack.codechicken.lib.lighting.LightModel;
-import cofh.repack.codechicken.lib.render.CCModel;
-import cofh.repack.codechicken.lib.render.CCRenderState;
-import cofh.repack.codechicken.lib.vec.Translation;
-import cofh.repack.codechicken.lib.vec.Vector3;
+import codechicken.lib.lighting.LightModel;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
+import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
-import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-import cofh.thermalexpansion.core.TEProps;
-import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.client.registry.RenderingRegistry;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 
-import net.minecraft.block.Block;
-import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.IIcon;
-import net.minecraft.world.IBlockAccess;
-
-public class RenderDynamo implements ISimpleBlockRenderingHandler {
+public class RenderDynamo //implements ISimpleBlockRenderingHandler
+{
 
 	public static final RenderDynamo instance = new RenderDynamo();
 
-	static IIcon textureCoil;
-	static IIcon[] textureBase = new IIcon[BlockDynamo.Types.values().length];
+	static TextureAtlasSprite textureCoil;
+	static TextureAtlasSprite[] textureBase = new TextureAtlasSprite[BlockDynamo.Types.values().length];
 	static CCModel[][] modelCoil = new CCModel[2][6];
 	static CCModel[][] modelBase = new CCModel[2][6];
 	static CCModel[] modelAnimation = new CCModel[6];
 
 	static {
-		TEProps.renderIdDynamo = RenderingRegistry.getNextAvailableRenderId();
-		RenderingRegistry.registerBlockHandler(instance);
+		//TEProps.renderIdDynamo = RenderingRegistry.getNextAvailableRenderId();
+		//RenderingRegistry.registerBlockHandler(instance);
 
 		generateModels();
 	}
@@ -85,7 +77,7 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		}
 	}
 
-	public void renderCoil(int facing, boolean active, double x, double y, double z) {
+	public void renderCoil(CCRenderState ccrs, int facing, boolean active, double x, double y, double z) {
 
 		x += 0.5;
 		y += 0.5;
@@ -94,13 +86,13 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 
 		if (active) {
-			modelCoil[0][facing].render(trans, RenderUtils.getIconTransformation(textureCoil));
+			modelCoil[0][facing].render(ccrs, trans, RenderUtils.getIconTransformation(textureCoil));
 		} else {
-			modelCoil[1][facing].render(trans, RenderUtils.getIconTransformation(textureCoil));
+			modelCoil[1][facing].render(ccrs, trans, RenderUtils.getIconTransformation(textureCoil));
 		}
 	}
 
-	public void renderBase(int facing, boolean active, int type, double x, double y, double z) {
+	public void renderBase(CCRenderState ccrs, int facing, boolean active, int type, double x, double y, double z) {
 
 		x += 0.5;
 		y += 0.5;
@@ -109,59 +101,59 @@ public class RenderDynamo implements ISimpleBlockRenderingHandler {
 		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
 
 		if (active) {
-			modelBase[0][facing].render(trans, RenderUtils.getIconTransformation(textureBase[type]));
+			modelBase[0][facing].render(ccrs, trans, RenderUtils.getIconTransformation(textureBase[type]));
 		} else {
-			modelBase[1][facing].render(trans, RenderUtils.getIconTransformation(textureBase[type]));
+			modelBase[1][facing].render(ccrs, trans, RenderUtils.getIconTransformation(textureBase[type]));
 		}
 	}
 
-	public void renderAnimation(int facing, boolean active, int type, IIcon icon, double x, double y, double z) {
+	public void renderAnimation(CCRenderState ccrs, int facing, boolean active, int type, TextureAtlasSprite icon, double x, double y, double z) {
 
 		if (active) {
-			modelAnimation[facing].render(x, y, z, RenderUtils.getIconTransformation(icon));
+			modelAnimation[facing].render(ccrs, x, y, z, RenderUtils.getIconTransformation(icon));
 		}
 	}
 
-	@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+	//@Override
+	//public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+//
+	//	RenderUtils.preItemRender();
+//
+	//	CCRenderState.startDrawing();
+	//	renderCoil(1, false, -0.5, -0.5, -0.5);
+	//	renderBase(1, false, metadata, -0.5, -0.5, -0.5);
+	//	CCRenderState.draw();
+//
+	//	RenderUtils.postItemRender();
+	//}
 
-		RenderUtils.preItemRender();
+	//@Override
+	//public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+//
+	//	TileEntity tile = world.getTileEntity(x, y, z);
+	//	if (!(tile instanceof TileDynamoBase)) {
+	//		return false;
+	//	}
+	//	TileDynamoBase theTile = (TileDynamoBase) tile;
+//
+	//	RenderUtils.preWorldRender(world, x, y, z);
+	//	renderCoil(theTile.getFacing(), theTile.isActive, x, y, z);
+	//	renderAnimation(theTile.getFacing(), theTile.isActive, theTile.getType(), theTile.getActiveIcon(), x, y, z);
+	//	renderBase(theTile.getFacing(), theTile.isActive, theTile.getType(), x, y, z);
+//
+	//	return true;
+	//}
 
-		CCRenderState.startDrawing();
-		renderCoil(1, false, -0.5, -0.5, -0.5);
-		renderBase(1, false, metadata, -0.5, -0.5, -0.5);
-		CCRenderState.draw();
+	//@Override
+	//public boolean shouldRender3DInInventory(int modelId) {
+//
+	//	return true;
+	//}
 
-		RenderUtils.postItemRender();
-	}
-
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
-		TileEntity tile = world.getTileEntity(x, y, z);
-		if (!(tile instanceof TileDynamoBase)) {
-			return false;
-		}
-		TileDynamoBase theTile = (TileDynamoBase) tile;
-
-		RenderUtils.preWorldRender(world, x, y, z);
-		renderCoil(theTile.getFacing(), theTile.isActive, x, y, z);
-		renderAnimation(theTile.getFacing(), theTile.isActive, theTile.getType(), theTile.getActiveIcon(), x, y, z);
-		renderBase(theTile.getFacing(), theTile.isActive, theTile.getType(), x, y, z);
-
-		return true;
-	}
-
-	@Override
-	public boolean shouldRender3DInInventory(int modelId) {
-
-		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-
-		return TEProps.renderIdDynamo;
-	}
+	//@Override
+	//public int getRenderId() {
+//
+	//	return TEProps.renderIdDynamo;
+	//}
 
 }

@@ -59,9 +59,9 @@ public class CrucibleManager {
 
 		if (recipeNetherrack) {
 			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.netherrack), new FluidStack(FluidRegistry.LAVA,
+				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA,
 						FluidContainerRegistry.BUCKET_VOLUME));
 				ThermalExpansion.log.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.config.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
@@ -69,9 +69,9 @@ public class CrucibleManager {
 		}
 		if (recipeBlazeRod) {
 			if (tweakBlazeRodRF >= CoFHProps.LAVA_RF / 20 && tweakBlazeRodRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
+				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.blaze_rod), new FluidStack(FluidRegistry.LAVA,
+				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA,
 						FluidContainerRegistry.BUCKET_VOLUME / 4));
 				ThermalExpansion.log.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.config.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
@@ -79,17 +79,17 @@ public class CrucibleManager {
 		}
 		int defaultCost = CoFHProps.LAVA_RF * 8 / 5;
 
-		addTERecipe(defaultCost, new ItemStack(Blocks.cobblestone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.stone), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.obsidian), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(200, new ItemStack(Items.snowball), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 8));
-		addTERecipe(800, new ItemStack(Blocks.snow), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
-		addTERecipe(1600, new ItemStack(Blocks.ice), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(8000, new ItemStack(Items.redstone), new FluidStack(TFFluids.fluidRedstone, 100));
-		addTERecipe(8000 * 9, new ItemStack(Blocks.redstone_block), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
-		addTERecipe(20000, new ItemStack(Items.glowstone_dust), new FluidStack(TFFluids.fluidGlowstone, 250));
-		addTERecipe(20000 * 4, new ItemStack(Blocks.glowstone), new FluidStack(TFFluids.fluidGlowstone, 1000));
-		addTERecipe(20000, new ItemStack(Items.ender_pearl), new FluidStack(TFFluids.fluidEnder, 250));
+		addTERecipe(defaultCost, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+		addTERecipe(defaultCost, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+		addTERecipe(defaultCost, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+		addTERecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 8));
+		addTERecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
+		addTERecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
+		addTERecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
+		addTERecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
+		addTERecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
+		addTERecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, 1000));
+		addTERecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
 		addTERecipe(8000, TFItems.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
 		addTERecipe(8000, TFItems.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
 		addTERecipe(8000, TFItems.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));

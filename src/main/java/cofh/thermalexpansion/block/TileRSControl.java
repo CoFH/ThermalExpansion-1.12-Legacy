@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
 import cofh.asm.relauncher.Implementable;
@@ -10,8 +11,8 @@ import cofh.lib.audio.SoundTile;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,10 +31,10 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public void onNeighborBlockChange() {
 
 		wasPowered = isPowered;
-		isPowered = worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+		isPowered = worldObj.isBlockPowered(getPos());
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, xCoord, yCoord, zCoord);
+			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, getPos());
 			onRedstoneUpdate();
 		}
 	}
@@ -66,7 +67,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -76,6 +77,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -122,7 +124,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+            BlockUtils.fireBlockUpdate(worldObj, getPos());
 		}
 	}
 
@@ -137,7 +139,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, this.xCoord, this.yCoord, this.zCoord);
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, getPos());
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 		}
@@ -154,7 +156,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	@SideOnly(Side.CLIENT)
 	public ISound getSound() {
 
-		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);
+		return null;//new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);
 	}
 
 	public String getSoundName() {

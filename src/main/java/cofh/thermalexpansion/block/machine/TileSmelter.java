@@ -9,7 +9,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -218,7 +219,7 @@ public class TileSmelter extends TileMachineBase {
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1 || sideCache[side] == 5) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerPrimary = side;
 					break;
 				}
@@ -227,7 +228,7 @@ public class TileSmelter extends TileMachineBase {
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1 || sideCache[side] == 6) {
-				if (extractItem(1, AUTO_TRANSFER[level], side)) {
+				if (extractItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerSecondary = side;
 					break;
 				}
@@ -246,13 +247,13 @@ public class TileSmelter extends TileMachineBase {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, AUTO_TRANSFER[level] >> 1, side)) {
-						if (!transferItem(3, AUTO_TRANSFER[level] >> 1, side)) {
-							transferItem(2, AUTO_TRANSFER[level] >> 1, side);
+					if (transferItem(2, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
+						if (!transferItem(3, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
+							transferItem(2, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
 						}
 						outputTrackerPrimary = side;
 						break;
-					} else if (transferItem(3, AUTO_TRANSFER[level], side)) {
+					} else if (transferItem(3, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -265,7 +266,7 @@ public class TileSmelter extends TileMachineBase {
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(4, AUTO_TRANSFER[level], side)) {
+				if (transferItem(4, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -320,7 +321,7 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
@@ -329,6 +330,7 @@ public class TileSmelter extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
+        return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -390,7 +392,7 @@ public class TileSmelter extends TileMachineBase {
 				return !SmelterManager.isItemFlux(stack) && SmelterManager.isItemValid(stack);
 			}
 		}
-		return slot <= 1 ? SmelterManager.isItemValid(stack) : true;
+		return slot > 1 || SmelterManager.isItemValid(stack);
 	}
 
 }

@@ -28,7 +28,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 
-		if (stack.stackTagCompound != null && stack.stackTagCompound.hasKey("Fluid")) {
+		if (stack.getTagCompound() != null && stack.getTagCompound().hasKey("Fluid")) {
 			return super.getItemStackLimit(stack);
 		}
 		return 64;
@@ -45,13 +45,13 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 
 		switch (BlockTank.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		case RESONANT:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case REINFORCED:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
@@ -64,7 +64,7 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Fluid")) {
+		if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Fluid")) {
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
 			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
@@ -74,16 +74,16 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 			}
 			return;
 		}
-		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
+		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 
 		if (fluid != null) {
 			String color = StringHelper.LIGHT_GRAY;
 
-			if (fluid.getFluid().getRarity() == EnumRarity.uncommon) {
+			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
 				color = StringHelper.YELLOW;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.rare) {
+			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
 				color = StringHelper.BRIGHT_BLUE;
-			} else if (fluid.getFluid().getRarity() == EnumRarity.epic) {
+			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
 				color = StringHelper.PINK;
 			}
 			list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
@@ -108,10 +108,10 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	@Override
 	public FluidStack getFluid(ItemStack container) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid")) {
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Fluid")) {
 			return null;
 		}
-		return FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));
+		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 	}
 
 	@Override
@@ -129,10 +129,10 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		int capacity = getCapacity(container);
 
 		if (!doFill) {
-			if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid")) {
+			if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Fluid")) {
 				return Math.min(capacity, resource.amount);
 			}
-			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));
+			FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 
 			if (stack == null) {
 				return Math.min(capacity, resource.amount);
@@ -142,22 +142,22 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 			}
 			return Math.min(capacity - stack.amount, resource.amount);
 		}
-		if (container.stackTagCompound == null) {
-			container.stackTagCompound = new NBTTagCompound();
+		if (container.getTagCompound() == null) {
+			container.setTagCompound(new NBTTagCompound());
 		}
-		if (!container.stackTagCompound.hasKey("Fluid")) {
+		if (!container.getTagCompound().hasKey("Fluid")) {
 			NBTTagCompound fluidTag = resource.writeToNBT(new NBTTagCompound());
 
 			if (capacity < resource.amount) {
 				fluidTag.setInteger("Amount", capacity);
-				container.stackTagCompound.setTag("Fluid", fluidTag);
+				container.getTagCompound().setTag("Fluid", fluidTag);
 				return capacity;
 			}
 			fluidTag.setInteger("Amount", resource.amount);
-			container.stackTagCompound.setTag("Fluid", fluidTag);
+			container.getTagCompound().setTag("Fluid", fluidTag);
 			return resource.amount;
 		}
-		NBTTagCompound fluidTag = container.stackTagCompound.getCompoundTag("Fluid");
+		NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
 		FluidStack stack = FluidStack.loadFluidStackFromNBT(fluidTag);
 
 		if (!stack.isFluidEqual(resource)) {
@@ -171,17 +171,17 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 		} else {
 			stack.amount = capacity;
 		}
-		container.stackTagCompound.setTag("Fluid", stack.writeToNBT(fluidTag));
+		container.getTagCompound().setTag("Fluid", stack.writeToNBT(fluidTag));
 		return filled;
 	}
 
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid") || maxDrain == 0 || container.stackSize > 1) {
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Fluid") || maxDrain == 0 || container.stackSize > 1) {
 			return null;
 		}
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));
+		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 
 		if (stack == null) {
 			return null;
@@ -190,16 +190,16 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 
 		if (doDrain && ItemHelper.getItemDamage(container) != BlockTank.Types.CREATIVE.ordinal()) {
 			if (maxDrain >= stack.amount) {
-				container.stackTagCompound.removeTag("Fluid");
+				container.getTagCompound().removeTag("Fluid");
 
-				if (container.stackTagCompound.hasNoTags()) {
-					container.stackTagCompound = null;
+				if (container.getTagCompound().hasNoTags()) {
+					container.setTagCompound(null);
 				}
 				return stack;
 			}
-			NBTTagCompound fluidTag = container.stackTagCompound.getCompoundTag("Fluid");
+			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
 			fluidTag.setInteger("Amount", fluidTag.getInteger("Amount") - drained);
-			container.stackTagCompound.setTag("Fluid", fluidTag);
+			container.getTagCompound().setTag("Fluid", fluidTag);
 		}
 		stack.amount = drained;
 		return stack;

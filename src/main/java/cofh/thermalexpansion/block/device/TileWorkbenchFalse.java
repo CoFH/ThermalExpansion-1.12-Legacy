@@ -2,10 +2,11 @@ package cofh.thermalexpansion.block.device;
 
 import static cofh.thermalexpansion.block.workbench.TileWorkbench.*;
 
+import codechicken.lib.util.BlockUtils;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -32,10 +33,10 @@ public class TileWorkbenchFalse extends TileInventory {
 
 		inventory = new ItemStack[SCHEMATICS[1] + INVENTORY[1]];
 
-		worldObj.setBlock(xCoord, yCoord, zCoord, TEBlocks.blockWorkbench, 1, 3);
-		TileWorkbench tile = (TileWorkbench) worldObj.getTileEntity(xCoord, yCoord, zCoord);
+		worldObj.setBlockState(pos, TEBlocks.blockWorkbench.getStateFromMeta(1), 3);
+		TileWorkbench tile = (TileWorkbench) worldObj.getTileEntity(getPos());
 		tile.readFromNBT(tag);
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+        BlockUtils.fireBlockUpdate(worldObj, pos);
 	}
 
 	public TileWorkbenchFalse() {
@@ -67,12 +68,13 @@ public class TileWorkbenchFalse extends TileInventory {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Mode", (byte) selectedSchematic);
 		writeCraftingToNBT(nbt);
+        return nbt;
 	}
 
 	public void readCraftingFromNBT(NBTTagCompound nbt) {

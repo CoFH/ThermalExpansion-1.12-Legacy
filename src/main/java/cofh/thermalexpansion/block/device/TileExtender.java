@@ -5,13 +5,14 @@ import cofh.core.CoFHProps;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -82,9 +83,9 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public void onNeighborTileChange(int tileX, int tileY, int tileZ) {
+	public void onNeighborTileChange(BlockPos pos) {
 
-		super.onNeighborTileChange(tileX, tileY, tileZ);
+		super.onNeighborTileChange(pos);
 		updateHandlers();
 	}
 
@@ -163,56 +164,56 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
 	/* IEnergyReceiver */
 	@Override
-	public int receiveEnergy(ForgeDirection from, int maxReceive, boolean simulate) {
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
 		if (checkPollingAndNeighbor()) {
 			return 0;
 		}
 		polling = true;
-		int energy = targetReceiver != null ? targetReceiver.receiveEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxReceive, simulate) : 0;
+		int energy = targetReceiver != null ? targetReceiver.receiveEnergy(EnumFacing.VALUES[facing ^ 1], maxReceive, simulate) : 0;
 		polling = false;
 		return energy;
 	}
 
 	@Override
-	public int getEnergyStored(ForgeDirection from) {
+	public int getEnergyStored(EnumFacing from) {
 
 		if (checkPollingAndNeighbor()) {
 			return 0;
 		}
 		polling = true;
-		int energy = targetReceiver != null ? targetReceiver.getEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
+		int energy = targetReceiver != null ? targetReceiver.getEnergyStored(EnumFacing.VALUES[facing ^ 1]) : 0;
 		polling = false;
 		return energy;
 	}
 
 	@Override
-	public int getMaxEnergyStored(ForgeDirection from) {
+	public int getMaxEnergyStored(EnumFacing from) {
 
 		if (checkPollingAndNeighbor()) {
 			return 0;
 		}
 		polling = true;
-		int maxEnergy = targetReceiver != null ? targetReceiver.getMaxEnergyStored(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : 0;
+		int maxEnergy = targetReceiver != null ? targetReceiver.getMaxEnergyStored(EnumFacing.VALUES[facing ^ 1]) : 0;
 		polling = false;
 		return maxEnergy;
 	}
 
 	@Override
-	public boolean canConnectEnergy(ForgeDirection from) {
+	public boolean canConnectEnergy(EnumFacing from) {
 
 		if (checkPollingAndNeighbor()) {
 			return false;
 		}
 		polling = true;
-		boolean canConnect = targetReceiver != null ? targetReceiver.canConnectEnergy(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : false;
+		boolean canConnect = targetReceiver != null && targetReceiver.canConnectEnergy(EnumFacing.VALUES[facing ^ 1]);
 		polling = false;
 		return canConnect;
 	}
 
 	/* IFluidHandler */
 	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill) {
+	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
 		if (from.ordinal() == facing) {
 			return 0;
@@ -221,13 +222,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return 0;
 		}
 		polling = true;
-		int amount = targetHandler != null ? targetHandler.fill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doFill) : 0;
+		int amount = targetHandler != null ? targetHandler.fill(EnumFacing.VALUES[facing ^ 1], resource, doFill) : 0;
 		polling = false;
 		return amount;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
 		if (from.ordinal() == facing) {
 			return null;
@@ -236,13 +237,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return null;
 		}
 		polling = true;
-		FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], resource, doDrain) : null;
+		FluidStack drain = targetHandler != null ? targetHandler.drain(EnumFacing.VALUES[facing ^ 1], resource, doDrain) : null;
 		polling = false;
 		return drain;
 	}
 
 	@Override
-	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain) {
+	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
 		if (from.ordinal() == facing) {
 			return null;
@@ -251,13 +252,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return null;
 		}
 		polling = true;
-		FluidStack drain = targetHandler != null ? targetHandler.drain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], maxDrain, doDrain) : null;
+		FluidStack drain = targetHandler != null ? targetHandler.drain(EnumFacing.VALUES[facing ^ 1], maxDrain, doDrain) : null;
 		polling = false;
 		return drain;
 	}
 
 	@Override
-	public boolean canFill(ForgeDirection from, Fluid fluid) {
+	public boolean canFill(EnumFacing from, Fluid fluid) {
 
 		if (from.ordinal() == facing) {
 			return false;
@@ -266,13 +267,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return false;
 		}
 		polling = true;
-		boolean canFill = targetHandler != null ? targetHandler.canFill(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
+		boolean canFill = targetHandler != null && targetHandler.canFill(EnumFacing.VALUES[facing ^ 1], fluid);
 		polling = false;
 		return canFill;
 	}
 
 	@Override
-	public boolean canDrain(ForgeDirection from, Fluid fluid) {
+	public boolean canDrain(EnumFacing from, Fluid fluid) {
 
 		if (from.ordinal() == facing) {
 			return false;
@@ -281,13 +282,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return false;
 		}
 		polling = true;
-		boolean canDrain = targetHandler != null ? targetHandler.canDrain(ForgeDirection.VALID_DIRECTIONS[facing ^ 1], fluid) : false;
+		boolean canDrain = targetHandler != null && targetHandler.canDrain(EnumFacing.VALUES[facing ^ 1], fluid);
 		polling = false;
 		return canDrain;
 	}
 
 	@Override
-	public FluidTankInfo[] getTankInfo(ForgeDirection from) {
+	public FluidTankInfo[] getTankInfo(EnumFacing from) {
 
 		if (from.ordinal() == facing) {
 			return CoFHProps.EMPTY_TANK_INFO;
@@ -296,7 +297,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return CoFHProps.EMPTY_TANK_INFO;
 		}
 		polling = true;
-		FluidTankInfo[] tankInfo = targetHandler != null ? targetHandler.getTankInfo(ForgeDirection.VALID_DIRECTIONS[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
+		FluidTankInfo[] tankInfo = targetHandler != null ? targetHandler.getTankInfo(EnumFacing.VALUES[facing ^ 1]) : CoFHProps.EMPTY_TANK_INFO;
 		polling = false;
 		return tankInfo;
 	}
@@ -342,13 +343,13 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public ItemStack getStackInSlotOnClosing(int slot) {
+	public ItemStack removeStackFromSlot(int slot) {
 
 		if (checkPollingAndNeighbor()) {
 			return null;
 		}
 		polling = true;
-		ItemStack stack = targetInventory != null ? targetInventory.getStackInSlotOnClosing(slot) : null;
+		ItemStack stack = targetInventory != null ? targetInventory.removeStackFromSlot(slot) : null;
 		polling = false;
 		return stack;
 	}
@@ -385,16 +386,16 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 			return false;
 		}
 		polling = true;
-		boolean valid = targetInventory != null ? targetInventory.isItemValidForSlot(slot, stack) : false;
+		boolean valid = targetInventory != null && targetInventory.isItemValidForSlot(slot, stack);
 		polling = false;
 		return valid;
 	}
 
 	/* ISidedInventory */
 	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
+	public int[] getSlotsForFace(EnumFacing side) {
 
-		if (side == facing) {
+		if (side.ordinal() == facing) {
 			return CoFHProps.EMPTY_INVENTORY;
 		}
 		if (checkPollingAndNeighbor()) {
@@ -403,7 +404,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		polling = true;
 		int[] slots;
 		if (targetInventorySided != null) {
-			slots = targetInventorySided.getAccessibleSlotsFromSide(side);
+			slots = targetInventorySided.getSlotsForFace(side);
 		} else if (targetInventory != null) {
 			slots = getNonSidedSlots(targetInventory.getSizeInventory());
 		} else {
@@ -414,9 +415,9 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canInsertItem(int slot, ItemStack stack, int side) {
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		if (side == facing) {
+		if (side.ordinal() == facing) {
 			return false;
 		}
 		if (checkPollingAndNeighbor()) {
@@ -429,9 +430,9 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 	}
 
 	@Override
-	public boolean canExtractItem(int slot, ItemStack stack, int side) {
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
-		if (side == facing) {
+		if (side.ordinal() == facing) {
 			return false;
 		}
 		if (checkPollingAndNeighbor()) {

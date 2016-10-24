@@ -31,8 +31,8 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 
-		if (stack.stackTagCompound != null && !(!stack.stackTagCompound.hasKey("Inventory", Constants.NBT.TAG_LIST)
-				|| stack.stackTagCompound.getTagList("Inventory", stack.stackTagCompound.getId()).tagCount() <= 0)) {
+		if (stack.getTagCompound() != null && !(!stack.getTagCompound().hasKey("Inventory", Constants.NBT.TAG_LIST)
+				|| stack.getTagCompound().getTagList("Inventory", stack.getTagCompound().getId()).tagCount() <= 0)) {
 			return super.getItemStackLimit(stack);
 		}
 		return 64;
@@ -49,13 +49,13 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 
 		switch (BlockStrongbox.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		case RESONANT:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case REINFORCED:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
@@ -93,7 +93,7 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	public static int getStorageIndex(ItemStack container) {
 
 		int type = container.getItemDamage();
-		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding.effectId, container);
+		int enchant = EnchantmentHelper.getEnchantmentLevel(CoFHEnchantment.holding, container);
 
 		return getStorageIndex(type, enchant);
 	}

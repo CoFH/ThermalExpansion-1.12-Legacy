@@ -13,7 +13,7 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.StatCollector;
+import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -34,14 +34,14 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 		String unloc = getUnlocalizedNameInefficiently(stack);
 		String dispName, unloc2;
 
-		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Fluid")) {
+		if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Fluid")) {
 			unloc2 = ".dry";
 			dispName = "info.cofh.dry";
 		} else {
 			unloc2 = ".wet";
 			dispName = "info.cofh.soaked";
 		}
-		if (StatCollector.canTranslate(unloc + unloc2 + ".name")) {
+		if (I18n.canTranslate(unloc + unloc2 + ".name")) {
 			return StringHelper.localize(unloc + unloc2 + ".name");
 		}
 		return StringHelper.localize(dispName) + " " + StringHelper.localize(unloc + ".name");
@@ -64,9 +64,9 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 
 		switch (BlockSponge.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
@@ -79,22 +79,22 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		if (stack.stackTagCompound == null || !stack.stackTagCompound.hasKey("Fluid")) {
+		if (stack.getTagCompound() == null || !stack.getTagCompound().hasKey("Fluid")) {
 			list.add(StringHelper.localize("info.cofh.empty"));
 			return;
 		}
-		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.stackTagCompound.getCompoundTag("Fluid"));
+		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 
 		if (fluid == null) {
 			return;
 		}
 		String color = StringHelper.LIGHT_GRAY;
 
-		if (fluid.getFluid().getRarity() == EnumRarity.uncommon) {
+		if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
 			color = StringHelper.YELLOW;
-		} else if (fluid.getFluid().getRarity() == EnumRarity.rare) {
+		} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
 			color = StringHelper.BRIGHT_BLUE;
-		} else if (fluid.getFluid().getRarity() == EnumRarity.epic) {
+		} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
 			color = StringHelper.PINK;
 		}
 		list.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
@@ -105,10 +105,10 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public FluidStack getFluid(ItemStack container) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid")) {
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Fluid")) {
 			return null;
 		}
-		return FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));
+		return FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 	}
 
 	@Override
@@ -126,10 +126,10 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	@Override
 	public FluidStack drain(ItemStack container, int maxDrain, boolean doDrain) {
 
-		if (container.stackTagCompound == null || !container.stackTagCompound.hasKey("Fluid") || maxDrain == 0) {
+		if (container.getTagCompound() == null || !container.getTagCompound().hasKey("Fluid") || maxDrain == 0) {
 			return null;
 		}
-		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.stackTagCompound.getCompoundTag("Fluid"));
+		FluidStack stack = FluidStack.loadFluidStackFromNBT(container.getTagCompound().getCompoundTag("Fluid"));
 
 		if (stack == null) {
 			return null;
@@ -138,16 +138,16 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 
 		if (doDrain && ItemHelper.getItemDamage(container) != BlockTank.Types.CREATIVE.ordinal()) {
 			if (maxDrain >= stack.amount) {
-				container.stackTagCompound.removeTag("Fluid");
+				container.getTagCompound().removeTag("Fluid");
 
-				if (container.stackTagCompound.hasNoTags()) {
-					container.stackTagCompound = null;
+				if (container.getTagCompound().hasNoTags()) {
+					container.setTagCompound(null);
 				}
 				return stack;
 			}
-			NBTTagCompound fluidTag = container.stackTagCompound.getCompoundTag("Fluid");
+			NBTTagCompound fluidTag = container.getTagCompound().getCompoundTag("Fluid");
 			fluidTag.setInteger("Amount", fluidTag.getInteger("Amount") - drained);
-			container.stackTagCompound.setTag("Fluid", fluidTag);
+			container.getTagCompound().setTag("Fluid", fluidTag);
 		}
 		stack.amount = drained;
 		return stack;

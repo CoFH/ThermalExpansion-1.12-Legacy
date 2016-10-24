@@ -3,7 +3,9 @@ package cofh.thermalexpansion.block.sponge;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.TEBlocks;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
@@ -40,32 +42,33 @@ public class TileSpongeMagmatic extends TileSponge {
 		if (fullOnPlace) {
 			return;
 		}
-		Block query;
+		IBlockState query;
 		int queryMeta;
 		Fluid queryFluid;
 		int bucketCounter = 0;
-		for (int i = xCoord - 1; i <= xCoord + 1; i++) {
-			for (int j = yCoord - 1; j <= yCoord + 1; j++) {
-				for (int k = zCoord - 1; k <= zCoord + 1; k++) {
-					query = worldObj.getBlock(i, j, k);
-					queryMeta = worldObj.getBlockMetadata(i, j, k);
+		for (int x =  - 1; x <=  1; x++) {
+			for (int y =  - 1; y <=  1; y++) {
+				for (int z =  - 1; z <=  1; z++) {
+                    BlockPos offsetPos = getPos().add(x,y,z);
+					query = worldObj.getBlockState(offsetPos);
+					queryMeta = query.getBlock().getMetaFromState(query);
 
 					if (queryMeta == 0) {
-						queryFluid = FluidHelper.lookupFluidForBlock(query);
+						queryFluid = FluidHelper.lookupFluidForBlock(query.getBlock());
 						if (!full && queryFluid != null) {
 							if (myFluidStack == null) {
 								myFluidStack = new FluidStack(queryFluid, 1000);
 								bucketCounter = 1;
-								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
+								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
 							} else if (myFluidStack.getFluid() == queryFluid) {
 								bucketCounter++;
-								worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
+								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
 							}
-						} else if (query.isAir(worldObj, i, j, k)) {
-							worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
+						} else if (query.getBlock().isAir(query, worldObj, offsetPos)) {
+							worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
 						}
-					} else if (query.isAir(worldObj, i, j, k) || query.getMaterial().isLiquid()) {
-						worldObj.setBlock(i, j, k, TEBlocks.blockAirBarrier, 0, 3);
+					} else if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
+						worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
 					}
 				}
 			}

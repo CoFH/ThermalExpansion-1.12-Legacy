@@ -15,6 +15,7 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalfoundation.fluid.TFFluids;
 
+import java.io.IOException;
 import java.util.UUID;
 
 import net.minecraft.entity.player.InventoryPlayer;
@@ -39,7 +40,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 		super(new ContainerTEBase(inventory, theTile, false, false), TEXTURE);
 
 		myTile = (TilePlateTranslocate) theTile;
-		name = myTile.getInventoryName();
+		name = myTile.getName();
 		playerName = SecurityHelper.getID(inventory.player);
 		drawInventory = false;
 		this.ySize = 100;
@@ -136,7 +137,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mouseButton) {
+	protected void mouseClicked(int mX, int mY, int mouseButton) throws IOException{
 
 		if (134 <= mouseX && mouseX < 150 && 32 <= mouseY && mouseY < 48) {
 			int facing = myTile.getFacing();

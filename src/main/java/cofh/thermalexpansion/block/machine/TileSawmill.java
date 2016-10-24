@@ -10,7 +10,8 @@ import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
-import cpw.mods.fml.common.registry.GameRegistry;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,7 +98,7 @@ public class TileSawmill extends TileMachineBase {
 	protected boolean hasValidInput() {
 
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
-		return recipe == null ? false : recipe.getInput().stackSize <= inventory[0].stackSize;
+		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
 
 	@Override
@@ -181,7 +182,7 @@ public class TileSawmill extends TileMachineBase {
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], side)) {
+				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -200,13 +201,13 @@ public class TileSawmill extends TileMachineBase {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(1, AUTO_TRANSFER[level] >> 1, side)) {
-						if (!transferItem(2, AUTO_TRANSFER[level] >> 1, side)) {
-							transferItem(1, AUTO_TRANSFER[level] >> 1, side);
+					if (transferItem(1, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
+						if (!transferItem(2, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
+							transferItem(1, AUTO_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
 						}
 						outputTrackerPrimary = side;
 						break;
-					} else if (transferItem(2, AUTO_TRANSFER[level], side)) {
+					} else if (transferItem(2, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -219,7 +220,7 @@ public class TileSawmill extends TileMachineBase {
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, AUTO_TRANSFER[level], side)) {
+				if (transferItem(3, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -252,20 +253,21 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
-	public void writeToNBT(NBTTagCompound nbt) {
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+        return nbt;
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot == 0 ? SawmillManager.recipeExists(stack) : true;
+		return slot != 0 || SawmillManager.recipeExists(stack);
 	}
 
 }

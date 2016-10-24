@@ -16,10 +16,7 @@ import cofh.thermalexpansion.util.helpers.SchematicHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.InventoryCraftResult;
-import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
@@ -60,7 +57,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 	}
 
 	@Override
-	public ItemStack slotClick(int slot, int x, int y, EntityPlayer player) {
+	public ItemStack slotClick(int slot, int mouseButton, ClickType modifier, EntityPlayer player) {
 
 		if (slot == resultSlot.slotNumber && resultSlot.getHasStack() && CoreUtils.isClient()) {
 			if (SchematicHelper.isSchematic(myTile.getStackInSlot(0))) {
@@ -68,14 +65,14 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 				writeSchematic();
 			}
 		}
-		return super.slotClick(slot, x, y, player);
+		return super.slotClick(slot, mouseButton, modifier, player);
 	}
 
 	@Override
 	public void onCraftMatrixChanged(IInventory inventory) {
 
 		// InventoryCrafting craftMatrixTemp = new InventoryCrafting(new ContainerFalse(), 3, 3);
-		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorldObj()));
+		this.craftResult.setInventorySlotContents(0, ItemHelper.findMatchingRecipe(this.craftMatrix, myTile.getWorld()));
 	}
 
 	/* ISetSchematic */
@@ -86,7 +83,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 
 		if (schematic != null && resultSlot.getHasStack()) {
 			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorldObj(), craftResult.getStackInSlot(0)));
+					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(0, newSchematic);
 			for (int i = 0; i < 9; i++) {

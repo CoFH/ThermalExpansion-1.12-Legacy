@@ -106,14 +106,14 @@ public class TabConfigCell extends TabBase {
 		GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
 
 		for (int i = 0; i < 3; i++) {
-			gui.drawIcon(myTile.getTexture(1, i), posX() + 40, posY + 24, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_LEFT[myTile.getFacing()], i), posX() + 20, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(myTile.getFacing(), i), posX() + 40, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_RIGHT[myTile.getFacing()], i), posX() + 60, posY + 44, 0);
-			gui.drawIcon(myTile.getTexture(0, i), posX() + 40, posY + 64, 0);
-			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_OPPOSITE[myTile.getFacing()], i), posX() + 60, posY + 64, 0);
+			gui.drawIcon(myTile.getTexture(1, i), posX() + 40, posY + 24);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_LEFT[myTile.getFacing()], i), posX() + 20, posY + 44);
+			gui.drawIcon(myTile.getTexture(myTile.getFacing(), i), posX() + 40, posY + 44);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_RIGHT[myTile.getFacing()], i), posX() + 60, posY + 44);
+			gui.drawIcon(myTile.getTexture(0, i), posX() + 40, posY + 64);
+			gui.drawIcon(myTile.getTexture(BlockHelper.SIDE_OPPOSITE[myTile.getFacing()], i), posX() + 60, posY + 64);
 		}
-		gui.drawIcon(myTile.getTexture(myTile.getFacing(), 3), posX() + 40, posY + 44, 0);
+		gui.drawIcon(myTile.getTexture(myTile.getFacing(), 3), posX() + 40, posY + 44);
 
 		GL11.glDisable(GL11.GL_BLEND);
 		RenderHelper.setDefaultFontTextureSheet();

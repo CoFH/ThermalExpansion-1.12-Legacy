@@ -21,7 +21,7 @@ public class TEPlugins {
 
 			try {
 				pluginClass = TEPlugins.class.getClassLoader().loadClass(pluginPath);
-				pluginClass.getMethod("preInit", new Class[0]).invoke(null, new Object[0]);
+				pluginClass.getMethod("preInit", new Class[0]).invoke(null);
 			} catch (Throwable t) {
 				if (CoFHProps.enableDebugOutput) {
 					t.printStackTrace();
@@ -33,7 +33,7 @@ public class TEPlugins {
 
 			try {
 				if (pluginClass != null) {
-					pluginClass.getMethod("initialize", new Class[0]).invoke(null, new Object[0]);
+					pluginClass.getMethod("initialize", new Class[0]).invoke(null);
 				}
 			} catch (Throwable t) {
 				if (CoFHProps.enableDebugOutput) {
@@ -46,7 +46,7 @@ public class TEPlugins {
 
 			try {
 				if (pluginClass != null) {
-					pluginClass.getMethod("postInit", new Class[0]).invoke(null, new Object[0]);
+					pluginClass.getMethod("postInit", new Class[0]).invoke(null);
 				}
 			} catch (Throwable t) {
 				if (CoFHProps.enableDebugOutput) {
@@ -59,7 +59,7 @@ public class TEPlugins {
 
 			try {
 				if (pluginClass != null) {
-					pluginClass.getMethod("loadComplete", new Class[0]).invoke(null, new Object[0]);
+					pluginClass.getMethod("loadComplete", new Class[0]).invoke(null);
 				}
 			} catch (Throwable t) {
 				if (CoFHProps.enableDebugOutput) {
@@ -72,7 +72,7 @@ public class TEPlugins {
 
 			try {
 				if (pluginClass != null) {
-					pluginClass.getMethod("registerRenderInformation", new Class[0]).invoke(null, new Object[0]);
+					pluginClass.getMethod("registerRenderInformation", new Class[0]).invoke(null);
 				}
 			} catch (Throwable t) {
 				if (CoFHProps.enableDebugOutput) {

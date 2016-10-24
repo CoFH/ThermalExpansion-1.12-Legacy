@@ -32,13 +32,13 @@ public class ItemBlockWorkbench extends ItemBlockBase implements IInventoryConta
 
 		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
 		case CREATIVE:
-			return EnumRarity.epic;
+			return EnumRarity.EPIC;
 		case RESONANT:
-			return EnumRarity.rare;
+			return EnumRarity.RARE;
 		case REINFORCED:
-			return EnumRarity.uncommon;
+			return EnumRarity.UNCOMMON;
 		default:
-			return EnumRarity.common;
+			return EnumRarity.COMMON;
 		}
 	}
 
