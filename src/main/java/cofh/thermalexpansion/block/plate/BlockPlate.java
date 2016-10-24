@@ -1,44 +1,24 @@
 package cofh.thermalexpansion.block.plate;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-
 import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.util.BlockUtils;
 import cofh.api.block.IBlockConfigGui;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.cell.BlockCell;
-import cofh.thermalexpansion.block.ender.BlockEnder;
-import cofh.thermalexpansion.block.ender.BlockEnder.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.Vec3d;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
-
-import net.minecraft.block.material.MapColor;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,11 +26,24 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
@@ -206,7 +199,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 			if (tile == null) {
 				return;
 			}
-			AxisAlignedBB bb = entity.boundingBox;
+			AxisAlignedBB bb = entity.getEntityBoundingBox();
 			if (!bb.intersectsWith(getCollisionBlockBounds(tile, pos))) {
 				return;
 			}
@@ -231,7 +224,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		if (tile == null) {
 			return;
 		}
-		AxisAlignedBB bb = entity.boundingBox;
+		AxisAlignedBB bb = entity.getEntityBoundingBox();
 		if (!bb.intersectsWith(getCollisionBlockBounds(tile, pos))) {
 			return;
 		}

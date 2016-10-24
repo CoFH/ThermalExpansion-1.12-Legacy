@@ -63,7 +63,7 @@ public class BlockAirForce extends BlockAirBase {
 		ent.getEntityData().setLong("te:conveyor", world.getTotalWorldTime());
 
 		{
-			if (!world.getCollisionBoxes(ent.boundingBox).isEmpty() || !world.getCollisionBoxes(ent.boundingBox.offset(xO * 2, yO * 2, zO * 2)).isEmpty()) {
+			if (!world.getCollisionBoxes(ent.getEntityBoundingBox()).isEmpty() || !world.getCollisionBoxes(ent.getEntityBoundingBox().offset(xO * 2, yO * 2, zO * 2)).isEmpty()) {
 				xO = yO = zO = 0;
 			}
 			if (isZero(ent.motionX) && isZero(ent.motionZ)) {
@@ -119,7 +119,7 @@ public class BlockAirForce extends BlockAirBase {
 		double xO = axis.getFrontOffsetX() * offset;
         double yO = axis.getFrontOffsetY() * offset;
         double zO = axis.getFrontOffsetZ() * offset;
-        if (!world.getCollisionBoxes(ent.boundingBox).isEmpty() || !world.getCollisionBoxes(ent.boundingBox.offset(xO, yO, zO)).isEmpty()) {
+        if (!world.getCollisionBoxes(ent.getEntityBoundingBox()).isEmpty() || !world.getCollisionBoxes(ent.getEntityBoundingBox().offset(xO, yO, zO)).isEmpty()) {
 			return 0;
 		}
 		return offset;

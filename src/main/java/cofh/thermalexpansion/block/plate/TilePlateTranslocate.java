@@ -11,18 +11,16 @@ import cofh.thermalexpansion.gui.client.plate.GuiPlateTranslocate;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.init.SoundEvents;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.SoundEvents;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TilePlateTranslocate extends TilePlateBase implements IRedstoneControl {
 
@@ -56,7 +54,7 @@ public class TilePlateTranslocate extends TilePlateBase implements IRedstoneCont
 		double x = pos.getX() + v[0] + .5;
 		double y = pos.getY() + v[1] + .125;
 		double z = pos.getZ() + v[2] + .5;
-		if (!(entity instanceof EntityLivingBase) && entity.boundingBox == null) {
+		if (!(entity instanceof EntityLivingBase) && entity.getEntityBoundingBox() == null) {
 			x = entity.posX + v[0];
 			y = entity.posY + v[1];
 			z = entity.posZ + v[2];

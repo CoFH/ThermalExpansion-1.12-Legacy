@@ -16,7 +16,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.network.datasync.DataSerializer;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
@@ -147,12 +146,12 @@ public class EntityFlorb extends EntityThrowable {
     @Override
     protected void doBlockCollisions() {
 
-        int i = MathHelper.floor_double(this.boundingBox.minX + 0.001D);
-        int j = MathHelper.floor_double(this.boundingBox.minY + 0.001D);
-        int k = MathHelper.floor_double(this.boundingBox.minZ + 0.001D);
-        int l = MathHelper.floor_double(this.boundingBox.maxX - 0.001D);
-        int i1 = MathHelper.floor_double(this.boundingBox.maxY - 0.001D);
-        int j1 = MathHelper.floor_double(this.boundingBox.maxZ - 0.001D);
+        int i = MathHelper.floor_double(this.getEntityBoundingBox().minX + 0.001D);
+        int j = MathHelper.floor_double(this.getEntityBoundingBox().minY + 0.001D);
+        int k = MathHelper.floor_double(this.getEntityBoundingBox().minZ + 0.001D);
+        int l = MathHelper.floor_double(this.getEntityBoundingBox().maxX - 0.001D);
+        int i1 = MathHelper.floor_double(this.getEntityBoundingBox().maxY - 0.001D);
+        int j1 = MathHelper.floor_double(this.getEntityBoundingBox().maxZ - 0.001D);
 
         if (this.worldObj.isAreaLoaded(new BlockPos(i, j, k), new BlockPos(l, i1, j1))) {
             for (int k1 = i; k1 <= l; k1++) {
