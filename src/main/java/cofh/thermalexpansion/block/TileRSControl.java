@@ -7,15 +7,13 @@ import cofh.asm.relauncher.Implementable;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
-import cofh.lib.audio.SoundTile;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import net.minecraft.client.audio.ISound;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Implementable("buildcraft.api.tiles.IHasWork")
 @Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
@@ -156,7 +154,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	@SideOnly(Side.CLIENT)
 	public ISound getSound() {
 
-		return null;//new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord);
+		return null;//new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord); TODO Fix tile sounds
 	}
 
 	public String getSoundName() {

@@ -14,12 +14,11 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.ITickable;
-import net.minecraftforge.fml.relauncher.Side;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.ITickable;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileMachineBase extends TileAugmentable implements ITickable {
 
@@ -108,7 +107,6 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	@Override
 	public void update() {
-
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
@@ -218,7 +216,6 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	}
 
 	protected void onLevelChange() {
-
 		augments = new ItemStack[AUGMENT_COUNT[level]];
 		augmentStatus = new boolean[augments.length];
 		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
