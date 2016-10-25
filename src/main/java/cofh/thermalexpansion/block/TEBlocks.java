@@ -51,55 +51,58 @@ public class TEBlocks {
 
 	public static void preInit() {
 
+        blockMachine = (BlockMachine) addBlock(new BlockMachine());
+        blockDevice = addBlock(new BlockDevice());
+        blockDynamo = addBlock(new BlockDynamo());
+        blockCell = addBlock(new BlockCell());
+        blockTank = addBlock(new BlockTank());
+        blockStrongbox = addBlock(new BlockStrongbox());
+        blockCache = addBlock(new BlockCache());
+        blockWorkbench = addBlock(new BlockWorkbench());
+        blockTesseract = addBlock(new BlockEnder());
+        blockPlate = addBlock(new BlockPlate());
+        blockLight = addBlock(new BlockLight());
+        blockFrame = addBlock(new BlockFrame());
+        blockGlass = addBlock(new BlockGlass());
+        blockRockwool = addBlock(new BlockRockwool());
+        blockSponge = addBlock(new BlockSponge());
+
+        blockAirSignal = new BlockAirSignal();
+        blockAirLight = new BlockAirLight();
+        blockAirForce = new BlockAirForce();
+        blockAirBarrier = new BlockAirBarrier();
+
+        GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
+        GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
+        GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");
+        GameRegistry.registerBlock(blockCell, ItemBlockCell.class, "Cell");
+        GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
+        GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
+        GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
+        GameRegistry.registerBlock(blockWorkbench, ItemBlockWorkbench.class, "Workbench");
+        GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
+        GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
+        GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
+        GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
+        GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
+        GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
+        GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
+
+        GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
+        GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
+        GameRegistry.registerBlock(blockAirForce, null, "FakeAirForce");
+        GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
+
+        for (IInitializer initializer : blockList) {
+            initializer.preInit();
+        }
+
 	}
 
 	public static void initialize() {
-
-		blockMachine = addBlock(new BlockMachine());
-		blockDevice = addBlock(new BlockDevice());
-		blockDynamo = addBlock(new BlockDynamo());
-		blockCell = addBlock(new BlockCell());
-		blockTank = addBlock(new BlockTank());
-		blockStrongbox = addBlock(new BlockStrongbox());
-		blockCache = addBlock(new BlockCache());
-		blockWorkbench = addBlock(new BlockWorkbench());
-		blockTesseract = addBlock(new BlockEnder());
-		blockPlate = addBlock(new BlockPlate());
-		blockLight = addBlock(new BlockLight());
-		blockFrame = addBlock(new BlockFrame());
-		blockGlass = addBlock(new BlockGlass());
-		blockRockwool = addBlock(new BlockRockwool());
-		blockSponge = addBlock(new BlockSponge());
-
-		blockAirSignal = new BlockAirSignal();
-		blockAirLight = new BlockAirLight();
-		blockAirForce = new BlockAirForce();
-		blockAirBarrier = new BlockAirBarrier();
-
-		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
-		GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
-		GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");
-		GameRegistry.registerBlock(blockCell, ItemBlockCell.class, "Cell");
-		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
-		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
-		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
-		GameRegistry.registerBlock(blockWorkbench, ItemBlockWorkbench.class, "Workbench");
-		GameRegistry.registerBlock(blockTesseract, ItemBlockEnder.class, "Tesseract");
-		GameRegistry.registerBlock(blockPlate, ItemBlockPlate.class, "Plate");
-		GameRegistry.registerBlock(blockLight, ItemBlockLight.class, "Light");
-		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
-		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
-		GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
-		GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
-
-		GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
-		GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
-		GameRegistry.registerBlock(blockAirForce, null, "FakeAirForce");
-		GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
-
-		for (IInitializer initializer : blockList) {
-			initializer.initialize();
-		}
+        for (IInitializer initializer : blockList) {
+            initializer.initialize();
+        }
 	}
 
 	public static void postInit() {
@@ -116,7 +119,7 @@ public class TEBlocks {
 		return block;
 	}
 
-	public static Block blockMachine;
+	public static BlockMachine blockMachine;
 	public static Block blockDevice;
 	public static Block blockDynamo;
 	public static Block blockCell;

@@ -20,6 +20,10 @@ public class Proxy {
 
 	}
 
+	public void preInit(){
+
+    }
+
 	@SubscribeEvent
 	public void save(Save evt) {
 

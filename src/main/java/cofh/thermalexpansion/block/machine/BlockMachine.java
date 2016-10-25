@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
 import codechicken.lib.item.ItemStackRegistry;
-import cofh.api.tileentity.ISidedTexture;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -10,6 +9,8 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.core.IBlockTextureProvider;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
@@ -17,15 +18,17 @@ import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
@@ -47,7 +50,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockMachine extends BlockTEBase {
+public class BlockMachine extends BlockTEBase implements IBlockTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -71,16 +74,21 @@ public class BlockMachine extends BlockTEBase {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ BlockBakery.SPRITE_FACE_LAYER_PROPERTY, BlockBakery.PARTICLE_SPRITE_PROPERTY });
     }
 
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
 
     @Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+    public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
-			return null;
+            return null;
 		}
 		switch (Types.values()[metadata]) {
 		case FURNACE:
@@ -189,58 +197,71 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	/*@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {//TODO this is world textures. Used the render pass to decide what sprite to render.
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
 		return tile == null ? null : tile.getTexture(side, renderPass);
-	}
+	}*/
 
 	@Override
-	public IIcon getIcon(int side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {//TODO this is item icons, Only cares about the main texture and not any overlay.
 
-		if (side == 0) {
+		if (side.ordinal() == 0) {
 			return machineBottom;
 		}
-		if (side == 1) {
+		if (side.ordinal() == 1) {
 			return machineTop;
 		}
-		return side != 3 ? machineSide : machineFace[metadata % Types.values().length];
+		return side.ordinal() != 3 ? machineSide : machineFace[metadata % Types.values().length];
 	}
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
 
-		// Base Textures
-		machineBottom = ir.registerIcon("thermalexpansion:machine/Machine_Bottom");
-		machineTop = ir.registerIcon("thermalexpansion:machine/Machine_Top");
-		machineSide = ir.registerIcon("thermalexpansion:machine/Machine_Side");
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
 
-		// Face Textures
-		for (int i = 0; i < Types.values().length; i++) {
-			machineFace[i] = ir.registerIcon("thermalexpansion:machine/Machine_Face_" + StringHelper.titleCase(NAMES[i]));
-			machineActive[i] = ir.registerIcon("thermalexpansion:machine/Machine_Active_" + StringHelper.titleCase(NAMES[i]));
-		}
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+    }
 
-		// Config Textures
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 1, "thermalexpansion:config/Config_Blue", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 2, "thermalexpansion:config/Config_Red", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 3, "thermalexpansion:config/Config_Yellow", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 4, "thermalexpansion:config/Config_Orange", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 5, "thermalexpansion:config/Config_Green", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 6, "thermalexpansion:config/Config_Purple", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 7, "thermalexpansion:config/Config_Open", ir);
+    @Override
+    public void registerIcons(TextureMap textureMap) {
+        // Base Textures
+        machineBottom = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_bottom"));
+        machineTop = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_top"));
+        machineSide = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_side"));
 
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 1, "thermalexpansion:config/Config_Blue_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 2, "thermalexpansion:config/Config_Red_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 3, "thermalexpansion:config/Config_Yellow_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:config/Config_Orange_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:config/Config_Green_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:config/Config_Purple_CB", ir);
-		IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:config/Config_Open", ir);
-	}*/
+        // Face Textures
+        for (int i = 0; i < Types.values().length; i++) {
+            machineFace[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_face_" + NAMES[i]));
+            machineActive[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_active_" + NAMES[i]));
+        }
+
+        // Config Textures
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/config/config_blue", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/config/config_red", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 3, "thermalexpansion:blocks/config/config_yellow", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 4, "thermalexpansion:blocks/config/config_orange", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 5, "thermalexpansion:blocks/config/config_green", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 6, "thermalexpansion:blocks/config/config_purple", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 7, "thermalexpansion:blocks/config/config_open", textureMap);
+
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 1, "thermalexpansion:blocks/config/config_blue_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 2, "thermalexpansion:blocks/config/config_red_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 3, "thermalexpansion:blocks/config/config_yellow_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:blocks/config/config_orange_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:blocks/config/config_green_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:blocks/config/config_purple_cb", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);
+    }
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
@@ -517,7 +538,7 @@ public class BlockMachine extends BlockTEBase {
 		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
-	public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable {
 		FURNACE,
         PULVERIZER,
         SAWMILL,

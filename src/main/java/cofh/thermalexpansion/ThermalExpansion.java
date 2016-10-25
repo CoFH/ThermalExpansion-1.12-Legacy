@@ -144,6 +144,8 @@ public class ThermalExpansion {
 
 		TEItems.preInit();
 		TEBlocks.preInit();
+        proxy.preInit();
+
 		TEPlugins.preInit();
 	}
 

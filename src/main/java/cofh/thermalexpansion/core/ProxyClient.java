@@ -1,11 +1,23 @@
 package cofh.thermalexpansion.core;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.render.CCIconRegister;
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
+import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.client.model.TFBakedModel;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
+import net.minecraft.item.Item;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -22,6 +34,25 @@ public class ProxyClient extends Proxy {
         //MinecraftForgeClient.registerItemRenderer(TEFlorbs.itemFlorb, rendererFlorb);
 
         //ItemRenderRegistry.addItemRenderer(TEItems.diagramSchematic, RenderSchematic.instance);
+    }
+
+    @Override
+    public void preInit() {
+        StateMap stateMap = new StateMap.Builder().ignore(BlockMachine.TYPES).build();
+        ModelLoader.setCustomStateMapper(TEBlocks.blockMachine, stateMap);
+
+        TFBakedModel model = new TFBakedModel();
+        ModelResourceLocation locationNormal = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "normal");
+        ModelResourceLocation locationInventory = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "inventory");
+        for (int i = 0; i < Types.values().length; i++) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockMachine), i, locationInventory);
+        }
+        ModelRegistryHelper.register(locationNormal, model);
+        ModelRegistryHelper.register(locationInventory, model);
+
+        TextureUtils.addIconRegister(TEBlocks.blockMachine);
+
+
     }
 
     @Override
