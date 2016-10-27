@@ -323,12 +323,14 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (from.ordinal() == 0 && mode == 1 && !adjacentTanks[0]) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1 && !adjacentTanks[0]) {
 			return 0;
 		}
 		int amount = tank.fill(resource, doFill);
 
-		if (from.ordinal() != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
+		if (ordinal != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
 			if (amount == 0) {
 				return adjacentHandlers[1].fill(EnumFacing.DOWN, resource, doFill);
 			} else if (amount != resource.amount) {
@@ -343,7 +345,9 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 	@Override
 	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (from.ordinal() == 0 && mode == 1) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1) {
 			return null;
 		}
 		return tank.drain(resource, doDrain);
@@ -352,7 +356,9 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 	@Override
 	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == 0 && mode == 1) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1) {
 			return null;
 		}
 		return tank.drain(maxDrain, doDrain);

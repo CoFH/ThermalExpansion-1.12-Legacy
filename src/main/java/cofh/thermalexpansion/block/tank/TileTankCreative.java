@@ -36,10 +36,12 @@ public class TileTankCreative extends TileTank {
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (from.ordinal() == 0 && mode == 1) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1) {
 			return 0;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
+		if (ordinal > 1 && ordinal < 6) {
 			return 0;
 		}
 		if (resource == null || resource.getFluid() == null || resource.isFluidEqual(tank.getFluid())) {
@@ -54,10 +56,12 @@ public class TileTankCreative extends TileTank {
 	@Override
 	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
 
-		if (from.ordinal() == 0 && mode == 1) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1) {
 			return null;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
+		if (ordinal > 1 && ordinal < 6) {
 			return null;
 		}
 		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -69,10 +73,12 @@ public class TileTankCreative extends TileTank {
 	@Override
 	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
 
-		if (from.ordinal() == 0 && mode == 1) {
+        int ordinal = from == null ? 6 : from.ordinal();
+
+		if (ordinal == 0 && mode == 1) {
 			return null;
 		}
-		if (from.ordinal() > 1 && from.ordinal() < 6) {
+		if (ordinal > 1 && ordinal < 6) {
 			return null;
 		}
 		if (tank.getFluid() == null) {
