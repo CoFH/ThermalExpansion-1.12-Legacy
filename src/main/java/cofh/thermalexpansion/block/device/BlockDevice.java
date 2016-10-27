@@ -1,5 +1,5 @@
 package cofh.thermalexpansion.block.device;
-
+import cofh.core.render.IconRegistry;
 import codechicken.lib.item.ItemStackRegistry;
 
 
@@ -11,6 +11,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.core.IBlockTextureProvider;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
@@ -20,9 +22,14 @@ import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 
@@ -48,7 +55,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 
-public class BlockDevice extends BlockTEBase {
+public class BlockDevice extends BlockTEBase implements IBlockTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -58,6 +65,7 @@ public class BlockDevice extends BlockTEBase {
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setUnlocalizedName("thermalexpansion.device");
+        setDefaultState(getDefaultState().withProperty(TYPES, Types.ACTIVATOR));
 	}
 
     @Override
@@ -71,15 +79,21 @@ public class BlockDevice extends BlockTEBase {
     }
 
     @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, tileEntity);
     }
 
     @Override
-	public TileEntity createNewTileEntity(World world, int metadata) {
+    protected BlockStateContainer createBlockState() {
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.SPRITE_FACE_LAYER_PROPERTY).add(BlockBakery.PARTICLE_SPRITE_PROPERTY).build();
+    }
+
+    @Override
+    public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
-			return null;
+            return null;
 		}
 		switch (Types.values()[metadata]) {
 		case WORKBENCH_FALSE:
@@ -177,11 +191,48 @@ public class BlockDevice extends BlockTEBase {
 		return true;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
+    @Override
+    public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
-		return true;
-	}
+        if (metadata == Types.WORKBENCH_FALSE.ordinal()) {
+            if (side.ordinal() == 0) {
+                return IconRegistry.getIcon("WorkbenchBottom", 1);
+            } else if (side.ordinal() == 1) {
+                return IconRegistry.getIcon("WorkbenchTop", 1);
+            }
+            return IconRegistry.getIcon("WorkbenchSide", 1);
+        }
+        return side.ordinal() != 3 ? deviceSide : deviceFace[metadata % Types.values().length];
+    }
+
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public void registerIcons(TextureMap textureMap) {
+        deviceSide = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_side"));
+
+        // Face Textures
+        for (int i = 0; i < Types.values().length; i++) {
+            if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
+                continue;
+            }
+            deviceFace[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_face_" + NAMES[i]));
+            deviceActive[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_active_" + NAMES[i]));
+        }
+    }
 
 	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
@@ -193,31 +244,13 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public IIcon getIcon(int side, int metadata) {
 
-		if (metadata == Types.WORKBENCH_FALSE.ordinal()) {
-			if (side == 0) {
-				return IconRegistry.getIcon("WorkbenchBottom", 1);
-			} else if (side == 1) {
-				return IconRegistry.getIcon("WorkbenchTop", 1);
-			}
-			return IconRegistry.getIcon("WorkbenchSide", 1);
-		}
-		return side != 3 ? deviceSide : deviceFace[metadata % Types.values().length];
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-		deviceSide = ir.registerIcon("thermalexpansion:device/Device_Side");
 
-		// Face Textures
-		for (int i = 0; i < Types.values().length; i++) {
-			if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
-				continue;
-			}
-			deviceFace[i] = ir.registerIcon("thermalexpansion:device/Device_Face_" + StringHelper.titleCase(NAMES[i]));
-			deviceActive[i] = ir.registerIcon("thermalexpansion:device/Device_Active_" + StringHelper.titleCase(NAMES[i]));
-		}
 	}*/
 
 	@Override
@@ -396,7 +429,7 @@ public class BlockDevice extends BlockTEBase {
 		// extender = ItemBlockDevice.setDefaultTag(extender);
 	}
 
-	public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable {
 		WORKBENCH_FALSE,
         PUMP,
         ACTIVATOR,

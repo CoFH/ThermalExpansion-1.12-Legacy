@@ -190,12 +190,6 @@ public class BlockMachine extends BlockTEBase implements IBlockTextureProvider {
 		return true;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
-	}
-
 	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {//TODO this is world textures. Used the render pass to decide what sprite to render.
 

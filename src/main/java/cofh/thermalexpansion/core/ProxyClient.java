@@ -6,6 +6,7 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.client.model.TFBakedModel;
@@ -41,7 +42,7 @@ public class ProxyClient extends Proxy {
         StateMap stateMap = new StateMap.Builder().ignore(BlockMachine.TYPES).build();
         ModelLoader.setCustomStateMapper(TEBlocks.blockMachine, stateMap);
 
-        TFBakedModel model = new TFBakedModel();
+        TFBakedModel model = new TFBakedModel("thermalexpansion:blocks/machine/machine_side");
         ModelResourceLocation locationNormal = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "normal");
         ModelResourceLocation locationInventory = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "inventory");
         for (int i = 0; i < Types.values().length; i++) {
@@ -52,6 +53,18 @@ public class ProxyClient extends Proxy {
 
         TextureUtils.addIconRegister(TEBlocks.blockMachine);
 
+        StateMap deviceStateMap = new StateMap.Builder().ignore(BlockDevice.TYPES).build();
+        ModelLoader.setCustomStateMapper(TEBlocks.blockDevice, deviceStateMap);
+        model = new TFBakedModel("thermalexpansion:blocks/device/device_side");
+        locationNormal = new ModelResourceLocation(TEBlocks.blockDevice.getRegistryName(), "normal");
+        locationInventory = new ModelResourceLocation(TEBlocks.blockDevice.getRegistryName(), "inventory");
+        for (int i = 0; i < Types.values().length; i++) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockDevice), i, locationInventory);
+        }
+        ModelRegistryHelper.register(locationNormal, model);
+        ModelRegistryHelper.register(locationInventory, model);
+
+        TextureUtils.addIconRegister(TEBlocks.blockDevice);
 
     }
 

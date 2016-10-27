@@ -260,12 +260,6 @@ public class BlockCache extends BlockTEBase {
 		return true;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
-	}
-
 	/*@Override
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 

@@ -52,7 +52,7 @@ public class TEBlocks {
 	public static void preInit() {
 
         blockMachine = (BlockMachine) addBlock(new BlockMachine());
-        blockDevice = addBlock(new BlockDevice());
+        blockDevice = (BlockDevice) addBlock(new BlockDevice());
         blockDynamo = addBlock(new BlockDynamo());
         blockCell = addBlock(new BlockCell());
         blockTank = addBlock(new BlockTank());
@@ -120,7 +120,7 @@ public class TEBlocks {
 	}
 
 	public static BlockMachine blockMachine;
-	public static Block blockDevice;
+	public static BlockDevice blockDevice;
 	public static Block blockDynamo;
 	public static Block blockCell;
 	public static Block blockTank;

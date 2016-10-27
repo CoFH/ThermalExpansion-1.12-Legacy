@@ -137,12 +137,6 @@ public class BlockWorkbench extends BlockTEBase {
 		return true;
 	}
 
-	@Override
-	public boolean renderAsNormalBlock() {
-
-		return true;
-	}
-
 	//@Override
 	//public IIcon getIcon(int side, int metadata) {
 //

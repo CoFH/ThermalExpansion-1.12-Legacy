@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.client.model;
 
 import codechicken.lib.render.block.IExtendedModel;
+import codechicken.lib.texture.TextureUtils;
+import cofh.core.render.IconRegistry;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import com.google.common.collect.ImmutableList;
 import net.minecraft.block.state.IBlockState;
@@ -20,6 +22,13 @@ import java.util.List;
  * Created by covers1624 on 26/10/2016.
  */
 public class TFBakedModel implements IBakedModel, IExtendedModel {
+
+    private final String particle;
+
+    public TFBakedModel(String particle){
+        this.particle = particle;
+    }
+
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         return new ArrayList<BakedQuad>();
@@ -42,7 +51,7 @@ public class TFBakedModel implements IBakedModel, IExtendedModel {
 
     @Override
     public TextureAtlasSprite getParticleTexture() {
-        return null;
+        return TextureUtils.getTexture(particle);
     }
 
     @Override
