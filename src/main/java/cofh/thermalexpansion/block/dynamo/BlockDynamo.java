@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.item.ItemStackRegistry;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -12,12 +11,13 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.device.BlockDevice;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -27,9 +27,9 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Locale;
@@ -46,10 +46,12 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockDynamo extends BlockTEBase {
+public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
@@ -92,10 +94,22 @@ public class BlockDynamo extends BlockTEBase {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.ACTIVE_PROPERTY).add(BlockBakery.TYPE_PROPERTY).add(BlockBakery.ACTIVE_SPRITE_PROPERTY).build();
     }
 
-	@Override
+    @Override
+    @SideOnly(Side.CLIENT)
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderDynamo.instance;
+    }
+
+    @Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
@@ -194,19 +208,6 @@ public class BlockDynamo extends BlockTEBase {
 		TileDynamoBase theTile = (TileDynamoBase) tile;
 		return theTile.facing == BlockHelper.SIDE_OPPOSITE[side.ordinal()];
 	}
-
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-		IconRegistry.addIcon("DynamoCoilRedstone", "thermalexpansion:dynamo/Dynamo_Coil_Redstone", ir);
-
-		IconRegistry.addIcon("Dynamo" + Types.STEAM.ordinal(), "thermalexpansion:dynamo/Dynamo_Steam", ir);
-		IconRegistry.addIcon("Dynamo" + Types.MAGMATIC.ordinal(), "thermalexpansion:dynamo/Dynamo_Magmatic", ir);
-		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:dynamo/Dynamo_Compression", ir);
-		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:dynamo/Dynamo_Reactant", ir);
-		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:dynamo/Dynamo_Enervation", ir);
-	}*/
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {

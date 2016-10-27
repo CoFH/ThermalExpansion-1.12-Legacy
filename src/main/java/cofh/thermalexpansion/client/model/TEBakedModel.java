@@ -21,11 +21,11 @@ import java.util.List;
 /**
  * Created by covers1624 on 26/10/2016.
  */
-public class TFBakedModel implements IBakedModel, IExtendedModel {
+public class TEBakedModel implements IBakedModel, IExtendedModel {
 
     private final String particle;
 
-    public TFBakedModel(String particle){
+    public TEBakedModel(String particle){
         this.particle = particle;
     }
 
@@ -64,7 +64,11 @@ public class TFBakedModel implements IBakedModel, IExtendedModel {
         return new ItemOverrideList(ImmutableList.<ItemOverride>of()){
             @Override
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-                return BlockBakery.generateItemModel(stack);
+                IBakedModel model = BlockBakery.generateItemModel(stack);
+                if (model == null){
+                    return originalModel;
+                }
+                return model;
             }
         };
     }

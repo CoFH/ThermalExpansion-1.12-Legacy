@@ -1,21 +1,20 @@
 package cofh.thermalexpansion.core;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.render.CCIconRegister;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.device.BlockDevice;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.client.model.TFBakedModel;
+import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.item.Item;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
@@ -42,10 +41,10 @@ public class ProxyClient extends Proxy {
         StateMap stateMap = new StateMap.Builder().ignore(BlockMachine.TYPES).build();
         ModelLoader.setCustomStateMapper(TEBlocks.blockMachine, stateMap);
 
-        TFBakedModel model = new TFBakedModel("thermalexpansion:blocks/machine/machine_side");
+        TEBakedModel model = new TEBakedModel("thermalexpansion:blocks/machine/machine_side");
         ModelResourceLocation locationNormal = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "normal");
         ModelResourceLocation locationInventory = new ModelResourceLocation(TEBlocks.blockMachine.getRegistryName(), "inventory");
-        for (int i = 0; i < Types.values().length; i++) {
+        for (int i = 0; i < BlockMachine.Types.values().length; i++) {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockMachine), i, locationInventory);
         }
         ModelRegistryHelper.register(locationNormal, model);
@@ -55,10 +54,10 @@ public class ProxyClient extends Proxy {
 
         StateMap deviceStateMap = new StateMap.Builder().ignore(BlockDevice.TYPES).build();
         ModelLoader.setCustomStateMapper(TEBlocks.blockDevice, deviceStateMap);
-        model = new TFBakedModel("thermalexpansion:blocks/device/device_side");
+        model = new TEBakedModel("thermalexpansion:blocks/device/device_side");
         locationNormal = new ModelResourceLocation(TEBlocks.blockDevice.getRegistryName(), "normal");
         locationInventory = new ModelResourceLocation(TEBlocks.blockDevice.getRegistryName(), "inventory");
-        for (int i = 0; i < Types.values().length; i++) {
+        for (int i = 0; i < BlockDevice.Types.values().length; i++) {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockDevice), i, locationInventory);
         }
         ModelRegistryHelper.register(locationNormal, model);
@@ -66,6 +65,19 @@ public class ProxyClient extends Proxy {
 
         TextureUtils.addIconRegister(TEBlocks.blockDevice);
 
+        StateMap dynamoStateMap = new StateMap.Builder().ignore(BlockDynamo.TYPES).build();
+        ModelLoader.setCustomStateMapper(TEBlocks.blockDynamo, dynamoStateMap);
+        model = new TEBakedModel("");
+        locationNormal = new ModelResourceLocation(TEBlocks.blockDynamo.getRegistryName(), "normal");
+        locationInventory = new ModelResourceLocation(TEBlocks.blockDynamo.getRegistryName(), "inventory");
+        for (int i = 0; i < BlockDynamo.Types.values().length; i++) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockDynamo), i, locationInventory);
+        }
+
+        ModelRegistryHelper.register(locationNormal, model);
+        ModelRegistryHelper.register(locationInventory, model);
+
+        TextureUtils.addIconRegister(RenderDynamo.instance);
     }
 
     @Override
