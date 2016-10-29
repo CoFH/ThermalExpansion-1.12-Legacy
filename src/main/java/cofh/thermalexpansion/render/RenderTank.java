@@ -3,37 +3,31 @@ package cofh.thermalexpansion.render;
 import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.block.ICCBlockRenderer;
-import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Translation;
-import cofh.core.block.BlockCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
-import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.List;
 
-public class RenderTank implements ICCBlockRenderer, IItemRenderer {
+public class RenderTank implements ISimpleBlockBakery, IIconRegister {
 
     public static final RenderTank instance = new RenderTank();
 
@@ -86,24 +80,22 @@ public class RenderTank implements ICCBlockRenderer, IItemRenderer {
         }
     }
 
-    public void renderFrame(CCRenderState ccrs, int metadata, int mode, double x, double y, double z) {
+    public void renderFrame(CCRenderState ccrs, int metadata, int mode) {
 
-        Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-
-        modelFrame.render(ccrs, 0, 4, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]));
-        modelFrame.render(ccrs, 24, 28, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));
-        modelFrame.render(ccrs, 4, 8, trans, RenderUtils.getIconTransformation(textureTop[2 * metadata]));
-        modelFrame.render(ccrs, 28, 32, trans, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));
+        modelFrame.render(ccrs, 0, 4, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]));//Bottom
+        modelFrame.render(ccrs, 24, 28, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));//Bottom inside
+        modelFrame.render(ccrs, 4, 8, RenderUtils.getIconTransformation(textureTop[2 * metadata]));//Top
+        modelFrame.render(ccrs, 28, 32, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));//Top Inside.
 
         for (int i = 8; i < 24; i += 4) {
-            modelFrame.render(ccrs, i, i + 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
+            modelFrame.render(ccrs, i, i + 4, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));//Sides.
         }
         for (int i = 32; i < 48; i += 4) {
-            modelFrame.render(ccrs, i, i + 4, trans, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));
+            modelFrame.render(ccrs, i, i + 4, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));//Edges.
         }
     }
 
-    public void renderFluid(CCRenderState ccrs, int metadata, FluidStack stack, double x, double y, double z) {
+    public void renderFluid(CCRenderState ccrs, int metadata, FluidStack stack) {
 
         if (stack == null || stack.amount <= 0) {
             return;
@@ -119,129 +111,73 @@ public class RenderTank implements ICCBlockRenderer, IItemRenderer {
         } else {
             level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]);
         }
-        modelFluid[level].render(ccrs, x, y, z, RenderUtils.getIconTransformation(fluidTex));
-    }
-
-	/* ISimpleBlockRenderingHandler */
-    //@Override
-    //public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    //}
-
-    @Override
-    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {
+        modelFluid[level].render(ccrs, RenderUtils.getIconTransformation(fluidTex));
     }
 
     @Override
-    public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, VertexBuffer buffer) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (!(tile instanceof TileTank)) {
-            return false;
+    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+        FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
+        byte mode = state.getValue(BlockTank.MODE_PROPERTY);
+        int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+        if (face == null) {
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.ITEM);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
+
+            renderFrame(ccrs, type, mode);
+            renderFluid(ccrs, type, fluidStack);
+
+            buffer.finishDrawing();
+            return buffer.bake();
         }
-        TileTank theTile = (TileTank) tile;
+        return new ArrayList<BakedQuad>();
+    }
 
-        RenderUtils.preWorldRender(world, pos);
-        CCRenderState ccrs = CCRenderState.instance();
+    @Override
+    public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+        TileTank tank = ((TileTank) tileEntity);
+        state = state.withProperty(BlockTank.FLUID_STACK_PROPERTY, tank.getTankFluid());
+        state = state.withProperty(BlockTank.MODE_PROPERTY, tank.mode);
+        state = state.withProperty(BlockBakery.TYPE_PROPERTY, (int) tank.type);
+        return state;
+    }
 
-        if (BlockCoFHBase.renderPass == 0) {
-            renderFrame(ccrs, theTile.type, theTile.mode, pos.getX(), pos.getY(), pos.getZ());
-        } else {
-            if (theTile.getTankFluid() == null) {
-                return false;
+    @Override
+    public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+        if (face == null) {
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
+
+            FluidStack fluid = null;
+            if (stack.getTagCompound() != null) {
+                fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
             }
-            renderFluid(ccrs, theTile.getBlockMetadata(), theTile.getTankFluid(), pos.getX(), pos.getY(), pos.getZ());
+            renderFrame(ccrs, stack.getItemDamage(), 0);
+            renderFluid(ccrs, stack.getItemDamage(), fluid);
+
+            buffer.finishDrawing();
+            return buffer.bake();
         }
-        return true;
+        return new ArrayList<BakedQuad>();
     }
 
     @Override
-    public void renderBrightness(IBlockState state, float brightness) {
-    }
+    public void registerIcons(TextureMap textureMap) {
+        for (int i = 0; i < BlockTank.Types.values().length; i++) {
+            String name = BlockTank.NAMES[i];
+            IconRegistry.addIcon("TankBottom" + 2 * i, "thermalexpansion:blocks/tank/tank_" + name + "_bottom_blue", textureMap);
+            IconRegistry.addIcon("TankBottom" + (2 * i + 1), "thermalexpansion:blocks/tank/tank_" + name + "_bottom_orange", textureMap);
 
-    @Override
-    public void registerTextures(TextureMap map) {
-    }
+            IconRegistry.addIcon("TankTop" + 2 * i, "thermalexpansion:blocks/tank/tank_" + name + "_top_blue", textureMap);
+            IconRegistry.addIcon("TankTop" + (2 * i + 1), "thermalexpansion:blocks/tank/tank_" + name + "_top_orange", textureMap);
 
-    //@Override
-    //public boolean shouldRender3DInInventory(int modelId) {
-    //	return true;
-    //}
-
-    //@Override
-    //public int getRenderId() {
-    //	return TEProps.renderIdTank;
-    //}
-
-	/* IItemRenderer */
-    //@Override
-    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    //	return true;
-    //}
-
-    //@Override
-    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    //	return true;
-    //}
-
-    @Override
-    public void renderItem(ItemStack item) {
-
-        GlStateManager.pushMatrix();
-        double offset = -0.5;
-        //if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-        //	offset = 0;
-        //}
-        FluidStack fluid = null;
-        if (item.getTagCompound() != null) {
-            fluid = FluidStack.loadFluidStackFromNBT(item.getTagCompound().getCompoundTag("Fluid"));
+            IconRegistry.addIcon("TankSide" + 2 * i, "thermalexpansion:blocks/tank/tank_" + name + "_side_blue", textureMap);
+            IconRegistry.addIcon("TankSide" + (2 * i + 1), "thermalexpansion:blocks/tank/tank_" + name + "_side_orange", textureMap);
         }
-        RenderUtils.preItemRender();
-        CCRenderState ccrs = CCRenderState.instance();
-
-        ccrs.startDrawing(7, DefaultVertexFormats.POSITION_TEX);
-        renderFluid(ccrs, item.getItemDamage(), fluid, offset, offset, offset);
-        ccrs.draw();
-
-        ccrs.alphaOverride = -1;
-        ccrs.startDrawing(7, DefaultVertexFormats.ITEM);
-        renderFrame(ccrs, item.getItemDamage(), 0, offset, offset, offset);
-        ccrs.draw();
-
-        RenderUtils.postItemRender();
-        GlStateManager.popMatrix();
-    }
-
-    @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        return null;
-    }
-
-    @Override
-    public boolean isAmbientOcclusion() {
-        return false;
-    }
-
-    @Override
-    public boolean isGui3d() {
-        return false;
-    }
-
-    @Override
-    public boolean isBuiltInRenderer() {
-        return false;
-    }
-
-    @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return null;
-    }
-
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return ItemCameraTransforms.DEFAULT;
-    }
-
-    @Override
-    public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
     }
 }

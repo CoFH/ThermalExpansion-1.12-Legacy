@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.cell;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 import codechicken.lib.item.ItemStackRegistry;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgradeOverride;
 import cofh.lib.util.helpers.BlockHelper;
@@ -14,7 +13,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.IBlockLayerProvider;
-import cofh.thermalexpansion.client.UnlistedIntegerProperty;
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;

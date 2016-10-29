@@ -10,6 +10,7 @@ import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.*;
@@ -48,6 +49,7 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);
         registerBlockBakeryStuff(TEBlocks.blockCell, "", BlockCell.TYPES, RenderCell.instance);
+        registerBlockBakeryStuff(TEBlocks.blockTank, "", BlockTank.TYPES, RenderTank.instance);
     }
 
     private static void registerBlockBakeryStuff(Block block, String particle, IProperty typeProperty, IProperty... ignores) {

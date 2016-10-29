@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.tank;
 
+import codechicken.lib.block.property.unlisted.UnlistedByteProperty;
+import codechicken.lib.block.property.unlisted.UnlistedFluidStackProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -9,7 +11,12 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.render.RenderTank;
+import com.sun.deploy.security.ValidationState.TYPE;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -23,12 +30,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -37,9 +47,12 @@ import java.util.List;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockTank extends BlockTEBase {
+public class BlockTank extends BlockTEBase implements IBakeryBlock {
 
     public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+
+    public static final UnlistedFluidStackProperty FLUID_STACK_PROPERTY = new UnlistedFluidStackProperty("fluid_stack");
+    public static final UnlistedByteProperty MODE_PROPERTY = new UnlistedByteProperty("mode");
 
     public BlockTank() {
 
@@ -62,8 +75,13 @@ public class BlockTank extends BlockTEBase {
     }
 
     @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(FLUID_STACK_PROPERTY).add(MODE_PROPERTY).add(BlockBakery.TYPE_PROPERTY).build();
     }
 
     @Override
@@ -141,24 +159,6 @@ public class BlockTank extends BlockTEBase {
         return RESISTANCE[state.getBlock().getMetaFromState(state)];
     }
 
-    //@Override
-    public int getRenderType() {
-        return TEProps.renderIdTank;
-    }
-
-    //@Override
-    public int getRenderBlockPass() {
-
-        return 1;
-    }
-
-    //@Override
-    public boolean canRenderInPass(int pass) {
-
-        renderPass = pass;
-        return pass < 2;
-    }
-
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return side == EnumFacing.UP || side == EnumFacing.DOWN;
@@ -168,21 +168,6 @@ public class BlockTank extends BlockTEBase {
     public boolean hasComparatorInputOverride(IBlockState state) {
         return true;
     }
-
-    //@Override
-    //@SideOnly(Side.CLIENT)
-    //public void registerBlockIcons(IIconRegister ir) {
-    //    for (int i = 0; i < Types.values().length; i++) {
-    //        IconRegistry.addIcon("TankBottom" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Bottom_Blue", ir);
-    //        IconRegistry.addIcon("TankBottom" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Bottom_Orange", ir);
-    //
-    //        IconRegistry.addIcon("TankTop" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Top_Blue", ir);
-    //        IconRegistry.addIcon("TankTop" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Top_Orange", ir);
-    //
-    //        IconRegistry.addIcon("TankSide" + 2 * i, "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Blue", ir);
-    //        IconRegistry.addIcon("TankSide" + (2 * i + 1), "thermalexpansion:tank/Tank_" + StringHelper.titleCase(NAMES[i]) + "_Side_Orange", ir);
-    //    }
-    //}
 
     @Override
     public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
@@ -258,6 +243,16 @@ public class BlockTank extends BlockTEBase {
             GameRegistry.addRecipe(new RecipeUpgrade(tankResonant, new Object[] { "GIG", "IXI", "GIG", 'I', resonantMaterial, 'G', reinforcedMaterial, 'X', tankHardened }));
         }
         return true;
+    }
+
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderTank.instance;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
     }
 
     public enum Types {

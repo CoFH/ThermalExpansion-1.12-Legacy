@@ -1,5 +1,9 @@
 package cofh.thermalexpansion.client.bakery;
 
+import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
+import codechicken.lib.block.property.unlisted.UnlistedMapProperty;
+import codechicken.lib.block.property.unlisted.UnlistedSpriteProperty;
 import codechicken.lib.model.SimplePerspectiveAwareBakedModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.texture.TextureUtils;
