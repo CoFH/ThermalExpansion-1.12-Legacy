@@ -5,9 +5,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 
 /**
- * Created by covers1624 on 30/10/2016.
+ * Created by covers1624 on 25/10/2016.
  */
-public interface IBlockTextureProvider extends IIconRegister{
-
-    TextureAtlasSprite getTexture(EnumFacing side, int metadata);
+public interface IBlockLayeredTextureProvider extends IBlockLayerProvider, IBlockTextureProvider {
 }

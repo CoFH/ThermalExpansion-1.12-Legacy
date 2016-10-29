@@ -5,12 +5,15 @@ import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.tank.BlockTank;
+import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.*;
@@ -27,6 +30,8 @@ import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Locale;
 
 public class ProxyClient extends Proxy {
 
@@ -56,6 +61,12 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);
         registerBlockBakeryStuff(TEBlocks.blockCell, "", BlockCell.TYPES, RenderCell.instance);
         registerBlockBakeryStuff(TEBlocks.blockTank, "", BlockTank.TYPES, RenderTank.instance);
+        registerBlockBakeryStuff(TEBlocks.blockCache, "", BlockCache.TYPES);
+
+        for (EnumType type : EnumType.values()) {
+            ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockWorkbench), type.ordinal(), location);
+        }
     }
 
     private static void registerBlockBakeryStuff(Block block, String particle, IProperty typeProperty, IProperty... ignores) {

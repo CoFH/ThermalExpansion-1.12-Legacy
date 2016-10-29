@@ -31,17 +31,17 @@ public class SimpleSmartPerspectiveBakedItemModel implements IPerspectiveAwareMo
 
     public SimpleSmartPerspectiveBakedItemModel(Map<EnumFacing, List<BakedQuad>> faceQuadMap, List<BakedQuad> generalQuads, CCModelState modelState) {
         this.modelState = modelState;
-        this.faceQuadMap = ImmutableMap.copyOf(faceQuadMap);
-        this.generalQuads = ImmutableList.copyOf(generalQuads);
+        this.faceQuadMap = faceQuadMap != null ? ImmutableMap.copyOf(faceQuadMap) : null;
+        this.generalQuads = generalQuads != null ? ImmutableList.copyOf(generalQuads) : null;
     }
 
     @Override
     public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
         if (state == null) {
-            if (side == null) {
+            if (side == null && generalQuads != null) {
                 return generalQuads;
             }
-            if (faceQuadMap.containsKey(side)){
+            if (faceQuadMap != null && faceQuadMap.containsKey(side)){
                 faceQuadMap.get(side);
             }
         }

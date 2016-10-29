@@ -4,6 +4,7 @@ import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.cache.TileCache;
 import cofh.thermalexpansion.item.TEItems;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -66,7 +67,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 			RenderHelper.enableGUIStandardItemLighting();
 
 			//if (!ForgeHooksClient.renderInventoryItem(RenderUtils.renderBlocks, RenderHelper.engine(), lock, true, 0.0F, 0.0F, 0.0F)) {
-			//	RenderUtils.renderItem.renderItemIntoGUI(Minecraft.getMinecraft().fontRenderer, RenderHelper.engine(), lock, 0, 0);
+            Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRendererObj, lock, 0, 0, null);
 			//}
 			GlStateManager.enableAlpha();
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
@@ -77,7 +78,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
             GlStateManager.popMatrix();
 		}
         GlStateManager.pushMatrix();
-		//RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
+		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
 		GlStateManager.popMatrix();
 	}
 

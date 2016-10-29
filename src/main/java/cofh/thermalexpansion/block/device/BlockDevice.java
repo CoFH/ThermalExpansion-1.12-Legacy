@@ -11,7 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.IBlockTextureProvider;
+import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
@@ -54,7 +54,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 
-public class BlockDevice extends BlockTEBase implements IBlockTextureProvider {
+public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 

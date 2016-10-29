@@ -10,7 +10,10 @@ import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.TransformUtils;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.lib.util.ItemWrapper;
-import cofh.thermalexpansion.client.*;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
+import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
+import cofh.thermalexpansion.client.IBlockTextureProvider;
+import cofh.thermalexpansion.client.IControlledLayerProvider;
 import cofh.thermalexpansion.client.model.SimplePerspectiveAwareBakedLayerModel;
 import cofh.thermalexpansion.client.model.SimpleSmartBakedModel;
 import cofh.thermalexpansion.client.model.SimpleSmartLayeredModel;
@@ -44,6 +47,7 @@ import java.util.concurrent.TimeUnit;
 public class BlockBakery implements IResourceManagerReloadListener {
 
     public static final UnlistedMapProperty SPRITE_FACE_LAYER_PROPERTY = new UnlistedMapProperty("sprite_face_layer_map");//Contains face layer sprites. A.K.A, Blocks.
+    public static final UnlistedMapProperty SPRITE_FACE_PROPERTY = new UnlistedMapProperty("sprite_face_property");
     public static final UnlistedSpriteProperty PARTICLE_SPRITE_PROPERTY = new UnlistedSpriteProperty("particle");//Contains the.. Particle sprite.
 
     public static final UnlistedIntegerProperty FACING_PROPERTY = new UnlistedIntegerProperty("facing");
@@ -66,13 +70,18 @@ public class BlockBakery implements IResourceManagerReloadListener {
 
         if (block instanceof IBakeryBlock) {
             return ((IBakeryBlock) block).getCustomBakery().handleState(state, tileEntity);
-        } else if (block instanceof IBlockTextureProvider) {
-            IBlockTextureProvider textureProvider = (IBlockTextureProvider) block;
+        } else if (block instanceof IBlockLayeredTextureProvider) {
+            IBlockLayeredTextureProvider textureProvider = (IBlockLayeredTextureProvider) block;
 
             HashMap<EnumFacing, Map<BlockRenderLayer, TextureAtlasSprite>> spriteFaceLayerMap = new HashMap<EnumFacing, Map<BlockRenderLayer, TextureAtlasSprite>>();
             for (EnumFacing face : EnumFacing.VALUES) {
                 Map<BlockRenderLayer, TextureAtlasSprite> spriteLayerMap = new HashMap<BlockRenderLayer, TextureAtlasSprite>();
                 for (int pass = 0; pass < textureProvider.getTexturePasses(); pass++) {
+                    if (block instanceof IControlledLayerProvider) {
+                        if (!((IControlledLayerProvider) block).shouldUsePass(pass, tileEntity)) {
+                            continue;
+                        }
+                    }
                     BlockRenderLayer renderLayer = textureProvider.getRenderlayerForPass(pass);
 
                     TextureAtlasSprite sprite = ((ISidedTexture) tileEntity).getTexture(face.ordinal(), pass);
@@ -80,11 +89,17 @@ public class BlockBakery implements IResourceManagerReloadListener {
                 }
                 spriteFaceLayerMap.put(face, spriteLayerMap);
             }
-            IExtendedBlockState returnState = state;
-            returnState = returnState.withProperty(SPRITE_FACE_LAYER_PROPERTY, spriteFaceLayerMap);
+            state = state.withProperty(SPRITE_FACE_LAYER_PROPERTY, spriteFaceLayerMap);
             //returnState = returnState.withProperty(PARTICLE_SPRITE_PROPERTY, textureProvider.getTexture(EnumFacing.UP, blockMeta));
-            return returnState;
-        }
+            return state;
+        }// else if (block instanceof IBlockTextureProvider) {
+         //   Map<EnumFacing, TextureAtlasSprite> spriteFaceMap = new HashMap<EnumFacing, TextureAtlasSprite>();
+         //   IBlockTextureProvider provider = ((IBlockTextureProvider) block);
+         //   for (EnumFacing face : EnumFacing.VALUES) {
+         //       spriteFaceMap.put(face, provider.getTexture(face, blockMeta));
+         //   }
+            //state = state.withProperty(SPRITE_FACE_PROPERTY, spriteFaceMap);
+        //}
         return state;
     }
 
@@ -110,10 +125,9 @@ public class BlockBakery implements IResourceManagerReloadListener {
 
                 model = new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, generalQuads, TransformUtils.DEFAULT_BLOCK);
 
-            }
-            if (block instanceof IBlockTextureProvider) {
+            } else if (block instanceof IBlockLayeredTextureProvider) {
 
-                IBlockTextureProvider provider = ((IBlockTextureProvider) block);
+                IBlockLayeredTextureProvider provider = ((IBlockLayeredTextureProvider) block);
                 LinkedList<BakedQuad> itemQuads = new LinkedList<BakedQuad>();
                 itemQuads.addAll(bakeItemFace(EnumFacing.UP, provider.getTexture(EnumFacing.UP, stack.getMetadata())));
                 itemQuads.addAll(bakeItemFace(EnumFacing.DOWN, provider.getTexture(EnumFacing.DOWN, stack.getMetadata())));
@@ -121,7 +135,19 @@ public class BlockBakery implements IResourceManagerReloadListener {
                     itemQuads.addAll(bakeItemFace(face, provider.getTexture(face.getOpposite(), stack.getMetadata())));
                 }
                 model = new SimplePerspectiveAwareBakedModel(itemQuads, TransformUtils.DEFAULT_BLOCK);
+            } else if (block instanceof IBlockTextureProvider) {
+                IBlockTextureProvider provider = ((IBlockTextureProvider) block);
+                Map<EnumFacing, List<BakedQuad>> faceQuadMap = new HashMap<EnumFacing, List<BakedQuad>>();
+                for (EnumFacing face : EnumFacing.VALUES) {
+                    List<BakedQuad> faceQuads = new LinkedList<BakedQuad>();
+
+                    faceQuads.addAll(bakeItemFace(face, provider.getTexture(face, stack.getMetadata())));
+
+                    faceQuadMap.put(face, faceQuads);
+                }
+                model = new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, null, TransformUtils.DEFAULT_BLOCK);
             }
+
             if (model != null) {
                 itemModelCache.put(wrapper, model);
             }
@@ -171,7 +197,7 @@ public class BlockBakery implements IResourceManagerReloadListener {
                     generalLayerQuads.put(layer, quads);
                 }
 
-                for (EnumFacing face : EnumFacing.VALUES){
+                for (EnumFacing face : EnumFacing.VALUES) {
                     Map<BlockRenderLayer, List<BakedQuad>> layerQuads = new HashMap<BlockRenderLayer, List<BakedQuad>>();
                     for (int i = 0; i < layerProvider.getTexturePasses(); i++) {
                         BlockRenderLayer layer = layerProvider.getRenderlayerForPass(i);
@@ -185,6 +211,19 @@ public class BlockBakery implements IResourceManagerReloadListener {
                 }
                 return new SimpleSmartLayeredModel(faceLayerQuads, generalLayerQuads, TransformUtils.DEFAULT_BLOCK);
             }
+        } if (state.getBlock() instanceof IBlockTextureProvider && !(state.getBlock() instanceof IBlockLayeredTextureProvider)){
+            IBlockTextureProvider provider = ((IBlockTextureProvider) state.getBlock());
+
+            Map<EnumFacing, List<BakedQuad>> quadFaceMap = new HashMap<EnumFacing, List<BakedQuad>>();
+            for (EnumFacing face : EnumFacing.VALUES){
+                LinkedList<BakedQuad> quads = new LinkedList<BakedQuad>();
+
+                quads.addAll(bakeBlockFace(face, provider.getTexture(face, state.getBlock().getMetaFromState(state))));
+
+                quadFaceMap.put(face, quads);
+            }
+            return new SimpleSmartBakedModel(quadFaceMap, null, TransformUtils.DEFAULT_BLOCK);
+
         }
         Map<EnumFacing, Map<BlockRenderLayer, List<BakedQuad>>> quadFaceLayerMap = generateQuadFaceLayerMap(state);
         Map<EnumFacing, List<BakedQuad>> quadFaceMap = new HashMap<EnumFacing, List<BakedQuad>>();//Dummy map.

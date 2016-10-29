@@ -6,6 +6,7 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.util.ItemUtils;
 import codechicken.lib.util.SoundUtils;
 import codechicken.lib.vec.Vector3;
+import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.ItemHelper;
@@ -14,13 +15,18 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
+import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
+import cofh.thermalexpansion.client.IControlledLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
@@ -47,7 +53,7 @@ import net.minecraftforge.common.ForgeHooks;
 
 import javax.annotation.Nullable;
 
-public class BlockCache extends BlockTEBase {
+public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvider, IControlledLayerProvider {
 
     public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
 
@@ -265,37 +271,58 @@ public class BlockCache extends BlockTEBase {
 
 		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
 		return tile == null ? null : tile.getTexture(side, renderPass);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		if (side == 0) {
-			return IconRegistry.getIcon("CacheBottom", metadata);
-		}
-		if (side == 1) {
-			return IconRegistry.getIcon("CacheTop", metadata);
-		}
-		return side != 3 ? IconRegistry.getIcon("CacheSide", metadata) : IconRegistry.getIcon("CacheFace", metadata);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-		for (int i = 0; i < 9; i++) {
-			IconRegistry.addIcon("CacheMeter" + i, "thermalexpansion:cache/Cache_Meter_" + i, ir);
-		}
-		for (int i = 0; i < Types.values().length; i++) {
-			IconRegistry.addIcon("CacheBottom" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Bottom", ir);
-			IconRegistry.addIcon("CacheTop" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Top", ir);
-			IconRegistry.addIcon("CacheSide" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Side", ir);
-			IconRegistry.addIcon("CacheFace" + i, "thermalexpansion:cache/Cache_" + StringHelper.titleCase(NAMES[i]) + "_Face", ir);
-		}
-		IconRegistry.addIcon("CacheBlank", "thermalexpansion:config/Config_None", ir);
 	}*/
 
 	@Override
+	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+
+		if (side.ordinal() == 0) {
+			return IconRegistry.getIcon("CacheBottom", metadata);
+		}
+		if (side.ordinal() == 1) {
+			return IconRegistry.getIcon("CacheTop", metadata);
+		}
+		return side.ordinal() != 3 ? IconRegistry.getIcon("CacheSide", metadata) : IconRegistry.getIcon("CacheFace", metadata);
+	}
+
+    @Override
+    public void registerIcons(TextureMap textureMap) {
+        for (int i = 0; i < 9; i++) {
+            IconRegistry.addIcon("CacheMeter" + i, "thermalexpansion:blocks/cache/cache_meter_" + i, textureMap);
+        }
+        for (int i = 0; i < EnumType.values().length; i++) {
+            IconRegistry.addIcon("CacheBottom" + i, "thermalexpansion:blocks/cache/cache_" + NAMES[i] + "_bottom", textureMap);
+            IconRegistry.addIcon("CacheTop" + i, "thermalexpansion:blocks/cache/cache_" + NAMES[i] + "_top", textureMap);
+            IconRegistry.addIcon("CacheSide" + i, "thermalexpansion:blocks/cache/cache_" + NAMES[i] + "_side", textureMap);
+            IconRegistry.addIcon("CacheFace" + i, "thermalexpansion:blocks/cache/cache_" + NAMES[i] + "_face", textureMap);
+        }
+        IconRegistry.addIcon("CacheBlank", "thermalexpansion:blocks/config/config_none", textureMap);
+    }
+
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
+
+    @Override
+    public boolean shouldUsePass(int pass, TileEntity tileEntity) {
+        if (pass == 1){
+            return ((TileCache) tileEntity).storedStack != null;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
@@ -381,5 +408,4 @@ public class BlockCache extends BlockTEBase {
 	public static ItemStack cacheHardened;
 	public static ItemStack cacheReinforced;
 	public static ItemStack cacheResonant;
-
 }

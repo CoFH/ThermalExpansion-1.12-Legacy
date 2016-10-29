@@ -2,6 +2,7 @@ package cofh.thermalexpansion.item;
 
 import static cofh.lib.util.helpers.ItemHelper.*;
 
+import codechicken.lib.item.ItemMultiType;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.item.ItemBase;
 import cofh.core.util.crafting.RecipeUpgrade;
@@ -37,7 +38,7 @@ public class TEItems {
     public static ItemTransfuser itemTransfuser;
     public static ItemMiner itemMiner;
     public static ItemDiagram itemDiagram;
-    public static ItemBase itemMaterial;
+    public static ItemMultiType itemMaterial;
 
     public static ItemCapacitor itemCapacitor;
     public static ItemSatchel itemSatchel;
@@ -125,7 +126,9 @@ public class TEItems {
 		itemCapacitor = (ItemCapacitor) new ItemCapacitor().setUnlocalizedName("capacitor");
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 		itemDiagram = (ItemDiagram) new ItemDiagram().setUnlocalizedName("diagram");
-		itemMaterial = (ItemBase) new ItemBase("thermalexpansion").setUnlocalizedName("material").setCreativeTab(ThermalExpansion.tabItems);
+		itemMaterial = new ItemMultiType(ThermalExpansion.tabItems, "material");
+
+        GameRegistry.register(itemMaterial);
 
 		TEAugments.preInit();
 		TEEquipment.preInit();
@@ -180,20 +183,20 @@ public class TEItems {
 		diagramRedprint = itemDiagram.addItem(ItemDiagram.Types.REDPRINT.ordinal(), "redprint");
 
 		/* Parts */
-		pneumaticServo = itemMaterial.addItem(0, "pneumaticServo");
-		powerCoilGold = itemMaterial.addItem(1, "powerCoilGold");
-		powerCoilSilver = itemMaterial.addItem(2, "powerCoilSilver");
-		powerCoilElectrum = itemMaterial.addItem(3, "powerCoilElectrum");
+		pneumaticServo = itemMaterial.registerSubItem(0, "pneumaticServo");
+		powerCoilGold = itemMaterial.registerSubItem(1, "powerCoilGold");
+		powerCoilSilver = itemMaterial.registerSubItem(2, "powerCoilSilver");
+		powerCoilElectrum = itemMaterial.registerSubItem(3, "powerCoilElectrum");
 
-		lock = itemMaterial.addItem(16, "lock");
+		lock = itemMaterial.registerSubItem(16, "lock");
 
 		/* Process Items */
-		sawdust = itemMaterial.addOreDictItem(512, "dustWood");
-		sawdustCompressed = itemMaterial.addItem(513, "dustWoodCompressed");
-		slag = itemMaterial.addItem(514, "slag");
-		slagRich = itemMaterial.addItem(515, "slagRich");
-		fertilizer = itemMaterial.addOreDictItem(516, "fertilizer");
-		fertilizerRich = itemMaterial.addOreDictItem(517, "fertilizerRich");
+		sawdust = itemMaterial.registerSubItemOreDict(512, "dustWood");
+		sawdustCompressed = itemMaterial.registerSubItem(513, "dustWoodCompressed");
+		slag = itemMaterial.registerSubItem(514, "slag");
+		slagRich = itemMaterial.registerSubItem(515, "slagRich");
+		fertilizer = itemMaterial.registerSubItemOreDict(516, "fertilizer");
+		fertilizerRich = itemMaterial.registerSubItemOreDict(517, "fertilizerRich");
 		OreDictionary.registerOre("fertilizer", fertilizerRich);
 
 		TEAugments.initialize();
