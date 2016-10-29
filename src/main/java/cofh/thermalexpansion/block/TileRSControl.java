@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.util.BlockUtils;
+import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
 import cofh.asm.relauncher.Implementable;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
+import cofh.lib.audio.SoundTile;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
@@ -153,12 +155,10 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ISound getSound() {
-
-		return null;//new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, xCoord, yCoord, zCoord); TODO Fix tile sounds
+		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this));
 	}
 
 	public String getSoundName() {
-
 		return "";
 	}
 
