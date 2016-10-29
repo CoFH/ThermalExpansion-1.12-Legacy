@@ -99,58 +99,59 @@ public class TEAugments {
 
 	public static void preInit() {
 
-		itemAugment = (ItemAugment) new ItemAugment().setUnlocalizedName("augment");
+		itemAugment = new ItemAugment();
+        GameRegistry.register(itemAugment);
+
+        generalAutoOutput = itemAugment.registerSubItem(0, GENERAL_AUTO_OUTPUT);
+        generalAutoInput = itemAugment.registerSubItem(1, GENERAL_AUTO_INPUT);
+        generalReconfigSides = itemAugment.registerSubItem(16, GENERAL_RECONFIG_SIDES);
+        generalRedstoneControl = itemAugment.registerSubItem(32, GENERAL_REDSTONE_CONTROL);
+
+        itemAugment.addAugmentData(0, GENERAL_AUTO_OUTPUT, 1);
+        itemAugment.addAugmentData(1, GENERAL_AUTO_INPUT, 1);
+        itemAugment.addAugmentData(16, GENERAL_RECONFIG_SIDES, 1);
+        itemAugment.addAugmentData(32, GENERAL_REDSTONE_CONTROL, 1);
+
+        dynamoCoilDuct = itemAugment.registerSubItem(48, DYNAMO_COIL_DUCT);
+        itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);
+
+        dynamoThrottle = itemAugment.registerSubItem(49, DYNAMO_THROTTLE);
+        itemAugment.addAugmentData(49, DYNAMO_THROTTLE, 2);
+
+        for (int i = 0; i < NUM_DYNAMO_EFFICIENCY; i++) {
+            dynamoEfficiency[i] = itemAugment.registerSubItem(64 + i, DYNAMO_EFFICIENCY + i);
+            itemAugment.addAugmentData(64 + i, DYNAMO_EFFICIENCY, 1 + i, 0);
+        }
+        for (int i = 0; i < NUM_DYNAMO_OUTPUT; i++) {
+            dynamoOutput[i] = itemAugment.registerSubItem(80 + i, DYNAMO_OUTPUT + i);
+            itemAugment.addAugmentData(80 + i, DYNAMO_OUTPUT, 1 + i, 0);
+        }
+
+        for (int i = 0; i < NUM_MACHINE_SECONDARY; i++) {
+            machineSecondary[i] = itemAugment.registerSubItem(112 + i, MACHINE_SECONDARY + i);
+            itemAugment.addAugmentData(112 + i, MACHINE_SECONDARY, 1 + i, 0);
+        }
+        for (int i = 0; i < NUM_MACHINE_SPEED; i++) {
+            machineSpeed[i] = itemAugment.registerSubItem(128 + i, MACHINE_SPEED + i);
+            itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i, 0);
+        }
+        machineNull = itemAugment.registerSubItem(144, MACHINE_NULL);
+        itemAugment.addAugmentData(144, MACHINE_NULL, 1);
+
+        machineFurnaceFood = itemAugment.registerSubItem(256, MACHINE_FURNACE_FOOD);
+        itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
+
+        for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
+            machineExtruderBoost[i] = itemAugment.registerSubItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
+            itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i, 0);
+        }
+        // for (int i = 0; i < NUM_MACHINE_CHARGER; i++) {
+        // machineExtruderBoost[i] = itemAugment.addItem(336 + i, MACHINE_CHARGER_BOOST + i);
+        // itemAugment.addAugmentData(312 + i, MACHINE_CHARGER_BOOST, 1 + i, 0);
+        // }
 	}
 
 	public static void initialize() {
-
-		generalAutoOutput = itemAugment.addItem(0, GENERAL_AUTO_OUTPUT);
-		generalAutoInput = itemAugment.addItem(1, GENERAL_AUTO_INPUT);
-		generalReconfigSides = itemAugment.addItem(16, GENERAL_RECONFIG_SIDES);
-		generalRedstoneControl = itemAugment.addItem(32, GENERAL_REDSTONE_CONTROL);
-
-		itemAugment.addAugmentData(0, GENERAL_AUTO_OUTPUT, 1);
-		itemAugment.addAugmentData(1, GENERAL_AUTO_INPUT, 1);
-		itemAugment.addAugmentData(16, GENERAL_RECONFIG_SIDES, 1);
-		itemAugment.addAugmentData(32, GENERAL_REDSTONE_CONTROL, 1);
-
-		dynamoCoilDuct = itemAugment.addItem(48, DYNAMO_COIL_DUCT);
-		itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);
-
-		dynamoThrottle = itemAugment.addItem(49, DYNAMO_THROTTLE);
-		itemAugment.addAugmentData(49, DYNAMO_THROTTLE, 2);
-
-		for (int i = 0; i < NUM_DYNAMO_EFFICIENCY; i++) {
-			dynamoEfficiency[i] = itemAugment.addItem(64 + i, DYNAMO_EFFICIENCY + i);
-			itemAugment.addAugmentData(64 + i, DYNAMO_EFFICIENCY, 1 + i, 0);
-		}
-		for (int i = 0; i < NUM_DYNAMO_OUTPUT; i++) {
-			dynamoOutput[i] = itemAugment.addItem(80 + i, DYNAMO_OUTPUT + i);
-			itemAugment.addAugmentData(80 + i, DYNAMO_OUTPUT, 1 + i, 0);
-		}
-
-		for (int i = 0; i < NUM_MACHINE_SECONDARY; i++) {
-			machineSecondary[i] = itemAugment.addItem(112 + i, MACHINE_SECONDARY + i);
-			itemAugment.addAugmentData(112 + i, MACHINE_SECONDARY, 1 + i, 0);
-		}
-		for (int i = 0; i < NUM_MACHINE_SPEED; i++) {
-			machineSpeed[i] = itemAugment.addItem(128 + i, MACHINE_SPEED + i);
-			itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i, 0);
-		}
-		machineNull = itemAugment.addItem(144, MACHINE_NULL);
-		itemAugment.addAugmentData(144, MACHINE_NULL, 1);
-
-		machineFurnaceFood = itemAugment.addItem(256, MACHINE_FURNACE_FOOD);
-		itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
-
-		for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
-			machineExtruderBoost[i] = itemAugment.addItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
-			itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i, 0);
-		}
-		// for (int i = 0; i < NUM_MACHINE_CHARGER; i++) {
-		// machineExtruderBoost[i] = itemAugment.addItem(336 + i, MACHINE_CHARGER_BOOST + i);
-		// itemAugment.addAugmentData(312 + i, MACHINE_CHARGER_BOOST, 1 + i, 0);
-		// }
 	}
 
 	public static void postInit() {

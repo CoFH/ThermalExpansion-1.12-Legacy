@@ -11,6 +11,7 @@ import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.client.model.TEBakedModel;
+import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
@@ -42,6 +43,7 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void preInit() {
+        TEAugments.itemAugment.registerModelVariants();
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);

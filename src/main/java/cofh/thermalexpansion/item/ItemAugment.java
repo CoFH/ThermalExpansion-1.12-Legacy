@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.item;
 
+import codechicken.lib.item.ItemMultiType;
 import cofh.api.item.IAugmentItem;
 import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.ItemHelper;
@@ -17,7 +18,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 
-public class ItemAugment extends ItemBase implements IAugmentItem {
+public class ItemAugment extends ItemMultiType implements IAugmentItem {
 
 	public class AugmentEntry {
 
@@ -31,8 +32,7 @@ public class ItemAugment extends ItemBase implements IAugmentItem {
 
 	public ItemAugment() {
 
-		super("thermalexpansion");
-		setCreativeTab(ThermalExpansion.tabItems);
+		super(ThermalExpansion.tabItems, "augment");
 	}
 
 	@Override
