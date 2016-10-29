@@ -2,6 +2,8 @@ package cofh.thermalexpansion.block.light;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
+import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IBlockConfigGui;
 import cofh.core.render.IconRegistry;
@@ -17,23 +19,38 @@ import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.ender.BlockEnder;
+import cofh.thermalexpansion.block.ender.BlockEnder.Types;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.render.RenderLight;
 import cofh.thermalexpansion.render.transformation.TorchTransformation;
 import cofh.thermalexpansion.util.crafting.RecipeStyle;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import net.minecraft.block.SoundType;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
+import net.minecraft.block.state.BlockStateContainer.Builder;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+import java.util.Locale;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -49,7 +66,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 
-public class BlockLight extends BlockTEBase implements IBlockConfigGui {
+public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryBlock, IBlockLayerProvider {
 
 	public static Cuboid6[] models;
 
@@ -157,6 +174,14 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		GameRegistry.addRecipe(new RecipeStyle(3, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 6), 8))); // slab
 	}
 
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
+    public static final UnlistedIntegerProperty COLOUR_MULTIPLIER_PROPERTY = new UnlistedIntegerProperty("colour_multiplier");
+    public static final UnlistedIntegerProperty STYLE_PROPERTY = new UnlistedIntegerProperty("style");
+    public static final UnlistedIntegerProperty ALIGNMENT_PROPERTY = new UnlistedIntegerProperty("alignment");
+    public static final UnlistedBooleanProperty MODIFIED_PROPERTY = new UnlistedBooleanProperty("modified");
+
+
 	public BlockLight() {
 
 		super(Material.REDSTONE_LIGHT);
@@ -167,7 +192,35 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		basicGui = false;
 	}
 
-	@Override
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).meta();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        ExtendedBlockState.Builder builder = new Builder(this);
+        builder.add(TYPES);
+        builder.add(BlockBakery.TYPE_PROPERTY);
+        builder.add(COLOUR_MULTIPLIER_PROPERTY);
+        builder.add(STYLE_PROPERTY);
+        builder.add(ALIGNMENT_PROPERTY);
+        builder.add(MODIFIED_PROPERTY);
+        builder.add(BlockBakery.ACTIVE_PROPERTY);
+        return builder.build();
+    }
+
+    @Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		return new TileLight();
@@ -304,18 +357,20 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		return source.getCombinedLight(pos, tile.getInternalLight());
 	}
 
-	//@Override
-	public int getRenderBlockPass() {
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
 
-		return 1;
-	}
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
 
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+    }
 
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
@@ -390,12 +445,34 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui {
 		return true;
 	}
 
-	public enum Types {
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderLight.instance;
+    }
+
+    public enum Types implements IStringSerializable {
 		ILLUMINATOR,
         LAMP_LUMIUM_RADIANT,
         LAMP_LUMIUM;
 
-		public static Types getType(int meta) {
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
+
+        public static Types getType(int meta) {
 
 			Types[] types = values();
 			return types[meta % types.length];

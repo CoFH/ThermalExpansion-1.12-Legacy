@@ -3,10 +3,15 @@ package cofh.thermalexpansion.block.simple;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
+import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
@@ -14,7 +19,11 @@ import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
@@ -24,21 +33,26 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockFrame extends Block implements IDismantleable, IInitializer {
+public class BlockFrame extends Block implements IDismantleable, IInitializer, IBakeryBlock {
 
     public static int renderPass = 0;
 
@@ -52,6 +66,8 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
         return metadata < Types.ILLUMINATOR.ordinal();
     }
 
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
     public BlockFrame() {
 
         super(Material.IRON);
@@ -60,6 +76,21 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
         setSoundType(SoundType.METAL);
         setCreativeTab(ThermalExpansion.tabBlocks);
         setUnlocalizedName("thermalexpansion.frame");
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.ACTIVE_PROPERTY).build();
     }
 
     @Override
@@ -88,28 +119,11 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
         return getMetaFromState(state);
     }
 
-    //@Override
-    public int getRenderBlockPass() {
-
-        return 1;
-    }
-
-    //@Override
-    public int getRenderType() {
-
-        return TEProps.renderIdFrame;
-    }
-
     @Override
     public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
         return false;
     }
 
-	/*@Override
-    public boolean canRenderInPass(int pass) {
-		renderPass = pass;
-		return pass < 2;
-	}*/
 
     @Override
     public boolean isOpaqueCube(IBlockState state) {
@@ -121,111 +135,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
         return true;
     }
-
-	/*@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		if (side == 6) {
-			return getInnerIcon(metadata);
-		} else if (side == 7) {
-			return getCenterIcon(metadata);
-		}
-		return getFrameIcon(side, metadata);
-	}
-
-	private IIcon getFrameIcon(int side, int metadata) {
-
-		switch (Types.values()[metadata]) {
-		case CELL_BASIC:
-			return IconRegistry.getIcon("FrameCellBasic");
-		case CELL_HARDENED:
-			return IconRegistry.getIcon("FrameCellHardened");
-		case CELL_REINFORCED_EMPTY:
-		case CELL_REINFORCED_FULL:
-			return IconRegistry.getIcon("FrameCellReinforced");
-		case CELL_RESONANT_EMPTY:
-		case CELL_RESONANT_FULL:
-			return IconRegistry.getIcon("FrameCellResonant");
-		case TESSERACT_EMPTY:
-		case TESSERACT_FULL:
-			return IconRegistry.getIcon("FrameTesseract");
-		case ILLUMINATOR:
-			return IconRegistry.getIcon("FrameIlluminator");
-		default:
-			if (side == 0) {
-				return IconRegistry.getIcon("FrameMachineBottom");
-			}
-			if (side == 1) {
-				return IconRegistry.getIcon("FrameMachineTop");
-			}
-			return IconRegistry.getIcon("FrameMachineSide");
-		}
-	}
-
-	private IIcon getInnerIcon(int metadata) {
-
-		switch (Types.values()[metadata]) {
-		case CELL_BASIC:
-			return IconRegistry.getIcon("FrameCellBasicInner");
-		case CELL_HARDENED:
-			return IconRegistry.getIcon("FrameCellHardenedInner");
-		case CELL_REINFORCED_EMPTY:
-		case CELL_REINFORCED_FULL:
-			return IconRegistry.getIcon("FrameCellReinforcedInner");
-		case CELL_RESONANT_EMPTY:
-		case CELL_RESONANT_FULL:
-			return IconRegistry.getIcon("FrameCellResonantInner");
-		case TESSERACT_EMPTY:
-		case TESSERACT_FULL:
-			return IconRegistry.getIcon("FrameTesseractInner");
-		case ILLUMINATOR:
-			return IconRegistry.getIcon("FrameIlluminatorInner");
-		default:
-			return IconRegistry.getIcon("FrameMachineInner");
-		}
-	}
-
-	private IIcon getCenterIcon(int metadata) {
-
-		return IconRegistry.getIcon("FrameCenter", metadata);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-		IconRegistry.addIcon("FrameMachineBottom", "thermalexpansion:machine/Machine_Frame_Bottom", ir);
-		IconRegistry.addIcon("FrameMachineTop", "thermalexpansion:machine/Machine_Frame_Top", ir);
-		IconRegistry.addIcon("FrameMachineSide", "thermalexpansion:machine/Machine_Frame_Side", ir);
-		IconRegistry.addIcon("FrameCellBasic", "thermalexpansion:cell/Cell_Basic", ir);
-		IconRegistry.addIcon("FrameCellHardened", "thermalexpansion:cell/Cell_Hardened", ir);
-		IconRegistry.addIcon("FrameCellReinforced", "thermalexpansion:cell/Cell_Reinforced", ir);
-		IconRegistry.addIcon("FrameCellResonant", "thermalexpansion:cell/Cell_Resonant", ir);
-		IconRegistry.addIcon("FrameTesseract", "thermalexpansion:tesseract/Tesseract", ir);
-		IconRegistry.addIcon("FrameIlluminator", "thermalexpansion:light/Illuminator_Frame", ir);
-
-		IconRegistry.addIcon("FrameMachineInner", "thermalexpansion:machine/Machine_Frame_Inner", ir);
-		IconRegistry.addIcon("FrameCellBasicInner", "thermalexpansion:cell/Cell_Basic_Inner", ir);
-		IconRegistry.addIcon("FrameCellHardenedInner", "thermalexpansion:cell/Cell_Hardened_Inner", ir);
-		IconRegistry.addIcon("FrameCellReinforcedInner", "thermalexpansion:cell/Cell_Reinforced_Inner", ir);
-		IconRegistry.addIcon("FrameCellResonantInner", "thermalexpansion:cell/Cell_Resonant_Inner", ir);
-		IconRegistry.addIcon("FrameTesseractInner", "thermalexpansion:tesseract/Tesseract_Inner", ir);
-		IconRegistry.addIcon("FrameIlluminatorInner", "thermalexpansion:config/Config_None", ir);
-
-		IconRegistry.addIcon("FrameCenter" + 0, "thermalfoundation:storage/Block_Tin", ir);
-		IconRegistry.addIcon("FrameCenter" + 1, "thermalfoundation:storage/Block_Electrum", ir);
-		IconRegistry.addIcon("FrameCenter" + 2, "thermalfoundation:storage/Block_Signalum", ir);
-		IconRegistry.addIcon("FrameCenter" + 3, "thermalfoundation:storage/Block_Enderium", ir);
-		IconRegistry.addIcon("FrameCenter" + 4, "thermalexpansion:cell/Cell_Center_Solid", ir);
-		IconRegistry.addIcon("FrameCenter" + 5, "thermalexpansion:cell/Cell_Center_Solid", ir);
-		IconRegistry.addIcon("FrameCenter" + 6, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon("FrameCenter" + 7, "thermalfoundation:fluid/Fluid_Redstone_Still", ir);
-		IconRegistry.addIcon("FrameCenter" + 8, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon("FrameCenter" + 9, "thermalfoundation:fluid/Fluid_Redstone_Still", ir);
-		IconRegistry.addIcon("FrameCenter" + 10, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon("FrameCenter" + 11, "thermalfoundation:fluid/Fluid_Ender_Still", ir);
-		IconRegistry.addIcon("FrameCenter" + 12, "thermalexpansion:config/Config_None", ir);
-	}*/
 
     /* IDismantleable */
     @Override
@@ -345,7 +254,17 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
         return true;
     }
 
-    public enum Types {
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderFrame.instance;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    public enum Types implements IStringSerializable {
         MACHINE_BASIC,
         MACHINE_HARDENED,
         MACHINE_REINFORCED,
@@ -358,7 +277,24 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer {
         CELL_RESONANT_FULL,
         TESSERACT_EMPTY,
         TESSERACT_FULL,
-        ILLUMINATOR
+        ILLUMINATOR;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
     }
 
     public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellHardened", "cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };

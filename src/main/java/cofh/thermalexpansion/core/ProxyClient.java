@@ -12,10 +12,12 @@ import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.ender.BlockEnder;
+import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
+import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.tank.BlockTank;
-import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.*;
@@ -66,10 +68,17 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockCache, "", BlockCache.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
         registerBlockBakeryStuff(TEBlocks.blockPlate, "", BlockPlate.TYPES, RenderPlate.instance);
+        registerBlockBakeryStuff(TEBlocks.blockLight, "", BlockLight.TYPES, RenderLight.instance);
+        registerBlockBakeryStuff(TEBlocks.blockFrame, "", BlockFrame.TYPES, RenderFrame.instance);
 
         for (EnumType type : EnumType.values()) {
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockWorkbench), type.ordinal(), location);
+        }
+
+        for (BlockGlass.Types type : BlockGlass.Types.values()){
+            ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockGlass.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockGlass), type.ordinal(), location);
         }
     }
 

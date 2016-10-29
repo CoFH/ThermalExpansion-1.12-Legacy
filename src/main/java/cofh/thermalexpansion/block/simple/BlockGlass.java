@@ -11,6 +11,8 @@ import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
@@ -18,8 +20,10 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -29,9 +33,12 @@ import net.minecraftforge.oredict.OreDictionary;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class BlockGlass extends Block implements IDismantleable, IInitializer {
+
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
     public BlockGlass() {
 
@@ -41,6 +48,21 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
         setSoundType(SoundType.GLASS);
         setCreativeTab(ThermalExpansion.tabBlocks);
         setUnlocalizedName("thermalexpansion.glass");
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(TYPES).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+    }
+
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, TYPES);
     }
 
     @Override
@@ -152,6 +174,10 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
         return true;
     }
 
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
     /* IInitializer */
     @Override
     public boolean preInit() {
@@ -173,10 +199,33 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
         return true;
     }
 
+
     @Override
     public boolean postInit() {
 
         return true;
+    }
+
+    public enum Types implements IStringSerializable {
+        HARDENED,
+        ILLUMINATED;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public int meta() {
+            return ordinal();
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
     }
 
     //public static IIcon TEXTURE[] = new IIcon[2];
