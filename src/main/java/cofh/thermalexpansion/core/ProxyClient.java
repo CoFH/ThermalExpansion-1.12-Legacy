@@ -44,7 +44,13 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void preInit() {
+
+        RenderStrongbox.registerRenderers();
+
         TEAugments.itemAugment.registerModelVariants();
+
+
+
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);

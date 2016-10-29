@@ -1,41 +1,50 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.render.item.IItemRenderer;
+import codechicken.lib.util.TransformUtils;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.EnumType;
+import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongboxCreative;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
+import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
 import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.model.IPerspectiveAwareModel;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
+import org.apache.commons.lang3.tuple.Pair;
 
 import javax.annotation.Nullable;
+import javax.vecmath.Matrix4f;
 import java.util.List;
 
-public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer {
+public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer, IPerspectiveAwareModel {
 
     public static final RenderStrongbox instance = new RenderStrongbox();
     static ResourceLocation[] texture = new ResourceLocation[EnumType.values().length];
 
     static ModelStrongbox model = new ModelStrongbox();
 
-    static {
+    public static void registerRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
         ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
-
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
+        ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
     }
 
     public static void initialize() {
@@ -87,7 +96,7 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
     @Override
     public void renderItem(ItemStack item) {
-        double offset = -0.5;
+        double offset = 0;
         //if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
         //	offset = 0;
         //}
@@ -97,7 +106,7 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
             access = item.getTagCompound().getByte("Access");
         }
         model.boxLid.rotateAngleX = 0;
-        render(item.getItemDamage(), access, 5, offset, offset, offset);
+        render(item.getItemDamage(), access, 2, offset, offset, offset);
         GlStateManager.enableRescaleNormal();
     }
 
@@ -129,6 +138,11 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
     @Override
     public ItemCameraTransforms getItemCameraTransforms() {
         return ItemCameraTransforms.DEFAULT;
+    }
+
+    @Override
+    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+        return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK.getTransforms(), cameraTransformType);
     }
 
     @Override
