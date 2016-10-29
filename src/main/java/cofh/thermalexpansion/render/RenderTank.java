@@ -148,7 +148,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
     public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
         if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+            buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.bind(buffer);

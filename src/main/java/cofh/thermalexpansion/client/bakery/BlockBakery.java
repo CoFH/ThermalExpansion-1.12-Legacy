@@ -213,7 +213,7 @@ public class BlockBakery implements IResourceManagerReloadListener {
     }
 
     public static List<BakedQuad> bakeBlockFace(EnumFacing face, TextureAtlasSprite sprite) {
-        return ImmutableList.of(PlanarFaceBakery.bakeFace(face, sprite, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL));
+        return ImmutableList.of(PlanarFaceBakery.bakeFace(face, sprite, DefaultVertexFormats.ITEM));
     }
 
     @Override

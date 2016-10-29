@@ -84,7 +84,7 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
             TextureAtlasSprite activeSprite = state.getValue(BlockBakery.ACTIVE_SPRITE_PROPERTY);
 
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR_NORMAL);
+            buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.bind(buffer);

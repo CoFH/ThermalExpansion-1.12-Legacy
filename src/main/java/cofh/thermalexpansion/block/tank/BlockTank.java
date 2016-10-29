@@ -33,6 +33,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -108,6 +109,11 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
         for (int i = 1; i < Types.values().length; i++) {
             list.add(new ItemStack(item, 1, i));
         }
+    }
+
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+        return new AxisAlignedBB(0.125F, 0F, 0.125F, 0.875F, 1F, 0.875F);
     }
 
     @Override
