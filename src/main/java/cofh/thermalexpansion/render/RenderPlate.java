@@ -4,22 +4,34 @@ import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.block.ICCBlockRenderer;
-import codechicken.lib.vec.Translation;
+import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Vector3;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.core.render.RenderUtils.ScaledIconTransformation;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.plate.TilePlateBase;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.VertexBuffer;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.property.IExtendedBlockState;
 
-public class RenderPlate implements ICCBlockRenderer {
+import java.util.ArrayList;
+import java.util.List;
+
+public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
 
     public static final RenderPlate instance = new RenderPlate();
 
@@ -63,9 +75,20 @@ public class RenderPlate implements ICCBlockRenderer {
         }
     }
 
-    public void render(CCRenderState ccrs, int alignment, int direction, int type, double x, double y, double z) {
+    @Override
+    public void registerIcons(TextureMap textureMap) {
+        IconRegistry.addIcon("PlateBottom", "thermalexpansion:blocks/plate/plate_bottom", textureMap);
+        IconRegistry.addIcon("PlateTopO", "thermalexpansion:blocks/plate/plate_top_circle", textureMap);
+        IconRegistry.addIcon("PlateTop0", "thermalexpansion:blocks/plate/plate_top_down", textureMap);
+        IconRegistry.addIcon("PlateTop1", "thermalexpansion:blocks/plate/plate_top_up", textureMap);
+        IconRegistry.addIcon("PlateTop2", "thermalexpansion:blocks/plate/plate_top_north", textureMap);
+        IconRegistry.addIcon("PlateTop3", "thermalexpansion:blocks/plate/plate_top_south", textureMap);
+        IconRegistry.addIcon("PlateTop4", "thermalexpansion:blocks/plate/plate_top_west", textureMap);
+        IconRegistry.addIcon("PlateTop5", "thermalexpansion:blocks/plate/plate_top_east", textureMap);
+    }
 
-        Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
+    public void render(CCRenderState ccrs, int alignment, int direction, int type) {
+
         if (direction < 6) {
             int flip = alignment == 1 ? ((direction >> 1) & 1) ^ 1 : 1;
             // top plates need north/south inverted specially (otherwise flip would always be 1)
@@ -78,22 +101,69 @@ public class RenderPlate implements ICCBlockRenderer {
 
         CCModel model = side_model[alignment];
         if (type > 0) {
-            model.render(ccrs, 4, 8, trans, RenderUtils.getIconTransformation(texture_fluid[type - 1]));
+            model.render(ccrs, 4, 8, RenderUtils.getIconTransformation(texture_fluid[type - 1]));
         }
-        model.render(ccrs, 4, 8, trans, RenderUtils.getIconTransformation(texture_frame[direction]));
+        model.render(ccrs, 4, 8, RenderUtils.getIconTransformation(texture_frame[direction]));
         ScaledIconTransformation transform = RenderUtils.getIconTransformation(texture_frame[6]);
-        model.render(ccrs, 0, 4, trans, transform);
-        model.render(ccrs, 24, 28, trans, transform);
+        model.render(ccrs, 0, 4, transform);
+        model.render(ccrs, 24, 28, transform);
 
         for (int i = 8; i < 24; i += 4) {
-            model.render(ccrs, i, i + 4, trans, transform);
-            model.render(ccrs, 24 + i, 24 + i + 4, trans, transform);
+            model.render(ccrs, i, i + 4, transform);
+            model.render(ccrs, 24 + i, 24 + i + 4, transform);
         }
     }
 
-	/* ISimpleBlockRenderingHandler */
+    @Override
+    public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+        TilePlateBase plate = (TilePlateBase) tileEntity;
+        state = state.withProperty(BlockPlate.ALIGNMENT_PROPERTY, plate.getAlignment());
+        state = state.withProperty(BlockBakery.FACING_PROPERTY, plate.getFacing());
+        state = state.withProperty(BlockBakery.TYPE_PROPERTY, plate.getType());
+
+        return state;
+    }
+
+    @Override
+    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+        if (face == null) {
+            int alignment = state.getValue(BlockPlate.ALIGNMENT_PROPERTY);
+            int facing = state.getValue(BlockBakery.FACING_PROPERTY);
+            int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.ITEM);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
+
+            render(ccrs, alignment, facing, type);
+
+            buffer.finishDrawing();
+            return buffer.bake();
+        }
+        return new ArrayList<BakedQuad>();
+    }
+
+    @Override
+    public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+        if (face == null) {
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.ITEM);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
+
+            render(ccrs, 0, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
+
+            buffer.finishDrawing();
+            return buffer.bake();
+        }
+        return new ArrayList<BakedQuad>();
+    }
+
+    /* ISimpleBlockRenderingHandler */
     /*@Override
-	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
 
 
 	}
@@ -114,39 +184,4 @@ public class RenderPlate implements ICCBlockRenderer {
 	public int getRenderId() {
 		return TEProps.renderIdPlate;
 	}*/
-
-    @Override
-    public void handleRenderBlockDamage(IBlockAccess world, BlockPos pos, IBlockState state, TextureAtlasSprite sprite, VertexBuffer buffer) {
-    }
-
-    @Override
-    public boolean renderBlock(IBlockAccess world, BlockPos pos, IBlockState state, VertexBuffer buffer) {
-        TileEntity tile = world.getTileEntity(pos);
-        if (!(tile instanceof TilePlateBase)) {
-            return false;
-        }
-        TilePlateBase theTile = (TilePlateBase) tile;
-        CCRenderState ccrs = CCRenderState.instance();
-        ccrs.bind(buffer);
-
-        RenderUtils.preWorldRender(world, pos);
-        render(ccrs, theTile.getAlignment(), theTile.getFacing(), theTile.getType(), pos.getX(), pos.getY(), pos.getZ());
-        return true;
-    }
-
-    @Override
-    public void renderBrightness(IBlockState state, float brightness) {
-        //RenderUtils.preItemRender();
-
-        //CCRenderState.startDrawing();
-        //render(0, BlockPlate.Types.values()[metadata].texture, metadata, 0, 0, 0);
-        //CCRenderState.draw();
-
-        //RenderUtils.postItemRender();
-    }
-
-    @Override
-    public void registerTextures(TextureMap map) {
-
-    }
 }

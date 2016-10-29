@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.util.BlockUtils;
 import cofh.api.block.IBlockConfigGui;
@@ -9,8 +10,12 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.cell.BlockCell;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.render.RenderPlate;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
@@ -34,6 +39,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -45,7 +52,7 @@ import java.util.Random;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
+public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryBlock {
 
 	private static class PlateMaterial extends Material {
 
@@ -64,6 +71,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 
 	public static final Material material = new PlateMaterial(MapColor.IRON);
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
+    public static final UnlistedIntegerProperty ALIGNMENT_PROPERTY = new UnlistedIntegerProperty("alignment");
 
 	public BlockPlate() {
 
@@ -87,13 +96,18 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
     }
 
     @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(ALIGNMENT_PROPERTY).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.TYPE_PROPERTY).build();
     }
 
 
     @Override
-	public boolean openConfigGui(IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player) {
+    public boolean openConfigGui(IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player) {
 
 		return ((TilePlateBase) world.getTileEntity(pos)).openGui(player);
 	}
@@ -231,7 +245,32 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 		tile.onEntityCollidedWithBlock(entity);
 	}
 
-	public AxisAlignedBB getCollisionBlockBounds(TilePlateBase theTile, BlockPos pos) {
+    @Override
+    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+
+        TilePlateBase theTile = (TilePlateBase) source.getTileEntity(pos);
+        if (theTile != null) {
+            switch (theTile.alignment) {
+                case 0:
+                    return new AxisAlignedBB(0, 0, 0, 1, 1 / 16f, 1);
+                case 1:
+                    return new AxisAlignedBB(0, 15 / 16f, 0, 1, 1, 1);
+                case 2:
+                    return new AxisAlignedBB(0, 0, 0, 1, 1, 1 / 16f);
+                case 3:
+                    return new AxisAlignedBB(0, 0, 15 / 16f, 1, 1, 1);
+                case 4:
+                    return new AxisAlignedBB(0, 0, 0, 1 / 16f, 1, 1);
+                case 5:
+                    return new AxisAlignedBB(15 / 16f, 0, 0, 1, 1, 1);
+                default:
+            }
+        }
+
+        return new AxisAlignedBB(0, 0, 0, 1, 0.0625F, 1);
+    }
+
+    public AxisAlignedBB getCollisionBlockBounds(TilePlateBase theTile, BlockPos pos) {
 
 		float A = 1 / 16f;
 		float B = 15 / 16f;
@@ -312,19 +351,15 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui {
 	/*@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
+	}*/
 
-		IconRegistry.addIcon("PlateBottom", "thermalexpansion:plate/Plate_Bottom", ir);
-		IconRegistry.addIcon("PlateTopO", "thermalexpansion:plate/Plate_Top_Circle", ir);
-		IconRegistry.addIcon("PlateTop0", "thermalexpansion:plate/Plate_Top_Down", ir);
-		IconRegistry.addIcon("PlateTop1", "thermalexpansion:plate/Plate_Top_Up", ir);
-		IconRegistry.addIcon("PlateTop2", "thermalexpansion:plate/Plate_Top_North", ir);
-		IconRegistry.addIcon("PlateTop3", "thermalexpansion:plate/Plate_Top_South", ir);
-		IconRegistry.addIcon("PlateTop4", "thermalexpansion:plate/Plate_Top_West", ir);
-		IconRegistry.addIcon("PlateTop5", "thermalexpansion:plate/Plate_Top_East", ir);
-	}/*
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderPlate.instance;
+    }
 
-	/* IInitializer */
-	@Override
+    /* IInitializer */
+    @Override
 	public boolean initialize() {
 
 		TilePlateBase.initialize();
