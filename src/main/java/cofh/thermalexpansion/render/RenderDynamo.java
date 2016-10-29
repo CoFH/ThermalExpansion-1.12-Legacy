@@ -15,6 +15,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
+import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -27,7 +28,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderDynamo implements IIconRegister, ICustomBlockBakery {
+public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 
 	public static final RenderDynamo instance = new RenderDynamo();
 

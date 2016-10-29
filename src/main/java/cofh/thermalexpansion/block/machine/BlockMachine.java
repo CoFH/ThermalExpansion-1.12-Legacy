@@ -10,7 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.core.IBlockTextureProvider;
+import cofh.thermalexpansion.client.IBlockTextureProvider;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;

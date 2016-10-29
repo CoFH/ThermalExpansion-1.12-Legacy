@@ -3,7 +3,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/furnace",
+                "name": "thermalexpansion:blocks/machine/furnace",
                 "stream": false
             }
         ]
@@ -12,7 +12,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/pulverizer",
+                "name": "thermalexpansion:blocks/machine/pulverizer",
                 "stream": false
             }
         ]
@@ -21,7 +21,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/sawmill",
+                "name": "thermalexpansion:blocks/machine/sawmill",
                 "stream": false
             }
         ]
@@ -30,7 +30,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/smelter",
+                "name": "thermalexpansion:blocks/machine/smelter",
                 "stream": false
             }
         ]
@@ -39,7 +39,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/crucible",
+                "name": "thermalexpansion:blocks/machine/crucible",
                 "stream": false
             }
         ]
@@ -48,7 +48,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/transposer",
+                "name": "thermalexpansion:blocks/machine/transposer",
                 "stream": false
             }
         ]
@@ -57,7 +57,7 @@
         "category": "ambient",
         "sounds": [
             {
-                "name": "blocks/machine/accumulator",
+                "name": "thermalexpansion:blocks/machine/accumulator",
                 "stream": false
             }
         ]

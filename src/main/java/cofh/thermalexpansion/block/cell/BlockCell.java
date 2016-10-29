@@ -13,8 +13,14 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
+import cofh.thermalexpansion.client.UnlistedIntegerProperty;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
@@ -22,9 +28,12 @@ import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.List;
 import net.minecraft.block.material.Material;
@@ -40,9 +49,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockCell extends BlockTEBase {
+public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBakeryBlock {
 
     public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+
+    public static final UnlistedIntegerProperty CHARGE_PROPERTY = new UnlistedIntegerProperty("charge");
 
 	public BlockCell() {
 
@@ -64,8 +75,13 @@ public class BlockCell extends BlockTEBase {
     }
 
     @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.SPRITE_FACE_LAYER_PROPERTY).add(BlockBakery.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.ACTIVE_SPRITE_PROPERTY).build();
     }
 
 	@Override
@@ -172,33 +188,30 @@ public class BlockCell extends BlockTEBase {
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
 
-		for (int i = 0; i < 9; i++) {
-			IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:cell/Cell_Meter_" + i, ir);
-		}
-		IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:cell/Cell_Meter_Creative", ir);
-		IconRegistry.addIcon("Cell" + 0, "thermalexpansion:cell/Cell_Creative", ir);
-		IconRegistry.addIcon("Cell" + 1, "thermalexpansion:cell/Cell_Creative_Inner", ir);
-		IconRegistry.addIcon("Cell" + 2, "thermalexpansion:cell/Cell_Basic", ir);
-		IconRegistry.addIcon("Cell" + 3, "thermalexpansion:cell/Cell_Basic_Inner", ir);
-		IconRegistry.addIcon("Cell" + 4, "thermalexpansion:cell/Cell_Hardened", ir);
-		IconRegistry.addIcon("Cell" + 5, "thermalexpansion:cell/Cell_Hardened_Inner", ir);
-		IconRegistry.addIcon("Cell" + 6, "thermalexpansion:cell/Cell_Reinforced", ir);
-		IconRegistry.addIcon("Cell" + 7, "thermalexpansion:cell/Cell_Reinforced_Inner", ir);
-		IconRegistry.addIcon("Cell" + 8, "thermalexpansion:cell/Cell_Resonant", ir);
-		IconRegistry.addIcon("Cell" + 9, "thermalexpansion:cell/Cell_Resonant_Inner", ir);
-
-		IconRegistry.addIcon(TEXTURE_DEFAULT + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEXTURE_DEFAULT + 1, "thermalexpansion:cell/Cell_Config_Orange", ir);
-		IconRegistry.addIcon(TEXTURE_DEFAULT + 2, "thermalexpansion:cell/Cell_Config_Blue", ir);
-
-		IconRegistry.addIcon(TEXTURE_CB + 0, "thermalexpansion:config/Config_None", ir);
-		IconRegistry.addIcon(TEXTURE_CB + 1, "thermalexpansion:cell/Cell_Config_Orange_CB", ir);
-		IconRegistry.addIcon(TEXTURE_CB + 2, "thermalexpansion:cell/Cell_Config_Blue_CB", ir);
-
-		IconRegistry.addIcon("StorageRedstone", "thermalexpansion:cell/Cell_Center_Solid", ir);
 	}*/
 
-	@Override
+
+    @Override
+    public int getTexturePasses() {
+        return 1;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderCell.instance;
+    }
+
+    @Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);

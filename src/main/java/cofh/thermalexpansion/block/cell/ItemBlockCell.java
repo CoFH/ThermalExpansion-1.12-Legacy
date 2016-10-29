@@ -50,9 +50,9 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public double getDurabilityForDisplay(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)];
+			return 0;
 		}
-		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)] - stack.getTagCompound().getInteger("Energy");
+		return 1 - stack.getTagCompound().getInteger("Energy") / getMaxDamage(stack);
 	}
 
 	@Override

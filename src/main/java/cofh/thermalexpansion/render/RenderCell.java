@@ -1,179 +1,278 @@
 package cofh.thermalexpansion.render;
 
-import cofh.api.energy.IEnergyContainerItem;
-import cofh.core.block.BlockCoFHBase;
-import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
-import cofh.lib.render.RenderHelper;
 import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
+import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils;
+import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Translation;
+import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.render.IconRegistry;
+import cofh.core.render.RenderUtils;
+import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
+import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
-
-import org.lwjgl.opengl.GL11;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public class RenderCell //implements ISimpleBlockRenderingHandler, IItemRenderer
-{
+public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
-	public static final RenderCell instance = new RenderCell();
+    public static final RenderCell instance = new RenderCell();
 
-	static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
-	static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[EnumType.values().length * 2];
-	static CCModel modelCenter = CCModel.quadModel(24);
-	static CCModel modelFrame = CCModel.quadModel(48);
+    static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
+    static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[EnumType.values().length * 2];
+    static CCModel modelCenter = CCModel.quadModel(24);
+    static CCModel modelFrame = CCModel.quadModel(48);
 
-	static {
-		//TEProps.renderIdCell = RenderingRegistry.getNextAvailableRenderId();
-		//RenderingRegistry.registerBlockHandler(instance);
+    static {
+        //TEProps.renderIdCell = RenderingRegistry.getNextAvailableRenderId();
+        //RenderingRegistry.registerBlockHandler(instance);
 
-		//MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockCell), instance);
+        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockCell), instance);
 
-		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
+        modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
-		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
-		double inset = 0.1875;
-		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
-		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
-		modelFrame.computeNormals();
-		for (int i = 24; i < 48; i++) {
-			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
-		}
-		modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
-	}
+        Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
+        double inset = 0.1875;
+        modelFrame = CCModel.quadModel(48).generateBlock(0, box);
+        CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
+        modelFrame.computeNormals();
+        for (int i = 24; i < 48; i++) {
+            modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
+        }
+        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+    }
 
-	public static void initialize() {
+    public static void initialize() {
 
-		textureCenter[0] = IconRegistry.getIcon("StorageRedstone");
-		textureCenter[1] = IconRegistry.getIcon("FluidRedstone");
+        textureCenter[0] = IconRegistry.getIcon("StorageRedstone");
+        textureCenter[1] = IconRegistry.getIcon("FluidRedstone");
 
-		for (int i = 0; i < textureFrame.length; i++) {
-			textureFrame[i] = IconRegistry.getIcon("Cell", i);
-		}
-	}
+        for (int i = 0; i < textureFrame.length; i++) {
+            textureFrame[i] = IconRegistry.getIcon("Cell", i);
+        }
+    }
 
-	public void renderCenter(CCRenderState ccrs, int metadata, double x, double y, double z) {
+    @Override
+    public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+        TileCell cell = (TileCell) tileEntity;
+        HashMap<EnumFacing, TextureAtlasSprite> p2 = new HashMap<EnumFacing, TextureAtlasSprite>();
+        for (EnumFacing face : EnumFacing.VALUES) {
+            p2.put(face, cell.getTexture(face.ordinal(), 2));
+        }
+        state = state.withProperty(BlockBakery.SPRITE_FACE_LAYER_PROPERTY, p2);
+        state = state.withProperty(BlockBakery.TYPE_PROPERTY, (int) cell.type);
+        state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
+        state = state.withProperty(BlockBakery.FACING_PROPERTY, cell.getFacing());
+        state = state.withProperty(BlockBakery.ACTIVE_SPRITE_PROPERTY, cell.getTexture(cell.getFacing(), 3));
+        return state;
+    }
 
-		if (metadata == 1 || metadata == 2) {
-			modelCenter.render(ccrs, x, y, z, RenderUtils.getIconTransformation(textureCenter[0]));
-		} else {
-			modelCenter.render(ccrs, x, y, z, RenderUtils.getIconTransformation(textureCenter[1]));
-		}
-	}
+    @SuppressWarnings("unchecked")
+    @Override
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+        if (face == null) {
+            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakery.SPRITE_FACE_LAYER_PROPERTY);
+            int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+            int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
+            int facing = state.getValue(BlockBakery.FACING_PROPERTY);
+            TextureAtlasSprite frontFace = state.getValue(BlockBakery.ACTIVE_SPRITE_PROPERTY);
 
-	public void renderFrame(CCRenderState ccrs, int metadata, TileCell tile, double x, double y, double z) {
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.ITEM);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
 
-		Translation trans = RenderUtils.getRenderVector(x, y, z).translation();
-		for (int i = 0; i < 6; i++) {
-			modelFrame.render(ccrs, i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
-			modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, trans, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
-		}
-		if (tile != null) {
-			for (int i = 0; i < 6; i++) {
-				modelFrame.render(ccrs, i * 4, i * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getTexture(i, 2)));
-			}
-			int facing = tile.getFacing();
-			modelFrame.render(ccrs, facing * 4, facing * 4 + 4, trans, RenderUtils.getIconTransformation(tile.getTexture(facing, 3)));
-		}
-	}
+            //if (pass == 0) {
+                renderFrame(ccrs, type, spriteMap, facing, frontFace);
+                //TODO Center brightness.
+                //ccrs.brightness = 165 + charge * 5;
+                renderCenter(ccrs, type);
+            //} else {
+            //}
 
-	private int getScaledEnergyStored(ItemStack container, int scale) {
+            buffer.finishDrawing();
+            return buffer.bake();
+        }
+        return new ArrayList<BakedQuad>();
+    }
 
-		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+    @Override
+    public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+        if (face == null){
+            BakingVertexBuffer buffer = BakingVertexBuffer.create();
+            buffer.begin(7, DefaultVertexFormats.ITEM);
+            CCRenderState ccrs = CCRenderState.instance();
+            ccrs.reset();
+            ccrs.bind(buffer);
 
-		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
-	}
+            //if (pass == 0) {
+            renderFrame(ccrs, stack.getItemDamage(), null, 0, null);
+            //TODO Center brightness.
+            //ccrs.brightness = 165 + charge * 5;
+            renderCenter(ccrs, stack.getItemDamage());
+            //} else {
+            //}
+
+            buffer.finishDrawing();
+            return buffer.bake();
+        }
+        return new ArrayList<BakedQuad>();
+    }
+
+    @Override
+    public void registerIcons(TextureMap textureMap) {
+
+        for (int i = 0; i < 9; i++) {
+            IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:blocks/cell/cell_meter_" + i, textureMap);
+        }
+        IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:blocks/cell/cell_meter_creative", textureMap);
+        IconRegistry.addIcon("Cell" + 0, "thermalexpansion:blocks/cell/cell_creative", textureMap);
+        IconRegistry.addIcon("Cell" + 1, "thermalexpansion:blocks/cell/cell_creative_inner", textureMap);
+        IconRegistry.addIcon("Cell" + 2, "thermalexpansion:blocks/cell/cell_basic", textureMap);
+        IconRegistry.addIcon("Cell" + 3, "thermalexpansion:blocks/cell/cell_basic_inner", textureMap);
+        IconRegistry.addIcon("Cell" + 4, "thermalexpansion:blocks/cell/cell_hardened", textureMap);
+        IconRegistry.addIcon("Cell" + 5, "thermalexpansion:blocks/cell/cell_hardened_inner", textureMap);
+        IconRegistry.addIcon("Cell" + 6, "thermalexpansion:blocks/cell/cell_reinforced", textureMap);
+        IconRegistry.addIcon("Cell" + 7, "thermalexpansion:blocks/cell/cell_reinforced_inner", textureMap);
+        IconRegistry.addIcon("Cell" + 8, "thermalexpansion:blocks/cell/cell_resonant", textureMap);
+        IconRegistry.addIcon("Cell" + 9, "thermalexpansion:blocks/cell/cell_resonant_inner", textureMap);
+
+        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/cell/cell_config_orange", textureMap);
+        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/cell/cell_config_blue", textureMap);
+
+        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 1, "thermalexpansion:blocks/cell/cell_config_orange_cb", textureMap);
+        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 2, "thermalexpansion:blocks/cell/cell_config_blue_cb", textureMap);
+
+        IconRegistry.addIcon("StorageRedstone", "thermalexpansion:blocks/cell/cell_center_solid", textureMap);
+    }
+
+    public void renderCenter(CCRenderState ccrs, int metadata) {
+
+        if (metadata == 1 || metadata == 2) {
+            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[0]));
+        } else {
+            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[1]));
+        }
+    }
+
+    public void renderFrame(CCRenderState ccrs, int metadata, Map<EnumFacing, TextureAtlasSprite> spriteMap, int facing, TextureAtlasSprite faceTexture) {
+
+        for (int i = 0; i < 6; i++) {
+            modelFrame.render(ccrs, i * 4, i * 4 + 4, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
+            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
+        }
+        if (spriteMap != null) {
+            for (EnumFacing face : EnumFacing.VALUES) {
+                modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, RenderUtils.getIconTransformation(spriteMap.get(face)));
+            }
+            modelFrame.render(ccrs, facing * 4, facing * 4 + 4, RenderUtils.getIconTransformation(faceTexture));
+        }
+    }
+
+    private int getScaledEnergyStored(ItemStack container, int scale) {
+
+        IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+
+        return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
+    }
 
 	/* ISimpleBlockRenderingHandler */
-	//@Override
-	//public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-	//}
+    //@Override
+    //public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
+    //}
 
-	//@Override
-	//public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-//
-	//	TileEntity tile = world.getTileEntity(x, y, z);
-	//	if (!(tile instanceof TileCell)) {
-	//		return false;
-	//	}
-	//	TileCell theTile = (TileCell) tile;
-	//	int chargeLevel = Math.min(15, theTile.getScaledEnergyStored(16));
-//
-	//	RenderUtils.preWorldRender(world, x, y, z);
-	//	if (BlockCoFHBase.renderPass == 0) {
-	//		renderFrame(theTile.type, theTile, x, y, z);
-	//	} else {
-	//		CCRenderState.setBrightness(165 + chargeLevel * 5);
-	//		renderCenter(theTile.type, x, y, z);
-	//	}
-	//	return true;
-	//}
+    //@Override
+    //public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
+    //
+    //	TileEntity tile = world.getTileEntity(x, y, z);
+    //	if (!(tile instanceof TileCell)) {
+    //		return false;
+    //	}
+    //	TileCell theTile = (TileCell) tile;
+    //	int chargeLevel = Math.min(15, theTile.getScaledEnergyStored(16));
+    //
+    //	RenderUtils.preWorldRender(world, x, y, z);
+    //	if (BlockCoFHBase.renderPass == 0) {
+    //		renderFrame(theTile.type, theTile, x, y, z);
+    //	} else {
+    //		CCRenderState.setBrightness(165 + chargeLevel * 5);
+    //		renderCenter(theTile.type, x, y, z);
+    //	}
+    //	return true;
+    //}
 
-	//@Override
-	//public boolean shouldRender3DInInventory(int modelId) {
-	//	return true;
-	//}
+    //@Override
+    //public boolean shouldRender3DInInventory(int modelId) {
+    //	return true;
+    //}
 
-	//@Override
-	//public int getRenderId() {
-	//	return TEProps.renderIdCell;
-	//}
+    //@Override
+    //public int getRenderId() {
+    //	return TEProps.renderIdCell;
+    //}
 
 	/* IItemRenderer */
-	//@Override
-	//public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-	//	return true;
-	//}
+    //@Override
+    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
+    //	return true;
+    //}
 
-	//@Override
-	//public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-	//	return true;
-	//}
+    //@Override
+    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+    //	return true;
+    //}
 
-	//@Override
-	//public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-//
-	//	GL11.glPushMatrix();
-	//	double offset = -0.5;
-	//	if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-	//		offset = 0;
-	//	}
-	//	int chargeLevel = 0;
-//
-//		if (item.stackTagCompound != null) {
-//			chargeLevel = Math.min(15, getScaledEnergyStored(item, 16));
-//		}
-//		int metadata = item.getItemDamage();
-//		RenderUtils.preItemRender();
-//
-//		CCRenderState.startDrawing();
-//		renderFrame(metadata, null, offset, offset, offset);
-//		CCRenderState.draw();
-//
-//		CCRenderState.startDrawing();
-//		CCRenderState.setBrightness(165 + chargeLevel * 5);
-//		renderCenter(metadata, offset, offset, offset);
-//		CCRenderState.draw();
-//
-//		RenderUtils.postItemRender();
-//		GL11.glPopMatrix();
-//	}
+    //@Override
+    //public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
+    //
+    //	GL11.glPushMatrix();
+    //	double offset = -0.5;
+    //	if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
+    //		offset = 0;
+    //	}
+    //	int chargeLevel = 0;
+    //
+    //		if (item.stackTagCompound != null) {
+    //			chargeLevel = Math.min(15, getScaledEnergyStored(item, 16));
+    //		}
+    //		int metadata = item.getItemDamage();
+    //		RenderUtils.preItemRender();
+    //
+    //		CCRenderState.startDrawing();
+    //		renderFrame(metadata, null, offset, offset, offset);
+    //		CCRenderState.draw();
+    //
+    //		CCRenderState.startDrawing();
+    //		CCRenderState.setBrightness(165 + chargeLevel * 5);
+    //		renderCenter(metadata, offset, offset, offset);
+    //		CCRenderState.draw();
+    //
+    //		RenderUtils.postItemRender();
+    //		GL11.glPopMatrix();
+    //	}
 
 }
