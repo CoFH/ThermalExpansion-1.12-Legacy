@@ -125,20 +125,20 @@ public class TabConfigCell extends TabBase {
 		if (GuiScreen.isShiftKeyDown()) {
 			if (side == myTile.getFacing()) {
 				if (myTile.resetSides()) {
-					GuiBase.playSound("random.click", 1.0F, 0.2F);
+					GuiBase.playClickSound(1.0F, 0.2F);
 				}
 			} else if (myTile.setSide(side, 0)) {
-				GuiBase.playSound("random.click", 1.0F, 0.4F);
+				GuiBase.playClickSound(1.0F, 0.4F);
 			}
 			return;
 		}
 		if (mouseButton == 0) {
 			if (myTile.incrSide(side)) {
-				GuiBase.playSound("random.click", 1.0F, 0.8F);
+				GuiBase.playClickSound(1.0F, 0.8F);
 			}
 		} else if (mouseButton == 1) {
 			if (myTile.decrSide(side)) {
-				GuiBase.playSound("random.click", 1.0F, 0.6F);
+				GuiBase.playClickSound(1.0F, 0.6F);
 			}
 		}
 	}

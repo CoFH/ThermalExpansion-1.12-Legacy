@@ -98,7 +98,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 			myTile.distance += change;
 			pitch += 0.1F;
 		}
-		playSound("random.click", 1.0F, pitch);
+        playClickSound(1.0F, pitch);
 
 		myTile.sendModePacket();
 
@@ -152,7 +152,7 @@ public class GuiPlateTranslocate extends GuiBaseAdv {
 			}
 			facing %= 6;
 			if (myTile.setFacing(facing)) {
-				playSound("random.click", 1.0F, pitch);
+                playClickSound(1.0F, pitch);
 				myTile.sendModePacket();
 			}
 		} else {

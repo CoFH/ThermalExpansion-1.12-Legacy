@@ -65,13 +65,13 @@ public class GuiActivator extends GuiAugmentableBase {
 			settingClick.setToolTip(myTile.leftClick ? "info.thermalexpansion.clickLeft" : "info.thermalexpansion.clickRight");
 			settingClick.setSheetX(myTile.leftClick ? 176 : 196);
 			settingClick.setHoverX(myTile.leftClick ? 176 : 196);
-			playSound("random.click", 1.0F, myTile.leftClick ? 0.8F : 0.6F);
+            playClickSound(1.0F, myTile.leftClick ? 0.8F : 0.6F);
 		} else if (buttonName.equalsIgnoreCase("Sneak")) {
 			myTile.actsSneaking = !myTile.actsSneaking;
 			settingSneak.setToolTip(myTile.actsSneaking ? "info.thermalexpansion.sneakOn" : "info.thermalexpansion.sneakOff");
 			settingSneak.setSheetX(myTile.actsSneaking ? 176 : 196);
 			settingSneak.setHoverX(myTile.actsSneaking ? 176 : 196);
-			playSound("random.click", 1.0F, myTile.actsSneaking ? 0.6F : 0.8F);
+            playClickSound(1.0F, myTile.actsSneaking ? 0.6F : 0.8F);
 		} else if (buttonName.equalsIgnoreCase("tickSlot")) {
 			myTile.tickSlot++;
 			myTile.tickSlot %= 3;
@@ -79,7 +79,7 @@ public class GuiActivator extends GuiAugmentableBase {
 					: "info.thermalexpansion.slotsFirst");
 			settingSlot.setSheetX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
 			settingSlot.setHoverX(myTile.tickSlot == 0 ? 176 : myTile.tickSlot == 1 ? 196 : 216);
-			playSound("random.click", 1.0F, 0.6F + myTile.tickSlot * 0.1F);
+            playClickSound(1.0F, 0.6F + myTile.tickSlot * 0.1F);
 		} else if (buttonName.equalsIgnoreCase("Angle")) {
 			myTile.angle++;
 			myTile.angle %= 3;
@@ -87,7 +87,7 @@ public class GuiActivator extends GuiAugmentableBase {
 					: "info.thermalexpansion.angleHigh");
 			settingAngle.setSheetX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
 			settingAngle.setHoverX(myTile.angle == 0 ? 176 : myTile.angle == 1 ? 196 : 216);
-			playSound("random.click", 1.0F, 0.6F + myTile.angle * 0.1F);
+            playClickSound(1.0F, 0.6F + myTile.angle * 0.1F);
 		}
 		myTile.sendModePacket();
 	}

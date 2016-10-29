@@ -114,9 +114,9 @@ public class GuiSmelter extends GuiAugmentableBase {
 
 		if (buttonName.equals("Mode")) {
 			if (myTile.lockPrimary) {
-				playSound("random.click", 1.0F, 0.6F);
+                playClickSound(1.0F, 0.6F);
 			} else {
-				playSound("random.click", 1.0F, 0.8F);
+                playClickSound(1.0F, 0.8F);
 			}
 			myTile.setMode(!myTile.lockPrimary);
 		}

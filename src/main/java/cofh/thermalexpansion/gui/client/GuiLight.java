@@ -361,12 +361,12 @@ public class GuiLight extends GuiBaseAdv {
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		if (buttonName == "Dim") {
-			playSound("random.click", 1.0F, myTile.dim ? 0.6F : 0.4F);
+            playClickSound(1.0F, myTile.dim ? 0.6F : 0.4F);
 			myTile.dim = !myTile.dim;
 			myTile.getWorld().checkLight(myTile.getPos());
 			myTile.sendUpdatePacket(Side.SERVER);
 		} else if (buttonName == "Reset") {
-			playSound("random.click", 1.0F, 0.8F);
+            playClickSound(1.0F, 0.8F);
 			sendUpdates = false;
 			sliderR.setValue(255);
 			sliderG.setValue(255);

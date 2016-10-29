@@ -131,9 +131,9 @@ public class GuiTransposer extends GuiAugmentableBase {
 		if (buttonName.equals("Mode")) {
 			if (myTile.reverse == myTile.reverseFlag) {
 				if (myTile.reverse) {
-					playSound("random.click", 1.0F, 0.8F);
+                    playClickSound(1.0F, 0.8F);
 				} else {
-					playSound("random.click", 1.0F, 0.6F);
+                    playClickSound(1.0F, 0.6F);
 				}
 				myTile.setMode(!myTile.reverse);
 			}

@@ -82,7 +82,7 @@ public class GuiPlateCharge extends GuiBaseAdv {
 		if (buttonName.equalsIgnoreCase("Items")) {
 			myTile.chargeItems = !myTile.chargeItems;
 
-			playSound("random.click", 1.0F, myTile.chargeItems ? 0.8F : 0.6F);
+            playClickSound(1.0F, myTile.chargeItems ? 0.8F : 0.6F);
 		}
 		myTile.sendModePacket();
 	}

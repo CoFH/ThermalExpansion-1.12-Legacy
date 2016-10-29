@@ -83,28 +83,28 @@ public class TabConfigTesseract extends TabBase {
 		if (24 <= mouseX && mouseX < 40 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incItemMode();
-				GuiBase.playSound("random.click", 1.0F, 0.8F);
+				GuiBase.playClickSound(1.0F, 0.8F);
 			} else if (mouseButton == 1) {
 				myTile.decItemMode();
-				GuiBase.playSound("random.click", 1.0F, 0.6F);
+				GuiBase.playClickSound(1.0F, 0.6F);
 			}
 			myTile.setTileInfo(myTile.frequency);
 		} else if (42 <= mouseX && mouseX < 58 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incFluidMode();
-				GuiBase.playSound("random.click", 1.0F, 0.8F);
+				GuiBase.playClickSound(1.0F, 0.8F);
 			} else if (mouseButton == 1) {
 				myTile.decFluidMode();
-				GuiBase.playSound("random.click", 1.0F, 0.6F);
+				GuiBase.playClickSound(1.0F, 0.6F);
 			}
 			myTile.setTileInfo(myTile.frequency);
 		} else if (60 <= mouseX && mouseX < 76 && 20 <= mouseY && mouseY < 36) {
 			if (mouseButton == 0) {
 				myTile.incEnergyMode();
-				GuiBase.playSound("random.click", 1.0F, 0.8F);
+				GuiBase.playClickSound(1.0F, 0.8F);
 			} else if (mouseButton == 1) {
 				myTile.decEnergyMode();
-				GuiBase.playSound("random.click", 1.0F, 0.6F);
+				GuiBase.playClickSound(1.0F, 0.6F);
 			}
 			myTile.setTileInfo(myTile.frequency);
 		}

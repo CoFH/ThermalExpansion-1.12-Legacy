@@ -163,15 +163,15 @@ public class GuiWorkbench extends GuiBaseAdv {
 		if (buttonName.equals("Set")) {
 			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
 				PacketTEBase.sendTabSchematicPacketToServer();
-				playSound("random.click", 1.0F, 0.8F);
+                playClickSound(1.0F, 0.8F);
 			}
 		} else if (buttonName.equals("Get")) {
 			if (gridNotEmpty()) {
 				myTile.clearCraftingGrid();
-				playSound("random.click", 1.0F, 0.6F);
+                playClickSound(1.0F, 0.6F);
 			} else if (hasValidSchematic()) {
 				myTile.setCraftingGrid();
-				playSound("random.click", 1.0F, 0.8F);
+                playClickSound(1.0F, 0.8F);
 			}
 		}
 	}
