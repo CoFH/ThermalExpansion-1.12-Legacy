@@ -204,7 +204,7 @@ public class RenderTesseractStarfield extends TileEntitySpecialRenderer<TileTess
         CCRenderState ccrs = CCRenderState.instance();
 
         ccrs.startDrawing(GL11.GL_QUADS, DefaultVertexFormats.BLOCK);
-        RenderTesseract.instance.renderCenter(ccrs, 0, tile, -0.5, -0.5, -0.5);
+        RenderTesseract.instance.renderCenter(ccrs, false, tile.isActive, -0.5, -0.5, -0.5);
         ccrs.draw();
         ShaderHelper.releaseShader();
 

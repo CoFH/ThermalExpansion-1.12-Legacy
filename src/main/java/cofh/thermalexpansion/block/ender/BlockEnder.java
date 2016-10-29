@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.ender;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
+import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
@@ -11,15 +12,22 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.client.bakery.IBakeryBlock;
+import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.render.RenderTesseract;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -40,9 +48,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockEnder extends BlockTEBase {
+public class BlockEnder extends BlockTEBase implements IBakeryBlock{
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+
+    public static final UnlistedBooleanProperty DISABLED_PROPERTY = new UnlistedBooleanProperty("disabled");
 
 	public BlockEnder() {
 
@@ -63,8 +73,13 @@ public class BlockEnder extends BlockTEBase {
     }
 
     @Override
+    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+    }
+
+    @Override
     protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.ACTIVE_PROPERTY).add(DISABLED_PROPERTY).build();
     }
 
 	@Override
@@ -163,15 +178,19 @@ public class BlockEnder extends BlockTEBase {
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister ir) {
-
-		IconRegistry.addIcon("Tesseract", "thermalexpansion:tesseract/Tesseract", ir);
-		IconRegistry.addIcon("TesseractInner", "thermalexpansion:tesseract/Tesseract_Inner", ir);
-		IconRegistry.addIcon("TesseractActive", "thermalexpansion:tesseract/Tesseract_Active", ir);
-		IconRegistry.addIcon("TesseractInnerActive", "thermalexpansion:tesseract/Tesseract_Inner_Active", ir);
-		IconRegistry.addIcon("SkyEnder", "thermalexpansion:tesseract/Sky_Ender", ir);
 	}*/
 
-	@Override
+    @Override
+    public ICustomBlockBakery getCustomBakery() {
+        return RenderTesseract.instance;
+    }
+
+    @Override
+    public BlockRenderLayer getBlockLayer() {
+        return BlockRenderLayer.CUTOUT;
+    }
+
+    @Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);

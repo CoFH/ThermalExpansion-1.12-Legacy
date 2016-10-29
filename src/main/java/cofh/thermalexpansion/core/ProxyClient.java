@@ -11,6 +11,7 @@ import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
+import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.workbench.BlockWorkbench;
@@ -62,6 +63,7 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockCell, "", BlockCell.TYPES, RenderCell.instance);
         registerBlockBakeryStuff(TEBlocks.blockTank, "", BlockTank.TYPES, RenderTank.instance);
         registerBlockBakeryStuff(TEBlocks.blockCache, "", BlockCache.TYPES);
+        registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
 
         for (EnumType type : EnumType.values()) {
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
