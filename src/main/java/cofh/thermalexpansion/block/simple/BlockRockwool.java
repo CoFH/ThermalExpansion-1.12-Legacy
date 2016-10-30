@@ -25,16 +25,6 @@ public class BlockRockwool extends BlockColored implements IInitializer {
         setUnlocalizedName("thermalexpansion.rockwool");
     }
 
-    //@Override
-    //public IIcon getIcon(int side, int metadata) {
-    //	return Blocks.wool.getIcon(side, metadata);
-    //}
-
-    //@Override
-    //@SideOnly(Side.CLIENT)
-    //public void registerBlockIcons(IIconRegister ir) {
-    //}
-
     /* IInitializer */
     @Override
     public boolean preInit() {
