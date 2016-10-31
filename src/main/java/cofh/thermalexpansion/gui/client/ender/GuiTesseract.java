@@ -34,7 +34,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiTesseract extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_ENDER + "Tesseract.png";
+	static final String TEX_PATH = TEProps.PATH_GUI_ENDER + "tesseract.png";
 
 	static final int TB_HEIGHT = 12;
 

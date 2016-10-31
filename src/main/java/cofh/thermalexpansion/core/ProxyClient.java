@@ -125,13 +125,13 @@ public class ProxyClient extends Proxy {
     @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
 
-        IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:icons/Icon_Config_Tesseract", event.getMap());
-        IconRegistry.addIcon("IconRecvOnly", "thermalexpansion:icons/Icon_RecvOnly", event.getMap());
-        IconRegistry.addIcon("IconSendOnly", "thermalexpansion:icons/Icon_SendOnly", event.getMap());
-        IconRegistry.addIcon("IconSendRecv", "thermalexpansion:icons/Icon_SendRecv", event.getMap());
-        IconRegistry.addIcon("IconBlocked", "thermalexpansion:icons/Icon_Blocked", event.getMap());
-        IconRegistry.addIcon("IconSchematic", "thermalexpansion:diagram/Schematic", event.getMap());
-        IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:icons/Icon_SlotSchematic", event.getMap());
+        IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:items/icons/icon_Config_Tesseract", event.getMap());
+        IconRegistry.addIcon("IconRecvOnly", "thermalexpansion:items/icons/icon_recvonly", event.getMap());
+        IconRegistry.addIcon("IconSendOnly", "thermalexpansion:items/icons/icon_sendonly", event.getMap());
+        IconRegistry.addIcon("IconSendRecv", "thermalexpansion:items/icons/icon_sendrecv", event.getMap());
+        IconRegistry.addIcon("IconBlocked", "thermalexpansion:items/icons/icon_blocked", event.getMap());
+        IconRegistry.addIcon("IconSchematic", "thermalexpansion:items/diagram/schematic", event.getMap());
+        IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:items/icons/Icon_SlotSchematic", event.getMap());
 
     }
 
