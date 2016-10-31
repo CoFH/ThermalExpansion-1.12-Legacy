@@ -192,11 +192,12 @@ public class BlockBakery implements IResourceManagerReloadListener {
                 }
                 return new SimpleSmartLayeredModel(faceLayerQuads, generalLayerQuads, TransformUtils.DEFAULT_BLOCK);
             }
-        } if (state.getBlock() instanceof IBlockTextureProvider && !(state.getBlock() instanceof IBlockLayeredTextureProvider)){
+        }
+        if (state.getBlock() instanceof IBlockTextureProvider && !(state.getBlock() instanceof IBlockLayeredTextureProvider)) {
             IBlockTextureProvider provider = ((IBlockTextureProvider) state.getBlock());
 
             Map<EnumFacing, List<BakedQuad>> quadFaceMap = new HashMap<EnumFacing, List<BakedQuad>>();
-            for (EnumFacing face : EnumFacing.VALUES){
+            for (EnumFacing face : EnumFacing.VALUES) {
                 LinkedList<BakedQuad> quads = new LinkedList<BakedQuad>();
 
                 quads.addAll(bakeBlockFace(face, provider.getTexture(face, state.getBlock().getMetaFromState(state))));
@@ -229,7 +230,7 @@ public class BlockBakery implements IResourceManagerReloadListener {
     }
 
     public static List<BakedQuad> bakeItemFace(EnumFacing face, TextureAtlasSprite sprite) {
-        return ImmutableList.of(PlanarFaceBakery.bakeFace(face, sprite, DefaultVertexFormats.ITEM));
+        return ImmutableList.copyOf(PlanarFaceBakery.shadeQuadFaces(PlanarFaceBakery.bakeFace(face, sprite, DefaultVertexFormats.ITEM)));
     }
 
     public static List<BakedQuad> bakeBlockFace(EnumFacing face, TextureAtlasSprite sprite) {
