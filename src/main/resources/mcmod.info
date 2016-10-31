@@ -6,7 +6,7 @@
         "version": "${version}",
         "credits": "Team CoFH",
         "logoFile": "assets/thermalexpansion/textures/logo.png",
-        "mcversion": "${mcversion}",
+        "mcversion": "${mc_version}",
         "url": "http://www.teamcofh.com",
         "updateUrl": "",
         "authorList": [ "Team CoFH" ],

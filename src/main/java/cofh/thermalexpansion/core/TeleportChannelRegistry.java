@@ -23,7 +23,7 @@ public class TeleportChannelRegistry {
 
 	static ServerEnderChannelRegistry serverChannels;
 	static ClientEnderChannelRegistry clientChannels;
-	final static String dummy = new String();
+	final static String dummy = "";
 
 	public static void initialize() {
 
@@ -35,18 +35,18 @@ public class TeleportChannelRegistry {
 		clientChannels = new ClientEnderChannelRegistry() {
 
 			@Override
-			public String setFrequency(String _, int freq, String name) {
+			public String setFrequency(String s, int freq, String name) {
 
-				if (_ != dummy) {
+				if (!s.equals(dummy)) {
 					PacketHandler.sendToServer(new Packet(hostedChannel, freq, name));
 				}
 				return super.setFrequency(hostedChannel, freq, name);
 			}
 
 			@Override
-			public String removeFrequency(String _, int freq) {
+			public String removeFrequency(String s, int freq) {
 
-				if (_ != dummy) {
+				if (!s.equals(dummy)) {
 					PacketHandler.sendToServer(new Packet(hostedChannel, freq));
 				}
 				return super.removeFrequency(hostedChannel, freq);

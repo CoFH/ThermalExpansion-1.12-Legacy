@@ -1,0 +1,20 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "builtin/generated",
+    "textures": {
+      "layer0": "blocks/dirt"
+    },
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "type": {
+      "capacitorbasic": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_basic"}},
+      "capacitorcreative": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_creative"}},
+      "capacitorhardened": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_hardened"}},
+      "capacitorpotato": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_potato"}},
+      "capacitorreinforced": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_reinforced"}},
+      "capacitorresonant": {"textures":{"layer0":"thermalexpansion:items/capacitor/capacitor_resonant"}}
+    }
+  }
+}
