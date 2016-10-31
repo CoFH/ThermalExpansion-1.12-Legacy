@@ -11,6 +11,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiAccumulator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.EnumFacing;
@@ -72,7 +73,7 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		passiveGen = ThermalExpansion.config.get("Machine.Accumulator", "PassiveGeneration", false);
 	}
 
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL).setLock(FluidRegistry.WATER);
 
 	int adjacentSources = -1;
 	int outputTrackerFluid;
@@ -82,7 +83,6 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	public TileAccumulator() {
 
 		super(Types.ACCUMULATOR);
-		tank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -136,45 +136,39 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	protected void updateAdjacentSources() {
 
 		inHell = worldObj.getBiomeGenForCoords(getPos()) == Biomes.HELL;
-
 		adjacentSources = 0;
 
-		IBlockState state = worldObj.getBlockState(getPos().down());
-		int bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().down()))) {
 			++adjacentSources;
 		}
 
-		state = worldObj.getBlockState(getPos().up());
-		bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().up()))) {
 			++adjacentSources;
 		}
 
-		state = worldObj.getBlockState(getPos().west());
-		bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().west()))) {
 			++adjacentSources;
 		}
 
-		state = worldObj.getBlockState(getPos().east());
-		bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().east()))) {
 			++adjacentSources;
 		}
 
-		state = worldObj.getBlockState(getPos().north());
-		bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().north()))) {
 			++adjacentSources;
 		}
 
-		state = worldObj.getBlockState(getPos().south());
-		bMeta = state.getBlock().getMetaFromState(state);
-		if (bMeta == 0 && (state == Blocks.WATER || state == Blocks.FLOWING_WATER)) {
+		if (isWater(worldObj.getBlockState(getPos().south()))) {
 			++adjacentSources;
 		}
 	}
+
+	private static boolean isWater(IBlockState state){
+        if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER){
+            return state.getValue(BlockLiquid.LEVEL) == 0;
+        }
+        return false;
+    }
 
 	protected void transferOutputFluid() {
 
@@ -273,7 +267,9 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
-
+        if (tank.getFluid() == null){
+            tank.setLock(FluidRegistry.WATER);
+        }
 		tank.getFluid().amount = payload.getInt();
 	}
 
