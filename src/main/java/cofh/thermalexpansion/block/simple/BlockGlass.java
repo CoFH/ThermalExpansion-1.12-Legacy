@@ -159,7 +159,7 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
             double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             EntityItem entity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
-            entity.delayBeforeCanPickup = 10;
+            entity.setPickupDelay(10);
             world.spawnEntityInWorld(entity);
 
             CoreUtils.dismantleLog(player.getName(), this, metadata, pos);

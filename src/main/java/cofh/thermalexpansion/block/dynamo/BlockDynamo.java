@@ -11,6 +11,7 @@ import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -94,7 +95,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.ACTIVE_PROPERTY).add(BlockBakery.TYPE_PROPERTY).add(BlockBakery.ACTIVE_SPRITE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_PROPERTY).add(CommonProperties.TYPE_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
     }
 
     @Override
@@ -178,18 +179,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 			}
 		}
 		return super.onBlockActivated(world, pos,state, player, hand, heldItem, side, hitX, hitY, hitZ);
-	}
-
-	//@Override
-	public int getRenderBlockPass() {
-
-		return 0;
-	}
-
-	//@Override
-	public int getRenderType() {
-
-		return TEProps.renderIdDynamo;
 	}
 
 	@Override

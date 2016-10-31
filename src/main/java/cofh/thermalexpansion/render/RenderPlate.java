@@ -3,7 +3,6 @@ package cofh.thermalexpansion.render;
 import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Vector3;
@@ -11,12 +10,10 @@ import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.core.render.RenderUtils.ScaledIconTransformation;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.plate.TilePlateBase;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -24,8 +21,6 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
@@ -118,8 +113,8 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
     public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
         TilePlateBase plate = (TilePlateBase) tileEntity;
         state = state.withProperty(BlockPlate.ALIGNMENT_PROPERTY, plate.getAlignment());
-        state = state.withProperty(BlockBakery.FACING_PROPERTY, plate.getFacing());
-        state = state.withProperty(BlockBakery.TYPE_PROPERTY, plate.getType());
+        state = state.withProperty(CommonProperties.FACING_PROPERTY, plate.getFacing());
+        state = state.withProperty(CommonProperties.TYPE_PROPERTY, plate.getType());
 
         return state;
     }
@@ -128,8 +123,8 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
     public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
         if (face == null) {
             int alignment = state.getValue(BlockPlate.ALIGNMENT_PROPERTY);
-            int facing = state.getValue(BlockBakery.FACING_PROPERTY);
-            int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+            int facing = state.getValue(CommonProperties.FACING_PROPERTY);
+            int type = state.getValue(CommonProperties.TYPE_PROPERTY);
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();

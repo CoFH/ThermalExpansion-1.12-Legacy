@@ -130,6 +130,24 @@ public class TEItems {
 
         GameRegistry.register(itemMaterial);
 
+
+        /* Parts */
+        pneumaticServo = itemMaterial.registerSubItem(0, "pneumaticServo");
+        powerCoilGold = itemMaterial.registerSubItem(1, "powerCoilGold");
+        powerCoilSilver = itemMaterial.registerSubItem(2, "powerCoilSilver");
+        powerCoilElectrum = itemMaterial.registerSubItem(3, "powerCoilElectrum");
+
+        lock = itemMaterial.registerSubItem(16, "lock");
+
+		/* Process Items */
+        sawdust = itemMaterial.registerSubItemOreDict(512, "dustWood");
+        sawdustCompressed = itemMaterial.registerSubItem(513, "dustWoodCompressed");
+        slag = itemMaterial.registerSubItem(514, "slag");
+        slagRich = itemMaterial.registerSubItem(515, "slagRich");
+        fertilizer = itemMaterial.registerSubItemOreDict(516, "fertilizer");
+        fertilizerRich = itemMaterial.registerSubItemOreDict(517, "fertilizerRich");
+        OreDictionary.registerOre("fertilizer", fertilizerRich);
+
 		TEAugments.preInit();
 		TEEquipment.preInit();
 		TEFlorbs.preInit();
@@ -182,22 +200,6 @@ public class TEItems {
 		diagramSchematic = itemDiagram.addItem(ItemDiagram.Types.SCHEMATIC.ordinal(), "schematic");
 		diagramRedprint = itemDiagram.addItem(ItemDiagram.Types.REDPRINT.ordinal(), "redprint");
 
-		/* Parts */
-		pneumaticServo = itemMaterial.registerSubItem(0, "pneumaticServo");
-		powerCoilGold = itemMaterial.registerSubItem(1, "powerCoilGold");
-		powerCoilSilver = itemMaterial.registerSubItem(2, "powerCoilSilver");
-		powerCoilElectrum = itemMaterial.registerSubItem(3, "powerCoilElectrum");
-
-		lock = itemMaterial.registerSubItem(16, "lock");
-
-		/* Process Items */
-		sawdust = itemMaterial.registerSubItemOreDict(512, "dustWood");
-		sawdustCompressed = itemMaterial.registerSubItem(513, "dustWoodCompressed");
-		slag = itemMaterial.registerSubItem(514, "slag");
-		slagRich = itemMaterial.registerSubItem(515, "slagRich");
-		fertilizer = itemMaterial.registerSubItemOreDict(516, "fertilizer");
-		fertilizerRich = itemMaterial.registerSubItemOreDict(517, "fertilizerRich");
-		OreDictionary.registerOre("fertilizer", fertilizerRich);
 
 		TEAugments.initialize();
 		TEEquipment.initialize();

@@ -14,6 +14,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
 import cofh.thermalexpansion.client.IControlledLayerProvider;
@@ -50,6 +51,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -77,6 +80,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, tileEntity);
@@ -84,7 +88,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ BlockBakery.SPRITE_FACE_LAYER_PROPERTY });
+        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ CommonProperties.SPRITE_FACE_LAYER_PROPERTY });
     }
 
     @Override
@@ -247,33 +251,14 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 		return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
-	//@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 
 		return true;
 	}
 
-	/*@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-
-		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
-		return tile == null ? null : tile.getTexture(side, renderPass);
-	}*/
-
 	@Override
+    @SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
 		if (side.ordinal() == 0) {
@@ -286,6 +271,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 	}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         for (int i = 0; i < 9; i++) {
             IconRegistry.addIcon("CacheMeter" + i, "thermalexpansion:blocks/cache/cache_meter_" + i, textureMap);
@@ -300,16 +286,19 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
         return 2;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
         return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean shouldUsePass(int pass, TileEntity tileEntity) {
         if (pass == 1){
             return ((TileCache) tileEntity).storedStack != null;
@@ -318,6 +307,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
     }

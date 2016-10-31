@@ -546,15 +546,15 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 		if (pass == 0) {
 			if (side == 0) {
-				return BlockMachine.machineBottom;
+				return IconRegistry.getIcon("MachineBottom");
 			} else if (side == 1) {
-				return BlockMachine.machineTop;
+				return IconRegistry.getIcon("MachineTop");
 			}
-			return side != facing ? BlockMachine.machineSide : isActive ? BlockMachine.machineActive[type] : BlockMachine.machineFace[type];
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}
-		return BlockMachine.machineSide;
+		return IconRegistry.getIcon("MachineSide");
 	}
 
 	/* ISoundSource */

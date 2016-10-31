@@ -6,7 +6,6 @@ import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IBlockConfigGui;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
@@ -14,13 +13,11 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
-import codechicken.lib.vec.SwapYZ;
 import codechicken.lib.vec.Transformation;
 import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.ender.BlockEnder;
-import cofh.thermalexpansion.block.ender.BlockEnder.Types;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
@@ -203,6 +200,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
@@ -211,12 +209,12 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
     protected BlockStateContainer createBlockState() {
         ExtendedBlockState.Builder builder = new Builder(this);
         builder.add(TYPES);
-        builder.add(BlockBakery.TYPE_PROPERTY);
+        builder.add(CommonProperties.TYPE_PROPERTY);
         builder.add(COLOUR_MULTIPLIER_PROPERTY);
         builder.add(STYLE_PROPERTY);
         builder.add(ALIGNMENT_PROPERTY);
         builder.add(MODIFIED_PROPERTY);
-        builder.add(BlockBakery.ACTIVE_PROPERTY);
+        builder.add(CommonProperties.ACTIVE_PROPERTY);
         return builder.build();
     }
 
@@ -344,12 +342,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		return false;
 	}
 
-	//@Override
-	public int getRenderType() {
-
-		return TEProps.renderIdLight;
-	}
-
 	@SideOnly(Side.CLIENT)
     @Override
     public int getPackedLightmapCoords(IBlockState state, IBlockAccess source, BlockPos pos) {
@@ -358,16 +350,19 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 	}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
         return 2;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
         return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
     }
@@ -376,16 +371,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
-
-	//@Override
-	//@SideOnly(Side.CLIENT)
-	//public void registerBlockIcons(IIconRegister ir) {
-    //
-	//	IconRegistry.addIcon("Light0", "thermalexpansion:light/Illuminator_Frame", ir);
-	//	IconRegistry.addIcon("Light1", "thermalexpansion:light/Lamp_Effect", ir);
-	//	IconRegistry.addIcon("LightEffect", "thermalexpansion:light/Illuminator_Effect", ir);
-	//	IconRegistry.addIcon("LightHalo", "thermalexpansion:light/Lamp_Halo", ir);
-	//}
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
@@ -446,6 +431,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 	}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderLight.instance;
     }

@@ -1,15 +1,12 @@
 package cofh.thermalexpansion.client.bakery;
 
-import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
-import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
-import codechicken.lib.block.property.unlisted.UnlistedMapProperty;
-import codechicken.lib.block.property.unlisted.UnlistedSpriteProperty;
 import codechicken.lib.model.SimplePerspectiveAwareBakedModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.TransformUtils;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.lib.util.ItemWrapper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
 import cofh.thermalexpansion.client.IBlockTextureProvider;
@@ -34,6 +31,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -44,20 +43,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * Created by covers1624 on 25/10/2016.
  */
+@SideOnly(Side.CLIENT)
 public class BlockBakery implements IResourceManagerReloadListener {
 
-    public static final UnlistedMapProperty SPRITE_FACE_LAYER_PROPERTY = new UnlistedMapProperty("sprite_face_layer_map");//Contains face layer sprites. A.K.A, Blocks.
-    public static final UnlistedMapProperty SPRITE_FACE_PROPERTY = new UnlistedMapProperty("sprite_face_property");
-    public static final UnlistedSpriteProperty PARTICLE_SPRITE_PROPERTY = new UnlistedSpriteProperty("particle");//Contains the.. Particle sprite.
-
-    public static final UnlistedIntegerProperty FACING_PROPERTY = new UnlistedIntegerProperty("facing");
-    public static final UnlistedBooleanProperty ACTIVE_PROPERTY = new UnlistedBooleanProperty("active");
-    public static final UnlistedIntegerProperty TYPE_PROPERTY = new UnlistedIntegerProperty("type");
-
-    public static final UnlistedSpriteProperty ACTIVE_SPRITE_PROPERTY = new UnlistedSpriteProperty("active_texture");
-
     private static Cache<IExtendedBlockState, IBakedModel> stateModelCache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
-
     private static Cache<ItemWrapper, IBakedModel> itemModelCache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
 
     static {
@@ -89,17 +78,9 @@ public class BlockBakery implements IResourceManagerReloadListener {
                 }
                 spriteFaceLayerMap.put(face, spriteLayerMap);
             }
-            state = state.withProperty(SPRITE_FACE_LAYER_PROPERTY, spriteFaceLayerMap);
-            //returnState = returnState.withProperty(PARTICLE_SPRITE_PROPERTY, textureProvider.getTexture(EnumFacing.UP, blockMeta));
+            state = state.withProperty(CommonProperties.SPRITE_FACE_LAYER_PROPERTY, spriteFaceLayerMap);
             return state;
-        }// else if (block instanceof IBlockTextureProvider) {
-         //   Map<EnumFacing, TextureAtlasSprite> spriteFaceMap = new HashMap<EnumFacing, TextureAtlasSprite>();
-         //   IBlockTextureProvider provider = ((IBlockTextureProvider) block);
-         //   for (EnumFacing face : EnumFacing.VALUES) {
-         //       spriteFaceMap.put(face, provider.getTexture(face, blockMeta));
-         //   }
-            //state = state.withProperty(SPRITE_FACE_PROPERTY, spriteFaceMap);
-        //}
+        }
         return state;
     }
 
@@ -232,7 +213,7 @@ public class BlockBakery implements IResourceManagerReloadListener {
     }
 
     public static Map<EnumFacing, Map<BlockRenderLayer, List<BakedQuad>>> generateQuadFaceLayerMap(IExtendedBlockState state) {
-        Map<EnumFacing, Map<BlockRenderLayer, TextureAtlasSprite>> spriteFaceLayerMap = state.getValue(SPRITE_FACE_LAYER_PROPERTY);
+        Map<EnumFacing, Map<BlockRenderLayer, TextureAtlasSprite>> spriteFaceLayerMap = state.getValue(CommonProperties.SPRITE_FACE_LAYER_PROPERTY);
         Map<EnumFacing, Map<BlockRenderLayer, List<BakedQuad>>> quadFaceLayerMap = new HashMap<EnumFacing, Map<BlockRenderLayer, List<BakedQuad>>>();
         for (EnumFacing face : spriteFaceLayerMap.keySet()) {
             Map<BlockRenderLayer, TextureAtlasSprite> spriteLayerMap = spriteFaceLayerMap.get(face);

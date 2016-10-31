@@ -3,14 +3,12 @@ package cofh.thermalexpansion.block.simple;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
@@ -19,11 +17,9 @@ import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLiving.SpawnPlacementType;
@@ -41,7 +37,6 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.oredict.OreDictionary;
@@ -90,7 +85,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.ACTIVE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.ACTIVE_PROPERTY).build();
     }
 
     @Override
@@ -150,7 +145,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
             double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
             EntityItem entity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
-            entity.delayBeforeCanPickup = 10;
+            entity.setPickupDelay(10);
             world.spawnEntityInWorld(entity);
 
             CoreUtils.dismantleLog(player.getName(), this, metadata, pos);

@@ -9,8 +9,7 @@ import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
@@ -73,13 +72,14 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock{
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.ACTIVE_PROPERTY).add(DISABLED_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.ACTIVE_PROPERTY).add(DISABLED_PROPERTY).build();
     }
 
 	@Override
@@ -145,23 +145,10 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock{
 	}
 
 	//@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	//@Override
 	@SideOnly(Side.CLIENT)
 	public int getRenderType() {
 
 		return TEProps.renderIdEnder;
-	}
-
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
 	}
 
     @Override
@@ -169,23 +156,14 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock{
 		return true;
 	}
 
-	/*@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		return IconRegistry.getIcon("Tesseract");
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-	}*/
-
     @Override
+    @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderTesseract.instance;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }

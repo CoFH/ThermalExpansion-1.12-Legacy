@@ -9,9 +9,9 @@ import codechicken.lib.vec.Cuboid6;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -118,7 +118,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
     public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
         FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
         byte mode = state.getValue(BlockTank.MODE_PROPERTY);
-        int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+        int type = state.getValue(CommonProperties.TYPE_PROPERTY);
         if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -140,7 +140,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
         TileTank tank = ((TileTank) tileEntity);
         state = state.withProperty(BlockTank.FLUID_STACK_PROPERTY, tank.getTankFluid());
         state = state.withProperty(BlockTank.MODE_PROPERTY, tank.mode);
-        state = state.withProperty(BlockBakery.TYPE_PROPERTY, (int) tank.type);
+        state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) tank.type);
         return state;
     }
 

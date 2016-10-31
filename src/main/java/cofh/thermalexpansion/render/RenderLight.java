@@ -9,9 +9,9 @@ import codechicken.lib.vec.Transformation;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.light.TileLight;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -90,19 +90,19 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
     @Override
     public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
         TileLight light = ((TileLight) tileEntity);
-        state = state.withProperty(BlockBakery.TYPE_PROPERTY, state.getBlock().getMetaFromState(state));
+        state = state.withProperty(CommonProperties.TYPE_PROPERTY, state.getBlock().getMetaFromState(state));
         state = state.withProperty(BlockLight.COLOUR_MULTIPLIER_PROPERTY, light.getColorMultiplier());
         state = state.withProperty(BlockLight.STYLE_PROPERTY, (int) light.style);
         state = state.withProperty(BlockLight.ALIGNMENT_PROPERTY, (int) light.alignment);
         state = state.withProperty(BlockLight.MODIFIED_PROPERTY, light.modified);
-        state = state.withProperty(BlockBakery.ACTIVE_PROPERTY, light.getInternalLight() > 0);
+        state = state.withProperty(CommonProperties.ACTIVE_PROPERTY, light.getInternalLight() > 0);
         return state;
     }
 
     @Override
     public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
-            int meta = state.getValue(BlockBakery.TYPE_PROPERTY);
+            int meta = state.getValue(CommonProperties.TYPE_PROPERTY);
             int colour = state.getValue(BlockLight.COLOUR_MULTIPLIER_PROPERTY);
             int style = state.getValue(BlockLight.STYLE_PROPERTY);
             int alignment = state.getValue(BlockLight.ALIGNMENT_PROPERTY);
@@ -123,7 +123,7 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
                     renderWorldIlluminator(ccrs, pass, style, colour, modified, transformation);
                     break;
                 case LAMP_LUMIUM_RADIANT:
-                    active = state.getValue(BlockBakery.ACTIVE_PROPERTY);
+                    active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
                 case LAMP_LUMIUM:
                     renderWorldLampLumium(ccrs, pass, style, colour, active, transformation);
                     break;

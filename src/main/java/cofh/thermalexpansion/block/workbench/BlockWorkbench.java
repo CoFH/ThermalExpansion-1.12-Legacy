@@ -7,6 +7,7 @@ import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
@@ -37,6 +38,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,13 +69,14 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.SPRITE_FACE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_PROPERTY).build();
     }
 
     @Override
@@ -146,19 +150,8 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
         return true;
     }
 
-    //@Override
-    //public IIcon getIcon(int side, int metadata) {
-    //
-    //	if (side == 0) {
-    //		return IconRegistry.getIcon("WorkbenchBottom", metadata);
-    //	}
-    //	if (side == 1) {
-    //		return IconRegistry.getIcon("WorkbenchTop", metadata);
-    //	}
-    //	return IconRegistry.getIcon("WorkbenchSide", metadata);
-    //}
-
     @Override
+    @SideOnly(Side.CLIENT)
     public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
         if (side.ordinal() == 0) {
             return IconRegistry.getIcon("WorkbenchBottom", metadata);
@@ -170,6 +163,7 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         for (int i = 0; i < EnumType.values().length; i++) {
             IconRegistry.addIcon("WorkbenchBottom" + i, "thermalexpansion:blocks/workbench/workbench_" + NAMES[i] + "_bottom", textureMap);
@@ -177,17 +171,6 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
             IconRegistry.addIcon("WorkbenchSide" + i, "thermalexpansion:blocks/workbench/workbench_" + NAMES[i] + "_side", textureMap);
         }
     }
-
-    //@Override
-    //@SideOnly(Side.CLIENT)
-    //public void registerBlockIcons(IIconRegister ir) {
-    //
-    //	for (int i = 0; i < Types.values().length; i++) {
-    //		IconRegistry.addIcon("WorkbenchBottom" + i, "thermalexpansion:workbench/Workbench_" + StringHelper.titleCase(NAMES[i]) + "_Bottom", ir);
-    //		IconRegistry.addIcon("WorkbenchTop" + i, "thermalexpansion:workbench/Workbench_" + StringHelper.titleCase(NAMES[i]) + "_Top", ir);
-    //		IconRegistry.addIcon("WorkbenchSide" + i, "thermalexpansion:workbench/Workbench_" + StringHelper.titleCase(NAMES[i]) + "_Side", ir);
-    //	}
-    //}
 
     @Override
     public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {

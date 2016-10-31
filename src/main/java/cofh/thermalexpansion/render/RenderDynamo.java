@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.render.buffer.BakingVertexBuffer;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
@@ -10,11 +11,10 @@ import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -23,6 +23,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
@@ -68,20 +69,20 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
     @Override
     public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
         TileDynamoBase dynamo = (TileDynamoBase) tile;
-        state = state.withProperty(BlockBakery.FACING_PROPERTY, dynamo.getFacing());
-        state = state.withProperty(BlockBakery.ACTIVE_PROPERTY, dynamo.isActive);
-        state = state.withProperty(BlockBakery.TYPE_PROPERTY, dynamo.getType());
-        state = state.withProperty(BlockBakery.ACTIVE_SPRITE_PROPERTY, dynamo.getActiveIcon());
+        state = state.withProperty(CommonProperties.FACING_PROPERTY, dynamo.getFacing());
+        state = state.withProperty(CommonProperties.ACTIVE_PROPERTY, dynamo.isActive);
+        state = state.withProperty(CommonProperties.TYPE_PROPERTY, dynamo.getType());
+        state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
         return state;
     }
 
     @Override
     public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
         if (face == null) {
-            int facing = state.getValue(BlockBakery.FACING_PROPERTY);
-            boolean active = state.getValue(BlockBakery.ACTIVE_PROPERTY);
-            int type = state.getValue(BlockBakery.TYPE_PROPERTY);
-            TextureAtlasSprite activeSprite = state.getValue(BlockBakery.ACTIVE_SPRITE_PROPERTY);
+            int facing = state.getValue(CommonProperties.FACING_PROPERTY);
+            boolean active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
+            int type = state.getValue(CommonProperties.TYPE_PROPERTY);
+            TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
 
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);

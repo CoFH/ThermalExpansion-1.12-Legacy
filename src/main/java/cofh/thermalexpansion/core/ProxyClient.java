@@ -23,6 +23,7 @@ import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
+import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -58,6 +59,7 @@ public class ProxyClient extends Proxy {
         RenderStrongbox.registerRenderers();
 
         TEAugments.itemAugment.registerModelVariants();
+        TFItems.itemMaterial.registerModelVariants();
 
 
 

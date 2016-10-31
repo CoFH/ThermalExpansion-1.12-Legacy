@@ -9,6 +9,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
@@ -96,13 +97,14 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(ALIGNMENT_PROPERTY).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.TYPE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(ALIGNMENT_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.TYPE_PROPERTY).build();
     }
 
 
@@ -329,12 +331,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		}
 	}
 
-	//@Override
-	public int getRenderType() {
-
-		return TEProps.renderIdPlate;
-	}
-
     @Nullable
     @Override
     public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
@@ -348,12 +344,8 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		return null;
 	}
 
-	/*@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-	}*/
-
     @Override
+    @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderPlate.instance;
     }

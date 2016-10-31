@@ -142,7 +142,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
             }
             for (ItemStack drop : drops) {
                 EntityItem item = new EntityItem(world, pos.getX(), pos.getY(), pos.getZ(), drop);
-                item.delayBeforeCanPickup = 10;
+                item.setPickupDelay(10);
                 world.spawnEntityInWorld(item);
             }
         }

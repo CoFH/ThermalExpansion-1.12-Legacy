@@ -202,13 +202,13 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? BlockDevice.deviceSide : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
-					: BlockDevice.deviceFace[type];
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
+					: IconRegistry.getIcon("DeviceFace", type);
 		} else if (side < 6) {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: redstoneControlOrDisable() ? BlockDevice.deviceActive[type] : BlockDevice.deviceFace[type];
+					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", type) : IconRegistry.getIcon("DeviceFace", type);
 		}
-		return BlockDevice.deviceSide;
+		return IconRegistry.getIcon("DeviceSide");
 	}
 
 	/* ISidedInventory */

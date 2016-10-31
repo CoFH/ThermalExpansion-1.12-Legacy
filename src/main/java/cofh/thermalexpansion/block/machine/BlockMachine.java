@@ -8,6 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
@@ -74,12 +75,12 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ BlockBakery.SPRITE_FACE_LAYER_PROPERTY, BlockBakery.PARTICLE_SPRITE_PROPERTY });
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY ).build();
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
@@ -167,19 +168,6 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
-	//@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
@@ -190,51 +178,50 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
 		return true;
 	}
 
-	/*@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {//TODO this is world textures. Used the render pass to decide what sprite to render.
-
-		ISidedTexture tile = (ISidedTexture) world.getTileEntity(x, y, z);
-		return tile == null ? null : tile.getTexture(side, renderPass);
-	}*/
 
 	@Override
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {//TODO this is item icons, Only cares about the main texture and not any overlay.
+    @SideOnly(Side.CLIENT)
+	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
 		if (side.ordinal() == 0) {
-			return machineBottom;
+			return IconRegistry.getIcon("MachineBottom");
 		}
 		if (side.ordinal() == 1) {
-			return machineTop;
+			return IconRegistry.getIcon("MachineTop");
 		}
-		return side.ordinal() != 3 ? machineSide : machineFace[metadata % Types.values().length];
+		return side.ordinal() != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
 	}
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
         return 2;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
         return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
         // Base Textures
-        machineBottom = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_bottom"));
-        machineTop = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_top"));
-        machineSide = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_side"));
+        IconRegistry.addIcon("MachineBottom", "thermalexpansion:blocks/machine/machine_bottom", textureMap);
+        IconRegistry.addIcon("MachineTop", "thermalexpansion:blocks/machine/machine_top", textureMap);
+        IconRegistry.addIcon("MachineSide", "thermalexpansion:blocks/machine/machine_side", textureMap);
 
         // Face Textures
         for (int i = 0; i < Types.values().length; i++) {
-            machineFace[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_face_" + NAMES[i]));
-            machineActive[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/machine/machine_active_" + NAMES[i]));
+            IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:blocks/machine/machine_face_" + NAMES[i], textureMap);
+            IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:blocks/machine/machine_active_" + NAMES[i], textureMap);
         }
 
         // Config Textures
@@ -568,13 +555,6 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
         }
 
 	}
-
-	public static TextureAtlasSprite machineBottom;
-	public static TextureAtlasSprite machineTop;
-	public static TextureAtlasSprite machineSide;
-
-	public static TextureAtlasSprite[] machineFace = new TextureAtlasSprite[Types.values().length];
-	public static TextureAtlasSprite[] machineActive = new TextureAtlasSprite[Types.values().length];
 
 	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
 			"assembler", "charger", "insolator" };

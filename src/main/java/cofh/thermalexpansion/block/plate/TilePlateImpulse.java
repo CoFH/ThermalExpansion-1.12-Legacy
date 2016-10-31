@@ -244,7 +244,7 @@ public class TilePlateImpulse extends TilePlateBase { // implements IItemDuct {
 
 		double v[] = fixVector(0, -0.25, 0);
 		EntityItem ent = new EntityItem(worldObj, getPos().getX() + .5, getPos().getY() + .5, getPos().getZ() + .5, item);
-		ent.delayBeforeCanPickup = 10;
+		ent.setPickupDelay(10);
 		ent.motionX = v[0];
 		ent.motionY = v[1];
 		ent.motionZ = v[2];

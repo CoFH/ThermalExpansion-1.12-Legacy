@@ -11,9 +11,9 @@ import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.core.render.ShaderHelper;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.ender.TileTesseract;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -112,7 +112,7 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
     @Override
     public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
         TileTesseract tesseract = (TileTesseract) tileEntity;
-        state = state.withProperty(BlockBakery.ACTIVE_PROPERTY, tesseract.isActive);
+        state = state.withProperty(CommonProperties.ACTIVE_PROPERTY, tesseract.isActive);
         state = state.withProperty(BlockEnder.DISABLED_PROPERTY, tesseract.redstoneControlOrDisable());
         return state;
     }
@@ -120,7 +120,7 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
     @Override
     public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
         if (face == null) {
-            boolean isActive = state.getValue(BlockBakery.ACTIVE_PROPERTY);
+            boolean isActive = state.getValue(CommonProperties.ACTIVE_PROPERTY);
             boolean rsContOrDisable = state.getValue(BlockEnder.DISABLED_PROPERTY);
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);

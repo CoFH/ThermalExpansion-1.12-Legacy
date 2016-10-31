@@ -9,6 +9,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
@@ -25,7 +26,6 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -52,7 +52,8 @@ import net.minecraft.tileentity.TileEntity;
 
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProvider {
 
@@ -78,6 +79,7 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, tileEntity);
@@ -85,7 +87,7 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.SPRITE_FACE_LAYER_PROPERTY).add(BlockBakery.PARTICLE_SPRITE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY).build();
     }
 
     @Override
@@ -151,29 +153,6 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	//@Override
-	//public void onEntityCollidedWithBlock(World world, int x, int y, int z, Entity entity) {
-
-		// TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(x, y, z);
-		// if (tile == null) {
-		// return;
-		// }
-		// tile.onEntityCollidedWithBlock(entity);
-	//}
-
-	//@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
     @Override
     public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 		return false;
@@ -201,56 +180,41 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
             }
             return IconRegistry.getIcon("WorkbenchSide", 1);
         }
-        return side.ordinal() != 3 ? deviceSide : deviceFace[metadata % Types.values().length];
+        return side.ordinal() != 3 ? IconRegistry.getIcon("DeviceSide"): IconRegistry.getIcon("DeviceFace", metadata % Types.values().length);
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
         return 2;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
         return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
-        deviceSide = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_side"));
+        IconRegistry.addIcon("DeviceSide", "thermalexpansion:blocks/device/device_side", textureMap);
 
         // Face Textures
         for (int i = 0; i < Types.values().length; i++) {
             if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
                 continue;
             }
-            deviceFace[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_face_" + NAMES[i]));
-            deviceActive[i] = textureMap.registerSprite(new ResourceLocation("thermalexpansion:blocks/device/device_active_" + NAMES[i]));
+            IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:blocks/device/device_face_" + NAMES[i], textureMap);
+            IconRegistry.addIcon("DeviceActive" + i, "thermalexpansion:blocks/device/device_active_" + NAMES[i], textureMap);
         }
     }
-
-	/*@Override
-	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-
-		ISidedTexture theTile = (ISidedTexture) world.getTileEntity(x, y, z);
-		return theTile == null ? null : theTile.getTexture(side, renderPass);
-	}
-
-	@Override
-	public IIcon getIcon(int side, int metadata) {
-
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-
-	}*/
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
@@ -459,11 +423,6 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
             return type.ordinal();
         }
 	}
-
-	public static TextureAtlasSprite deviceSide;
-
-	public static TextureAtlasSprite[] deviceFace = new TextureAtlasSprite[Types.values().length];
-	public static TextureAtlasSprite[] deviceActive = new TextureAtlasSprite[Types.values().length];
 
 	public static final String[] NAMES = { "workbench", "pump", "activator", "breaker", "collector", "nullifier", "buffer", "extender" };
 	public static boolean[] enable = new boolean[Types.values().length];

@@ -11,10 +11,10 @@ import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,8 +24,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -80,11 +80,11 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (EnumFacing face : EnumFacing.VALUES) {
             p2.put(face, cell.getTexture(face.ordinal(), 2));
         }
-        state = state.withProperty(BlockBakery.SPRITE_FACE_LAYER_PROPERTY, p2);
-        state = state.withProperty(BlockBakery.TYPE_PROPERTY, (int) cell.type);
+        state = state.withProperty(CommonProperties.SPRITE_FACE_LAYER_PROPERTY, p2);
+        state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) cell.type);
         state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
-        state = state.withProperty(BlockBakery.FACING_PROPERTY, cell.getFacing());
-        state = state.withProperty(BlockBakery.ACTIVE_SPRITE_PROPERTY, cell.getTexture(cell.getFacing(), 3));
+        state = state.withProperty(CommonProperties.FACING_PROPERTY, cell.getFacing());
+        state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(cell.getTexture(cell.getFacing(), 3).getIconName()));
         return state;
     }
 
@@ -92,11 +92,11 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
     @Override
     public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
-            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakery.SPRITE_FACE_LAYER_PROPERTY);
-            int type = state.getValue(BlockBakery.TYPE_PROPERTY);
+            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.SPRITE_FACE_LAYER_PROPERTY);
+            int type = state.getValue(CommonProperties.TYPE_PROPERTY);
             int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
-            int facing = state.getValue(BlockBakery.FACING_PROPERTY);
-            TextureAtlasSprite frontFace = state.getValue(BlockBakery.ACTIVE_SPRITE_PROPERTY);
+            int facing = state.getValue(CommonProperties.FACING_PROPERTY);
+            TextureAtlasSprite frontFace = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
 
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);

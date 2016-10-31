@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.IBlockLayerProvider;
@@ -47,6 +48,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBakeryBlock {
 
@@ -74,13 +77,14 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakery.SPRITE_FACE_LAYER_PROPERTY).add(BlockBakery.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(BlockBakery.FACING_PROPERTY).add(BlockBakery.ACTIVE_SPRITE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
     }
 
 	@Override
@@ -147,25 +151,6 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
 		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
 	}
 
-	//@Override
-	public int getRenderBlockPass() {
-
-		return 1;
-	}
-
-	//@Override
-	public int getRenderType() {
-
-		return TEProps.renderIdCell;
-	}
-
-	//@Override
-	public boolean canRenderInPass(int pass) {
-
-		renderPass = pass;
-		return pass < 2;
-	}
-
 	@Override
 	public boolean hasComparatorInputOverride(IBlockState state) {
 
@@ -177,35 +162,26 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
 		return true;
 	}
 
-	/*@Override
-	public IIcon getIcon(int side, int metadata) {
-
-		return IconRegistry.getIcon("Cell" + 2 * metadata);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerBlockIcons(IIconRegister ir) {
-
-	}*/
-
-
     @Override
+    @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
         return 1;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
         return BlockRenderLayer.CUTOUT;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderCell.instance;
     }

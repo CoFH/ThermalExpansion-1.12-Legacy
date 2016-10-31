@@ -10,13 +10,12 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.RenderTank;
-import com.sun.deploy.security.ValidationState.TYPE;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -42,6 +41,8 @@ import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -76,13 +77,14 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
         return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
     }
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(FLUID_STACK_PROPERTY).add(MODE_PROPERTY).add(BlockBakery.TYPE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(FLUID_STACK_PROPERTY).add(MODE_PROPERTY).add(CommonProperties.TYPE_PROPERTY).build();
     }
 
     @Override
@@ -252,11 +254,13 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderTank.instance;
     }
 
     @Override
+    @SideOnly(Side.CLIENT)
     public BlockRenderLayer getBlockLayer() {
         return BlockRenderLayer.CUTOUT;
     }
