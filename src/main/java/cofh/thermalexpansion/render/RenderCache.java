@@ -77,7 +77,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
             GlStateManager.popMatrix();
 		}
         GlStateManager.pushMatrix();
-		RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
+		//RenderUtils.renderItemOnBlockSide(tile, tile.storedStack, tile.getFacing(), x, y, z);
 		GlStateManager.popMatrix();
 	}
 

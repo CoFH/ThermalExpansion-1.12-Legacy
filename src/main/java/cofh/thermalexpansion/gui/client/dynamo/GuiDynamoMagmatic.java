@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoMagmatic extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoMagmatic.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "dynamo_magmatic.png");
 
 	public GuiDynamoMagmatic(InventoryPlayer inventory, TileEntity tile) {
 

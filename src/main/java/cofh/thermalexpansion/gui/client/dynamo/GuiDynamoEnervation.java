@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoEnervation extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "DynamoEnervation.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "dynamo_enervation.png");
 
 	ElementDualScaled duration;
 
