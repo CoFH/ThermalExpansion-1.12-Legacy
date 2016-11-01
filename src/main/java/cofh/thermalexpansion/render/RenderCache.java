@@ -44,31 +44,30 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 			case 1:
 				break;
 			case 2:
-				GlStateManager.translate(x + 3/16f, y + 3/16f, z - RenderHelper.RENDER_OFFSET * 3);
+				GlStateManager.translate(x + 3/16f, y + 3/16f, z + RenderHelper.RENDER_OFFSET * 150);
 				break;
 			case 3:
-                GlStateManager.translate(x + 13/16f, y + 3/16f, z + 1 + RenderHelper.RENDER_OFFSET * 3);
+                GlStateManager.translate(x + 13/16f, y + 3/16f, z + 1 - RenderHelper.RENDER_OFFSET * 150);
                 GlStateManager.rotate(180, 0, 1, 0);
 				break;
 			case 4:
-                GlStateManager.translate(x - RenderHelper.RENDER_OFFSET * 3, y + 3/16f, z + 13/16f);
-                GlStateManager.rotate(90, 0, 1, 0);
-				break;
+                GlStateManager.translate(x + RenderHelper.RENDER_OFFSET * 150, y + 3/16f, z + 13/16f);
+			GlStateManager.rotate(90, 0, 1, 0);
+			break;
 			case 5:
-                GlStateManager.translate(x + 1 + RenderHelper.RENDER_OFFSET * 3, y + 3/16f, z + 3/16f);
-                GlStateManager.rotate(-90, 0, 1, 0);
+				GlStateManager.translate(x + 1 - RenderHelper.RENDER_OFFSET * 150, y + 3/16f, z + 3/16f);
+				GlStateManager.rotate(-90, 0, 1, 0);
 				break;
 			default:
-			}
-			GlStateManager.scale(0.03125 / 4, 0.03125 / 4, -RenderHelper.RENDER_OFFSET);
-			GlStateManager.rotate(180, 0, 0, 1);
+		}
+		GlStateManager.scale(0.03125 / 4, 0.03125 / 4, -RenderHelper.RENDER_OFFSET);
+		GlStateManager.rotate(180, 0, 0, 1);
 
 			RenderUtils.setupLight(tile, EnumFacing.VALUES[tile.getFacing()]);
 			RenderHelper.enableGUIStandardItemLighting();
 
-			//if (!ForgeHooksClient.renderInventoryItem(RenderUtils.renderBlocks, RenderHelper.engine(), lock, true, 0.0F, 0.0F, 0.0F)) {
-            Minecraft.getMinecraft().getRenderItem().renderItemOverlayIntoGUI(Minecraft.getMinecraft().fontRendererObj, lock, 0, 0, null);
-			//}
+			RenderHelper.renderItem().renderItemAndEffectIntoGUI(lock, 0,0);
+
 			GlStateManager.enableAlpha();
 			GlStateManager.alphaFunc(GL11.GL_GREATER, 0.1F);
 			GlStateManager.enableBlend();
