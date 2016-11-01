@@ -7,10 +7,7 @@ import codechicken.lib.util.TransformUtils;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.lib.util.ItemWrapper;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
-import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
-import cofh.thermalexpansion.client.IBlockTextureProvider;
-import cofh.thermalexpansion.client.IControlledLayerProvider;
+import cofh.thermalexpansion.client.*;
 import cofh.thermalexpansion.client.model.SimplePerspectiveAwareBakedLayerModel;
 import cofh.thermalexpansion.client.model.SimpleSmartBakedModel;
 import cofh.thermalexpansion.client.model.SimpleSmartLayeredModel;
@@ -26,6 +23,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.IResourceManagerReloadListener;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -47,15 +45,26 @@ import java.util.concurrent.TimeUnit;
 public class BlockBakery implements IResourceManagerReloadListener {
 
     private static Cache<IExtendedBlockState, IBakedModel> stateModelCache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
+
+    //TODO Auto register key generators for all ItemBlocks.
     private static Cache<ItemWrapper, IBakedModel> itemModelCache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
+    private static Cache<String, IBakedModel> itemKeyModelCache = CacheBuilder.newBuilder().expireAfterAccess(5, TimeUnit.MINUTES).build();
+
+    private static Map<Item, IItemStackKeyGenerator> itemKeyGeneratorMap = new HashMap<Item, IItemStackKeyGenerator>();
 
     static {
         TextureUtils.registerReloadListener(new BlockBakery());
     }
 
+    public static void registerItemKeyGenerator(Item item, IItemStackKeyGenerator generator) {
+        if (itemKeyGeneratorMap.containsKey(item)) {
+            throw new IllegalArgumentException("Unable to register IItemStackKeyGenerator as one is already registered for item: " + item.getRegistryName());
+        }
+        itemKeyGeneratorMap.put(item, generator);
+    }
+
     public static IBlockState handleExtendedState(IExtendedBlockState state, TileEntity tileEntity) {
         Block block = state.getBlock();
-        int blockMeta = block.getMetaFromState(state);
 
         if (block instanceof IBakeryBlock) {
             return ((IBakeryBlock) block).getCustomBakery().handleState(state, tileEntity);
@@ -84,56 +93,74 @@ public class BlockBakery implements IResourceManagerReloadListener {
         return state;
     }
 
-    public static IBakedModel generateItemModel(ItemStack stack) {
-        ItemWrapper wrapper = ItemWrapper.fromItemStack(stack);
-        IBakedModel model = itemModelCache.getIfPresent(wrapper);
-
-        if (model == null) {
-            Block block = Block.getBlockFromItem(stack.getItem());
-            if (block instanceof IBakeryBlock) {
-                ICustomBlockBakery bakery = ((IBakeryBlock) block).getCustomBakery();
-                List<BakedQuad> generalQuads = new LinkedList<BakedQuad>();
-                Map<EnumFacing, List<BakedQuad>> faceQuadMap = new HashMap<EnumFacing, List<BakedQuad>>();
-                generalQuads.addAll(bakery.bakeItemQuads(null, stack));
-
-                for (EnumFacing face : EnumFacing.VALUES) {
-                    List<BakedQuad> faceQuads = new LinkedList<BakedQuad>();
-
-                    faceQuads.addAll(bakery.bakeItemQuads(face, stack));
-
-                    faceQuadMap.put(face, faceQuads);
+    public static IBakedModel getCachedItemModel(ItemStack stack) {
+        IBakedModel model;
+        IItemStackKeyGenerator generator = itemKeyGeneratorMap.get(stack.getItem());
+        if (generator != null) {
+            String key = generator.generateKey(stack);
+            model = itemKeyModelCache.getIfPresent(key);
+            if (model == null) {
+                model = generateItemModel(stack);
+                if (model != null) {
+                    itemKeyModelCache.put(key, model);
                 }
-
-                model = new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, generalQuads, TransformUtils.DEFAULT_BLOCK);
-
-            } else if (block instanceof IBlockLayeredTextureProvider) {
-
-                IBlockLayeredTextureProvider provider = ((IBlockLayeredTextureProvider) block);
-                LinkedList<BakedQuad> itemQuads = new LinkedList<BakedQuad>();
-                itemQuads.addAll(bakeItemFace(EnumFacing.UP, provider.getTexture(EnumFacing.UP, stack.getMetadata())));
-                itemQuads.addAll(bakeItemFace(EnumFacing.DOWN, provider.getTexture(EnumFacing.DOWN, stack.getMetadata())));
-                for (EnumFacing face : EnumFacing.HORIZONTALS) {
-                    itemQuads.addAll(bakeItemFace(face, provider.getTexture(face.getOpposite(), stack.getMetadata())));
-                }
-                model = new SimplePerspectiveAwareBakedModel(itemQuads, TransformUtils.DEFAULT_BLOCK);
-            } else if (block instanceof IBlockTextureProvider) {
-                IBlockTextureProvider provider = ((IBlockTextureProvider) block);
-                Map<EnumFacing, List<BakedQuad>> faceQuadMap = new HashMap<EnumFacing, List<BakedQuad>>();
-                for (EnumFacing face : EnumFacing.VALUES) {
-                    List<BakedQuad> faceQuads = new LinkedList<BakedQuad>();
-
-                    faceQuads.addAll(bakeItemFace(face, provider.getTexture(face, stack.getMetadata())));
-
-                    faceQuadMap.put(face, faceQuads);
-                }
-                model = new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, null, TransformUtils.DEFAULT_BLOCK);
             }
+        } else {
+            ItemWrapper wrapper = ItemWrapper.fromItemStack(stack);
+            model = itemModelCache.getIfPresent(wrapper);
 
-            if (model != null) {
-                itemModelCache.put(wrapper, model);
+            if (model == null) {
+                model = generateItemModel(stack);
+                if (model != null) {
+                    itemModelCache.put(wrapper, model);
+                }
             }
         }
         return model;
+
+    }
+
+    public static IBakedModel generateItemModel(ItemStack stack) {
+        Block block = Block.getBlockFromItem(stack.getItem());
+        if (block instanceof IBakeryBlock) {
+            ICustomBlockBakery bakery = ((IBakeryBlock) block).getCustomBakery();
+            List<BakedQuad> generalQuads = new LinkedList<BakedQuad>();
+            Map<EnumFacing, List<BakedQuad>> faceQuadMap = new HashMap<EnumFacing, List<BakedQuad>>();
+            generalQuads.addAll(bakery.bakeItemQuads(null, stack));
+
+            for (EnumFacing face : EnumFacing.VALUES) {
+                List<BakedQuad> faceQuads = new LinkedList<BakedQuad>();
+
+                faceQuads.addAll(bakery.bakeItemQuads(face, stack));
+
+                faceQuadMap.put(face, faceQuads);
+            }
+
+            return new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, generalQuads, TransformUtils.DEFAULT_BLOCK);
+
+        } else if (block instanceof IBlockLayeredTextureProvider) {
+
+            IBlockLayeredTextureProvider provider = ((IBlockLayeredTextureProvider) block);
+            LinkedList<BakedQuad> itemQuads = new LinkedList<BakedQuad>();
+            itemQuads.addAll(bakeItemFace(EnumFacing.UP, provider.getTexture(EnumFacing.UP, stack.getMetadata())));
+            itemQuads.addAll(bakeItemFace(EnumFacing.DOWN, provider.getTexture(EnumFacing.DOWN, stack.getMetadata())));
+            for (EnumFacing face : EnumFacing.HORIZONTALS) {
+                itemQuads.addAll(bakeItemFace(face, provider.getTexture(face.getOpposite(), stack.getMetadata())));
+            }
+            return new SimplePerspectiveAwareBakedModel(itemQuads, TransformUtils.DEFAULT_BLOCK);
+        } else if (block instanceof IBlockTextureProvider) {
+            IBlockTextureProvider provider = ((IBlockTextureProvider) block);
+            Map<EnumFacing, List<BakedQuad>> faceQuadMap = new HashMap<EnumFacing, List<BakedQuad>>();
+            for (EnumFacing face : EnumFacing.VALUES) {
+                List<BakedQuad> faceQuads = new LinkedList<BakedQuad>();
+
+                faceQuads.addAll(bakeItemFace(face, provider.getTexture(face, stack.getMetadata())));
+
+                faceQuadMap.put(face, faceQuads);
+            }
+            return new SimpleSmartPerspectiveBakedItemModel(faceQuadMap, null, TransformUtils.DEFAULT_BLOCK);
+        }
+        return null;
     }
 
     public static IBakedModel getCachedModel(IExtendedBlockState state) {

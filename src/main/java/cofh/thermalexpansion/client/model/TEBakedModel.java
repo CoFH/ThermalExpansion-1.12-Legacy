@@ -64,7 +64,7 @@ public class TEBakedModel implements IBakedModel, IExtendedModel {
         return new ItemOverrideList(ImmutableList.<ItemOverride>of()){
             @Override
             public IBakedModel handleItemState(IBakedModel originalModel, ItemStack stack, World world, EntityLivingBase entity) {
-                IBakedModel model = BlockBakery.generateItemModel(stack);
+                IBakedModel model = BlockBakery.getCachedItemModel(stack);
                 if (model == null){
                     return originalModel;
                 }

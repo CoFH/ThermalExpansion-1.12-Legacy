@@ -18,6 +18,8 @@ import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.tank.BlockTank;
+import cofh.thermalexpansion.client.IItemStackKeyGenerator;
+import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
@@ -32,6 +34,7 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -74,6 +77,19 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
         registerBlockBakeryStuff(TEBlocks.blockPlate, "", BlockPlate.TYPES, RenderPlate.instance);
         registerBlockBakeryStuff(TEBlocks.blockLight, "", BlockLight.TYPES, RenderLight.instance);
+        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockLight), new IItemStackKeyGenerator() {
+            @Override
+            public String generateKey(ItemStack stack) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(stack.getItem().getRegistryName().toString());
+                builder.append(",");
+                if (stack.hasTagCompound()){
+                    builder.append(stack.getTagCompound().getByte("Style"));
+                }
+                return builder.toString();
+            }
+        });
+
         registerBlockBakeryStuff(TEBlocks.blockFrame, "", BlockFrame.TYPES, RenderFrame.instance);
 
         for (EnumType type : EnumType.values()) {
