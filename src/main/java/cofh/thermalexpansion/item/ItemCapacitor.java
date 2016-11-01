@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.item;
 
+import codechicken.lib.item.ItemMultiType;
 import codechicken.lib.util.SoundUtils;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.item.ItemBase;
@@ -24,14 +25,13 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-public class ItemCapacitor extends ItemBase implements IEnergyContainerItem {
+public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem {
 
 	public ItemCapacitor() {
 
-		super("thermalexpansion");
+		super(ThermalExpansion.tabTools, "thermalexpansion:capacitor");
 		setMaxDamage(1);
 		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

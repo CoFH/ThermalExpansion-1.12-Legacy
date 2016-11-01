@@ -20,6 +20,7 @@ import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
@@ -59,7 +60,8 @@ public class ProxyClient extends Proxy {
         RenderStrongbox.registerRenderers();
 
         TEAugments.itemAugment.registerModelVariants();
-        TFItems.itemMaterial.registerModelVariants();
+        TEItems.itemMaterial.registerModelVariants();
+        TEItems.itemCapacitor.registerModelVariants();
 
 
 
