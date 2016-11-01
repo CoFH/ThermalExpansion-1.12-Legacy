@@ -254,15 +254,19 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 
 	@Override
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-
-		TileLight tile = (TileLight) source.getTileEntity(pos);
-		switch (tile.style) {
-		case 2:
-		case 5:
-			return null;
-		}
-		Cuboid6 ret = models[tile.style].copy().apply(getTransformation(tile.style, tile.alignment));
-		return ret.aabb();
+        //TODO This causes crashes due to being called before the block is placed in the world. We need to override placeBlockOnSide inside the ItemBlock and handle the collision check ourselves.
+		TileEntity tile = source.getTileEntity(pos);
+        if (tile instanceof TileLight) {
+            TileLight light = ((TileLight) tile);
+            switch (light.style) {
+                case 2:
+                case 5:
+                    return null;
+            }
+            Cuboid6 ret = models[light.style].copy().apply(getTransformation(light.style, light.alignment));
+            return ret.aabb();
+        }
+        return FULL_BLOCK_AABB;
 	}
 
 	/*@Override
