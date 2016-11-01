@@ -131,6 +131,17 @@ public class TEItems {
         //GameRegistry.register(itemDiagram);
         GameRegistry.register(itemMaterial);
 
+        		/* Tools */
+        toolWrench = new ItemStack(itemWrench);
+        toolBattleWrench = new ItemStack(itemBattleWrench);
+        ItemStackRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
+        toolMultimeter = itemMultimeter.addItem(0, "multimeter");
+        toolDebugger = itemMultimeter.addItem(1, "debugger");
+        toolIgniter = new ItemStack(itemIgniter);
+        toolChiller = new ItemStack(itemChiller);
+        toolPump = new ItemStack(itemPump);
+        toolTransfuser = new ItemStack(itemTransfuser);
+
 
 
         /* Capacitor */
@@ -140,6 +151,13 @@ public class TEItems {
         capacitorHardened = itemCapacitor.registerSubItem(ItemCapacitor.Types.HARDENED.ordinal(), "capacitorHardened", EnumRarity.COMMON);
         capacitorReinforced = itemCapacitor.registerSubItem(ItemCapacitor.Types.REINFORCED.ordinal(), "capacitorReinforced", EnumRarity.UNCOMMON);
         capacitorResonant = itemCapacitor.registerSubItem(ItemCapacitor.Types.RESONANT.ordinal(), "capacitorResonant", EnumRarity.RARE);
+
+
+        EnergyHelper.setDefaultEnergyTag(capacitorCreative, 0);
+        EnergyHelper.setDefaultEnergyTag(capacitorBasic, 0);
+        EnergyHelper.setDefaultEnergyTag(capacitorHardened, 0);
+        EnergyHelper.setDefaultEnergyTag(capacitorReinforced, 0);
+        EnergyHelper.setDefaultEnergyTag(capacitorResonant, 0);
 
 
         /* Parts */
@@ -168,22 +186,7 @@ public class TEItems {
 
         ItemSatchel.configure();
 
-		/* Tools */
-        toolWrench = new ItemStack(itemWrench);
-        toolBattleWrench = new ItemStack(itemBattleWrench);
-        ItemStackRegistry.registerCustomItemStack("toolBattleWrench", toolBattleWrench);
-        toolMultimeter = itemMultimeter.addItem(0, "multimeter");
-        toolDebugger = itemMultimeter.addItem(1, "debugger");
-        toolIgniter = new ItemStack(itemIgniter);
-        toolChiller = new ItemStack(itemChiller);
-        toolPump = new ItemStack(itemPump);
-        toolTransfuser = new ItemStack(itemTransfuser);
 
-        EnergyHelper.setDefaultEnergyTag(capacitorCreative, 0);
-        EnergyHelper.setDefaultEnergyTag(capacitorBasic, 0);
-        EnergyHelper.setDefaultEnergyTag(capacitorHardened, 0);
-        EnergyHelper.setDefaultEnergyTag(capacitorReinforced, 0);
-        EnergyHelper.setDefaultEnergyTag(capacitorResonant, 0);
 
 		/* Satchel */
         satchelCreative = itemSatchel.addItem(ItemSatchel.Types.CREATIVE.ordinal(), "satchelCreative", 3);

@@ -29,6 +29,7 @@ import cofh.thermalexpansion.render.item.RenderItemFlorb;
 import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
@@ -65,6 +66,13 @@ public class ProxyClient extends Proxy {
         TEAugments.itemAugment.registerModelVariants();
         TEItems.itemMaterial.registerModelVariants();
         TEItems.itemCapacitor.registerModelVariants();
+
+        registerToolModel(TEItems.itemBattleWrench, "battleWrench");
+        registerToolModel(TEItems.itemChiller, "chiller");
+        registerToolModel(TEItems.toolDebugger, "debugger");
+        registerToolModel(TEItems.itemIgniter, "igniter");
+        registerToolModel(TEItems.toolMultimeter, "multimeter");
+        registerToolModel(TEItems.itemWrench, "wrench");
 
 
 
@@ -136,6 +144,21 @@ public class ProxyClient extends Proxy {
         if (iconRegister != null) {
             TextureUtils.addIconRegister(iconRegister);
         }
+    }
+
+    private void registerToolModel(Item item, String name){
+        final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
+        ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return location;
+            }
+        });
+    }
+
+    private void registerToolModel(ItemStack stack, String name) {
+        final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
+        ModelLoader.setCustomModelResourceLocation(stack.getItem(), stack.getMetadata(), location);
     }
 
     @Override
