@@ -5,6 +5,7 @@ import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cache.BlockCache;
@@ -62,8 +63,13 @@ public class ProxyClient extends Proxy {
         TEAugments.itemAugment.registerModelVariants();
         TEItems.itemMaterial.registerModelVariants();
         TEItems.itemCapacitor.registerModelVariants();
-
-
+        TEItems.itemChiller.registerModelVariants();
+        TEItems.itemIgniter.registerModelVariants();
+        TEItems.itemMultimeter.registerModelVariants();
+        TEItems.itemPump.registerModelVariants();
+        TEItems.itemTransfuser.registerModelVariants();
+        TEItems.itemWrench.registerModelVariants();
+        TEItems.itemBattleWrench.registerModelVariants();
 
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);

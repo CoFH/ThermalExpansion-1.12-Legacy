@@ -5,7 +5,10 @@ import codechicken.lib.util.BlockUtils;
 
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.TEItems;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -23,6 +26,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -285,4 +289,9 @@ public class ItemPump extends ItemEnergyContainerBase {
 		return 2;
 	}
 
+	public void registerModelVariants() {
+
+		ModelResourceLocation location = new ModelResourceLocation(ThermalExpansion.modId + ":tool", "type=pumpinput");
+		ModelLoader.setCustomModelResourceLocation(TEItems.itemPump, 0, location);
+	}
 }

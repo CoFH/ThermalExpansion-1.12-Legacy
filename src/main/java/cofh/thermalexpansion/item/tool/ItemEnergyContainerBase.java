@@ -63,7 +63,7 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 		if (stack.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		return 1 + maxEnergy - stack.getTagCompound().getInteger("Energy");
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double)getMaxDamage(stack));
 	}
 
 	@Override

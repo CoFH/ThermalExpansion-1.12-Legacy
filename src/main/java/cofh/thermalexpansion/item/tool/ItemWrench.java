@@ -10,9 +10,12 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.TEItems;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
@@ -21,6 +24,7 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
 
 import java.util.List;
@@ -140,4 +144,9 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 
 	}
 
+	public void registerModelVariants() {
+
+		ModelResourceLocation location = new ModelResourceLocation(ThermalExpansion.modId + ":tool", "type=wrench");
+		ModelLoader.setCustomModelResourceLocation(TEItems.itemWrench, 0, location);
+	}
 }

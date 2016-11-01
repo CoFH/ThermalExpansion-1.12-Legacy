@@ -7,12 +7,16 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.TEItems;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -239,4 +243,9 @@ public class ItemTransfuser extends ItemToolBase {
 		return 2;
 	}
 
+	public void registerModelVariants() {
+
+		ModelResourceLocation location = new ModelResourceLocation(ThermalExpansion.modId + ":tool", "type=transfuserinput");
+		ModelLoader.setCustomModelResourceLocation(TEItems.itemTransfuser, 0, location);
+	}
 }

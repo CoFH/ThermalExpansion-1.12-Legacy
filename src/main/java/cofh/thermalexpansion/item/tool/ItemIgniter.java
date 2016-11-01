@@ -6,8 +6,11 @@ import codechicken.lib.vec.Vector3;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.TEItems;
 import net.minecraft.block.BlockTNT;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
@@ -22,6 +25,7 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 
 import java.util.List;
 
@@ -82,4 +86,9 @@ public class ItemIgniter extends ItemEnergyContainerBase {
         return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
     }
 
+    public void registerModelVariants() {
+
+        ModelResourceLocation location = new ModelResourceLocation(ThermalExpansion.modId + ":tool", "type=igniter");
+        ModelLoader.setCustomModelResourceLocation(TEItems.itemIgniter, 0, location);
+    }
 }
