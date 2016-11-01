@@ -3,16 +3,12 @@ package cofh.thermalexpansion.item;
 import codechicken.lib.item.ItemMultiType;
 import codechicken.lib.util.SoundUtils;
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.core.item.ItemBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,12 +21,14 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+import java.util.List;
+
 public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem {
 
 	public ItemCapacitor() {
 
 		super(ThermalExpansion.tabTools, "thermalexpansion:capacitor");
-		setMaxDamage(1);
+//		setMaxDamage(1);
 		setMaxStackSize(1);
 	}
 
@@ -91,6 +89,10 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 
 	@Override
 	public void onUpdate(ItemStack stack, World world, Entity entity, int slot, boolean isCurrentItem) {
+		//This is not ideal but stack.setItem is broken
+		if (stack.getItemDamage() == Types.POTATO.ordinal() && getEnergyStored(stack) == 0) {
+			((EntityPlayer) entity).inventory.setInventorySlotContents(slot, new ItemStack(Items.BAKED_POTATO));
+		}
 
 		if (slot > 8 || !isActive(stack) || isCurrentItem) {
 			return;
@@ -143,30 +145,28 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		return false;
 	}
 
-	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return ItemHelper.getItemDamage(stack) != Types.CREATIVE.ordinal();
-	}
-
     @Override
     public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 		return EnumActionResult.FAIL;
 	}
 
 	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
+		return true;//super.showDurabilityBar(stack);
+	}
+
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			return CAPACITY[ItemHelper.getItemDamage(stack)];
+			return 1;
 		}
-		return CAPACITY[ItemHelper.getItemDamage(stack)] - stack.getTagCompound().getInteger("Energy");
+		return 1D - ((double) getEnergyStored(stack) / (double) CAPACITY[ItemHelper.getItemDamage(stack)]);
 	}
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
-
-		return CAPACITY[ItemHelper.getItemDamage(stack)];
+		return super.getMaxDamage(stack);
 	}
 
 	/* IEnergyContainerItem */
@@ -202,10 +202,6 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		if (!simulate && container.getItemDamage() != Types.CREATIVE.ordinal()) {
 			stored -= extract;
 			container.getTagCompound().setInteger("Energy", stored);
-
-			if (stored == 0 && container.getItemDamage() == Types.POTATO.ordinal()) {
-				container.setItem(Items.BAKED_POTATO);
-			}
 		}
 		return extract;
 	}
