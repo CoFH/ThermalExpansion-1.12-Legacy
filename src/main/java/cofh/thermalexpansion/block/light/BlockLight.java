@@ -261,7 +261,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
             switch (light.style) {
                 case 2:
                 case 5:
-                    return null;
+                    return FULL_BLOCK_AABB;
             }
             Cuboid6 ret = models[light.style].copy().apply(getTransformation(light.style, light.alignment));
             return ret.aabb();
