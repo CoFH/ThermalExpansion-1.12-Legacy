@@ -159,6 +159,18 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		}
 	}
 
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
 	private static void addRecipes(ItemStack lamp) {
 
 		GameRegistry.addRecipe(new RecipeStyle(2, 1, lamp, 0, ItemBlockLight.setDefaultTag(ItemHelper.cloneStack(lamp, 2), 1))); // plate
@@ -240,10 +252,10 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		}
 	}
 
-	//@Override
-	public AxisAlignedBB getBoundingBox(World world, BlockPos pos) {
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-		TileLight tile = (TileLight) world.getTileEntity(pos);
+		TileLight tile = (TileLight) source.getTileEntity(pos);
 		switch (tile.style) {
 		case 2:
 		case 5:

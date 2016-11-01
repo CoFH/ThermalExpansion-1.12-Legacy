@@ -69,7 +69,7 @@ public class ItemBlockLight extends ItemBlock {
 		if (!world.setBlockState(pos, newState, 3)) {
 			return false;
 		}
-		if (world.getBlockState(pos) == block) {
+		if (world.getBlockState(pos).getBlock() == block) {
             block.onBlockPlacedBy(world, pos, newState, player, stack);
             //block.onPostBlockPlaced(world, x, y, z, metadata);
 			TileLight tile = (TileLight) world.getTileEntity(pos);
