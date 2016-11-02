@@ -152,6 +152,7 @@ public class TileLight extends TileTEBase implements ITileInfo {
 		}
 		this.modified = true;
 		this.color = color;
+		markDirty();
 		setRenderColor();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
@@ -287,7 +288,9 @@ public class TileLight extends TileTEBase implements ITileInfo {
 
 		modified = nbt.getBoolean("Modified");
 		mode = nbt.getByte("Mode");
-		color = nbt.getInteger("Color");
+		if (modified) {
+			color = nbt.getInteger("Color");
+		}
 
 		isPowered = nbt.getBoolean("Powered");
 		inputPower = nbt.getByte("Signal");
