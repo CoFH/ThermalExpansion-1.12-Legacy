@@ -3,8 +3,10 @@ package cofh.thermalexpansion.core;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
+import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cache.BlockCache;
@@ -21,10 +23,10 @@ import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.model.TEBakedModel;
+import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalexpansion.item.tool.ItemPump;
-import cofh.thermalexpansion.item.tool.ItemTransfuser;
+import cofh.thermalexpansion.item.tool.ItemToolBase;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
@@ -74,26 +76,24 @@ public class ProxyClient extends Proxy {
         registerToolModel(TEItems.itemIgniter, "igniter");
         registerToolModel(TEItems.toolMultimeter, "multimeter");
         registerToolModel(TEItems.itemWrench, "wrench");
+        registerModedToolModel(TEItems.itemPump, "pump");
+        registerModedToolModel(TEItems.itemTransfuser, "transfuser");
 
-        final ModelResourceLocation pumpInput = getToolLocation("pumpinput");
-        final ModelResourceLocation pumpOutput = getToolLocation("pumpoutput");
-        ModelLoader.setCustomMeshDefinition(TEItems.itemPump, new ItemMeshDefinition() {
+        final int accessCount = ISecurable.AccessMode.values().length;
+        final ModelResourceLocation[] satchelLocations =
+                new ModelResourceLocation[ItemSatchel.NAMES.length * accessCount];
+        for (int meta = 0; meta < ItemSatchel.NAMES.length; meta++) {
+            for (int access = 0; access < accessCount; access++) {
+                satchelLocations[meta * accessCount + access] = getSatchelLocation(meta, ISecurable.AccessMode.values()[access]);
+            }
+        }
+        ModelLoader.setCustomMeshDefinition(TEItems.itemSatchel, new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return TEItems.itemPump.getMode(stack) == ItemPump.OUTPUT ? pumpOutput : pumpInput;
+                return satchelLocations[stack.getMetadata() * accessCount + SecurityHelper.getAccess(stack).ordinal()];
             }
         });
-        ModelLoader.registerItemVariants(TEItems.itemPump, pumpInput, pumpOutput);
-
-        final ModelResourceLocation transfuserInput = getToolLocation("transfuserinput");
-        final ModelResourceLocation transfuserOutput = getToolLocation("transfuseroutput");
-        ModelLoader.setCustomMeshDefinition(TEItems.itemTransfuser, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return TEItems.itemTransfuser.getMode(stack) == ItemTransfuser.OUTPUT ? transfuserOutput : transfuserInput;
-            }
-        });
-        ModelLoader.registerItemVariants(TEItems.itemTransfuser, transfuserInput, transfuserOutput);
+        ModelLoader.registerItemVariants(TEItems.itemSatchel, satchelLocations);
 
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
@@ -167,8 +167,26 @@ public class ProxyClient extends Proxy {
         }
     }
 
+    private ModelResourceLocation getSatchelLocation(int meta, ISecurable.AccessMode access) {
+        return new ModelResourceLocation("thermalexpansion:satchel", "latch=" + access.toString().toLowerCase() + ",type=" + ItemSatchel.NAMES[meta]);
+    }
+
     private ModelResourceLocation getToolLocation(String name) {
         return new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
+    }
+
+    private void registerModedToolModel(final ItemToolBase item, String name) {
+        final int OUTPUT = 1;
+        final ModelResourceLocation input = getToolLocation(name + "input");
+        final ModelResourceLocation output = getToolLocation(name + "output");
+
+        ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return item.getMode(stack) == OUTPUT ? output : input;
+            }
+        });
+        ModelLoader.registerItemVariants(item, input, output);
     }
 
     private void registerToolModel(Item item, String name){
