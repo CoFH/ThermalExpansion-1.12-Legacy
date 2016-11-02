@@ -88,6 +88,8 @@ public class ProxyClient extends Proxy {
             @Override
             public String generateKey(ItemStack stack) {
                 StringBuilder builder = new StringBuilder();
+                builder.append(stack.getMetadata());
+                builder.append(",");
                 builder.append(stack.getItem().getRegistryName().toString());
                 builder.append(",");
                 if (stack.hasTagCompound()){
