@@ -169,7 +169,9 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
-		type = nbt.getByte("Type");
+		if (nbt.hasKey("Type")) {
+			type = nbt.getByte("Type");
+		}
 		facing = nbt.getByte("Facing");
 		locked = nbt.getBoolean("LockItem");
 
