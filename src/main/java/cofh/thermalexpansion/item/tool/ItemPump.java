@@ -36,7 +36,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 	//IIcon drainIcon;
 
 	static final int INPUT = 0;
-	static final int OUTPUT = 1;
+	public static final int OUTPUT = 1;
 
 	public ItemPump() {
 

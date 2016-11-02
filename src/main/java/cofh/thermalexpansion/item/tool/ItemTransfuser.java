@@ -29,7 +29,7 @@ public class ItemTransfuser extends ItemToolBase {
 	//IIcon transferIcon;
 
 	static final int INPUT = 0;
-	static final int OUTPUT = 1;
+	public static final int OUTPUT = 1;
 
 	static final int TRANSFER = 100000;
 

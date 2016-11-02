@@ -23,6 +23,8 @@ import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.model.TEBakedModel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.item.tool.ItemPump;
+import cofh.thermalexpansion.item.tool.ItemTransfuser;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.RenderItemFlorb;
@@ -73,7 +75,25 @@ public class ProxyClient extends Proxy {
         registerToolModel(TEItems.toolMultimeter, "multimeter");
         registerToolModel(TEItems.itemWrench, "wrench");
 
+        final ModelResourceLocation pumpInput = getToolLocation("pumpinput");
+        final ModelResourceLocation pumpOutput = getToolLocation("pumpoutput");
+        ModelLoader.setCustomMeshDefinition(TEItems.itemPump, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return TEItems.itemPump.getMode(stack) == ItemPump.OUTPUT ? pumpOutput : pumpInput;
+            }
+        });
+        ModelLoader.registerItemVariants(TEItems.itemPump, pumpInput, pumpOutput);
 
+        final ModelResourceLocation transfuserInput = getToolLocation("transfuserinput");
+        final ModelResourceLocation transfuserOutput = getToolLocation("transfuseroutput");
+        ModelLoader.setCustomMeshDefinition(TEItems.itemTransfuser, new ItemMeshDefinition() {
+            @Override
+            public ModelResourceLocation getModelLocation(ItemStack stack) {
+                return TEItems.itemTransfuser.getMode(stack) == ItemTransfuser.OUTPUT ? transfuserOutput : transfuserInput;
+            }
+        });
+        ModelLoader.registerItemVariants(TEItems.itemTransfuser, transfuserInput, transfuserOutput);
 
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
@@ -147,19 +167,21 @@ public class ProxyClient extends Proxy {
         }
     }
 
+    private ModelResourceLocation getToolLocation(String name) {
+        return new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
+    }
+
     private void registerToolModel(Item item, String name){
-        final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
-        ModelLoader.setCustomMeshDefinition(item, new ItemMeshDefinition() {
-            @Override
-            public ModelResourceLocation getModelLocation(ItemStack stack) {
-                return location;
-            }
-        });
+        registerToolModel(item, 0, name);
     }
 
     private void registerToolModel(ItemStack stack, String name) {
-        final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
-        ModelLoader.setCustomModelResourceLocation(stack.getItem(), stack.getMetadata(), location);
+        registerToolModel(stack.getItem(), stack.getMetadata(), name);
+    }
+
+    private void registerToolModel(Item item, int metadata, String name) {
+        final ModelResourceLocation location = getToolLocation(name);
+        ModelLoader.setCustomModelResourceLocation(item, metadata, location);
     }
 
     @Override
