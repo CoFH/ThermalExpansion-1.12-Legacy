@@ -62,6 +62,8 @@ public class EntityFlorb extends EntityThrowable {
         super(world, entity);
         this.fluid = fluid;
 
+        setHeadingFromThrower(entity, entity.rotationPitch, entity.rotationYaw, 0.0F, 1.5F, 1.0F);
+
         setGravity();
         setSyncFluid();
     }
