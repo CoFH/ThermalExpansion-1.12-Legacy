@@ -180,11 +180,11 @@ public class EntityFlorb extends EntityThrowable {
             traceResult.entityHit.attackEntityFrom(DamageSource.causeThrownDamage(this, this.getThrower()), 0F);
         }
 
-        if (worldObj.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
+        if (traceResult.sideHit != null && worldObj.getBlockState(pos).getBlock() != Blocks.SNOW_LAYER) {
             pos = pos.offset(traceResult.sideHit);
         }
         if (ServerHelper.isServerWorld(worldObj)) {
-            if (getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
+            if (traceResult.sideHit != null && getThrower() instanceof EntityPlayer && !((EntityPlayer) getThrower()).canPlayerEdit(pos, traceResult.sideHit, blockCheck)) {
                 ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
                 this.setDead();
                 return;

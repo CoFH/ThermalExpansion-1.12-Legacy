@@ -222,6 +222,8 @@ public class ProxyClient extends Proxy {
         IconRegistry.addIcon("IconBlocked", "thermalexpansion:items/icons/icon_blocked", event.getMap());
         IconRegistry.addIcon("IconSchematic", "thermalexpansion:items/diagram/schematic", event.getMap());
         IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:items/icons/Icon_SlotSchematic", event.getMap());
+        IconRegistry.addIcon("FlorbMask", "thermalexpansion:items/florb/florb_mask", event.getMap());
+        IconRegistry.addIcon("FlorbOutline", "thermalexpansion:items/florb/florb_outline", event.getMap());
 
     }
 

@@ -143,13 +143,4 @@ public class ItemFlorb extends ItemBase {
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
-
-	//@Override
-	//public void registerIcons(IIconRegister ir) {
-	//	IconRegistry.addIcon("Florb", "thermalexpansion:florb/Florb", ir);
-	//	IconRegistry.addIcon("FlorbMagmatic", "thermalexpansion:florb/FlorbMagmatic", ir);
-	//	IconRegistry.addIcon("FlorbMask", "thermalexpansion:florb/FlorbMask", ir);
-	//	IconRegistry.addIcon("FlorbOutline", "thermalexpansion:florb/FlorbOutline", ir);
-	//}
-
 }
