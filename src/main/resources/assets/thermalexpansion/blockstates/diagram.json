@@ -1,0 +1,16 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "builtin/generated",
+    "textures": {
+      "layer0": "blocks/dirt"
+    },
+    "transform": "forge:default-item"
+  },
+  "variants": {
+    "type": {
+      "schematic": {"textures":{"layer0":"thermalexpansion:items/diagram/schematic"}},
+      "redprint": {"textures":{"layer0":"thermalexpansion:items/diagram/redprint"}}
+    }
+  }
+}

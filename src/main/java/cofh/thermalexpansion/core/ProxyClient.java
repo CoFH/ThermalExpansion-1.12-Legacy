@@ -102,6 +102,9 @@ public class ProxyClient extends Proxy {
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 0, ModelFlorb.MODEL_LOCATION);
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 1, ModelFlorb.MAGMATIC_MODEL_LOCATION);
 
+        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 0, getDiagramLocation("schematic"));
+        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
+
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
         registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);
@@ -196,6 +199,10 @@ public class ProxyClient extends Proxy {
 
     private ModelResourceLocation getToolLocation(String name) {
         return new ModelResourceLocation("thermalexpansion:tool", "type=" + name.toLowerCase());
+    }
+
+    private ModelResourceLocation getDiagramLocation(String name) {
+        return new ModelResourceLocation("thermalexpansion:diagram", "type=" + name.toLowerCase());
     }
 
     private void registerModedToolModel(final ItemToolBase item, String name) {
