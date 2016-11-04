@@ -47,7 +47,7 @@ public class TileSpongeCreative extends TileSponge {
                     BlockPos offsetPos = getPos().add(x, y, z);
                     query = worldObj.getBlockState(offsetPos);
                     if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
-                        worldObj.setBlockState(pos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+                        worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
                     }
                 }
             }
