@@ -1,0 +1,54 @@
+{
+  "forge_marker": 1,
+  "defaults": {
+    "model": "minecraft:cube_all",
+    "textures": {
+      "all" : "blocks/dirt"
+    },
+    "transform": "forge:default-block"
+  },
+  "variants": {
+    "soaked=false,type=creative": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_creative"
+        }
+      }
+    ],
+    "soaked=true,type=creative": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_creative"
+        }
+      }
+    ],
+    "soaked=false,type=basic": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_basic"
+        }
+      }
+    ],
+    "soaked=true,type=basic": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_basic_soaked"
+        }
+      }
+    ],
+    "soaked=false,type=magmatic": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_magmatic"
+        }
+      }
+    ],
+    "soaked=true,type=magmatic": [
+      {
+        "textures": {
+          "all": "thermalexpansion:blocks/sponge/sponge_magmatic_soaked"
+        }
+      }
+    ]
+  }
+}

@@ -1,16 +1,12 @@
 package cofh.thermalexpansion.block.sponge;
 
-import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.bakery.IBakeryBlock;
-import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.render.RenderSponge;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -25,12 +21,8 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 import java.util.Locale;
@@ -38,10 +30,10 @@ import java.util.Random;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockSponge extends BlockTEBase implements IBakeryBlock {
+public class BlockSponge extends BlockTEBase {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
-    public static final UnlistedBooleanProperty SOAKED = new UnlistedBooleanProperty("soaked");
+    public static final PropertyBool SOAKED = PropertyBool.create("soaked");
 
     public BlockSponge() {
 
@@ -49,6 +41,7 @@ public class BlockSponge extends BlockTEBase implements IBakeryBlock {
         setHardness(0.6F);
         setSoundType(SoundType.PLANT);
         setUnlocalizedName("thermalexpansion.sponge");
+        setDefaultState(getDefaultState().withProperty(SOAKED, false));
     }
 
     @Override
@@ -63,18 +56,12 @@ public class BlockSponge extends BlockTEBase implements IBakeryBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(SOAKED).build();
+        return new BlockStateContainer(this, TYPES, SOAKED);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
-    }
-
-    @Override
-    public ICustomBlockBakery getCustomBakery() {
-        return RenderSponge.instance;
+    public IBlockState getActualState(IBlockState state, IBlockAccess worldIn, BlockPos pos) {
+        return state.withProperty(SOAKED, ((TileSponge) worldIn.getTileEntity(pos)).getFluid() != null);
     }
 
     @Override
@@ -99,7 +86,7 @@ public class BlockSponge extends BlockTEBase implements IBakeryBlock {
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
         if (enable[0]) {
             list.add(new ItemStack(item, 1, 0));
