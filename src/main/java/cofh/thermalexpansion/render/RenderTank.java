@@ -1,11 +1,12 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
@@ -54,7 +55,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
         }
-        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
@@ -82,16 +83,16 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
 
     public void renderFrame(CCRenderState ccrs, int metadata, int mode) {
 
-        modelFrame.render(ccrs, 0, 4, RenderUtils.getIconTransformation(textureBottom[2 * metadata + mode]));//Bottom
-        modelFrame.render(ccrs, 24, 28, RenderUtils.getIconTransformation(textureTop[2 * metadata + mode]));//Bottom inside
-        modelFrame.render(ccrs, 4, 8, RenderUtils.getIconTransformation(textureTop[2 * metadata]));//Top
-        modelFrame.render(ccrs, 28, 32, RenderUtils.getIconTransformation(textureBottom[2 * metadata]));//Top Inside.
+        modelFrame.render(ccrs, 0, 4, new IconTransformation(textureBottom[2 * metadata + mode]));//Bottom
+        modelFrame.render(ccrs, 24, 28, new IconTransformation(textureTop[2 * metadata + mode]));//Bottom inside
+        modelFrame.render(ccrs, 4, 8, new IconTransformation(textureTop[2 * metadata]));//Top
+        modelFrame.render(ccrs, 28, 32, new IconTransformation(textureBottom[2 * metadata]));//Top Inside.
 
         for (int i = 8; i < 24; i += 4) {
-            modelFrame.render(ccrs, i, i + 4, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));//Sides.
+            modelFrame.render(ccrs, i, i + 4, new IconTransformation(textureSides[2 * metadata + mode]));//Sides.
         }
         for (int i = 32; i < 48; i += 4) {
-            modelFrame.render(ccrs, i, i + 4, RenderUtils.getIconTransformation(textureSides[2 * metadata + mode]));//Edges.
+            modelFrame.render(ccrs, i, i + 4, new IconTransformation(textureSides[2 * metadata + mode]));//Edges.
         }
     }
 
@@ -111,7 +112,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
         } else {
             level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]);
         }
-        modelFluid[level].render(ccrs, RenderUtils.getIconTransformation(fluidTex));
+        modelFluid[level].render(ccrs, new IconTransformation(fluidTex));
     }
 
     @Override
@@ -161,7 +162,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
             renderFluid(ccrs, stack.getItemDamage(), fluid);
 
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }

@@ -1,11 +1,13 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.lighting.LightModel;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Vector3;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.core.render.RenderUtils.ScaledIconTransformation;
@@ -66,7 +68,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
         side_model[0].shrinkUVs(RenderHelper.RENDER_OFFSET);
         CCModel.generateSidedModels(side_model, 0, new Vector3(0.5, 0.5, 0.5));
         for (int i = side_model.length; i-- > 0; ) {
-            side_model[i].computeNormals().computeLighting(LightModel.standardLightModel);
+            side_model[i].computeNormals()/*.computeLighting(LightModel.standardLightModel)*/;
         }
     }
 
@@ -96,10 +98,10 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
 
         CCModel model = side_model[alignment];
         if (type > 0) {
-            model.render(ccrs, 4, 8, RenderUtils.getIconTransformation(texture_fluid[type - 1]));
+            model.render(ccrs, 4, 8, new IconTransformation(texture_fluid[type - 1]));
         }
-        model.render(ccrs, 4, 8, RenderUtils.getIconTransformation(texture_frame[direction]));
-        ScaledIconTransformation transform = RenderUtils.getIconTransformation(texture_frame[6]);
+        model.render(ccrs, 4, 8, new IconTransformation(texture_frame[direction]));
+        IconTransformation transform = new IconTransformation(texture_frame[6]);
         model.render(ccrs, 0, 4, transform);
         model.render(ccrs, 24, 28, transform);
 
@@ -151,7 +153,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             render(ccrs, 0, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
 
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }

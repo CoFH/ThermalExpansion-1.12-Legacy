@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.lighting.LightModel;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -60,7 +61,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
         }
-        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
@@ -136,7 +137,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             //}
 
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }
