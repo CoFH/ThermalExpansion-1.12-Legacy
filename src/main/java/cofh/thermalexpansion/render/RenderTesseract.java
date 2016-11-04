@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.lighting.LightModel;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -150,7 +151,7 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
             renderCenter(ccrs, false, false, 0, 0, 0);
 
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }

@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
@@ -110,7 +111,7 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
             renderCoil(ccrs, 1, false);
             renderBase(ccrs, 1, false, stack.getMetadata());
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }

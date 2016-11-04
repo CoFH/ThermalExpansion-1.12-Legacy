@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.lighting.LightModel;
+import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -152,7 +153,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             render(ccrs, 0, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
 
             buffer.finishDrawing();
-            return buffer.bake();
+            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
     }
