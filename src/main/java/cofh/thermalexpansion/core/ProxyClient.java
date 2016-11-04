@@ -19,6 +19,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockGlass;
+import cofh.thermalexpansion.block.sponge.BlockSponge;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
@@ -110,6 +111,7 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
         registerBlockBakeryStuff(TEBlocks.blockPlate, "", BlockPlate.TYPES, RenderPlate.instance);
         registerBlockBakeryStuff(TEBlocks.blockLight, "", BlockLight.TYPES, RenderLight.instance);
+        registerBlockBakeryStuff(TEBlocks.blockSponge, "", BlockSponge.TYPES, RenderSponge.instance);
         BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockLight), new IItemStackKeyGenerator() {
             @Override
             public String generateKey(ItemStack stack) {
