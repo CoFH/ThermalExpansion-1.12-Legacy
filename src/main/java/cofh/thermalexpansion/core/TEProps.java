@@ -34,10 +34,10 @@ public class TEProps {
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
 	public static final String PATH_GUI_WORKBENCH = PATH_GUI + "workbench/";
 
-	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "Slots.png");
-	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "SlotsCB.png");
-	public static final ResourceLocation PATH_ASSEMBLER = new ResourceLocation(PATH_ELEMENTS + "SlotsAssembler.png");
-	public static final ResourceLocation PATH_ASSEMBLER_CB = new ResourceLocation(PATH_ELEMENTS + "SlotsAssemblerCB.png");
+	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "slots.png");
+	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_c_b.png");
+	public static final ResourceLocation PATH_ASSEMBLER = new ResourceLocation(PATH_ELEMENTS + "slots_assembler.png");
+	public static final ResourceLocation PATH_ASSEMBLER_CB = new ResourceLocation(PATH_ELEMENTS + "slots_assembler_c_b.png");
 	public static final String PATH_ICON = PATH_GUI + "icons/";
 
 	public static final String TEXTURE_DEFAULT = "Config_";

@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiAssembler extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Assembler.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "assembler.png");
 
 	ElementSlotOverlayAssembler[] slotInput = new ElementSlotOverlayAssembler[3];
 	ElementBase slotOutput;
