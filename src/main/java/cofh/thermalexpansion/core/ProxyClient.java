@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.core;
 
+import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
@@ -20,6 +21,7 @@ import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.sponge.BlockSponge;
+import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
@@ -53,6 +55,9 @@ import java.util.Locale;
 public class ProxyClient extends Proxy {
 
     public static RenderItemModular rendererComponent = new RenderItemModular();
+
+    private static DummyBakedModel DUMMY_MODEL = new DummyBakedModel();
+
 
     @Override
     public void registerRenderInformation() {
@@ -160,6 +165,16 @@ public class ProxyClient extends Proxy {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockRockwool), color.ordinal(), location);
         }
 
+        final ModelResourceLocation normalLoc = new ModelResourceLocation(TEBlocks.blockStrongbox.getRegistryName(), "normal");
+        ModelLoader.setCustomStateMapper(TEBlocks.blockStrongbox, (new StateMap.Builder()).ignore(BlockStrongbox.TYPES).build());
+        ModelRegistryHelper.register(normalLoc, DUMMY_MODEL);
+        ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), RenderStrongbox.instance);
+
+        registerDummyModel(TEBlocks.blockAirBarrier);
+        registerDummyModel(TEBlocks.blockAirForce);
+        registerDummyModel(TEBlocks.blockAirLight);
+        registerDummyModel(TEBlocks.blockAirSignal);
+
         RenderEntityFlorb.initialize();
     }
 
@@ -191,6 +206,12 @@ public class ProxyClient extends Proxy {
         if (iconRegister != null) {
             TextureUtils.addIconRegister(iconRegister);
         }
+    }
+
+    private void registerDummyModel(Block block) {
+        final ModelResourceLocation normalLoc = new ModelResourceLocation(block.getRegistryName(), "normal");
+        ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).build());
+        ModelRegistryHelper.register(normalLoc, DUMMY_MODEL);
     }
 
     private ModelResourceLocation getSatchelLocation(int meta, ISecurable.AccessMode access) {

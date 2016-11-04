@@ -1,28 +1,20 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.util.TransformUtils;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.TEBlocks;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongboxCreative;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.IBakedModel;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.block.model.*;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
@@ -44,7 +36,6 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
     public static void registerRenderers() {
         ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
         ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
-        ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), instance);
     }
 
     public static void initialize() {
