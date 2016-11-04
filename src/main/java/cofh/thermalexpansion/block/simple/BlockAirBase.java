@@ -18,7 +18,6 @@ import java.util.Random;
 
 public class BlockAirBase extends Block {
 
-    private static final AxisAlignedBB EMPTY_BB = new AxisAlignedBB(0D, 0D, 0D, 0D, 0D, 0D);
     public static final Material materialBarrier = new Material(MapColor.AIR).setReplaceable();
 
     public BlockAirBase(Material material) {
@@ -35,7 +34,7 @@ public class BlockAirBase extends Block {
 
     @Override
     public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return EMPTY_BB;
+        return new AxisAlignedBB(0D, 0D, 0D, 0D, 0D, 0D);
     }
 
     @Override

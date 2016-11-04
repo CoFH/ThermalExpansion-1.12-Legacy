@@ -84,7 +84,8 @@ public class ProxyClient extends Proxy {
         registerModedToolModel(TEItems.itemTransfuser, "transfuser");
 
         final int accessCount = ISecurable.AccessMode.values().length;
-        final ModelResourceLocation[] satchelLocations = new ModelResourceLocation[ItemSatchel.NAMES.length * accessCount];
+        final ModelResourceLocation[] satchelLocations =
+                new ModelResourceLocation[ItemSatchel.NAMES.length * accessCount];
         for (int meta = 0; meta < ItemSatchel.NAMES.length; meta++) {
             for (int access = 0; access < accessCount; access++) {
                 satchelLocations[meta * accessCount + access] = getSatchelLocation(meta, ISecurable.AccessMode.values()[access]);
@@ -110,6 +111,7 @@ public class ProxyClient extends Proxy {
         registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
         registerBlockBakeryStuff(TEBlocks.blockPlate, "", BlockPlate.TYPES, RenderPlate.instance);
         registerBlockBakeryStuff(TEBlocks.blockLight, "", BlockLight.TYPES, RenderLight.instance);
+        registerBlockBakeryStuff(TEBlocks.blockSponge, "", BlockSponge.TYPES, RenderSponge.instance);
         BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockLight), new IItemStackKeyGenerator() {
             @Override
             public String generateKey(ItemStack stack) {
@@ -118,23 +120,8 @@ public class ProxyClient extends Proxy {
                 builder.append(",");
                 builder.append(stack.getItem().getRegistryName().toString());
                 builder.append(",");
-                if (stack.hasTagCompound()) {
+                if (stack.hasTagCompound()){
                     builder.append(stack.getTagCompound().getByte("Style"));
-                }
-                return builder.toString();
-            }
-        });
-        registerBlockBakeryStuff(TEBlocks.blockSponge, "", BlockSponge.TYPES, RenderSponge.instance);
-        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockSponge), new IItemStackKeyGenerator() {
-            @Override
-            public String generateKey(ItemStack stack) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(stack.getMetadata());
-                builder.append(",");
-                builder.append(stack.getItem().getRegistryName().toString());
-                builder.append(",");
-                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
-                    builder.append("soaked");
                 }
                 return builder.toString();
             }
@@ -147,12 +134,12 @@ public class ProxyClient extends Proxy {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockWorkbench), type.ordinal(), location);
         }
 
-        for (BlockGlass.Types type : BlockGlass.Types.values()) {
+        for (BlockGlass.Types type : BlockGlass.Types.values()){
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockGlass.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockGlass), type.ordinal(), location);
         }
 
-        for (EnumDyeColor color : EnumDyeColor.values()) {
+        for (EnumDyeColor color : EnumDyeColor.values()){
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockRockwool.getRegistryName(), "color=" + color.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockRockwool), color.ordinal(), location);
         }
@@ -212,7 +199,7 @@ public class ProxyClient extends Proxy {
         ModelLoader.registerItemVariants(item, input, output);
     }
 
-    private void registerToolModel(Item item, String name) {
+    private void registerToolModel(Item item, String name){
         registerToolModel(item, 0, name);
     }
 
