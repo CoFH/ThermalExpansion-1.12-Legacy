@@ -9,6 +9,7 @@ import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
@@ -64,7 +65,7 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
         }
-        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
@@ -214,14 +215,14 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
 
     public void renderCenter(CCRenderState ccrs, int metadata) {
 
-        modelCenter.render(ccrs, RenderUtils.getIconTransformation(getIcon(7, metadata)));
+        modelCenter.render(ccrs, new IconTransformation(getIcon(7, metadata)));
     }
 
     public void renderFrame(CCRenderState ccrs, int metadata) {
 
         for (int i = 0; i < 6; i++) {
-            modelFrame.render(ccrs, i * 4, i * 4 + 4,  RenderUtils.getIconTransformation(getIcon(i, metadata)));
-            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28,  RenderUtils.getIconTransformation(getIcon(6, metadata)));
+            modelFrame.render(ccrs, i * 4, i * 4 + 4,  new IconTransformation(getIcon(i, metadata)));
+            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28,  new IconTransformation(getIcon(6, metadata)));
         }
     }
 }

@@ -3,6 +3,7 @@ package cofh.thermalexpansion.render;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
@@ -135,21 +136,21 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 		modelAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 - d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 		modelAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 
-		for (int j = modelAnimation.length; j-- > 0;) {
-			modelAnimation[j].computeLighting(LightModel.standardLightModel);
-		}
+		//for (int j = modelAnimation.length; j-- > 0;) {
+			//modelAnimation[j].computeLighting(LightModel.standardLightModel);
+		//}
 
 		for (int i = 0; i < modelCoil.length; i++) {
 			CCModel.generateSidedModels(modelCoil[i], 1, new Vector3());
-			for (int j = modelCoil[i].length; j-- > 0;) {
-				modelCoil[i][j].computeLighting(LightModel.standardLightModel);
-			}
+			//for (int j = modelCoil[i].length; j-- > 0;) {
+			//	modelCoil[i][j].computeLighting(LightModel.standardLightModel);
+			//}
 		}
 		for (int i = 0; i < modelBase.length; i++) {
 			CCModel.generateSidedModels(modelBase[i], 1, new Vector3());
-			for (int j = modelBase[i].length; j-- > 0;) {
-				modelBase[i][j].computeLighting(LightModel.standardLightModel);
-			}
+			//for (int j = modelBase[i].length; j-- > 0;) {
+			//	modelBase[i][j].computeLighting(LightModel.standardLightModel);
+			//}
 		}
 	}
 
@@ -157,9 +158,9 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 
 
 		if (active) {
-			modelCoil[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), RenderUtils.getIconTransformation(textureCoil));
+			modelCoil[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureCoil));
 		} else {
-			modelCoil[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), RenderUtils.getIconTransformation(textureCoil));
+			modelCoil[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureCoil));
 		}
 	}
 
@@ -167,16 +168,16 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 
 
 		if (active) {
-			modelBase[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), RenderUtils.getIconTransformation(textureBase[type]));
+			modelBase[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureBase[type]));
 		} else {
-			modelBase[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), RenderUtils.getIconTransformation(textureBase[type]));
+			modelBase[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureBase[type]));
 		}
 	}
 
 	public void renderAnimation(CCRenderState ccrs, int facing, boolean active, int type, TextureAtlasSprite icon) {
 
 		if (active) {
-			modelAnimation[facing].render(ccrs, RenderUtils.getIconTransformation(icon));
+			modelAnimation[facing].render(ccrs, new IconTransformation(icon));
 		}
 	}
 

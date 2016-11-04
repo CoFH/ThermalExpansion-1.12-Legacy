@@ -59,7 +59,7 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
         }
-        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {

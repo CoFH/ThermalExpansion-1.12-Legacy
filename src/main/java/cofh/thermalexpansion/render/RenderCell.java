@@ -60,7 +60,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
         }
-        modelFrame.computeLighting(LightModel.standardLightModel).shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
