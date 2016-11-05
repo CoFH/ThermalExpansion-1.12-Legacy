@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -46,10 +45,6 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
     static CCModel modelFrame = CCModel.quadModel(48);
 
     static {
-        //TEProps.renderIdCell = RenderingRegistry.getNextAvailableRenderId();
-        //RenderingRegistry.registerBlockHandler(instance);
-
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockCell), instance);
 
         modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
@@ -61,7 +56,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
         }
-        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
@@ -106,10 +101,10 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             ccrs.bind(buffer);
 
             //if (pass == 0) {
-                renderFrame(ccrs, type, spriteMap, facing, frontFace);
-                //TODO Center brightness.
-                //ccrs.brightness = 165 + charge * 5;
-                renderCenter(ccrs, type);
+            renderFrame(ccrs, type, spriteMap, facing, frontFace);
+            //TODO Center brightness.
+            //ccrs.brightness = 165 + charge * 5;
+            renderCenter(ccrs, type);
             //} else {
             //}
 
@@ -121,7 +116,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
     @Override
     public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-        if (face == null){
+        if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();
@@ -200,80 +195,5 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
         return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
     }
-
-	/* ISimpleBlockRenderingHandler */
-    //@Override
-    //public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-    //}
-
-    //@Override
-    //public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-    //
-    //	TileEntity tile = world.getTileEntity(x, y, z);
-    //	if (!(tile instanceof TileCell)) {
-    //		return false;
-    //	}
-    //	TileCell theTile = (TileCell) tile;
-    //	int chargeLevel = Math.min(15, theTile.getScaledEnergyStored(16));
-    //
-    //	RenderUtils.preWorldRender(world, x, y, z);
-    //	if (BlockCoFHBase.renderPass == 0) {
-    //		renderFrame(theTile.type, theTile, x, y, z);
-    //	} else {
-    //		CCRenderState.setBrightness(165 + chargeLevel * 5);
-    //		renderCenter(theTile.type, x, y, z);
-    //	}
-    //	return true;
-    //}
-
-    //@Override
-    //public boolean shouldRender3DInInventory(int modelId) {
-    //	return true;
-    //}
-
-    //@Override
-    //public int getRenderId() {
-    //	return TEProps.renderIdCell;
-    //}
-
-	/* IItemRenderer */
-    //@Override
-    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    //	return true;
-    //}
-
-    //@Override
-    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    //	return true;
-    //}
-
-    //@Override
-    //public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-    //
-    //	GL11.glPushMatrix();
-    //	double offset = -0.5;
-    //	if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-    //		offset = 0;
-    //	}
-    //	int chargeLevel = 0;
-    //
-    //		if (item.stackTagCompound != null) {
-    //			chargeLevel = Math.min(15, getScaledEnergyStored(item, 16));
-    //		}
-    //		int metadata = item.getItemDamage();
-    //		RenderUtils.preItemRender();
-    //
-    //		CCRenderState.startDrawing();
-    //		renderFrame(metadata, null, offset, offset, offset);
-    //		CCRenderState.draw();
-    //
-    //		CCRenderState.startDrawing();
-    //		CCRenderState.setBrightness(165 + chargeLevel * 5);
-    //		renderCenter(metadata, offset, offset, offset);
-    //		CCRenderState.draw();
-    //
-    //		RenderUtils.postItemRender();
-    //		GL11.glPopMatrix();
-    //	}
 
 }

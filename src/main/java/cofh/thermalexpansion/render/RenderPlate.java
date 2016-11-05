@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -9,8 +8,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
-import cofh.core.render.RenderUtils.ScaledIconTransformation;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.plate.BlockPlate;
@@ -37,8 +34,6 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
     static CCModel[] side_model = new CCModel[6];
 
     static {
-        //TEProps.renderIdPlate = RenderingRegistry.getNextAvailableRenderId();
-        //RenderingRegistry.registerBlockHandler(instance);
 
         generateModels();
     }
@@ -68,7 +63,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
         side_model[0].shrinkUVs(RenderHelper.RENDER_OFFSET);
         CCModel.generateSidedModels(side_model, 0, new Vector3(0.5, 0.5, 0.5));
         for (int i = side_model.length; i-- > 0; ) {
-            side_model[i].computeNormals()/*.computeLighting(LightModel.standardLightModel)*/;
+            side_model[i].computeNormals();
         }
     }
 
@@ -157,28 +152,4 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
         }
         return new ArrayList<BakedQuad>();
     }
-
-    /* ISimpleBlockRenderingHandler */
-    /*@Override
-    public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-
-
-	}
-
-	@Override
-	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-
-
-	}
-
-	@Override
-	public boolean shouldRender3DInInventory(int modelId) {
-
-		return true;
-	}
-
-	@Override
-	public int getRenderId() {
-		return TEProps.renderIdPlate;
-	}*/
 }

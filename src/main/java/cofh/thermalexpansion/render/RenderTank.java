@@ -40,10 +40,6 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
     static CCModel modelFrame = CCModel.quadModel(48);
 
     static {
-        //TEProps.renderIdTank = RenderingRegistry.getNextAvailableRenderId();
-        //RenderingRegistry.registerBlockHandler(instance);
-
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockTank), instance);
 
         generateFluidModels();
 
@@ -55,7 +51,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
         }
-        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {

@@ -7,8 +7,8 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Transformation;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.light.BlockLight;
@@ -44,10 +44,6 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
     static CCModel[] modelHalo = new CCModel[NUM_STYLES];
 
     static {
-        //TEProps.renderIdLight = RenderingRegistry.getNextAvailableRenderId();
-        //RenderingRegistry.registerBlockHandler(instance);
-
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockLight), instance);
 
         generateModels();
     }
@@ -182,21 +178,21 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
     public void renderCenter(CCRenderState ccrs, int style, int color, boolean modified, Transformation t) {
 
         modelCenter[style].setColour(color);
-        modelCenter[style].render(ccrs, t, RenderUtils.getIconTransformation(textureCenter[modified ? 1 : 0]));
+        modelCenter[style].render(ccrs, t, new IconTransformation(textureCenter[modified ? 1 : 0]));
         modelCenter[style].setColour(0xFFFFFFFF);
     }
 
     public void renderFrame(CCRenderState ccrs, int style, int color, int type, Transformation t) {
 
         modelFrame[style].setColour(color);
-        modelFrame[style].render(ccrs, t, RenderUtils.getIconTransformation(textureFrame[type]));
+        modelFrame[style].render(ccrs, t, new IconTransformation(textureFrame[type]));
         modelFrame[style].setColour(0xFFFFFFFF);
     }
 
     public void renderHalo(CCRenderState ccrs, int style, int color, Transformation t) {
 
         modelHalo[style].setColour(color & ~0x80);
-        modelHalo[style].render(ccrs, t, RenderUtils.getIconTransformation(textureHalo));
+        modelHalo[style].render(ccrs, t, new IconTransformation(textureHalo));
         modelHalo[style].setColour(0xFFFFFFFF);
     }
 

@@ -6,9 +6,7 @@ import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
-import codechicken.lib.lighting.LightModel;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.vec.Translation;
@@ -42,8 +40,6 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 	static CCModel[] modelAnimation = new CCModel[6];
 
 	static {
-		//TEProps.renderIdDynamo = RenderingRegistry.getNextAvailableRenderId();
-		//RenderingRegistry.registerBlockHandler(instance);
 
 		generateModels();
 	}
@@ -137,21 +133,12 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 		modelAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 - d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 		modelAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 
-		//for (int j = modelAnimation.length; j-- > 0;) {
-			//modelAnimation[j].computeLighting(LightModel.standardLightModel);
-		//}
 
 		for (int i = 0; i < modelCoil.length; i++) {
 			CCModel.generateSidedModels(modelCoil[i], 1, new Vector3());
-			//for (int j = modelCoil[i].length; j-- > 0;) {
-			//	modelCoil[i][j].computeLighting(LightModel.standardLightModel);
-			//}
 		}
 		for (int i = 0; i < modelBase.length; i++) {
 			CCModel.generateSidedModels(modelBase[i], 1, new Vector3());
-			//for (int j = modelBase[i].length; j-- > 0;) {
-			//	modelBase[i][j].computeLighting(LightModel.standardLightModel);
-			//}
 		}
 	}
 
@@ -181,47 +168,5 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
 			modelAnimation[facing].render(ccrs, new IconTransformation(icon));
 		}
 	}
-
-	//@Override
-	//public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer) {
-//
-	//	RenderUtils.preItemRender();
-//
-	//	CCRenderState.startDrawing();
-	//	renderCoil(1, false, -0.5, -0.5, -0.5);
-	//	renderBase(1, false, metadata, -0.5, -0.5, -0.5);
-	//	CCRenderState.draw();
-//
-	//	RenderUtils.postItemRender();
-	//}
-
-	//@Override
-	//public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-//
-	//	TileEntity tile = world.getTileEntity(x, y, z);
-	//	if (!(tile instanceof TileDynamoBase)) {
-	//		return false;
-	//	}
-	//	TileDynamoBase theTile = (TileDynamoBase) tile;
-//
-	//	RenderUtils.preWorldRender(world, x, y, z);
-	//	renderCoil(theTile.getFacing(), theTile.isActive, x, y, z);
-	//	renderAnimation(theTile.getFacing(), theTile.isActive, theTile.getType(), theTile.getActiveIcon(), x, y, z);
-	//	renderBase(theTile.getFacing(), theTile.isActive, theTile.getType(), x, y, z);
-//
-	//	return true;
-	//}
-
-	//@Override
-	//public boolean shouldRender3DInInventory(int modelId) {
-//
-	//	return true;
-	//}
-
-	//@Override
-	//public int getRenderId() {
-//
-	//	return TEProps.renderIdDynamo;
-	//}
 
 }

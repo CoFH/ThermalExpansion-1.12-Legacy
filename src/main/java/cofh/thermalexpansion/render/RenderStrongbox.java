@@ -66,31 +66,13 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
     @Override
     public void renderTileEntityAt(TileStrongbox strongbox, double x, double y, double z, float f, int destroyStage) {
 
-        //CCRenderState.reset();
-        //CCRenderState.pullLightmap();
-        //CCRenderState.setDynamic();
-
         model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
         render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
     }
 
-	/* IItemRenderer */
-    //@Override
-    //public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-    //	return true;
-    //}
-
-    //@Override
-    //public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
-    //	return true;
-    //}
-
     @Override
     public void renderItem(ItemStack item) {
         double offset = 0;
-        //if (type == ItemRenderType.EQUIPPED || type == ItemRenderType.EQUIPPED_FIRST_PERSON) {
-        //	offset = 0;
-        //}
         int access = 0;
 
         if (item.getTagCompound() != null) {

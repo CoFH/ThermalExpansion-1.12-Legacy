@@ -4,7 +4,6 @@ import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.cache.TileCache;
 import cofh.thermalexpansion.item.TEItems;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.client.registry.ClientRegistry;

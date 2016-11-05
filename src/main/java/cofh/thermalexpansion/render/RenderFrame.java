@@ -1,45 +1,25 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.lighting.LightModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
-import codechicken.lib.render.block.ICCBlockRenderer;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
-import codechicken.lib.render.item.IItemRenderer;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
-import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.TEBlocks;
-import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockFrame.Types;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.block.model.BakedQuad;
-import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
-import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import org.lwjgl.opengl.GL11;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,10 +31,6 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
     static CCModel modelFrame = CCModel.quadModel(48);
 
     static {
-        //TEProps.renderIdFrame = RenderingRegistry.getNextAvailableRenderId();
-        //RenderingRegistry.registerBlockHandler(instance);
-
-        //MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockFrame), instance);
 
         modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
@@ -66,7 +42,7 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
         for (int i = 24; i < 48; i++) {
             modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));
         }
-        modelFrame/*.computeLighting(LightModel.standardLightModel)*/.shrinkUVs(RenderHelper.RENDER_OFFSET);
+        modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
     }
 
     public static void initialize() {
@@ -177,7 +153,7 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
 
     @Override
     public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
-        if (face == null){
+        if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();
@@ -199,7 +175,7 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
 
     @Override
     public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-        if (face == null){
+        if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
             CCRenderState ccrs = CCRenderState.instance();
@@ -222,8 +198,8 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
     public void renderFrame(CCRenderState ccrs, int metadata) {
 
         for (int i = 0; i < 6; i++) {
-            modelFrame.render(ccrs, i * 4, i * 4 + 4,  new IconTransformation(getIcon(i, metadata)));
-            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28,  new IconTransformation(getIcon(6, metadata)));
+            modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(getIcon(i, metadata)));
+            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(getIcon(6, metadata)));
         }
     }
 }
