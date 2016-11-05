@@ -34,6 +34,7 @@ import cofh.thermalexpansion.item.tool.ItemToolBase;
 import cofh.thermalexpansion.render.*;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
+import cofh.thermalexpansion.render.item.SchematicBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.client.renderer.ItemMeshDefinition;
@@ -107,7 +108,9 @@ public class ProxyClient extends Proxy {
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 0, ModelFlorb.MODEL_LOCATION);
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 1, ModelFlorb.MAGMATIC_MODEL_LOCATION);
 
-        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 0, getDiagramLocation("schematic"));
+        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 0, getDiagramLocation("schematic_override"));
+        ModelRegistryHelper.register(getDiagramLocation("schematic_override"), new SchematicBakedModel());
+        ModelLoader.registerItemVariants(TEItems.itemDiagram, getDiagramLocation("schematic"));
         ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
 
         registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
