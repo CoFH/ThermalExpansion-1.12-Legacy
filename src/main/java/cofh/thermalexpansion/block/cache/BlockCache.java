@@ -238,6 +238,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 			onBlockClicked(world, pos, player);
 			return false;
 		} else {
+		    onBlockHarvested(world, pos, world.getBlockState(pos), player);
 			return world.setBlockToAir(pos);
 		}
 	}
