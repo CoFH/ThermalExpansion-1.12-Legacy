@@ -368,13 +368,13 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
     @Override
     @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
-        return 2;
+        return 3;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+        return pass >= 1 ? pass > 1 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override

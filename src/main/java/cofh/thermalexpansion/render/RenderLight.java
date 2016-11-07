@@ -113,7 +113,6 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
             ccrs.bind(buffer);
 
             Transformation transformation = BlockLight.getTransformation(style, alignment);
-            ccrs.bind(buffer);
 
             switch (BlockLight.Types.getType(meta)) {
                 case ILLUMINATOR:
@@ -199,10 +198,11 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
     public boolean renderWorldIlluminator(CCRenderState ccrs, int pass, int style, int color, boolean modified, Transformation t) {
 
         if (pass == 0) {
-            renderFrame(ccrs, style, -1, 0, t);
+            renderCenter(ccrs, style, color, modified, t);
             return true;
+        } else if (pass == 1) {
+            renderFrame(ccrs, style, -1, 0, t);
         }
-        renderCenter(ccrs, style, color, modified, t);
 
         return true;
     }
@@ -212,7 +212,7 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
         if (pass == 0) {
             renderFrame(ccrs, style, color, 1, t);
             return true;
-        } else if (active) {
+        } else if (pass == 2 && active) {
             renderHalo(ccrs, style, color, t);
         }
         return active;
