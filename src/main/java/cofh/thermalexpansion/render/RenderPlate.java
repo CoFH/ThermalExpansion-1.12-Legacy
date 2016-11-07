@@ -12,6 +12,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.plate.BlockPlate;
 import cofh.thermalexpansion.block.plate.TilePlateBase;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,13 +20,14 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
+public class RenderPlate implements ILayeredBlockBakery, IIconRegister {
 
     public static final RenderPlate instance = new RenderPlate();
 
@@ -79,8 +81,17 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
         IconRegistry.addIcon("PlateTop5", "thermalexpansion:blocks/plate/plate_top_east", textureMap);
     }
 
-    public void render(CCRenderState ccrs, int alignment, int direction, int type) {
+    public void render(CCRenderState ccrs, int pass, int alignment, int direction, int type) {
+        direction = adjustDirection(alignment, direction);
 
+        if (pass == 0 && type > 0) {
+            renderFluid(ccrs, type, alignment);
+        } else if (pass == 1) {
+            renderFrame(ccrs, alignment, direction);
+        }
+    }
+
+    private int adjustDirection(int alignment, int direction) {
         if (direction < 6) {
             int flip = alignment == 1 ? ((direction >> 1) & 1) ^ 1 : 1;
             // top plates need north/south inverted specially (otherwise flip would always be 1)
@@ -90,11 +101,11 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             // if the alignment needs inversion
             direction ^= s & off;
         }
+        return direction;
+    }
 
+    private void renderFrame(CCRenderState ccrs, int alignment, int direction) {
         CCModel model = side_model[alignment];
-        if (type > 0) {
-            model.render(ccrs, 4, 8, new IconTransformation(texture_fluid[type - 1]));
-        }
         model.render(ccrs, 4, 8, new IconTransformation(texture_frame[direction]));
         IconTransformation transform = new IconTransformation(texture_frame[6]);
         model.render(ccrs, 0, 4, transform);
@@ -104,6 +115,11 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             model.render(ccrs, i, i + 4, transform);
             model.render(ccrs, 24 + i, 24 + i + 4, transform);
         }
+    }
+
+    private void renderFluid(CCRenderState ccrs, int type, int alignment) {
+        CCModel model = side_model[alignment];
+        model.render(ccrs, 4, 8, new IconTransformation(texture_fluid[type - 1]));
     }
 
     @Override
@@ -117,7 +133,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             int alignment = state.getValue(BlockPlate.ALIGNMENT_PROPERTY);
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);
@@ -128,7 +144,7 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            render(ccrs, alignment, facing, type);
+            render(ccrs, pass, alignment, facing, type);
 
             buffer.finishDrawing();
             return buffer.bake();
@@ -145,11 +161,20 @@ public class RenderPlate implements ISimpleBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            render(ccrs, 0, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
+            renderItem(ccrs, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
 
             buffer.finishDrawing();
             return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
         }
         return new ArrayList<BakedQuad>();
+    }
+
+    private void renderItem(CCRenderState ccrs, int direction, int type) {
+        direction = adjustDirection(0, direction);
+
+        if (type > 0) {
+            renderFluid(ccrs, type, 0);
+        }
+        renderFrame(ccrs, 0, direction);
     }
 }

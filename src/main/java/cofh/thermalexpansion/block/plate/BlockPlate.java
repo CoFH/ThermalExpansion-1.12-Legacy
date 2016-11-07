@@ -11,6 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -32,6 +33,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -53,9 +55,9 @@ import java.util.Random;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryBlock {
+public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryBlock, IBlockLayerProvider {
 
-	private static class PlateMaterial extends Material {
+    private static class PlateMaterial extends Material {
 
 		public PlateMaterial(MapColor color) {
 
@@ -68,11 +70,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 
 			return false;
 		}
-	}
 
+    }
 	public static final Material material = new PlateMaterial(MapColor.IRON);
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
     public static final UnlistedIntegerProperty ALIGNMENT_PROPERTY = new UnlistedIntegerProperty("alignment");
 
 	public BlockPlate() {
@@ -85,11 +87,11 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		basicGui = false;
 	}
 
-
     @Override
     public int getMetaFromState(IBlockState state) {
         return state.getValue(TYPES).meta();
     }
+
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
@@ -107,6 +109,20 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
         return new ExtendedBlockState.Builder(this).add(TYPES).add(ALIGNMENT_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.TYPE_PROPERTY).build();
     }
 
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass > 0 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+    }
 
     @Override
     public boolean openConfigGui(IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player) {
