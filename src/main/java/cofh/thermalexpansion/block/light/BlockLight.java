@@ -258,11 +258,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		TileEntity tile = source.getTileEntity(pos);
         if (tile instanceof TileLight) {
             TileLight light = ((TileLight) tile);
-            switch (light.style) {
-                case 2:
-                case 5:
-                    return FULL_BLOCK_AABB;
-            }
             Cuboid6 ret = models[light.style].copy().apply(getTransformation(light.style, light.alignment));
             return ret.aabb();
         }
@@ -380,7 +375,7 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
     @Override
     @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override
