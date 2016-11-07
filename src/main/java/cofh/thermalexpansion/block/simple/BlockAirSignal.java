@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.simple;
 
+import net.minecraft.block.properties.PropertyInteger;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.particle.ParticleFirework;
@@ -14,6 +16,8 @@ import java.util.Random;
 
 public class BlockAirSignal extends BlockAirBase /*implements IRedNetOutputNode*/ {
 
+    public static final PropertyInteger INTENSITY = PropertyInteger.create("intensity", 0, 15);
+
     public BlockAirSignal() {
 
         super(materialBarrier);
@@ -23,8 +27,23 @@ public class BlockAirSignal extends BlockAirBase /*implements IRedNetOutputNode*
     }
 
     @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, INTENSITY);
+    }
+
+    @Override
     public int getWeakPower(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
         return getMetaFromState(blockState);
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(INTENSITY, meta);
+    }
+
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(INTENSITY);
     }
 
     @Override

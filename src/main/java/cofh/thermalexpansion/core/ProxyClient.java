@@ -18,6 +18,7 @@ import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
+import cofh.thermalexpansion.block.simple.BlockAirSignal;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.sponge.BlockSponge;
@@ -168,15 +169,13 @@ public class ProxyClient extends Proxy {
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockRockwool), color.ordinal(), location);
         }
 
-        final ModelResourceLocation normalLoc = new ModelResourceLocation(TEBlocks.blockStrongbox.getRegistryName(), "normal");
-        ModelLoader.setCustomStateMapper(TEBlocks.blockStrongbox, (new StateMap.Builder()).ignore(BlockStrongbox.TYPES).build());
-        ModelRegistryHelper.register(normalLoc, DUMMY_MODEL);
+        registerDummyModel(TEBlocks.blockStrongbox, BlockStrongbox.TYPES);
         ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), RenderStrongbox.instance);
 
         registerDummyModel(TEBlocks.blockAirBarrier);
         registerDummyModel(TEBlocks.blockAirForce);
         registerDummyModel(TEBlocks.blockAirLight);
-        registerDummyModel(TEBlocks.blockAirSignal);
+        registerDummyModel(TEBlocks.blockAirSignal, BlockAirSignal.INTENSITY);
 
         RenderEntityFlorb.initialize();
     }
@@ -211,9 +210,9 @@ public class ProxyClient extends Proxy {
         }
     }
 
-    private void registerDummyModel(Block block) {
+    private void registerDummyModel(Block block, IProperty<?>... propertiesToIgnore) {
         final ModelResourceLocation normalLoc = new ModelResourceLocation(block.getRegistryName(), "normal");
-        ModelLoader.setCustomStateMapper(block, (new StateMap.Builder()).build());
+        ModelLoader.setCustomStateMapper(block, new StateMap.Builder().ignore(propertiesToIgnore).build());
         ModelRegistryHelper.register(normalLoc, DUMMY_MODEL);
     }
 
