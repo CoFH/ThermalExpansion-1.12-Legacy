@@ -239,7 +239,7 @@ public class TileDynamoSteam extends TileDynamoBase implements IFluidHandler {
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
+        if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 			return 0;
 		}
 		if (resource.getFluid() == steam.getFluid()) {

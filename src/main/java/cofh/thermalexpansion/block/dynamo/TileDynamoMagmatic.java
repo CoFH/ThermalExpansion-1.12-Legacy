@@ -157,7 +157,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+        if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 			return 0;
 		}
 		if (isValidFuel(resource)) {
@@ -172,7 +172,7 @@ public class TileDynamoMagmatic extends TileDynamoBase implements IFluidHandler 
 		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
-		if (isValidFuel(resource)) {
+		if (resource.equals(tank.getFluid())) {
 			return tank.drain(resource.amount, doDrain);
 		}
 		return null;

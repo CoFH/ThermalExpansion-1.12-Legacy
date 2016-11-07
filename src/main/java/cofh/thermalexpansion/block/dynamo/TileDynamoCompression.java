@@ -175,7 +175,7 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 	@Override
 	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
 
-		if (resource == null || from.ordinal() == facing && !augmentCoilDuct) {
+		if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 			return 0;
 		}
 		if (isValidFuel(resource)) {
@@ -193,10 +193,10 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
 			return null;
 		}
-		if (isValidFuel(resource)) {
+		if (resource.equals(fuelTank.getFluid())) {
 			return fuelTank.drain(resource.amount, doDrain);
 		}
-		if (isValidCoolant(resource)) {
+		if (resource.equals(coolantTank.getFluid())) {
 			return coolantTank.drain(resource.amount, doDrain);
 		}
 		return null;
