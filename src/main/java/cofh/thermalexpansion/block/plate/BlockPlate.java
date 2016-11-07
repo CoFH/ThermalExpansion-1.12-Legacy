@@ -130,7 +130,17 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		return ((TilePlateBase) world.getTileEntity(pos)).openGui(player);
 	}
 
-	@Override
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
