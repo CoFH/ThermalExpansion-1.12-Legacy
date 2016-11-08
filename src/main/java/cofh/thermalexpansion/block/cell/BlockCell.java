@@ -165,19 +165,19 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
     @Override
     @SideOnly(Side.CLIENT)
     public int getTexturePasses() {
-        return 1;
+        return 2;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return BlockRenderLayer.CUTOUT;
+        return pass > 0 ? BlockRenderLayer.TRANSLUCENT :BlockRenderLayer.CUTOUT;
     }
 
     @Override
     @SideOnly(Side.CLIENT)
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.CUTOUT;
+        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
     }
 
     @Override

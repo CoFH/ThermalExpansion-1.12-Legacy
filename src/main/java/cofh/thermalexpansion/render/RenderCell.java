@@ -100,13 +100,13 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            //if (pass == 0) {
-            renderFrame(ccrs, type, spriteMap, facing, frontFace);
-            //TODO Center brightness.
-            //ccrs.brightness = 165 + charge * 5;
-            renderCenter(ccrs, type);
-            //} else {
-            //}
+            if (pass == 0) {
+                renderFrame(ccrs, type, spriteMap, facing, frontFace);
+            } else {
+                //TODO Center brightness.
+                //ccrs.brightness = 165 + charge * 5;
+                renderCenter(ccrs, type);
+            }
 
             buffer.finishDrawing();
             return buffer.bake();
