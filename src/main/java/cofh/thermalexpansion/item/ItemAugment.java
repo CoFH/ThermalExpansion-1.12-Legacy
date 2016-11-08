@@ -33,6 +33,8 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 	public ItemAugment() {
 
 		super(ThermalExpansion.tabItems, "augment");
+        //TODO temp fix,
+        setUnlocalizedName("thermalexpansion.augment.");
 	}
 
 	@Override
