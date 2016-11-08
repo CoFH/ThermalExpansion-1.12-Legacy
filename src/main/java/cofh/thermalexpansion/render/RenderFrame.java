@@ -10,6 +10,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.simple.BlockFrame.Types;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -17,13 +18,14 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
+public class RenderFrame implements IIconRegister, ILayeredBlockBakery {
 
     public static final RenderFrame instance = new RenderFrame();
 
@@ -152,7 +154,7 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -160,12 +162,22 @@ public class RenderFrame implements ISimpleBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
             int meta = state.getBlock().getMetaFromState(state);
-            renderFrame(ccrs, meta);
-            renderCenter(ccrs, meta);
+            if (pass == 0) {
+                renderFrame(ccrs, meta);
+                if (!hasTranslucentCenter(meta)) {
+                    renderCenter(ccrs, meta);
+                }
+            } else if (hasTranslucentCenter(meta)) {
+                renderCenter(ccrs, meta);
+            }
             buffer.finishDrawing();
             return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
+    }
+
+    private boolean hasTranslucentCenter(int meta) {
+        return meta == 7 || meta == 9 || meta == 11;
     }
 
     @Override
