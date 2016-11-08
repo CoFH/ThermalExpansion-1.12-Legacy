@@ -288,7 +288,9 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyRe
 
 		super.readFromNBT(nbt);
 
-		type = nbt.getByte("Type");
+		if (nbt.hasKey("Type")) {
+            type = nbt.getByte("Type");
+        }
 		outputTracker = nbt.getByte("Tracker");
 		energySend = MathHelper.clamp(nbt.getInteger("Send"), 0, MAX_SEND[type]);
 		energyReceive = MathHelper.clamp(nbt.getInteger("Recv"), 0, MAX_RECEIVE[type]);
