@@ -283,6 +283,16 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerP
         RESONANT
     }
 
+    @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
+    public boolean isOpaqueCube(IBlockState state) {
+        return false;
+    }
+
     public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
     public static final float[] HARDNESS = { -1.0F, 1.0F, 3.0F, 4.0F, 4.0F };
     public static final int[] RESISTANCE = { 1200, 15, 90, 120, 120 };
