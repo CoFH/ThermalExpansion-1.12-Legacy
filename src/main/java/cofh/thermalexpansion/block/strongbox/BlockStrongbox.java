@@ -97,6 +97,11 @@ public class BlockStrongbox extends BlockTEBase {
     }
 
     @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
     public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
         IBlockState state1 = world.getBlockState(pos);
 		if (getMetaFromState(state1) == 0 && !enable[0]) {

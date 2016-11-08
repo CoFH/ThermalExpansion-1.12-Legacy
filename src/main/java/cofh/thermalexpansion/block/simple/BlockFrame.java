@@ -275,11 +275,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
         return false;
     }
 
-    @Override
-    public boolean isFullyOpaque(IBlockState state) {
-        return false;
-    }
-
     public enum Types implements IStringSerializable {
         MACHINE_BASIC,
         MACHINE_HARDENED,

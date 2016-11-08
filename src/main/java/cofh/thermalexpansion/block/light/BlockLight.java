@@ -160,12 +160,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 	}
 
 	@Override
-	public boolean isOpaqueCube(IBlockState state) {
-
-		return false;
-	}
-
-	@Override
 	public boolean isFullCube(IBlockState state) {
 
 		return false;

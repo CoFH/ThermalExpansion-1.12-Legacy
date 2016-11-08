@@ -128,6 +128,11 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
     }
 
     @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
