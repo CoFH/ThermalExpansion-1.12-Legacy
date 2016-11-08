@@ -12,6 +12,7 @@ import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -23,6 +24,7 @@ import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
@@ -52,7 +54,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
+public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
@@ -108,6 +110,21 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
     @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderDynamo.instance;
+    }
+
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass > 0 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    }
+
+    @Override
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -284,7 +301,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
-	public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable {
 		STEAM,
         MAGMATIC,
         COMPRESSION,

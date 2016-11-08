@@ -15,13 +15,14 @@ import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IExtendedBlockState;
@@ -29,7 +30,7 @@ import net.minecraftforge.common.property.IExtendedBlockState;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
+public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 
 	public static final RenderDynamo instance = new RenderDynamo();
 
@@ -75,7 +76,7 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
     }
 
     @Override
-    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);
             boolean active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
@@ -87,9 +88,12 @@ public class RenderDynamo implements IIconRegister, ISimpleBlockBakery {
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.bind(buffer);
-            renderCoil(ccrs, facing, active);
-            renderAnimation(ccrs, facing, active, type, activeSprite);
-            renderBase(ccrs, facing, active, type);
+            if (pass == 0) {
+                renderCoil(ccrs, facing, active);
+                renderAnimation(ccrs, facing, active, type, activeSprite);
+            } else {
+                renderBase(ccrs, facing, active, type);
+            }
             buffer.finishDrawing();
             return buffer.bake();
         }
