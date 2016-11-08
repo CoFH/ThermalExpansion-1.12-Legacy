@@ -102,7 +102,10 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
             if (pass == 0) {
                 renderFrame(ccrs, type, spriteMap, facing, frontFace);
-            } else {
+                if (hasSolidCenter(type)) {
+                    renderCenter(ccrs, type);
+                }
+            } else if (!hasSolidCenter(type)) {
                 //TODO Center brightness.
                 //ccrs.brightness = 165 + charge * 5;
                 renderCenter(ccrs, type);
@@ -112,6 +115,10 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
+    }
+
+    private boolean hasSolidCenter(int type) {
+        return type == EnumType.BASIC.meta() || type == EnumType.HARDENED.meta();
     }
 
     @Override
