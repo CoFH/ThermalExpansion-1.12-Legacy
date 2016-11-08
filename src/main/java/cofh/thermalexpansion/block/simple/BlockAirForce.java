@@ -3,6 +3,8 @@ package cofh.thermalexpansion.block.simple;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 
+import net.minecraft.block.properties.PropertyDirection;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 
 import net.minecraft.entity.Entity;
@@ -17,7 +19,9 @@ import net.minecraft.world.World;
 
 public class BlockAirForce extends BlockAirBase {
 
-	public BlockAirForce() {
+	public static final PropertyDirection FACING = PropertyDirection.create("facing");
+
+    public BlockAirForce() {
 
 		super(materialBarrier);
 		disableStats();
@@ -38,9 +42,24 @@ public class BlockAirForce extends BlockAirBase {
 		 */
 	}
 
-	private static void absorbFallDamage(Entity ent, BlockPos pos) {
+    @Override
+    protected BlockStateContainer createBlockState() {
+        return new BlockStateContainer(this, FACING);
+    }
 
-		if (new AxisAlignedBB(pos).isVecInside(new  Vec3d(ent.posX, ent.posY - ent.getEyeHeight(), ent.posZ))) {
+    @Override
+    public int getMetaFromState(IBlockState state) {
+        return state.getValue(FACING).ordinal();
+    }
+
+    @Override
+    public IBlockState getStateFromMeta(int meta) {
+        return getDefaultState().withProperty(FACING, EnumFacing.VALUES[meta]);
+    }
+
+    private static void absorbFallDamage(Entity ent, BlockPos pos) {
+
+		if (new AxisAlignedBB(pos).isVecInside(new  Vec3d(ent.posX, ent.posY, ent.posZ))) {
 			ent.fallDistance *= 0.4;
 			ent.motionY = 0;
 		}
@@ -74,10 +93,10 @@ public class BlockAirForce extends BlockAirBase {
 					break;
 				case 1:
 					xO += clampOffset(world, ent, (x - (ent.prevPosX - .5)) / 20, EnumFacing.EAST);
-					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.getEyeHeight() - .1)) / 20, EnumFacing.UP);
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - .1)) / 20, EnumFacing.UP);
 					break;
 				case 2:
-					yO += clampOffset(world, ent, (y - (ent.prevPosY - ent.getEyeHeight() - .1)) / 20, EnumFacing.UP);
+					yO += clampOffset(world, ent, (y - (ent.prevPosY - .1)) / 20, EnumFacing.UP);
 					zO += clampOffset(world, ent, (z - (ent.prevPosZ - .5)) / 20, EnumFacing.SOUTH);
 					break;
 				}
@@ -94,15 +113,15 @@ public class BlockAirForce extends BlockAirBase {
 				xO += ent.motionX;
 				zO += ent.motionZ;
 			}
-			if (dir == EnumFacing.UP && yO > 0 && MathHelper.floor(ent.prevPosY - ent.getEyeHeight() + yO) != y) {
+			if (dir == EnumFacing.UP && yO > 0 && MathHelper.floor(ent.prevPosY + yO) != y) {
 				if (world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() != TEBlocks.blockAirForce) {
 					yO = 0;
 				}
 			}
 			if (ent instanceof EntityLivingBase) {
-				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY - ent.getEyeHeight() + yO, ent.prevPosZ + zO);
+				((EntityLivingBase) ent).setPositionAndUpdate(ent.prevPosX + xO, ent.prevPosY + yO, ent.prevPosZ + zO);
 			} else {
-				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY - ent.getEyeHeight() + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
+				ent.setLocationAndAngles(ent.prevPosX + xO, ent.prevPosY + yO, ent.prevPosZ + zO, ent.rotationYaw, ent.rotationPitch);
 			}
 			ent.lastTickPosX = ent.posX - xO;
 			ent.lastTickPosY = ent.posY - yO;
