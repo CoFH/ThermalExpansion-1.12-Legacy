@@ -13,6 +13,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -20,6 +21,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.Fluid;
@@ -28,7 +30,7 @@ import net.minecraftforge.fluids.FluidStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RenderTank implements ISimpleBlockBakery, IIconRegister {
+public class RenderTank implements ILayeredBlockBakery, IIconRegister {
 
     public static final RenderTank instance = new RenderTank();
 
@@ -112,7 +114,7 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
         byte mode = state.getValue(BlockTank.MODE_PROPERTY);
         int type = state.getValue(CommonProperties.TYPE_PROPERTY);
@@ -123,8 +125,11 @@ public class RenderTank implements ISimpleBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            renderFrame(ccrs, type, mode);
-            renderFluid(ccrs, type, fluidStack);
+            if (pass == 0) {
+                renderFrame(ccrs, type, mode);
+            } else {
+                renderFluid(ccrs, type, fluidStack);
+            }
 
             buffer.finishDrawing();
             return buffer.bake();
