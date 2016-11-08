@@ -14,6 +14,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.ender.TileTesseract;
+import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
 import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -21,6 +22,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.relauncher.Side;
@@ -30,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SideOnly(Side.CLIENT)
-public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
+public class RenderTesseract implements IIconRegister, ILayeredBlockBakery {
 
     public static final RenderTesseract instance = new RenderTesseract();
 
@@ -85,7 +87,7 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeQuads(EnumFacing face, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             boolean isActive = state.getValue(CommonProperties.ACTIVE_PROPERTY);
             boolean rsContOrDisable = state.getValue(BlockEnder.DISABLED_PROPERTY);
@@ -95,8 +97,11 @@ public class RenderTesseract implements ISimpleBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            renderFrame(ccrs, false, isActive, rsContOrDisable, 0, 0, 0);
-            renderCenter(ccrs, false, isActive, 0, 0, 0);
+            if (pass == 0) {
+                renderFrame(ccrs, false, isActive, rsContOrDisable, 0, 0, 0);
+            } else {
+                renderCenter(ccrs, false, isActive, 0, 0, 0);
+            }
 
             buffer.finishDrawing();
             return buffer.bake();

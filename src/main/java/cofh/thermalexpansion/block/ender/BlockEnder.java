@@ -11,6 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -47,7 +48,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockEnder extends BlockTEBase implements IBakeryBlock{
+public class BlockEnder extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -163,9 +164,18 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock{
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getBlockLayer() {
-        return BlockRenderLayer.CUTOUT;
+    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+    }
+
+    @Override
+    public int getTexturePasses() {
+        return 2;
+    }
+
+    @Override
+    public BlockRenderLayer getRenderlayerForPass(int pass) {
+        return pass > 0 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
     }
 
     @Override
@@ -223,7 +233,7 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock{
 		return true;
 	}
 
-	public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable {
         TESSERACT;
 
         @Override
