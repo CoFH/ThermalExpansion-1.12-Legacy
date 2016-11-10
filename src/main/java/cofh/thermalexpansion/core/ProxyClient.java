@@ -18,6 +18,7 @@ import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
+import cofh.thermalexpansion.block.simple.BlockAirForce;
 import cofh.thermalexpansion.block.simple.BlockAirSignal;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.simple.BlockGlass;
@@ -173,7 +174,7 @@ public class ProxyClient extends Proxy {
         ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocks.blockStrongbox), RenderStrongbox.instance);
 
         registerDummyModel(TEBlocks.blockAirBarrier);
-        registerDummyModel(TEBlocks.blockAirForce);
+        registerDummyModel(TEBlocks.blockAirForce, BlockAirForce.FACING);
         registerDummyModel(TEBlocks.blockAirLight);
         registerDummyModel(TEBlocks.blockAirSignal, BlockAirSignal.INTENSITY);
 
