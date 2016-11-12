@@ -82,7 +82,13 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		}
 	}
 
-	@Override
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) &&
+                (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+    }
+
+    @Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (stack.getTagCompound() == null) {

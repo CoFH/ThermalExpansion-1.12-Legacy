@@ -3,6 +3,7 @@ package cofh.thermalexpansion.item.tool;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.item.IEqualityOverrideItem;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 
 import java.util.List;
@@ -40,7 +41,13 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, 0), maxEnergy));
 	}
 
-	@Override
+    @Override
+    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) &&
+                (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+    }
+
+    @Override
 	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		super.addInformationDelegate(stack, player, list, check);
