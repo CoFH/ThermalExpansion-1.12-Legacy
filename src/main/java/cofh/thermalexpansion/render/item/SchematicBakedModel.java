@@ -38,7 +38,7 @@ public class SchematicBakedModel implements IStackPerspectiveAwareModel {
 
     @Override
     public boolean isAmbientOcclusion() {
-        return false;
+        return true;
     }
 
     @Override
