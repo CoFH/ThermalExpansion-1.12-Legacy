@@ -25,6 +25,7 @@ import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.block.sponge.BlockSponge;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
+import cofh.thermalexpansion.block.tank.TileTank;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.model.TEBakedModel;
@@ -49,6 +50,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -148,6 +150,25 @@ public class ProxyClient extends Proxy {
                 builder.append(",");
                 if (stack.hasTagCompound()) {
                     builder.append(stack.getTagCompound().getByte("Style"));
+                }
+                return builder.toString();
+            }
+        });
+
+        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockTank), new IItemStackKeyGenerator() {
+            @Override
+            public String generateKey(ItemStack stack) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(stack.getMetadata());
+                builder.append(",");
+                builder.append(stack.getItem().getRegistryName().toString());
+                builder.append(",");
+                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
+                    FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+                    int level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) fluid.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[stack.getMetadata()]);
+                    builder.append(fluid.getFluid().getName());
+                    builder.append(",");
+                    builder.append(level);
                 }
                 return builder.toString();
             }
