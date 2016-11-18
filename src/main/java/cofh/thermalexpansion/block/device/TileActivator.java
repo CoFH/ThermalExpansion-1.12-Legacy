@@ -275,7 +275,6 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 
 	public void updateFakePlayer(int tickSlot) {
 
-		myFakePlayer.inventory.mainInventory = new ItemStack[36];
 		for (int i = 0; i < MAX_SLOT; i++) {
 			myFakePlayer.inventory.mainInventory[i] = getStackInSlot(i);
 		}
