@@ -317,8 +317,9 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			y += .5D;
 		}
 		myFakePlayer.setPositionAndRotation(x, y, z, yaw, pitch);
+        myFakePlayer.setRotationYawHead(yaw);
 		myFakePlayer.isSneaking = actsSneaking;
-		myFakePlayer.eyeHeight = -1.1F;
+		myFakePlayer.eyeHeight = 0.4F;
 		myFakePlayer.setItemInHand(tickSlot);
 
 		myFakePlayer.onUpdate();
@@ -369,7 +370,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			if (!simRightClick2(thePlayer, deployingStack, pos, side) && deployingStack != null) {
 				List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(getPos(), facing));
 
-				if (entities.size() > 0 && thePlayer.interact(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size() - 1) : 0), deployingStack, EnumHand.MAIN_HAND) != EnumActionResult.FAIL) {
+				if (entities.size() > 0 && thePlayer.interact(entities.get(entities.size() > 1 ? MathHelper.RANDOM.nextInt(entities.size()) : 0), deployingStack, EnumHand.MAIN_HAND) != EnumActionResult.PASS) {
 					return true;
 				}
 				//PlayerInteractEvent event = new PlayerInteractEvent.RightClickEmpty(thePlayer, Action.RIGHT_CLICK_AIR, 0, 0, 0, -1, worldObj);
@@ -411,7 +412,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		boolean isAir = state.getBlock().isAir(state, worldObj, pos);
 
 		if (deployingStack != null && deployingStack.getItem() != null
-				&& deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, pos, side, f, f1, f2, EnumHand.MAIN_HAND) != EnumActionResult.FAIL) {
+				&& deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, pos, side, f, f1, f2, EnumHand.MAIN_HAND) != EnumActionResult.PASS) {
 			return true;
 		}
 		if (!thePlayer.isSneaking() || thePlayer.getHeldItem(EnumHand.MAIN_HAND) == null) {
@@ -423,27 +424,27 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			return false;
 		} else {
 			if (deployingStack.getItem() instanceof ItemBlock) {
-				if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.SUCCESS) {
+				if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.PASS) {
 					if (isAir) {
-						if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.SUCCESS) {
+						if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.PASS) {
 							return false;
 						}
 					} else {
-						if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.DOWN, f, f1, f2) == EnumActionResult.SUCCESS) {
+						if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.DOWN, f, f1, f2) == EnumActionResult.PASS) {
 							return false;
 						}
 					}
 				}
 			} else {
 				if (isAir) {
-					if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.SUCCESS) {
-						if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.SUCCESS) {
+					if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.PASS) {
+						if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.PASS) {
 							return false;
 						}
 					}
 				} else {
-					if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.DOWN, f, f1, f2) == EnumActionResult.SUCCESS) {
-						if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.SUCCESS) {
+					if (deployingStack.onItemUse(thePlayer, worldObj, pos, EnumHand.MAIN_HAND, EnumFacing.DOWN, f, f1, f2) == EnumActionResult.PASS) {
+						if (deployingStack.onItemUse(thePlayer, worldObj, pos.add(0, offsetY, 0), EnumHand.MAIN_HAND, EnumFacing.VALUES[facing != 1 ? 1 : 0], f, f1, f2) == EnumActionResult.PASS) {
 							return false;
 						}
 					}
