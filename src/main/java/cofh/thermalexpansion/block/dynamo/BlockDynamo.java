@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.dynamo;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
@@ -16,11 +18,11 @@ import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -172,7 +174,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
 	}
 
 	@Override
-	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
 			list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
@@ -306,7 +308,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
-    public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable, IType, IParticleProvider {
 		STEAM,
         MAGMATIC,
         COMPRESSION,
@@ -318,9 +320,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
             return name().toLowerCase(Locale.US);
         }
 
-        public int meta() {
-            return ordinal();
-        }
 
         public static Types fromMeta(int meta) {
             try {
@@ -328,6 +327,21 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
             } catch (IndexOutOfBoundsException e){
                 throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
             }
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public String getParticleTexture() {
+            return "thermalexpansion:blocks/dynamo/dynamo_" + getName();
         }
 
         public static int meta(Types type) {

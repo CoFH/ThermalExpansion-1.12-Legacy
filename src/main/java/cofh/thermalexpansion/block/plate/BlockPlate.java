@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.plate;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.util.BlockUtils;
@@ -23,6 +25,7 @@ import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -475,7 +478,7 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		// @formatter:on
 	}
 
-	public enum Types implements IStringSerializable {
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
 		FRAME,
 		SIGNAL,
 		IMPULSE,
@@ -491,10 +494,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
             return name().toLowerCase(Locale.US);
         }
 
-        public int meta() {
-            return ordinal();
-        }
-
         public static Types fromMeta(int meta) {
             try {
                 return values()[meta];
@@ -502,7 +501,22 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
                 throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
             }
         }
-	}
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public String getParticleTexture() {
+            return "thermalexpansion:blocks/plate/plate_bottom";
+        }
+    }
 
 	public static final String[] NAMES = { "frame", "signal", "impulse", "translocate", "charge", "excursion", "teleport" };
 	public static boolean[] enable = new boolean[Types.values().length];

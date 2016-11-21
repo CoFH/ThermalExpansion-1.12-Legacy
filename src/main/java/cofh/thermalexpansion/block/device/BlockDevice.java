@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 
 import cofh.core.render.IconRegistry;
@@ -18,6 +20,7 @@ import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -392,7 +395,7 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
 		// extender = ItemBlockDevice.setDefaultTag(extender);
 	}
 
-    public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable, IType, IParticleProvider {
 		WORKBENCH_FALSE,
         PUMP,
         ACTIVATOR,
@@ -407,16 +410,27 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
             return name().toLowerCase(Locale.US);
         }
 
-        public int meta() {
-            return ordinal();
-        }
-
         public static Types fromMeta(int meta) {
             try {
                 return values()[meta];
             } catch (IndexOutOfBoundsException e){
                 throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
             }
+        }
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public String getParticleTexture() {
+            return "thermalexpansion:blocks/device/device_side";
         }
 
         public static int meta(Types type) {

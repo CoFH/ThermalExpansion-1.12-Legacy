@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.client;
 
-import codechicken.lib.texture.TextureUtils.IIconRegister;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
+import codechicken.lib.block.IBlockTextureProvider;
 
 /**
  * Created by covers1624 on 25/10/2016.

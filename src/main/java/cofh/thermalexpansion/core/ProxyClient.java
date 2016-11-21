@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.core;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.texture.TextureUtils;
@@ -8,7 +10,6 @@ import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.lib.util.helpers.SecurityHelper;
-import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;
@@ -117,15 +118,16 @@ public class ProxyClient extends Proxy {
         ModelLoader.registerItemVariants(TEItems.itemDiagram, getDiagramLocation("schematic"));
         ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
 
-        registerBlockBakeryStuff(TEBlocks.blockMachine, "thermalexpansion:blocks/machine/machine_side", BlockMachine.TYPES);
-        registerBlockBakeryStuff(TEBlocks.blockDevice, "thermalexpansion:blocks/device/device_side", BlockDevice.TYPES);
-        registerBlockBakeryStuff(TEBlocks.blockDynamo, "", BlockDynamo.TYPES, RenderDynamo.instance);
-        registerBlockBakeryStuff(TEBlocks.blockCell, "", BlockCell.TYPES, RenderCell.instance);
-        registerBlockBakeryStuff(TEBlocks.blockTank, "", BlockTank.TYPES, RenderTank.instance);
-        registerBlockBakeryStuff(TEBlocks.blockCache, "", BlockCache.TYPES);
-        registerBlockBakeryStuff(TEBlocks.blockTesseract, "", BlockEnder.TYPES, RenderTesseract.instance);
-        registerBlockBakeryStuff(TEBlocks.blockPlate, "", BlockPlate.TYPES, RenderPlate.instance);
-        registerBlockBakeryStuff(TEBlocks.blockLight, "", BlockLight.TYPES, RenderLight.instance);
+        registerBlockToBakery(TEBlocks.blockMachine, BlockMachine.Types.values());
+        registerBlockToBakery(TEBlocks.blockDevice, BlockDevice.Types.values());
+        registerBlockToBakery(TEBlocks.blockDynamo, RenderDynamo.instance, BlockDynamo.Types.values());
+        registerBlockToBakery(TEBlocks.blockCell, RenderCell.instance, BlockCell.Types.values());
+        registerBlockToBakery(TEBlocks.blockTank, RenderTank.instance, BlockTank.Types.values());
+        registerBlockToBakery(TEBlocks.blockCache, BlockCache.Types.values());
+        registerBlockToBakery(TEBlocks.blockTesseract, RenderTesseract.instance, BlockEnder.Types.values());
+        registerBlockToBakery(TEBlocks.blockPlate, RenderPlate.instance, BlockPlate.Types.values());
+        registerBlockToBakery(TEBlocks.blockLight, RenderLight.instance, BlockLight.Types.values());
+        registerBlockToBakery(TEBlocks.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
 
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(TEBlocks.blockSponge), new ItemMeshDefinition() {
             @Override
@@ -174,9 +176,9 @@ public class ProxyClient extends Proxy {
             }
         });
 
-        registerBlockBakeryStuff(TEBlocks.blockFrame, "", BlockFrame.TYPES, RenderFrame.instance);
 
-        for (EnumType type : EnumType.values()) {
+
+        for (BlockCell.Types type : BlockCell.Types.values()) {
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockWorkbench), type.ordinal(), location);
         }
@@ -202,31 +204,20 @@ public class ProxyClient extends Proxy {
         RenderEntityFlorb.initialize();
     }
 
-    private static void registerBlockBakeryStuff(Block block, String particle, IProperty typeProperty, IProperty... ignores) {
-        IIconRegister register = block instanceof IIconRegister ? ((IIconRegister) block) : null;
-        registerBlockBakeryStuff(block, particle, typeProperty, register, ignores);
+    public static void registerBlockToBakery(Block block, IParticleProvider[] types) {
+        IIconRegister register = block instanceof IIconRegister ? (IIconRegister) block : null;
+        registerBlockToBakery(block, register, types);
     }
 
-    //TODO Override the particle grabbing.
-    private static void registerBlockBakeryStuff(Block block, String particle, IProperty typeProperty, IIconRegister iconRegister, IProperty... ignores) {
-        StateMap.Builder builder = new StateMap.Builder();
-        builder.ignore(typeProperty);
-        for (IProperty property : ignores) {
-            builder.ignore(property);
+    //FIXME: Do per side particle grabbing.
+    public static void registerBlockToBakery(Block block, IIconRegister iconRegister, IParticleProvider[] types) {
+        for (IParticleProvider type : types) {
+            IBakedModel model = new TEBakedModel(type.getParticleTexture());
+            String typeName = type.getTypeProperty().getName();
+            ModelResourceLocation location = new ModelResourceLocation(block.getRegistryName(), typeName + "=" + type.getName());
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), type.meta(), location);
+            ModelRegistryHelper.register(location, model);
         }
-
-        StateMap stateMap = builder.build();
-        ModelLoader.setCustomStateMapper(block, stateMap);
-        IBakedModel model = new TEBakedModel(particle);
-        ModelResourceLocation locationNormal = new ModelResourceLocation(block.getRegistryName(), "normal");
-        ModelResourceLocation locationInventory = new ModelResourceLocation(block.getRegistryName(), "inventory");
-        for (int i = 0; i < typeProperty.getAllowedValues().size(); i++) {
-            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), i, locationInventory);
-        }
-
-        ModelRegistryHelper.register(locationNormal, model);
-        ModelRegistryHelper.register(locationInventory, model);
-
         if (iconRegister != null) {
             TextureUtils.addIconRegister(iconRegister);
         }

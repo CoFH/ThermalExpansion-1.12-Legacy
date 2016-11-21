@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
@@ -519,7 +521,7 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
 		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
-    public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable, IType, IParticleProvider {
 		FURNACE,
         PULVERIZER,
         SAWMILL,
@@ -538,9 +540,6 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
             return name().toLowerCase(Locale.US);
         }
 
-        public int meta() {
-            return ordinal();
-        }
 
         public static Types fromMeta(int meta) {
             try {
@@ -548,6 +547,21 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
             } catch (IndexOutOfBoundsException e){
                 throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
             }
+        }
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public String getParticleTexture() {
+            return "thermalexpansion:blocks/machine/machine_side";
         }
 
         public static int meta(Types type) {

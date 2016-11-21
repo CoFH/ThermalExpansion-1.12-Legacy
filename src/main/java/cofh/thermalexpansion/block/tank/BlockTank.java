@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.tank;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.block.property.unlisted.UnlistedByteProperty;
 import codechicken.lib.block.property.unlisted.UnlistedFluidStackProperty;
 import codechicken.lib.item.ItemStackRegistry;
@@ -11,7 +13,6 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
@@ -19,6 +20,7 @@ import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.render.RenderTank;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -33,6 +35,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
@@ -47,12 +50,13 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Locale;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
 
-    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
     public static final UnlistedFluidStackProperty FLUID_STACK_PROPERTY = new UnlistedFluidStackProperty("fluid_stack");
     public static final UnlistedByteProperty MODE_PROPERTY = new UnlistedByteProperty("mode");
@@ -74,7 +78,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerP
 
     @Override
     public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
     }
 
     @Override
@@ -104,7 +108,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerP
     }
 
     @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+    public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
         if (enable[0]) {
             list.add(new ItemStack(item, 1, 0));
@@ -275,13 +279,46 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerP
         return pass > 0 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
     }
 
-    public enum Types {
+    public enum Types implements IStringSerializable, IType, IParticleProvider {
         CREATIVE,
         BASIC,
         HARDENED,
         REINFORCED,
-        RESONANT
+        RESONANT;
+
+        @Override
+        public String getName() {
+            return name().toLowerCase(Locale.US);
+        }
+
+        public static Types fromMeta(int meta) {
+            try {
+                return values()[meta];
+            } catch (IndexOutOfBoundsException e){
+                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+            }
+        }
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public String getParticleTexture() {
+            return "thermalexpansion:blocks/glass/hardened";
+        }
+
+        public static int meta(Types type) {
+            return type.ordinal();
+        }
     }
+
 
     @Override
     public boolean isFullCube(IBlockState state) {

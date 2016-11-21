@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.client.bakery;
 
+import codechicken.lib.block.IBlockTextureProvider;
 import codechicken.lib.model.SimplePerspectiveAwareBakedModel;
 import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.texture.TextureUtils;

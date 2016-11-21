@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.simple;
 
+import codechicken.lib.block.IParticleProvider;
+import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
@@ -18,6 +20,7 @@ import cofh.thermalfoundation.item.TFItems;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -275,7 +278,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
         return false;
     }
 
-    public enum Types implements IStringSerializable {
+    public enum Types implements IStringSerializable, IType, IParticleProvider {
         MACHINE_BASIC,
         MACHINE_HARDENED,
         MACHINE_REINFORCED,
@@ -295,9 +298,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
             return name().toLowerCase(Locale.US);
         }
 
-        public int meta() {
-            return ordinal();
-        }
 
         public static Types fromMeta(int meta) {
             try {
@@ -305,6 +305,42 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
             } catch (IndexOutOfBoundsException e){
                 throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
             }
+        }
+
+        @Override
+        public int meta() {
+            return ordinal();
+        }
+
+        @Override
+        public IProperty<?> getTypeProperty() {
+            return TYPES;
+        }
+
+        @Override
+        public String getParticleTexture() {
+            switch (this) {
+
+                case MACHINE_BASIC:
+                case MACHINE_HARDENED:
+                case MACHINE_REINFORCED:
+                case MACHINE_RESONANT:
+                    return "thermalexpansion:blocks/machine/machine_frame_side";
+                case CELL_BASIC:
+                case CELL_HARDENED:
+                    return "thermalexpansion:blocks/cell/" + getName();
+                case CELL_REINFORCED_EMPTY:
+                case CELL_REINFORCED_FULL:
+                case CELL_RESONANT_EMPTY:
+                case CELL_RESONANT_FULL:
+                    return "thermalexpansion:blocks/cell/" + getName().substring(0, getName().lastIndexOf("_"));
+                case TESSERACT_EMPTY:
+                case TESSERACT_FULL:
+                    return "thermalexpansion:blocks/tesseract/tesseract";
+                case ILLUMINATOR:
+                    return "thermalexpansion:blocks/light/" + getName() + "_frame";
+            }
+            return "minecraft:blocks/dirt";
         }
     }
 
