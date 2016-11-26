@@ -76,7 +76,7 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);
             boolean active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
@@ -88,7 +88,7 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
             CCRenderState ccrs = CCRenderState.instance();
             ccrs.reset();
             ccrs.bind(buffer);
-            if (pass == 0) {
+            if (layer == BlockRenderLayer.SOLID) {
                 renderCoil(ccrs, facing, active);
                 renderAnimation(ccrs, facing, active, type, activeSprite);
             } else {
@@ -111,7 +111,7 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
             renderCoil(ccrs, 1, false);
             renderBase(ccrs, 1, false, stack.getMetadata());
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

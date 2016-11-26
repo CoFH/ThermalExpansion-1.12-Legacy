@@ -13,11 +13,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.RenderTesseract;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import com.mojang.authlib.GameProfile;
@@ -51,7 +49,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
-public class BlockEnder extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
+public class BlockEnder extends BlockTEBase implements IBakeryBlock {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -148,13 +146,6 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock, IBlockLayer
 		}
 	}
 
-	//@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderType() {
-
-		return TEProps.renderIdEnder;
-	}
-
     @Override
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
@@ -169,16 +160,6 @@ public class BlockEnder extends BlockTEBase implements IBakeryBlock, IBlockLayer
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
     }
 
     @Override

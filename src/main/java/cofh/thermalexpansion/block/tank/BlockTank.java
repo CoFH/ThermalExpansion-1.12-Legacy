@@ -13,7 +13,6 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -54,7 +53,7 @@ import java.util.Locale;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
+public class BlockTank extends BlockTEBase implements IBakeryBlock {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -267,16 +266,6 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IBlockLayerP
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
     }
 
     public enum Types implements IStringSerializable, IType, IParticleProvider {

@@ -75,7 +75,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (EnumFacing face : EnumFacing.VALUES) {
             p2.put(face, cell.getTexture(face.ordinal(), 2));
         }
-        state = state.withProperty(CommonProperties.SPRITE_FACE_LAYER_PROPERTY, p2);
+        state = state.withProperty(CommonProperties.LAYER_FACE_SPRITE_MAP, p2);
         state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) cell.type);
         state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
         state = state.withProperty(CommonProperties.FACING_PROPERTY, cell.getFacing());
@@ -85,9 +85,9 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
-            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.SPRITE_FACE_LAYER_PROPERTY);
+            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.LAYER_FACE_SPRITE_MAP);
             int type = state.getValue(CommonProperties.TYPE_PROPERTY);
             int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);
@@ -99,7 +99,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            if (pass == 0) {
+            if (layer == BlockRenderLayer.CUTOUT) {
                 renderFrame(ccrs, type, spriteMap, facing, frontFace);
                 if (hasSolidCenter(type)) {
                     renderCenter(ccrs, type);
@@ -138,7 +138,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
             //}
 
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

@@ -114,7 +114,7 @@ public class RenderTank implements ILayeredBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
         byte mode = state.getValue(BlockTank.MODE_PROPERTY);
         int type = state.getValue(CommonProperties.TYPE_PROPERTY);
@@ -125,7 +125,7 @@ public class RenderTank implements ILayeredBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            if (pass == 0) {
+            if (layer == BlockRenderLayer.CUTOUT) {
                 renderFrame(ccrs, type, mode);
             } else {
                 renderFluid(ccrs, type, fluidStack);
@@ -163,7 +163,7 @@ public class RenderTank implements ILayeredBlockBakery, IIconRegister {
             renderFluid(ccrs, stack.getItemDamage(), fluid);
 
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

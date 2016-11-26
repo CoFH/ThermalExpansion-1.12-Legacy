@@ -5,6 +5,8 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.texture.IWorldBlockTextureProvider;
+import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.ItemUtils;
 import codechicken.lib.util.SoundUtils;
 import codechicken.lib.vec.Vector3;
@@ -17,8 +19,6 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
-import cofh.thermalexpansion.client.IControlledLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.properties.IProperty;
@@ -55,7 +55,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvider, IControlledLayerProvider {
+public class BlockCache extends BlockTEBase implements IWorldBlockTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -87,7 +87,7 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ CommonProperties.SPRITE_FACE_LAYER_PROPERTY });
+        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ CommonProperties.LAYER_FACE_SPRITE_MAP });
     }
 
     @Override
@@ -260,15 +260,29 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
 	@Override
     @SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-
 		if (side.ordinal() == 0) {
 			return IconRegistry.getIcon("CacheBottom", metadata);
 		}
 		if (side.ordinal() == 1) {
 			return IconRegistry.getIcon("CacheTop", metadata);
 		}
-		return side.ordinal() != 3 ? IconRegistry.getIcon("CacheSide", metadata) : IconRegistry.getIcon("CacheFace", metadata);
+		return side.ordinal() != 2 ? IconRegistry.getIcon("CacheSide", metadata) : IconRegistry.getIcon("CacheFace", metadata);
 	}
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileCache) {
+            TileCache cache = ((TileCache) tileEntity);
+            if (layer == BlockRenderLayer.CUTOUT && cache.storedStack != null) {
+                cache.getTexture(side.ordinal(), 1);//Cull the meter if there is no stack.
+            } else {
+                return cache.getTexture(side.ordinal(), 0);
+            }
+        }
+        return TextureUtils.getMissingSprite();
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -283,27 +297,6 @@ public class BlockCache extends BlockTEBase implements IBlockLayeredTextureProvi
             IconRegistry.addIcon("CacheFace" + i, "thermalexpansion:blocks/cache/cache_" + NAMES[i] + "_face", textureMap);
         }
         IconRegistry.addIcon("CacheBlank", "thermalexpansion:blocks/config/config_none", textureMap);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean shouldUsePass(int pass, TileEntity tileEntity) {
-        if (pass == 1){
-            return ((TileCache) tileEntity).storedStack != null;
-        }
-        return true;
     }
 
     @Override

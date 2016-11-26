@@ -97,7 +97,7 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             int meta = state.getValue(CommonProperties.TYPE_PROPERTY);
             int colour = state.getValue(BlockLight.COLOUR_MULTIPLIER_PROPERTY);
@@ -116,12 +116,12 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
 
             switch (BlockLight.Types.getType(meta)) {
                 case ILLUMINATOR:
-                    renderWorldIlluminator(ccrs, pass, style, colour, modified, transformation);
+                    renderWorldIlluminator(ccrs, layer, style, colour, modified, transformation);
                     break;
                 case LAMP_LUMIUM_RADIANT:
                     active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
                 case LAMP_LUMIUM:
-                    renderWorldLampLumium(ccrs, pass, style, colour, active, transformation);
+                    renderWorldLampLumium(ccrs, layer, style, colour, active, transformation);
                     break;
             }
 
@@ -164,12 +164,12 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
                     break;
                 case LAMP_LUMIUM_RADIANT:
                 case LAMP_LUMIUM:
-                    renderWorldLampLumium(ccrs, 0, style, color, false, pos);
+                    renderWorldLampLumium(ccrs, BlockRenderLayer.SOLID, style, color, false, pos);
                     break;
             }
 
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }
@@ -195,24 +195,24 @@ public class RenderLight implements ILayeredBlockBakery, IIconRegister {
         modelHalo[style].setColour(0xFFFFFFFF);
     }
 
-    public boolean renderWorldIlluminator(CCRenderState ccrs, int pass, int style, int color, boolean modified, Transformation t) {
+    public boolean renderWorldIlluminator(CCRenderState ccrs, BlockRenderLayer layer, int style, int color, boolean modified, Transformation t) {
 
-        if (pass == 0) {
+        if (layer == BlockRenderLayer.SOLID) {
             renderCenter(ccrs, style, color, modified, t);
             return true;
-        } else if (pass == 1) {
+        } else if (layer == BlockRenderLayer.CUTOUT) {
             renderFrame(ccrs, style, -1, 0, t);
         }
 
         return true;
     }
 
-    public boolean renderWorldLampLumium(CCRenderState ccrs, int pass, int style, int color, boolean active, Transformation t) {
+    public boolean renderWorldLampLumium(CCRenderState ccrs, BlockRenderLayer layer, int style, int color, boolean active, Transformation t) {
 
-        if (pass == 0) {
+        if (layer == BlockRenderLayer.SOLID) {
             renderFrame(ccrs, style, color, 1, t);
             return true;
-        } else if (pass == 2 && active) {
+        } else if (layer == BlockRenderLayer.TRANSLUCENT && active) {
             renderHalo(ccrs, style, color, t);
         }
         return active;

@@ -3,6 +3,8 @@ package cofh.thermalexpansion.block.machine;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.texture.IWorldBlockTextureProvider;
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -13,7 +15,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
@@ -31,7 +32,6 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
@@ -53,7 +53,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 
 import javax.annotation.Nullable;
 
-public class BlockMachine extends BlockTEBase implements IBlockLayeredTextureProvider {
+public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -78,7 +78,7 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY ).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.LAYER_FACE_SPRITE_MAP).build();
     }
 
     @Override
@@ -180,30 +180,37 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
 		return true;
 	}
 
-
-	@Override
+    @Override
     @SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-
-		if (side.ordinal() == 0) {
-			return IconRegistry.getIcon("MachineBottom");
-		}
-		if (side.ordinal() == 1) {
-			return IconRegistry.getIcon("MachineTop");
-		}
-		return side.ordinal() != 3 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
+        if (side.ordinal() == 0) {
+            return IconRegistry.getIcon("MachineBottom");
+        }
+        if (side.ordinal() == 1) {
+            return IconRegistry.getIcon("MachineTop");
+        }
+        return side.ordinal() != 2 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
 	}
 
     @Override
     @SideOnly(Side.CLIENT)
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
+        TileEntity tileEntity = access.getTileEntity(pos);
+        if (tileEntity instanceof TileMachineBase) {
+            TileMachineBase machine = ((TileMachineBase) tileEntity);
+            if (layer == BlockRenderLayer.SOLID) {
+                if (side == EnumFacing.DOWN) {
+                    return IconRegistry.getIcon("MachineBottom");
+                } else if (side == EnumFacing.UP) {
+                    return IconRegistry.getIcon("MachineTop");
+                }
+                return side.ordinal() != machine.getFacing() ? IconRegistry.getIcon("MachineSide") : machine.isActive ? IconRegistry.getIcon("MachineActive", machine.type) : IconRegistry.getIcon("MachineFace", machine.type);
+            } else if (layer == BlockRenderLayer.CUTOUT) {
+                //TODO Rethink sideConfig stuff on Machines, We need a getter.
+                return machine.getTexture(side.ordinal(), 1);
+            }
+        }
+        return TextureUtils.getMissingSprite();
     }
 
     @Override
@@ -247,13 +254,13 @@ public class BlockMachine extends BlockTEBase implements IBlockLayeredTexturePro
     }
 
 	@Override
-	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+    public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
-		TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
+        TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
 		if (tile != null) {
-			if (tag == null) {
+            if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);

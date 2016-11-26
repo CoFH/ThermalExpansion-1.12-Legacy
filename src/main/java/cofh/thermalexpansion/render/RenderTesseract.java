@@ -87,7 +87,7 @@ public class RenderTesseract implements IIconRegister, ILayeredBlockBakery {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             boolean isActive = state.getValue(CommonProperties.ACTIVE_PROPERTY);
             boolean rsContOrDisable = state.getValue(BlockEnder.DISABLED_PROPERTY);
@@ -97,7 +97,7 @@ public class RenderTesseract implements IIconRegister, ILayeredBlockBakery {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            if (pass == 0) {
+            if (layer == BlockRenderLayer.CUTOUT) {
                 renderFrame(ccrs, false, isActive, rsContOrDisable, 0, 0, 0);
             } else {
                 renderCenter(ccrs, false, isActive, 0, 0, 0);
@@ -122,7 +122,7 @@ public class RenderTesseract implements IIconRegister, ILayeredBlockBakery {
             renderCenter(ccrs, false, false, 0, 0, 0);
 
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

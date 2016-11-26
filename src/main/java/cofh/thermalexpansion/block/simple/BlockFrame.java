@@ -9,7 +9,6 @@ import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
 import cofh.thermalexpansion.render.RenderFrame;
@@ -51,7 +50,7 @@ import java.util.Locale;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockFrame extends Block implements IDismantleable, IInitializer, IBakeryBlock, IBlockLayerProvider {
+public class BlockFrame extends Block implements IDismantleable, IInitializer, IBakeryBlock {
 
     public static int renderPass = 0;
 
@@ -261,16 +260,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
     @Override
     public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
         return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
-
-    @Override
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT;
     }
 
     @Override

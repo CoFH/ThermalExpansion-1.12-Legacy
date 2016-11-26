@@ -14,7 +14,6 @@ import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
@@ -56,7 +55,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLayerProvider {
+public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
@@ -112,16 +111,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IBlockLaye
     @SideOnly(Side.CLIENT)
     public ICustomBlockBakery getCustomBakery() {
         return RenderDynamo.instance;
-    }
-
-    @Override
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override

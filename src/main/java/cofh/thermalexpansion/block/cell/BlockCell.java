@@ -14,7 +14,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
@@ -55,7 +54,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBakeryBlock {
+public class BlockCell extends BlockTEBase implements IBakeryBlock {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -88,7 +87,7 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.LAYER_FACE_SPRITE_MAP).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
     }
 
 	@Override
@@ -165,18 +164,6 @@ public class BlockCell extends BlockTEBase implements IBlockLayerProvider, IBake
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 		return true;
 	}
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.TRANSLUCENT :BlockRenderLayer.CUTOUT;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

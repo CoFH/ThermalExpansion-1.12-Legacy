@@ -81,12 +81,12 @@ public class RenderPlate implements ILayeredBlockBakery, IIconRegister {
         IconRegistry.addIcon("PlateTop5", "thermalexpansion:blocks/plate/plate_top_east", textureMap);
     }
 
-    public void render(CCRenderState ccrs, int pass, int alignment, int direction, int type) {
+    public void render(CCRenderState ccrs, BlockRenderLayer layer, int alignment, int direction, int type) {
         direction = adjustDirection(alignment, direction);
 
-        if (pass == 0 && type > 0) {
+        if (layer == BlockRenderLayer.SOLID && type > 0) {
             renderFluid(ccrs, type, alignment);
-        } else if (pass == 1) {
+        } else if (layer == BlockRenderLayer.CUTOUT) {
             renderFrame(ccrs, alignment, direction);
         }
     }
@@ -133,7 +133,7 @@ public class RenderPlate implements ILayeredBlockBakery, IIconRegister {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face,BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             int alignment = state.getValue(BlockPlate.ALIGNMENT_PROPERTY);
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);
@@ -144,7 +144,7 @@ public class RenderPlate implements ILayeredBlockBakery, IIconRegister {
             ccrs.reset();
             ccrs.bind(buffer);
 
-            render(ccrs, pass, alignment, facing, type);
+            render(ccrs, layer, alignment, facing, type);
 
             buffer.finishDrawing();
             return buffer.bake();
@@ -164,7 +164,7 @@ public class RenderPlate implements ILayeredBlockBakery, IIconRegister {
             renderItem(ccrs, BlockPlate.Types.values()[stack.getMetadata()].texture, stack.getMetadata());
 
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

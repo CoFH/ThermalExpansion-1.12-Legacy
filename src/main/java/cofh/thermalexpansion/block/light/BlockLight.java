@@ -21,11 +21,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.RenderLight;
 import cofh.thermalexpansion.render.transformation.TorchTransformation;
 import cofh.thermalexpansion.util.crafting.RecipeStyle;
@@ -66,7 +64,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 
-public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryBlock, IBlockLayerProvider {
+public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryBlock {
 
 	public static Cuboid6[] models;
 
@@ -356,18 +354,6 @@ public class BlockLight extends BlockTEBase implements IBlockConfigGui, IBakeryB
 		TileLight tile = (TileLight) source.getTileEntity(pos);
 		return source.getCombinedLight(pos, tile.getInternalLight());
 	}
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public int getTexturePasses() {
-        return 3;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass >= 1 ? pass > 1 ? BlockRenderLayer.TRANSLUCENT : BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
-    }
 
     @Override
     @SideOnly(Side.CLIENT)

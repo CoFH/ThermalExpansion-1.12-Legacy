@@ -154,7 +154,7 @@ public class RenderFrame implements IIconRegister, ILayeredBlockBakery {
     }
 
     @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state) {
+    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
             BakingVertexBuffer buffer = BakingVertexBuffer.create();
             buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -162,7 +162,7 @@ public class RenderFrame implements IIconRegister, ILayeredBlockBakery {
             ccrs.reset();
             ccrs.bind(buffer);
             int meta = state.getBlock().getMetaFromState(state);
-            if (pass == 0) {
+            if (layer == BlockRenderLayer.CUTOUT) {
                 renderFrame(ccrs, meta);
                 if (!hasTranslucentCenter(meta)) {
                     renderCenter(ccrs, meta);
@@ -197,7 +197,7 @@ public class RenderFrame implements IIconRegister, ILayeredBlockBakery {
             renderFrame(ccrs, meta);
             renderCenter(ccrs, meta);
             buffer.finishDrawing();
-            return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
+            return buffer.bake();
         }
         return new ArrayList<BakedQuad>();
     }

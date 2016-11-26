@@ -12,6 +12,6 @@ import java.util.List;
  */
 public interface ILayeredBlockBakery extends ICustomBlockBakery {
 
-    List<BakedQuad> bakeLayerFace(EnumFacing face, int pass, BlockRenderLayer layer, IExtendedBlockState state);
+    List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state);
 
 }

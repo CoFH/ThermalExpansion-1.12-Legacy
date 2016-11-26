@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.core;
 
 import codechicken.lib.block.IParticleProvider;
-import codechicken.lib.block.IType;
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.texture.TextureUtils;
@@ -10,6 +9,7 @@ import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.lib.util.helpers.SecurityHelper;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;
@@ -27,6 +27,7 @@ import cofh.thermalexpansion.block.sponge.BlockSponge;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
+import cofh.thermalexpansion.client.IBlockStateKeyGenerator;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.model.TEBakedModel;
@@ -45,18 +46,23 @@ import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class ProxyClient extends Proxy {
 
@@ -76,6 +82,7 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void preInit() {
+        BlockBakery.init();
 
         RenderStrongbox.registerRenderers();
 
@@ -129,6 +136,8 @@ public class ProxyClient extends Proxy {
         registerBlockToBakery(TEBlocks.blockLight, RenderLight.instance, BlockLight.Types.values());
         registerBlockToBakery(TEBlocks.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
 
+        registerModelKeyGenerators();
+
         ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(TEBlocks.blockSponge), new ItemMeshDefinition() {
             @Override
             public ModelResourceLocation getModelLocation(ItemStack stack) {
@@ -141,42 +150,6 @@ public class ProxyClient extends Proxy {
             ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocks.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=false,type=" + BlockSponge.NAMES[i]));
             ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocks.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=true,type=" + BlockSponge.NAMES[i]));
         }
-
-        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockLight), new IItemStackKeyGenerator() {
-            @Override
-            public String generateKey(ItemStack stack) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(stack.getMetadata());
-                builder.append(",");
-                builder.append(stack.getItem().getRegistryName().toString());
-                builder.append(",");
-                if (stack.hasTagCompound()) {
-                    builder.append(stack.getTagCompound().getByte("Style"));
-                }
-                return builder.toString();
-            }
-        });
-
-        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockTank), new IItemStackKeyGenerator() {
-            @Override
-            public String generateKey(ItemStack stack) {
-                StringBuilder builder = new StringBuilder();
-                builder.append(stack.getMetadata());
-                builder.append(",");
-                builder.append(stack.getItem().getRegistryName().toString());
-                builder.append(",");
-                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
-                    FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
-                    int level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) fluid.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[stack.getMetadata()]);
-                    builder.append(fluid.getFluid().getName());
-                    builder.append(",");
-                    builder.append(level);
-                }
-                return builder.toString();
-            }
-        });
-
-
 
         for (BlockCell.Types type : BlockCell.Types.values()) {
             ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
@@ -266,6 +239,154 @@ public class ProxyClient extends Proxy {
     private void registerToolModel(Item item, int metadata, String name) {
         final ModelResourceLocation location = getToolLocation(name);
         ModelLoader.setCustomModelResourceLocation(item, metadata, location);
+    }
+
+    private void registerModelKeyGenerators(){
+        /*Items*/
+        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockLight), new IItemStackKeyGenerator() {
+            @Override
+            public String generateKey(ItemStack stack) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(stack.getMetadata());
+                builder.append(",");
+                builder.append(stack.getItem().getRegistryName().toString());
+                builder.append(",");
+                if (stack.hasTagCompound()) {
+                    builder.append(stack.getTagCompound().getByte("Style"));
+                }
+                return builder.toString();
+            }
+        });
+
+        BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocks.blockTank), new IItemStackKeyGenerator() {
+            @Override
+            public String generateKey(ItemStack stack) {
+                StringBuilder builder = new StringBuilder();
+                builder.append(stack.getMetadata());
+                builder.append(",");
+                builder.append(stack.getItem().getRegistryName().toString());
+                builder.append(",");
+                if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
+                    FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+                    int level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) fluid.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[stack.getMetadata()]);
+                    builder.append(fluid.getFluid().getName());
+                    builder.append(",");
+                    builder.append(level);
+                }
+                return builder.toString();
+            }
+        });
+        //FIXME, Possible json models: Dynamo,
+
+        /*Blocks*/
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockDynamo, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.FACING_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.ACTIVE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockCell, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.LAYER_FACE_SPRITE_MAP);
+                for (Entry<EnumFacing, TextureAtlasSprite> spriteEntry : spriteMap.entrySet()) {
+                    String tex = spriteEntry.getValue().getIconName();
+                    builder.append(spriteEntry.getKey()).append("=").append(tex.substring(tex.lastIndexOf("/") + 1));
+                    builder.append(",");
+                }
+                builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockCell.CHARGE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.FACING_PROPERTY));
+                builder.append(",");
+                String tex = state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY).getResourcePath();
+                builder.append(tex.substring(tex.lastIndexOf("/") + 1));
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockTank, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                int metadata = state.getBlock().getMetaFromState(state);
+                FluidStack stack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
+                if (stack != null) {
+                    builder.append(stack.getUnlocalizedName());
+                    builder.append("|");
+                    if (stack.getFluid().isGaseous()) {
+                        builder.append(32 + 192 * stack.amount / TileTank.CAPACITY[metadata]);
+                    } else {
+                        builder.append((int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]));
+                    }
+                    builder.append(",");
+                }
+                builder.append(state.getValue(BlockTank.MODE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockTesseract, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.ACTIVE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockEnder.DISABLED_PROPERTY));
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockPlate, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                builder.append(state.getValue(BlockPlate.ALIGNMENT_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.FACING_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockLight, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockLight.COLOUR_MULTIPLIER_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockLight.STYLE_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockLight.ALIGNMENT_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(BlockLight.MODIFIED_PROPERTY));
+                builder.append(",");
+                builder.append(state.getValue(CommonProperties.ACTIVE_PROPERTY));
+                return builder.toString();
+            }
+        });
+        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockFrame, new IBlockStateKeyGenerator() {
+            @Override
+            public String generateKey(IExtendedBlockState state) {
+                return state.getBlock().getRegistryName().toString() + "|" + state.getBlock().getMetaFromState(state);
+            }
+        });
     }
 
     @Override

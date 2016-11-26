@@ -13,11 +13,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
-import cofh.thermalexpansion.client.IBlockLayerProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.client.bakery.IBakeryBlock;
 import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderPlate;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -58,7 +56,7 @@ import java.util.Random;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryBlock, IBlockLayerProvider {
+public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryBlock {
 
     private static class PlateMaterial extends Material {
 
@@ -110,16 +108,6 @@ public class BlockPlate extends BlockTEBase implements IBlockConfigGui, IBakeryB
     @Override
     protected BlockStateContainer createBlockState() {
         return new ExtendedBlockState.Builder(this).add(TYPES).add(ALIGNMENT_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.TYPE_PROPERTY).build();
-    }
-
-    @Override
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass > 0 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
     }
 
     @Override

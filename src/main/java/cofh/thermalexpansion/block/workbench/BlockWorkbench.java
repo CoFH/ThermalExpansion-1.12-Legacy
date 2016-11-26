@@ -11,7 +11,7 @@ import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
-import codechicken.lib.block.IBlockTextureProvider;
+import codechicken.lib.texture.IBlockTextureProvider;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.block.material.Material;

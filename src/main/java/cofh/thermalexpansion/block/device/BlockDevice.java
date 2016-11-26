@@ -4,6 +4,7 @@ import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 
+import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
 import cofh.lib.util.helpers.BlockHelper;
@@ -14,7 +15,6 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.IBlockLayeredTextureProvider;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
@@ -58,7 +58,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProvider {
+public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvider {
 
     public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
@@ -90,7 +90,7 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_LAYER_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.LAYER_FACE_SPRITE_MAP).build();
     }
 
     @Override
@@ -183,19 +183,21 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
             }
             return IconRegistry.getIcon("WorkbenchSide", 1);
         }
-        return side.ordinal() != 3 ? IconRegistry.getIcon("DeviceSide"): IconRegistry.getIcon("DeviceFace", metadata % Types.values().length);
+        return side.ordinal() != 2 ? IconRegistry.getIcon("DeviceSide"): IconRegistry.getIcon("DeviceFace", metadata % Types.values().length);
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public int getTexturePasses() {
-        return 2;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public BlockRenderLayer getRenderlayerForPass(int pass) {
-        return pass >= 1 ? BlockRenderLayer.CUTOUT : BlockRenderLayer.SOLID;
+    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof TileDeviceBase) {
+            TileDeviceBase device = ((TileDeviceBase) tileEntity);
+            if (layer == BlockRenderLayer.CUTOUT) {
+                device.getTexture(side.ordinal(), 1);
+            } else {
+                device.getTexture(side.ordinal(), 0);
+            }
+        }
+        return null;
     }
 
     @Override
@@ -220,10 +222,10 @@ public class BlockDevice extends BlockTEBase implements IBlockLayeredTextureProv
     }
 
 	@Override
-	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+    public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
-		TileEntity tile = world.getTileEntity(pos);
+        TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileAugmentable) {
 			TileAugmentable theTile = (TileAugmentable) tile;

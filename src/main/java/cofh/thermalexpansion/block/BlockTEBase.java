@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.raytracer.RayTracer;
+import codechicken.lib.render.particle.CustomParticleHandler;
+import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.block.BlockCoFHBase;
@@ -14,6 +16,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.particle.ParticleManager;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
@@ -33,6 +36,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
@@ -162,4 +167,23 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 		return ret;
 	}
 
+    @Override
+    @SideOnly(Side.CLIENT)//Because vanilla removed state and side based particle textures in 1.8..
+    public boolean addHitEffects(IBlockState state, World world, RayTraceResult trace, ParticleManager manager) {
+        if (this instanceof IWorldBlockTextureProvider) {
+            CustomParticleHandler.addHitEffects(state, world, trace, manager, ((IWorldBlockTextureProvider) this));
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+        if (this instanceof IWorldBlockTextureProvider) {
+            CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
+            return true;
+        }
+        return false;
+    }
 }
