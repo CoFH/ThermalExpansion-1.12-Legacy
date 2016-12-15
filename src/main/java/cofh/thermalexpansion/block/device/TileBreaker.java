@@ -14,6 +14,9 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.LinkedList;
@@ -24,12 +27,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.WorldServer;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInventoryConnection, ITickable {
+public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
 
 	public static void initialize() {
 
@@ -183,42 +183,18 @@ public class TileBreaker extends TileDeviceBase implements IFluidHandler, IInven
         return nbt;
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		return 0;
-	}
-
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return CoFHProps.EMPTY_TANK_INFO;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(EmptyFluidHandler.INSTANCE);
+        }
+        return super.getCapability(capability, facing);
+    }
 
 	/* IInventoryConnection */
 	@Override

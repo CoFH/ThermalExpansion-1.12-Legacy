@@ -19,6 +19,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.UUID;
@@ -33,6 +34,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.IItemHandler;
+import net.minecraftforge.items.wrapper.InvWrapper;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nullable;
 
@@ -70,6 +75,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
+	//Extracts an item FROM an inventory to the machine.
 	public boolean extractItem(int slot, int amount, EnumFacing side) {
 
 		if (slot > inventory.length) {
@@ -85,80 +91,27 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
 		if (Utils.isAccessibleInput(adjInv, side)) {
-			if (adjInv instanceof ISidedInventory) {
-				ISidedInventory sidedInv = (ISidedInventory) adjInv;
-				int slots[] = sidedInv.getSlotsForFace(side.getOpposite());
-
-				if (slots == null) {
-					return false;
-				}
-				for (int i = 0; i < slots.length && amount > 0; i++) {
-					ItemStack queryStack = sidedInv.getStackInSlot(slots[i]);
-					if (queryStack == null) {
-						continue;
-					}
-					if (sidedInv.canExtractItem(slots[i], queryStack, side.getOpposite())) {
-						if (stack == null) {
-							if (isItemValidForSlot(slot, queryStack)) {
-								int toExtract = Math.min(amount, queryStack.stackSize);
-								stack = ItemHelper.cloneStack(queryStack, toExtract);
-								queryStack.stackSize -= toExtract;
-
-								if (queryStack.stackSize <= 0) {
-									sidedInv.setInventorySlotContents(slots[i], null);
-								} else {
-									sidedInv.setInventorySlotContents(slots[i], queryStack);
-								}
-								amount -= toExtract;
-							}
-						} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
-							int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
-							stack.stackSize += toExtract;
-							queryStack.stackSize -= toExtract;
-
-							if (queryStack.stackSize <= 0) {
-								sidedInv.setInventorySlotContents(slots[i], null);
-							} else {
-								sidedInv.setInventorySlotContents(slots[i], queryStack);
-							}
-							amount -= toExtract;
-						}
-					}
-				}
-			} else {
-				IInventory inv = (IInventory) adjInv;
-				for (int i = 0; i < inv.getSizeInventory() && amount > 0; i++) {
-					ItemStack queryStack = inv.getStackInSlot(i);
+				IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
+				for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
+					ItemStack queryStack = inv.extractItem(i, amount, true);
 					if (queryStack == null) {
 						continue;
 					}
 					if (stack == null) {
 						if (isItemValidForSlot(slot, queryStack)) {
 							int toExtract = Math.min(amount, queryStack.stackSize);
-							stack = ItemHelper.cloneStack(queryStack, toExtract);
-							queryStack.stackSize -= toExtract;
-
-							if (queryStack.stackSize <= 0) {
-								inv.setInventorySlotContents(i, null);
-							} else {
-								inv.setInventorySlotContents(i, queryStack);
-							}
+							stack = inv.extractItem(i, toExtract, false);
 							amount -= toExtract;
 						}
 					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
 						int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+						ItemStack extracted = inv.extractItem(slot, toExtract, false);
+						toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
 						stack.stackSize += toExtract;
-						queryStack.stackSize -= toExtract;
-
-						if (queryStack.stackSize <= 0) {
-							inv.setInventorySlotContents(i, null);
-						} else {
-							inv.setInventorySlotContents(i, queryStack);
-						}
 						amount -= toExtract;
 					}
 				}
-			}
+
 			if (initialAmount != amount) {
 				inventory[slot] = stack;
 				adjInv.markDirty();
@@ -537,4 +490,20 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return name;
 	}
 
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    }
+
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+            if (this instanceof ISidedInventory) {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
+            } else {
+                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
+            }
+        }
+        return super.getCapability(capability, facing);
+    }
 }

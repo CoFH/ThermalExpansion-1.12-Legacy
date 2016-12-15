@@ -15,6 +15,8 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -27,9 +29,10 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, ITickable {
+import javax.annotation.Nullable;
+
+public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 
 	public static void initialize() {
 
@@ -174,8 +177,7 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 			return;
 		}
 		tank.drain(
-				adjacentHandlers[0].fill(EnumFacing.UP,
-						new FluidStack(tank.getFluid(), Math.min(FluidContainerRegistry.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
+				adjacentHandlers[0].fill(new FluidStack(tank.getFluid(), Math.min(Fluid.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
 
 		if (tank.getFluidAmount() <= 0) {
 			updateRender();
@@ -187,8 +189,8 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 		byte curMode = mode;
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, 0);
-		if (FluidHelper.isFluidHandler(tile)) {
-			adjacentHandlers[0] = (IFluidHandler) tile;
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+			adjacentHandlers[0] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
 
 			if (tile instanceof TileTank) {
 				mode = 1;
@@ -201,8 +203,8 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 			adjacentTanks[0] = false;
 		}
 		tile = BlockHelper.getAdjacentTileEntity(this, 1);
-		if (FluidHelper.isFluidHandler(tile)) {
-			adjacentHandlers[1] = (IFluidHandler) tile;
+		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+			adjacentHandlers[1] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
 
             adjacentTanks[1] = tile instanceof TileTank;
 		} else {
@@ -319,68 +321,66 @@ public class TileTank extends TileTEBase implements IFluidHandler, ITileInfo, IT
 		tank.setFluid(payload.getFluidStack());
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-        int ordinal = from == null ? 6 : from.ordinal();
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
+                }
 
-		if (ordinal == 0 && mode == 1 && !adjacentTanks[0]) {
-			return 0;
-		}
-		int amount = tank.fill(resource, doFill);
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    int ordinal = facing == null ? 6 : facing.ordinal();
 
-		if (ordinal != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
-			if (amount == 0) {
-				return adjacentHandlers[1].fill(EnumFacing.DOWN, resource, doFill);
-			} else if (amount != resource.amount) {
-				FluidStack remaining = resource.copy();
-				remaining.amount -= amount;
-				return amount + adjacentHandlers[1].fill(EnumFacing.DOWN, remaining, doFill);
-			}
-		}
-		return amount;
-	}
+                    if (ordinal == 0 && mode == 1 && !adjacentTanks[0]) {
+                        return 0;
+                    }
+                    int amount = tank.fill(resource, doFill);
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                    if (ordinal != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
+                        if (amount == 0) {
+                            return adjacentHandlers[1].fill(resource, doFill);
+                        } else if (amount != resource.amount) {
+                            FluidStack remaining = resource.copy();
+                            remaining.amount -= amount;
+                            return amount + adjacentHandlers[1].fill(remaining, doFill);
+                        }
+                    }
+                    return amount;
+                }
 
-        int ordinal = from == null ? 6 : from.ordinal();
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    int ordinal = facing == null ? 6 : facing.ordinal();
 
-		if (ordinal == 0 && mode == 1) {
-			return null;
-		}
-		return tank.drain(resource, doDrain);
-	}
+                    if (ordinal == 0 && mode == 1) {
+                        return null;
+                    }
+                    return tank.drain(resource, doDrain);
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    int ordinal = facing == null ? 6 : facing.ordinal();
 
-        int ordinal = from == null ? 6 : from.ordinal();
-
-		if (ordinal == 0 && mode == 1) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return new FluidTankInfo[] { tank.getInfo() };
-	}
+                    if (ordinal == 0 && mode == 1) {
+                        return null;
+                    }
+                    return tank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, facing);
+    }
 
 	/* ITileInfo */
 	@Override

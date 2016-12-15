@@ -32,17 +32,24 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.items.CapabilityItemHandler;
+import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Locale;
 
-public class TileTesseract extends TileRSControl implements ITickable, IEnergyReceiver, IEnergyProvider, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler, IFluidHandler,
+public class TileTesseract extends TileRSControl implements ITickable, IEnergyReceiver, IEnergyProvider, IEnderEnergyHandler, IEnderFluidHandler, IEnderItemHandler,
 		IInventoryConnection, ISidedInventory {
 
 	public static void initialize() {
@@ -181,8 +188,8 @@ public class TileTesseract extends TileRSControl implements ITickable, IEnergyRe
 			if (tile instanceof TileTesseract) {
 				continue;
 			}
-			if (FluidHelper.isFluidHandler(tile)) {
-				adjacentFluidHandlers[i] = (IFluidHandler) tile;
+			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.VALUES[i ^ 1])) {
+				adjacentFluidHandlers[i] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.VALUES[i ^ 1]);
 			} else {
 				adjacentFluidHandlers[i] = null;
 			}
@@ -206,11 +213,11 @@ public class TileTesseract extends TileRSControl implements ITickable, IEnergyRe
 		if (tile instanceof TileTesseract) {
 			return;
 		}
-		if (FluidHelper.isFluidHandler(tile)) {
-			adjacentFluidHandlers[side] = (IFluidHandler) tile;
-		} else {
-			adjacentFluidHandlers[side] = null;
-		}
+        if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.VALUES[side ^ 1])) {
+            adjacentFluidHandlers[side] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.VALUES[side ^ 1]);
+        } else {
+            adjacentFluidHandlers[side] = null;
+        }
 		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[side ^ 1])) {
 			adjacentEnergyReceivers[side] = (IEnergyReceiver) tile;
 		} else {
@@ -835,12 +842,12 @@ public class TileTesseract extends TileRSControl implements ITickable, IEnergyRe
 
 		for (int side = fluidTrackerAdjacent; side < 6 && fluid.amount > 0; side++) {
 			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(EnumFacing.VALUES[side ^ 1], fluid, doFill);
+				fluid.amount -= adjacentFluidHandlers[side].fill(fluid, doFill);
 			}
 		}
 		for (int side = 0; side < fluidTrackerAdjacent && side < 6 && fluid.amount > 0; side++) {
 			if (adjacentFluidHandlers[side] != null) {
-				fluid.amount -= adjacentFluidHandlers[side].fill(EnumFacing.VALUES[side ^ 1], fluid, doFill);
+				fluid.amount -= adjacentFluidHandlers[side].fill(fluid, doFill);
 			}
 		}
 
@@ -917,45 +924,46 @@ public class TileTesseract extends TileRSControl implements ITickable, IEnergyRe
 		return true;
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+    }
 
-		if (frequency == -1 || !redstoneControlOrDisable() || !canSendFluid() || ServerHelper.isClientWorld(worldObj) || resource == null) {
-			return 0;
-		}
-		return sendFluid(resource, doFill);
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    return new IFluidTankProperties[]{new FluidTankProperties(null, Integer.MAX_VALUE, true, false)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    if (frequency == -1 || !redstoneControlOrDisable() || !canSendFluid() || ServerHelper.isClientWorld(worldObj) || resource == null) {
+                        return 0;
+                    }
+                    return sendFluid(resource, doFill);
+                }
 
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    return null;
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return CoFHProps.EMPTY_TANK_INFO;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    return null;
+                }
+            });
+        }
+        if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+	        return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(this, facing));
+        }
+        return super.getCapability(capability, facing);
+    }
 
 	/* ISecurable */
 	@Override

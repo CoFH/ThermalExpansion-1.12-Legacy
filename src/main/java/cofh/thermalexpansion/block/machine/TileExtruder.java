@@ -15,6 +15,11 @@ import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,14 +27,14 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileExtruder extends TileMachineBase implements ICustomInventory, IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	public byte processLevel;
 
@@ -477,49 +482,48 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory, I
 		markDirty();
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		if (from != null && sideCache[from.ordinal()] != 1) {
-			return 0;
-		}
-		if (resource.getFluid() == FluidRegistry.LAVA) {
-			return hotTank.fill(resource, doFill);
-		} else if (resource.getFluid() == FluidRegistry.WATER) {
-			return coldTank.fill(resource, doFill);
-		}
-		return 0;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    FluidTankInfo hotInfo = hotTank.getInfo();
+                    FluidTankInfo coldInfo = coldTank.getInfo();
+                    return new IFluidTankProperties[] {new FluidTankProperties(hotInfo.fluid, hotInfo.capacity, true, false), new FluidTankProperties(coldInfo.fluid, coldInfo.capacity, true, false)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    if (from != null && sideCache[from.ordinal()] != 1) {
+                        return 0;
+                    }
+                    if (resource.getFluid() == FluidRegistry.LAVA) {
+                        return hotTank.fill(resource, doFill);
+                    } else if (resource.getFluid() == FluidRegistry.WATER) {
+                        return coldTank.fill(resource, doFill);
+                    }
+                    return 0;
+                }
 
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    return null;
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return new FluidTankInfo[] { hotTank.getInfo(), coldTank.getInfo() };
-	}
-
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    return null;
+                }
+            });
+        }
+        return super.getCapability(capability, from);
+    }
 }

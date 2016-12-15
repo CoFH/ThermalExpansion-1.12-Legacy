@@ -14,6 +14,11 @@ import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -21,13 +26,13 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileInsolator extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileInsolator extends TileMachineBase {
 
 	public static void initialize() {
 
@@ -464,41 +469,39 @@ public class TileInsolator extends TileMachineBase implements IFluidHandler {
 		return slot > 1 || InsolatorManager.isItemValid(stack);
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		return tank.fill(resource, doFill);
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    FluidTankInfo info = tank.getInfo();
+                    return new IFluidTankProperties[]{new FluidTankProperties(info.fluid, info.capacity, true, false)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    return tank.fill(resource, doFill);
+                }
 
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    return null;
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return new FluidTankInfo[] { tank.getInfo() };
-	}
-
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    return null;
+                }
+            });
+        }
+        return super.getCapability(capability, facing);
+    }
 }

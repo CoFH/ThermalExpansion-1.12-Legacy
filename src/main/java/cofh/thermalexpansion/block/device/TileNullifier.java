@@ -10,6 +10,10 @@ import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -19,10 +23,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileNullifier extends TileDeviceBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileNullifier extends TileDeviceBase {
 
 	public static void initialize() {
 
@@ -98,42 +102,40 @@ public class TileNullifier extends TileDeviceBase implements IFluidHandler {
 
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		return isSideAccessible(from) ? resource.amount : 0;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    return new IFluidTankProperties[] {new FluidTankProperties(null, Integer.MAX_VALUE, true, false)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    return isSideAccessible(facing) ? resource.amount : 0;
+                }
 
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    return null;
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		return null;
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    return null;
+                }
+            });
+        }
+        return super.getCapability(capability, facing);
+    }
 
 	/* IInventory */
 	@Override

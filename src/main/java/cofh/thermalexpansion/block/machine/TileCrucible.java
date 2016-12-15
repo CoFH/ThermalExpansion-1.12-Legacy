@@ -18,18 +18,23 @@ import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileCrucible extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileCrucible extends TileMachineBase {
 
 	public static void initialize() {
 
@@ -308,55 +313,50 @@ public class TileCrucible extends TileMachineBase implements IFluidHandler {
 		}
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		return 0;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    FluidTankInfo info = tank.getInfo();
+                    return new IFluidTankProperties[] {new FluidTankProperties(info.fluid, info.capacity, false, true)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    return 0;
+                }
 
-		if (from != null && sideCache[from.ordinal()] != 2) {
-			return null;
-		}
-		if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-			return null;
-		}
-		return tank.drain(resource.amount, doDrain);
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    if (from != null && sideCache[from.ordinal()] != 2) {
+                        return null;
+                    }
+                    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+                        return null;
+                    }
+                    return tank.drain(resource.amount, doDrain);
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		if (from != null && sideCache[from.ordinal()] != 2) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		// return sideCache[from.ordinal()] == 2;
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		// if (sideCache[from.ordinal()] != 2) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		return new FluidTankInfo[] { tank.getInfo() };
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    if (from != null && sideCache[from.ordinal()] != 2) {
+                        return null;
+                    }
+                    return tank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, from);
+    }
 
 	/* ISidedTexture */
 	@Override

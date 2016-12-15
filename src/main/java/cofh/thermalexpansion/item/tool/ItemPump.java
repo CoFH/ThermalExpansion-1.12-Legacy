@@ -74,7 +74,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 		RayTraceResult traceResult = RayTracer.retrace(player, getMode(stack) == INPUT);
 
 		if (traceResult != null && world.isBlockModifiable(player, traceResult.getBlockPos())) {
-			TileEntity tile = world.getTileEntity(traceResult.getBlockPos());;
+			TileEntity tile = world.getTileEntity(traceResult.getBlockPos());
 			FluidStack resource;
 			boolean success = false;
 

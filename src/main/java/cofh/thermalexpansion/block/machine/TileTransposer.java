@@ -19,19 +19,24 @@ import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileTransposer extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileTransposer extends TileMachineBase {
 
 	public static void initialize() {
 
@@ -705,66 +710,50 @@ public class TileTransposer extends TileMachineBase implements IFluidHandler {
 		return slot != 0 || (FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack));
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		if (reverse || from == null || sideCache[from.ordinal()] != 1) {
-			return 0;
-		}
-		return tank.fill(resource, doFill);
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    FluidTankInfo info = tank.getInfo();
+                    return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 3)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    if (reverse || from == null || sideCache[from.ordinal()] != 1) {
+                        return 0;
+                    }
+                    return tank.fill(resource, doFill);
+                }
 
-		if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
-			return null;
-		}
-		return tank.drain(resource, doDrain);
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+                        return null;
+                    }
+                    return tank.drain(resource, doDrain);
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		if (from == null) {
-			return false;
-		}
-		return !reverse && sideCache[from.ordinal()] == 1;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		if (from == null) {
-			return false;
-		}
-		return reverse && sideCache[from.ordinal()] == 3;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		// if (reverse) {
-		// if (sideCache[from.ordinal()] != 3) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		// } else {
-		// if (sideCache[from.ordinal()] != 1) {
-		// return CoFHProps.EMPTY_TANK_INFO;
-		// }
-		// }
-		return new FluidTankInfo[] { tank.getInfo() };
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+                        return null;
+                    }
+                    return tank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, from);
+    }
 
 	/* ISidedTexture */
 	@Override

@@ -7,6 +7,10 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -18,9 +22,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileDynamoCompression extends TileDynamoBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileDynamoCompression extends TileDynamoBase {
 
 	static final int TYPE = BlockDynamo.Types.COMPRESSION.ordinal();
 
@@ -171,54 +176,65 @@ public class TileDynamoCompression extends TileDynamoBase implements IFluidHandl
 		}
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-			return 0;
-		}
-		if (isValidFuel(resource)) {
-			return fuelTank.fill(resource, doFill);
-		}
-		if (isValidCoolant(resource)) {
-			return coolantTank.fill(resource, doFill);
-		}
-		return 0;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    return FluidTankProperties.convert(new FluidTankInfo[] { fuelTank.getInfo(), coolantTank.getInfo() });
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+                        return 0;
+                    }
+                    if (isValidFuel(resource)) {
+                        return fuelTank.fill(resource, doFill);
+                    }
+                    if (isValidCoolant(resource)) {
+                        return coolantTank.fill(resource, doFill);
+                    }
+                    return 0;
+                }
 
-		if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-			return null;
-		}
-		if (resource.equals(fuelTank.getFluid())) {
-			return fuelTank.drain(resource.amount, doDrain);
-		}
-		if (resource.equals(coolantTank.getFluid())) {
-			return coolantTank.drain(resource.amount, doDrain);
-		}
-		return null;
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+                        return null;
+                    }
+                    if (resource.equals(fuelTank.getFluid())) {
+                        return fuelTank.drain(resource.amount, doDrain);
+                    }
+                    if (resource.equals(coolantTank.getFluid())) {
+                        return coolantTank.drain(resource.amount, doDrain);
+                    }
+                    return null;
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
 
-		if (!augmentCoilDuct && from.ordinal() == facing) {
-			return null;
-		}
-		if (fuelTank.getFluidAmount() <= 0) {
-			return coolantTank.drain(maxDrain, doDrain);
-		}
-		return fuelTank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return new FluidTankInfo[] { fuelTank.getInfo(), coolantTank.getInfo() };
-	}
+                    if (!augmentCoilDuct && from.ordinal() == facing) {
+                        return null;
+                    }
+                    if (fuelTank.getFluidAmount() <= 0) {
+                        return coolantTank.drain(maxDrain, doDrain);
+                    }
+                    return fuelTank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, from);
+    }
 
 	/* FUEL MANAGER */
 	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();

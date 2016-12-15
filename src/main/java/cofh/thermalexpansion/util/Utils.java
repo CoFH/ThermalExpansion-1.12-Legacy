@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.util;
 
 
+import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.util.ItemUtils;
 import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
@@ -9,8 +10,6 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
@@ -68,27 +67,29 @@ public class Utils {
 		return stack == null ? 0 : stack.stackSize;
 	}
 
-	public static int addToInsertion(IInventory tile, EnumFacing from, ItemStack stack) {
-
-		if (!InventoryHelper.isInsertion(tile)) {
-			return stack.stackSize;
-		}
-		stack = InventoryHelper.addToInsertion(tile, from, stack);
-
-		return stack == null ? 0 : stack.stackSize;
-	}
-
-	public static int canAddToInventory(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
-
-		TileEntity tile = worldObj.getTileEntity(pos);
-
-		if (!InventoryHelper.isInventory(tile)) {
-			return stack.stackSize;
-		}
-		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from.getOpposite());
-
-		return stack == null ? 0 : stack.stackSize;
-	}
+//	@Deprecated
+//	public static int addToInsertion(IInventory tile, EnumFacing from, ItemStack stack) {
+//
+//		if (!InventoryHelper.isInsertion(tile)) {
+//			return stack.stackSize;
+//		}
+//		stack = InventoryHelper.addToInsertion(tile, from, stack);
+//
+//		return stack == null ? 0 : stack.stackSize;
+//	}
+//
+//  @Deprecated
+//	public static int canAddToInventory(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
+//
+//		TileEntity tile = worldObj.getTileEntity(pos);
+//
+//		if (!InventoryHelper.isInventory(tile)) {
+//			return stack.stackSize;
+//		}
+//		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from.getOpposite());
+//
+//		return stack == null ? 0 : stack.stackSize;
+//	}
 
 	public static int addToPipeTile(TileEntity theTile, EnumFacing side, ItemStack stack) {
 
@@ -148,21 +149,13 @@ public class Utils {
 	}
 
 	public static boolean isAccessibleInput(TileEntity tile, EnumFacing side) {
-
-		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getSlotsForFace(side.getOpposite()).length <= 0) {
-			return false;
-		}
-        return tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0;
+        return InventoryUtils.hasItemHandlerCap(tile, side.getOpposite()) && InventoryUtils.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
     }
 
 	public static boolean isAccessibleOutput(TileEntity tile, EnumFacing side) {
-
-		if (tile instanceof ISidedInventory && ((ISidedInventory) tile).getSlotsForFace(side.getOpposite()).length <= 0) {
-			return false;
-		}
-		if (tile instanceof IInventory && ((IInventory) tile).getSizeInventory() > 0) {
-			return true;
-		}
+	    if (InventoryUtils.hasItemHandlerCap(tile, side.getOpposite())) {
+	        return InventoryUtils.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
+        }
         return tile instanceof IItemDuct;
     }
 

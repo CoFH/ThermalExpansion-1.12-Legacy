@@ -43,6 +43,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -147,14 +149,14 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
             return true;
         }
         TileTank tile = (TileTank) world.getTileEntity(pos);
+        if (heldItem == null) {
+            return false;
+        }
+        if (FluidUtil.interactWithFluidHandler(heldItem, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player)) {
+            return true;
+        }
 
-        if (FluidHelper.fillHandlerWithContainer(tile.getWorld(), tile, player)) {
-            return true;
-        }
-        if (FluidHelper.fillContainerFromHandler(tile.getWorld(), tile, player, tile.getTankFluid())) {
-            return true;
-        }
-        if (ItemHelper.isPlayerHoldingFluidContainer(player)) {
+        if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
             return true;
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);

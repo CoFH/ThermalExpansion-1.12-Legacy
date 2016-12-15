@@ -15,18 +15,22 @@ import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
 
-public class TileAccumulator extends TileMachineBase implements IFluidHandler {
+import javax.annotation.Nullable;
+
+public class TileAccumulator extends TileMachineBase {
 
 	public static void initialize() {
 
@@ -273,50 +277,48 @@ public class TileAccumulator extends TileMachineBase implements IFluidHandler {
 		tank.getFluid().amount = payload.getInt();
 	}
 
-	/* IFluidHandler */
-	@Override
-	public int fill(EnumFacing from, FluidStack resource, boolean doFill) {
+    @Override
+    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+    }
 
-		return 0;
-	}
+    @Override
+    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+                @Override
+                public IFluidTankProperties[] getTankProperties() {
+                    FluidTankInfo info = tank.getInfo();
+                    return new IFluidTankProperties[] {new FluidTankProperties(info.fluid, info.capacity, false, true)};
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, FluidStack resource, boolean doDrain) {
+                @Override
+                public int fill(FluidStack resource, boolean doFill) {
+                    return 0;
+                }
 
-		if (from != null && sideCache[from.ordinal()] < 1) {
-			return null;
-		}
-		if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
-			return null;
-		}
-		return tank.drain(resource.amount, doDrain);
-	}
+                @Nullable
+                @Override
+                public FluidStack drain(FluidStack resource, boolean doDrain) {
+                    if (from != null && sideCache[from.ordinal()] < 1) {
+                        return null;
+                    }
+                    if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
+                        return null;
+                    }
+                    return tank.drain(resource.amount, doDrain);
+                }
 
-	@Override
-	public FluidStack drain(EnumFacing from, int maxDrain, boolean doDrain) {
-
-		if (from != null && sideCache[from.ordinal()] < 1) {
-			return null;
-		}
-		return tank.drain(maxDrain, doDrain);
-	}
-
-	@Override
-	public boolean canFill(EnumFacing from, Fluid fluid) {
-
-		return false;
-	}
-
-	@Override
-	public boolean canDrain(EnumFacing from, Fluid fluid) {
-
-		return true;
-	}
-
-	@Override
-	public FluidTankInfo[] getTankInfo(EnumFacing from) {
-
-		return new FluidTankInfo[] { tank.getInfo() };
-	}
-
+                @Nullable
+                @Override
+                public FluidStack drain(int maxDrain, boolean doDrain) {
+                    if (from != null && sideCache[from.ordinal()] < 1) {
+                        return null;
+                    }
+                    return tank.drain(maxDrain, doDrain);
+                }
+            });
+        }
+        return super.getCapability(capability, from);
+    }
 }
