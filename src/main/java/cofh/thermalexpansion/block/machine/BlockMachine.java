@@ -32,6 +32,8 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
@@ -163,7 +165,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
-			if (FluidHelper.fillHandlerWithContainer(world, (IFluidHandler) tile, player)) {
+			if (FluidUtil.interactWithFluidHandler(heldItem, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player)) {
 				return true;
 			}
 		}

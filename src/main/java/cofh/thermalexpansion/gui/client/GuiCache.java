@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCache extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "Cache.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "cache.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateImpulse myTile;

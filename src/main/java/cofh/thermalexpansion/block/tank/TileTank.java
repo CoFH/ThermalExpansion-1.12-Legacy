@@ -189,7 +189,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		byte curMode = mode;
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, 0);
-		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
+		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP)) {
 			adjacentHandlers[0] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.UP);
 
 			if (tile instanceof TileTank) {
@@ -203,7 +203,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 			adjacentTanks[0] = false;
 		}
 		tile = BlockHelper.getAdjacentTileEntity(this, 1);
-		if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
+		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
 			adjacentHandlers[1] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
 
             adjacentTanks[1] = tile instanceof TileTank;

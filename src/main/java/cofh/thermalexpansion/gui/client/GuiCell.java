@@ -23,7 +23,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCell extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "Cell.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "cell.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileCell myTile;

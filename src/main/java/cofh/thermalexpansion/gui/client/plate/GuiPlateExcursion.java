@@ -20,7 +20,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiPlateExcursion extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Plate.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/plate.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateExcursion myTile;

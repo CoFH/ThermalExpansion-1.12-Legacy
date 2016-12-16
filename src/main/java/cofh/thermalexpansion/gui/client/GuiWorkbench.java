@@ -26,7 +26,7 @@ public class GuiWorkbench extends GuiBaseAdv {
 
 	static {
 		for (int i = 0; i < 4; i++) {
-			TEX_PATH[i] = TEProps.PATH_GUI_WORKBENCH + "Workbench" + (i + 1) + ".png";
+			TEX_PATH[i] = TEProps.PATH_GUI_WORKBENCH + "workbench_" + (i + 1) + ".png";
 			TEXTURES[i] = new ResourceLocation(TEX_PATH[i]);
 		}
 	}

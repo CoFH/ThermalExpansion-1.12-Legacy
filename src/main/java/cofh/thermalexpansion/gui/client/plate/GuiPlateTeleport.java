@@ -33,7 +33,7 @@ import org.lwjgl.input.Keyboard;
 
 public class GuiPlateTeleport extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "plate/Teleport.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "plate/teleport.png";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TilePlateTeleporter myTile;

@@ -19,14 +19,12 @@ import cofh.thermalexpansion.block.ender.BlockEnder;
 import cofh.thermalexpansion.block.light.BlockLight;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.plate.BlockPlate;
-import cofh.thermalexpansion.block.simple.BlockAirForce;
-import cofh.thermalexpansion.block.simple.BlockAirSignal;
-import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.block.simple.BlockGlass;
+import cofh.thermalexpansion.block.simple.*;
 import cofh.thermalexpansion.block.sponge.BlockSponge;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
+import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.client.IBlockStateKeyGenerator;
 import cofh.thermalexpansion.client.IItemStackKeyGenerator;
 import cofh.thermalexpansion.client.bakery.BlockBakery;
@@ -42,10 +40,12 @@ import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.render.item.SchematicBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.block.statemap.StateMapperBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
@@ -124,6 +124,25 @@ public class ProxyClient extends Proxy {
         ModelRegistryHelper.register(getDiagramLocation("schematic_override"), new SchematicBakedModel());
         ModelLoader.registerItemVariants(TEItems.itemDiagram, getDiagramLocation("schematic"));
         ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
+
+        ModelLoader.setCustomStateMapper(TEBlocks.blockGlass, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation("thermalexpansion:glass", "type=" + state.getValue(BlockGlass.TYPES));
+            }
+        });
+        ModelLoader.setCustomStateMapper(TEBlocks.blockRockwool, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation("thermalexpansion:rockwool", "type=" + state.getValue(BlockRockwool.COLOR));
+            }
+        });
+        ModelLoader.setCustomStateMapper(TEBlocks.blockWorkbench, new StateMapperBase() {
+            @Override
+            protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+                return new ModelResourceLocation("thermalexpansion:workbench", "type=" + state.getValue(BlockWorkbench.TYPES));
+            }
+        });
 
         registerBlockToBakery(TEBlocks.blockMachine, BlockMachine.Types.values());
         registerBlockToBakery(TEBlocks.blockDevice, BlockDevice.Types.values());

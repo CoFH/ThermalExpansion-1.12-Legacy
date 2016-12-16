@@ -40,11 +40,11 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
     public static void initialize() {
 
-        texture[EnumType.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Basic.png");
-        texture[EnumType.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Hardened.png");
-        texture[EnumType.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Reinforced.png");
-        texture[EnumType.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Resonant.png");
-        texture[EnumType.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/Strongbox_Creative.png");
+        texture[EnumType.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_basic.png");
+        texture[EnumType.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_hardened.png");
+        texture[EnumType.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_reinforced.png");
+        texture[EnumType.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_resonant.png");
+        texture[EnumType.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_creative.png");
     }
 
     public void render(int metadata, int access, int facing, double x, double y, double z) {

@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiLight extends GuiBaseAdv {
 
-	static final String TEX_PATH = TEProps.PATH_GUI + "Light.png";
+	static final String TEX_PATH = TEProps.PATH_GUI + "light.png";
 	static final String LOC_PATH = "chat.thermalexpansion.light.";
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 	static final ResourceLocation SLIDER = new ResourceLocation(TEProps.PATH_GUI + "elements/Slider_Light.png");

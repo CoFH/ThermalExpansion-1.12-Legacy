@@ -185,7 +185,7 @@ public class TileTesseract extends TileRSControl implements ITickable, IEnergyRe
 		for (int i = 0; i < 6; i++) {
 			TileEntity tile = BlockHelper.getAdjacentTileEntity(this, i);
 
-			if (tile instanceof TileTesseract) {
+			if (tile instanceof TileTesseract || tile == null) {
 				continue;
 			}
 			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.VALUES[i ^ 1])) {
