@@ -198,8 +198,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	public void sendGuiNetworkData(Container container, IContainerListener player) {
 
 		super.sendGuiNetworkData(container, player);
-
-		player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
+		if (player instanceof EntityPlayer) {
+            player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
+        }
 	}
 
 	/* NBT METHODS */
