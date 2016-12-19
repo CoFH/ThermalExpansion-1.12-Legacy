@@ -130,19 +130,19 @@ public class ProxyClient extends Proxy {
         ModelLoader.setCustomStateMapper(TEBlocks.blockGlass, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation("thermalexpansion:glass", "type=" + state.getValue(BlockGlass.TYPES));
+                return new ModelResourceLocation("thermalexpansion:glass", "type=" + state.getValue(BlockGlass.TYPES).getName());
             }
         });
         ModelLoader.setCustomStateMapper(TEBlocks.blockRockwool, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation("thermalexpansion:rockwool", "color=" + state.getValue(BlockRockwool.COLOR));
+                return new ModelResourceLocation("thermalexpansion:rockwool", "color=" + state.getValue(BlockRockwool.COLOR).getName());
             }
         });
         ModelLoader.setCustomStateMapper(TEBlocks.blockWorkbench, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation("thermalexpansion:workbench", "type=" + state.getValue(BlockWorkbench.TYPES));
+                return new ModelResourceLocation("thermalexpansion:workbench", "type=" + state.getValue(BlockWorkbench.TYPES).getName());
             }
         });
 
