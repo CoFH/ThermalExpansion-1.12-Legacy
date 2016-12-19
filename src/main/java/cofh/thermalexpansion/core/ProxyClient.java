@@ -10,6 +10,7 @@ import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.CommonProperties;
+import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;
@@ -40,6 +41,7 @@ import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.render.item.SchematicBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
+import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -134,7 +136,7 @@ public class ProxyClient extends Proxy {
         ModelLoader.setCustomStateMapper(TEBlocks.blockRockwool, new StateMapperBase() {
             @Override
             protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-                return new ModelResourceLocation("thermalexpansion:rockwool", "type=" + state.getValue(BlockRockwool.COLOR));
+                return new ModelResourceLocation("thermalexpansion:rockwool", "color=" + state.getValue(BlockRockwool.COLOR));
             }
         });
         ModelLoader.setCustomStateMapper(TEBlocks.blockWorkbench, new StateMapperBase() {
@@ -170,18 +172,18 @@ public class ProxyClient extends Proxy {
             ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocks.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=true,type=" + BlockSponge.NAMES[i]));
         }
 
-        for (BlockCell.Types type : BlockCell.Types.values()) {
-            ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockWorkbench.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
+        for (EnumType type :  EnumType.values()) {
+            ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:workbench", "type=" + type.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockWorkbench), type.ordinal(), location);
         }
 
         for (BlockGlass.Types type : BlockGlass.Types.values()) {
-            ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockGlass.getRegistryName(), "type=" + type.getName().toLowerCase(Locale.US));
+            ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:glass", "type=" + type.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockGlass), type.ordinal(), location);
         }
 
         for (EnumDyeColor color : EnumDyeColor.values()) {
-            ModelResourceLocation location = new ModelResourceLocation(TEBlocks.blockRockwool.getRegistryName(), "color=" + color.getName().toLowerCase(Locale.US));
+            ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:rockwool", "color=" + color.getName().toLowerCase(Locale.US));
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocks.blockRockwool), color.ordinal(), location);
         }
 
