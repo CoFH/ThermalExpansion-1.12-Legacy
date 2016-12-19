@@ -115,6 +115,11 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
     }
 
     @Override
+    public boolean isFullCube(IBlockState state) {
+        return false;
+    }
+
+    @Override
     public boolean canPlaceTorchOnTop(IBlockState state, IBlockAccess world, BlockPos pos) {
 
         return true;
@@ -128,7 +133,8 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
     @Override
     public boolean shouldSideBeRendered(IBlockState blockState, IBlockAccess blockAccess, BlockPos pos, EnumFacing side) {
-        return blockState.getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
+        IBlockState offset = blockAccess.getBlockState(pos.offset(side));
+        return offset.getBlock() != this && super.shouldSideBeRendered(blockState, blockAccess, pos, side);
     }
 
     //@Override

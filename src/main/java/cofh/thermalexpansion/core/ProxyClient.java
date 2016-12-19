@@ -413,13 +413,13 @@ public class ProxyClient extends Proxy {
     @SubscribeEvent
     public void registerIcons(TextureStitchEvent.Pre event) {
 
-        IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:items/icons/icon_Config_Tesseract", event.getMap());
+        IconRegistry.addIcon("IconConfigTesseract", "thermalexpansion:items/icons/icon_config_tesseract", event.getMap());
         IconRegistry.addIcon("IconRecvOnly", "thermalexpansion:items/icons/icon_recvonly", event.getMap());
         IconRegistry.addIcon("IconSendOnly", "thermalexpansion:items/icons/icon_sendonly", event.getMap());
         IconRegistry.addIcon("IconSendRecv", "thermalexpansion:items/icons/icon_sendrecv", event.getMap());
         IconRegistry.addIcon("IconBlocked", "thermalexpansion:items/icons/icon_blocked", event.getMap());
         IconRegistry.addIcon("IconSchematic", "thermalexpansion:items/diagram/schematic", event.getMap());
-        IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:items/icons/Icon_SlotSchematic", event.getMap());
+        IconRegistry.addIcon("IconSlotSchematic", "thermalexpansion:items/icons/icon_slotschematic", event.getMap());
         IconRegistry.addIcon("FlorbMask", "thermalexpansion:items/florb/florb_mask", event.getMap());
         IconRegistry.addIcon("FlorbOutline", "thermalexpansion:items/florb/florb_outline", event.getMap());
 

@@ -21,21 +21,17 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 
     //public static final RenderEntityFlorb instance = new RenderEntityFlorb();
 
-    static {
+    protected RenderEntityFlorb(RenderManager renderManager) {
+        super(renderManager);
+    }
+
+    public static void initialize() {
         RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, new IRenderFactory<EntityFlorb>() {
             @Override
             public Render<? super EntityFlorb> createRenderFor(RenderManager manager) {
                 return new RenderEntityFlorb(manager);
             }
         });
-    }
-
-    protected RenderEntityFlorb(RenderManager renderManager) {
-        super(renderManager);
-    }
-
-    public static void initialize() {
-
     }
 
     @Override
