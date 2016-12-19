@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class GuiExtruder extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Extruder.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "extruder.png");
 
 	TileExtruder myTile;
 

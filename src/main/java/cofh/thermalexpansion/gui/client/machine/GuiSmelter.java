@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiSmelter extends GuiAugmentableBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Smelter.png";
+	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "smelter.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileSmelter myTile;

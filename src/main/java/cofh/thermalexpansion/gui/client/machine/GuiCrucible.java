@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCrucible extends GuiAugmentableBase {
 
-	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Crucible.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crucible.png");
 
 	ElementBase slotInput;
 	ElementBase slotOutput;

@@ -17,7 +17,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiInsolator extends GuiAugmentableBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Insolator.png";
+	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "insolator.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileInsolator myTile;

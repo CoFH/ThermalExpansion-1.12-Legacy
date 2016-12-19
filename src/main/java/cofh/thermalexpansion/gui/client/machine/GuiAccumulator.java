@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiAccumulator extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Accumulator.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "accumulator.png");
 
 	ElementBase slotOutput;
 

@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiBuffer extends GuiAugmentableBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Buffer.png";
+	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "buffer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileBuffer myTile;

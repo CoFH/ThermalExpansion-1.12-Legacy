@@ -13,7 +13,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiActivator extends GuiAugmentableBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Activator.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "activator.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileActivator myTile;

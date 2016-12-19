@@ -19,7 +19,7 @@ import java.io.IOException;
 
 public class GuiPrecipitator extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Precipitator.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "precipitator.png");
 
 	TilePrecipitator myTile;
 

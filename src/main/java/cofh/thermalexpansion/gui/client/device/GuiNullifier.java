@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiNullifier extends GuiAugmentableBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Nullifier.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "nullifier.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	public GuiNullifier(InventoryPlayer inventory, TileEntity tile) {

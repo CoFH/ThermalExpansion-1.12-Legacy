@@ -19,7 +19,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiTransposer extends GuiAugmentableBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "Transposer.png";
+	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "transposer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileTransposer myTile;

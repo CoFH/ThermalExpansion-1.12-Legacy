@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiSawmill extends GuiAugmentableBase {
 
-	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Sawmill.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "sawmill.png");
 
 	ElementBase slotInput;
 	ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];

@@ -12,7 +12,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiLexicon extends GuiAugmentableBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Lexicon.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "lexicon.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	TileLexicon myTile;

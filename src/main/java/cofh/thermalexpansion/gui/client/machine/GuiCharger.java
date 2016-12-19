@@ -14,7 +14,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCharger extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "Charger.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "charger.png");
 
 	ElementBase slotInput;
 	ElementBase slotOutput;

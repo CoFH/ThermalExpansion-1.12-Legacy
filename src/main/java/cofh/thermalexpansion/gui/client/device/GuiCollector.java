@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCollector extends GuiAugmentableBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "Breaker.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "breaker.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	public GuiCollector(InventoryPlayer inventory, TileEntity tile) {
