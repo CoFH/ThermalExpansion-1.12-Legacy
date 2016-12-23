@@ -139,7 +139,7 @@ public class TileAccumulator extends TileMachineBase {
 
 	protected void updateAdjacentSources() {
 
-		inHell = worldObj.getBiomeGenForCoords(getPos()) == Biomes.HELL;
+		inHell = worldObj.getBiome(getPos()) == Biomes.HELL;
 		adjacentSources = 0;
 
 		if (isWater(worldObj.getBlockState(getPos().down()))) {
