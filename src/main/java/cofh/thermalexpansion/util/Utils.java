@@ -181,7 +181,7 @@ public class Utils {
         }
         if (stack.getItem() instanceof IToolHammer) {
             BlockPos pos = traceResult.getBlockPos();
-            return ((IToolHammer) stack.getItem()).isUsable(stack, player, pos.getX(), pos.getY(), pos.getZ());
+            return ((IToolHammer) stack.getItem()).isUsable(stack, player, pos);
         } else if (bcWrenchExists) {
             return canHandleBCWrench(player, hand, stack, traceResult);
         }
@@ -201,7 +201,7 @@ public class Utils {
         }
         if (stack.getItem() instanceof IToolHammer) {
             BlockPos pos = traceResult.getBlockPos();
-            ((IToolHammer) stack.getItem()).toolUsed(stack, player, pos.getX(), pos.getY(), pos.getZ());
+            ((IToolHammer) stack.getItem()).toolUsed(stack, player, pos);
         } else if (bcWrenchExists) {
             bcWrenchUsed(player, hand, stack, traceResult);
         }

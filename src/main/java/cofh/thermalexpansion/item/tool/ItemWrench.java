@@ -119,13 +119,13 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 
 	/* IToolHammer */
 	@Override
-	public boolean isUsable(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+	public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
 
 		return true;
 	}
 
 	@Override
-	public void toolUsed(ItemStack item, EntityLivingBase user, int x, int y, int z) {
+	public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
 
 	}
 
