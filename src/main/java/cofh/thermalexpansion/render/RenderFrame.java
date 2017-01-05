@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -10,8 +9,7 @@ import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.simple.BlockFrame.Types;
-import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
-import cofh.thermalexpansion.client.bakery.ISimpleBlockBakery;
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;

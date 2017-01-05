@@ -3,6 +3,7 @@ package cofh.thermalexpansion.core;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.api.tileentity.ISecurable;
@@ -26,10 +27,10 @@ import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
 import cofh.thermalexpansion.block.workbench.BlockWorkbench;
-import cofh.thermalexpansion.client.IBlockStateKeyGenerator;
-import cofh.thermalexpansion.client.IItemStackKeyGenerator;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.model.TEBakedModel;
+import codechicken.lib.model.blockbakery.IBlockStateKeyGenerator;
+import codechicken.lib.model.blockbakery.IItemStackKeyGenerator;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEFlorbs;
@@ -41,7 +42,6 @@ import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.render.item.SchematicBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.BlockWorldState;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
@@ -84,7 +84,6 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void preInit() {
-        BlockBakery.init();
 
         RenderStrongbox.registerRenderers();
 
@@ -206,7 +205,7 @@ public class ProxyClient extends Proxy {
     //FIXME: Do per side particle grabbing.
     public static void registerBlockToBakery(Block block, IIconRegister iconRegister, IParticleProvider[] types) {
         for (IParticleProvider type : types) {
-            IBakedModel model = new TEBakedModel(type.getParticleTexture());
+            IBakedModel model = new CCBakeryModel(type.getParticleTexture());
             String typeName = type.getTypeProperty().getName();
             ModelResourceLocation location = new ModelResourceLocation(block.getRegistryName(), typeName + "=" + type.getName());
             ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(block), type.meta(), location);
@@ -318,7 +317,7 @@ public class ProxyClient extends Proxy {
             public String generateKey(IExtendedBlockState state) {
                 StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
                 builder.append(",");
-                Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.LAYER_FACE_SPRITE_MAP);
+                Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
                 for (Entry<EnumFacing, TextureAtlasSprite> spriteEntry : spriteMap.entrySet()) {
                     String tex = spriteEntry.getValue().getIconName();
                     builder.append(spriteEntry.getKey()).append("=").append(tex.substring(tex.lastIndexOf("/") + 1));

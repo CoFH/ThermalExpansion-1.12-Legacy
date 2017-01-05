@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.bakery.PlanarFaceBakery;
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -14,7 +14,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
-import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -75,7 +75,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         for (EnumFacing face : EnumFacing.VALUES) {
             p2.put(face, cell.getTexture(face.ordinal(), 2));
         }
-        state = state.withProperty(CommonProperties.LAYER_FACE_SPRITE_MAP, p2);
+        state = state.withProperty(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP, p2);
         state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) cell.type);
         state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
         state = state.withProperty(CommonProperties.FACING_PROPERTY, cell.getFacing());
@@ -87,7 +87,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
     @Override
     public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
         if (face == null) {
-            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(CommonProperties.LAYER_FACE_SPRITE_MAP);
+            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
             int type = state.getValue(CommonProperties.TYPE_PROPERTY);
             int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
             int facing = state.getValue(CommonProperties.FACING_PROPERTY);

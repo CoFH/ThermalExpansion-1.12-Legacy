@@ -4,6 +4,7 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
@@ -18,8 +19,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
+import codechicken.lib.model.blockbakery.BlockBakery;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -87,7 +87,7 @@ public class BlockCache extends BlockTEBase implements IWorldBlockTextureProvide
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ CommonProperties.LAYER_FACE_SPRITE_MAP });
+        return new ExtendedBlockState(this, new IProperty[]{TYPES}, new IUnlistedProperty[]{ BlockBakeryProperties.LAYER_FACE_SPRITE_MAP });
     }
 
     @Override

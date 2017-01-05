@@ -155,7 +155,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ISound getSound() {
-		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this));
+		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
 	}
 
 	public String getSoundName() {

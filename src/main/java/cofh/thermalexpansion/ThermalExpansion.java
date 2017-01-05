@@ -93,7 +93,7 @@ public class ThermalExpansion {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.0.0";
 	public static final String version_max = "1.1.0";
-	public static final String dependencies = CoFHCore.version_group + ThermalFoundation.version_group;
+	public static final String dependencies = CoFHCore.version_group + ThermalFoundation.version_group + "required-after:CodeChickenLib";
 	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	public static final String version_group = "required-after:" + modId + "@[" + version + "," + version_max + ");";

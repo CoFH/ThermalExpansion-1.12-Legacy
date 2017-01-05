@@ -4,6 +4,7 @@ import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.crafting.RecipeAugmentable;
@@ -12,9 +13,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
+import codechicken.lib.model.blockbakery.BlockBakery;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
@@ -90,7 +90,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.LAYER_FACE_SPRITE_MAP).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).build();
     }
 
     @Override

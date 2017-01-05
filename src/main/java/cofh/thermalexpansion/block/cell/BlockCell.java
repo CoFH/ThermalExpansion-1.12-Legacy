@@ -5,6 +5,7 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgradeOverride;
 import cofh.lib.util.helpers.BlockHelper;
@@ -15,9 +16,9 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
-import cofh.thermalexpansion.client.bakery.IBakeryBlock;
-import cofh.thermalexpansion.client.bakery.ICustomBlockBakery;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
@@ -87,7 +88,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 
     @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.LAYER_FACE_SPRITE_MAP).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
+        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
     }
 
 	@Override

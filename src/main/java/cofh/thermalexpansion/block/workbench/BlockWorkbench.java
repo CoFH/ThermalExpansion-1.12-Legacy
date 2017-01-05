@@ -1,25 +1,19 @@
 package cofh.thermalexpansion.block.workbench;
 
 import codechicken.lib.item.ItemStackRegistry;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
-import codechicken.lib.texture.IBlockTextureProvider;
-import cofh.thermalexpansion.client.bakery.BlockBakery;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,18 +29,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider {
+public class BlockWorkbench extends BlockTEBase {
 
     public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
 
@@ -69,14 +59,8 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
     }
 
     @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
-    }
-
-    @Override
     protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.SPRITE_FACE_PROPERTY).build();
+        return new BlockStateContainer(this, TYPES);
     }
 
     @Override
@@ -148,28 +132,6 @@ public class BlockWorkbench extends BlockTEBase implements IBlockTextureProvider
     public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 
         return true;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-        if (side.ordinal() == 0) {
-            return IconRegistry.getIcon("WorkbenchBottom", metadata);
-        }
-        if (side.ordinal() == 1) {
-            return IconRegistry.getIcon("WorkbenchTop", metadata);
-        }
-        return IconRegistry.getIcon("WorkbenchSide", metadata);
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        for (int i = 0; i < EnumType.values().length; i++) {
-            IconRegistry.addIcon("WorkbenchBottom" + i, "thermalexpansion:blocks/workbench/workbench_" + NAMES[i] + "_bottom", textureMap);
-            IconRegistry.addIcon("WorkbenchTop" + i, "thermalexpansion:blocks/workbench/workbench_" + NAMES[i] + "_top", textureMap);
-            IconRegistry.addIcon("WorkbenchSide" + i, "thermalexpansion:blocks/workbench/workbench_" + NAMES[i] + "_side", textureMap);
-        }
     }
 
     @Override

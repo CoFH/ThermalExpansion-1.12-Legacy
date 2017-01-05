@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
@@ -15,7 +14,7 @@ import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-import cofh.thermalexpansion.client.bakery.ILayeredBlockBakery;
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
