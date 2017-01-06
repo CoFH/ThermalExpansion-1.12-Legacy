@@ -183,12 +183,14 @@ public class TileAccumulator extends TileMachineBase {
 			return;
 		}
 		int side;
+		EnumFacing face;
 		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
+			face = EnumFacing.VALUES[side];
 
 			if (sideCache[side] == 1) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, face, outputBuffer, true);
 
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);

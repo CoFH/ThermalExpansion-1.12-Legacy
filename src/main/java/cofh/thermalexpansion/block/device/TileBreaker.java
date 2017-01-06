@@ -103,7 +103,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		if (theStack != null) {
 			for (int i = 0; i < 6 && theStack.amount > 0; i++) {
 				if (sideCache[i] == 1) {
-					theStack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, i, theStack, true);
+					theStack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[i], theStack, true);
 				}
 			}
 			worldObj.setBlockToAir(offsetPos);

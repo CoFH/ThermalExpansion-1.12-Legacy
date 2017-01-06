@@ -355,7 +355,7 @@ public class TileTransposer extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], outputBuffer, true);
 
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);

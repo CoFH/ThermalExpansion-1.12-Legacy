@@ -166,7 +166,7 @@ public class TileCrucible extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, side, outputBuffer, true);
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], outputBuffer, true);
 
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
