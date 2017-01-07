@@ -191,11 +191,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof TileDeviceBase) {
             TileDeviceBase device = ((TileDeviceBase) tileEntity);
-            if (layer == BlockRenderLayer.CUTOUT) {
-                device.getTexture(side.ordinal(), 1);
-            } else {
-                device.getTexture(side.ordinal(), 0);
-            }
+            return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
         }
         return null;
     }
