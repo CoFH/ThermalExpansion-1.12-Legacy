@@ -22,6 +22,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -62,7 +63,14 @@ public class ItemPump extends ItemEnergyContainerBase {
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-		boolean success = doItemUse(stack, world, player, hand);
+
+		boolean success = false;
+		try {
+            doItemUse(stack, world, player, hand);
+        } catch (Exception e) {//Fluid stuff is a bit wobbly atm, catch stuff so it doesn't crash.
+		    e.printStackTrace();
+		    player.addChatMessage(new TextComponentString("Error with ItemPump, see console for more info."));
+        }
 		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
@@ -82,10 +90,10 @@ public class ItemPump extends ItemEnergyContainerBase {
 				if (FluidHelper.isFluidHandler(tile)) {
 					if (ServerHelper.isServerWorld(world)) {
 						IFluidHandler handler = (IFluidHandler) tile;
-						resource = handler.drain(traceResult.sideHit, FluidContainerRegistry.BUCKET_VOLUME, false);
+						resource = handler.drain(traceResult.sideHit, FluidHelper.BUCKET_VOLUME, false);
 
 						if (resource == null) {
-							resource = handler.drain(null, FluidContainerRegistry.BUCKET_VOLUME, false);
+							resource = handler.drain(null, FluidHelper.BUCKET_VOLUME, false);
 							handler.drain(null, fillFluidContainerItems(resource, player.inventory, true), true);
 						} else {
 							handler.drain(traceResult.sideHit, fillFluidContainerItems(resource, player.inventory, true), true);
@@ -111,7 +119,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 						ItemStack container = null;
 						for (int i = 0; i < tankInfo.length; i++) {
 							resource = tankInfo[i].fluid;
-							container = findDrainContainerItem(resource, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+							container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
 							if (container != null) {
 								break;
 							}
@@ -119,7 +127,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 						if (container != null) {
 							if (ServerHelper.isServerWorld(world)) {
 								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidContainerRegistry.BUCKET_VOLUME);
+								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME);
 
 								if (handler.fill(traceResult.sideHit, fillStack, false) > 0) {
 									containerItem.drain(container, handler.fill(traceResult.sideHit, fillStack, true), true);
@@ -135,7 +143,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 							ItemStack container = null;
 							for (int i = 0; i < tankInfo.length; i++) {
 								resource = tankInfo[i].fluid;
-								container = findDrainContainerItem(resource, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+								container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
 								if (container != null) {
 									break;
 								}
@@ -144,7 +152,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 								if (ServerHelper.isServerWorld(world)) {
 									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
 									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container),
-											FluidContainerRegistry.BUCKET_VOLUME), true), true);
+                                            FluidHelper.BUCKET_VOLUME), true), true);
 								}
 								success = true;
 							}
@@ -153,7 +161,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 				} else {
 					Block block = null;
 					ItemStack container = null;
-					container = findDrainContainerItem(null, FluidContainerRegistry.BUCKET_VOLUME, player.inventory);
+					container = findDrainContainerItem(null, FluidHelper.BUCKET_VOLUME, player.inventory);
 
 					if (container != null) {
 						IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
@@ -177,7 +185,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 									if (ServerHelper.isServerWorld(world)) {
 										world.setBlockState(offsetPos, block.getDefaultState(), 3);
                                         BlockUtils.fireBlockUpdate(world, offsetPos);
-										containerItem.drain(container, FluidContainerRegistry.BUCKET_VOLUME, true);
+										containerItem.drain(container, FluidHelper.BUCKET_VOLUME, true);
 									}
 									success = true;
 								}
@@ -209,8 +217,8 @@ public class ItemPump extends ItemEnergyContainerBase {
 		if (fluid == null) {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-					IFluidContainerItem containerItem = (IFluidContainerItem) inventory.getStackInSlot(i).getItem();
-					FluidStack containerFluid = containerItem.drain(inventory.getStackInSlot(i), amount, false);
+                    net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+					FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);
 						break;
@@ -220,8 +228,8 @@ public class ItemPump extends ItemEnergyContainerBase {
 		} else {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-					IFluidContainerItem containerItem = (IFluidContainerItem) inventory.getStackInSlot(i).getItem();
-					FluidStack containerFluid = containerItem.drain(inventory.getStackInSlot(i), amount, false);
+                    net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+                    FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && FluidHelper.isFluidEqual(fluid, containerFluid) && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);
 						break;

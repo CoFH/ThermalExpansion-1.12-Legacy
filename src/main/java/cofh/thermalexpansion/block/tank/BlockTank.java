@@ -5,15 +5,16 @@ import codechicken.lib.block.IType;
 import codechicken.lib.block.property.unlisted.UnlistedByteProperty;
 import codechicken.lib.block.property.unlisted.UnlistedFluidStackProperty;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.thermalexpansion.render.RenderTank;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -41,8 +42,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -147,15 +148,10 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
             return true;
         }
         TileTank tile = (TileTank) world.getTileEntity(pos);
-        if (heldItem == null) {
-            return false;
-        }
-        if (FluidUtil.interactWithFluidHandler(heldItem, tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null), player)) {
-            return true;
-        }
 
-        if (heldItem.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            return true;
+        if (tile != null) {
+            IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+            return FluidHelper.isFluidHandler(heldItem) || FluidHelper.interactWithHandler(heldItem, handler, player, hand);
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
