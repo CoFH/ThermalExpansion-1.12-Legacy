@@ -14,6 +14,7 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.FMLLog;
 
 public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem {
 
@@ -49,15 +50,9 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public double getDurabilityForDisplay(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			return 0;
+			return 1;
 		}
-		return 1 - stack.getTagCompound().getInteger("Energy") / getMaxDamage(stack);
-	}
-
-	@Override
-	public int getMaxDamage(ItemStack stack) {
-
-		return TileCell.CAPACITY[ItemHelper.getItemDamage(stack)];
+		return 1D - ((double)stack.getTagCompound().getInteger("Energy") / (double)TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]);
 	}
 
 	@Override
