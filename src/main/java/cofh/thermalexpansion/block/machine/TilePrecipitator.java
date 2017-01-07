@@ -359,7 +359,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
     @Override
     public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
                 @Override
                 public IFluidTankProperties[] getTankProperties() {
                     FluidTankInfo info = tank.getInfo();
