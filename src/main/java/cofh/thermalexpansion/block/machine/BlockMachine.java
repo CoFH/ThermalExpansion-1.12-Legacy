@@ -198,17 +198,8 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
         TileEntity tileEntity = access.getTileEntity(pos);
         if (tileEntity instanceof TileMachineBase) {
             TileMachineBase machine = ((TileMachineBase) tileEntity);
-            if (layer == BlockRenderLayer.SOLID) {
-                if (side == EnumFacing.DOWN) {
-                    return IconRegistry.getIcon("MachineBottom");
-                } else if (side == EnumFacing.UP) {
-                    return IconRegistry.getIcon("MachineTop");
-                }
-                return side.ordinal() != machine.getFacing() ? IconRegistry.getIcon("MachineSide") : machine.isActive ? IconRegistry.getIcon("MachineActive", machine.type) : IconRegistry.getIcon("MachineFace", machine.type);
-            } else if (layer == BlockRenderLayer.CUTOUT) {
-                //TODO Rethink sideConfig stuff on Machines, We need a getter.
-                return machine.getTexture(side.ordinal(), 1);
-            }
+            //TODO ISidedTexture needs to change to support layers + passes.
+            return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
         }
         return TextureUtils.getMissingSprite();
     }
