@@ -1,0 +1,15 @@
+#en_GB
+#*drinks tea angrily*
+
+info.thermalexpansion.augment.generalRedstoneControl.0=Allows for redstone control settings to be utilised on a device.
+
+info.thermalexpansion.augment.machineFurnaceFood=Redstone Furnace: Specialisation
+
+info.thermalexpansion.light.1=Can be almost any colour you wish.
+
+tab.thermalexpansion.light.1=Colour and mode may be adjusted with sliders.
+
+tile.thermalexpansion.machine.pulverizer.name=Pulveriser
+
+tile.thermalexpansion.rockwool.silver.name=Light Grey Rockwool
+tile.thermalexpansion.rockwool.gray.name=Grey Rockwool
