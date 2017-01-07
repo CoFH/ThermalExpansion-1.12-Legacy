@@ -499,7 +499,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
     @Override
     public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 	    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (this instanceof ISidedInventory) {
+            if (this instanceof ISidedInventory && facing != null) {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
             } else {
                 return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
