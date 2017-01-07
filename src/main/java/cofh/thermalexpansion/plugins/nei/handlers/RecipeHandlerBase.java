@@ -6,6 +6,7 @@ import codechicken.lib.gui.GuiDraw;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.nei.NEIClientConfig;
 import codechicken.nei.api.stack.PositionedStack;
+import codechicken.nei.config.KeyBindings;
 import codechicken.nei.recipe.GuiCraftingRecipe;
 import codechicken.nei.recipe.GuiRecipe;
 import codechicken.nei.recipe.GuiUsageRecipe;
@@ -100,11 +101,11 @@ public abstract class RecipeHandlerBase extends TemplateRecipeHandler {
 	@Override
 	public boolean keyTyped(GuiRecipe gui, char keyChar, int keyCode, int recipe) {
 
-		if (keyCode == NEIClientConfig.getKeyBinding("gui.recipe")) {
+		if (KeyBindings.get("nei.options.keys.gui.recipe").isActiveAndMatches(keyCode)) {
 			if (transferFluidTank(gui, recipe, false)) {
 				return true;
 			}
-		} else if (keyCode == NEIClientConfig.getKeyBinding("gui.usage")) {
+		} else if (KeyBindings.get("nei.options.keys.gui.usage").isActiveAndMatches(keyCode)) {
 			if (transferFluidTank(gui, recipe, true)) {
 				return true;
 			}
