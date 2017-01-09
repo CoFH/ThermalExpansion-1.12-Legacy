@@ -1,0 +1,511 @@
+#cs_CZ
+
+achievement.thermalexpansion.base=Vítejte v Thermal Expansionu!
+achievement.thermalexpansion.base.desc=A právě to začíná.
+achievement.thermalexpansion.machineFrame=Zarámované!
+achievement.thermalexpansion.machineFrame.desc=Nejspíš jich budeš dělat hodně.
+
+achievement.thermalexpansion.furnace=Uhlí je pro blbce
+achievement.thermalexpansion.furnace.desc=Vypaluj věci se stylem!
+achievement.thermalexpansion.pulverizer=ROZBITÍ STROJE!
+achievement.thermalexpansion.pulverizer.desc=Maličká ruda.
+achievement.thermalexpansion.sawmill=Nesnáším stromy, miluji dřevo
+achievement.thermalexpansion.sawmill.desc=Jako sekání stromů, ale lepší.
+achievement.thermalexpansion.smelter=Dvě cihličky vstoupí, jedna opustí
+achievement.thermalexpansion.smelter.desc=Naprosto né na jídlo.
+achievement.thermalexpansion.crucible=Rozpustí všechno
+achievement.thermalexpansion.crucible.desc=Ano, může to dělat lávu. Ty příšero.
+achievement.thermalexpansion.transposer=Doplnění (Téměř) zadarmo
+achievement.thermalexpansion.transposer.desc=Plnění kyblíků ročně je těžká práce.
+achievement.thermalexpansion.precipitator=Koulovačka!
+achievement.thermalexpansion.precipitator.desc=Nebude dělat žlutý sníh.
+achievement.thermalexpansion.extruder=Tahle věc je skvělá!
+achievement.thermalexpansion.extruder.desc=Také to obsidianí!
+achievement.thermalexpansion.accumulator=Voda, voda všude
+achievement.thermalexpansion.accumulator.desc=Né, nefunguje to s lávou. Ty příšero.
+achievement.thermalexpansion.assembler=Zlý cyklus
+achievement.thermalexpansion.assembler.desc=Né, nebude to craftit.
+achievement.thermalexpansion.charger=What The Flux?
+achievement.thermalexpansion.charger.desc=Flux nezná hranice. Tak pozor na ruce.
+achievement.thermalexpansion.insolator=Slunce v krabici!
+achievement.thermalexpansion.insolator.desc=Naprosto  anorganické.
+
+achievement.thermalexpansion.wrench=To vypadá jako trefa!
+achievement.thermalexpansion.wrench.desc=Pokud *opravdu* potřebuješ nějaký nástroj, kladivo je ten pravý.
+achievement.thermalexpansion.multimeter=B.S.E.E.
+achievement.thermalexpansion.multimeter.desc=Nesetkáte se zde s žádnými nešťastnými náhodami, jen s těmi šťstnými.
+achievement.thermalexpansion.schematic=Žádná složitá schémata
+achievement.thermalexpansion.schematic.desc=Je to více než plán.
+achievement.thermalexpansion.florb=Mohu to hodit ?!
+achievement.thermalexpansion.florb.desc=Obsahuje tekutinu. Můžeš to hodit.
+achievement.thermalexpansion.florbMagmatic=Sleduj hořet svět
+achievement.thermalexpansion.florbMagmatic.desc=Florb. Ano, uchovává lávu. Ty příšero.
+
+achievement.thermalexpansion.capacitorPotato=Half-Pečený nápad!
+achievement.thermalexpansion.capacitorPotato.desc=Bram-Bo-Ra
+
+achievement.thermalexpansion.fluidRedstone=ruditová revoluce!
+achievement.thermalexpansion.fluidRedstone.desc=Nahoru je stále nahoru, dolu je stále dolu. A toto je opravdu úžasné.
+achievement.thermalexpansion.fluidGlowstone=Ono to teče nahoru?!
+achievement.thermalexpansion.fluidGlowstone.desc=Tak tahle se dělají formace! Všechno teď vůbec nedává smysl!
+achievement.thermalexpansion.fluidEnder=Wibbly-Wobbly, Timey-Wimey.
+achievement.thermalexpansion.fluidEnder.desc=Konec je teprve na začátku.
+achievement.thermalexpansion.fluidPyrotheum=PRO BOHA PROČ?!
+achievement.thermalexpansion.fluidPyrotheum.desc=Tohle je momentálně horší než láva. Ty příšero.
+achievement.thermalexpansion.fluidCryotheum=Zima se blíží
+achievement.thermalexpansion.fluidCryotheum.desc=Tohle je také horší než láva, s vyjímkou studenosti. Ty Yeti.
+achievement.thermalexpansion.fluidMana=Když se magie setká s technikou.
+achievement.thermalexpansion.fluidMana.desc=Co to je, nikdy jsem...?
+achievement.thermalexpansion.fluidCoal=Zkapalnění je spása!
+achievement.thermalexpansion.fluidCoal.desc=Není *pravděpodobné* že to bude dobré pro životní prostředí.
+
+chat.thermalexpansion.light.0=Mód: Přepínání; Defaultně: Vypnuto
+chat.thermalexpansion.light.1=Mód: Přepínání; Defaultně: Zapnuto
+chat.thermalexpansion.light.2=Mód: Nastavitelný (Úměrný)
+chat.thermalexpansion.light.3=Mód: Nastavitelný (Opačný)
+chat.thermalexpansion.light.4=Mód: Vždy vypnuto
+chat.thermalexpansion.light.5=Mód: Vždy zapnuto
+
+#Cell
+info.thermalexpansion.decRecv=Sníží RF vstup o
+info.thermalexpansion.decSend=Sníží RF výstup o
+info.thermalexpansion.incRecv=Zvýší RF vstup o
+info.thermalexpansion.incSend=Zvýší RF výstup o
+info.thermalexpansion.maxIn=Maximální vstup
+info.thermalexpansion.maxOut=Maximální výstup
+
+#Workbench
+info.thermalexpansion.gridClear=Pročistit pole craftingu
+info.thermalexpansion.gridSet=Nastavit pole craftingu ze schématu
+info.thermalexpansion.noRecipe=Žádný recept
+info.thermalexpansion.noSchematic=Žádné schéma
+info.thermalexpansion.writeSchematic=Zapsat schéma
+
+#Activator
+info.thermalexpansion.angleLevel=Úroveň cíle
+info.thermalexpansion.angleLow=Cíl nízký
+info.thermalexpansion.angleHigh=Cíl vysoký
+info.thermalexpansion.clickLeft=Levé kliknutí
+info.thermalexpansion.clickRight=Pravé kliknutí
+info.thermalexpansion.slotsFirst=Pouze první slot
+info.thermalexpansion.slotsRand=Náhodně použít předměty
+info.thermalexpansion.slotsRR=Použití předmětů Round Robin
+info.thermalexpansion.sneakOff=Bez plížení
+info.thermalexpansion.sneakOn=Plížení
+
+#Tesseract
+info.thermalexpansion.inactive=Neaktivní
+info.thermalexpansion.modeBlocked=Blokované
+info.thermalexpansion.modeEnergy=Mód energie
+info.thermalexpansion.modeFluid=Mód tekutin
+info.thermalexpansion.modeItem=Mód předmětů
+info.thermalexpansion.modeRecv=Přijímat pouze
+info.thermalexpansion.modeSend=Odesílat pouze
+info.thermalexpansion.modeSendRecv=Odesílat/Přijímat
+
+#Smelter
+info.thermalexpansion.smelter.toggleLock=Uzamknout slot Fluxu
+info.thermalexpansion.smelter.toggleUnlock=Odemknout slot Fluxu
+
+#Transposer
+info.thermalexpansion.transposer.toggleEmpty=Přepnuto: Vyprázdnit
+info.thermalexpansion.transposer.toggleFill=Přepnuto: Naplnit
+info.thermalexpansion.transposer.toggleWait=Přepnuto
+
+#Insolator
+info.thermalexpansion.insolator.toggleLock=Uzamknout slot hnojiva
+info.thermalexpansion.insolator.toggleUnlock=Odemknout slot hnojiva
+
+#Plates
+info.thermalexpansion.distance=Vzdálenost
+info.thermalexpansion.intensitySignal=Síla signálu
+info.thermalexpansion.intensityImpulse=Nuceně spustit
+info.thermalexpansion.duration=Trvání
+
+#Tier Localization
+info.thermalexpansion.creative=Kreativní
+info.thermalexpansion.basic=Běžné
+info.thermalexpansion.hardened=Tvrzelé
+info.thermalexpansion.reinforced=Vyztužené
+info.thermalexpansion.resonant=Rezonantní
+
+info.thermalexpansion.augment=Zvětšení
+info.thermalexpansion.augment.energyProduced=Produkovaná energie
+info.thermalexpansion.augment.energyUsed=Použitá energie
+info.thermalexpansion.augment.fuelConsumed=Spotřebováno paliva
+info.thermalexpansion.augment.fuelEnergy=Základni energie paliva
+info.thermalexpansion.augment.levels.0=Vyžaduje instalaci předchozích úrovní.
+info.thermalexpansion.augment.levels.1=Použita největší úroveň zvětšení.
+info.thermalexpansion.augment.levels.2=Vyžaduje instalaci ruditového ovládání.
+info.thermalexpansion.augment.machine.0=Vyžaduje
+info.thermalexpansion.augment.machine.1=Stroj
+info.thermalexpansion.augment.secondaryChance=Sekundární šance
+info.thermalexpansion.augment.perOperation=Za operaci
+info.thermalexpansion.augment.production=Produkce
+info.thermalexpansion.augment.speed=Rychlost
+info.thermalexpansion.augment.upTo=Až
+info.thermalexpansion.augment.waterConsumed=Zkonzumováno vody
+
+info.thermalexpansion.augment.dynamoCoilDuct=Dynamo: Přístupnost stran
+info.thermalexpansion.augment.dynamoCoilDuct.0=Umožňuje vkládání a odebírání předmětů skrz cívku dynama.
+info.thermalexpansion.augment.dynamoEfficiency=Dynamo: Efektivita paliva
+info.thermalexpansion.augment.dynamoOutput=Dynamo: Výstup energie
+info.thermalexpansion.augment.dynamoThrottle=Dynamo: Pokročilé škrcení
+info.thermalexpansion.augment.dynamoThrottle.0=Zlepšuje škrcení dynama takže to může omezit výstup energie na 0 RF/t.
+
+info.thermalexpansion.augment.generalAutoOutput=Automatizovaný výstup
+info.thermalexpansion.augment.generalAutoOutput.0=Umožňuje předmětům a tekutinám automatický přenos ven ze zařízení.
+info.thermalexpansion.augment.generalReconfigSides=Přenastavitelné strany
+info.thermalexpansion.augment.generalReconfigSides.0=Umožňuje přenastavení stran zařízení.
+info.thermalexpansion.augment.generalRedstoneControl=Ruditové ovládání
+info.thermalexpansion.augment.generalRedstoneControl.0=Umožnuje využít na zařízení ruditové nastavení ovládání.
+
+info.thermalexpansion.augment.machineSecondary=Stroj: Sekundární výstup
+info.thermalexpansion.augment.machineSpeed=Stroj: Rychlost zpracování
+
+info.thermalexpansion.augment.machineFurnaceFood=Ruditová pec: Specializace
+info.thermalexpansion.augment.machineFurnaceFood.0=Navyšuje výstup ovoce.
+info.thermalexpansion.augment.machineFurnaceFood.1=Může pouze péct jídlo.
+
+info.thermalexpansion.augment.machineExtruderBoost=Ohnivý Extruder: Velikost dávky
+
+info.thermalexpansion.capacitor.0=Aktivuj pro nabití vložených předmětů.
+info.thermalexpansion.capacitor.1=Použij při plížení pro aktivaci.
+info.thermalexpansion.capacitor.2=Nabíjení vložených předmětů.
+info.thermalexpansion.capacitor.3=Použij při plížení pro deaktivaci.
+info.thermalexpansion.capacitor.4=Musí zůstat v hotbaru.
+info.thermalexpansion.capacitor.potato=Chytré! Ale né znovunabíjecí.
+
+info.thermalexpansion.device.activator=Dělá více, než může pouhý popisek vysvětlit.
+info.thermalexpansion.device.breaker=Ničí bloky. Dost jednoduché.
+info.thermalexpansion.device.nullifier=Odstraňuje věci ze světa.
+
+info.thermalexpansion.diagram.0=Použij během plížení pro smazání.
+info.thermalexpansion.diagram.1=Použij na zařízení pro zkopírování jeho nastavení.
+info.thermalexpansion.diagram.2=Použij na zařízení pro přenos uloženého nastavení.
+
+info.thermalexpansion.dynamo.generate=Generuje energii (Ruditový Flux).
+info.thermalexpansion.dynamo.steam=Vyžaduje vodu a tuhé palivo.
+info.thermalexpansion.dynamo.steam.0=Namásto toho může být dovnitř napumpována pára.
+info.thermalexpansion.dynamo.magmatic=Vyžaduje horké tekutiny.
+info.thermalexpansion.dynamo.compression=Vyžaduje tekuté palivo a chladič.
+info.thermalexpansion.dynamo.reactant=Vyžaduje tekuté palivo a pevný reaktant.
+info.thermalexpansion.dynamo.enervation=Vytahuje flux z různých objektů.
+
+info.thermalexpansion.ender.tesseract.0=Unifikovaný bod v časoprostoru.
+info.thermalexpansion.ender.tesseract.1=Může přenášet předměty, tekutiny a RF.
+
+info.thermalexpansion.light.0=Vydává světlo založené na ruditovém signálu.
+info.thermalexpansion.light.1=Může být téměř jakékoliv barvy.
+
+info.thermalexpansion.machine.furnace=Peče předměty.
+info.thermalexpansion.machine.pulverizer=Drtí předměty.
+info.thermalexpansion.machine.sawmill=Poskytuje přídavné dřevo.
+info.thermalexpansion.machine.smelter=Spéká slitiny a kody. Dva vstupy.
+info.thermalexpansion.machine.crucible=Taví předměty na tekutiny.
+info.thermalexpansion.machine.transposer=Obsluhuje tekutiny a tekutinové úložiště.
+info.thermalexpansion.machine.precipitator=Mrazí tekutiny na pevné látky.
+info.thermalexpansion.machine.extruder=Mixuje horké a studené tekutiny.
+info.thermalexpansion.machine.accumulator=Čerpá vodu z okolí.
+info.thermalexpansion.machine.assembler=Vyrábí předměty.
+info.thermalexpansion.machine.charger=Nabíjí předměty RF energií.
+info.thermalexpansion.machine.insolator=Dodává rostlinám 'slunce' a RF.
+
+info.thermalexpansion.plate.signal=Při kontaktu vysílá ruditový signál.
+info.thermalexpansion.plate.impulse=Při kontaktu dodá věcem pohyb.
+info.thermalexpansion.plate.translocate=Při kontaktu teleportuje věci.
+
+info.thermalexpansion.rockwool.default=Vytvořeno upečením strusky.
+info.thermalexpansion.rockwool.dyed=Vytvořeno barvením jiné skelté vaty.
+
+info.thermalexpansion.workbench=Vyrábí věci; může použít modrotisky.
+
+info.thermalexpansion.florb.0=Uchová 1000 mB většiny tekutin.
+info.thermalexpansion.florb.1=Uchová 1000 mB většiny horkých tekutin.
+info.thermalexpansion.florb.2=Naplněno s
+info.thermalexpansion.florb.3=Ano, můžeš to hodit.
+info.thermalexpansion.florb.4=Tato tekutina je světlejší než vzduch.
+info.thermalexpansion.florb.5=Florb bude cestovat dále.
+
+info.thermalexpansion.tool.battleWrench=90% kladivo, 10% klíč.
+info.thermalexpansion.tool.chiller=Mrazí věci do dálky.
+info.thermalexpansion.tool.igniter=Zapaluje oheň do dálky.
+info.thermalexpansion.tool.multimeter.0=Poskytuje informace o věcech.
+info.thermalexpansion.tool.multimeter.1=Použij při plížení pro konfiguraci některých zařízení.
+info.thermalexpansion.tool.pump=Pumpuje tekutiny do a z kompatibilních úložišť.
+info.thermalexpansion.tool.transfuser=Přelévá RF do a z kompatibilních předmětů a zařízení.
+info.thermalexpansion.tool.wrench.0=Jistě, je to klíč.
+info.thermalexpansion.tool.wrench.1=Ale jako další nástroj je to také kladivo
+info.thermalexpansion.tool.wrench.2=pokud ho potřebuješ, abys byl jednička.
+
+info.thermalexpansion.multimeter=Použij multimetr při plížení pro konfiguraci.
+info.thermalexpansion.securable=Zabezpečitelné zámkem.
+info.thermalexpansion.storage.enchant=Může být očarován pro pobrání více předmětů.
+info.thermalexpansion.wrench=Klikni s klíčem při plížení pro odmontování.
+
+#Items
+item.thermalexpansion.augment.dynamoCoilDuct.name=Cívka převodovky potrubí
+item.thermalexpansion.augment.dynamoThrottle.name=Omezovač pole buzení
+item.thermalexpansion.augment.dynamoEfficiency0.name=Sekundární převodovka
+item.thermalexpansion.augment.dynamoEfficiency1.name=Optimalizátor Fluxové vazby
+item.thermalexpansion.augment.dynamoEfficiency2.name=Regulátor kryocívky
+item.thermalexpansion.augment.dynamoOutput0.name=Sekundární cívka převodovky
+item.thermalexpansion.augment.dynamoOutput1.name=Fluxový modulační zesilovač
+item.thermalexpansion.augment.dynamoOutput2.name=Fluxový zesilovač kryocívky
+
+item.thermalexpansion.augment.generalAutoOutput.name=Integrovaný servo mechanismus
+item.thermalexpansion.augment.generalReconfigSides.name=Integrovaný modulární rámec
+item.thermalexpansion.augment.generalRedstoneControl.name=Integrovaný ruditový obvod
+
+item.thermalexpansion.augment.machineSecondary0.name=Sekundární síto
+item.thermalexpansion.augment.machineSecondary1.name=Stabilizovaný rám
+item.thermalexpansion.augment.machineSecondary2.name=Zpětná vazba gyroserva 
+item.thermalexpansion.augment.machineSpeed0.name=Sekundární recepční cívka
+item.thermalexpansion.augment.machineSpeed1.name=Přetaktovaná modulární převodovka
+item.thermalexpansion.augment.machineSpeed2.name=Fluxový časo-prostorový unifikátor
+
+item.thermalexpansion.augment.machineFurnaceFood.name=Trivekční komora
+
+item.thermalexpansion.augment.machineExtruderBoost0.name=Zrychlené vytlačování
+item.thermalexpansion.augment.machineExtruderBoost1.name=Ohnivá katalyzace
+item.thermalexpansion.augment.machineExtruderBoost2.name=Pyroklastická generace
+
+item.thermalexpansion.capacitor.creative.name=Kreativní Fluxový kondenzátor
+item.thermalexpansion.capacitor.potato.name=Hlíznatý Fluxový kondenzátor
+item.thermalexpansion.capacitor.basic.name=Leadstonový Fluxový kondenzátor
+item.thermalexpansion.capacitor.hardened.name=Tvrzený Fluxový kondenzátor
+item.thermalexpansion.capacitor.reinforced.name=Ruditový Fluxový kondenzátor
+item.thermalexpansion.capacitor.resonant.name=Rezonantní Fluxový kondenzátor
+
+item.thermalexpansion.diagram.schematic.name=Schéma
+item.thermalexpansion.diagram.redprint.name=Červenotisk
+
+item.thermalexpansion.florb.florb.name=Florb
+item.thermalexpansion.florb.florbMagmatic.name=Magmatický Florb
+
+item.thermalexpansion.material.pneumaticServo.name=Pneumatické servo
+item.thermalexpansion.material.powerCoilGold.name=Ruditová recepční cívka
+item.thermalexpansion.material.powerCoilSilver.name=Ruditová převodová cívka
+item.thermalexpansion.material.powerCoilElectrum.name=Ruditová vodivá cívka
+item.thermalexpansion.material.lock.name=Signálový bezpečnostní zámek
+
+item.thermalexpansion.material.dustWood.name=Piliny
+item.thermalexpansion.material.dustWoodCompressed.name=Kompresované piliny
+item.thermalexpansion.material.slag.name=Struska
+item.thermalexpansion.material.slagRich.name=Bohatá struska
+item.thermalexpansion.material.fertilizer.name=Fyto-Gro
+item.thermalexpansion.material.fertilizerRich.name=Bohaté Fyto-Gro
+
+item.thermalexpansion.satchel.creative.name=Kreativní aktovka
+item.thermalexpansion.satchel.basic.name=Aktovka
+item.thermalexpansion.satchel.hardened.name=Tvrzená aktovka
+item.thermalexpansion.satchel.reinforced.name=Zesílená aktovka
+item.thermalexpansion.satchel.resonant.name=Rezonantní aktovka
+
+item.thermalexpansion.tool.wrench.name=Půlměsíčné kladivo
+item.thermalexpansion.tool.battleWrench.name=Bojový klíč
+item.thermalexpansion.tool.multimeter.name=Multimetr
+item.thermalexpansion.tool.debugger.name=Debugger
+item.thermalexpansion.tool.igniter.name=Fluxový podpalovač
+item.thermalexpansion.tool.chiller.name=Flux zchlazovač
+item.thermalexpansion.tool.pump.name=TekPumpa
+item.thermalexpansion.tool.transfuser.name=Fluxový transfůzer
+
+itemGroup.thermalexpansion.creativeTab=Thermal Expansion
+itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Bloky
+itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Nástroje
+itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Předměty
+itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florby
+
+#NEI Recipes
+recipe.thermalexpansion.machine=Výroba strojů
+recipe.thermalexpansion.upgrade=Výroba vylepšení
+recipe.thermalexpansion.secure=Výroba zabezpečení
+
+#Info Tabs
+tab.thermalexpansion.cell.0=Ukládá ruditový Flux.
+tab.thermalexpansion.cell.1=Podrž Shift nebo Ctrl pro upravení nastavení energie.
+
+tab.thermalexpansion.device.activator.0=Řeže to! Krájí to! Sype to věci, háže to věci!
+tab.thermalexpansion.device.activator.1=Možná to je náhodné, možná ne. Možná to je záludné, možná ne.
+tab.thermalexpansion.device.activator.2=Klamně universální!
+tab.thermalexpansion.device.breaker.0=Rozbíjí všechny věci!
+tab.thermalexpansion.device.breaker.1=Drž se dál od předku tohoto zařízení.
+tab.thermalexpansion.device.nullifier.0=Odesílá všechny věci do /dev/null!
+tab.thermalexpansion.device.nullifier.1=Je to příšerné místo; ani tekutiny nemohou uniknout.
+
+tab.thermalexpansion.dynamo.0=Rychlost generace závisí na energetickém požadavku.
+tab.thermalexpansion.dynamo.steam.0=Generuje ruditový Flux s použitím páry.
+tab.thermalexpansion.dynamo.steam.1=Pevné paliva a voda mohou být použity pro generování páry.
+tab.thermalexpansion.dynamo.magmatic.0=Generuje ruditový flux s použitím extrémně horkých tekutin.
+tab.thermalexpansion.dynamo.compression.0=Generuje ruditový flux s použitím tekutých paliv a chladících kapalin.
+tab.thermalexpansion.dynamo.reactant.0=Generuje ruditový flux s použitím alchymistických reakcí.
+tab.thermalexpansion.dynamo.reactant.1=Musí být poskytnut pevný reaktant a tekuté palivo.
+tab.thermalexpansion.dynamo.enervation.0=Extrahuje ruditový Flux přímo z přírodních zdrojů, nebo objektů, které ho ukládají.
+
+tab.thermalexpansion.ender.tesseract.0=Použij je pro okamžitý transport věcí přes obrovské vzdálenosti nebo přes dimenze.
+tab.thermalexpansion.ender.tesseract.1=Nastav Ender frekvenci pro zajištění spárování.
+
+tab.thermalexpansion.light.0=Vysoce konfigurovatelné světlo, citlivé na rudit.
+tab.thermalexpansion.light.1=Barva a mód mohou být nastaveny při použití posuvníků.
+tab.thermalexpansion.light.2=Nahradí tmavost užasností!
+
+tab.thermalexpansion.machine.furnace.0=Vypaluje věci s použitím ruditového Fluxu.
+tab.thermalexpansion.machine.furnace.1=Používá velmi malou energii pro uvaření jídla.
+tab.thermalexpansion.machine.furnace.2=Mňam ňam ňam.
+tab.thermalexpansion.machine.pulverizer.0=Drtí věci na jiné věci.
+tab.thermalexpansion.machine.pulverizer.1=Užitečné při procesování rud nebo přeměňování předmětů.
+tab.thermalexpansion.machine.pulverizer.2=Je to samozřejmě nevratné.
+tab.thermalexpansion.machine.sawmill.0=Seká polena na prkna a zpracovává dřevěné věci.
+tab.thermalexpansion.machine.sawmill.1=Velice užitečné pro dělání většiny věcí týkajících se tromu.
+tab.thermalexpansion.machine.sawmill.2=Pozor na ruce.
+tab.thermalexpansion.machine.smelter.0=Vypéká kovy a věci, které potřebují vysoké teploty.
+tab.thermalexpansion.machine.smelter.1=Užitečné pro zpracování rud a výrobu pokročilých zařízení.
+tab.thermalexpansion.machine.smelter.2=Levý slot může být uzamčen pro obsažení pouze některých předmětů.
+tab.thermalexpansion.machine.smelter.3=Určitě nebude péct jídlo.
+tab.thermalexpansion.machine.crucible.0=Mění pervné materiály v tekuté!
+tab.thermalexpansion.machine.crucible.1=Velmi užitečné při výrobě pokročilých zařízení.
+tab.thermalexpansion.machine.crucible.2=Chraňte před malými dětmi a zvířaty.
+tab.thermalexpansion.machine.transposer.0=Plní nebo vyprazdňuje věci, které uchovávají tekutiny.
+tab.thermalexpansion.machine.transposer.1=Klikni na tlačítko pro změnu mezi plnícím a vyprazdňovacím módem.
+tab.thermalexpansion.machine.transposer.2=Samozřejmě to jde i vrátit naopak.
+tab.thermalexpansion.machine.precipitator.0=Používá ruditový Flux pro zmražení určitých tekutin!
+tab.thermalexpansion.machine.precipitator.1=Vybraný předměť je to, co dostaneš, pokud je v tanku dostatek tekutiny.
+tab.thermalexpansion.machine.precipitator.2=Užij si koulovačku.
+tab.thermalexpansion.machine.extruder.0=Míchá vodu a lávu pro výrobu odlišných typů kamene.
+tab.thermalexpansion.machine.extruder.1=Vybraný předměť je to, co dostaneš, pokud je v tanku dostatek vody a lávy.
+tab.thermalexpansion.machine.extruder.2=Minecraftová fyzika je zábava!
+tab.thermalexpansion.machine.accumulator.0=Pumpuje vodu z okolí.
+tab.thermalexpansion.machine.accumulator.1=Umísti do vodního jezírka pro zrychlení.
+tab.thermalexpansion.machine.accumulator.2=Neutop se.
+tab.thermalexpansion.machine.assembler.0=Vyrábí recepty uložené ve schématech.
+tab.thermalexpansion.machine.assembler.1=Používá 20 ruditového Fluxu na jeden předmět.
+tab.thermalexpansion.machine.assembler.2=Ne, tohle to vyrábět nebude.
+tab.thermalexpansion.machine.charger.0=Přenáší energii do kompatibilních předmětů.
+tab.thermalexpansion.machine.charger.1=Nabíjecí rychlost může být omezena předmětem.
+tab.thermalexpansion.machine.charger.2=Užij si hukot.
+tab.thermalexpansion.machine.insolator.0=Přenáší živiny a světlo do rostlin s použitím ruditového Fluxu.
+tab.thermalexpansion.machine.insolator.1=Né tak úplně 'přírodní' farmaření.
+tab.thermalexpansion.machine.insolator.2=Levý slot může být uzamčen pro obsažení pouze některých předmětů.
+tab.thermalexpansion.machine.insolator.3=Slavně žhavící!
+
+tab.thermalexpansion.plate.signal.0=Při kontaktu vysílá na dálku ruditový signál.
+tab.thermalexpansion.plate.signal.1=Parametry signálu mohou být nastaveny.
+tab.thermalexpansion.plate.impulse.0=Předá signál při kontaktu.
+tab.thermalexpansion.plate.impulse.1=Síla a úhel mohou být nastaveny.
+tab.thermalexpansion.plate.translocate.0=Teleportuje objekty a entity při kontaktu.
+tab.thermalexpansion.plate.translocate.1=Vzdálenost může být nastavena.
+
+tab.thermalexpansion.satchel.0=Je to aktovka. Nebude ukládat některé objekty.
+tab.thermalexpansion.satchel.1=Bez náhrad.
+tab.thermalexpansion.satchel.creative=Pouze ukládá jednu věc... od druhu.
+
+tab.thermalexpansion.storage.enchant=Může být očarována pro uskladnění více věcí!
+
+tab.thermalexpansion.strongbox.0=Je to krabice! Uskladňuje věci. No dobře, většinu věcí.
+tab.thermalexpansion.strongbox.creative=Uskladňuje neomezený počet kusů od jedné věci!
+
+tab.thermalexpansion.workbench.0=Vyrábí věci!
+tab.thermalexpansion.workbench.1=Výrobní recept může být zapsát nebo přečten ze schématu.
+tab.thermalexpansion.workbench.2=Klikni se Shiftem + pravé tl. myši na schéma pro přímou výrobu uloženého receptu.
+
+#Blocks
+tile.thermalexpansion.cache.creative.name=Kreativní keš
+tile.thermalexpansion.cache.basic.name=Keš
+tile.thermalexpansion.cache.hardened.name=Tvrzená keš
+tile.thermalexpansion.cache.reinforced.name=Zesílená keš
+tile.thermalexpansion.cache.resonant.name=Rezonantní keš
+
+tile.thermalexpansion.cell=Energetická buňka
+tile.thermalexpansion.cell.creative.name=Kreativní energetická buňka
+tile.thermalexpansion.cell.basic.name=Leadstonová energetická buňka
+tile.thermalexpansion.cell.hardened.name=Tvrzená energetická buňka
+tile.thermalexpansion.cell.reinforced.name=Ruditová energetická buňka
+tile.thermalexpansion.cell.resonant.name=Rezonantní energetická buňka
+
+tile.thermalexpansion.device.workbench.name=Strojníkův pracovní stůl
+tile.thermalexpansion.device.activator.name=Autonomní aktivátor
+tile.thermalexpansion.device.breaker.name=Ničitel terénu
+tile.thermalexpansion.device.nullifier.name=Anulovač
+
+tile.thermalexpansion.dynamo=Dynamo
+tile.thermalexpansion.dynamo.steam.name=Parní dynamo
+tile.thermalexpansion.dynamo.magmatic.name=Magmatické dynamo
+tile.thermalexpansion.dynamo.compression.name=Kompresní dynamo
+tile.thermalexpansion.dynamo.reactant.name=Reaktantní dynamo
+tile.thermalexpansion.dynamo.enervation.name=Vyčerpávací dynamo
+
+tile.thermalexpansion.ender.tesseract.name=Teserakt
+
+tile.thermalexpansion.frame.machineBasic.name=Strojový rám (Běžný)
+tile.thermalexpansion.frame.machineHardened.name=Strojový rám (Tvrzený)
+tile.thermalexpansion.frame.machineReinforced.name=Strojový rám (Zesílený)
+tile.thermalexpansion.frame.machineResonant.name=Strojový rám (Rezonantní)
+tile.thermalexpansion.frame.cellBasic.name=Leadstonový rám energetické buňky
+tile.thermalexpansion.frame.cellHardened.name=Tvrzený rám energetické buňky
+tile.thermalexpansion.frame.cellReinforcedEmpty.name=Ruditový rám energetické buňky (Prázdný)
+tile.thermalexpansion.frame.cellReinforcedFull.name=Ruditový rám energetické buňky (Plný)
+tile.thermalexpansion.frame.cellResonantEmpty.name=Rezonantní rám energetické buňky (Prázdný)
+tile.thermalexpansion.frame.cellResonantFull.name=Rezonantní rám energetické buňky (Plný)
+tile.thermalexpansion.frame.tesseractEmpty.name=Rám teseraktu (Prázdný)
+tile.thermalexpansion.frame.tesseractFull.name=Rám teseraktu (Plný)
+tile.thermalexpansion.frame.illuminator.name=Rám osvětlovače
+
+tile.thermalexpansion.glass.name=Tvrzené sklo
+tile.thermalexpansion.glassLumium.name=Tvrzené lumiové sklo
+
+tile.thermalexpansion.light.name=6-módové osvětlení
+tile.thermalexpansion.light.illuminator.name=Větlitový osvětlovač
+tile.thermalexpansion.light.lampLumiumRadiant.name=Zářivá lumiová lampa
+tile.thermalexpansion.light.lampLumium.name=Lumiová lampa
+
+tile.thermalexpansion.machine.furnace.name=Ruditová pec
+tile.thermalexpansion.machine.pulverizer.name=Mlýnek
+tile.thermalexpansion.machine.sawmill.name=Pila
+tile.thermalexpansion.machine.smelter.name=Indukční vypalovač
+tile.thermalexpansion.machine.crucible.name=Magmatická mísa
+tile.thermalexpansion.machine.transposer.name=Tekutinový plnič
+tile.thermalexpansion.machine.precipitator.name=Glaciální odlučovač
+tile.thermalexpansion.machine.extruder.name=Ohnivý extruder
+tile.thermalexpansion.machine.accumulator.name=Vodní akumulátor
+tile.thermalexpansion.machine.assembler.name=Cyklický zpracovávač
+tile.thermalexpansion.machine.charger.name=Energetický plnič
+tile.thermalexpansion.machine.insolator.name=Rostlinný izolátor
+
+tile.thermalexpansion.plate.frame.name=Rám desky
+tile.thermalexpansion.plate.impulse.name=Impulzní deska
+tile.thermalexpansion.plate.signal.name=Ruditová deska
+tile.thermalexpansion.plate.translocate.name=Translokační deska
+
+tile.thermalexpansion.rockwool.black.name=Černá skelná vata
+tile.thermalexpansion.rockwool.red.name=Červená skelná vata
+tile.thermalexpansion.rockwool.green.name=Zelená skelná vata
+tile.thermalexpansion.rockwool.brown.name=Hnědá skelná vata
+tile.thermalexpansion.rockwool.blue.name=Modrá skelná vata
+tile.thermalexpansion.rockwool.purple.name=Fialová skelná vata
+tile.thermalexpansion.rockwool.cyan.name=Tyrkysová skelná vata
+tile.thermalexpansion.rockwool.silver.name=Světle šedá skelná vata
+tile.thermalexpansion.rockwool.gray.name=Šedá skelná vata
+tile.thermalexpansion.rockwool.pink.name=Růžová skelná vata
+tile.thermalexpansion.rockwool.lime.name=Světle zelená skelná vata
+tile.thermalexpansion.rockwool.yellow.name=Žlutá skelná vata
+tile.thermalexpansion.rockwool.lightBlue.name=Světle modrá skelná vata
+tile.thermalexpansion.rockwool.magenta.name=Purpurová skelná vata
+tile.thermalexpansion.rockwool.orange.name=Oranžová skelná vata
+tile.thermalexpansion.rockwool.white.name=Bílá skelná vata
+
+tile.thermalexpansion.sponge.creative.name=Kreativní houba
+tile.thermalexpansion.sponge.basic.name=Prostá houba
+tile.thermalexpansion.sponge.magmatic.name=Magmatická houba
+
+tile.thermalexpansion.strongbox.creative.name=Kreativní trezor
+tile.thermalexpansion.strongbox.basic.name=Trezor
+tile.thermalexpansion.strongbox.hardened.name=Tvrzený trezor
+tile.thermalexpansion.strongbox.reinforced.name=Zesílený trezor
+tile.thermalexpansion.strongbox.resonant.name=Rezonantní trezor
+
+tile.thermalexpansion.tank.creative.name=Kreativní přenosná nádrž
+tile.thermalexpansion.tank.basic.name=Přenosná nádrž
+tile.thermalexpansion.tank.hardened.name=Tvrzená přenosná nádrž
+tile.thermalexpansion.tank.reinforced.name=Zesílená přenosná nádrž
+tile.thermalexpansion.tank.resonant.name=Rezonantní přenosná nádrž

@@ -1,0 +1,109 @@
+#en_PT
+
+#Activator
+info.thermalexpansion.sneakOff=Above Board
+info.thermalexpansion.sneakOn=Skullduggery!
+
+info.thermalexpansion.augment.generalAutoOutput.0=Allows for automatic transfarr out of a device.
+info.thermalexpansion.augment.generalAutoInput.0=Allows for automatic transfarr into a device.
+
+info.thermalexpansion.augment.machineNull=Machine: Secondary Nullifiarr
+
+info.thermalexpansion.augment.machineFurnaceFood.0=Increases grub output.
+info.thermalexpansion.augment.machineFurnaceFood.1=Can only cook grub.
+
+info.thermalexpansion.augment.machineExtruderBoost=Igneous Extrudarr: Batch Size
+
+info.thermalexpansion.capacitor.0=Activate to charrge held items.
+info.thermalexpansion.capacitor.1=Use whilst skulking to activate.
+info.thermalexpansion.capacitor.2=Charrging held items.
+info.thermalexpansion.capacitor.3=Use whilst skulking to deactivate.
+info.thermalexpansion.capacitor.4=Must remain in hotbarr.
+info.thermalexpansion.capacitor.potato=Clever! But not recharrgeable.
+
+info.thermalexpansion.device.nullifier=Keelhauls everything!
+
+info.thermalexpansion.diagram.0=Use whilst skulking to erase.
+
+info.thermalexpansion.machine.sawmill=Provides additional lumbarr.
+info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containarrs.
+
+info.thermalexpansion.tool.battleWrench=90% hammarr, 10% wrench.
+info.thermalexpansion.tool.wrench.1=But any tool is a hammarr
+
+info.thermalexpansion.multimeter=Use a multimetarr whilst skulking to configure.
+info.thermalexpansion.wrench=Wrench whilst skulking to dismantle.
+
+#Items
+item.thermalexpansion.augment.dynamoEfficiency0.name=Extra Widgetbox
+item.thermalexpansion.augment.dynamoEfficiency1.name=Better Flux Linkage
+item.thermalexpansion.augment.dynamoEfficiency2.name=CryoCoil Regulatorr
+item.thermalexpansion.augment.dynamoOutput0.name=Extra Transmission Coil
+item.thermalexpansion.augment.dynamoOutput1.name=Flux Modulation Boostarr
+item.thermalexpansion.augment.dynamoOutput2.name=CryoCoil Flux Amplifiarr
+
+item.thermalexpansion.augment.generalAutoInput.name=Integrated Suckin' Apparratus
+item.thermalexpansion.augment.generalReconfigSides.name=Integrated Side-Switchin' Framework
+
+item.thermalexpansion.augment.machineNull.name=Nullification Chambarr
+
+item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chambarr
+
+item.thermalexpansion.augment.machineExtruderBoost0.name=Accelarrated Extrusion
+
+item.thermalexpansion.capacitor.creative.name=Creative Flux Capacitarr
+item.thermalexpansion.capacitor.potato.name=Tubarrous Flux Capacitarr
+item.thermalexpansion.capacitor.basic.name=Leadstone Flux Capacitarr
+item.thermalexpansion.capacitor.hardened.name=Harrdened Flux Capacitarr
+item.thermalexpansion.capacitor.reinforced.name=Redstone Flux Capacitarr
+item.thermalexpansion.capacitor.resonant.name=Resonant Flux Capacitarr
+
+item.thermalexpansion.satchel.creative.name=Creative Loot Bag
+item.thermalexpansion.satchel.basic.name=Loot Bag
+item.thermalexpansion.satchel.hardened.name=Harrdened Loot Bag
+item.thermalexpansion.satchel.reinforced.name=Reinforced Loot Bag
+item.thermalexpansion.satchel.resonant.name=Resonant Loot Bag
+
+item.thermalexpansion.tool.wrench.name=Crescent Hammarr
+item.thermalexpansion.tool.multimeter.name=Multimetarr
+item.thermalexpansion.tool.debugger.name=Debuggarr
+item.thermalexpansion.tool.igniter.name=Flux Ignitarr
+item.thermalexpansion.tool.chiller.name=Flux Chillarr
+item.thermalexpansion.tool.transfuser.name=Flux Transfusarr
+
+#Blocks
+tile.thermalexpansion.device.activator.name=Autonomous Activatorr
+tile.thermalexpansion.device.breaker.name=Terrain Smasharr
+tile.thermalexpansion.device.collector.name=Loot Pillager
+tile.thermalexpansion.device.nullifier.name=Nullifier
+tile.thermalexpansion.device.buffer.name=Booty Mover
+
+tile.thermalexpansion.ender.tesseract.name=Tessarract
+
+tile.thermalexpansion.frame.illuminator.name=Illuminatorr Frame
+
+tile.thermalexpansion.glass.name=Harrdened Glass
+tile.thermalexpansion.glassLumium.name=Harrdened Lumium Glass
+
+tile.thermalexpansion.machine.furnace.name=Redstone Furnace
+tile.thermalexpansion.machine.pulverizer.name=Pulverizarr
+tile.thermalexpansion.machine.sawmill.name=Sawmill
+tile.thermalexpansion.machine.smelter.name=Induction Smeltarr
+tile.thermalexpansion.machine.crucible.name=Magma Crucible
+tile.thermalexpansion.machine.transposer.name=Fluid Transposarr
+tile.thermalexpansion.machine.precipitator.name=Glacial Precipitatorr
+tile.thermalexpansion.machine.extruder.name=Igneous Extrudarr
+tile.thermalexpansion.machine.accumulator.name=Aqueous Accumulatorr
+tile.thermalexpansion.machine.assembler.name=Cyclic Assemblarr
+tile.thermalexpansion.machine.charger.name=Energetic Infusarr
+tile.thermalexpansion.machine.insolator.name=Phytogenic Insolatorr
+
+tile.thermalexpansion.sponge.creative.name=Creative Swab
+tile.thermalexpansion.sponge.basic.name=Plain Swab
+tile.thermalexpansion.sponge.magmatic.name=Magmatic Swab
+
+tile.thermalexpansion.strongbox.creative.name=Creative Booty Coffer
+tile.thermalexpansion.strongbox.basic.name=Booty Coffer
+tile.thermalexpansion.strongbox.hardened.name=Hardened Booty Coffer
+tile.thermalexpansion.strongbox.reinforced.name=Reinforced Booty Coffer
+tile.thermalexpansion.strongbox.resonant.name=Resonant Booty Coffer

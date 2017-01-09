@@ -1,0 +1,560 @@
+#es_ES
+
+achievement.thermalexpansion.base=Bienvenido a Thermal Expansion!
+achievement.thermalexpansion.base.desc=Y así comienza.
+achievement.thermalexpansion.machineFrame=enmarcado!
+achievement.thermalexpansion.machineFrame.desc=Probablemente va a hacer un montón de ellos.
+
+achievement.thermalexpansion.furnace=EL carbon es para los Tontos
+achievement.thermalexpansion.furnace.desc=Funde cosas con estilo!
+achievement.thermalexpansion.pulverizer=MAQUINA DESTRUCTORA!
+achievement.thermalexpansion.pulverizer.desc=Insignificante Mena.
+achievement.thermalexpansion.sawmill=Odio los Árboles, Amo la Madera 
+achievement.thermalexpansion.sawmill.desc=Como golpear Árboles, Pero mejor.
+achievement.thermalexpansion.smelter=Dos lingotes entran, Un lingote sale
+achievement.thermalexpansion.smelter.desc=Absolutamente no es para la comida.
+achievement.thermalexpansion.crucible=Funde Todo
+achievement.thermalexpansion.crucible.desc=Si, Puedes hacer lava. Moustruo.
+achievement.thermalexpansion.transposer=(En su mayoria) Recargas Gratis
+achievement.thermalexpansion.transposer.desc=Llenar cubos a mano es un trabajo dificil.
+achievement.thermalexpansion.precipitator=Guerra de Bolas de Nieve!
+achievement.thermalexpansion.precipitator.desc=No hara nieve amarilla.
+achievement.thermalexpansion.extruder=Esta Cosa Rockea!
+achievement.thermalexpansion.extruder.desc=Tambien hace Obsidiana!
+achievement.thermalexpansion.accumulator=Agua, Agua Por doquier
+achievement.thermalexpansion.accumulator.desc=No, no trabaja con Lava. Monstruo.
+achievement.thermalexpansion.assembler=Un circulo vicioso
+achievement.thermalexpansion.assembler.desc=No, que no va a craftear.
+achievement.thermalexpansion.charger=Que es el Flux?
+achievement.thermalexpansion.charger.desc=El Flux no conoce limites. Así que cuidado con tus manos.
+achievement.thermalexpansion.insolator=El sol en una Caja!
+achievement.thermalexpansion.insolator.desc=Definitivamente no es organica.
+
+achievement.thermalexpansion.wrench=Se ve como un Clavo!
+achievement.thermalexpansion.wrench.desc=Cualquier herramienta es un martillo si tu *realmente* necesitas uno.
+achievement.thermalexpansion.multimeter=B.S.E.E.
+achievement.thermalexpansion.multimeter.desc=No hay accidentes, solo *Flukes*.
+achievement.thermalexpansion.schematic=Sin proyectos involucrados.
+achievement.thermalexpansion.schematic.desc=Es mas que un Plan.
+achievement.thermalexpansion.florb=Puedo tirar esto?!
+achievement.thermalexpansion.florb.desc=Contiene un Liquido. Usted puede tirarlo.
+achievement.thermalexpansion.florbMagmatic=Mira el mundo arder
+achievement.thermalexpansion.florbMagmatic.desc=Florb. Si, puede contener Lava. Monstruo.
+
+achievement.thermalexpansion.capacitorPotato=Una Idea a medio hornear!
+achievement.thermalexpansion.capacitorPotato.desc=Pa-Tay-Ta
+
+achievement.thermalexpansion.fluidRedstone=La revolucion de la Redstone!
+achievement.thermalexpansion.fluidRedstone.desc=Todavia esta para arriba, todavia esta para abajo. Y todavia es asombroso.
+achievement.thermalexpansion.fluidGlowstone=Fluye hacia arriba?!
+achievement.thermalexpansion.fluidGlowstone.desc=Así es cómo se producen esas formaciones! Todo tiene sentido ahora!
+achievement.thermalexpansion.fluidEnder=Wibbly-Wobbly, Timey-Wimey.
+achievement.thermalexpansion.fluidEnder.desc=El Fin es actualmente el comienso.
+achievement.thermalexpansion.fluidPyrotheum=OH DIOS PORQUE?!
+achievement.thermalexpansion.fluidPyrotheum.desc=Esto es actualmente peor que la Lava. Monstruo.
+achievement.thermalexpansion.fluidCryotheum=El invierno esta viniendo
+achievement.thermalexpansion.fluidCryotheum.desc=Esto es peor que la lava, excepto el frio. Yeti.
+achievement.thermalexpansion.fluidMana=Cuando la Magia encuentra la Tecnologia.
+achievement.thermalexpansion.fluidMana.desc=Que es esto?
+achievement.thermalexpansion.fluidCoal=Liquifacturar es la Salvacion!
+achievement.thermalexpansion.fluidCoal.desc=Esto no puede *probablemente* ser bueno para el medio ambiente.
+
+chat.thermalexpansion.light.0=Modo: Cambiar; Defecto: Apagado
+chat.thermalexpansion.light.1=Modo: Cambiar; Defecto: Encendido
+chat.thermalexpansion.light.2=Modo: Escala (Proporcional)
+chat.thermalexpansion.light.3=Modo: Escala (Invertido)
+chat.thermalexpansion.light.4=Mode: Siempre Apagado
+chat.thermalexpansion.light.5=Mode: Siempre Encendido
+
+#Cell
+info.thermalexpansion.decRecv=Reducir la entrada de RF por
+info.thermalexpansion.decSend=Reducir la salida de RF por
+info.thermalexpansion.incRecv=Incrementar la entrada de RF por
+info.thermalexpansion.incSend=Incrementar la salida de RF por
+info.thermalexpansion.maxIn=Entrada Maxima
+info.thermalexpansion.maxOut=Salida Maxima
+
+#Activator
+info.thermalexpansion.angleLevel=Apuntar al centro
+info.thermalexpansion.angleLow=Apuntar a abajo
+info.thermalexpansion.angleHigh=Apuntar a arriba
+info.thermalexpansion.clickLeft=Click izquierdo
+info.thermalexpansion.clickRight=Click derecho
+info.thermalexpansion.slotsFirst=Solo primera ranura
+info.thermalexpansion.slotsRand=Usar objetos al azar
+info.thermalexpansion.slotsRR=Usar objetos uno por uno
+info.thermalexpansion.sneakOff=Sin Agacharce
+info.thermalexpansion.sneakOn=Agarcharce
+
+#Buffer
+info.thermalexpansion.buffer.disableInput=Deshabilitar la entrada
+info.thermalexpansion.buffer.disableOutput=Deshabilitar la salida
+info.thermalexpansion.buffer.enableInput=Habilitar la entrada
+info.thermalexpansion.buffer.enableOutput=Habilitar la salida
+
+#Tesseract
+info.thermalexpansion.inactive=Inactivo
+info.thermalexpansion.modeBlocked=Bloqueado
+info.thermalexpansion.modeEnergy=Modo Energia
+info.thermalexpansion.modeFluid=Modo Fluidos
+info.thermalexpansion.modeItem=Modo Objetos
+info.thermalexpansion.modeRecv=Solo Recibir
+info.thermalexpansion.modeSend=Solo Enviar
+info.thermalexpansion.modeSendRecv=Enviar/Recibir
+
+#Smelter
+info.thermalexpansion.smelter.toggleLock=Cerrar Ranura de Flux
+info.thermalexpansion.smelter.toggleUnlock=Abrir Ranura de Flux 
+
+#Transposer
+info.thermalexpansion.transposer.toggleEmpty=Alternar: Vaciar
+info.thermalexpansion.transposer.toggleFill=Alternar: Rellenar
+info.thermalexpansion.transposer.toggleWait=Alternar
+
+#Insolator
+info.thermalexpansion.insolator.toggleLock=Cerrar Ranura de Fertilizante
+info.thermalexpansion.insolator.toggleUnlock=Abrir Ranura de Fertilizante
+
+#Plates
+info.thermalexpansion.distance=Distancia
+info.thermalexpansion.intensitySignal=Fuerza de la señal
+info.thermalexpansion.intensityImpulse=Fuerza del lanzamiento
+info.thermalexpansion.duration=Duracion
+
+#Workbench
+info.thermalexpansion.gridClear=Limpiar la Ranura de Crafteo
+info.thermalexpansion.gridSet=Colocar los objetos en la Ranura de Crafteo
+info.thermalexpansion.noRecipe=No hay Crafteo
+info.thermalexpansion.noSchematic=No hay Esquema
+info.thermalexpansion.writeSchematic=Anotar el Esquema
+
+#Tier Localization
+info.thermalexpansion.creative=Creativo
+info.thermalexpansion.basic=Basica
+info.thermalexpansion.hardened=Endurecida
+info.thermalexpansion.reinforced=Reforzada
+info.thermalexpansion.resonant=Resonante
+
+info.thermalexpansion.augment=Aumentador
+info.thermalexpansion.augment.energyProduced=Energia Producida 
+info.thermalexpansion.augment.energyUsed=Energia Usada
+info.thermalexpansion.augment.fuelConsumed=Combustible Consumido
+info.thermalexpansion.augment.fuelEnergy=Base de Combustible por Energia
+info.thermalexpansion.augment.levels.0=Requiere niveles previos para ser instalado.
+info.thermalexpansion.augment.levels.1=El nivel mas alto del Aumentador es el usado.
+info.thermalexpansion.augment.machine.0=Requiere una Maquina
+info.thermalexpansion.augment.machine.1=
+info.thermalexpansion.augment.requireRS=Requiere Control de Redstone para ser instalado.
+info.thermalexpansion.augment.perOperation=Por Operacion
+info.thermalexpansion.augment.production=Produccion
+info.thermalexpansion.augment.secondaryChance=Otra Oportunidad
+info.thermalexpansion.augment.speed=De Velocidad
+info.thermalexpansion.augment.upTo=Sube a
+info.thermalexpansion.augment.waterConsumed=Agua Consumida
+
+info.thermalexpansion.augment.dynamoCoilDuct=Dinamo: Accesibilidad de lado
+info.thermalexpansion.augment.dynamoCoilDuct.0=Permite la insecion y la extracion a través de la bobina de el Dinamo.
+info.thermalexpansion.augment.dynamoEfficiency=Dinamo: Eficiencia del Combustible
+info.thermalexpansion.augment.dynamoOutput=Dinamo: Salida de Energia
+info.thermalexpansion.augment.dynamoThrottle=Dinamo: Regulacion Avanzada
+info.thermalexpansion.augment.dynamoThrottle.0=Activa la salida minima del dynamo a 0 RF/t.
+
+info.thermalexpansion.augment.generalAutoOutput=Salida Automatica
+info.thermalexpansion.augment.generalAutoOutput.0=Permite la salida automatica de un dispositivo.
+info.thermalexpansion.augment.generalAutoInput=Entrada Automatica
+info.thermalexpansion.augment.generalAutoInput.0=Permite la entrada automatica de un dispositivo.
+info.thermalexpansion.augment.generalReconfigSides=Lados Reconfigurables
+info.thermalexpansion.augment.generalReconfigSides.0=Permite que los lados de un dispositivo sean reconfigurables.
+info.thermalexpansion.augment.generalRedstoneControl=Control de Redstone
+info.thermalexpansion.augment.generalRedstoneControl.0=Permite el control de redstone en un dispositivo.
+
+info.thermalexpansion.augment.machineSecondary=Maquina: Salida Secundaria
+info.thermalexpansion.augment.machineSpeed=Maquina: Velocidad de Procesamiento 
+
+info.thermalexpansion.augment.machineNull=Maquina: Nullificador Secundario
+info.thermalexpansion.augment.machineNull.0=Destruye el exceso de objetos de salidas secundarias.
+
+info.thermalexpansion.augment.machineFurnaceFood=Horno de Redstone: Especializacion
+info.thermalexpansion.augment.machineFurnaceFood.0=Incrementa la salida de Comida.
+info.thermalexpansion.augment.machineFurnaceFood.1=Solo puede cocinar comida.
+
+info.thermalexpansion.augment.machineExtruderBoost=Extrusora Ignea: Tamaño del lote
+
+info.thermalexpansion.capacitor.0=Activar para recargar objetos recargables.
+info.thermalexpansion.capacitor.1=Usar mientras estas agachado para activarlo.
+info.thermalexpansion.capacitor.2=Recarga objetos recargables.
+info.thermalexpansion.capacitor.3=Usar mientras estas agachado desactivarlo.
+info.thermalexpansion.capacitor.4=Debe permanecer en la hotbar.
+info.thermalexpansion.capacitor.potato=Barata! Pero no recargable.
+
+info.thermalexpansion.device.activator=Hace mucho mas de lo que el texto de ayuda dice.
+info.thermalexpansion.device.breaker=Destruye bloques. Muy simple.
+info.thermalexpansion.device.buffer=Almacena y tranfiere objetos.
+info.thermalexpansion.device.collector=Recoge objetos en un area.
+info.thermalexpansion.device.nullifier=Elimina cosas de la existencia.
+
+info.thermalexpansion.diagram.0=Boton derecho mientras estas agachado para borralo.
+info.thermalexpansion.diagram.1=Usar en un dispositivo para copiar sus ajustes.
+info.thermalexpansion.diagram.2=Usar en un dispositivo para transferir los ajustes guardados.
+
+info.thermalexpansion.dynamo.generate=Genera Energia (Redstone Flux).
+info.thermalexpansion.dynamo.steam=Requiere agua y cobustible solidos.
+info.thermalexpansion.dynamo.steam.0=El vapor Steam tambien puedes ser extraido en lugar de generar energia.
+info.thermalexpansion.dynamo.magmatic=Require fluidos calientes.
+info.thermalexpansion.dynamo.compression=Require cobustibles en estado liquido y refrigerantes liquidos.
+info.thermalexpansion.dynamo.reactant=Require combustibles en estado liquido y reactantes solidos.
+info.thermalexpansion.dynamo.enervation=Extrae el flux de objetos varios.
+
+info.thermalexpansion.ender.tesseract.0=Cuestion unficada en el espacio tiempo.
+info.thermalexpansion.ender.tesseract.1=Puede transferir objetos, fluidos y RF.
+
+info.thermalexpansion.light.0=Emite luz si se le da una señal de redstone.
+info.thermalexpansion.light.1=Puede ser de casi cualquier color que desee.
+
+info.thermalexpansion.machine.furnace=Funde objetos.
+info.thermalexpansion.machine.pulverizer=Tritura objetos.
+info.thermalexpansion.machine.sawmill=Proporciona madera adicional.
+info.thermalexpansion.machine.smelter=Funde aleaciones y metales. Dos entradas.
+info.thermalexpansion.machine.crucible=Derrite objetos en fluidos.
+info.thermalexpansion.machine.transposer=Manipula fluidos y contenedores de fluidos.
+info.thermalexpansion.machine.precipitator=Conjela fluidos en objetos en estado solido.
+info.thermalexpansion.machine.extruder=Mezcla fluidos calientes y frios.
+info.thermalexpansion.machine.accumulator=Extrae el agua de los alrededores.
+info.thermalexpansion.machine.assembler=Craftea objetos.
+info.thermalexpansion.machine.charger=Recarga objetos recargables con RF.
+info.thermalexpansion.machine.insolator=Infunde plantas con 'sol' y RF.
+
+info.thermalexpansion.plate.signal=Emite una señal de redstone en el contacto.
+info.thermalexpansion.plate.impulse=Impulsa todo tipo de cosas en el contacto.
+info.thermalexpansion.plate.translocate=Teleporta todo tipo de cosas en el contacto.
+info.thermalexpansion.plate.charge=Recarga todo tipo de cosas en el contacto.
+info.thermalexpansion.plate.excursion=Projecta un rayo de fuerza.
+info.thermalexpansion.plate.teleport=Teleporta todo tipo de cosas a una placa conectada.
+
+info.thermalexpansion.plate.charge.playersOnly=Solo recarga jugadores.
+info.thermalexpansion.plate.charge.anything=Recarga jugadores y objetos.
+
+info.thermalexpansion.rockwool.default=Creada por fundir Escoria.
+info.thermalexpansion.rockwool.dyed=Creada por tintar otras Lanas de Roca.
+
+info.thermalexpansion.workbench=Craftea objetos. Se puede utilizar Esquemas para craftear mas rapido.
+
+info.thermalexpansion.florb.0=Puede contener 1000 mB de la mayoria de los fluidos.
+info.thermalexpansion.florb.1=Puede contener 1000 mB de la mayoria de los fluidos calientes.
+info.thermalexpansion.florb.2=Rellenar con el
+info.thermalexpansion.florb.3=Si, puedes tirarlo.
+info.thermalexpansion.florb.4=Este liquido es mas ligero que el aire.
+info.thermalexpansion.florb.5=El Florb viajara lejos.
+
+info.thermalexpansion.tool.battleWrench=90% martillo, 10% llave inglesa.
+info.thermalexpansion.tool.chiller=Congela cosas a distancia.
+info.thermalexpansion.tool.igniter=Inicia incendios a distancia.
+info.thermalexpansion.tool.multimeter.0=Proporciona informacion acerca de cosas.
+info.thermalexpansion.tool.multimeter.1=Usar mientras estas agachado para configurar algunos dispositivos.
+info.thermalexpansion.tool.pump=Bombea fluidos dentro y fuera de contenedores de compatibles.
+info.thermalexpansion.tool.transfuser=Transfunde RF dentro y fuera de objetos y dispositivos compatibles.
+info.thermalexpansion.tool.wrench.0=Por supuesto, es un llave inglesa.
+info.thermalexpansion.tool.wrench.1=Sin embargo, cualquier herramienta es un martillo
+info.thermalexpansion.tool.wrench.2=si usted realmente lo necesita.
+
+info.thermalexpansion.multimeter=Usa un multimetro mientras estas agachado para configurar.
+info.thermalexpansion.securable=Asegurable con una cerradura.
+info.thermalexpansion.storage.enchant=Puede ser encantada para contener mas objetos.
+info.thermalexpansion.wrench=Usar una llave inglesa mientras estas agachado para desmantelar.
+
+#Items
+item.thermalexpansion.augment.dynamoCoilDuct.name=Transmision de los Conductos de la Bobina
+item.thermalexpansion.augment.dynamoThrottle.name=Excitacion del Campo Limite
+item.thermalexpansion.augment.dynamoEfficiency0.name=Caja de Engranajes Secundaria
+item.thermalexpansion.augment.dynamoEfficiency1.name=Optimizacion de Flux de Lingamiento
+item.thermalexpansion.augment.dynamoEfficiency2.name=Regulador de la CryoBobina
+item.thermalexpansion.augment.dynamoOutput0.name=Transmision Secundaria de la Bobina
+item.thermalexpansion.augment.dynamoOutput1.name=Aplificador de Flux de Modulacion 
+item.thermalexpansion.augment.dynamoOutput2.name=Amplificador de CryoBobina de Flux
+
+item.thermalexpansion.augment.generalAutoOutput.name=Mecanismo Integrado del Servo
+item.thermalexpansion.augment.generalAutoInput.name=Mecanismo Integrado de la Tolva
+item.thermalexpansion.augment.generalReconfigSides.name=Marco Modular Integrado
+item.thermalexpansion.augment.generalRedstoneControl.name=Circuito de Redstone Integrado
+
+item.thermalexpansion.augment.machineSecondary0.name=Colador Secundario
+item.thermalexpansion.augment.machineSecondary1.name=Marco Estabilizado
+item.thermalexpansion.augment.machineSecondary2.name=Realimentacion del GyroServo
+item.thermalexpansion.augment.machineSpeed0.name=Bobina de Recepcion Secundario
+item.thermalexpansion.augment.machineSpeed1.name=Caja de Engranajes Modular Overlockeada
+item.thermalexpansion.augment.machineSpeed2.name=Unificador de Flux en el Espacio-Tiempo
+
+item.thermalexpansion.augment.machineNull.name=Camara de Nullificacion
+
+item.thermalexpansion.augment.machineFurnaceFood.name=Camara de Triveccion
+
+item.thermalexpansion.augment.machineExtruderBoost0.name=Accelerador de la extrusion
+item.thermalexpansion.augment.machineExtruderBoost1.name=Cataclismo Igneo
+item.thermalexpansion.augment.machineExtruderBoost2.name=Generacion Pyroclastica
+
+item.thermalexpansion.capacitor.creative.name=Capacitador de Flux Creativo
+item.thermalexpansion.capacitor.potato.name=Capacitador de Flux Tuberoso
+item.thermalexpansion.capacitor.basic.name=Capacitador de Flux de Plomo
+item.thermalexpansion.capacitor.hardened.name=Capacitador de Flux Endurecido
+item.thermalexpansion.capacitor.reinforced.name=Capacitador de Flux de Redstone
+item.thermalexpansion.capacitor.resonant.name=Capacitador de Flux Resonante
+
+item.thermalexpansion.diagram.schematic.name=Esquema
+item.thermalexpansion.diagram.redprint.name=Plano Rojo
+
+item.thermalexpansion.florb.florb.name=Florb
+item.thermalexpansion.florb.florbMagmatic.name=Florb Magmatica
+
+item.thermalexpansion.material.pneumaticServo.name=Servo Neumatico
+item.thermalexpansion.material.powerCoilGold.name=Recpetor de la Bobina de Redstone
+item.thermalexpansion.material.powerCoilSilver.name=Transmisor de la Bobina de Redstone
+item.thermalexpansion.material.powerCoilElectrum.name=Conductor de la Bobina de Redstone
+item.thermalexpansion.material.lock.name=Candado de Seguridad de Signalum
+
+item.thermalexpansion.material.dustWood.name=Serrin
+item.thermalexpansion.material.dustWoodCompressed.name=Serrin Comprimido
+item.thermalexpansion.material.slag.name=Escoria 
+item.thermalexpansion.material.slagRich.name=Escoria Rica
+item.thermalexpansion.material.fertilizer.name=Phyto-Gro
+item.thermalexpansion.material.fertilizerRich.name=Phyto-Gro Rico
+
+item.thermalexpansion.satchel.creative.name=Cartera Creativa
+item.thermalexpansion.satchel.basic.name=Cartera
+item.thermalexpansion.satchel.hardened.name=Cartera Enduresida
+item.thermalexpansion.satchel.reinforced.name=Cartera Reforzada
+item.thermalexpansion.satchel.resonant.name=Cartera Resonante
+
+item.thermalexpansion.tool.wrench.name=Martillo Creciente
+item.thermalexpansion.tool.battleWrench.name=Llave Ingresa de Batalla
+item.thermalexpansion.tool.multimeter.name=Multimetro
+item.thermalexpansion.tool.debugger.name=Debugger
+item.thermalexpansion.tool.igniter.name=Encendedor de Flux
+item.thermalexpansion.tool.chiller.name=Enfriador de Flux 
+item.thermalexpansion.tool.pump.name=FluiVac
+item.thermalexpansion.tool.transfuser.name=Transfusor de Flux
+
+itemGroup.thermalexpansion.creativeTab=Thermal Expansion
+itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Bloques
+itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Herramientas
+itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Objetos
+itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
+
+#NEI Recipes
+recipe.thermalexpansion.machine=Machine Crafting
+recipe.thermalexpansion.upgrade=Upgrade Crafting
+recipe.thermalexpansion.secure=Security Crafting
+
+#Info Tabs
+tab.thermalexpansion.cell.0=Almacena Redstone Flux.
+tab.thermalexpansion.cell.1=Manen Shift o Ctrl para afinar el control de energia.
+
+tab.thermalexpansion.device.activator.0=Son slices! Son dices! Se vierte cosas, se lansan cosas!
+tab.thermalexpansion.device.activator.1=Tal vez sea al azar, tal vez no es. Tal vez sea disimulado, tal vez no.
+tab.thermalexpansion.device.activator.2=Engañosamente versatil!
+tab.thermalexpansion.device.breaker.0=Destruye todas las cosas!
+tab.thermalexpansion.device.breaker.1=Manten tu cara lejos de este dispositivo.
+tab.thermalexpansion.device.collector.0=Recoge los objetos en un area.
+tab.thermalexpansion.device.collector.1=Todo lo que no es clavado a juego justo!
+tab.thermalexpansion.device.collector.2=Probable mente no robara tu inventario. Probablemente.
+tab.thermalexpansion.device.nullifier.0=Envia todos tus objetos a /dev/null!
+tab.thermalexpansion.device.nullifier.1=Es un lugar horrible; incluso los fluidos no pueden escapar.
+tab.thermalexpansion.device.buffer.0=Almacena y transfiere objetos. Puede extraer automaticamente.
+tab.thermalexpansion.device.buffer.1=Mejor que una Tolva, de verdad!
+tab.thermalexpansion.device.buffer.2=Manen Shift o Ctrl para afinar cantidades.
+
+tab.thermalexpansion.dynamo.0=La velocidad de generacion varia en funcion de la demanda de energia.
+tab.thermalexpansion.dynamo.steam.0=Genera Redstone Flux usando Vapor.
+tab.thermalexpansion.dynamo.steam.1=Combustibles Solidos y Agua pueden ser usados para generar Vapor.
+tab.thermalexpansion.dynamo.magmatic.0=Genera Redstone Flux usando fluidos extremadamente calientes.
+tab.thermalexpansion.dynamo.compression.0=Genera Redstone Flux usando combustibles liquidos y refrigerantes.
+tab.thermalexpansion.dynamo.reactant.0=Genera Redstone Flux usando reacciones quimicas.
+tab.thermalexpansion.dynamo.reactant.1=Un reactante solido y un combustible liquido deve ser provisto.
+tab.thermalexpansion.dynamo.enervation.0=Extrae Redstone Flux directamente de recursos naturales o de objetos que almacenan esos recursos.
+
+tab.thermalexpansion.ender.tesseract.0=Usar para transportar instantaneamente objetos, fluidos y energia a travez de largas distancias o entre dimensiones. 
+tab.thermalexpansion.ender.tesseract.1=Cambia la frecuencia de Ender para determinar linkeos.
+
+tab.thermalexpansion.light.0=luz altamente configurable, posee sencivilidad de redstone.
+tab.thermalexpansion.light.1=El color y el modo puede ser configurado con los deslizadores.
+tab.thermalexpansion.light.2=Reemplazar la oscuridad puede ser asombroso!
+
+tab.thermalexpansion.machine.furnace.0=Funde cosas usando Redstone Flux.
+tab.thermalexpansion.machine.furnace.1=Usa un poco de energia para cocinar comida.
+tab.thermalexpansion.machine.furnace.2=Om nom nom.
+tab.thermalexpansion.machine.pulverizer.0=Rompe cosas en otras cosas.
+tab.thermalexpansion.machine.pulverizer.1=Util para procesar menas.
+tab.thermalexpansion.machine.pulverizer.2=Cientificamente no es reversible.
+tab.thermalexpansion.machine.sawmill.0=Corta troncos en Madera y reprocesa cosas hachas con madera.
+tab.thermalexpansion.machine.sawmill.1=Muy util para hacer el maximo provecho de un arbol.
+tab.thermalexpansion.machine.sawmill.2=Mira tus manos.
+tab.thermalexpansion.machine.smelter.0=Fundir metales y cosas requiere altas temperaturas.
+tab.thermalexpansion.machine.smelter.1=Util para procesar ores y para construir dispositivos avanzados.
+tab.thermalexpansion.machine.smelter.2=La ranura izquierda puede ser cerrada para que contenga ciertos objetos.
+tab.thermalexpansion.machine.smelter.3=Absolutamente no cocina comida.
+tab.thermalexpansion.machine.crucible.0=Convierte materiales solidos en fluidos!
+tab.thermalexpansion.machine.crucible.1=Muy util para construir dispositivos avanzados.
+tab.thermalexpansion.machine.crucible.2=Mantener alejado niños pequeños y mascotas.
+tab.thermalexpansion.machine.transposer.0=Rellena o vacia cosas que pueden contener fluidos.
+tab.thermalexpansion.machine.transposer.1=Dale click al boton para cambiar los modos Rellenar y Vaciar.
+tab.thermalexpansion.machine.transposer.2=Cientificamente reversible.
+tab.thermalexpansion.machine.precipitator.0=Usa Redstone Flux para conjelar fluidos varios!
+tab.thermalexpansion.machine.precipitator.1=El objeto seleccionado es lo que vas a obtener, si es que hay suficiente fluido en el tanque.
+tab.thermalexpansion.machine.precipitator.2=Hora de una pelea con Bolas de Nieve.
+tab.thermalexpansion.machine.extruder.0=Mezcla agua y lava para crear diferentes tipos de rocas igneas.
+tab.thermalexpansion.machine.extruder.1=El objeto seleccionado es lo que vas a obtener, si es que hay suficiente agua y lava en los tanques.
+tab.thermalexpansion.machine.extruder.2=Las fisicas de Minecraft son divertidas!
+tab.thermalexpansion.machine.accumulator.0=Extrae el agua water de los alrededores.
+tab.thermalexpansion.machine.accumulator.1=Coloca un pisina de agua para aumentar la velocidad.
+tab.thermalexpansion.machine.accumulator.2=No te tires.
+tab.thermalexpansion.machine.assembler.0=Puede salvar crafteos en Esquemas.
+tab.thermalexpansion.machine.assembler.1=Usa 20 Redstone Flux por objeto.
+tab.thermalexpansion.machine.assembler.2=No, no va a craftear eso.
+tab.thermalexpansion.machine.charger.0=Infunde energia en objetos recargables.
+tab.thermalexpansion.machine.charger.1=La velocidad de la recarga puede ser limitada por el objeto.
+tab.thermalexpansion.machine.charger.2=Alimenta el hum.
+tab.thermalexpansion.machine.insolator.0=Infunde nutrientes y luz en plantas usando Redstone Flux.
+tab.thermalexpansion.machine.insolator.1=No es exactamente 'organico' 
+tab.thermalexpansion.machine.insolator.2=La ranura izquierda puede ser cerrada para que contenga ciertos objetos.
+tab.thermalexpansion.machine.insolator.3=Gloriosamente incandescente!
+
+tab.thermalexpansion.plate.signal.0=Emite una señal de redstone en el contacto.
+tab.thermalexpansion.plate.signal.1=Los parametros de la señal pueden ser configurado.
+tab.thermalexpansion.plate.impulse.0=Imparte impulso al entrar en contacto.
+tab.thermalexpansion.plate.impulse.1=La fuerza y el angulo pueden ser configurados.
+tab.thermalexpansion.plate.translocate.0=Teleporta objetos y entidades en el contacto.
+tab.thermalexpansion.plate.translocate.1=La Distancia puede ser cofigurada.
+tab.thermalexpansion.plate.charge.0=Recargas cosas en el contacto.
+tab.thermalexpansion.plate.charge.1=Puede ser configurado para ignorar objetos.
+tab.thermalexpansion.plate.excursion.0=Projecta un rayo de fuerza que mueve objetos.
+tab.thermalexpansion.plate.excursion.1=La Direccion de el rayo puede ser configurada.
+tab.thermalexpansion.plate.teleport.0=Permite la teleportacion a grandes distancias. 
+tab.thermalexpansion.plate.teleport.1=Los viajes interdimensionales consumen mas RF.
+
+tab.thermalexpansion.satchel.0=Es una cartera, no va a guardar algunos objetos.
+tab.thermalexpansion.satchel.1=No hay reembolsos.
+tab.thermalexpansion.satchel.creative=Solo puede almacenar una sola cosa... mas o menos.
+
+tab.thermalexpansion.storage.enchant=Puede ser encantado para almacenar mas cosas!
+
+tab.thermalexpansion.strongbox.0=Es una caja! Puede almacenar cosas. si, la mayoria de la cosas.
+tab.thermalexpansion.strongbox.creative=Puede contener ilimitadas Holds unlimited cantidades de un solo objeto!
+
+tab.thermalexpansion.workbench.0=Craftea cosas!
+tab.thermalexpansion.workbench.1=Puede escribir crafteos o leerlos a travez de un esquema.
+tab.thermalexpansion.workbench.2=Shift + Click Derecho en un Esquema para salvar un crafteo directamente.
+tab.thermalexpansion.workbench.creative=Los objetos son opcionales!e
+
+#Blocks
+tile.thermalexpansion.cache.creative.name=Cache Creativo
+tile.thermalexpansion.cache.basic.name=Cache
+tile.thermalexpansion.cache.hardened.name=Cache Endurecido
+tile.thermalexpansion.cache.reinforced.name=Cache Reforzado
+tile.thermalexpansion.cache.resonant.name=Cache Resonante
+
+tile.thermalexpansion.cell=Celula de Energia
+tile.thermalexpansion.cell.creative.name=Celula de Energia Creativa
+tile.thermalexpansion.cell.basic.name=Celula de Energia de Plomo
+tile.thermalexpansion.cell.hardened.name=Celula de Energia Endurecida
+tile.thermalexpansion.cell.reinforced.name=Celula de Energia de Redstone
+tile.thermalexpansion.cell.resonant.name=Celula de Energia Resonante
+
+tile.thermalexpansion.device.activator.name=Activador Automatico
+tile.thermalexpansion.device.breaker.name=Golpeador de el Terreno
+tile.thermalexpansion.device.collector.name=Aparato de Acquisicion 
+tile.thermalexpansion.device.nullifier.name=Nullificador
+tile.thermalexpansion.device.buffer.name=Asignador de Objetos
+
+tile.thermalexpansion.dynamo=Dinamo
+tile.thermalexpansion.dynamo.steam.name=Dinamo de Vapor
+tile.thermalexpansion.dynamo.magmatic.name=Dinamo Magmatico
+tile.thermalexpansion.dynamo.compression.name=Dinamo de Compresion 
+tile.thermalexpansion.dynamo.reactant.name=Dinamo Reactante
+tile.thermalexpansion.dynamo.enervation.name=Dinamo de Enervacion 
+
+tile.thermalexpansion.ender.tesseract.name=Tesseract
+
+tile.thermalexpansion.frame.machineBasic.name=Marco de Maquina (Basico)
+tile.thermalexpansion.frame.machineHardened.name=Marco de Maquina (Endurecido)
+tile.thermalexpansion.frame.machineReinforced.name=Marco de Maquina (Reforzado)
+tile.thermalexpansion.frame.machineResonant.name=Marco de Maquina (Resonante)
+tile.thermalexpansion.frame.cellBasic.name=Marco de la Celula de Energia de Plomo
+tile.thermalexpansion.frame.cellHardened.name=Marco de la Celula de Energia Endurecida
+tile.thermalexpansion.frame.cellReinforcedEmpty.name=Marco de la Celula de Energia de Redstone (Vacia)
+tile.thermalexpansion.frame.cellReinforcedFull.name=Marco de la Celula de Energia de Redstone (Llena)
+tile.thermalexpansion.frame.cellResonantEmpty.name=Marco de la Celula de Energia Resonante (Vacia)
+tile.thermalexpansion.frame.cellResonantFull.name=Marco de la Celula de Energia Resonante (Llena)
+tile.thermalexpansion.frame.tesseractEmpty.name=Marco de la Tesseract (Vacia)
+tile.thermalexpansion.frame.tesseractFull.name=Marco de la Tesseract (Llena)
+tile.thermalexpansion.frame.illuminator.name=Marco de el Iluminador 
+
+tile.thermalexpansion.glass.name=Cristal Endurecido
+tile.thermalexpansion.glassLumium.name=Cristal de Lumium Endurecido
+
+tile.thermalexpansion.light.name=6-Mode Lighting 
+tile.thermalexpansion.light.illuminator.name=Iluminador de Piedra Luminosa
+tile.thermalexpansion.light.lampLumiumRadiant.name=Lampara de Lumium Radiante
+tile.thermalexpansion.light.lampLumium.name=Lampara de Lumium
+
+tile.thermalexpansion.machine.furnace.name=Horno de Redstone
+tile.thermalexpansion.machine.pulverizer.name=Pulverizador
+tile.thermalexpansion.machine.sawmill.name=Aserradero
+tile.thermalexpansion.machine.smelter.name=Horno de Induccion
+tile.thermalexpansion.machine.crucible.name=Crisol Magmatico
+tile.thermalexpansion.machine.transposer.name=Reemisor de Fluidos
+tile.thermalexpansion.machine.precipitator.name=Precipitador Glacial
+tile.thermalexpansion.machine.extruder.name=Extrusora Ignea
+tile.thermalexpansion.machine.accumulator.name=Acumulador Acuoso
+tile.thermalexpansion.machine.assembler.name=Ensamblador Ciclico
+tile.thermalexpansion.machine.charger.name=Infusor Energetico
+tile.thermalexpansion.machine.insolator.name=Aislante Phytogenico
+
+tile.thermalexpansion.plate.frame.name=Marco de la Placa
+tile.thermalexpansion.plate.impulse.name=Placa de Impulso
+tile.thermalexpansion.plate.signal.name=Placa de Redstone
+tile.thermalexpansion.plate.translocate.name=Placa de Translocacion
+tile.thermalexpansion.plate.charge.name=Placa de Recarga
+tile.thermalexpansion.plate.teleport.name=Placa de Teleportacion
+tile.thermalexpansion.plate.excursion.name=Placa de Excursion
+
+tile.thermalexpansion.rockwool.black.name=Lana de Roca Negra
+tile.thermalexpansion.rockwool.red.name=Lana de Roca Roja
+tile.thermalexpansion.rockwool.green.name=Lana de Roca Verde
+tile.thermalexpansion.rockwool.brown.name=Lana de Roca Marron
+tile.thermalexpansion.rockwool.blue.name=Lana de Roca Azul
+tile.thermalexpansion.rockwool.purple.name=Lana de Roca Purpura
+tile.thermalexpansion.rockwool.cyan.name=Lana de Roca Cyan
+tile.thermalexpansion.rockwool.silver.name=Lana de Roca Gris Claro
+tile.thermalexpansion.rockwool.gray.name=Lana de Roca Gris
+tile.thermalexpansion.rockwool.pink.name=Lana de Roca Rosa
+tile.thermalexpansion.rockwool.lime.name=Lana de Roca Lima
+tile.thermalexpansion.rockwool.yellow.name=Lana de Roca Amarilla
+tile.thermalexpansion.rockwool.lightBlue.name=Lana de Roca Azul Claro
+tile.thermalexpansion.rockwool.magenta.name=Lana de Roca Magenta
+tile.thermalexpansion.rockwool.orange.name=Lana de Roca Naranja
+tile.thermalexpansion.rockwool.white.name=Lana de Roca Blanca
+
+tile.thermalexpansion.sponge.creative.name=Esponja Crativa
+tile.thermalexpansion.sponge.basic.name=Esponja Llana
+tile.thermalexpansion.sponge.magmatic.name=Esponja Magmatica
+
+tile.thermalexpansion.strongbox.creative.name=Caja Fuerte Creativa
+tile.thermalexpansion.strongbox.basic.name=Caja Fuerte
+tile.thermalexpansion.strongbox.hardened.name=Caja Fuerte Endurecida
+tile.thermalexpansion.strongbox.reinforced.name=Caja Fuerte Reforzada
+tile.thermalexpansion.strongbox.resonant.name=Caja Fuerte Resonante
+
+tile.thermalexpansion.tank.creative.name=Tanque Portatil Creativo
+tile.thermalexpansion.tank.basic.name=Tanque Portatil
+tile.thermalexpansion.tank.hardened.name=Tanque Portatil Endurecido
+tile.thermalexpansion.tank.reinforced.name=Tanque Portatil Reforzado
+tile.thermalexpansion.tank.resonant.name=Tanque Portatil Resonante
+
+tile.thermalexpansion.workbench.creative.name=Mesa de Trabajo del Maquinista Creativa
+tile.thermalexpansion.workbench.basic.name=Mesa de Trabajo del Maquinista
+tile.thermalexpansion.workbench.hardened.name=Mesa de Trabajo del Maquinista Endurecida
+tile.thermalexpansion.workbench.reinforced.name=Mesa de Trabajo del Maquinista Reforzada
+tile.thermalexpansion.workbench.resonant.name=Mesa de Trabajo del Maquinista Resonante
+
+#To be removed
+tile.thermalexpansion.device.workbench.name=Machinist's Workbench
+info.thermalexpansion.device.workbench=Crafts things, can make use of Schematics.
