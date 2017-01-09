@@ -36,6 +36,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
 
+		myContainer.onCraftMatrixChanged(null);
 		return ServerHelper.isClientWorld(player.worldObj) ? myTile.createItemClient(false, inventory.getStackInSlot(getSlotIndex())) : myTile.createItem(
 				false, inventory.getStackInSlot(getSlotIndex()));
 	}
@@ -55,7 +56,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 
-		myTile.createItem(true, inventory.getStackInSlot(getSlotIndex()));
+		myTile.createItem(true, stack);
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, stack, myContainer.craftMatrix);
 		this.onCrafting(stack);
 		super.onPickupFromSlot(player, stack);
@@ -69,10 +70,16 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	}
 
 	@Override
+	public ItemStack decrStackSize(int amt) {
+
+		myContainer.onCraftMatrixChanged(null);
+        return super.decrStackSize(amt);
+    }
+
+	@Override
 	public ItemStack getStack() {
 
-		myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
-		//myContainer.onCraftMatrixChanged(null);
+		//myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
 		return this.inventory.getStackInSlot(getSlotIndex());
 	}
 

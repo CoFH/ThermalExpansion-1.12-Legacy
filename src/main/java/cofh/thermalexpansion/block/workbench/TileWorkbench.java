@@ -391,15 +391,16 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
+		ItemStack result = super.decrStackSize(slot, amount);
 		updateClient = true;
-		return super.decrStackSize(slot, amount);
+		return result;
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
-		updateClient = true;
 		super.setInventorySlotContents(slot, stack);
+		updateClient = true;
 	}
 
 	/* ICustomInventory */
