@@ -56,6 +56,9 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	@Override
 	public void onPickupFromSlot(EntityPlayer player, ItemStack stack) {
 
+		if (stack == null) {
+			return;
+		}
 		myTile.createItem(true, stack);
 		FMLCommonHandler.instance().firePlayerCraftingEvent(player, stack, myContainer.craftMatrix);
 		this.onCrafting(stack);
