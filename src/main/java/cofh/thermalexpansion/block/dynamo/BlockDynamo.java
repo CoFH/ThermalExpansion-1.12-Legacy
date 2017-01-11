@@ -6,6 +6,7 @@ import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.IBakeryBlock;
 import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
@@ -40,6 +41,8 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.property.ExtendedBlockState;
@@ -161,7 +164,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		}
 	}
 
-	@Override
+    @Nullable
+    @Override
+    public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
+	    TileEntity tileEntity = worldIn.getTileEntity(pos);
+	    if (tileEntity != null) {
+	        int facing = ((TileDynamoBase) tileEntity).facing;
+	        //Due to CCL Black magic, passing a CuboidRayTraceResult down this method will cause CCL to render its contained BB.
+            return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing +6]);
+        }
+        return super.collisionRayTrace(blockState, worldIn, pos, start, end);
+    }
+
+    @Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
