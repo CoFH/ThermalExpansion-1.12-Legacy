@@ -151,7 +151,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
 
         if (tile != null) {
             IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-            return FluidHelper.isFluidHandler(heldItem) || FluidHelper.interactWithHandler(heldItem, handler, player, hand);
+            return FluidHelper.interactWithHandler(heldItem, handler, player, hand) || FluidHelper.isFluidHandler(heldItem);
         }
         return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
     }
