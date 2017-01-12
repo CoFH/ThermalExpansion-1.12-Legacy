@@ -5,7 +5,7 @@ import codechicken.lib.inventory.InventoryUtils;
 import codechicken.lib.util.ItemUtils;
 import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
-import cofh.api.transport.IItemDuct;
+import cofh.api.tileentity.IItemDuct;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 

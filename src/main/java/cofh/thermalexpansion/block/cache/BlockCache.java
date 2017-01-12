@@ -20,6 +20,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import codechicken.lib.model.blockbakery.BlockBakery;
+import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
@@ -320,25 +321,27 @@ public class BlockCache extends BlockTEBase implements IWorldBlockTextureProvide
 	}
 
 	/* IDismantleable */
-	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
-
-		NBTTagCompound tag = getItemStackTag(world, pos);
-
-		TileEntity tile = world.getTileEntity(pos);
-		if (tile instanceof TileCache) {
-			((TileCache) tile).inventory = new ItemStack[((TileCache) tile).inventory.length];
-		}
-		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
-	}
-
     @Override
-    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-		if (getMetaFromState(world.getBlockState(pos)) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
-			return false;
-		}
-		return super.canDismantle(player, world, pos);
-	}
+    public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
+
+        NBTTagCompound tag = getItemStackTag(world, pos);
+
+        TileEntity tile = world.getTileEntity(pos);
+        if (tile instanceof TileInventory) {
+            ((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
+        }
+        return super.dismantleDelegate(tag, world, pos, player, returnDrops, false);
+    }
+
+    /* IDismantleable */
+    @Override
+    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+
+        if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+            return false;
+        }
+        return super.canDismantle(world, pos, state, player);
+    }
 
 	/* IInitializer */
 	@Override

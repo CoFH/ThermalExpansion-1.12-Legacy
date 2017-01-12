@@ -27,9 +27,9 @@ public class Proxy {
 	@SubscribeEvent
 	public void save(Save evt) {
 
-		if (evt.getWorld().provider.getDimension() == 0) {
-			TeleportChannelRegistry.save();
-		}
+//		if (evt.getWorld().provider.getDimension() == 0) {
+//			TeleportChannelRegistry.save();
+//		}
 	}
 
 	@SideOnly(Side.CLIENT)

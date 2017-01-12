@@ -202,15 +202,14 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		return tag;
 	}
 
-	/* IDismantleable */
-	@Override
-	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-        Types type = world.getBlockState(pos).getValue(TYPES);
-		if (type == Types.CREATIVE && !CoreUtils.isOp(player)) {
-			return false;
-		}
-		return super.canDismantle(player, world, pos);
-	}
+    /* IDismantleable */
+    @Override
+    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+        if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+            return false;
+        }
+        return super.canDismantle(world, pos, state, player);
+    }
 
 	/* IInitializer */
 	@Override

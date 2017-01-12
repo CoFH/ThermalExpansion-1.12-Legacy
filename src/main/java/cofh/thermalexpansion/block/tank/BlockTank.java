@@ -195,14 +195,12 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
     }
 
     /* IDismantleable */
-
     @Override
-    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-        IBlockState state = world.getBlockState(pos);
+    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
         if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
             return false;
         }
-        return super.canDismantle(player, world, pos);
+        return super.canDismantle(world, pos, state, player);
     }
 
     /* IInitializer */

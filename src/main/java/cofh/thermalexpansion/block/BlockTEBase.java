@@ -5,13 +5,10 @@ import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
-import cofh.core.block.BlockCoFHBase;
-import cofh.core.block.TileCoFHBase;
+import cofh.core.block.BlockCoFHBaseOld;
+import cofh.core.block.TileCoFHBaseOld;
 import cofh.core.util.CoreUtils;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.SoundType;
@@ -41,7 +38,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
 
-public abstract class BlockTEBase extends BlockCoFHBase {
+public abstract class BlockTEBase extends BlockCoFHBaseOld {
 
 	protected boolean basicGui = true;
 
@@ -69,16 +66,15 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY ) {
 			return false;
 		}
-		if (player.isSneaking()) {
-			if (Utils.isHoldingUsableWrench(player, traceResult)) {
-				if (ServerHelper.isServerWorld(world) && canDismantle(player, world, pos)) {
-					dismantleBlock(player, world, pos, false);
-				}
-				Utils.usedWrench(player, traceResult);
-				return true;
-			}
-			return false;
-		}
+        if (player.isSneaking()) {
+            if (WrenchHelper.isHoldingUsableWrench(player, traceResult)) {
+                if (ServerHelper.isServerWorld(world)) {
+                    dismantleBlock(world, pos, state, player, false);
+                    WrenchHelper.usedWrench(player, traceResult);
+                }
+                return true;
+            }
+        }
 		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
 
 		if (tile == null) {
@@ -124,12 +120,17 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 		return retTag;
 	}
 
+	/* Drop Helper */
+	public ArrayList<ItemStack> dropDelegate(NBTTagCompound nbt, IBlockAccess world, BlockPos pos, int fortune) {
+	    return dismantleDelegate(nbt, (World) world, pos, null, false, true);
+    }
+
 	/* Dismantle Helper */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, NBTTagCompound nbt, IBlockAccess blockAccess, BlockPos pos, boolean returnDrops, boolean simulate) {
+	public ArrayList<ItemStack> dismantleDelegate(NBTTagCompound nbt, World world, BlockPos pos, EntityPlayer player, boolean returnDrops, boolean simulate) {
 
-		TileEntity tile = blockAccess.getTileEntity(pos);
-        IBlockState state = blockAccess.getBlockState(pos);
+		TileEntity tile = world.getTileEntity(pos);
+        IBlockState state = world.getBlockState(pos);
 		int bMeta = state.getBlock().getMetaFromState(state);
 
 		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
@@ -138,9 +139,8 @@ public abstract class BlockTEBase extends BlockCoFHBase {
 			dropBlock.setTagCompound(nbt);
 		}
 		if (!simulate) {
-            World world = (World) blockAccess;
-			if (tile instanceof TileCoFHBase) {
-				((TileCoFHBase) tile).blockDismantled();
+			if (tile instanceof TileCoFHBaseOld) {
+				((TileCoFHBaseOld) tile).blockDismantled();
 			}
 			world.setBlockToAir(pos);
 

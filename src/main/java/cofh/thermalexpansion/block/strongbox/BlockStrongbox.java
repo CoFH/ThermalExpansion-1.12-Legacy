@@ -156,7 +156,7 @@ public class BlockStrongbox extends BlockTEBase {
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
 
 		NBTTagCompound tag = getItemStackTag(world, pos);
 
@@ -164,18 +164,16 @@ public class BlockStrongbox extends BlockTEBase {
 		if (tile instanceof TileInventory) {
 			((TileInventory) tile).inventory = new ItemStack[((TileInventory) tile).inventory.length];
 		}
-		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
+		return super.dismantleDelegate(tag, world, pos, player, returnDrops, false);
 	}
 
 	@Override
-	public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
-
-        IBlockState state = world.getBlockState(pos);
+	public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 
 		if (state.getValue(TYPES) == EnumType.CREATIVE && !CoreUtils.isOp(player)) {
 			return false;
 		}
-		return super.canDismantle(player, world, pos);
+		return super.canDismantle(world, pos, state, player);
 	}
 
 	/* IInitializer */

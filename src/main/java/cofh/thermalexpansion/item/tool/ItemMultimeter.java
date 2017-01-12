@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.block.IBlockConfigGui;
-import cofh.api.block.IBlockDebug;
 import cofh.api.block.IBlockInfo;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.chat.ChatHelper;
@@ -14,7 +13,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -97,7 +95,7 @@ public class ItemMultimeter extends ItemBase {
 				}
 			}
 			if (state.getBlock() instanceof IBlockInfo) {
-				((IBlockInfo) (state.getBlock())).getBlockInfo(world, pos, hitSide, player, info, false);
+				((IBlockInfo) (state.getBlock())).getBlockInfo(info, world, pos, hitSide, player, false);
 
 				ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 				info.clear();
@@ -106,7 +104,7 @@ public class ItemMultimeter extends ItemBase {
 				TileEntity theTile = world.getTileEntity(pos);
 				if (theTile instanceof ITileInfo) {
 					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, null, player, false);
+						((ITileInfo) theTile).getTileInfo(info, world, pos, hitSide, player, false);
 						ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
 					}
 					info.clear();
@@ -116,30 +114,30 @@ public class ItemMultimeter extends ItemBase {
 			info.clear();
 			return false;
 		} else { // Debugger
-			if (player.isSneaking() && state.getBlock() instanceof IBlockDebug) {
-				((IBlockDebug) (state.getBlock())).debugBlock(world, pos, hitSide, player);
-				return true;
-			} else if (state.getBlock() instanceof IBlockInfo) {
-				if (ServerHelper.isClientWorld(world)) {
-					info.add(new TextComponentString("-Client-"));
-				} else {
-					info.add(new TextComponentString("-Server-"));
-				}
-				((IBlockInfo) (state.getBlock())).getBlockInfo(world, pos, hitSide, player, info, true);
-				ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
-				info.clear();
-				return true;
-			} else {
-				TileEntity theTile = world.getTileEntity(pos);
-				if (theTile instanceof ITileInfo) {
-					if (ServerHelper.isServerWorld(world)) {
-						((ITileInfo) theTile).getTileInfo(info, null, player, player.isSneaking());
-						ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
-					}
-					info.clear();
-					return true;
-				}
-			}
+//			if (player.isSneaking() && state.getBlock() instanceof IBlockInfo) {
+//                ((IBlockInfo) (state.getBlock())).getBlockInfo(info, world, pos, hitSide, player, true);
+//				return true;
+//			} else if (state.getBlock() instanceof IBlockInfo) {
+//				if (ServerHelper.isClientWorld(world)) {
+//					info.add(new TextComponentString("-Client-"));
+//				} else {
+//					info.add(new TextComponentString("-Server-"));
+//				}
+//				((IBlockInfo) (state.getBlock())).getBlockInfo(world, pos, hitSide, player, info, true);
+//				ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+//				info.clear();
+//				return true;
+//			} else {
+//				TileEntity theTile = world.getTileEntity(pos);
+//				if (theTile instanceof ITileInfo) {
+//					if (ServerHelper.isServerWorld(world)) {
+//						((ITileInfo) theTile).getTileInfo(info, null, player, player.isSneaking());
+//						ChatHelper.sendIndexedChatMessagesToPlayer(player, info);
+//					}
+//					info.clear();
+//					return true;
+//				}
+//			}
 		}
 		info.clear();
 		return false;

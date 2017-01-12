@@ -6,6 +6,7 @@ import cofh.api.core.IInitializer;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.WrenchHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.Block;
@@ -82,10 +83,10 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
     public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
         if (player.isSneaking()) {
             RayTraceResult traceResult = RayTracer.retrace(player);
-            if (Utils.isHoldingUsableWrench(player, traceResult)) {
+            if (WrenchHelper.isHoldingUsableWrench(player, traceResult)) {
                 if (ServerHelper.isServerWorld(world)) {
-                    dismantleBlock(player, world, pos, false);
-                    Utils.usedWrench(player, traceResult);
+                    dismantleBlock(world, pos, state, player, false);
+                    WrenchHelper.usedWrench(player, traceResult);
                 }
                 return true;
             }
@@ -154,7 +155,8 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
 
     /* IDismantleable */
     @Override
-    public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
+    public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
+
         int metadata = getMetaFromState(world.getBlockState(pos));
         ItemStack dropBlock = new ItemStack(this, 1, metadata);
         world.setBlockToAir(pos);
@@ -176,11 +178,13 @@ public class BlockGlass extends Block implements IDismantleable, IInitializer {
     }
 
     @Override
-    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
+    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+
         return true;
     }
 
     public BlockRenderLayer getBlockLayer() {
+
         return BlockRenderLayer.CUTOUT;
     }
 

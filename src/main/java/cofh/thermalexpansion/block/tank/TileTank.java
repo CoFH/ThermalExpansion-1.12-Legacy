@@ -15,6 +15,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.capability.*;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -384,7 +385,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;

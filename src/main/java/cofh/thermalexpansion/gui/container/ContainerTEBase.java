@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.container;
 
 import cofh.api.tileentity.IAugmentable;
-import cofh.core.block.TileCoFHBase;
+import cofh.core.block.TileCoFHBaseOld;
 import cofh.core.gui.slot.SlotAugment;
 import cofh.lib.gui.container.ContainerBase;
 import cofh.lib.gui.container.IAugmentableContainer;
@@ -19,7 +19,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTEBase extends ContainerBase implements IAugmentableContainer {
 
-	public final TileCoFHBase baseTile;
+	public final TileCoFHBaseOld baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];
@@ -36,7 +36,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(TileEntity tile) {
 
-		baseTile = (TileCoFHBase) tile;
+		baseTile = (TileCoFHBaseOld) tile;
 	}
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile) {
@@ -46,8 +46,8 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile, boolean augSlots, boolean playerInvSlots) {
 
-		if (tile instanceof TileCoFHBase) {
-			baseTile = (TileCoFHBase) tile;
+		if (tile instanceof TileCoFHBaseOld) {
+			baseTile = (TileCoFHBaseOld) tile;
 		} else {
 			baseTile = null;
 		}

@@ -239,7 +239,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 
 	/* IDismantleable */
 	@Override
-	public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
+	public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
 
 		NBTTagCompound tag = getItemStackTag(world, pos);
 
@@ -254,7 +254,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 			tag.setInteger("Energy", theTile.getEnergyStored(null));
 			theTile.writeAugmentsToNBT(tag);
 		}
-		return super.dismantleBlock(player, tag, world, pos, returnDrops, false);
+		return super.dismantleDelegate(tag, world, pos, player, returnDrops, false);
 	}
 
 	/* IInitializer */

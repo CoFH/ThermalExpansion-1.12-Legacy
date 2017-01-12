@@ -14,6 +14,7 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
@@ -74,9 +75,9 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 		if (MinecraftForge.EVENT_BUS.post(event) || event.getResult() == Result.DENY ) {
 			return EnumActionResult.PASS;
 		}
-		if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
-				&& ((IDismantleable) block).canDismantle(player, world, pos)) {
-			((IDismantleable) block).dismantleBlock(player, world, pos, false);
+        if (ServerHelper.isServerWorld(world) && player.isSneaking() && block instanceof IDismantleable
+                && ((IDismantleable) block).canDismantle(world, pos, state, player)) {
+            ((IDismantleable) block).dismantleBlock(world, pos, state, player, false);
 			// TODO: Changeover.
 			// ArrayList<ItemStack> drops = ((IDismantleable) block).dismantleBlock(player, world, x, y, z, true);
 			// for (ItemStack drop : drops) {
@@ -118,16 +119,28 @@ public class ItemWrench extends ItemToolBase implements IToolHammer {
 	}
 
 	/* IToolHammer */
-	@Override
-	public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
+		/* IToolHammer */
+    @Override
+    public boolean isUsable(ItemStack item, EntityLivingBase user, BlockPos pos) {
 
-		return true;
-	}
+        return true;
+    }
 
-	@Override
-	public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
+    @Override
+    public boolean isUsable(ItemStack item, EntityLivingBase user, Entity entity) {
 
-	}
+        return true;
+    }
+
+    @Override
+    public void toolUsed(ItemStack item, EntityLivingBase user, BlockPos pos) {
+
+    }
+
+    @Override
+    public void toolUsed(ItemStack item, EntityLivingBase user, Entity entity) {
+
+    }
 
 	/* IToolWrench */
 	public boolean canWrench(EntityPlayer player, int x, int y, int z) {

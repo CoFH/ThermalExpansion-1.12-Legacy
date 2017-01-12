@@ -21,7 +21,6 @@ import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.Proxy;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.core.TeleportChannelRegistry;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.TECreativeTab;
 import cofh.thermalexpansion.gui.TECreativeTabFlorbs;
@@ -149,7 +148,7 @@ public class ThermalExpansion {
 		registerMachineOreDict();
 		TEItems.initialize();
 		TEBlocks.initialize();
-		TeleportChannelRegistry.initialize();
+		//TeleportChannelRegistry.initialize();
 
 		if (TEProps.enableAchievements) {
 			TEAchievements.initialize();
@@ -216,8 +215,8 @@ public class ThermalExpansion {
 	@EventHandler
 	public void serverStart(FMLServerAboutToStartEvent event) {
 
-		TeleportChannelRegistry.createServerRegistry();
-		TeleportChannelRegistry.createClientRegistry();
+		//TeleportChannelRegistry.createServerRegistry();
+		//TeleportChannelRegistry.createClientRegistry();
 	}
 
 	@EventHandler
@@ -250,7 +249,7 @@ public class ThermalExpansion {
 		ItemSatchel.enableSecurity = payload.getBool();
 
 		log.info("Receiving Server Configuration...");
-		TeleportChannelRegistry.createClientRegistry();
+		//TeleportChannelRegistry.createClientRegistry();
 	}
 
 	public PacketCoFHBase getConfigSync() {

@@ -136,7 +136,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 
     /* IDismantleable */
     @Override
-    public ArrayList<ItemStack> dismantleBlock(EntityPlayer player, World world, BlockPos pos, boolean returnDrops) {
+    public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
 
         int metadata = getMetaFromState(world.getBlockState(pos));
         ItemStack dropBlock = new ItemStack(this, 1, metadata);
@@ -159,7 +159,8 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
     }
 
     @Override
-    public boolean canDismantle(EntityPlayer player, World world, BlockPos pos) {
+    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+
         return true;
     }
 

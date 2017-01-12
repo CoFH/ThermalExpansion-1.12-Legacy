@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
-import cofh.core.block.TileCoFHBase;
+import cofh.core.block.TileCoFHBaseOld;
 import cofh.core.network.*;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -13,7 +13,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileTEBase extends TileCoFHBase implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
+public abstract class TileTEBase extends TileCoFHBaseOld implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
     protected String tileName = "";
 

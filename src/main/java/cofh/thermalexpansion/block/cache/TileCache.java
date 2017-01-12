@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.cache;
 
-import cofh.api.inventory.IInventoryRetainer;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
@@ -11,8 +11,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -402,7 +404,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	/* ITileInfo */
 	@Override
-	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
+	public void getTileInfo(List<ITextComponent> info, IBlockAccess world, BlockPos pos, EnumFacing side, EntityPlayer player, boolean debug) {
 
 		if (debug) {
 			return;
@@ -472,5 +474,11 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 		return pass == 0 && storedStack != null;
 	}
+
+    /* IInventoryRetainer */
+    public boolean retainInventory() {
+
+        return true;
+    }
 
 }

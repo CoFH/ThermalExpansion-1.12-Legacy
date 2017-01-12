@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.strongbox;
 
-import cofh.api.inventory.IInventoryRetainer;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
@@ -19,7 +19,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.Iterator;
 import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -308,4 +307,9 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 		return access.isPublic();
 	}
 
+	/* IInventoryRetainer */
+    public boolean retainInventory() {
+
+        return true;
+    }
 }

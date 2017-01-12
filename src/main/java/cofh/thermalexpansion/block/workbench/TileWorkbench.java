@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.workbench;
 
 import cofh.api.core.ICustomInventory;
-import cofh.api.inventory.IInventoryRetainer;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.core.network.PacketTileInfo;
@@ -435,5 +435,11 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 
 		return slot >= SCHEMATICS[type];
 	}
+
+    /* IInventoryRetainer */
+    public boolean retainInventory() {
+
+        return true;
+    }
 
 }

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui;
 
 import codechicken.lib.util.ItemUtils;
-import cofh.core.block.TileCoFHBase;
+import cofh.core.block.TileCoFHBaseOld;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.GuiSatchel;
 import cofh.thermalexpansion.gui.container.ContainerSatchel;
@@ -23,8 +23,8 @@ public class GuiHandler implements IGuiHandler {
         switch (id) {
             case TILE_ID:
                 TileEntity tile = world.getTileEntity(pos);
-                if (tile instanceof TileCoFHBase) {
-                    return ((TileCoFHBase) tile).getGuiClient(player.inventory);
+                if (tile instanceof TileCoFHBaseOld) {
+                    return ((TileCoFHBaseOld) tile).getGuiClient(player.inventory);
                 }
                 return null;
             case SATCHEL_ID:
@@ -43,8 +43,8 @@ public class GuiHandler implements IGuiHandler {
         switch (id) {
             case TILE_ID:
                 TileEntity tile = world.getTileEntity(pos);
-                if (tile instanceof TileCoFHBase) {
-                    return ((TileCoFHBase) tile).getGuiServer(player.inventory);
+                if (tile instanceof TileCoFHBaseOld) {
+                    return ((TileCoFHBaseOld) tile).getGuiServer(player.inventory);
                 }
                 return null;
             case SATCHEL_ID:

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.api.inventory.IInventoryConnection;
+import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.CoFHProps;
 import cofh.core.RegistrySocial;
 import cofh.lib.util.helpers.BlockHelper;
