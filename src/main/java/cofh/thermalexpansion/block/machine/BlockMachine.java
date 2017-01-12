@@ -18,7 +18,6 @@ import codechicken.lib.model.blockbakery.BlockBakery;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
@@ -32,9 +31,9 @@ import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import java.util.List;
@@ -331,7 +330,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 
 		// @formatter:off
 		if (enable[Types.FURNACE.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(furnace, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(furnace, defaultAugments, new Object[]{
 					" X ",
 					"YCY",
 					"IPI",
@@ -346,7 +345,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			String category = "Machine.Pulverizer";
 			String comment = "If enabled, the Pulverizer will require Diamonds instead of Flint.";
 			Item component = ThermalExpansion.config.get(category, "RequireDiamonds", false, comment) ? Items.DIAMOND : Items.FLINT;
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -358,7 +357,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.SAWMILL.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(sawmill, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(sawmill, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -370,7 +369,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.SMELTER.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -382,7 +381,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.CRUCIBLE.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -394,7 +393,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.TRANSPOSER.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(transposer, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(transposer, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -406,7 +405,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.PRECIPITATOR.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(precipitator, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(precipitator, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -418,7 +417,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.EXTRUDER.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -430,7 +429,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.ACCUMULATOR.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -442,7 +441,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.ASSEMBLER.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -454,7 +453,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.CHARGER.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(charger, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
@@ -466,7 +465,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			}));
 		}
 		if (enable[Types.INSOLATOR.ordinal()]) {
-			NEIRecipeWrapper.addMachineRecipe(new RecipeMachine(insolator, defaultAugments, new Object[] {
+			GameRegistry.addRecipe(new RecipeMachine(insolator, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",

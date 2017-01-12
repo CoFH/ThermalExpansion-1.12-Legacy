@@ -29,8 +29,6 @@ import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
-import cofh.thermalexpansion.plugins.TEPlugins;
-import cofh.thermalexpansion.plugins.nei.handlers.NEIRecipeWrapper;
 import cofh.thermalexpansion.util.FMLEventHandler;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -43,7 +41,6 @@ import cofh.thermalexpansion.util.crafting.PrecipitatorManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.RecipeMachineUpgrade;
-import cofh.thermalexpansion.util.crafting.RecipeStyle;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -70,7 +67,6 @@ import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -89,7 +85,7 @@ import org.apache.logging.log4j.Logger;
 		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
 public class ThermalExpansion {
 
-	public static final String modId = "ThermalExpansion";
+	public static final String modId = "thermalexpansion";
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.0.0";
 	public static final String version_max = "1.1.0";
@@ -136,8 +132,8 @@ public class ThermalExpansion {
 
 		RecipeSorter.register("thermalexpansion:machine", RecipeMachine.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
 		RecipeSorter.register("thermalexpansion:machineUpgrade", RecipeMachineUpgrade.class, RecipeSorter.Category.SHAPED, "before:cofh:upgrade");
-		RecipeSorter.register("thermalexpansion:style", RecipeStyle.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
-		RecipeSorter.register("thermalexpansion:NEIWrapper", NEIRecipeWrapper.class, RecipeSorter.Category.UNKNOWN, "after:forge:shapedore");
+		//RecipeSorter.register("thermalexpansion:style", RecipeStyle.class, RecipeSorter.Category.SHAPED, "after:forge:shapedore");
+		//RecipeSorter.register("thermalexpansion:NEIWrapper", NEIRecipeWrapper.class, RecipeSorter.Category.UNKNOWN, "after:forge:shapedore");
 
 		cleanConfig(true);
 		configOptions();
@@ -145,8 +141,6 @@ public class ThermalExpansion {
 		TEItems.preInit();
 		TEBlocks.preInit();
         proxy.preInit();
-
-		TEPlugins.preInit();
 	}
 
 	@EventHandler
@@ -155,7 +149,6 @@ public class ThermalExpansion {
 		registerMachineOreDict();
 		TEItems.initialize();
 		TEBlocks.initialize();
-		TEPlugins.initialize();
 		TeleportChannelRegistry.initialize();
 
 		if (TEProps.enableAchievements) {
@@ -188,7 +181,6 @@ public class ThermalExpansion {
 
 		TEItems.postInit();
 		TEBlocks.postInit();
-		TEPlugins.postInit();
 
 		proxy.registerEntities();
 		proxy.registerRenderInformation();
@@ -213,7 +205,6 @@ public class ThermalExpansion {
 
 		FuelManager.parseFuels();
 
-		TEPlugins.loadComplete();
 
 		cleanConfig(false);
 		config.cleanUp(false, true);
