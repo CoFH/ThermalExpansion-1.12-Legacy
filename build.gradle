@@ -51,7 +51,7 @@ dependencies {
 version = "${project.config.mod_version}." + (System.getenv("BUILD_NUMBER") ?: "1")
 
 println config.mc_version + "-" + config.forge_version
-// Setup the forge minecraft plugin data. Specify the preferred forge/minecraft version here
+// Setup the forge minecraft plugin data. Specify the preferred forge/minecraft VERSION here
 minecraft {
     version = config.mc_version + "-" + config.forge_version
     mappings = config.mappings
@@ -65,7 +65,7 @@ processResources {
 
     from(sourceSets.main.resources.srcDirs) {
         include 'mcmod.info'
-        expand 'version': project.version, 'mc_version': project.config.mc_version
+        expand 'VERSION': project.version, 'mc_version': project.config.mc_version
     }
     rename '(.+_at.cfg)', 'META-INF/$1'
 }
@@ -106,7 +106,7 @@ uploadArchives {
                 repository(url: "file://${local_maven}")
                 pom {
                     groupId = project.group
-                    // Force the maven upload to use the <mcversion>-<version> syntax preferred at files
+                    // Force the maven upload to use the <mcversion>-<VERSION> syntax preferred at files
                     artifactId = project.archivesBaseName
                     project {
                         name project.archivesBaseName

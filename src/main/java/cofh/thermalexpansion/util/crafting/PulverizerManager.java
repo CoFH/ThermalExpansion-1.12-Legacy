@@ -11,9 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.TFItems;
-import cofh.thermalfoundation.item.VanillaEquipment;
-import net.minecraftforge.fml.common.FMLLog;
-import net.minecraftforge.fml.common.registry.GameRegistry;
+import cofh.thermalfoundation.item.tool.VanillaEquipment;
 
 import gnu.trove.map.hash.THashMap;
 
@@ -581,7 +579,7 @@ public class PulverizerManager {
 		static final String ORE = "ore";
 		static final String INGOT = "ingot";
 		static final String NUGGET = "nugget";
-		static final String LOG = "log";
+		static final String LOG = "LOG";
 		static final String SAND = "sand";
 
 		public static boolean safeOreType(String oreName) {

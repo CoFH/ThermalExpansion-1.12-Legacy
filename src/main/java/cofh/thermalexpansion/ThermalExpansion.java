@@ -5,8 +5,6 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.mod.BaseMod;
-import cofh.mod.updater.UpdateManager;
 import cofh.thermalexpansion.block.TEBlocks;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
@@ -88,7 +86,7 @@ public class ThermalExpansion {
 	public static final String modName = "Thermal Expansion";
 	public static final String version = "1.0.0";
 	public static final String version_max = "1.1.0";
-	public static final String dependencies = CoFHCore.version_group + ThermalFoundation.version_group + "required-after:CodeChickenLib";
+	public static final String dependencies = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib";
 	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	public static final String version_group = "required-after:" + modId + "@[" + version + "," + version_max + ");";
@@ -121,7 +119,7 @@ public class ThermalExpansion {
 	public void preInit(FMLPreInitializationEvent event) {
         FMLLog.info("ThermalExpansion");
 
-		//UpdateManager.registerUpdater(new UpdateManager(this, releaseURL, CoFHProps.DOWNLOAD_URL));
+		//UpdateManager.registerUpdater(new UpdateManager(this, RELEASE_URL, CoFHProps.DOWNLOAD_URL));
 		config.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/common.cfg"), true));
 		configClient.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/client.cfg"), true));
 

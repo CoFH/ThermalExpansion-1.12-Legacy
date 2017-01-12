@@ -110,7 +110,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	//@Override
 	//@SideOnly(Side.CLIENT)
 	//public void registerIcons(IIconRegister ir) {
-	//	this.itemIcon = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + StringHelper.titleCase(itemName));
+	//	this.itemIcon = ir.registerIcon(MOD_NAME + ":" + getUnlocalizedName().replace("item." + MOD_NAME + ".", "") + "/" + StringHelper.titleCase(itemName));
 	//}
 
 	/* IMultiModeItem */

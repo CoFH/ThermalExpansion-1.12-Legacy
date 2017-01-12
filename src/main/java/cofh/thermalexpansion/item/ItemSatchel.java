@@ -168,9 +168,9 @@ public class ItemSatchel extends ItemBase implements IInventoryContainerItem {
     //
     //	super.registerIcons(ir);
     //
-    //	latch[0] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPublic");
-    //	latch[1] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchFriends");
-    //	latch[2] = ir.registerIcon(modName + ":" + getUnlocalizedName().replace("item." + modName + ".", "") + "/" + "LatchPrivate");
+    //	latch[0] = ir.registerIcon(MOD_NAME + ":" + getUnlocalizedName().replace("item." + MOD_NAME + ".", "") + "/" + "LatchPublic");
+    //	latch[1] = ir.registerIcon(MOD_NAME + ":" + getUnlocalizedName().replace("item." + MOD_NAME + ".", "") + "/" + "LatchFriends");
+    //	latch[2] = ir.registerIcon(MOD_NAME + ":" + getUnlocalizedName().replace("item." + MOD_NAME + ".", "") + "/" + "LatchPrivate");
     //}
 
     /* HELPERS */

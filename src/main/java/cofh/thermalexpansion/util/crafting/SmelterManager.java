@@ -10,9 +10,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ISmelterRecipe;
 import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalfoundation.item.Equipment;
+import cofh.thermalfoundation.item.tool.Equipment;
 import cofh.thermalfoundation.item.TFItems;
-import cofh.thermalfoundation.item.VanillaEquipment;
+import cofh.thermalfoundation.item.tool.VanillaEquipment;
 
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
