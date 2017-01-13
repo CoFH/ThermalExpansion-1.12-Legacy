@@ -1,11 +1,13 @@
 package cofh.thermalexpansion.block.cell;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.crafting.RecipeUpgradeOverride;
 import cofh.lib.util.helpers.BlockHelper;
@@ -15,32 +17,17 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import cofh.thermalfoundation.item.TFItems;
+import cofh.thermalfoundation.item.ItemMaterial;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import java.util.List;
-import java.util.Locale;
-
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -50,10 +37,23 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.List;
+import java.util.Locale;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockCell extends BlockTEBase implements IBakeryBlock {
 
@@ -244,14 +244,14 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 
 		if (enable[Types.BASIC.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellBasic, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellBasic, 'P', TEItems.powerCoilElectrum));
-			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
+			PulverizerManager.addRecipe(4000, cellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotLead, 3));
 		}
 		if (enable[Types.HARDENED.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened, 'P', TEItems.powerCoilElectrum));
 			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger(
 					"Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic, 'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum));
-			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
+			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
 		}
 		if (enable[Types.REINFORCED.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellReinforced, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellReinforcedFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));

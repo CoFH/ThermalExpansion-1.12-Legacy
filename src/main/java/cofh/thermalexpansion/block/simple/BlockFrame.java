@@ -3,19 +3,19 @@ package cofh.thermalexpansion.block.simple;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.api.block.IDismantleable;
 import cofh.api.core.IInitializer;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.CommonProperties;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cofh.thermalfoundation.item.TFItems;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
@@ -230,10 +230,10 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
         GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X', frameMachineReinforced));
 
         GameRegistry.addRecipe(ShapedRecipe(frameCellBasic, "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X', Blocks.REDSTONE_BLOCK));
-        PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotLead, 3));
+        PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotLead, 3));
 
         GameRegistry.addRecipe(ShapedRecipe(frameCellHardened, " I ", "IXI", " I ", 'I', "ingotInvar", 'X', frameCellBasic));
-        PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(TFItems.ingotInvar, 3));
+        PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
 
         GameRegistry.addRecipe(ShapedRecipe(frameCellReinforcedEmpty, "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "blockGlassHardened", 'X', "gemDiamond"));
         TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);

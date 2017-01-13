@@ -6,18 +6,9 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ITransposerRecipe;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cofh.thermalfoundation.item.TFItems;
-
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -26,6 +17,9 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.*;
+import java.util.Map.Entry;
 
 public class TransposerManager {
 
@@ -101,29 +95,29 @@ public class TransposerManager {
 			addFillRecipe(4000, new ItemStack(Items.BRICK), new ItemStack(Items.NETHERBRICK), new FluidStack(FluidRegistry.LAVA, 250), false);
 		}
 		addTEFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), new FluidStack(TFFluids.fluidRedstone, 200), false);
-		addTEFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(TFItems.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
-		addTEFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(TFItems.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
-		addTEFillRecipe(4000, ItemHelper.cloneStack(TFItems.dustObsidian, 1), ItemHelper.cloneStack(TFItems.dustBasalz, 1), new FluidStack(
+		addTEFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		addTEFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
+		addTEFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 1), ItemHelper.cloneStack(ItemMaterial.dustBasalz, 1), new FluidStack(
 				TFFluids.fluidRedstone, 200), false);
 
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketGlowstone, 1), new FluidStack(TFFluids.fluidGlowstone, 1000),
-				true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketEnder, 1), new FluidStack(TFFluids.fluidEnder, 1000), true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketPyrotheum, 1), new FluidStack(TFFluids.fluidPyrotheum, 1000),
-				true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketCryotheum, 1), new FluidStack(TFFluids.fluidCryotheum, 1000),
-				true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketAerotheum, 1), new FluidStack(TFFluids.fluidAerotheum, 1000),
-				true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketPetrotheum, 1), new FluidStack(TFFluids.fluidPetrotheum, 1000),
-				true);
-		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(TFItems.bucketCoal, 1), new FluidStack(TFFluids.fluidCoal, 1000), true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketRedstone, 1), new FluidStack(TFFluids.fluidRedstone, 1000), true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketGlowstone, 1), new FluidStack(TFFluids.fluidGlowstone, 1000),
+//				true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketEnder, 1), new FluidStack(TFFluids.fluidEnder, 1000), true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketPyrotheum, 1), new FluidStack(TFFluids.fluidPyrotheum, 1000),
+//				true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketCryotheum, 1), new FluidStack(TFFluids.fluidCryotheum, 1000),
+//				true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketAerotheum, 1), new FluidStack(TFFluids.fluidAerotheum, 1000),
+//				true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketPetrotheum, 1), new FluidStack(TFFluids.fluidPetrotheum, 1000),
+//				true);
+//		addTEFillRecipe(800, new ItemStack(Items.BUCKET), ItemHelper.cloneStack(ItemMaterial.bucketCoal, 1), new FluidStack(TFFluids.fluidCoal, 1000), true);
 	}
 
 	public static void loadRecipes() {
 
-		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(TFItems.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200),
+		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200),
 				false);
 
 		for (FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData()) {

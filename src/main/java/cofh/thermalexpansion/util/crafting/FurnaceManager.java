@@ -5,16 +5,9 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IFurnaceRecipe;
-import cofh.thermalfoundation.item.TFItems;
-
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -23,6 +16,11 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 public class FurnaceManager {
 
@@ -108,14 +106,14 @@ public class FurnaceManager {
 		}
 		int energy = DEFAULT_ENERGY;
 
-		addOreDictRecipe("oreIron", TFItems.ingotIron);
-		addOreDictRecipe("oreGold", TFItems.ingotGold);
-		addOreDictRecipe("oreCopper", TFItems.ingotCopper);
-		addOreDictRecipe("oreTin", TFItems.ingotTin);
-		addOreDictRecipe("oreSilver", TFItems.ingotSilver);
-		addOreDictRecipe("oreLead", TFItems.ingotLead);
-		addOreDictRecipe("oreNickel", TFItems.ingotNickel);
-		addOreDictRecipe("orePlatinum", TFItems.ingotPlatinum);
+		addOreDictRecipe("oreIron", ItemMaterial.ingotIron);
+		addOreDictRecipe("oreGold", ItemMaterial.ingotGold);
+		addOreDictRecipe("oreCopper", ItemMaterial.ingotCopper);
+		addOreDictRecipe("oreTin", ItemMaterial.ingotTin);
+		addOreDictRecipe("oreSilver", ItemMaterial.ingotSilver);
+		addOreDictRecipe("oreLead", ItemMaterial.ingotLead);
+		addOreDictRecipe("oreNickel", ItemMaterial.ingotNickel);
+		addOreDictRecipe("orePlatinum", ItemMaterial.ingotPlatinum);
 
 		addOreDictRecipe("oreCoal", new ItemStack(Items.COAL, 1, 0));
 		addOreDictRecipe("oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
@@ -126,28 +124,28 @@ public class FurnaceManager {
 
 		energy = DEFAULT_ENERGY * 10 / 16;
 
-		addOreDictRecipe(energy, "dustIron", TFItems.ingotIron);
-		addOreDictRecipe(energy, "dustGold", TFItems.ingotGold);
-		addOreDictRecipe(energy, "dustCopper", TFItems.ingotCopper);
-		addOreDictRecipe(energy, "dustTin", TFItems.ingotTin);
-		addOreDictRecipe(energy, "dustSilver", TFItems.ingotSilver);
-		addOreDictRecipe(energy, "dustLead", TFItems.ingotLead);
-		addOreDictRecipe(energy, "dustNickel", TFItems.ingotNickel);
-		addOreDictRecipe(energy, "dustPlatinum", TFItems.ingotPlatinum);
-		addOreDictRecipe(energy, "dustElectrum", TFItems.ingotElectrum);
-		addOreDictRecipe(energy, "dustInvar", TFItems.ingotInvar);
-		addOreDictRecipe(energy, "dustBronze", TFItems.ingotBronze);
+		addOreDictRecipe(energy, "dustIron", ItemMaterial.ingotIron);
+		addOreDictRecipe(energy, "dustGold", ItemMaterial.ingotGold);
+		addOreDictRecipe(energy, "dustCopper", ItemMaterial.ingotCopper);
+		addOreDictRecipe(energy, "dustTin", ItemMaterial.ingotTin);
+		addOreDictRecipe(energy, "dustSilver", ItemMaterial.ingotSilver);
+		addOreDictRecipe(energy, "dustLead", ItemMaterial.ingotLead);
+		addOreDictRecipe(energy, "dustNickel", ItemMaterial.ingotNickel);
+		addOreDictRecipe(energy, "dustPlatinum", ItemMaterial.ingotPlatinum);
+		addOreDictRecipe(energy, "dustElectrum", ItemMaterial.ingotElectrum);
+		addOreDictRecipe(energy, "dustInvar", ItemMaterial.ingotInvar);
+		addOreDictRecipe(energy, "dustBronze", ItemMaterial.ingotBronze);
 
 		energy = DEFAULT_ENERGY * 6 / 16;
 
-		addOreDictRecipe(energy, "oreberryIron", TFItems.nuggetIron);
-		addOreDictRecipe(energy, "oreberryGold", TFItems.nuggetGold);
-		addOreDictRecipe(energy, "oreberryCopper", TFItems.nuggetCopper);
-		addOreDictRecipe(energy, "oreberryTin", TFItems.nuggetTin);
-		addOreDictRecipe(energy, "oreberrySilver", TFItems.nuggetSilver);
-		addOreDictRecipe(energy, "oreberryLead", TFItems.nuggetLead);
-		addOreDictRecipe(energy, "oreberryNickel", TFItems.nuggetNickel);
-		addOreDictRecipe(energy, "oreberryPlatinum", TFItems.nuggetPlatinum);
+		addOreDictRecipe(energy, "oreberryIron", ItemMaterial.nuggetIron);
+		addOreDictRecipe(energy, "oreberryGold", ItemMaterial.nuggetGold);
+		addOreDictRecipe(energy, "oreberryCopper", ItemMaterial.nuggetCopper);
+		addOreDictRecipe(energy, "oreberryTin", ItemMaterial.nuggetTin);
+		addOreDictRecipe(energy, "oreberrySilver", ItemMaterial.nuggetSilver);
+		addOreDictRecipe(energy, "oreberryLead", ItemMaterial.nuggetLead);
+		addOreDictRecipe(energy, "oreberryNickel", ItemMaterial.nuggetNickel);
+		addOreDictRecipe(energy, "oreberryPlatinum", ItemMaterial.nuggetPlatinum);
 	}
 
 	public static void loadRecipes() {

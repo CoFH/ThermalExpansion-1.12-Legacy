@@ -7,20 +7,18 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ICrucibleRecipe;
 import cofh.thermalfoundation.fluid.TFFluids;
-import cofh.thermalfoundation.item.TFItems;
-
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class CrucibleManager {
 
@@ -90,11 +88,11 @@ public class CrucibleManager {
 		addTERecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
 		addTERecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, 1000));
 		addTERecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
-		addTERecipe(8000, TFItems.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
-		addTERecipe(8000, TFItems.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
-		addTERecipe(8000, TFItems.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
-		addTERecipe(8000, TFItems.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
-		addTERecipe(8000, TFItems.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
+		addTERecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
+		addTERecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
+		addTERecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
+		addTERecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
+		addTERecipe(8000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 	}
 
 	public static void loadRecipes() {

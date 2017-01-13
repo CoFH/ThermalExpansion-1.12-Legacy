@@ -51,11 +51,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		String category = "RecipeManagers.Extruder.Recipes";
 
 		processLava[0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
+		processLava[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "STONE.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
 		processLava[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
 
 		processWater[0][0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[0][1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Stone.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
+		processWater[0][1] = MathHelper.clamp(ThermalExpansion.config.get(category, "STONE.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
 		processWater[0][2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
 
 		for (int i = 1; i < 3; i++) {
@@ -65,7 +65,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		}
 
 		ThermalExpansion.config.removeProperty(category, "Cobblestone.Time");
-		ThermalExpansion.config.removeProperty(category, "Stone.Time");
+		ThermalExpansion.config.removeProperty(category, "STONE.Time");
 		ThermalExpansion.config.removeProperty(category, "Obsidian.Time");
 
 		defaultSideConfig[type] = new SideConfig();

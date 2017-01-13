@@ -29,54 +29,32 @@ import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.util.FMLEventHandler;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
-import cofh.thermalexpansion.util.crafting.ChargerManager;
-import cofh.thermalexpansion.util.crafting.CrucibleManager;
-import cofh.thermalexpansion.util.crafting.ExtruderManager;
-import cofh.thermalexpansion.util.crafting.FurnaceManager;
-import cofh.thermalexpansion.util.crafting.InsolatorManager;
-import cofh.thermalexpansion.util.crafting.PrecipitatorManager;
-import cofh.thermalexpansion.util.crafting.PulverizerManager;
-import cofh.thermalexpansion.util.crafting.RecipeMachine;
-import cofh.thermalexpansion.util.crafting.RecipeMachineUpgrade;
-import cofh.thermalexpansion.util.crafting.SawmillManager;
-import cofh.thermalexpansion.util.crafting.SmelterManager;
-import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalexpansion.util.crafting.TECraftingParser;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalexpansion.util.crafting.*;
 import cofh.thermalfoundation.ThermalFoundation;
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.FMLLog;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.CustomProperty;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLInterModComms;
+import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
-import net.minecraftforge.fml.common.event.FMLLoadCompleteEvent;
-import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent;
 import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.RecipeSorter;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.RecipeSorter;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
 		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))

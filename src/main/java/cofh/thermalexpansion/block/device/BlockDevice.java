@@ -298,7 +298,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 	public boolean postInit() {
 
 		String category = "Device.Breaker";
-		String comment = "If enabled, The Block Breaker will require a Diamond Pickaxe instead of an Invar Pickaxe.";
+		String comment = "If enabled, The Block Breaker will require a DIAMOND Pickaxe instead of an Invar Pickaxe.";
 		boolean breakerDiamondPickaxe = ThermalExpansion.config.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
 		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.DIAMOND_PICKAXE) : TEEquipment.toolInvarPickaxe;
 
