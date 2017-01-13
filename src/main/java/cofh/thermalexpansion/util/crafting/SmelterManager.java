@@ -212,7 +212,7 @@ public class SmelterManager {
 
 			for (Equipment e : Equipment.values()) {
 
-				ingot = ItemStackRegistry.findItemStack("ThermalFoundation", "ingot" + e.name(), 1); // suck it, oredict
+				ingot = ItemStackRegistry.findItemStack("thermalfoundation", "ingot" + e.name(), 1); // suck it, oredict
 				addRecycleRecipe(5000, e.toolSword, ingot, 2);
 				addRecycleRecipe(5000, e.toolPickaxe, ingot, 3);
 				addRecycleRecipe(5000, e.toolAxe, ingot, 3);
@@ -379,7 +379,7 @@ public class SmelterManager {
 		if (registeredIngot.isEmpty()) {
 			return;
 		}
-		ItemStack ingot = ItemStackRegistry.findItemStack("ThermalFoundation", ingotName, 1);
+		ItemStack ingot = ItemStackRegistry.findItemStack("thermalfoundation", ingotName, 1);
 		if (ingot != null && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {
 			ingot = null;
 		}
@@ -394,7 +394,7 @@ public class SmelterManager {
 		}
 		ItemStack related = null;
 		if (relatedName != null) {
-			related = ItemStackRegistry.findItemStack("ThermalFoundation", relatedName, 1);
+			related = ItemStackRegistry.findItemStack("thermalfoundation", relatedName, 1);
 			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
 				related = null;
 			}

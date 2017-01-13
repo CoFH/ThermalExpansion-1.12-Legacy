@@ -409,7 +409,7 @@ public class PulverizerManager {
 		if (registeredDust.isEmpty()) {
 			return;
 		}
-		ItemStack dust = ItemStackRegistry.findItemStack("ThermalFoundation", dustName, 1);
+		ItemStack dust = ItemStackRegistry.findItemStack("thermalfoundation", dustName, 1);
 		if (dust != null && !OreDictionaryArbiter.getAllOreNames(dust).contains(dustName)) {
 			dust = null;
 		}
@@ -427,7 +427,7 @@ public class PulverizerManager {
 		}
 		ItemStack related = null;
 		if (relatedName != null) {
-			related = ItemStackRegistry.findItemStack("ThermalFoundation", relatedName, 1);
+			related = ItemStackRegistry.findItemStack("thermalfoundation", relatedName, 1);
 			if (related != null && !OreDictionaryArbiter.getAllOreNames(related).contains(relatedName)) {
 				related = null;
 			}
