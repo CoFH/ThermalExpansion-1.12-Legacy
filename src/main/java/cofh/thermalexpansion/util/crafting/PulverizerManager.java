@@ -11,7 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.ItemMaterial;
-import cofh.thermalfoundation.item.tool.EquipmentVanilla;
+import cofh.thermalfoundation.item.EquipmentVanilla;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;

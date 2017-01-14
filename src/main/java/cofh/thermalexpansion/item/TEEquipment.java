@@ -2,7 +2,7 @@ package cofh.thermalexpansion.item;
 
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.item.ItemArmorAdv;
-import cofh.thermalfoundation.item.tool.Equipment;
+import cofh.thermalfoundation.item.Equipment;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
