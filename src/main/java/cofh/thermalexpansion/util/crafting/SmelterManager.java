@@ -162,8 +162,8 @@ public class SmelterManager {
 			addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
 			addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
 		}
-
-		{ /* RECYCLING */
+		/* RECYCLING */
+		/*{
 			ItemStack ingot = new ItemStack(Items.IRON_INGOT, 1);
 			// no minecart, rails. Railcraft causes resource duplication there
 			addRecipe(5000, blockSand, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), TEItems.slagRich, 10); // consumes redstone
@@ -227,7 +227,7 @@ public class SmelterManager {
 				addRecycleRecipe(5000, e.toolShears, ingot, 2);
 				addRecycleRecipe(5000, e.toolSickle, ingot, 3);
 			}
-		}
+		}*/
 	}
 
 	public static void loadRecipes() {
