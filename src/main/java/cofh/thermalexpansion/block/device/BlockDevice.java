@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.device;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
-
+import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.core.render.IconRegistry;
@@ -14,36 +14,19 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
-import codechicken.lib.model.blockbakery.BlockBakery;
 import cofh.thermalexpansion.item.TEAugments;
-import cofh.thermalexpansion.item.TEEquipment;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import cofh.thermalfoundation.item.TFEquipment;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.IStringSerializable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-
-import net.minecraft.block.material.Material;
-
 import net.minecraft.creativetab.CreativeTabs;
-
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -52,11 +35,21 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvider {
 
@@ -300,7 +293,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		String category = "Device.Breaker";
 		String comment = "If enabled, The Block Breaker will require a DIAMOND Pickaxe instead of an Invar Pickaxe.";
 		boolean breakerDiamondPickaxe = ThermalExpansion.config.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
-		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.DIAMOND_PICKAXE) : TEEquipment.toolInvarPickaxe;
+		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.DIAMOND_PICKAXE) : TFEquipment.ToolSet.INVAR.toolPickaxe;
 
 		String tinPart = "thermalexpansion:machineTin";
 

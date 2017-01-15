@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.*;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalfoundation.item.Equipment;
+import cofh.thermalfoundation.item.TFEquipment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
@@ -107,7 +107,7 @@ public class TEItems {
     public static void preInit() {
 
         itemWrench = (ItemWrench) new ItemWrench().setUnlocalizedName("tool", "wrench");
-        itemBattleWrench = (ItemWrenchBattle) new ItemWrenchBattle(Equipment.Invar.TOOL_MATERIAL).setRepairIngot("ingotInvar");
+        itemBattleWrench = (ItemWrenchBattle) new ItemWrenchBattle(TFEquipment.TOOL_MATERIAL_INVAR).setRepairIngot("ingotInvar");
         GameRegistry.registerItem(itemBattleWrench, "tool.battleWrenchInvar");
         itemMultimeter = (ItemMultimeter) new ItemMultimeter().setUnlocalizedName("tool", "meter");
         itemIgniter = (ItemIgniter) new ItemIgniter().setUnlocalizedName("tool", "igniter");
@@ -178,7 +178,6 @@ public class TEItems {
         OreDictionary.registerOre("fertilizer", fertilizerRich);
 
         TEAugments.preInit();
-        TEEquipment.preInit();
         TEFlorbs.preInit();
     }
 
@@ -206,7 +205,6 @@ public class TEItems {
         diagramRedprint = itemDiagram.addItem(ItemDiagram.Types.REDPRINT.ordinal(), "redprint");
 
         TEAugments.initialize();
-        TEEquipment.initialize();
         TEFlorbs.initialize();
     }
 
@@ -318,7 +316,6 @@ public class TEItems {
         GameRegistry.addRecipe(ShapelessRecipe(ItemHelper.cloneStack(fertilizerRich, 32), "dustCharcoal", "dustSaltpeter", slagRich));
 
         TEAugments.postInit();
-        TEEquipment.postInit();
         TEFlorbs.postInit();
     }
 }

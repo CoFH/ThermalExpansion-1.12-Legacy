@@ -11,7 +11,6 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalfoundation.item.ItemMaterial;
-import cofh.thermalfoundation.item.EquipmentVanilla;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -140,10 +139,10 @@ public class PulverizerManager {
 			addRecipe(4800, new ItemStack(Items.DIAMOND_CHESTPLATE), new ItemStack(Items.DIAMOND, 8));
 			addRecipe(4200, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
 			addRecipe(2400, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
-			addRecipe(2400, EquipmentVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(2100, EquipmentVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(1200, EquipmentVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
-			addRecipe(2100, EquipmentVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
+//			addRecipe(2400, ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
+//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
+//			addRecipe(1200, ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
+//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
 		}
 
 		addRecipe(3200, new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND), 15);
