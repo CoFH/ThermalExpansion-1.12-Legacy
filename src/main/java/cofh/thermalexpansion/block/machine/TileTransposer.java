@@ -58,7 +58,7 @@ public class TileTransposer extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineTransposer");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineTransposer");
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion.Transposer");
 	}

@@ -37,7 +37,7 @@ public class TilePulverizer extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachinePulverizer");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachinePulverizer");
 
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion.Pulverizer");
 	}

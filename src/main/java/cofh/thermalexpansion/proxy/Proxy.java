@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.core;
+package cofh.thermalexpansion.proxy;
 
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

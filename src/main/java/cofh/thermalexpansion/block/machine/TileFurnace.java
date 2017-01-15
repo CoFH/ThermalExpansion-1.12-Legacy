@@ -39,7 +39,7 @@ public class TileFurnace extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineFurnace");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineFurnace");
 
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
 	}

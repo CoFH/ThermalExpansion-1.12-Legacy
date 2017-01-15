@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.core;
+package cofh.thermalexpansion.proxy;
 
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.model.DummyBakedModel;

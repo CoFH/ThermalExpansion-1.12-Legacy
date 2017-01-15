@@ -39,7 +39,7 @@ public class TileSawmill extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineSawmill");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineSawmill");
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
 	}

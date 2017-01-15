@@ -54,7 +54,7 @@ public class TileInsolator extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineInsolator");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineInsolator");
 
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion.Insolator");
 	}

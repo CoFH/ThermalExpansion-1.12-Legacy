@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 public class FuelManager {
 
-	public static ConfigHandler configFuels = new ConfigHandler(ThermalExpansion.version);
+	public static ConfigHandler configFuels = new ConfigHandler(ThermalExpansion.VERSION);
 
 	static {
 		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/fuels.cfg"), true));

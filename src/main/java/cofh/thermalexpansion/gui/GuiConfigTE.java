@@ -9,14 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 
 public class GuiConfigTE extends GuiConfig {
 
 	public GuiConfigTE(GuiScreen parentScreen) {
 
-		super(parentScreen, getConfigElements(parentScreen), ThermalExpansion.modId, false, false, ThermalExpansion.modName);
+		super(parentScreen, getConfigElements(parentScreen), ThermalExpansion.MOD_ID, false, false, ThermalExpansion.MOD_NAME);
 	}
 
 	public static final String[] CATEGORIES_CLIENT = { "Machine" };

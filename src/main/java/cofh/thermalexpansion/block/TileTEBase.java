@@ -84,7 +84,7 @@ public abstract class TileTEBase extends TileCoFHBaseOld implements ITileInfoPac
     public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
         super.writeToNBT(nbt);
-        nbt.setString("Version", ThermalExpansion.version);
+        nbt.setString("Version", ThermalExpansion.VERSION);
 
         if (!tileName.isEmpty()) {
             nbt.setString("Name", tileName);

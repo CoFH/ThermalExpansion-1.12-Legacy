@@ -91,6 +91,6 @@ public class TEFlorbs {
 	public static ArrayList<ItemStack> florbList = new ArrayList<ItemStack>();
 
 	public static boolean enable = true;
-	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.version);
+	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.VERSION);
 
 }

@@ -56,7 +56,7 @@ public class TileCrucible extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineCrucible");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineCrucible");
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
 	}

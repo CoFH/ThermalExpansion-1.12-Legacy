@@ -16,7 +16,6 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
-import cofh.thermalexpansion.core.Proxy;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.GuiHandler;
@@ -26,6 +25,7 @@ import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
+import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.FMLEventHandler;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -56,29 +56,28 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-@Mod(modid = ThermalExpansion.modId, name = ThermalExpansion.modName, version = ThermalExpansion.version, dependencies = ThermalExpansion.dependencies,
-		guiFactory = ThermalExpansion.modGuiFactory, customProperties = @CustomProperty(k = "cofhversion", v = "true"))
+@Mod (modid = ThermalExpansion.MOD_ID, name = ThermalExpansion.MOD_NAME, version = ThermalExpansion.VERSION, dependencies = ThermalExpansion.DEPENDENCIES, guiFactory = ThermalExpansion.MOD_GUI_FACTORY, customProperties = @CustomProperty (k = "cofhversion", v = "true"))
 public class ThermalExpansion {
 
-	public static final String modId = "thermalexpansion";
-	public static final String modName = "Thermal Expansion";
-	public static final String version = "1.0.0";
-	public static final String version_max = "1.1.0";
-	public static final String dependencies = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib";
-	public static final String modGuiFactory = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
+	public static final String MOD_ID = "thermalexpansion";
+	public static final String MOD_NAME = "Thermal Expansion";
 
-	public static final String version_group = "required-after:" + modId + "@[" + version + "," + version_max + ");";
-	public static final String releaseURL = "https://raw.github.com/CoFH/VERSION/master/" + modId;
+	public static final String VERSION = "4.2.0";
+	public static final String VERSION_MAX = "4.3.0";
+	public static final String VERSION_GROUP = "required-after:" + MOD_ID + "@[" + VERSION + "," + VERSION_MAX + ");";
 
-	@Instance(modId)
+	public static final String DEPENDENCIES = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib";
+	public static final String MOD_GUI_FACTORY = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
+
+	@Instance (MOD_ID)
 	public static ThermalExpansion instance;
 
-	@SidedProxy(clientSide = "cofh.thermalexpansion.core.ProxyClient", serverSide = "cofh.thermalexpansion.core.Proxy")
+	@SidedProxy (clientSide = "cofh.thermalexpansion.proxy.ProxyClient", serverSide = "cofh.thermalexpansion.proxy.Proxy")
 	public static Proxy proxy;
 
-	public static final Logger log = LogManager.getLogger(modId);
-	public static final ConfigHandler config = new ConfigHandler(version);
-	public static final ConfigHandler configClient = new ConfigHandler(version);
+	public static final Logger log = LogManager.getLogger(MOD_ID);
+	public static final ConfigHandler config = new ConfigHandler(VERSION);
+	public static final ConfigHandler configClient = new ConfigHandler(VERSION);
 	public static final GuiHandler guiHandler = new GuiHandler();
 
 	public static CreativeTabs tabCommon = null;
@@ -95,7 +94,8 @@ public class ThermalExpansion {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-        FMLLog.info("ThermalExpansion");
+
+		FMLLog.info("ThermalExpansion");
 
 		//UpdateManager.registerUpdater(new UpdateManager(this, RELEASE_URL, CoFHProps.DOWNLOAD_URL));
 		config.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/common.cfg"), true));
@@ -115,7 +115,7 @@ public class ThermalExpansion {
 
 		TEItems.preInit();
 		TEBlocks.preInit();
-        proxy.preInit();
+		proxy.preInit();
 	}
 
 	@EventHandler
@@ -179,7 +179,6 @@ public class ThermalExpansion {
 		InsolatorManager.loadRecipes();
 
 		FuelManager.parseFuels();
-
 
 		cleanConfig(false);
 		config.cleanUp(false, true);
@@ -292,8 +291,7 @@ public class ThermalExpansion {
 		category = "General";
 		comment = "If enabled, ingots are used instead of gears in many default recipes.";
 		String iPrefix = ThermalExpansion.config.get(category, "UseIngots", false, comment) ? "ingot" : "gear";
-		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze",
-			"Signalum", "Lumium", "Enderium")) {
+		for (String entry : Arrays.asList("Iron", "Gold", "Copper", "Tin", "Silver", "Lead", "Nickel", "Platinum", "Mithril", "Electrum", "Invar", "Bronze", "Signalum", "Lumium", "Enderium")) {
 			String prefix = "thermalexpansion:machine";
 			List<ItemStack> partList = OreDictionary.getOres(iPrefix + entry);
 			for (int i = 0; i < partList.size(); i++) {
@@ -305,8 +303,7 @@ public class ThermalExpansion {
 	void configOptions() {
 
 		String category;
-		@SuppressWarnings("unused")
-		String comment;
+		@SuppressWarnings ("unused") String comment;
 
 		/* GRAPHICS */
 		if (CoFHProps.enableColorBlindTextures) {
@@ -315,8 +312,7 @@ public class ThermalExpansion {
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
 			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
-		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", true,
-			"Set to TRUE for Tesseracts to use an alternate starfield shader.");
+		TEProps.useAlternateStarfieldShader = ThermalExpansion.configClient.get("Render", "UseAlternateShader", true, "Set to TRUE for Tesseracts to use an alternate starfield shader.");
 
 		/* INTERFACE */
 		category = "Interface.CreativeTab";
@@ -386,7 +382,7 @@ public class ThermalExpansion {
 	}
 
 	@EventHandler
-	@SuppressWarnings("deprecation")
+	@SuppressWarnings ("deprecation")
 	public void missingMappings(FMLMissingMappingsEvent e) {
 
 		List<MissingMapping> list = e.get();
@@ -398,40 +394,21 @@ public class ThermalExpansion {
 					name = name.substring(name.indexOf(':') + 1);
 				}
 				switch (mapping.type) {
-				case ITEM:
-					if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0) {
+					case ITEM:
+						if (name.indexOf("tool.") != 0 && name.indexOf("armor.") != 0) {
+							break;
+						}
+						Item item = GameRegistry.findItem("ThermalFoundation", name);
+						if (item != null) {
+							mapping.remap(item);
+						} else {
+							mapping.warn();
+						}
+					default:
 						break;
-					}
-					Item item = GameRegistry.findItem("ThermalFoundation", name);
-					if (item != null) {
-						mapping.remap(item);
-					} else {
-						mapping.warn();
-					}
-				default:
-					break;
 				}
 			}
 		}
-	}
-
-	/* BaseMod */
-	//@Override
-	public String getModId() {
-
-		return modId;
-	}
-
-	//@Override
-	public String getModName() {
-
-		return modName;
-	}
-
-	//@Override
-	public String getModVersion() {
-
-		return version;
 	}
 
 }

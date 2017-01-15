@@ -47,7 +47,7 @@ public class TileAccumulator extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(0);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineAccumulator");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineAccumulator");
 
 		GameRegistry.registerTileEntity(TileAccumulator.class, "thermalexpansion.Accumulator");
 	}

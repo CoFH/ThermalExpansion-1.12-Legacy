@@ -39,7 +39,7 @@ public class TileSmelter extends TileMachineBase {
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.modId, "blockMachineSmelter");
+		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineSmelter");
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion.Smelter");
 	}
