@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.tool.*;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalfoundation.item.TFEquipment;
+import cofh.thermalfoundation.init.TFEquipment;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;

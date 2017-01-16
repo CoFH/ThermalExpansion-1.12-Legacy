@@ -14,7 +14,7 @@ import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
-import cofh.thermalfoundation.fluid.TFFluids;
+import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
