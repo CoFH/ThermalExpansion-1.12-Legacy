@@ -9,9 +9,9 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
-import cofh.thermalexpansion.core.TEAchievements;
-import cofh.thermalexpansion.core.TEProps;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEAchievements;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TEItemsOld;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -51,7 +51,7 @@ public class TECraftingHandler {
 
 	public static void addSecureRecipe(ItemStack stack) {
 
-		GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItems.lock, 'S', "nuggetSignalum", 'X', stack }));
+		GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItemsOld.lock, 'S', "nuggetSignalum", 'X', stack }));
 	}
 
 	@SubscribeEvent

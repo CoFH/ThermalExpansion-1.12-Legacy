@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block;
+package cofh.thermalexpansion.init;
 
 import cofh.api.core.IInitializer;
 import cofh.thermalexpansion.block.cache.BlockCache;
@@ -25,9 +25,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 
-public class TEBlocks {
+public class TEBlocksOld {
 
-	private TEBlocks() {
+	private TEBlocksOld() {
 
 	}
 

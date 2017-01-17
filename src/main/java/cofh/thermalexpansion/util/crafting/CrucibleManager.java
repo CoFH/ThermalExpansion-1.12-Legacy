@@ -27,7 +27,7 @@ public class CrucibleManager {
 	public static final int DEFAULT_ENERGY = 8000;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Crucible", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Crucible", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
@@ -49,19 +49,19 @@ public class CrucibleManager {
 
 		String category = "RecipeManagers.Crucible.Recipes";
 
-		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Netherrack", true);
-		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
+		boolean recipeNetherrack = ThermalExpansion.CONFIG.get(category, "Netherrack", true);
+		boolean recipeBlazeRod = ThermalExpansion.CONFIG.get(category, "BlazeRod", true);
 
-		int tweakNetherrackRF = ThermalExpansion.config.get(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
-		int tweakBlazeRodRF = ThermalExpansion.config.get(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
+		int tweakNetherrackRF = ThermalExpansion.CONFIG.get(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
+		int tweakBlazeRodRF = ThermalExpansion.CONFIG.get(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 
 		if (recipeNetherrack) {
 			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
 				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 			} else {
 				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-				ThermalExpansion.log.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.config.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
+				ThermalExpansion.LOG.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
+				ThermalExpansion.CONFIG.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
 			}
 		}
 		if (recipeBlazeRod) {
@@ -69,8 +69,8 @@ public class CrucibleManager {
 				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 			} else {
 				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
-				ThermalExpansion.log.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.config.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
+				ThermalExpansion.LOG.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
+				ThermalExpansion.CONFIG.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 			}
 		}
 		int defaultCost = CoFHProps.LAVA_RF * 8 / 5;

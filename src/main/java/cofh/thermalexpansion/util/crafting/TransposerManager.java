@@ -30,7 +30,7 @@ public class TransposerManager {
 	public static final int DEFAULT_ENERGY = 1600;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Transposer", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Transposer", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
@@ -72,11 +72,11 @@ public class TransposerManager {
 
 		String category = "RecipeManagers.Transposer.Recipes";
 
-		boolean recipeMossyCobble = ThermalExpansion.config.get(category, "MossyCobblestone", true);
-		boolean recipeMossyStoneBrick = ThermalExpansion.config.get(category, "MossyStoneBrick", true);
-		boolean recipeEndStone = ThermalExpansion.config.get(category, "EndStone", true);
-		boolean recipePackedIce = ThermalExpansion.config.get(category, "PackedIce", true);
-		boolean recipeNetherBrick = ThermalExpansion.config.get(category, "NetherBrick", false);
+		boolean recipeMossyCobble = ThermalExpansion.CONFIG.get(category, "MossyCobblestone", true);
+		boolean recipeMossyStoneBrick = ThermalExpansion.CONFIG.get(category, "MossyStoneBrick", true);
+		boolean recipeEndStone = ThermalExpansion.CONFIG.get(category, "EndStone", true);
+		boolean recipePackedIce = ThermalExpansion.CONFIG.get(category, "PackedIce", true);
+		boolean recipeNetherBrick = ThermalExpansion.CONFIG.get(category, "NetherBrick", false);
 
 		if (recipeMossyCobble) {
 			addFillRecipe(8000, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.MOSSY_COBBLESTONE), new FluidStack(FluidRegistry.WATER, 250), false);

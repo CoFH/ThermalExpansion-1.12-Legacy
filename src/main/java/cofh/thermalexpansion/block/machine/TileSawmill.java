@@ -7,7 +7,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -33,8 +33,8 @@ public class TileSawmill extends TileMachineBase {
 		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		String category = "Machine.Sawmill";
-		int basePower = MathHelper.clamp(ThermalExpansion.config.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.config.set(category, "BasePower", basePower);
+		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
+		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 		defaultEnergyConfig[type] = new EnergyConfig();
 		defaultEnergyConfig[type].setParamsPower(basePower);
 
@@ -154,7 +154,7 @@ public class TileSawmill extends TileMachineBase {
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}
-				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, TEItems.sawdust)) {
+				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, TEItemsOld.sawdust)) {
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}

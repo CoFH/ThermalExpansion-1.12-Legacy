@@ -52,7 +52,7 @@ public class ItemSatchel extends ItemCoFHBase implements IInventoryContainerItem
 	public static void configure() {
 
 		String comment = "Enable this to allow for Satchels to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Satchel.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Satchel.All.Securable", enableSecurity, comment);
 	}
 
 	//IIcon latch[] = new IIcon[3];
@@ -233,9 +233,9 @@ public class ItemSatchel extends ItemCoFHBase implements IInventoryContainerItem
 	static {
 		String category = "Item.Satchel.";
 
-		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", enable[0]);
+		enable[0] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[0]), "Enable", enable[0]);
 		for (int i = 1; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe", enable[i]);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe", enable[i]);
 		}
 	}
 

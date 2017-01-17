@@ -4,9 +4,6 @@ import codechicken.lib.block.property.unlisted.UnlistedBooleanProperty;
 import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.block.property.unlisted.UnlistedResourceLocationProperty;
 
-/**
- * Created by covers1624 on 31/10/2016.
- */
 public class CommonProperties {
 
 	public static final UnlistedIntegerProperty FACING_PROPERTY;

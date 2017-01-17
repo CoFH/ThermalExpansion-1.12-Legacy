@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.simple;
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.api.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import net.minecraft.block.BlockColored;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.MapColor;
@@ -46,7 +46,7 @@ public class BlockRockwool extends BlockColored implements IInitializer {
 	@Override
 	public boolean postInit() {
 
-		GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, DEFAULT_META), 0.0F);
+		GameRegistry.addSmelting(TEItemsOld.slag, new ItemStack(this, 1, DEFAULT_META), 0.0F);
 		for (int i = 0; i < 16; i++) {
 			GameRegistry.addRecipe(new ItemStack(this, 8, i), "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.DYE, 1, 15 - i));
 		}

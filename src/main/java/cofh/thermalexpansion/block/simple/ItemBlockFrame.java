@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.simple;
 
-import cofh.core.item.ItemBlockCore;
+import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import net.minecraft.block.Block;
 import net.minecraft.item.EnumRarity;

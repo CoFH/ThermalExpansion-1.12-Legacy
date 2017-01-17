@@ -5,8 +5,8 @@ import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
-import cofh.core.block.BlockCoFHBaseOld;
-import cofh.core.block.TileCoFHBaseOld;
+import cofh.core.block.BlockCoreTile;
+import cofh.core.block.TileCore;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -36,7 +36,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 
-public abstract class BlockTEBase extends BlockCoFHBaseOld {
+public abstract class BlockTEBase extends BlockCoreTile {
 
 	protected boolean basicGui = true;
 
@@ -82,7 +82,7 @@ public abstract class BlockTEBase extends BlockCoFHBaseOld {
 		}
 		if (Utils.isHoldingUsableWrench(player, traceResult)) {
 			if (ServerHelper.isServerWorld(world)) {
-				tile.onWrench(player, side.ordinal());
+				tile.onWrench(player, side);
 			}
 			Utils.usedWrench(player, traceResult);
 			return true;
@@ -140,8 +140,8 @@ public abstract class BlockTEBase extends BlockCoFHBaseOld {
 			dropBlock.setTagCompound(nbt);
 		}
 		if (!simulate) {
-			if (tile instanceof TileCoFHBaseOld) {
-				((TileCoFHBaseOld) tile).blockDismantled();
+			if (tile instanceof TileCore) {
+				((TileCore) tile).blockDismantled();
 			}
 			world.setBlockToAir(pos);
 

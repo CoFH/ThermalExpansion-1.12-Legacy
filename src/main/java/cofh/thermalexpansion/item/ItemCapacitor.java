@@ -258,40 +258,40 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 	static {
 		String category2 = "Item.Capacitor.";
 		String category = category2 + StringHelper.titleCase(NAMES[0]);
-		ENABLE[0] = ThermalExpansion.config.get(category, "Enable", ENABLE[0]);
+		ENABLE[0] = ThermalExpansion.CONFIG.get(category, "Enable", ENABLE[0]);
 
 		for (int i = 1; i < Types.values().length; i++) {
 			category = category2 + StringHelper.titleCase(NAMES[i]);
-			ENABLE[i] = ThermalExpansion.config.get(category, "Recipe", ENABLE[i]);
+			ENABLE[i] = ThermalExpansion.CONFIG.get(category, "Recipe", ENABLE[i]);
 		}
 
 		category = category2 + StringHelper.titleCase(NAMES[5]);
-		CAPACITY[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[5]), CAPACITY[5] / 10, 1000000 * 1000);
-		SEND[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[5]), SEND[5] / 10, SEND[5] * 1000);
-		RECEIVE[5] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[5]), RECEIVE[5] / 10, RECEIVE[4] * 1000);
+		CAPACITY[5] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Capacity", CAPACITY[5]), CAPACITY[5] / 10, 1000000 * 1000);
+		SEND[5] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[5]), SEND[5] / 10, SEND[5] * 1000);
+		RECEIVE[5] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Receive", RECEIVE[5]), RECEIVE[5] / 10, RECEIVE[4] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[4]);
-		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[4]), CAPACITY[4] / 10, CAPACITY[5]);
-		SEND[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[4]), SEND[4] / 10, SEND[4] * 1000);
-		RECEIVE[4] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[4]), RECEIVE[4] / 10, RECEIVE[4] * 1000);
+		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Capacity", CAPACITY[4]), CAPACITY[4] / 10, CAPACITY[5]);
+		SEND[4] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[4]), SEND[4] / 10, SEND[4] * 1000);
+		RECEIVE[4] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Receive", RECEIVE[4]), RECEIVE[4] / 10, RECEIVE[4] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[3]);
-		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[3]), CAPACITY[3] / 10, CAPACITY[4]);
-		SEND[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[3]), SEND[3] / 10, SEND[3] * 1000);
-		RECEIVE[3] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[3]), RECEIVE[3] / 10, RECEIVE[3] * 1000);
+		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Capacity", CAPACITY[3]), CAPACITY[3] / 10, CAPACITY[4]);
+		SEND[3] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[3]), SEND[3] / 10, SEND[3] * 1000);
+		RECEIVE[3] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Receive", RECEIVE[3]), RECEIVE[3] / 10, RECEIVE[3] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[2]);
-		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[2]), CAPACITY[2] / 10, CAPACITY[3]);
-		RECEIVE[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[2]), RECEIVE[2] / 10, RECEIVE[2] * 1000);
-		SEND[2] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[2]), SEND[2] / 10, SEND[2] * 1000);
+		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Capacity", CAPACITY[2]), CAPACITY[2] / 10, CAPACITY[3]);
+		RECEIVE[2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Receive", RECEIVE[2]), RECEIVE[2] / 10, RECEIVE[2] * 1000);
+		SEND[2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[2]), SEND[2] / 10, SEND[2] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[1]);
-		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
-		SEND[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
+		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Capacity", CAPACITY[1]), CAPACITY[1] / 10, CAPACITY[2]);
+		SEND[1] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[1]), SEND[1] / 10, SEND[1] * 1000);
 		// RECEIVE[1] = MathHelper.clamp(ThermalExpansion.config.get(category, "Receive", RECEIVE[1]), RECEIVE[1] / 10, RECEIVE[1] * 1000);
 
 		category = category2 + StringHelper.titleCase(NAMES[0]);
-		SEND[0] = MathHelper.clamp(ThermalExpansion.config.get(category, "Send", SEND[0]), SEND[0] / 10, SEND[0] * 1000);
+		SEND[0] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Send", SEND[0]), SEND[0] / 10, SEND[0] * 1000);
 		CAPACITY[0] = SEND[0];
 	}
 

@@ -238,9 +238,9 @@ public class BlockStrongbox extends BlockTEBase {
 	static {
 		String category = "Strongbox.";
 
-		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
+		enable[0] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
 		for (int i = 1; i < EnumType.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}
 

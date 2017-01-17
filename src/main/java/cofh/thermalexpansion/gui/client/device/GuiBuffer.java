@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
 import cofh.thermalexpansion.block.device.TileBuffer;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
 import net.minecraft.client.gui.GuiScreen;

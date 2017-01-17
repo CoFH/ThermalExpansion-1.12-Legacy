@@ -37,7 +37,7 @@ public class GuiConfigTE extends GuiConfig {
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
 
 		for (int i = 0; i < CATEGORIES_CLIENT.length; i++) {
-			list.add(new ConfigElement(ThermalExpansion.configClient.getCategory(CATEGORIES_CLIENT[i])));
+			list.add(new ConfigElement(ThermalExpansion.CONFIG_CLIENT.getCategory(CATEGORIES_CLIENT[i])));
 		}
 		return list;
 	}
@@ -48,7 +48,7 @@ public class GuiConfigTE extends GuiConfig {
 		List<IConfigElement> list = new ArrayList<IConfigElement>();
 
 		for (int i = 0; i < CATEGORIES_COMMON.length; i++) {
-			list.add(new ConfigElement(ThermalExpansion.config.getCategory(CATEGORIES_COMMON[i])));
+			list.add(new ConfigElement(ThermalExpansion.CONFIG.getCategory(CATEGORIES_COMMON[i])));
 		}
 		return list;
 	}

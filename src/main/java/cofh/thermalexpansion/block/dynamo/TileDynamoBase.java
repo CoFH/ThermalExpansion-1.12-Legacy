@@ -39,12 +39,12 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	public static void configure() {
 
 		String comment = "Enable this to allow for Dynamos to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
 
 		for (int i = 0; i < BlockDynamo.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockDynamo.NAMES[i]);
-			int maxPower = MathHelper.clamp(ThermalExpansion.config.get("Dynamo." + name, "BasePower", 80), 10, 160);
-			ThermalExpansion.config.set("Dynamo." + name, "BasePower", maxPower);
+			int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get("Dynamo." + name, "BasePower", 80), 10, 160);
+			ThermalExpansion.CONFIG.set("Dynamo." + name, "BasePower", maxPower);
 			maxPower /= 10;
 			maxPower *= 10;
 			defaultEnergyConfig[i] = new EnergyConfig();
@@ -96,7 +96,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	}
 
 	@Override
-	public int getComparatorInput() {
+	public int getComparatorInputOverride() {
 
 		return compareTracker;
 	}
@@ -114,7 +114,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	}
 
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		rotateBlock();
 		return true;

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.simple;
 
 import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -116,7 +116,7 @@ public class BlockAirForce extends BlockAirBase {
 				zO += ent.motionZ;
 			}
 			if (dir == EnumFacing.UP && yO > 0 && MathHelper.floor(ent.prevPosY + yO) != y) {
-				if (world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() != TEBlocks.blockAirForce) {
+				if (world.getBlockState(new BlockPos(x, y + 1, z)).getBlock() != TEBlocksOld.blockAirForce) {
 					yO = 0;
 				}
 			}

@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.machine;
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;

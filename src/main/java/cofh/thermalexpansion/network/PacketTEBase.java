@@ -60,10 +60,10 @@ public class PacketTEBase extends PacketCoFHBase {
 					ThermalExpansion.instance.handleConfigSync(this);
 					return;
 				default:
-					ThermalExpansion.log.error("Unknown Packet! Internal: TEPH, ID: " + type);
+					ThermalExpansion.LOG.error("Unknown Packet! Internal: TEPH, ID: " + type);
 			}
 		} catch (Exception e) {
-			ThermalExpansion.log.error("Packet payload failure! Please check your config files!");
+			ThermalExpansion.LOG.error("Packet payload failure! Please check your config files!");
 			e.printStackTrace();
 		}
 	}

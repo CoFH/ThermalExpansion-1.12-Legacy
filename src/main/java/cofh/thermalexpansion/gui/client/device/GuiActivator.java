@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.device;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.thermalexpansion.block.device.TileActivator;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.device.ContainerActivator;
 import net.minecraft.entity.player.InventoryPlayer;

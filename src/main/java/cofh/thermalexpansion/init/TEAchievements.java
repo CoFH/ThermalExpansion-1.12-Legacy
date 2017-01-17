@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.core;
+package cofh.thermalexpansion.init;
 
 import cofh.thermalexpansion.block.cache.BlockCache;
 import cofh.thermalexpansion.block.cell.BlockCell;

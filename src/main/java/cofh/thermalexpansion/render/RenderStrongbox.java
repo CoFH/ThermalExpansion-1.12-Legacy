@@ -7,7 +7,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongboxCreative;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;

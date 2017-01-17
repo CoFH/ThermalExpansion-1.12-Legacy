@@ -338,9 +338,9 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock {
 	static {
 		String category = "Tank.";
 
-		enable[0] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
+		enable[0] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[0]), "Enable", true);
 		for (int i = 1; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}
 

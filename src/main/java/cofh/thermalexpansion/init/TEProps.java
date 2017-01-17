@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.core;
+package cofh.thermalexpansion.init;
 
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidContainerRegistry;

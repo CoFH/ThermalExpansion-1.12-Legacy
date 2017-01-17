@@ -10,7 +10,11 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+<<<<<<< HEAD
 import cofh.thermalexpansion.init.TETextures;
+=======
+import cofh.thermalexpansion.init.TEProps;
+>>>>>>> 254d25c... Refactors ^2.
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -40,10 +44,10 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
 			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.config.get("Security", "Machine." + name + ".Securable", true, comment);
+			enableSecurity[i] = ThermalExpansion.CONFIG.get("Security", "Machine." + name + ".Securable", true, comment);
 
 			comment = "Enable sounds for the " + name + ".";
-			enableSound[i] = ThermalExpansion.configClient.get("Machine." + name, "Sound.Enable", true, comment);
+			enableSound[i] = ThermalExpansion.CONFIG_CLIENT.get("Machine." + name, "Sound.Enable", true, comment);
 		}
 	}
 

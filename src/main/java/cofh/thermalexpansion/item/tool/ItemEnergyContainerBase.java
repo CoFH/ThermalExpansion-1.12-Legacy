@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.core.item.IEqualityOverrideItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -9,11 +8,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 import java.util.List;
 
-public abstract class ItemEnergyContainerBase extends ItemToolBase implements IEnergyContainerItem, IEqualityOverrideItem {
+public abstract class ItemEnergyContainerBase extends ItemToolBase implements IEnergyContainerItem {
 
 	public int maxEnergy = 80000;
 	public int maxTransfer = 160;
@@ -125,24 +123,6 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 	public int getMaxEnergyStored(ItemStack container) {
 
 		return maxEnergy;
-	}
-
-	/* IEqualityOverrideItem */
-	@Override
-	public boolean isLastHeldItemEqual(ItemStack current, ItemStack previous) {
-
-		NBTTagCompound a = current.getTagCompound(), b = previous.getTagCompound();
-		if (a == b) {
-			return true;
-		}
-		if (a == null || b == null) {
-			return false;
-		}
-		a = a.copy();
-		b = b.copy();
-		a.removeTag("Energy");
-		b.removeTag("Energy");
-		return a.equals(b);
 	}
 
 }

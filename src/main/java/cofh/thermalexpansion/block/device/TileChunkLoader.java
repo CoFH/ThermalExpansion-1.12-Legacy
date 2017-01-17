@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.device;
 import cofh.api.energy.EnergyStorage;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;

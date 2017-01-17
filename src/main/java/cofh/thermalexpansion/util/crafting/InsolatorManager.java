@@ -7,7 +7,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IInsolatorRecipe;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
@@ -32,11 +32,11 @@ public class InsolatorManager {
 	public static final int DEFAULT_ENERGY_SPECIAL = 9600;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Insolator", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Insolator", "AllowRecipeOverwrite", false);
 
 		String category = "RecipeManagers.Insolator.Crop";
 		String comment = "This sets the boosted rate for Crop growth - when Rich Phyto-Gro is used. This number is used in all automatically generated recipes.";
-		cropMultiplierSpecial = MathHelper.clamp(ThermalExpansion.config.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
+		cropMultiplierSpecial = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
 	}
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
@@ -94,16 +94,16 @@ public class InsolatorManager {
 
 		String category = "RecipeManagers.Insolator.Recipes";
 
-		boolean recipeCocoaBean = ThermalExpansion.config.get(category, "CocoaBean", true);
-		boolean recipeReeds = ThermalExpansion.config.get(category, "Reeds", true);
-		boolean recipeCactus = ThermalExpansion.config.get(category, "Cactus", true);
-		boolean recipeVine = ThermalExpansion.config.get(category, "Vine", true);
-		boolean recipeLilyPad = ThermalExpansion.config.get(category, "LilyPad", true);
-		boolean recipePumpkin = ThermalExpansion.config.get(category, "Pumpkin", true);
-		boolean recipeMelon = ThermalExpansion.config.get(category, "Melon", true);
+		boolean recipeCocoaBean = ThermalExpansion.CONFIG.get(category, "CocoaBean", true);
+		boolean recipeReeds = ThermalExpansion.CONFIG.get(category, "Reeds", true);
+		boolean recipeCactus = ThermalExpansion.CONFIG.get(category, "Cactus", true);
+		boolean recipeVine = ThermalExpansion.CONFIG.get(category, "Vine", true);
+		boolean recipeLilyPad = ThermalExpansion.CONFIG.get(category, "LilyPad", true);
+		boolean recipePumpkin = ThermalExpansion.CONFIG.get(category, "Pumpkin", true);
+		boolean recipeMelon = ThermalExpansion.CONFIG.get(category, "Melon", true);
 
-		addFertilizer(TEItems.fertilizer);
-		addFertilizer(TEItems.fertilizerRich);
+		addFertilizer(TEItemsOld.fertilizer);
+		addFertilizer(TEItemsOld.fertilizerRich);
 
 		addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
 		addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 150);
@@ -251,15 +251,15 @@ public class InsolatorManager {
 	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (secondaryOutput != null) {
-			addRecipe(DEFAULT_ENERGY, primaryInput, TEItems.fertilizer, primaryOutput, secondaryOutput, secondaryChance);
+			addRecipe(DEFAULT_ENERGY, primaryInput, TEItemsOld.fertilizer, primaryOutput, secondaryOutput, secondaryChance);
 
 			if (secondaryChance < 100) {
 				secondaryChance = Math.min(100, secondaryChance * cropMultiplierSpecial);
 			}
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItems.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial), secondaryOutput, secondaryChance);
+			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItemsOld.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial), secondaryOutput, secondaryChance);
 		} else {
-			addRecipe(DEFAULT_ENERGY, primaryInput, TEItems.fertilizer, primaryOutput);
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItems.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial));
+			addRecipe(DEFAULT_ENERGY, primaryInput, TEItemsOld.fertilizer, primaryOutput);
+			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItemsOld.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial));
 		}
 	}
 

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.simple;
 
-import cofh.core.block.BlockCoFHBaseOld;
+import cofh.core.CoFHProps;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
@@ -78,7 +78,7 @@ public class BlockAirBase extends Block {
 	@Override
 	public List<ItemStack> getDrops(IBlockAccess world, BlockPos pos, IBlockState state, int fortune) {
 
-		return BlockCoFHBaseOld.NO_DROP;
+		return CoFHProps.NO_DROP;
 	}
 
 	@Override

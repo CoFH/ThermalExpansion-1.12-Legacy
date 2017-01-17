@@ -5,7 +5,7 @@ import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;

@@ -22,11 +22,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 import java.util.List;
 
-public class TileCache extends TileReconfigurable implements IDeepStorageUnit, ISidedInventory, IInventoryRetainer, ITileInfo {
+public class TileCache extends TileReconfigurable implements ISidedInventory, IInventoryRetainer, ITileInfo {
 
 	public static void initialize() {
 
@@ -39,10 +38,10 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	static {
 		String category = "Cache.";
-		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
-		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
-		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
-		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
+		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
+		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
 	int meterTracker;
@@ -79,7 +78,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	}
 
 	@Override
-	public int getComparatorInput() {
+	public int getComparatorInputOverride() {
 
 		return compareTracker;
 	}
@@ -230,13 +229,13 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	}
 
 	/* IDeepStorageUnit */
-	@Override
+	//@Override
 	public ItemStack getStoredItemType() {
 
 		return ItemHelper.cloneStack(storedStack, getStoredCount());
 	}
 
-	@Override
+	//@Override
 	public void setStoredItemCount(int amount) {
 
 		if (storedStack == null) {
@@ -253,7 +252,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 		markDirty();
 	}
 
-	@Override
+	//@Override
 	public void setStoredItemType(ItemStack stack, int amount) {
 
 		if (stack == null) {
@@ -268,7 +267,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 		markDirty();
 	}
 
-	@Override
+	//@Override
 	public int getMaxStoredCount() {
 
 		return CAPACITY[type];

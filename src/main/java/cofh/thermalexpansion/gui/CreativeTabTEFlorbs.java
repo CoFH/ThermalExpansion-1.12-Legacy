@@ -12,12 +12,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TECreativeTabFlorbs extends CreativeTabs {
+public class CreativeTabTEFlorbs extends CreativeTabs {
 
 	int iconIndex = 0;
 	TimeTracker iconTracker = new TimeTracker();
 
-	public TECreativeTabFlorbs() {
+	public CreativeTabTEFlorbs() {
 
 		super("ThermalExpansionFlorbs");
 	}

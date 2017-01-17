@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.container;
 
 import cofh.api.tileentity.IAugmentable;
-import cofh.core.block.TileCoFHBaseOld;
+import cofh.core.block.TileCore;
 import cofh.core.gui.slot.SlotAugment;
 import cofh.lib.gui.container.ContainerBase;
 import cofh.lib.gui.container.IAugmentableContainer;
@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTEBase extends ContainerBase implements IAugmentableContainer {
 
-	public final TileCoFHBaseOld baseTile;
+	public final TileCore baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];
@@ -35,7 +35,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(TileEntity tile) {
 
-		baseTile = (TileCoFHBaseOld) tile;
+		baseTile = (TileCore) tile;
 	}
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile) {
@@ -45,8 +45,8 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 
 	public ContainerTEBase(InventoryPlayer inventory, TileEntity tile, boolean augSlots, boolean playerInvSlots) {
 
-		if (tile instanceof TileCoFHBaseOld) {
-			baseTile = (TileCoFHBaseOld) tile;
+		if (tile instanceof TileCore) {
+			baseTile = (TileCore) tile;
 		} else {
 			baseTile = null;
 		}
@@ -92,7 +92,7 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {
 
-		return baseTile == null || baseTile.isUseable(player);
+		return baseTile == null || baseTile.isUsable(player);
 	}
 
 	@Override

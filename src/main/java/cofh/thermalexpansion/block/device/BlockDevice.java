@@ -15,7 +15,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.item.TEAugments;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalfoundation.init.TFEquipment;
@@ -302,7 +302,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 
 		String category = "Device.Breaker";
 		String comment = "If enabled, The Block Breaker will require a DIAMOND Pickaxe instead of an Invar Pickaxe.";
-		boolean breakerDiamondPickaxe = ThermalExpansion.config.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
+		boolean breakerDiamondPickaxe = ThermalExpansion.CONFIG.get(category, "Recipe.RequireDiamondPickaxe", false, comment);
 		ItemStack pickaxe = breakerDiamondPickaxe ? new ItemStack(Items.DIAMOND_PICKAXE) : TFEquipment.ToolSet.INVAR.toolPickaxe;
 
 		String tinPart = "thermalexpansion:machineTin";
@@ -315,7 +315,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 					" P ",
 					'C', Blocks.PISTON,
 					'I', tinPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Blocks.CHEST
 			}));
 		}
@@ -326,7 +326,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 					" P ",
 					'C', Blocks.PISTON,
 					'I', tinPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', pickaxe
 			}));
 		}
@@ -337,7 +337,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 					" P ",
 					'C', Blocks.PISTON,
 					'I', tinPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', Blocks.HOPPER
 			}));
 		}
@@ -348,7 +348,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 					" P ",
 					'C', Items.LAVA_BUCKET,
 					'I', tinPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', "ingotInvar"
 			}));
 		}
@@ -359,7 +359,7 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 					" P ",
 					'C', Blocks.HOPPER,
 					'I', tinPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', "gearCopper"
 			}));
 		}
@@ -449,14 +449,14 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		String category = "Device.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 		enable[Types.WORKBENCH_FALSE.ordinal()] = false;
 		enable[Types.PUMP.ordinal()] = false;
 		enable[Types.EXTENDER.ordinal()] = false;
-		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.WORKBENCH_FALSE.ordinal()]));
-		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.PUMP.ordinal()]));
-		ThermalExpansion.config.removeCategory(category + StringHelper.titleCase(NAMES[Types.EXTENDER.ordinal()]));
+		ThermalExpansion.CONFIG.removeCategory(category + StringHelper.titleCase(NAMES[Types.WORKBENCH_FALSE.ordinal()]));
+		ThermalExpansion.CONFIG.removeCategory(category + StringHelper.titleCase(NAMES[Types.PUMP.ordinal()]));
+		ThermalExpansion.CONFIG.removeCategory(category + StringHelper.titleCase(NAMES[Types.EXTENDER.ordinal()]));
 	}
 
 	public static ItemStack pump;

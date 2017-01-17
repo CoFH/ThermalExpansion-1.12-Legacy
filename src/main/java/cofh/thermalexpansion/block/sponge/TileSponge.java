@@ -5,9 +5,9 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import cofh.thermalexpansion.block.TileTEBase;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.nbt.NBTTagCompound;
@@ -57,10 +57,10 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 				for (int z = -1; z <= 1; z++) {
 					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
-					if (query.getBlock() == TEBlocks.blockAirBarrier) {
+					if (query.getBlock() == TEBlocksOld.blockAirBarrier) {
 						worldObj.setBlockToAir(offsetPos);
-					} else if (query.getBlock() == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+					} else if (query.getBlock() == TEBlocksOld.blockSponge) {
+						worldObj.scheduleBlockUpdate(offsetPos, TEBlocksOld.blockSponge, 1, 0);
 					}
 				}
 			}
@@ -70,8 +70,8 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 				for (int z = -2; z <= 2; z++) {
 					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
-					if (query.getBlock() == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+					if (query.getBlock() == TEBlocksOld.blockSponge) {
+						worldObj.scheduleBlockUpdate(offsetPos, TEBlocksOld.blockSponge, 1, 0);
 					}
 				}
 			}
@@ -81,8 +81,8 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 				for (int z = -2; z <= 2; z++) {
 					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
-					if (query.getBlock() == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+					if (query.getBlock() == TEBlocksOld.blockSponge) {
+						worldObj.scheduleBlockUpdate(offsetPos, TEBlocksOld.blockSponge, 1, 0);
 					}
 				}
 			}
@@ -92,8 +92,8 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 				for (int z = -2; z <= 2; z += 4) {
 					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
-					if (query.getBlock() == TEBlocks.blockSponge) {
-						worldObj.scheduleBlockUpdate(offsetPos, TEBlocks.blockSponge, 1, 0);
+					if (query.getBlock() == TEBlocksOld.blockSponge) {
+						worldObj.scheduleBlockUpdate(offsetPos, TEBlocksOld.blockSponge, 1, 0);
 					}
 				}
 			}
@@ -135,19 +135,19 @@ public class TileSponge extends TileTEBase implements ISidedTexture {
 							if (myFluidStack == null) {
 								myFluidStack = new FluidStack(queryFluid, 1000);
 								bucketCounter = 1;
-								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+								worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 							} else if (myFluidStack.getFluid() == queryFluid) {
 								bucketCounter++;
-								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+								worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 							}
 						} else if (query.getBlock().isAir(query, worldObj, offsetPos)) {
-							worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+							worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 						}
 					} else if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
 						if (queryFluid != null && queryFluid.getTemperature() >= TEProps.MAGMATIC_TEMPERATURE) {
 							// do nothing
 						} else {
-							worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+							worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 						}
 					}
 				}

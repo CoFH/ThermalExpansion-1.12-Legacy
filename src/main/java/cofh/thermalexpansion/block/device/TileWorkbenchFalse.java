@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import codechicken.lib.util.BlockUtils;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import net.minecraft.item.ItemStack;
@@ -33,7 +33,7 @@ public class TileWorkbenchFalse extends TileInventory {
 
 		inventory = new ItemStack[SCHEMATICS[1] + INVENTORY[1]];
 
-		worldObj.setBlockState(pos, TEBlocks.blockWorkbench.getStateFromMeta(1), 3);
+		worldObj.setBlockState(pos, TEBlocksOld.blockWorkbench.getStateFromMeta(1), 3);
 		TileWorkbench tile = (TileWorkbench) worldObj.getTileEntity(getPos());
 		tile.readFromNBT(tag);
 		BlockUtils.fireBlockUpdate(worldObj, pos);

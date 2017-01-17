@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.cell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockCore;
+import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;

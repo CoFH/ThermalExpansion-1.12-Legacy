@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.sponge;
 
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -47,7 +47,7 @@ public class TileSpongeCreative extends TileSponge {
 					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
 					if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
-						worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+						worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 					}
 				}
 			}

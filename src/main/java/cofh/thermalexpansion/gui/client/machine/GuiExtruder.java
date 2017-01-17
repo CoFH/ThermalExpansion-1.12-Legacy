@@ -6,7 +6,7 @@ import cofh.lib.gui.element.ElementFluid;
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.machine.TileExtruder;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;

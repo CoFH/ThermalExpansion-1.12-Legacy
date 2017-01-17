@@ -6,7 +6,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ISawmillRecipe;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
@@ -31,11 +31,11 @@ public class SawmillManager {
 	private static float logMultiplier = 1.5F;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Sawmill", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Sawmill", "AllowRecipeOverwrite", false);
 
 		String category = "RecipeManagers.Sawmill.Log";
 		String comment = "This sets the default rate for Log->Plank conversion. This number is used in all automatically generated recipes.";
-		logMultiplier = MathHelper.clamp((float) ThermalExpansion.config.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
+		logMultiplier = MathHelper.clamp((float) ThermalExpansion.CONFIG.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
 	}
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
@@ -85,26 +85,26 @@ public class SawmillManager {
 		addRecipe(2400, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 2));
 		addRecipe(2400, new ItemStack(Blocks.TRAPDOOR), new ItemStack(Blocks.PLANKS, 3));
 
-		addRecipe(2400, new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 0), TEItems.sawdust);
-		addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 1), TEItems.sawdust);
-		addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 2), TEItems.sawdust);
-		addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 3), TEItems.sawdust);
-		addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 4), TEItems.sawdust);
-		addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 5), TEItems.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 0), TEItemsOld.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 1), TEItemsOld.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 2), TEItemsOld.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 3), TEItemsOld.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 4), TEItemsOld.sawdust);
+		addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 5), TEItemsOld.sawdust);
 
 		addRecipe(800, new ItemStack(Blocks.WOODEN_BUTTON), new ItemStack(Blocks.PLANKS, 1));
-		addRecipe(1200, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 12);
+		addRecipe(1200, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), TEItemsOld.sawdust, 12);
 		addRecipe(2400, new ItemStack(Items.BED), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Blocks.WOOL, 3));
 		addRecipe(2400, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 6), new ItemStack(Items.BOOK, 3));
 		addRecipe(2400, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.REDSTONE, 1));
 		addRecipe(2400, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.DIAMOND, 1));
 
 		addRecipe(2400, new ItemStack(Items.BOAT), new ItemStack(Blocks.PLANKS, 5));
-		addRecipe(1600, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 12);
-		addRecipe(1600, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 2), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 2), TEItems.sawdust, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), TEItems.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), TEItemsOld.sawdust, 12);
+		addRecipe(1600, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), TEItemsOld.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 2), TEItemsOld.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 2), TEItemsOld.sawdust, 25);
+		addRecipe(1600, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), TEItemsOld.sawdust, 25);
 
 		addRecipe(3200, new ItemStack(Blocks.OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 0));
 		addRecipe(3200, new ItemStack(Blocks.SPRUCE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 1));
@@ -114,10 +114,10 @@ public class SawmillManager {
 		addRecipe(3200, new ItemStack(Blocks.DARK_OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 5));
 
 		addRecipe(800, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
-		addRecipe(800, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), TEItems.sawdust, 12); // yeah. well. fun on resource limited maps?
-		addRecipe(800, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), TEItems.sawdust, 12);
-		addRecipe(800, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
-		addRecipe(800, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(TEItems.sawdust, 2));
+		addRecipe(800, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), TEItemsOld.sawdust, 12); // yeah. well. fun on resource limited maps?
+		addRecipe(800, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), TEItemsOld.sawdust, 12);
+		addRecipe(800, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(TEItemsOld.sawdust, 2));
+		addRecipe(800, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(TEItemsOld.sawdust, 2));
 		addRecipe(1600, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 10);
 		addRecipe(2400, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 6), new ItemStack(Items.LEATHER, 1), 25);
 		addRecipe(2000, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 5), new ItemStack(Items.LEATHER, 1), 15);
@@ -210,7 +210,7 @@ public class SawmillManager {
 					if (resultEntry != null) {
 						ItemStack result = resultEntry.copy();
 						result.stackSize *= logMultiplier;
-						addRecipe(800, log, result, TEItems.sawdust);
+						addRecipe(800, log, result, TEItemsOld.sawdust);
 					}
 				}
 			} else {
@@ -221,7 +221,7 @@ public class SawmillManager {
 				if (resultEntry != null) {
 					ItemStack result = resultEntry.copy();
 					result.stackSize *= logMultiplier;
-					addRecipe(800, log, result, TEItems.sawdust);
+					addRecipe(800, log, result, TEItemsOld.sawdust);
 				}
 			}
 		}

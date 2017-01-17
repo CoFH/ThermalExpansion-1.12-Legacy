@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.strongbox;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.core.CoFHProps;
 import cofh.core.enchantment.CoFHEnchantment;
-import cofh.core.item.ItemBlockCore;
+import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;

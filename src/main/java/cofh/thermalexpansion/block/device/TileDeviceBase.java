@@ -5,7 +5,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
@@ -21,11 +21,11 @@ public abstract class TileDeviceBase extends TileAugmentable {
 		for (int i = 0; i < BlockDevice.Types.values().length; i++) {
 			String name = StringHelper.titleCase(BlockDevice.NAMES[i]);
 			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", true, comment);
+			enableSecurity[i] = ThermalExpansion.CONFIG.get("Security", "Device." + name + ".Securable", true, comment);
 		}
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()]) + ".Securable");
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.PUMP.ordinal()]) + ".Securable");
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
+		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()]) + ".Securable");
+		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.PUMP.ordinal()]) + ".Securable");
+		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
 	}
 
 	protected final byte type;

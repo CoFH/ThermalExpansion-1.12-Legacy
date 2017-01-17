@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.sponge;
 
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.TEBlocks;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
@@ -57,16 +57,16 @@ public class TileSpongeMagmatic extends TileSponge {
 							if (myFluidStack == null) {
 								myFluidStack = new FluidStack(queryFluid, 1000);
 								bucketCounter = 1;
-								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+								worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 							} else if (myFluidStack.getFluid() == queryFluid) {
 								bucketCounter++;
-								worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+								worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 							}
 						} else if (query.getBlock().isAir(query, worldObj, offsetPos)) {
-							worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+							worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 						}
 					} else if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
-						worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+						worldObj.setBlockState(offsetPos, TEBlocksOld.blockAirBarrier.getDefaultState(), 3);
 					}
 				}
 			}

@@ -37,7 +37,7 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 	public static void configure() {
 
 		String comment = "Enable this to allow for Strongboxes to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Strongbox.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Strongbox.All.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;
@@ -80,7 +80,7 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 	}
 
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		return rotateBlock();
 	}

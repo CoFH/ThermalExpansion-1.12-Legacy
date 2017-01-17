@@ -15,7 +15,7 @@ public class ExtruderManager { // TODO
 	private static boolean allowOverwrite = false;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Extruder", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Extruder", "AllowRecipeOverwrite", false);
 	}
 
 	public static RecipeExtruder[] getRecipeList() {

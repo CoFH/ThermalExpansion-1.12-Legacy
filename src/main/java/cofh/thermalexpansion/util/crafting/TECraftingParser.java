@@ -62,10 +62,10 @@ public class TECraftingParser {
 		});
 
 		if (fList == null || fList.length <= 0) {
-			ThermalExpansion.log.info("There are no crafting files present in " + folder + ".");
+			ThermalExpansion.LOG.info("There are no crafting files present in " + folder + ".");
 			return;
 		}
-		ThermalExpansion.log.info(fList.length + " crafting files present in " + folder + "/.");
+		ThermalExpansion.LOG.info(fList.length + " crafting files present in " + folder + "/.");
 		list.addAll(Arrays.asList(fList));
 	}
 
@@ -86,16 +86,16 @@ public class TECraftingParser {
 			try {
 				craftingList = (JsonObject) parser.parse(new FileReader(craftingFile));
 			} catch (Throwable t) {
-				ThermalExpansion.log.error("Critical error reading from a crafting file: " + craftingFile + " > Please be sure the file is correct!", t);
+				ThermalExpansion.LOG.error("Critical error reading from a crafting file: " + craftingFile + " > Please be sure the file is correct!", t);
 				continue;
 			}
-			ThermalExpansion.log.info("Reading template info from: " + craftingFile + ":");
+			ThermalExpansion.LOG.info("Reading template info from: " + craftingFile + ":");
 			for (Entry<String, JsonElement> craftingEntry : craftingList.entrySet()) {
 
 				if (acquireCraftingEntry(craftingEntry.getKey(), craftingEntry.getValue())) {
-					ThermalExpansion.log.debug("Crafting entry added: \"" + craftingEntry.getKey() + "\"");
+					ThermalExpansion.LOG.debug("Crafting entry added: \"" + craftingEntry.getKey() + "\"");
 				} else {
-					ThermalExpansion.log.error("Error handling entry: \"" + craftingEntry.getKey() + "\" > Please check the parameters. If adding a recipe, it *may* conflict with an existing recipe or entry. If removing a recipe, the recipe may not have existed.");
+					ThermalExpansion.LOG.error("Error handling entry: \"" + craftingEntry.getKey() + "\" > Please check the parameters. If adding a recipe, it *may* conflict with an existing recipe or entry. If removing a recipe, the recipe may not have existed.");
 				}
 			}
 		}
@@ -688,7 +688,7 @@ public class TECraftingParser {
 				stack = ItemHelper.cloneStack(oreStack, stackSize);
 			} else {
 				if (!item.has("name")) {
-					ThermalExpansion.log.error("Item entry missing valid name or oreName!");
+					ThermalExpansion.LOG.error("Item entry missing valid name or oreName!");
 					return null;
 				}
 				stack = new ItemStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(item.get("name").getAsString())), stackSize, metadata);
@@ -698,11 +698,11 @@ public class TECraftingParser {
 					NBTBase nbtbase = JsonToNBT.getTagFromJson(item.get("nbt").getAsString());
 
 					if (!(nbtbase instanceof NBTTagCompound)) {
-						ThermalExpansion.log.error("Item has invalid NBT data.");
+						ThermalExpansion.LOG.error("Item has invalid NBT data.");
 					}
 					stack.setTagCompound((NBTTagCompound) nbtbase);
 				} catch (NBTException t) {
-					ThermalExpansion.log.error("Item has invalid NBT data.", t);
+					ThermalExpansion.LOG.error("Item has invalid NBT data.", t);
 				}
 			}
 		}
@@ -732,7 +732,7 @@ public class TECraftingParser {
 				amount = FluidContainerRegistry.BUCKET_VOLUME;
 			}
 			if (!fluid.has("name")) {
-				ThermalExpansion.log.error("Fluid entry missing valid name!");
+				ThermalExpansion.LOG.error("Fluid entry missing valid name!");
 				return null;
 			}
 			stack = new FluidStack(FluidRegistry.getFluid(fluid.get("name").getAsString()), amount);
@@ -742,11 +742,11 @@ public class TECraftingParser {
 					NBTBase nbtbase = JsonToNBT.getTagFromJson(fluid.get("nbt").getAsString());
 
 					if (!(nbtbase instanceof NBTTagCompound)) {
-						ThermalExpansion.log.error("Fluid has invalid NBT data.");
+						ThermalExpansion.LOG.error("Fluid has invalid NBT data.");
 					}
 					stack.tag = (NBTTagCompound) nbtbase;
 				} catch (NBTException t) {
-					ThermalExpansion.log.error("Fluid has invalid NBT data.", t);
+					ThermalExpansion.LOG.error("Fluid has invalid NBT data.", t);
 				}
 			}
 		}

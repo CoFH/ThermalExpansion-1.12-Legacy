@@ -6,7 +6,7 @@ import codechicken.lib.vec.Vector3;
 import cofh.api.block.IDismantleable;
 import cofh.api.item.IToolHammer;
 import cofh.asm.relauncher.Implementable;
-import cofh.core.item.tool.ItemSwordAdv;
+import cofh.core.item.tool.ItemSwordCore;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import java.util.List;
 
 @Implementable ("buildcraft.api.tools.IToolWrench")
-public class ItemWrenchBattle extends ItemSwordAdv implements IToolHammer {
+public class ItemWrenchBattle extends ItemSwordCore implements IToolHammer {
 
 	public ItemWrenchBattle(ToolMaterial toolMaterial) {
 

@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;

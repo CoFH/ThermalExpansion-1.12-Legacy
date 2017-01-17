@@ -10,7 +10,7 @@ import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.cell.TileCell;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.TabConfigCell;
 import net.minecraft.client.gui.GuiScreen;

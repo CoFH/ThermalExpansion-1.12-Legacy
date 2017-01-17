@@ -4,7 +4,7 @@ import cofh.core.CoFHProps;
 import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlay extends ElementBase {
 

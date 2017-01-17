@@ -19,7 +19,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.item.TEAugments;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.block.material.Material;
@@ -287,19 +287,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 	public boolean postInit() {
 
 		if (enable[Types.STEAM.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoSteam, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I', "ingotCopper", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoSteam, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItemsOld.powerCoilSilver, 'G', "gearCopper", 'I', "ingotCopper", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoMagmatic, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I', "ingotInvar", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoMagmatic, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItemsOld.powerCoilSilver, 'G', "gearInvar", 'I', "ingotInvar", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.COMPRESSION.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoCompression, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin", 'I', "ingotTin", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoCompression, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItemsOld.powerCoilSilver, 'G', "gearTin", 'I', "ingotTin", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.REACTANT.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoReactant, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze", 'I', "ingotBronze", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoReactant, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItemsOld.powerCoilSilver, 'G', "gearBronze", 'I', "ingotBronze", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.ENERVATION.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoEnervation, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum", 'I', "ingotElectrum", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoEnervation, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItemsOld.powerCoilSilver, 'G', "gearElectrum", 'I', "ingotElectrum", 'R', "dustRedstone" }));
 		}
 		TECraftingHandler.addSecureRecipe(dynamoSteam);
 		TECraftingHandler.addSecureRecipe(dynamoMagmatic);
@@ -372,7 +372,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		String category = "Dynamo.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 	}
 

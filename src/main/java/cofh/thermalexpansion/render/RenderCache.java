@@ -3,7 +3,7 @@ package cofh.thermalexpansion.render;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.cache.TileCache;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Items;
@@ -23,7 +23,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 
 	public static void initialize() {
 
-		lock = TEItems.lock.copy();
+		lock = TEItemsOld.lock.copy();
 	}
 
 	@Override

@@ -1,10 +1,13 @@
-package cofh.thermalexpansion.item;
+package cofh.thermalexpansion.init;
 
-import codechicken.lib.item.ItemMultiType;
 import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.item.ItemCapacitor;
+import cofh.thermalexpansion.item.ItemSatchel;
+import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.item.TEFlorbs;
 import cofh.thermalexpansion.item.tool.*;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.init.Blocks;
@@ -12,19 +15,17 @@ import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
 
-public class TEItems {
+public class TEItemsOld {
 
 	public static ItemIgniter itemIgniter;
 	public static ItemChiller itemChiller;
 	public static ItemPump itemPump;
 	public static ItemTransfuser itemTransfuser;
 	public static ItemMiner itemMiner;
-	public static ItemMultiType itemMaterial;
 
 	public static ItemCapacitor itemCapacitor;
 	public static ItemSatchel itemSatchel;
@@ -70,19 +71,19 @@ public class TEItems {
 	static {
 		String category2 = "Item.Tool.";
 		String category = category2 + "Igniter";
-		enableIgniter = ThermalExpansion.config.get(category, "Recipe", true);
+		enableIgniter = ThermalExpansion.CONFIG.get(category, "Recipe", true);
 
 		category = category2 + "Chiller";
-		enableChiller = ThermalExpansion.config.get(category, "Recipe", true);
+		enableChiller = ThermalExpansion.CONFIG.get(category, "Recipe", true);
 
 		category = category2 + "Pump";
-		enablePump = ThermalExpansion.config.get(category, "Recipe", true);
+		enablePump = ThermalExpansion.CONFIG.get(category, "Recipe", true);
 
 		category = category2 + "Transfuser";
-		enableTransfuser = ThermalExpansion.config.get(category, "Recipe", true);
+		enableTransfuser = ThermalExpansion.CONFIG.get(category, "Recipe", true);
 	}
 
-	private TEItems() {
+	private TEItemsOld() {
 
 	}
 
@@ -94,7 +95,6 @@ public class TEItems {
 		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
 		itemCapacitor = new ItemCapacitor();
 		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
-		itemMaterial = new ItemMultiType(ThermalExpansion.tabItems, "material").setUnlocalizedName("thermalexpansion.material.");
 
 		//GameRegistry.register(itemWrench);
 		//GameRegistry.register(itemBattleWrench);
@@ -106,7 +106,6 @@ public class TEItems {
 		GameRegistry.register(itemCapacitor);
 		//GameRegistry.register(itemSatchel);
 		//GameRegistry.register(itemDiagram);
-		GameRegistry.register(itemMaterial);
 
         		/* Tools */
 		toolIgniter = new ItemStack(itemIgniter);
@@ -129,24 +128,6 @@ public class TEItems {
 		EnergyHelper.setDefaultEnergyTag(capacitorHardened, 0);
 		EnergyHelper.setDefaultEnergyTag(capacitorReinforced, 0);
 		EnergyHelper.setDefaultEnergyTag(capacitorResonant, 0);
-
-
-        /* Parts */
-		pneumaticServo = itemMaterial.registerSubItem(0, "pneumaticServo");
-		powerCoilGold = itemMaterial.registerSubItem(1, "powerCoilGold");
-		powerCoilSilver = itemMaterial.registerSubItem(2, "powerCoilSilver");
-		powerCoilElectrum = itemMaterial.registerSubItem(3, "powerCoilElectrum");
-
-		lock = itemMaterial.registerSubItem(16, "lock");
-
-		/* Process Items */
-		sawdust = itemMaterial.registerSubItemOreDict(512, "dustWood");
-		sawdustCompressed = itemMaterial.registerSubItem(513, "dustWoodCompressed");
-		slag = itemMaterial.registerSubItem(514, "slag");
-		slagRich = itemMaterial.registerSubItem(515, "slagRich");
-		fertilizer = itemMaterial.registerSubItemOreDict(516, "fertilizer");
-		fertilizerRich = itemMaterial.registerSubItemOreDict(517, "fertilizerRich");
-		OreDictionary.registerOre("fertilizer", fertilizerRich);
 
 		TEAugments.preInit();
 		TEFlorbs.preInit();
@@ -232,10 +213,10 @@ public class TEItems {
 
 		/* Parts */
 		String category = "General";
-		boolean servosAllowSilver = ThermalExpansion.config.get(category, "PneumaticServo.AllowSilver", false);
-		boolean servosAllowInvar = ThermalExpansion.config.get(category, "PneumaticServo.AllowInvar", false);
-		boolean servosAllowBronze = ThermalExpansion.config.get(category, "PneumaticServo.AllowBronze", false);
-		boolean servosAllowSteel = ThermalExpansion.config.get(category, "PneumaticServo.AllowSteel", false);
+		boolean servosAllowSilver = ThermalExpansion.CONFIG.get(category, "PneumaticServo.AllowSilver", false);
+		boolean servosAllowInvar = ThermalExpansion.CONFIG.get(category, "PneumaticServo.AllowInvar", false);
+		boolean servosAllowBronze = ThermalExpansion.CONFIG.get(category, "PneumaticServo.AllowBronze", false);
+		boolean servosAllowSteel = ThermalExpansion.CONFIG.get(category, "PneumaticServo.AllowSteel", false);
 
 		GameRegistry.addRecipe(ShapedRecipe(pneumaticServo, " I ", "GRG", " I ", 'R', "dustRedstone", 'G', "blockGlass", 'I', "ingotIron"));
 

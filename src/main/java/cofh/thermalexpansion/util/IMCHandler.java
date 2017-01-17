@@ -138,10 +138,10 @@ public class IMCHandler {
 						}
 						continue;
 					}
-					ThermalExpansion.log.warn("Thermal Expansion received an invalid IMC from " + theMessage.getSender() + "! Key was " + theMessage.key);
+					ThermalExpansion.LOG.warn("Thermal Expansion received an invalid IMC from " + theMessage.getSender() + "! Key was " + theMessage.key);
 				}
 			} catch (Exception e) {
-				ThermalExpansion.log.warn("Thermal Expansion received a broken IMC from " + theMessage.getSender() + "!");
+				ThermalExpansion.LOG.warn("Thermal Expansion received a broken IMC from " + theMessage.getSender() + "!");
 				e.printStackTrace();
 			}
 		}

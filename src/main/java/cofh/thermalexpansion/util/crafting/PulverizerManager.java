@@ -9,7 +9,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
@@ -32,11 +32,11 @@ public class PulverizerManager {
 	private static int oreMultiplier = 2;
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Pulverizer", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Pulverizer", "AllowRecipeOverwrite", false);
 
 		String category = "RecipeManagers.Pulverizer.Ore";
 		String comment = "This sets the default rate for Ore->Dust conversion. This number is used in all automatically generated recipes.";
-		oreMultiplier = MathHelper.clamp(ThermalExpansion.config.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
+		oreMultiplier = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "DefaultMultiplier", oreMultiplier, comment), 1, 64);
 	}
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
@@ -70,18 +70,18 @@ public class PulverizerManager {
 		String comment;
 		String category = "RecipeManagers.Pulverizer.Recipes";
 
-		boolean recipeSandstone = ThermalExpansion.config.get(category, "Sandstone", true);
-		boolean recipeNetherrack = ThermalExpansion.config.get(category, "Netherrack", true);
-		boolean recipeWool = ThermalExpansion.config.get(category, "Wool", true);
-		boolean recipeReed = ThermalExpansion.config.get(category, "Reed", true);
-		boolean recipeBone = ThermalExpansion.config.get(category, "Bone", true);
-		boolean recipeBlazeRod = ThermalExpansion.config.get(category, "BlazeRod", true);
-		boolean recipeBlizzRod = ThermalExpansion.config.get(category, "BlizzRod", true);
-		boolean recipeBlitzRod = ThermalExpansion.config.get(category, "BlitzRod", true);
-		boolean recipeBasalzRod = ThermalExpansion.config.get(category, "BasalzRod", true);
-		boolean recipeHorseArmor = ThermalExpansion.config.get(category, "HorseArmor", true);
-		boolean recipeRedstoneLamp = ThermalExpansion.config.get(category, "RedstoneLamp", true);
-		boolean recipeGlassBottle = ThermalExpansion.config.get(category, "GlassBottle", true);
+		boolean recipeSandstone = ThermalExpansion.CONFIG.get(category, "Sandstone", true);
+		boolean recipeNetherrack = ThermalExpansion.CONFIG.get(category, "Netherrack", true);
+		boolean recipeWool = ThermalExpansion.CONFIG.get(category, "Wool", true);
+		boolean recipeReed = ThermalExpansion.CONFIG.get(category, "Reed", true);
+		boolean recipeBone = ThermalExpansion.CONFIG.get(category, "Bone", true);
+		boolean recipeBlazeRod = ThermalExpansion.CONFIG.get(category, "BlazeRod", true);
+		boolean recipeBlizzRod = ThermalExpansion.CONFIG.get(category, "BlizzRod", true);
+		boolean recipeBlitzRod = ThermalExpansion.CONFIG.get(category, "BlitzRod", true);
+		boolean recipeBasalzRod = ThermalExpansion.CONFIG.get(category, "BasalzRod", true);
+		boolean recipeHorseArmor = ThermalExpansion.CONFIG.get(category, "HorseArmor", true);
+		boolean recipeRedstoneLamp = ThermalExpansion.CONFIG.get(category, "RedstoneLamp", true);
+		boolean recipeGlassBottle = ThermalExpansion.CONFIG.get(category, "GlassBottle", true);
 
 		{ /* RECYCLING */
 			addRecipe(3200, new ItemStack(Blocks.GLASS), new ItemStack(Blocks.SAND));
@@ -165,7 +165,7 @@ public class PulverizerManager {
 		addTERecipe(3200, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
 		addRecipe(2400, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
 
-		addRecipe(1600, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(TEItems.sawdust, 8));
+		addRecipe(1600, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(TEItemsOld.sawdust, 8));
 
 		addRecipe(1600, new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 4, 11));
 		addRecipe(1600, new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 4, 1));
@@ -188,7 +188,7 @@ public class PulverizerManager {
 			int[] dyeChance = new int[ColorHelper.woolColorConfig.length];
 
 			comment = "This sets the default rate for Wool->String conversion. This number is used in all automatically generated recipes.";
-			int numString = ThermalExpansion.config.get(category, "String", 4, comment);
+			int numString = ThermalExpansion.CONFIG.get(category, "String", 4, comment);
 			ItemStack stringStack = new ItemStack(Items.STRING, numString);
 
 			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
@@ -201,7 +201,7 @@ public class PulverizerManager {
 
 			category = "RecipeManagers.Pulverizer.Wool.Dye";
 			for (int i = 0; i < ColorHelper.woolColorConfig.length; i++) {
-				dyeChance[i] = MathHelper.clamp(ThermalExpansion.config.get(category, ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
+				dyeChance[i] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, ColorHelper.woolColorConfig[i], dyeChance[i]), 0, 100);
 
 				if (dyeChance[i] > 0) {
 					addTERecipe(1600, new ItemStack(Blocks.WOOL, 1, i), stringStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
@@ -258,9 +258,9 @@ public class PulverizerManager {
 
 		String category = "RecipeManagers.Pulverizer.Recipes";
 
-		boolean siliconRecipe = ThermalExpansion.config.get(category, "Silicon", true);
-		boolean diamondRecipe = ThermalExpansion.config.get(category, "DIAMOND", true);
-		boolean enderPearlRecipe = ThermalExpansion.config.get(category, "EnderPearl", true);
+		boolean siliconRecipe = ThermalExpansion.CONFIG.get(category, "Silicon", true);
+		boolean diamondRecipe = ThermalExpansion.CONFIG.get(category, "DIAMOND", true);
+		boolean enderPearlRecipe = ThermalExpansion.CONFIG.get(category, "EnderPearl", true);
 
 		if (ItemHelper.oreNameExists("itemSilicon") && siliconRecipe) {
 			addRecipe(1600, new ItemStack(Blocks.SAND, 1), ItemHelper.cloneStack(OreDictionary.getOres("itemSilicon").get(0), 1));

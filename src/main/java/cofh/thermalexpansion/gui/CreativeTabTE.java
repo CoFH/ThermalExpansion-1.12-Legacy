@@ -7,16 +7,16 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class TECreativeTab extends CreativeTabs {
+public class CreativeTabTE extends CreativeTabs {
 
 	private final String label;
 
-	public TECreativeTab() {
+	public CreativeTabTE() {
 
 		this("");
 	}
 
-	public TECreativeTab(String label) {
+	public CreativeTabTE(String label) {
 
 		super("ThermalExpansion" + label);
 		this.label = label;

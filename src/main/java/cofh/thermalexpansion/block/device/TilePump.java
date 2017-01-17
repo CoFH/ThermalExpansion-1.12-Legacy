@@ -4,7 +4,7 @@ import cofh.api.energy.EnergyStorage;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -46,7 +46,7 @@ public class TilePump extends TileAugmentable {
 	public static void configure() {
 
 		String comment = "Enable this to allow for Pumps to be securable.";
-		enableSecurity = ThermalExpansion.config.get("Security", "Device.Pump.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Device.Pump.Securable", enableSecurity, comment);
 	}
 
 	public static boolean enableSecurity = true;

@@ -9,6 +9,7 @@ import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
@@ -17,7 +18,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
 
 	@Override
-	public boolean onWrench(EntityPlayer player, int hitSide) {
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		return rotateBlock();
 	}

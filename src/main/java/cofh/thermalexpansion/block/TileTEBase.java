@@ -1,19 +1,19 @@
 package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
-import cofh.core.block.TileCoFHBaseOld;
+import cofh.core.block.TileCore;
 import cofh.core.network.*;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileTEBase extends TileCoFHBaseOld implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
+public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
 	protected String tileName = "";
 

@@ -371,7 +371,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer player) {
 
-		return isUseable(player);
+		return isUsable(player);
 	}
 
 	@Override

@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.entity.player.InventoryPlayer;

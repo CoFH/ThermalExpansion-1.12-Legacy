@@ -14,9 +14,13 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
+<<<<<<< HEAD
 import cofh.thermalexpansion.init.TETextures;
+=======
+import cofh.thermalexpansion.init.TEProps;
+>>>>>>> 254d25c... Refactors ^2.
 import cofh.thermalexpansion.item.TEAugments;
-import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
@@ -344,7 +348,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', "dustRedstone",
 					'Y', Blocks.BRICK_BLOCK
 			}));
@@ -352,14 +356,14 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		if (enable[Types.PULVERIZER.ordinal()]) {
 			String category = "Machine.Pulverizer";
 			String comment = "If enabled, the Pulverizer will require Diamonds instead of Flint.";
-			Item component = ThermalExpansion.config.get(category, "RequireDiamonds", false, comment) ? Items.DIAMOND : Items.FLINT;
+			Item component = ThermalExpansion.CONFIG.get(category, "RequireDiamonds", false, comment) ? Items.DIAMOND : Items.FLINT;
 			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] {
 					" X ",
 					"YCY",
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Blocks.PISTON,
 					'Y', component
 			}));
@@ -371,7 +375,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Items.IRON_AXE,
 					'Y', "plankWood"
 			}));
@@ -383,7 +387,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', invarPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Items.BUCKET,
 					'Y', "ingotInvar"
 			}));
@@ -395,7 +399,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', invarPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', BlockFrame.frameCellBasic,
 					'Y', Blocks.NETHER_BRICK
 			}));
@@ -407,7 +411,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			}));
@@ -419,7 +423,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Blocks.PISTON,
 					'Y', "ingotInvar"
 			}));
@@ -431,7 +435,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', Blocks.PISTON,
 					'Y', "blockGlass"
 			}));
@@ -443,7 +447,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.pneumaticServo,
+					'P', TEItemsOld.pneumaticServo,
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			}));
@@ -455,7 +459,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', Blocks.CHEST,
 					'Y', "gearTin"
 			}));
@@ -467,9 +471,9 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', BlockFrame.frameCellBasic,
-					'Y', TEItems.powerCoilSilver
+					'Y', TEItemsOld.powerCoilSilver
 			}));
 		}
 		if (enable[Types.INSOLATOR.ordinal()]) {
@@ -479,7 +483,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 					"IPI",
 					'C', machineFrame,
 					'I', copperPart,
-					'P', TEItems.powerCoilGold,
+					'P', TEItemsOld.powerCoilGold,
 					'X', "gearLumium",
 					'Y', Blocks.DIRT
 			}));
@@ -587,20 +591,20 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		String category = "Machine.";
 
 		for (int i = 0; i < Types.values().length; i++) {
-			enable[i] = ThermalExpansion.config.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
+			enable[i] = ThermalExpansion.CONFIG.get(category + StringHelper.titleCase(NAMES[i]), "Recipe.Enable", true);
 		}
 		category = "Machine.All";
 
-		creativeTiers[0] = ThermalExpansion.config.get(category, "CreativeTab.Basic", false);
-		creativeTiers[1] = ThermalExpansion.config.get(category, "CreativeTab.Hardened", false);
-		creativeTiers[2] = ThermalExpansion.config.get(category, "CreativeTab.Reinforced", false);
-		creativeTiers[3] = ThermalExpansion.config.get(category, "CreativeTab.Resonant", true);
+		creativeTiers[0] = ThermalExpansion.CONFIG.get(category, "CreativeTab.Basic", false);
+		creativeTiers[1] = ThermalExpansion.CONFIG.get(category, "CreativeTab.Hardened", false);
+		creativeTiers[2] = ThermalExpansion.CONFIG.get(category, "CreativeTab.Reinforced", false);
+		creativeTiers[3] = ThermalExpansion.CONFIG.get(category, "CreativeTab.Resonant", true);
 
 		category += ".Augments";
 
-		defaultAutoTransfer = ThermalExpansion.config.get(category, "Default.AutoTransfer", true);
-		defaultRedstoneControl = ThermalExpansion.config.get(category, "Default.RedstoneControl", true);
-		defaultReconfigSides = ThermalExpansion.config.get(category, "Default.ReconfigurableSides", true);
+		defaultAutoTransfer = ThermalExpansion.CONFIG.get(category, "Default.AutoTransfer", true);
+		defaultRedstoneControl = ThermalExpansion.CONFIG.get(category, "Default.RedstoneControl", true);
+		defaultReconfigSides = ThermalExpansion.CONFIG.get(category, "Default.ReconfigurableSides", true);
 	}
 
 	public static ItemStack furnace;

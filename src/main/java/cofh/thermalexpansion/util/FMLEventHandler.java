@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.util;
 
-import cofh.thermalexpansion.core.TEAchievements;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEAchievements;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

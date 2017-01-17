@@ -32,7 +32,7 @@ public class FurnaceManager {
 	private static Set<Block> handledBlocks = new THashSet<Block>();
 
 	static {
-		allowOverwrite = ThermalExpansion.config.get("RecipeManagers.Furnace", "AllowRecipeOverwrite", false);
+		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Furnace", "AllowRecipeOverwrite", false);
 
 		handledBlocks.add(Blocks.CACTUS);
 		handledBlocks.add(Blocks.GOLD_ORE);

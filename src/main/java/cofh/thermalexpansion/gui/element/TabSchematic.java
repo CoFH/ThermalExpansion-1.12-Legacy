@@ -4,7 +4,7 @@ import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.TabBase;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.util.ResourceLocation;
