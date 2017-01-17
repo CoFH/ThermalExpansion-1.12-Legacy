@@ -10,11 +10,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-<<<<<<< HEAD
 import cofh.thermalexpansion.init.TETextures;
-=======
-import cofh.thermalexpansion.init.TEProps;
->>>>>>> 254d25c... Refactors ^2.
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;

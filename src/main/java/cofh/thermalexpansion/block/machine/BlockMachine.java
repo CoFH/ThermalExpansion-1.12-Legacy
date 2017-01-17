@@ -14,13 +14,9 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-<<<<<<< HEAD
-import cofh.thermalexpansion.init.TETextures;
-=======
-import cofh.thermalexpansion.init.TEProps;
->>>>>>> 254d25c... Refactors ^2.
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.init.TEItemsOld;
+import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
