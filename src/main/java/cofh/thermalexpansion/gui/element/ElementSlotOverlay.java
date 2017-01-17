@@ -72,43 +72,43 @@ public class ElementSlotOverlay extends ElementBase {
 		int offsetY = slotColor % 3 * 32;
 
 		switch (slotType) {
-		case 0:
-			sizeX = 16;
-			sizeY = 16;
-			offsetX += 8;
-			offsetY += 8;
-			break;
-		case 1:
-			sizeX = 24;
-			sizeY = 24;
-			offsetX += 36;
-			offsetY += 4;
-			break;
-		case 2:
-			sizeX = 42;
-			sizeY = 24;
-			offsetX += 75;
-			offsetY += 4;
-			break;
-		case 3:
-			sizeX = 16;
-			sizeY = 60;
-			offsetX = slotColor * 32 + 8;
-			offsetY = 98;
-			break;
+			case 0:
+				sizeX = 16;
+				sizeY = 16;
+				offsetX += 8;
+				offsetY += 8;
+				break;
+			case 1:
+				sizeX = 24;
+				sizeY = 24;
+				offsetX += 36;
+				offsetY += 4;
+				break;
+			case 2:
+				sizeX = 42;
+				sizeY = 24;
+				offsetX += 75;
+				offsetY += 4;
+				break;
+			case 3:
+				sizeX = 16;
+				sizeY = 60;
+				offsetX = slotColor * 32 + 8;
+				offsetY = 98;
+				break;
 		}
 
 		switch (slotRender) {
-		case 0:
-			sizeY /= 2;
-			break;
-		case 1:
-			sizeY /= 2;
-			y += sizeY;
-			offsetY += sizeY;
-			break;
-		case 2:
-			break;
+			case 0:
+				sizeY /= 2;
+				break;
+			case 1:
+				sizeY /= 2;
+				y += sizeY;
+				offsetY += sizeY;
+				break;
+			case 2:
+				break;
 		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}
@@ -123,40 +123,40 @@ public class ElementSlotOverlay extends ElementBase {
 		offsetX += slotType * 32;
 
 		switch (slotType) {
-		case 0:
-			x -= 8;
-			y -= 8;
-			break;
-		case 1:
-			x -= 4;
-			y -= 4;
-			break;
-		case 2:
-			sizeX = 64;
-			x -= 11;
-			y -= 4;
-			break;
-		case 3:
-			sizeX = 32;
-			sizeY = 64;
-			offsetX = slotColor * 32;
-			offsetY = 96;
-			x -= 8;
-			y -= 2;
-			break;
+			case 0:
+				x -= 8;
+				y -= 8;
+				break;
+			case 1:
+				x -= 4;
+				y -= 4;
+				break;
+			case 2:
+				sizeX = 64;
+				x -= 11;
+				y -= 4;
+				break;
+			case 3:
+				sizeX = 32;
+				sizeY = 64;
+				offsetX = slotColor * 32;
+				offsetY = 96;
+				x -= 8;
+				y -= 2;
+				break;
 		}
 
 		switch (slotRender) {
-		case 0:
-			sizeY /= 2;
-			break;
-		case 1:
-			sizeY /= 2;
-			y += sizeY;
-			offsetY += sizeY;
-			break;
-		default:
-			break;
+			case 0:
+				sizeY /= 2;
+				break;
+			case 1:
+				sizeY /= 2;
+				y += sizeY;
+				offsetY += sizeY;
+				break;
+			default:
+				break;
 		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}

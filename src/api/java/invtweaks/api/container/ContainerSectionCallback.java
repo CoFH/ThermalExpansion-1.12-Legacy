@@ -10,7 +10,8 @@ import java.lang.annotation.Target;
  * <p>
  * Signature of the method should be Map<ContainerSection, List<Slot>> func()
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.METHOD)
+@Retention (RetentionPolicy.RUNTIME)
+@Target (ElementType.METHOD)
 public @interface ContainerSectionCallback {
+
 }

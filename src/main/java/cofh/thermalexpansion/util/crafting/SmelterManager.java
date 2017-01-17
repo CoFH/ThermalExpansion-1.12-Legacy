@@ -296,8 +296,7 @@ public class SmelterManager {
 	}
 
 	/* ADD RECIPES */
-	protected static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-			int secondaryChance) {
+	protected static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0) {
 			return false;
@@ -309,8 +308,7 @@ public class SmelterManager {
 		return true;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-			int secondaryChance, boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeExists(primaryInput, secondaryInput)) {
 			return false;
@@ -334,15 +332,13 @@ public class SmelterManager {
 		lockSet.add(new ComparableItemStackSmelter(flux));
 	}
 
-	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance,
-			int slagOreChance, int slagDustChance) {
+	public static void addDefaultOreDictionaryRecipe(String oreName, String dustName, ItemStack ingot, ItemStack ingotRelated, int richSlagChance, int slagOreChance, int slagDustChance) {
 
 		if (ingot == null) {
 			return;
 		}
 		if (oreName != null) {
-			addOreToIngotRecipe(oreName, ItemHelper.cloneStack(ingot, oreMultiplier), ItemHelper.cloneStack(ingot, oreMultiplierSpecial),
-				ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
+			addOreToIngotRecipe(oreName, ItemHelper.cloneStack(ingot, oreMultiplier), ItemHelper.cloneStack(ingot, oreMultiplierSpecial), ItemHelper.cloneStack(ingotRelated, 1), richSlagChance, slagOreChance);
 		}
 		if (dustName != null) {
 			addDustToIngotRecipe(dustName, ItemHelper.cloneStack(ingot, 2), slagDustChance);
@@ -365,9 +361,9 @@ public class SmelterManager {
 		String relatedName = null;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-        List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-        List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-        List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
 
 		if (relatedType != "") {
 			relatedName = "ingot" + StringHelper.titleCase(relatedType);
@@ -432,22 +428,20 @@ public class SmelterManager {
 
 	public static void addDustToIngotRecipe(String dustName, ItemStack ingot2, int slagDustChance) {
 
-        List<ItemStack> registeredOres = OreDictionary.getOres(dustName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(dustName);
 
 		if (registeredOres.size() > 0) {
 			addRecipe(800, ItemHelper.cloneStack(registeredOres.get(0), 2), blockSand, ingot2, TEItems.slag, slagDustChance);
 		}
 	}
 
-	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount,
-			ItemStack primaryOutput) {
+	public static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
 
-        List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
-        List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
+		List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
+		List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
 
 		if (primaryOreList.size() > 0 && secondaryOreList.size() > 0) {
-			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount),
-				ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
+			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount), ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
 		}
 	}
 
@@ -463,9 +457,9 @@ public class SmelterManager {
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
 		// if (OreDictionary.)
-        List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-        List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-        List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
 
 		if (registeredIngot.isEmpty()) {
 			return;
@@ -505,14 +499,12 @@ public class SmelterManager {
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, false);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-			boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, boolean overwrite) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100, overwrite);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-			int secondaryChance) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, false);
 	}
@@ -607,8 +599,7 @@ public class SmelterManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET)
-					|| oreName.equals("sand");
+			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals("sand");
 		}
 
 		public static int getOreID(ItemStack stack) {

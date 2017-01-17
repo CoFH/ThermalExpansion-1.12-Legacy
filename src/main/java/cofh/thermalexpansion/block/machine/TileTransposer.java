@@ -18,21 +18,20 @@ import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
 
 import javax.annotation.Nullable;
 
@@ -312,8 +311,7 @@ public class TileTransposer extends TileMachineBase {
 				inventory[1] = null;
 				containerItem = null;
 			} else {
-				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2])
-						&& inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
+				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
 					inventory[2].stackSize++;
 					inventory[1] = null;
 					containerItem = null;
@@ -432,8 +430,7 @@ public class TileTransposer extends TileMachineBase {
 			renderFluid.amount = 0;
 		}
 		if (!reverse) {
-			processMax = containerItem.getCapacity(inventory[1])
-					- (containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount);
+			processMax = containerItem.getCapacity(inventory[1]) - (containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount);
 			processRem = processMax;
 		} else {
 			processMax = containerItem.getFluid(inventory[1]) == null ? 0 : containerItem.getFluid(inventory[1]).amount;
@@ -551,7 +548,7 @@ public class TileTransposer extends TileMachineBase {
 		nbt.setInteger("TrackOut2", outputTrackerFluid);
 		nbt.setBoolean("Rev", reverse);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -616,7 +613,7 @@ public class TileTransposer extends TileMachineBase {
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-        BlockUtils.fireBlockUpdate(getWorld(),getPos());
+		BlockUtils.fireBlockUpdate(getWorld(), getPos());
 	}
 
 	@Override
@@ -710,50 +707,56 @@ public class TileTransposer extends TileMachineBase {
 		return slot != 0 || (FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack));
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo info = tank.getInfo();
-                    return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 3)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (reverse || from == null || sideCache[from.ordinal()] != 1) {
-                        return 0;
-                    }
-                    return tank.fill(resource, doFill);
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
-                        return null;
-                    }
-                    return tank.drain(resource, doDrain);
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 3) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (reverse || from == null || sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 	/* ISidedTexture */
 	@Override
@@ -767,8 +770,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", type);
 		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
 		}
 	}
 

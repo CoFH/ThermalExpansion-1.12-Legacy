@@ -10,23 +10,22 @@ import cofh.thermalexpansion.block.machine.BlockMachine.Types;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
@@ -232,7 +231,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -297,7 +296,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-        BlockUtils.fireBlockUpdate(getWorld(), pos);
+		BlockUtils.fireBlockUpdate(getWorld(), pos);
 	}
 
 	@Override
@@ -351,45 +350,51 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		markDirty();
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo info = tank.getInfo();
-                    return new IFluidTankProperties[]{new FluidTankProperties(info.fluid, info.capacity, true, false)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (from != null && sideCache[from.ordinal()] != 1) {
-                        return 0;
-                    }
-                    if (resource.getFluid() != FluidRegistry.WATER) {
-                        return 0;
-                    }
-                    return tank.fill(resource, doFill);
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    return null;
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    return null;
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from != null && sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					if (resource.getFluid() != FluidRegistry.WATER) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 }

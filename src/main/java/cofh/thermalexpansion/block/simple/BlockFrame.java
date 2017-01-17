@@ -52,313 +52,314 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockFrame extends Block implements IDismantleable, IInitializer, IBakeryBlock {
 
-    public static int renderPass = 0;
+	public static int renderPass = 0;
 
-    public static boolean hasCenter(int metadata) {
+	public static boolean hasCenter(int metadata) {
 
-        return metadata < Types.ILLUMINATOR.ordinal();
-    }
+		return metadata < Types.ILLUMINATOR.ordinal();
+	}
 
-    public static boolean hasFrame(int metadata) {
+	public static boolean hasFrame(int metadata) {
 
-        return metadata < Types.ILLUMINATOR.ordinal();
-    }
+		return metadata < Types.ILLUMINATOR.ordinal();
+	}
 
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
-    public BlockFrame() {
+	public BlockFrame() {
 
-        super(Material.IRON);
-        setHardness(15.0F);
-        setResistance(25.0F);
-        setSoundType(SoundType.METAL);
-        setCreativeTab(ThermalExpansion.tabBlocks);
-        setUnlocalizedName("thermalexpansion.frame");
-    }
+		super(Material.IRON);
+		setHardness(15.0F);
+		setResistance(25.0F);
+		setSoundType(SoundType.METAL);
+		setCreativeTab(ThermalExpansion.tabBlocks);
+		setUnlocalizedName("thermalexpansion.frame");
+	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
-    }
+		return state.getValue(TYPES).ordinal();
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.ACTIVE_PROPERTY).build();
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
 
-    @Override
-    public void getSubBlocks(Item item, CreativeTabs tab, List list) {
+		return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+	}
 
-        for (int i = 0; i < Types.values().length; i++) {
-            if (enable[i]) {
-                list.add(new ItemStack(item, 1, i));
-            }
-        }
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
 
-    @Override
-    public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
-        return HARDNESS[getMetaFromState(blockState)];
-    }
+		return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.ACTIVE_PROPERTY).build();
+	}
 
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
-        return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
-    }
+	@Override
+	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 
-    @Override
-    public int damageDropped(IBlockState state) {
+		for (int i = 0; i < Types.values().length; i++) {
+			if (enable[i]) {
+				list.add(new ItemStack(item, 1, i));
+			}
+		}
+	}
 
-        return getMetaFromState(state);
-    }
+	@Override
+	public float getBlockHardness(IBlockState blockState, World worldIn, BlockPos pos) {
 
-    @Override
-    public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
-        return false;
-    }
+		return HARDNESS[getMetaFromState(blockState)];
+	}
 
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
 
-    @Override
-    public boolean isOpaqueCube(IBlockState state) {
+		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
+	}
 
-        return false;
-    }
+	@Override
+	public int damageDropped(IBlockState state) {
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
-        return true;
-    }
+		return getMetaFromState(state);
+	}
 
-    /* IDismantleable */
-    @Override
-    public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
+	@Override
+	public boolean canCreatureSpawn(IBlockState state, IBlockAccess world, BlockPos pos, SpawnPlacementType type) {
 
-        int metadata = getMetaFromState(world.getBlockState(pos));
-        ItemStack dropBlock = new ItemStack(this, 1, metadata);
-        world.setBlockToAir(pos);
+		return false;
+	}
 
-        if (!returnDrops) {
-            float f = 0.3F;
-            double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-            EntityItem entity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
-            entity.setPickupDelay(10);
-            world.spawnEntityInWorld(entity);
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 
-            CoreUtils.dismantleLog(player.getName(), this, metadata, pos);
-        }
-        ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
-        ret.add(dropBlock);
-        return ret;
-    }
+		return false;
+	}
 
-    @Override
-    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 
-        return true;
-    }
+		return true;
+	}
 
-    /* IInitializer */
-    @Override
-    public boolean preInit() {
+	/* IDismantleable */
+	@Override
+	public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
 
-        return true;
-    }
+		int metadata = getMetaFromState(world.getBlockState(pos));
+		ItemStack dropBlock = new ItemStack(this, 1, metadata);
+		world.setBlockToAir(pos);
 
-    @Override
-    public boolean initialize() {
+		if (!returnDrops) {
+			float f = 0.3F;
+			double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+			double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+			double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
+			EntityItem entity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
+			entity.setPickupDelay(10);
+			world.spawnEntityInWorld(entity);
 
-        frameMachineBasic = new ItemStack(this, 1, Types.MACHINE_BASIC.ordinal());
-        frameMachineHardened = new ItemStack(this, 1, Types.MACHINE_HARDENED.ordinal());
-        frameMachineReinforced = new ItemStack(this, 1, Types.MACHINE_REINFORCED.ordinal());
-        frameMachineResonant = new ItemStack(this, 1, Types.MACHINE_RESONANT.ordinal());
-        frameCellBasic = new ItemStack(this, 1, Types.CELL_BASIC.ordinal());
-        frameCellHardened = new ItemStack(this, 1, Types.CELL_HARDENED.ordinal());
-        frameCellReinforcedEmpty = new ItemStack(this, 1, Types.CELL_REINFORCED_EMPTY.ordinal());
-        frameCellReinforcedFull = new ItemStack(this, 1, Types.CELL_REINFORCED_FULL.ordinal());
-        frameCellResonantEmpty = new ItemStack(this, 1, Types.CELL_RESONANT_EMPTY.ordinal());
-        frameCellResonantFull = new ItemStack(this, 1, Types.CELL_RESONANT_FULL.ordinal());
-        frameTesseractEmpty = new ItemStack(this, 1, Types.TESSERACT_EMPTY.ordinal());
-        frameTesseractFull = new ItemStack(this, 1, Types.TESSERACT_FULL.ordinal());
-        frameIlluminator = new ItemStack(this, 1, Types.ILLUMINATOR.ordinal());
+			CoreUtils.dismantleLog(player.getName(), this, metadata, pos);
+		}
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(dropBlock);
+		return ret;
+	}
 
-        ItemStackRegistry.registerCustomItemStack("frameMachineBasic", frameMachineBasic);
-        ItemStackRegistry.registerCustomItemStack("frameMachineHardened", frameMachineHardened);
-        ItemStackRegistry.registerCustomItemStack("frameMachineReinforced", frameMachineReinforced);
-        ItemStackRegistry.registerCustomItemStack("frameMachineResonant", frameMachineResonant);
-        ItemStackRegistry.registerCustomItemStack("frameCellBasic", frameCellBasic);
-        ItemStackRegistry.registerCustomItemStack("frameCellHardened", frameCellHardened);
-        ItemStackRegistry.registerCustomItemStack("frameCellReinforcedEmpty", frameCellReinforcedEmpty);
-        ItemStackRegistry.registerCustomItemStack("frameCellReinforcedFull", frameCellReinforcedFull);
-        ItemStackRegistry.registerCustomItemStack("frameCellResonantEmpty", frameCellResonantEmpty);
-        ItemStackRegistry.registerCustomItemStack("frameCellResonantFull", frameCellResonantFull);
-        ItemStackRegistry.registerCustomItemStack("frameTesseractEmpty", frameTesseractEmpty);
-        ItemStackRegistry.registerCustomItemStack("frameTesseractFull", frameTesseractFull);
-        ItemStackRegistry.registerCustomItemStack("frameIlluminator", frameIlluminator);
+	@Override
+	public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 
-        OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
-        OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
-        OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineReinforced);
-        OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineResonant);
+		return true;
+	}
 
-        return true;
-    }
+	/* IInitializer */
+	@Override
+	public boolean preInit() {
 
-    @Override
-    public boolean postInit() {
+		return true;
+	}
 
-        GameRegistry.addRecipe(ShapedRecipe(frameMachineBasic, "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin"));
+	@Override
+	public boolean initialize() {
+
+		frameMachineBasic = new ItemStack(this, 1, Types.MACHINE_BASIC.ordinal());
+		frameMachineHardened = new ItemStack(this, 1, Types.MACHINE_HARDENED.ordinal());
+		frameMachineReinforced = new ItemStack(this, 1, Types.MACHINE_REINFORCED.ordinal());
+		frameMachineResonant = new ItemStack(this, 1, Types.MACHINE_RESONANT.ordinal());
+		frameCellBasic = new ItemStack(this, 1, Types.CELL_BASIC.ordinal());
+		frameCellHardened = new ItemStack(this, 1, Types.CELL_HARDENED.ordinal());
+		frameCellReinforcedEmpty = new ItemStack(this, 1, Types.CELL_REINFORCED_EMPTY.ordinal());
+		frameCellReinforcedFull = new ItemStack(this, 1, Types.CELL_REINFORCED_FULL.ordinal());
+		frameCellResonantEmpty = new ItemStack(this, 1, Types.CELL_RESONANT_EMPTY.ordinal());
+		frameCellResonantFull = new ItemStack(this, 1, Types.CELL_RESONANT_FULL.ordinal());
+		frameTesseractEmpty = new ItemStack(this, 1, Types.TESSERACT_EMPTY.ordinal());
+		frameTesseractFull = new ItemStack(this, 1, Types.TESSERACT_FULL.ordinal());
+		frameIlluminator = new ItemStack(this, 1, Types.ILLUMINATOR.ordinal());
+
+		ItemStackRegistry.registerCustomItemStack("frameMachineBasic", frameMachineBasic);
+		ItemStackRegistry.registerCustomItemStack("frameMachineHardened", frameMachineHardened);
+		ItemStackRegistry.registerCustomItemStack("frameMachineReinforced", frameMachineReinforced);
+		ItemStackRegistry.registerCustomItemStack("frameMachineResonant", frameMachineResonant);
+		ItemStackRegistry.registerCustomItemStack("frameCellBasic", frameCellBasic);
+		ItemStackRegistry.registerCustomItemStack("frameCellHardened", frameCellHardened);
+		ItemStackRegistry.registerCustomItemStack("frameCellReinforcedEmpty", frameCellReinforcedEmpty);
+		ItemStackRegistry.registerCustomItemStack("frameCellReinforcedFull", frameCellReinforcedFull);
+		ItemStackRegistry.registerCustomItemStack("frameCellResonantEmpty", frameCellResonantEmpty);
+		ItemStackRegistry.registerCustomItemStack("frameCellResonantFull", frameCellResonantFull);
+		ItemStackRegistry.registerCustomItemStack("frameTesseractEmpty", frameTesseractEmpty);
+		ItemStackRegistry.registerCustomItemStack("frameTesseractFull", frameTesseractFull);
+		ItemStackRegistry.registerCustomItemStack("frameIlluminator", frameIlluminator);
+
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineBasic);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineHardened);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineReinforced);
+		OreDictionary.registerOre("thermalexpansion:machineFrame", frameMachineResonant);
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
+
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineBasic, "IGI", "GXG", "IGI", 'I', "ingotIron", 'G', "blockGlass", 'X', "gearTin"));
 
 		/* Direct Recipes */
-        // GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
-        // "gearElectrum" }));
-        // GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
-        // 'X', "gearSignalum" }));
-        // GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
-        // 'X',
-        // "gearEnderium" }));
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlass", 'X',
+		// "gearElectrum" }));
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// 'X', "gearSignalum" }));
+		// GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, new Object[] { "IGI", "GXG", "IGI", 'I', "ingotInvar", 'G', "blockGlassHardened",
+		// 'X',
+		// "gearEnderium" }));
 
 		/* Tiered Recipes */
-        GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X', frameMachineBasic));
-        GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum", 'X', frameMachineHardened));
-        GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X', frameMachineReinforced));
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineHardened, "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X', frameMachineBasic));
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineReinforced, "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum", 'X', frameMachineHardened));
+		GameRegistry.addRecipe(ShapedRecipe(frameMachineResonant, "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X', frameMachineReinforced));
 
-        GameRegistry.addRecipe(ShapedRecipe(frameCellBasic, "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X', Blocks.REDSTONE_BLOCK));
-        PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotLead, 3));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellBasic, "IGI", "GXG", "IGI", 'I', "ingotLead", 'G', "blockGlass", 'X', Blocks.REDSTONE_BLOCK));
+		PulverizerManager.addRecipe(4000, frameCellBasic, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotLead, 3));
 
-        GameRegistry.addRecipe(ShapedRecipe(frameCellHardened, " I ", "IXI", " I ", 'I', "ingotInvar", 'X', frameCellBasic));
-        PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellHardened, " I ", "IXI", " I ", 'I', "ingotInvar", 'X', frameCellBasic));
+		PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
 
-        GameRegistry.addRecipe(ShapedRecipe(frameCellReinforcedEmpty, "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "blockGlassHardened", 'X', "gemDiamond"));
-        TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
+		GameRegistry.addRecipe(ShapedRecipe(frameCellReinforcedEmpty, "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "blockGlassHardened", 'X', "gemDiamond"));
+		TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
-        GameRegistry.addRecipe(ShapedRecipe(frameCellResonantEmpty, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedEmpty));
-        GameRegistry.addRecipe(ShapedRecipe(frameCellResonantFull, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedFull));
-        TransposerManager.addTEFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
+		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantEmpty, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedEmpty));
+		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantFull, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedFull));
+		TransposerManager.addTEFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
-        if (recipe[Types.TESSERACT_EMPTY.ordinal()]) {
-            GameRegistry.addRecipe(ShapedRecipe(frameTesseractEmpty, "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened", 'X', "gemDiamond"));
-        }
-        if (recipe[Types.TESSERACT_FULL.ordinal()]) {
-            TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
-        }
-        GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameIlluminator, 2), " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S', "ingotSignalum"));
+		if (recipe[Types.TESSERACT_EMPTY.ordinal()]) {
+			GameRegistry.addRecipe(ShapedRecipe(frameTesseractEmpty, "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened", 'X', "gemDiamond"));
+		}
+		if (recipe[Types.TESSERACT_FULL.ordinal()]) {
+			TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
+		}
+		GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameIlluminator, 2), " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S', "ingotSignalum"));
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public ICustomBlockBakery getCustomBakery() {
-        return RenderFrame.instance;
-    }
+	@Override
+	public ICustomBlockBakery getCustomBakery() {
 
-    @Override
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
+		return RenderFrame.instance;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
-    public enum Types implements IStringSerializable, IType, IParticleProvider {
-        MACHINE_BASIC,
-        MACHINE_HARDENED,
-        MACHINE_REINFORCED,
-        MACHINE_RESONANT,
-        CELL_BASIC,
-        CELL_HARDENED,
-        CELL_REINFORCED_EMPTY,
-        CELL_REINFORCED_FULL,
-        CELL_RESONANT_EMPTY,
-        CELL_RESONANT_FULL,
-        TESSERACT_EMPTY,
-        TESSERACT_FULL,
-        ILLUMINATOR;
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+	}
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.US);
-        }
+	@Override
+	public boolean isFullCube(IBlockState state) {
 
+		return false;
+	}
 
-        public static Types fromMeta(int meta) {
-            try {
-                return values()[meta];
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-            }
-        }
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
+		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_HARDENED, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, CELL_RESONANT_EMPTY, CELL_RESONANT_FULL, TESSERACT_EMPTY, TESSERACT_FULL, ILLUMINATOR;
 
-        @Override
-        public int meta() {
-            return ordinal();
-        }
+		@Override
+		public String getName() {
 
-        @Override
-        public IProperty<?> getTypeProperty() {
-            return TYPES;
-        }
+			return name().toLowerCase(Locale.US);
+		}
 
-        @Override
-        public String getParticleTexture() {
-            switch (this) {
+		public static Types fromMeta(int meta) {
 
-                case MACHINE_BASIC:
-                case MACHINE_HARDENED:
-                case MACHINE_REINFORCED:
-                case MACHINE_RESONANT:
-                    return "thermalexpansion:blocks/machine/machine_frame_side";
-                case CELL_BASIC:
-                case CELL_HARDENED:
-                    return "thermalexpansion:blocks/cell/" + getName();
-                case CELL_REINFORCED_EMPTY:
-                case CELL_REINFORCED_FULL:
-                case CELL_RESONANT_EMPTY:
-                case CELL_RESONANT_FULL:
-                    return "thermalexpansion:blocks/cell/" + getName().substring(0, getName().lastIndexOf("_"));
-                case TESSERACT_EMPTY:
-                case TESSERACT_FULL:
-                    return "thermalexpansion:blocks/tesseract/tesseract";
-                case ILLUMINATOR:
-                    return "thermalexpansion:blocks/light/" + getName() + "_frame";
-            }
-            return "minecraft:blocks/dirt";
-        }
-    }
+			try {
+				return values()[meta];
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+			}
+		}
 
-    public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellHardened", "cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };
-    public static final float[] HARDNESS = { 5.0F, 15.0F, 20.0F, 20.0F, 5.0F, 15.0F, 20.0F, 20.0F, 20.0F, 20.0F, 15.0F, 15.0F, 3.0F };
-    public static final int[] RESISTANCE = { 15, 90, 120, 120, 15, 90, 120, 120, 120, 120, 2000, 2000, 150 };
-    public static boolean[] enable = new boolean[Types.values().length];
-    public static boolean[] recipe = new boolean[Types.values().length];
+		@Override
+		public int meta() {
 
-    static {
-        for (int i = 0; i < Types.values().length; i++) {
-            enable[i] = true;
-            recipe[i] = true;
-        }
-    }
+			return ordinal();
+		}
 
-    public static ItemStack frameMachineBasic;
-    public static ItemStack frameMachineHardened;
-    public static ItemStack frameMachineReinforced;
-    public static ItemStack frameMachineResonant;
-    public static ItemStack frameCellBasic;
-    public static ItemStack frameCellHardened;
-    public static ItemStack frameCellReinforcedEmpty;
-    public static ItemStack frameCellReinforcedFull;
-    public static ItemStack frameCellResonantEmpty;
-    public static ItemStack frameCellResonantFull;
-    public static ItemStack frameTesseractEmpty;
-    public static ItemStack frameTesseractFull;
-    public static ItemStack frameIlluminator;
+		@Override
+		public IProperty<?> getTypeProperty() {
+
+			return TYPES;
+		}
+
+		@Override
+		public String getParticleTexture() {
+
+			switch (this) {
+
+				case MACHINE_BASIC:
+				case MACHINE_HARDENED:
+				case MACHINE_REINFORCED:
+				case MACHINE_RESONANT:
+					return "thermalexpansion:blocks/machine/machine_frame_side";
+				case CELL_BASIC:
+				case CELL_HARDENED:
+					return "thermalexpansion:blocks/cell/" + getName();
+				case CELL_REINFORCED_EMPTY:
+				case CELL_REINFORCED_FULL:
+				case CELL_RESONANT_EMPTY:
+				case CELL_RESONANT_FULL:
+					return "thermalexpansion:blocks/cell/" + getName().substring(0, getName().lastIndexOf("_"));
+				case TESSERACT_EMPTY:
+				case TESSERACT_FULL:
+					return "thermalexpansion:blocks/tesseract/tesseract";
+				case ILLUMINATOR:
+					return "thermalexpansion:blocks/light/" + getName() + "_frame";
+			}
+			return "minecraft:blocks/dirt";
+		}
+	}
+
+	public static final String[] NAMES = { "machineBasic", "machineHardened", "machineReinforced", "machineResonant", "cellBasic", "cellHardened", "cellReinforcedEmpty", "cellReinforcedFull", "cellResonantEmpty", "cellResonantFull", "tesseractEmpty", "tesseractFull", "illuminator" };
+	public static final float[] HARDNESS = { 5.0F, 15.0F, 20.0F, 20.0F, 5.0F, 15.0F, 20.0F, 20.0F, 20.0F, 20.0F, 15.0F, 15.0F, 3.0F };
+	public static final int[] RESISTANCE = { 15, 90, 120, 120, 15, 90, 120, 120, 120, 120, 2000, 2000, 150 };
+	public static boolean[] enable = new boolean[Types.values().length];
+	public static boolean[] recipe = new boolean[Types.values().length];
+
+	static {
+		for (int i = 0; i < Types.values().length; i++) {
+			enable[i] = true;
+			recipe[i] = true;
+		}
+	}
+
+	public static ItemStack frameMachineBasic;
+	public static ItemStack frameMachineHardened;
+	public static ItemStack frameMachineReinforced;
+	public static ItemStack frameMachineResonant;
+	public static ItemStack frameCellBasic;
+	public static ItemStack frameCellHardened;
+	public static ItemStack frameCellReinforcedEmpty;
+	public static ItemStack frameCellReinforcedFull;
+	public static ItemStack frameCellResonantEmpty;
+	public static ItemStack frameCellResonantFull;
+	public static ItemStack frameTesseractEmpty;
+	public static ItemStack frameTesseractFull;
+	public static ItemStack frameIlluminator;
 
 }

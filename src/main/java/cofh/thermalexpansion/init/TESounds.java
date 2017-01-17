@@ -11,25 +11,26 @@ import net.minecraft.util.SoundEvent;
  */
 public class TESounds {
 
-    public static final SoundEvent machineFurnace;
-    public static final SoundEvent machinePulverizer;
-    public static final SoundEvent machineSawmill;
-    public static final SoundEvent machineSmelter;
-    public static final SoundEvent machineCrucible;
-    public static final SoundEvent machineTransposer;
-    public static final SoundEvent machineAccumulator;
+	public static final SoundEvent machineFurnace;
+	public static final SoundEvent machinePulverizer;
+	public static final SoundEvent machineSawmill;
+	public static final SoundEvent machineSmelter;
+	public static final SoundEvent machineCrucible;
+	public static final SoundEvent machineTransposer;
+	public static final SoundEvent machineAccumulator;
 
-    static {
-        machineFurnace = getRegisteredSoundEvent("thermalexpansion:blockMachineFurnace");
-        machinePulverizer = getRegisteredSoundEvent("thermalexpansion:blockMachinePulverizer");
-        machineSawmill = getRegisteredSoundEvent("thermalexpansion:blockMachineSawmill");
-        machineSmelter = getRegisteredSoundEvent("thermalexpansion:blockMachineSmelter");
-        machineCrucible = getRegisteredSoundEvent("thermalexpansion:blockMachineCrucible");
-        machineTransposer = getRegisteredSoundEvent("thermalexpansion:blockMachineTransposer");
-        machineAccumulator = getRegisteredSoundEvent("thermalexpansion:blockMachineAccumulator");
-    }
+	static {
+		machineFurnace = getRegisteredSoundEvent("thermalexpansion:blockMachineFurnace");
+		machinePulverizer = getRegisteredSoundEvent("thermalexpansion:blockMachinePulverizer");
+		machineSawmill = getRegisteredSoundEvent("thermalexpansion:blockMachineSawmill");
+		machineSmelter = getRegisteredSoundEvent("thermalexpansion:blockMachineSmelter");
+		machineCrucible = getRegisteredSoundEvent("thermalexpansion:blockMachineCrucible");
+		machineTransposer = getRegisteredSoundEvent("thermalexpansion:blockMachineTransposer");
+		machineAccumulator = getRegisteredSoundEvent("thermalexpansion:blockMachineAccumulator");
+	}
 
-    private static SoundEvent getRegisteredSoundEvent(String id) {
-        return new SoundEvent(new ResourceLocation(id));
-    }
+	private static SoundEvent getRegisteredSoundEvent(String id) {
+
+		return new SoundEvent(new ResourceLocation(id));
+	}
 }

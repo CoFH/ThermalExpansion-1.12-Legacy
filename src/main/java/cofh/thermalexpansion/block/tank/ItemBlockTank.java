@@ -1,11 +1,8 @@
 package cofh.thermalexpansion.block.tank;
 
-import cofh.core.item.ItemBlockBase;
+import cofh.core.item.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -14,7 +11,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
-public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem {
+import java.util.List;
+
+public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem {
 
 	public ItemBlockTank(Block block) {
 
@@ -44,14 +43,14 @@ public class ItemBlockTank extends ItemBlockBase implements IFluidContainerItem 
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockTank.Types.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		case RESONANT:
-			return EnumRarity.RARE;
-		case REINFORCED:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			case RESONANT:
+				return EnumRarity.RARE;
+			case REINFORCED:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

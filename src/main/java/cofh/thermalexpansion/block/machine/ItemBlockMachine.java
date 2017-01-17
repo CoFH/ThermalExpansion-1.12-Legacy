@@ -1,24 +1,18 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.AugmentHelper;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-
-import java.util.List;
-
+import cofh.core.item.ItemBlockCore;
+import cofh.lib.util.helpers.*;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.translation.I18n;
 
-public class ItemBlockMachine extends ItemBlockBase {
+import java.util.List;
+
+public class ItemBlockMachine extends ItemBlockCore {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
 
@@ -76,12 +70,12 @@ public class ItemBlockMachine extends ItemBlockBase {
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (getLevel(stack)) {
-		case 3:
-			return EnumRarity.RARE;
-		case 2:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case 3:
+				return EnumRarity.RARE;
+			case 2:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

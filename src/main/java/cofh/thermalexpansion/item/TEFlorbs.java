@@ -1,24 +1,23 @@
 package cofh.thermalexpansion.item;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
-
 import cofh.core.CoFHProps;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.io.File;
-import java.util.ArrayList;
-
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.io.File;
+import java.util.ArrayList;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
 
 public class TEFlorbs {
 
@@ -41,8 +40,8 @@ public class TEFlorbs {
 
 	public static void initialize() {
 
-		florb = itemFlorb.addItem(0, "florb", 0, false);
-		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic", 0, false);
+		florb = itemFlorb.addItem(0, "florb");
+		florbMagmatic = itemFlorb.addItem(1, "florbMagmatic");
 	}
 
 	public static void postInit() {

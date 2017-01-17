@@ -5,14 +5,13 @@ import cofh.core.item.IEqualityOverrideItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+
+import java.util.List;
 
 public abstract class ItemEnergyContainerBase extends ItemToolBase implements IEnergyContainerItem, IEqualityOverrideItem {
 
@@ -41,13 +40,13 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 		list.add(EnergyHelper.setDefaultEnergyTag(new ItemStack(item, 1, 0), maxEnergy));
 	}
 
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) &&
-                (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
-    }
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-    @Override
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+	}
+
+	@Override
 	protected void addInformationDelegate(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		super.addInformationDelegate(stack, player, list, check);
@@ -67,10 +66,11 @@ public abstract class ItemEnergyContainerBase extends ItemToolBase implements IE
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
+
 		if (stack.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(stack, 0);
 		}
-		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double)getMaxDamage(stack));
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxDamage(stack));
 	}
 
 	@Override

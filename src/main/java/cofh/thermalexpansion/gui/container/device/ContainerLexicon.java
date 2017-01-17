@@ -5,7 +5,6 @@ import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotRemoveOnly;
 import cofh.thermalexpansion.block.device.TileLexicon;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;

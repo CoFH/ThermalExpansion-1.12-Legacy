@@ -19,9 +19,9 @@ import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.render.RenderCell;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -57,9 +57,9 @@ import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockCell extends BlockTEBase implements IBakeryBlock {
 
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
-    public static final UnlistedIntegerProperty CHARGE_PROPERTY = new UnlistedIntegerProperty("charge");
+	public static final UnlistedIntegerProperty CHARGE_PROPERTY = new UnlistedIntegerProperty("charge");
 
 	public BlockCell() {
 
@@ -67,36 +67,41 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		setHardness(20.0F);
 		setResistance(120.0F);
 		setUnlocalizedName("thermalexpansion.cell");
-        setDefaultState(getDefaultState().withProperty(TYPES, Types.BASIC));
+		setDefaultState(getDefaultState().withProperty(TYPES, Types.BASIC));
 	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
-    }
+		return state.getValue(TYPES).ordinal();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
-    }
+		return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+
+		return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).add(CommonProperties.TYPE_PROPERTY).add(CHARGE_PROPERTY).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
+
 		if (metadata >= Types.values().length) {
 			return null;
 		}
-        Types type = Types.fromMeta(metadata);
+		Types type = Types.fromMeta(metadata);
 		if (type == Types.CREATIVE) {
 			if (!enable[Types.CREATIVE.meta()]) {
 				return null;
@@ -118,8 +123,9 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		}
 	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
 		if (getMetaFromState(state) == 0 && !enable[0]) {
 			world.setBlockToAir(pos);
 			return;
@@ -145,13 +151,15 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-    @Override
-    public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+	@Override
+	public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+
 		return HARDNESS[getMetaFromState(blockState)];
 	}
 
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+
 		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
 	}
 
@@ -161,29 +169,33 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		return true;
 	}
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+
 		return true;
 	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public ICustomBlockBakery getCustomBakery() {
-        return RenderCell.instance;
-    }
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+	}
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public ICustomBlockBakery getCustomBakery() {
 
-    @Override
+		return RenderCell.instance;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
@@ -202,14 +214,15 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		return tag;
 	}
 
-    /* IDismantleable */
-    @Override
-    public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
-        if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
-            return false;
-        }
-        return super.canDismantle(world, pos, state, player);
-    }
+	/* IDismantleable */
+	@Override
+	public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
+
+		if (state.getBlock().getMetaFromState(state) == Types.CREATIVE.ordinal() && !CoreUtils.isOp(player)) {
+			return false;
+		}
+		return super.canDismantle(world, pos, state, player);
+	}
 
 	/* IInitializer */
 	@Override
@@ -231,10 +244,10 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		ItemBlockCell.setDefaultTag(cellResonant, 0);
 
 		ItemStackRegistry.registerCustomItemStack("cellCreative", cellCreative);
-        ItemStackRegistry.registerCustomItemStack("cellBasic", cellBasic);
-        ItemStackRegistry.registerCustomItemStack("cellHardened", cellHardened);
-        ItemStackRegistry.registerCustomItemStack("cellReinforced", cellReinforced);
-        ItemStackRegistry.registerCustomItemStack("cellResonant", cellResonant);
+		ItemStackRegistry.registerCustomItemStack("cellBasic", cellBasic);
+		ItemStackRegistry.registerCustomItemStack("cellHardened", cellHardened);
+		ItemStackRegistry.registerCustomItemStack("cellReinforced", cellReinforced);
+		ItemStackRegistry.registerCustomItemStack("cellResonant", cellResonant);
 
 		return true;
 	}
@@ -248,8 +261,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		}
 		if (enable[Types.HARDENED.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, " I ", "IXI", " P ", 'I', "ingotCopper", 'X', BlockFrame.frameCellHardened, 'P', TEItems.powerCoilElectrum));
-			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger(
-					"Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
+			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellHardened, new Object[] { " I ", "IXI", " I ", 'I', "ingotInvar", 'X', cellBasic }).addInteger("Send", TileCell.MAX_SEND[1], TileCell.MAX_SEND[2]).addInteger("Recv", TileCell.MAX_RECEIVE[1], TileCell.MAX_RECEIVE[2]));
 			GameRegistry.addRecipe(ShapedRecipe(cellHardened, "IYI", "YXY", "IPI", 'I', "ingotInvar", 'X', BlockFrame.frameCellBasic, 'Y', "ingotCopper", 'P', TEItems.powerCoilElectrum));
 			PulverizerManager.addRecipe(4000, cellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
 		}
@@ -258,8 +270,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		}
 		if (enable[Types.RESONANT.meta()]) {
 			GameRegistry.addRecipe(ShapedRecipe(cellResonant, " X ", "YCY", "IPI", 'C', BlockFrame.frameCellResonantFull, 'I', "ingotLead", 'P', TEItems.powerCoilElectrum, 'X', "ingotElectrum", 'Y', "ingotElectrum"));
-			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced })
-					.addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
+			GameRegistry.addRecipe(new RecipeUpgradeOverride(cellResonant, new Object[] { " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', cellReinforced }).addInteger("Send", TileCell.MAX_SEND[3], TileCell.MAX_SEND[4]).addInteger("Recv", TileCell.MAX_RECEIVE[3], TileCell.MAX_RECEIVE[4]));
 		}
 		TECraftingHandler.addSecureRecipe(cellCreative);
 		TECraftingHandler.addSecureRecipe(cellBasic);
@@ -270,48 +281,49 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock {
 		return true;
 	}
 
-    public enum Types implements IStringSerializable, IType, IParticleProvider {
-        CREATIVE,
-        BASIC,
-        HARDENED,
-        REINFORCED,
-        RESONANT;
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
+		CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.US);
-        }
+		@Override
+		public String getName() {
 
-        public static Types fromMeta(int meta) {
-            try {
-                return values()[meta];
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-            }
-        }
+			return name().toLowerCase(Locale.US);
+		}
 
-        @Override
-        public int meta() {
-            return ordinal();
-        }
+		public static Types fromMeta(int meta) {
 
-        @Override
-        public IProperty<?> getTypeProperty() {
-            return TYPES;
-        }
+			try {
+				return values()[meta];
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+			}
+		}
 
-        @Override
-        public String getParticleTexture() {
-            return "thermalexpansion:blocks/cell/cell_" + getName();
-        }
+		@Override
+		public int meta() {
 
-        public static int meta(Types type) {
-            return type.ordinal();
-        }
-    }
+			return ordinal();
+		}
 
+		@Override
+		public IProperty<?> getTypeProperty() {
 
-    public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
+			return TYPES;
+		}
+
+		@Override
+		public String getParticleTexture() {
+
+			return "thermalexpansion:blocks/cell/cell_" + getName();
+		}
+
+		public static int meta(Types type) {
+
+			return type.ordinal();
+		}
+	}
+
+	public static final String[] NAMES = { "creative", "basic", "hardened", "reinforced", "resonant" };
 	public static final float[] HARDNESS = { -1.0F, 5.0F, 15.0F, 20.0F, 20.0F };
 	public static final int[] RESISTANCE = { 1200, 15, 90, 120, 120 };
 	public static boolean[] enable = new boolean[Types.values().length];

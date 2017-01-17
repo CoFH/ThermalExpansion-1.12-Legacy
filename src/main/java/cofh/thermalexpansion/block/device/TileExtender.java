@@ -5,18 +5,17 @@ import cofh.core.CoFHProps;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileExtender extends TileDeviceBase implements IFluidHandler {
 

@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;

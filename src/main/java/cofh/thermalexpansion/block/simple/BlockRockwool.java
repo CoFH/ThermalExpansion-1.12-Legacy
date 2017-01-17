@@ -15,46 +15,46 @@ import net.minecraftforge.oredict.OreDictionary;
 
 public class BlockRockwool extends BlockColored implements IInitializer {
 
-    public BlockRockwool() {
+	public BlockRockwool() {
 
-        super(new Material(MapColor.CLOTH));
-        setHardness(0.8F);
-        setResistance(10.0F);
-        setSoundType(SoundType.CLOTH);
-        setCreativeTab(ThermalExpansion.tabBlocks);
-        setUnlocalizedName("thermalexpansion.rockwool");
-    }
+		super(new Material(MapColor.CLOTH));
+		setHardness(0.8F);
+		setResistance(10.0F);
+		setSoundType(SoundType.CLOTH);
+		setCreativeTab(ThermalExpansion.tabBlocks);
+		setUnlocalizedName("thermalexpansion.rockwool");
+	}
 
-    /* IInitializer */
-    @Override
-    public boolean preInit() {
+	/* IInitializer */
+	@Override
+	public boolean preInit() {
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public boolean initialize() {
+	@Override
+	public boolean initialize() {
 
-        rockWool = new ItemStack(this);
+		rockWool = new ItemStack(this);
 
-        ItemStackRegistry.registerCustomItemStack("clothRock", rockWool);
-        OreDictionary.registerOre("blockClothRock", new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE));
+		ItemStackRegistry.registerCustomItemStack("clothRock", rockWool);
+		OreDictionary.registerOre("blockClothRock", new ItemStack(this, 1, OreDictionary.WILDCARD_VALUE));
 
-        return true;
-    }
+		return true;
+	}
 
-    @Override
-    public boolean postInit() {
+	@Override
+	public boolean postInit() {
 
-        GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, DEFAULT_META), 0.0F);
-        for (int i = 0; i < 16; i++) {
-            GameRegistry.addRecipe(new ItemStack(this, 8, i), "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.DYE, 1, 15 - i));
-        }
-        return true;
-    }
+		GameRegistry.addSmelting(TEItems.slag, new ItemStack(this, 1, DEFAULT_META), 0.0F);
+		for (int i = 0; i < 16; i++) {
+			GameRegistry.addRecipe(new ItemStack(this, 8, i), "###", "#D#", "###", '#', this, 'D', new ItemStack(Items.DYE, 1, 15 - i));
+		}
+		return true;
+	}
 
-    public static int DEFAULT_META = 8;
+	public static int DEFAULT_META = 8;
 
-    public static ItemStack rockWool;
+	public static ItemStack rockWool;
 
 }

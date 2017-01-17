@@ -8,19 +8,17 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 import javax.annotation.Nullable;
 
@@ -141,7 +139,7 @@ public class TilePump extends TileAugmentable {
 		nbt.setInteger("Tracker", outputTracker);
 		nbt.setBoolean("Rev", reverse);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* IReconfigurableSides */
@@ -158,49 +156,55 @@ public class TilePump extends TileAugmentable {
 		return null;
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo info = tank.getInfo();
-                    return new IFluidTankProperties[]{new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 2)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (!reverse || from == null || sideCache[from.ordinal()] != 1) {
-                        return 0;
-                    }
-                    return tank.fill(resource, doFill);
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (reverse || from == null || sideCache[from.ordinal()] != 2) {
-                        return null;
-                    }
-                    return tank.drain(resource, doDrain);
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (reverse || from == null || sideCache[from.ordinal()] != 2) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 2) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (!reverse || from == null || sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (reverse || from == null || sideCache[from.ordinal()] != 2) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (reverse || from == null || sideCache[from.ordinal()] != 2) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 }

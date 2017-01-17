@@ -4,23 +4,19 @@ import codechicken.lib.raytracer.RayTracer;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
-import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 
 public class ItemTransfuser extends ItemToolBase {
@@ -118,8 +114,9 @@ public class ItemTransfuser extends ItemToolBase {
 	// return true;
 	// }
 
-    @Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+	@Override
+	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+
 		boolean r = doItemUse(stack, world, player, hand);
 		if (r) { // HACK: forge is fucking stupid with this method
 			ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
@@ -127,13 +124,15 @@ public class ItemTransfuser extends ItemToolBase {
 		return r ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+
 		boolean success = doItemUse(stack, world, player, hand);
 		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
 	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+
 		RayTraceResult traceResult = RayTracer.retrace(player, getMode(stack) == INPUT);
 
 		if (traceResult != null) {

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
@@ -14,7 +15,6 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -33,173 +33,177 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SideOnly(Side.CLIENT)
+@SideOnly (Side.CLIENT)
 public class RenderCell implements IIconRegister, ILayeredBlockBakery {
 
-    public static final RenderCell instance = new RenderCell();
+	public static final RenderCell instance = new RenderCell();
 
-    static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
-    static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[BlockCell.Types.values().length * 2];
-    static CCModel modelCenter = CCModel.quadModel(24);
-    static CCModel modelFrame = CCModel.quadModel(48);
+	static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
+	static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[BlockCell.Types.values().length * 2];
+	static CCModel modelCenter = CCModel.quadModel(24);
+	static CCModel modelFrame = CCModel.quadModel(48);
 
-    static {
+	static {
 
-        modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
+		modelCenter.generateBlock(0, 0.15, 0.15, 0.15, 0.85, 0.85, 0.85).computeNormals();
 
-        Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
-        double inset = 0.1875;
-        modelFrame = CCModel.quadModel(48).generateBlock(0, box);
-        CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
-        modelFrame.computeNormals();
-        for (int i = 24; i < 48; i++) {
-            modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
-        }
-        modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
-    }
+		Cuboid6 box = new Cuboid6(0, 0, 0, 1, 1, 1);
+		double inset = 0.1875;
+		modelFrame = CCModel.quadModel(48).generateBlock(0, box);
+		CCModel.generateBackface(modelFrame, 0, modelFrame, 24, 24);
+		modelFrame.computeNormals();
+		for (int i = 24; i < 48; i++) {
+			modelFrame.verts[i].vec.add(modelFrame.normals()[i].copy().multiply(inset));//TODO Model shrinking inside CCModel.
+		}
+		modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
+	}
 
-    public static void initialize() {
+	public static void initialize() {
 
-        textureCenter[0] = IconRegistry.getIcon("StorageRedstone");
-        textureCenter[1] = IconRegistry.getIcon("FluidRedstone");
+		textureCenter[0] = IconRegistry.getIcon("StorageRedstone");
+		textureCenter[1] = IconRegistry.getIcon("FluidRedstone");
 
-        for (int i = 0; i < textureFrame.length; i++) {
-            textureFrame[i] = IconRegistry.getIcon("Cell", i);
-        }
-    }
+		for (int i = 0; i < textureFrame.length; i++) {
+			textureFrame[i] = IconRegistry.getIcon("Cell", i);
+		}
+	}
 
-    @Override
-    public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
-        TileCell cell = (TileCell) tileEntity;
-        HashMap<EnumFacing, TextureAtlasSprite> p2 = new HashMap<EnumFacing, TextureAtlasSprite>();
-        for (EnumFacing face : EnumFacing.VALUES) {
-            p2.put(face, cell.getTexture(face.ordinal(), 2));
-        }
-        state = state.withProperty(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP, p2);
-        state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) cell.type);
-        state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
-        state = state.withProperty(CommonProperties.FACING_PROPERTY, cell.getFacing());
-        state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(cell.getTexture(cell.getFacing(), 3).getIconName()));
-        return state;
-    }
+	@Override
+	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
-        if (face == null) {
-            Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
-            int type = state.getValue(CommonProperties.TYPE_PROPERTY);
-            int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
-            int facing = state.getValue(CommonProperties.FACING_PROPERTY);
-            TextureAtlasSprite frontFace = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
+		TileCell cell = (TileCell) tileEntity;
+		HashMap<EnumFacing, TextureAtlasSprite> p2 = new HashMap<EnumFacing, TextureAtlasSprite>();
+		for (EnumFacing face : EnumFacing.VALUES) {
+			p2.put(face, cell.getTexture(face.ordinal(), 2));
+		}
+		state = state.withProperty(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP, p2);
+		state = state.withProperty(CommonProperties.TYPE_PROPERTY, (int) cell.type);
+		state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
+		state = state.withProperty(CommonProperties.FACING_PROPERTY, cell.getFacing());
+		state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(cell.getTexture(cell.getFacing(), 3).getIconName()));
+		return state;
+	}
 
-            BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.ITEM);
-            CCRenderState ccrs = CCRenderState.instance();
-            ccrs.reset();
-            ccrs.bind(buffer);
+	@SuppressWarnings ("unchecked")
+	@Override
+	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
-            if (layer == BlockRenderLayer.CUTOUT) {
-                renderFrame(ccrs, type, spriteMap, facing, frontFace);
-                if (hasSolidCenter(type)) {
-                    renderCenter(ccrs, type);
-                }
-            } else if (!hasSolidCenter(type)) {
-                //TODO Center brightness.
-                //ccrs.brightness = 165 + charge * 5;
-                renderCenter(ccrs, type);
-            }
+		if (face == null) {
+			Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+			int type = state.getValue(CommonProperties.TYPE_PROPERTY);
+			int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
+			int facing = state.getValue(CommonProperties.FACING_PROPERTY);
+			TextureAtlasSprite frontFace = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
 
-            buffer.finishDrawing();
-            return buffer.bake();
-        }
-        return new ArrayList<BakedQuad>();
-    }
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
 
-    private boolean hasSolidCenter(int type) {
-        return type == BlockCell.Types.BASIC.meta() || type == BlockCell.Types.HARDENED.meta();
-    }
+			if (layer == BlockRenderLayer.CUTOUT) {
+				renderFrame(ccrs, type, spriteMap, facing, frontFace);
+				if (hasSolidCenter(type)) {
+					renderCenter(ccrs, type);
+				}
+			} else if (!hasSolidCenter(type)) {
+				//TODO Center brightness.
+				//ccrs.brightness = 165 + charge * 5;
+				renderCenter(ccrs, type);
+			}
 
-    @Override
-    public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-        if (face == null) {
-            BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.ITEM);
-            CCRenderState ccrs = CCRenderState.instance();
-            ccrs.reset();
-            ccrs.bind(buffer);
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
 
-            //if (pass == 0) {
-            renderFrame(ccrs, stack.getItemDamage(), null, 0, null);
-            //TODO Center brightness.
-            //ccrs.brightness = 165 + charge * 5;
-            renderCenter(ccrs, stack.getItemDamage());
-            //} else {
-            //}
+	private boolean hasSolidCenter(int type) {
 
-            buffer.finishDrawing();
-            return buffer.bake();
-        }
-        return new ArrayList<BakedQuad>();
-    }
+		return type == BlockCell.Types.BASIC.meta() || type == BlockCell.Types.HARDENED.meta();
+	}
 
-    @Override
-    public void registerIcons(TextureMap textureMap) {
+	@Override
+	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-        for (int i = 0; i < 9; i++) {
-            IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:blocks/cell/cell_meter_" + i, textureMap);
-        }
-        IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:blocks/cell/cell_meter_creative", textureMap);
-        IconRegistry.addIcon("Cell" + 0, "thermalexpansion:blocks/cell/cell_creative", textureMap);
-        IconRegistry.addIcon("Cell" + 1, "thermalexpansion:blocks/cell/cell_creative_inner", textureMap);
-        IconRegistry.addIcon("Cell" + 2, "thermalexpansion:blocks/cell/cell_basic", textureMap);
-        IconRegistry.addIcon("Cell" + 3, "thermalexpansion:blocks/cell/cell_basic_inner", textureMap);
-        IconRegistry.addIcon("Cell" + 4, "thermalexpansion:blocks/cell/cell_hardened", textureMap);
-        IconRegistry.addIcon("Cell" + 5, "thermalexpansion:blocks/cell/cell_hardened_inner", textureMap);
-        IconRegistry.addIcon("Cell" + 6, "thermalexpansion:blocks/cell/cell_reinforced", textureMap);
-        IconRegistry.addIcon("Cell" + 7, "thermalexpansion:blocks/cell/cell_reinforced_inner", textureMap);
-        IconRegistry.addIcon("Cell" + 8, "thermalexpansion:blocks/cell/cell_resonant", textureMap);
-        IconRegistry.addIcon("Cell" + 9, "thermalexpansion:blocks/cell/cell_resonant_inner", textureMap);
+		if (face == null) {
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
 
-        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
-        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/cell/cell_config_orange", textureMap);
-        IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/cell/cell_config_blue", textureMap);
+			//if (pass == 0) {
+			renderFrame(ccrs, stack.getItemDamage(), null, 0, null);
+			//TODO Center brightness.
+			//ccrs.brightness = 165 + charge * 5;
+			renderCenter(ccrs, stack.getItemDamage());
+			//} else {
+			//}
 
-        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
-        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 1, "thermalexpansion:blocks/cell/cell_config_orange_cb", textureMap);
-        IconRegistry.addIcon(BlockCell.TEXTURE_CB + 2, "thermalexpansion:blocks/cell/cell_config_blue_cb", textureMap);
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
 
-        IconRegistry.addIcon("StorageRedstone", "thermalexpansion:blocks/cell/cell_center_solid", textureMap);
-    }
+	@Override
+	public void registerIcons(TextureMap textureMap) {
 
-    public void renderCenter(CCRenderState ccrs, int metadata) {
+		for (int i = 0; i < 9; i++) {
+			IconRegistry.addIcon("CellMeter" + i, "thermalexpansion:blocks/cell/cell_meter_" + i, textureMap);
+		}
+		IconRegistry.addIcon("CellMeterCreative", "thermalexpansion:blocks/cell/cell_meter_creative", textureMap);
+		IconRegistry.addIcon("Cell" + 0, "thermalexpansion:blocks/cell/cell_creative", textureMap);
+		IconRegistry.addIcon("Cell" + 1, "thermalexpansion:blocks/cell/cell_creative_inner", textureMap);
+		IconRegistry.addIcon("Cell" + 2, "thermalexpansion:blocks/cell/cell_basic", textureMap);
+		IconRegistry.addIcon("Cell" + 3, "thermalexpansion:blocks/cell/cell_basic_inner", textureMap);
+		IconRegistry.addIcon("Cell" + 4, "thermalexpansion:blocks/cell/cell_hardened", textureMap);
+		IconRegistry.addIcon("Cell" + 5, "thermalexpansion:blocks/cell/cell_hardened_inner", textureMap);
+		IconRegistry.addIcon("Cell" + 6, "thermalexpansion:blocks/cell/cell_reinforced", textureMap);
+		IconRegistry.addIcon("Cell" + 7, "thermalexpansion:blocks/cell/cell_reinforced_inner", textureMap);
+		IconRegistry.addIcon("Cell" + 8, "thermalexpansion:blocks/cell/cell_resonant", textureMap);
+		IconRegistry.addIcon("Cell" + 9, "thermalexpansion:blocks/cell/cell_resonant_inner", textureMap);
 
-        if (metadata == 1 || metadata == 2) {
-            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[0]));
-        } else {
-            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[1]));
-        }
-    }
+		IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+		IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/cell/cell_config_orange", textureMap);
+		IconRegistry.addIcon(BlockCell.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/cell/cell_config_blue", textureMap);
 
-    public void renderFrame(CCRenderState ccrs, int metadata, Map<EnumFacing, TextureAtlasSprite> spriteMap, int facing, TextureAtlasSprite faceTexture) {
+		IconRegistry.addIcon(BlockCell.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+		IconRegistry.addIcon(BlockCell.TEXTURE_CB + 1, "thermalexpansion:blocks/cell/cell_config_orange_cb", textureMap);
+		IconRegistry.addIcon(BlockCell.TEXTURE_CB + 2, "thermalexpansion:blocks/cell/cell_config_blue_cb", textureMap);
 
-        for (int i = 0; i < 6; i++) {
-            modelFrame.render(ccrs, i * 4, i * 4 + 4, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
-            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
-        }
-        if (spriteMap != null) {
-            for (EnumFacing face : EnumFacing.VALUES) {
-                modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, RenderUtils.getIconTransformation(spriteMap.get(face)));
-            }
-            modelFrame.render(ccrs, facing * 4, facing * 4 + 4, RenderUtils.getIconTransformation(faceTexture));
-        }
-    }
+		IconRegistry.addIcon("StorageRedstone", "thermalexpansion:blocks/cell/cell_center_solid", textureMap);
+	}
 
-    private int getScaledEnergyStored(ItemStack container, int scale) {
+	public void renderCenter(CCRenderState ccrs, int metadata) {
 
-        IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+		if (metadata == 1 || metadata == 2) {
+			modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[0]));
+		} else {
+			modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[1]));
+		}
+	}
 
-        return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
-    }
+	public void renderFrame(CCRenderState ccrs, int metadata, Map<EnumFacing, TextureAtlasSprite> spriteMap, int facing, TextureAtlasSprite faceTexture) {
+
+		for (int i = 0; i < 6; i++) {
+			modelFrame.render(ccrs, i * 4, i * 4 + 4, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
+			modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
+		}
+		if (spriteMap != null) {
+			for (EnumFacing face : EnumFacing.VALUES) {
+				modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, RenderUtils.getIconTransformation(spriteMap.get(face)));
+			}
+			modelFrame.render(ccrs, facing * 4, facing * 4 + 4, RenderUtils.getIconTransformation(faceTexture));
+		}
+	}
+
+	private int getScaledEnergyStored(ItemStack container, int scale) {
+
+		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+
+		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
+	}
 
 }

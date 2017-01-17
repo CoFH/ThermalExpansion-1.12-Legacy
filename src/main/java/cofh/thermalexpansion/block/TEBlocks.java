@@ -11,16 +11,7 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.ItemBlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.ItemBlockMachine;
-import cofh.thermalexpansion.block.simple.BlockAirBarrier;
-import cofh.thermalexpansion.block.simple.BlockAirForce;
-import cofh.thermalexpansion.block.simple.BlockAirLight;
-import cofh.thermalexpansion.block.simple.BlockAirSignal;
-import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.block.simple.BlockGlass;
-import cofh.thermalexpansion.block.simple.BlockRockwool;
-import cofh.thermalexpansion.block.simple.ItemBlockFrame;
-import cofh.thermalexpansion.block.simple.ItemBlockGlass;
-import cofh.thermalexpansion.block.simple.ItemBlockRockwool;
+import cofh.thermalexpansion.block.simple.*;
 import cofh.thermalexpansion.block.sponge.BlockSponge;
 import cofh.thermalexpansion.block.sponge.ItemBlockSponge;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
@@ -29,11 +20,10 @@ import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.ItemBlockTank;
 import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.block.workbench.ItemBlockWorkbench;
+import net.minecraft.block.Block;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-
-import net.minecraft.block.Block;
 
 public class TEBlocks {
 
@@ -45,52 +35,53 @@ public class TEBlocks {
 
 	public static void preInit() {
 
-        blockMachine = (BlockMachine) addBlock(new BlockMachine());
-        blockDevice = (BlockDevice) addBlock(new BlockDevice());
-        blockDynamo = addBlock(new BlockDynamo());
-        blockCell = addBlock(new BlockCell());
-        blockTank = addBlock(new BlockTank());
-        blockStrongbox = addBlock(new BlockStrongbox());
-        blockCache = addBlock(new BlockCache());
-        blockWorkbench = addBlock(new BlockWorkbench());
-        blockFrame = addBlock(new BlockFrame());
-        blockGlass = addBlock(new BlockGlass());
-        blockRockwool = addBlock(new BlockRockwool());
-        blockSponge = addBlock(new BlockSponge());
+		blockMachine = (BlockMachine) addBlock(new BlockMachine());
+		blockDevice = (BlockDevice) addBlock(new BlockDevice());
+		blockDynamo = addBlock(new BlockDynamo());
+		blockCell = addBlock(new BlockCell());
+		blockTank = addBlock(new BlockTank());
+		blockStrongbox = addBlock(new BlockStrongbox());
+		blockCache = addBlock(new BlockCache());
+		blockWorkbench = addBlock(new BlockWorkbench());
+		blockFrame = addBlock(new BlockFrame());
+		blockGlass = addBlock(new BlockGlass());
+		blockRockwool = addBlock(new BlockRockwool());
+		blockSponge = addBlock(new BlockSponge());
 
-        blockAirSignal = new BlockAirSignal();
-        blockAirLight = new BlockAirLight();
-        blockAirForce = new BlockAirForce();
-        blockAirBarrier = new BlockAirBarrier();
+		blockAirSignal = new BlockAirSignal();
+		blockAirLight = new BlockAirLight();
+		blockAirForce = new BlockAirForce();
+		blockAirBarrier = new BlockAirBarrier();
 
-        GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
-        GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
-        GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");
-        GameRegistry.registerBlock(blockCell, ItemBlockCell.class, "Cell");
-        GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
-        GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
-        GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
-        GameRegistry.registerBlock(blockWorkbench, ItemBlockWorkbench.class, "Workbench");
-        GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
-        GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
-        GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
-        GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
+		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
+		GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
+		GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");
+		GameRegistry.registerBlock(blockCell, ItemBlockCell.class, "Cell");
+		GameRegistry.registerBlock(blockTank, ItemBlockTank.class, "Tank");
+		GameRegistry.registerBlock(blockStrongbox, ItemBlockStrongbox.class, "Strongbox");
+		GameRegistry.registerBlock(blockCache, ItemBlockCache.class, "Cache");
+		GameRegistry.registerBlock(blockWorkbench, ItemBlockWorkbench.class, "Workbench");
+		GameRegistry.registerBlock(blockFrame, ItemBlockFrame.class, "Frame");
+		GameRegistry.registerBlock(blockGlass, ItemBlockGlass.class, "Glass");
+		GameRegistry.registerBlock(blockRockwool, ItemBlockRockwool.class, "Rockwool");
+		GameRegistry.registerBlock(blockSponge, ItemBlockSponge.class, "Sponge");
 
-        GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
-        GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
-        GameRegistry.registerBlock(blockAirForce, null, "FakeAirForce");
-        GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
+		GameRegistry.registerBlock(blockAirSignal, null, "FakeAirSignal");
+		GameRegistry.registerBlock(blockAirLight, null, "FakeAirLight");
+		GameRegistry.registerBlock(blockAirForce, null, "FakeAirForce");
+		GameRegistry.registerBlock(blockAirBarrier, null, "FakeAirBarrier");
 
-        for (IInitializer initializer : blockList) {
-            initializer.preInit();
-        }
+		for (IInitializer initializer : blockList) {
+			initializer.preInit();
+		}
 
 	}
 
 	public static void initialize() {
-        for (IInitializer initializer : blockList) {
-            initializer.initialize();
-        }
+
+		for (IInitializer initializer : blockList) {
+			initializer.initialize();
+		}
 	}
 
 	public static void postInit() {

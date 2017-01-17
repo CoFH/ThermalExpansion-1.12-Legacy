@@ -357,7 +357,7 @@ public class ThermalExpansion {
 			@Override
 			protected ItemStack getStack() {
 
-				return TEItems.toolWrench;
+				return TEItems.powerCoilGold;
 			}
 		};
 		tabFlorbs = florbTab ? tabCommon : new TECreativeTabFlorbs();

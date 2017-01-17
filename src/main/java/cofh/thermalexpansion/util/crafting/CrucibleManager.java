@@ -59,8 +59,7 @@ public class CrucibleManager {
 			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
 				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA,
-						FluidContainerRegistry.BUCKET_VOLUME));
+				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
 				ThermalExpansion.log.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.config.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
 			}
@@ -69,8 +68,7 @@ public class CrucibleManager {
 			if (tweakBlazeRodRF >= CoFHProps.LAVA_RF / 20 && tweakBlazeRodRF <= CoFHProps.LAVA_RF) {
 				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA,
-						FluidContainerRegistry.BUCKET_VOLUME / 4));
+				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
 				ThermalExpansion.log.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.config.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 			}

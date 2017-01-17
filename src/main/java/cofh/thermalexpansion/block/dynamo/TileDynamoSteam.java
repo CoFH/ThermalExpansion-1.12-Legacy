@@ -10,18 +10,9 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.init.TFFluids;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import gnu.trove.map.hash.TObjectIntHashMap;
-
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -29,9 +20,16 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
@@ -193,7 +191,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		nbt.setInteger("FuelMax", currentFuelRF);
 		nbt.setTag("SteamTank", steamTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("WaterTank", waterTank.writeToNBT(new NBTTagCompound()));
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -241,59 +239,64 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() * energyMod : 0;
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    return FluidTankProperties.convert(new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() });
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-                        return 0;
-                    }
-                    if (resource.getFluid() == steam.getFluid()) {
-                        return steamTank.fill(resource, doFill);
-                    }
-                    if (resource.getFluid() == FluidRegistry.WATER) {
-                        return waterTank.fill(resource, doFill);
-                    }
-                    return 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
-                        return null;
-                    }
-                    if (resource.getFluid() == FluidRegistry.WATER) {
-                        return waterTank.drain(resource.amount, doDrain);
-                    }
-                    return null;
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (!augmentCoilDuct && from.ordinal() == facing) {
-                        return null;
-                    }
-                    return waterTank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					return FluidTankProperties.convert(new FluidTankInfo[] { steamTank.getInfo(), waterTank.getInfo() });
+				}
 
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+						return 0;
+					}
+					if (resource.getFluid() == steam.getFluid()) {
+						return steamTank.fill(resource, doFill);
+					}
+					if (resource.getFluid() == FluidRegistry.WATER) {
+						return waterTank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (resource == null || from == null || !augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					if (resource.getFluid() == FluidRegistry.WATER) {
+						return waterTank.drain(resource.amount, doDrain);
+					}
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					return waterTank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 	/* IInventory */
 	@Override
@@ -324,8 +327,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	static {
 		String category = "Fuels.Steam";
-		FuelManager.configFuels.getCategory(category).setComment(
-				"You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
+		FuelManager.configFuels.getCategory(category).setComment("You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
 		coalRF = FuelManager.configFuels.get(category, "coal", coalRF);
 		charcoalRF = FuelManager.configFuels.get(category, "charcoal", charcoalRF);
 		woodRF = FuelManager.configFuels.get(category, "wood", woodRF);

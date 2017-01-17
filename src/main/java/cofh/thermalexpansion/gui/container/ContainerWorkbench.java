@@ -8,27 +8,24 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.gui.slot.SlotCraftingOutputWorkbench;
 import cofh.thermalexpansion.gui.slot.SlotSpecificItemWorkbench;
-import cofh.thermalexpansion.item.TEItems;
-import cofh.thermalexpansion.util.helpers.SchematicHelper;
-import net.minecraft.inventory.ClickType;
-import net.minecraftforge.fml.common.Optional;
-
+import cofh.thermalfoundation.init.TFItems;
+import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import gnu.trove.map.hash.THashMap;
-
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
-
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.ClickType;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.Optional;
+
+import java.util.List;
+import java.util.Map;
 
 public class ContainerWorkbench extends ContainerTEBase implements ISchematicContainer {
 
@@ -55,36 +52,36 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 		int gridXOffset = 44;
 
 		switch (type) {
-		case 1:
-			addPlayerSlotsToContainer(inventory, 8, 128);
-			addSchematicSlotsToContainer(17, 18, 3, 1);
-			addInventorySlotsToContainer(myTile, 8, 79, 2, 9);
-			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
-			rowSize = 9;
-			break;
-		case 2:
-			addPlayerSlotsToContainer(inventory, 8, 146);
-			addSchematicSlotsToContainer(10, 18, 3, 2);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 9);
-			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
-			rowSize = 9;
-			gridXOffset = 54;
-			break;
-		case 3:
-			addPlayerSlotsToContainer(inventory, 26, 146);
-			addSchematicSlotsToContainer(16, 18, 3, 3);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 11);
-			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 179, 37);
-			rowSize = 11;
-			gridXOffset = 80;
-			break;
-		default:
-			addPlayerSlotsToContainer(inventory, 35, 146);
-			addSchematicSlotsToContainer(16, 18, 3, 4);
-			addInventorySlotsToContainer(myTile, 8, 79, 3, 12);
-			myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 197, 37);
-			rowSize = 13;
-			gridXOffset = 98;
+			case 1:
+				addPlayerSlotsToContainer(inventory, 8, 128);
+				addSchematicSlotsToContainer(17, 18, 3, 1);
+				addInventorySlotsToContainer(myTile, 8, 79, 2, 9);
+				myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
+				rowSize = 9;
+				break;
+			case 2:
+				addPlayerSlotsToContainer(inventory, 8, 146);
+				addSchematicSlotsToContainer(10, 18, 3, 2);
+				addInventorySlotsToContainer(myTile, 8, 79, 3, 9);
+				myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 143, 37);
+				rowSize = 9;
+				gridXOffset = 54;
+				break;
+			case 3:
+				addPlayerSlotsToContainer(inventory, 26, 146);
+				addSchematicSlotsToContainer(16, 18, 3, 3);
+				addInventorySlotsToContainer(myTile, 8, 79, 3, 11);
+				myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 179, 37);
+				rowSize = 11;
+				gridXOffset = 80;
+				break;
+			default:
+				addPlayerSlotsToContainer(inventory, 35, 146);
+				addSchematicSlotsToContainer(16, 18, 3, 4);
+				addInventorySlotsToContainer(myTile, 8, 79, 3, 12);
+				myOutput = new SlotCraftingOutputWorkbench(myTile, this, inventory.player, craftResult, 0, 197, 37);
+				rowSize = 13;
+				gridXOffset = 98;
 		}
 		craftMatrix = new InventoryCraftingCustom(this, 3, 3, new CustomInventoryWrapper(myTile, 0), 0);
 		addSlotToContainer(myOutput);
@@ -123,8 +120,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-				addSlotToContainer(new SlotSpecificItemWorkbench(myTile, j + i * cols, xOffset + j * 19, yOffset + i * 19, TEItems.diagramSchematic)
-						.setSlotStackLimit(1));
+				addSlotToContainer(new SlotSpecificItemWorkbench(myTile, j + i * cols, xOffset + j * 19, yOffset + i * 19, TFItems.itemDiagram.schematic).setSlotStackLimit(1));
 			}
 		}
 	}
@@ -184,8 +180,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 		ItemStack schematic = myTile.getStackInSlot(myTile.selectedSchematic);
 
 		if (schematic != null && craftResult.getStackInSlot(0) != null) {
-			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
+			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic, SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(myTile.selectedSchematic, newSchematic);
 		}
@@ -210,7 +205,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	}
 
 	/* Inventory Tweaks */
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	@RowSizeCallback
 	public int getRowSize() {
 
@@ -218,7 +213,7 @@ public class ContainerWorkbench extends ContainerTEBase implements ISchematicCon
 	}
 
 	@ContainerSectionCallback
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
 		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();

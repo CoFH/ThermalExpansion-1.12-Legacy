@@ -3,10 +3,9 @@ package cofh.thermalexpansion.block.cell;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ServerHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileCellCreative extends TileCell {
 

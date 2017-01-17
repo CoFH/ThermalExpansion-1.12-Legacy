@@ -1,7 +1,5 @@
 package cofh.thermalexpansion.util.crafting;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
-
 import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -14,17 +12,18 @@ import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.core.TEAchievements;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEItems;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
 
 public class TECraftingHandler {
 
@@ -45,12 +44,9 @@ public class TECraftingHandler {
 
 	public static void addMachineUpgradeRecipes(ItemStack stack) {
 
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(1, RecipeMachineUpgrade.getMachineLevel(stack, 1), new Object[] { "IGI", " X ", "I I", 'I',
-				"ingotInvar", 'G', "gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) }));
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(2, RecipeMachineUpgrade.getMachineLevel(stack, 2), new Object[] { "IGI", " X ", "I I", 'I',
-				"blockGlassHardened", 'G', "gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) }));
-		GameRegistry.addRecipe(new RecipeMachineUpgrade(3, RecipeMachineUpgrade.getMachineLevel(stack, 3), new Object[] { "IGI", " X ", "I I", 'I',
-				"ingotSilver", 'G', "gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) }));
+		GameRegistry.addRecipe(new RecipeMachineUpgrade(1, RecipeMachineUpgrade.getMachineLevel(stack, 1), new Object[] { "IGI", " X ", "I I", 'I', "ingotInvar", 'G', "gearElectrum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 0) }));
+		GameRegistry.addRecipe(new RecipeMachineUpgrade(2, RecipeMachineUpgrade.getMachineLevel(stack, 2), new Object[] { "IGI", " X ", "I I", 'I', "blockGlassHardened", 'G', "gearSignalum", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 1) }));
+		GameRegistry.addRecipe(new RecipeMachineUpgrade(3, RecipeMachineUpgrade.getMachineLevel(stack, 3), new Object[] { "IGI", " X ", "I I", 'I', "ingotSilver", 'G', "gearEnderium", 'X', RecipeMachineUpgrade.getMachineLevel(stack, 2) }));
 	}
 
 	public static void addSecureRecipe(ItemStack stack) {
@@ -130,7 +126,7 @@ public class TECraftingHandler {
 				String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
 				List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-                List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+				List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
 
 				if (registeredOre.size() <= 0 || registeredIngot.size() <= 0) {
 					continue;

@@ -10,7 +10,6 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -53,10 +52,8 @@ public class GuiExtruder extends GuiAugmentableBase {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setAlwaysShow(true));
 		progressLava = (ElementFluid) addElement(new ElementFluid(this, 40, 49).setFluid(FluidHelper.LAVA).setSize(24, 16));
 		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidHelper.WATER).setSize(24, 16));
-		progressLavaOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 40, 49).setMode(1).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_RIGHT, 64, 16));
-		progressWaterOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 64, 16));
+		progressLavaOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 40, 49).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
+		progressWaterOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
 	}
 
 	@Override
@@ -86,7 +83,7 @@ public class GuiExtruder extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mouseButton) throws IOException{
+	protected void mouseClicked(int mX, int mY, int mouseButton) throws IOException {
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {
@@ -108,30 +105,30 @@ public class GuiExtruder extends GuiAugmentableBase {
 			offset = 64;
 		}
 		switch (myTile.getCurSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
+				break;
 		}
 	}
 
 	protected void drawPrevSelection() {
 
 		switch (myTile.getPrevSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
+				break;
 		}
 	}
 

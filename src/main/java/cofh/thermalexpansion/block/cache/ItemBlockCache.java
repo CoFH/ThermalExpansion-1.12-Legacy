@@ -1,17 +1,16 @@
 package cofh.thermalexpansion.block.cache;
 
-import cofh.core.item.ItemBlockBase;
+import cofh.core.item.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockCache extends ItemBlockBase {
+import java.util.List;
+
+public class ItemBlockCache extends ItemBlockCore {
 
 	public ItemBlockCache(Block block) {
 
@@ -41,14 +40,14 @@ public class ItemBlockCache extends ItemBlockBase {
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockCache.Types.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		case RESONANT:
-			return EnumRarity.RARE;
-		case REINFORCED:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			case RESONANT:
+				return EnumRarity.RARE;
+			case REINFORCED:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

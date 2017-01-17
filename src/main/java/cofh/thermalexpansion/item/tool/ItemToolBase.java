@@ -5,23 +5,21 @@ import cofh.core.util.KeyBindingMultiMode;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.List;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.lwjgl.input.Keyboard;
+
+import java.util.List;
 
 public abstract class ItemToolBase extends Item implements IMultiModeItem {
 
@@ -48,8 +46,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		addInformationDelegate(stack, player, list, check);
 
 		if (getNumModes(stack) > 0) {
-			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " "
-					+ Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
+			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " " + Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
 		}
 	}
 
@@ -64,8 +61,9 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		return true;
 	}
 
-    @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
 		return EnumActionResult.PASS;
 	}
 
@@ -116,6 +114,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	/* IMultiModeItem */
 	@Override
 	public int getMode(ItemStack stack) {
+
 		return stack.getTagCompound() == null ? 0 : stack.getTagCompound().getInteger("Mode");
 	}
 

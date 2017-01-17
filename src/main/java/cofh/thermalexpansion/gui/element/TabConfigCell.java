@@ -7,12 +7,10 @@ import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.cell.TileCell;
+import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.opengl.GL11;
 
 import java.util.List;
-
-import net.minecraft.client.gui.GuiScreen;
-
-import org.lwjgl.opengl.GL11;
 
 public class TabConfigCell extends TabBase {
 

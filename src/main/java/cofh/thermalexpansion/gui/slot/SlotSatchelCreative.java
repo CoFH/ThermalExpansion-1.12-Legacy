@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.gui.slot;
 
 import cofh.lib.gui.slot.ISlotValidator;
-
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -10,7 +9,6 @@ import net.minecraft.item.ItemStack;
  * A slot where the input can be validated based on any arbitrary criteria by using a passthrough method to an {@link ISlotValidator}.
  *
  * @author King Lemming
- *
  */
 public class SlotSatchelCreative extends Slot {
 

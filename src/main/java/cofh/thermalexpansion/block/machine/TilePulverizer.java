@@ -8,12 +8,11 @@ import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TilePulverizer extends TileMachineBase {
 
@@ -254,7 +253,7 @@ public class TilePulverizer extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
-        return nbt;
+		return nbt;
 	}
 
 	/* IInventory */

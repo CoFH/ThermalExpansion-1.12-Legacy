@@ -1,28 +1,8 @@
 package cofh.thermalexpansion.util;
 
-import cofh.thermalexpansion.api.crafting.CraftingHandlers;
-import cofh.thermalexpansion.api.crafting.IChargerHandler;
-import cofh.thermalexpansion.api.crafting.ICrucibleHandler;
-import cofh.thermalexpansion.api.crafting.IFurnaceHandler;
-import cofh.thermalexpansion.api.crafting.IInsolatorHandler;
-import cofh.thermalexpansion.api.crafting.IPulverizerHandler;
-import cofh.thermalexpansion.api.crafting.ISawmillHandler;
-import cofh.thermalexpansion.api.crafting.ISmelterHandler;
-import cofh.thermalexpansion.api.crafting.ITransposerHandler;
-import cofh.thermalexpansion.api.fuels.ICompressionHandler;
-import cofh.thermalexpansion.api.fuels.IEnervationHandler;
-import cofh.thermalexpansion.api.fuels.IMagmaticHandler;
-import cofh.thermalexpansion.api.fuels.IReactantHandler;
-import cofh.thermalexpansion.api.fuels.ISteamHandler;
-import cofh.thermalexpansion.util.crafting.ChargerManager;
-import cofh.thermalexpansion.util.crafting.CrucibleManager;
-import cofh.thermalexpansion.util.crafting.FurnaceManager;
-import cofh.thermalexpansion.util.crafting.InsolatorManager;
-import cofh.thermalexpansion.util.crafting.PulverizerManager;
-import cofh.thermalexpansion.util.crafting.SawmillManager;
-import cofh.thermalexpansion.util.crafting.SmelterManager;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
-
+import cofh.thermalexpansion.api.crafting.*;
+import cofh.thermalexpansion.api.fuels.*;
+import cofh.thermalexpansion.util.crafting.*;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -30,7 +10,6 @@ import net.minecraftforge.fluids.FluidStack;
  * This basically is the manager for the "unsafe" API interactions. It initializes external handles and maintains the Handler objects.
  *
  * @author King Lemming
- *
  */
 public class APIWarden {
 
@@ -49,7 +28,9 @@ public class APIWarden {
 		CraftingHandlers.insolator = new InsolatorHandler();
 	}
 
-	/** MACHINES */
+	/**
+	 * MACHINES
+	 */
 
 	/* FURNACE */
 	public static class FurnaceHandler implements IFurnaceHandler {
@@ -103,8 +84,7 @@ public class APIWarden {
 	public static class SmelterHandler implements ISmelterHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-				int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
 
 			return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, overwrite);
 		}
@@ -180,8 +160,7 @@ public class APIWarden {
 	public static class InsolatorHandler implements IInsolatorHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput,
-				int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
 
 			return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, overwrite);
 		}
@@ -193,7 +172,9 @@ public class APIWarden {
 		}
 	}
 
-	/** DYNAMOS */
+	/**
+	 * DYNAMOS
+	 */
 
 	/* STEAM */
 	public static class SteamHandler implements ISteamHandler {

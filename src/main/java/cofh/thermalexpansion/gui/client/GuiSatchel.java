@@ -10,10 +10,9 @@ import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.ContainerSatchel;
 import cofh.thermalexpansion.item.ItemSatchel;
+import net.minecraft.entity.player.InventoryPlayer;
 
 import java.util.UUID;
-
-import net.minecraft.entity.player.InventoryPlayer;
 
 public class GuiSatchel extends GuiBaseAdv {
 

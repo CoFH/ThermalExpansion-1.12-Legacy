@@ -139,10 +139,10 @@ public class PulverizerManager {
 			addRecipe(4800, new ItemStack(Items.DIAMOND_CHESTPLATE), new ItemStack(Items.DIAMOND, 8));
 			addRecipe(4200, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
 			addRecipe(2400, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
-//			addRecipe(2400, ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
-//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
-//			addRecipe(1200, ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
-//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
+			//			addRecipe(2400, ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
+			//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
+			//			addRecipe(1200, ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
+			//			addRecipe(2100, ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
 		}
 
 		addRecipe(3200, new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND), 15);
@@ -279,8 +279,7 @@ public class PulverizerManager {
 		}
 		/* APATITE */
 		if (ItemHelper.oreNameExists("oreApatite") && ItemHelper.oreNameExists("gemApatite")) {
-			addRecipe(2400, OreDictionary.getOres("oreApatite").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite").get(0), 12),
-				ItemMaterial.dustSulfur, 10);
+			addRecipe(2400, OreDictionary.getOres("oreApatite").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite").get(0), 12), ItemMaterial.dustSulfur, 10);
 		}
 		/* AMETHYST */
 		if (ItemHelper.oreNameExists("oreAmethyst") && ItemHelper.oreNameExists("gemAmethyst")) {
@@ -312,8 +311,7 @@ public class PulverizerManager {
 		}
 		/* APPLIED ENERGISTICS 2 */
 		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
-			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2),
-				OreDictionary.getOres("dustCertusQuartz").get(0), 10);
+			addRecipe(2400, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2), OreDictionary.getOres("dustCertusQuartz").get(0), 10);
 			addRecipe(1600, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
 		}
 		if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
@@ -394,12 +392,12 @@ public class PulverizerManager {
 		String relatedName = null;
 
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-        List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-        List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-        List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
 
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-        List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
+		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
 
 		if (relatedType != "") {
 			relatedName = "dust" + StringHelper.titleCase(relatedType);
@@ -447,8 +445,7 @@ public class PulverizerManager {
 		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
 
 		if (!registeredOres.isEmpty()) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, oreMultiplier), secondaryOutput,
-				secondaryChance);
+			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, oreMultiplier), secondaryOutput, secondaryChance);
 		}
 	}
 

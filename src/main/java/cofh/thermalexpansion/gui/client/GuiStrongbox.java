@@ -8,14 +8,12 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerStrongbox;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
+
+import java.util.UUID;
 
 public class GuiStrongbox extends GuiBaseAdv {
 

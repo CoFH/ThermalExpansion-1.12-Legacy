@@ -4,12 +4,14 @@ import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileTEBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -17,21 +19,18 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 
@@ -46,14 +45,10 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 
 	static {
 		String category = "Tank.";
-		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[4]), "Capacity", CAPACITY[4]),
-				CAPACITY[4] / 8, 1000000 * 1000);
-		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[3]), "Capacity", CAPACITY[3]),
-				CAPACITY[3] / 8, CAPACITY[4]);
-		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[2]), "Capacity", CAPACITY[2]),
-				CAPACITY[2] / 8, CAPACITY[3]);
-		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[1]), "Capacity", CAPACITY[1]),
-				CAPACITY[1] / 8, CAPACITY[2]);
+		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[4]), "Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
+		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[3]), "Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[2]), "Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockTank.NAMES[1]), "Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
 	int compareTracker;
@@ -90,8 +85,9 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		return type;
 	}
 
-    @Override
+	@Override
 	public int getComparatorInput() {
+
 		return compareTracker;
 	}
 
@@ -177,8 +173,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		if (tank.getFluidAmount() <= 0 || adjacentHandlers[0] == null) {
 			return;
 		}
-		tank.drain(
-				adjacentHandlers[0].fill(new FluidStack(tank.getFluid(), Math.min(Fluid.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
+		tank.drain(adjacentHandlers[0].fill(new FluidStack(tank.getFluid(), Math.min(Fluid.BUCKET_VOLUME, tank.getFluidAmount())), true), true);
 
 		if (tank.getFluidAmount() <= 0) {
 			updateRender();
@@ -207,7 +202,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN)) {
 			adjacentHandlers[1] = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, EnumFacing.DOWN);
 
-            adjacentTanks[1] = tile instanceof TileTank;
+			adjacentTanks[1] = tile instanceof TileTank;
 		} else {
 			adjacentHandlers[1] = null;
 			adjacentTanks[1] = false;
@@ -296,7 +291,7 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		nbt.setByte("Mode", mode);
 
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -322,66 +317,72 @@ public class TileTank extends TileTEBase implements ITileInfo, ITickable {
 		tank.setFluid(payload.getFluidStack());
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY){
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    int ordinal = facing == null ? 6 : facing.ordinal();
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
 
-                    if (ordinal == 0 && mode == 1 && !adjacentTanks[0]) {
-                        return 0;
-                    }
-                    int amount = tank.fill(resource, doFill);
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                    if (ordinal != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
-                        if (amount == 0) {
-                            return adjacentHandlers[1].fill(resource, doFill);
-                        } else if (amount != resource.amount) {
-                            FluidStack remaining = resource.copy();
-                            remaining.amount -= amount;
-                            return amount + adjacentHandlers[1].fill(remaining, doFill);
-                        }
-                    }
-                    return amount;
-                }
+					return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
+				}
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    int ordinal = facing == null ? 6 : facing.ordinal();
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
 
-                    if (ordinal == 0 && mode == 1) {
-                        return null;
-                    }
-                    return tank.drain(resource, doDrain);
-                }
+					int ordinal = facing == null ? 6 : facing.ordinal();
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    int ordinal = facing == null ? 6 : facing.ordinal();
+					if (ordinal == 0 && mode == 1 && !adjacentTanks[0]) {
+						return 0;
+					}
+					int amount = tank.fill(resource, doFill);
 
-                    if (ordinal == 0 && mode == 1) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, facing);
-    }
+					if (ordinal != 1 && adjacentHandlers[1] != null && adjacentTanks[1]) {
+						if (amount == 0) {
+							return adjacentHandlers[1].fill(resource, doFill);
+						} else if (amount != resource.amount) {
+							FluidStack remaining = resource.copy();
+							remaining.amount -= amount;
+							return amount + adjacentHandlers[1].fill(remaining, doFill);
+						}
+					}
+					return amount;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					int ordinal = facing == null ? 6 : facing.ordinal();
+
+					if (ordinal == 0 && mode == 1) {
+						return null;
+					}
+					return tank.drain(resource, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					int ordinal = facing == null ? 6 : facing.ordinal();
+
+					if (ordinal == 0 && mode == 1) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, facing);
+	}
 
 	/* ITileInfo */
 	@Override

@@ -60,7 +60,7 @@ import java.util.Locale;
 public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
 	static {
 		Cuboid6 bb = new Cuboid6(0, 0, 0, 1, 10 / 16., 1);
@@ -87,68 +87,75 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		setUnlocalizedName("thermalexpansion.dynamo");
 	}
 
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).meta();
-    }
+		return state.getValue(TYPES).meta();
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_PROPERTY).add(CommonProperties.TYPE_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
-    }
+		return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public ICustomBlockBakery getCustomBakery() {
-        return RenderDynamo.instance;
-    }
+		return new ExtendedBlockState.Builder(this).add(TYPES).add(CommonProperties.FACING_PROPERTY).add(CommonProperties.ACTIVE_PROPERTY).add(CommonProperties.TYPE_PROPERTY).add(CommonProperties.ACTIVE_SPRITE_PROPERTY).build();
+	}
 
-    @Override
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+		return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+	}
 
-    @Override
+	@Override
+	@SideOnly (Side.CLIENT)
+	public ICustomBlockBakery getCustomBakery() {
+
+		return RenderDynamo.instance;
+	}
+
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
 			return null;
 		}
 		switch (Types.values()[metadata]) {
-		case STEAM:
-			return new TileDynamoSteam();
-		case MAGMATIC:
-			return new TileDynamoMagmatic();
-		case COMPRESSION:
-			return new TileDynamoCompression();
-		case REACTANT:
-			return new TileDynamoReactant();
-		case ENERVATION:
-			return new TileDynamoEnervation();
-		default:
-			return null;
+			case STEAM:
+				return new TileDynamoSteam();
+			case MAGMATIC:
+				return new TileDynamoMagmatic();
+			case COMPRESSION:
+				return new TileDynamoCompression();
+			case REACTANT:
+				return new TileDynamoReactant();
+			case ENERVATION:
+				return new TileDynamoEnervation();
+			default:
+				return null;
 		}
 	}
 
-    @Override
-    public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+	@Override
+	public void addCollisionBoxToList(IBlockState state, World world, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, @Nullable Entity entityIn) {
+
 		int facing = ((TileDynamoBase) world.getTileEntity(pos)).facing;
 
 		AxisAlignedBB base, coil;
@@ -156,27 +163,28 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		coil = boundingBox[facing + 6].offset(pos);
 
 		if (coil.intersectsWith(entityBox)) {
-            collidingBoxes.add(coil);
+			collidingBoxes.add(coil);
 		}
 
 		if (base.intersectsWith(entityBox)) {
-            collidingBoxes.add(base);
+			collidingBoxes.add(base);
 		}
 	}
 
-    @Nullable
-    @Override
-    public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
-	    TileEntity tileEntity = worldIn.getTileEntity(pos);
-	    if (tileEntity != null) {
-	        int facing = ((TileDynamoBase) tileEntity).facing;
-	        //Due to CCL Black magic, passing a CuboidRayTraceResult down this method will cause CCL to render its contained BB.
-            return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing +6]);
-        }
-        return super.collisionRayTrace(blockState, worldIn, pos, start, end);
-    }
+	@Nullable
+	@Override
+	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
 
-    @Override
+		TileEntity tileEntity = worldIn.getTileEntity(pos);
+		if (tileEntity != null) {
+			int facing = ((TileDynamoBase) tileEntity).facing;
+			//Due to CCL Black magic, passing a CuboidRayTraceResult down this method will cause CCL to render its contained BB.
+			return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing + 6]);
+		}
+		return super.collisionRayTrace(blockState, worldIn, pos, start, end);
+	}
+
+	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int i = 0; i < Types.values().length; i++) {
@@ -184,8 +192,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		}
 	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
 		if (stack.getTagCompound() != null) {
@@ -196,18 +205,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
-        if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-            IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-            if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
-                return true;
-            }
-        }
+		if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
+				return true;
+			}
+		}
 
-		return super.onBlockActivated(world, pos,state, player, hand, heldItem, side, hitX, hitY, hitZ);
+		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
 	@Override
@@ -216,8 +226,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		return true;
 	}
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (!(tile instanceof TileDynamoBase)) {
@@ -264,10 +275,10 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Types.ENERVATION.ordinal()));
 
 		ItemStackRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
-        ItemStackRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
-        ItemStackRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
-        ItemStackRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
-        ItemStackRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
+		ItemStackRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
+		ItemStackRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
+		ItemStackRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
+		ItemStackRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 
 		return true;
 	}
@@ -276,24 +287,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 	public boolean postInit() {
 
 		if (enable[Types.STEAM.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoSteam, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G',
-					"gearCopper", 'I', "ingotCopper", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoSteam, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearCopper", 'I', "ingotCopper", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.MAGMATIC.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoMagmatic, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
-					'G', "gearInvar", 'I', "ingotInvar", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoMagmatic, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearInvar", 'I', "ingotInvar", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.COMPRESSION.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoCompression, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
-					'G', "gearTin", 'I', "ingotTin", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoCompression, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearTin", 'I', "ingotTin", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.REACTANT.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoReactant, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
-					'G', "gearBronze", 'I', "ingotBronze", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoReactant, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearBronze", 'I', "ingotBronze", 'R', "dustRedstone" }));
 		}
 		if (enable[Types.ENERVATION.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeAugmentable(dynamoEnervation, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver,
-					'G', "gearElectrum", 'I', "ingotElectrum", 'R', "dustRedstone" }));
+			GameRegistry.addRecipe(new RecipeAugmentable(dynamoEnervation, defaultAugments, new Object[] { " C ", "GIG", "IRI", 'C', TEItems.powerCoilSilver, 'G', "gearElectrum", 'I', "ingotElectrum", 'R', "dustRedstone" }));
 		}
 		TECraftingHandler.addSecureRecipe(dynamoSteam);
 		TECraftingHandler.addSecureRecipe(dynamoMagmatic);
@@ -313,45 +319,46 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock {
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
-    public enum Types implements IStringSerializable, IType, IParticleProvider {
-		STEAM,
-        MAGMATIC,
-        COMPRESSION,
-        REACTANT,
-        ENERVATION;
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
+		STEAM, MAGMATIC, COMPRESSION, REACTANT, ENERVATION;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.US);
-        }
+		@Override
+		public String getName() {
 
+			return name().toLowerCase(Locale.US);
+		}
 
-        public static Types fromMeta(int meta) {
-            try {
-                return values()[meta];
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-            }
-        }
+		public static Types fromMeta(int meta) {
 
-        @Override
-        public IProperty<?> getTypeProperty() {
-            return TYPES;
-        }
+			try {
+				return values()[meta];
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+			}
+		}
 
-        @Override
-        public int meta() {
-            return ordinal();
-        }
+		@Override
+		public IProperty<?> getTypeProperty() {
 
-        @Override
-        public String getParticleTexture() {
-            return "thermalexpansion:blocks/dynamo/dynamo_" + getName();
-        }
+			return TYPES;
+		}
 
-        public static int meta(Types type) {
-            return type.ordinal();
-        }
+		@Override
+		public int meta() {
+
+			return ordinal();
+		}
+
+		@Override
+		public String getParticleTexture() {
+
+			return "thermalexpansion:blocks/dynamo/dynamo_" + getName();
+		}
+
+		public static int meta(Types type) {
+
+			return type.ordinal();
+		}
 	}
 
 	public static final String[] NAMES = { "steam", "magmatic", "compression", "reactant", "enervation" };

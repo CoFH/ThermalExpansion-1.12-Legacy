@@ -2,34 +2,26 @@ package cofh.thermalexpansion.item.tool;
 
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.util.BlockUtils;
-
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.EnumActionResult;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MaterialLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 
 public class ItemPump extends ItemEnergyContainerBase {
 
@@ -47,13 +39,15 @@ public class ItemPump extends ItemEnergyContainerBase {
 		energyPerUse = 200;
 	}
 
-    @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
-        return EnumActionResult.SUCCESS;
-    }
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
 
-    @Override
-    public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+		return EnumActionResult.SUCCESS;
+	}
+
+	@Override
+	public EnumActionResult onItemUseFirst(ItemStack stack, EntityPlayer player, World world, BlockPos pos, EnumFacing side, float hitX, float hitY, float hitZ, EnumHand hand) {
+
 		boolean r = doItemUse(stack, world, player, hand);
 		if (r) { // HACK: forge is fucking stupid with this method
 			ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
@@ -61,16 +55,16 @@ public class ItemPump extends ItemEnergyContainerBase {
 		return r ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		boolean success = false;
 		try {
-            doItemUse(stack, world, player, hand);
-        } catch (Exception e) {//Fluid stuff is a bit wobbly atm, catch stuff so it doesn't crash.
-		    e.printStackTrace();
-		    player.addChatMessage(new TextComponentString("Error with ItemPump, see console for more info."));
-        }
+			doItemUse(stack, world, player, hand);
+		} catch (Exception e) {//Fluid stuff is a bit wobbly atm, catch stuff so it doesn't crash.
+			e.printStackTrace();
+			player.addChatMessage(new TextComponentString("Error with ItemPump, see console for more info."));
+		}
 		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
@@ -151,8 +145,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 							if (container != null) {
 								if (ServerHelper.isServerWorld(world)) {
 									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container),
-                                            FluidHelper.BUCKET_VOLUME), true), true);
+									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME), true), true);
 								}
 								success = true;
 							}
@@ -174,17 +167,16 @@ public class ItemPump extends ItemEnergyContainerBase {
 							block = Blocks.FLOWING_LAVA;
 						}
 						if (block != null) {
-                            BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+							BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
 							IBlockState worldState = world.getBlockState(offsetPos);
 
 							if (worldState.getBlock().getMetaFromState(worldState) == 0 && worldState.getMaterial() instanceof MaterialLiquid) {
 								// do not replace source blocks
 							} else {
-								if (world.isAirBlock(offsetPos) || worldState.getMaterial().isReplaceable()
-										|| worldState.getBlock() == Blocks.SNOW_LAYER) {
+								if (world.isAirBlock(offsetPos) || worldState.getMaterial().isReplaceable() || worldState.getBlock() == Blocks.SNOW_LAYER) {
 									if (ServerHelper.isServerWorld(world)) {
 										world.setBlockState(offsetPos, block.getDefaultState(), 3);
-                                        BlockUtils.fireBlockUpdate(world, offsetPos);
+										BlockUtils.fireBlockUpdate(world, offsetPos);
 										containerItem.drain(container, FluidHelper.BUCKET_VOLUME, true);
 									}
 									success = true;
@@ -217,7 +209,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 		if (fluid == null) {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-                    net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+					net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
 					FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);
@@ -228,8 +220,8 @@ public class ItemPump extends ItemEnergyContainerBase {
 		} else {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
 				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-                    net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
-                    FluidStack containerFluid = handler.drain(amount, false);
+					net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+					FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && FluidHelper.isFluidEqual(fluid, containerFluid) && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);
 						break;

@@ -38,8 +38,7 @@ import java.util.Map;
  * <br>
  * ForcedDecorativeAll:     Connections permit access to all 16 bands, only when the cable is in forced connection mode
  */
-public enum RedNetConnectionType
-{
+public enum RedNetConnectionType {
 	None,                   //  0; 0000000
 	CableSingle,            // 11; 0001011
 	PlateSingle,            // 13; 0001101
@@ -53,34 +52,35 @@ public enum RedNetConnectionType
 	DecorativeAll,          // NA; 0010001
 	ForcedDecorativeSingle, // NA; 0101001
 	ForcedDecorativeAll;    // NA; 0110001
-	
+
 	public final boolean isConnected = this.ordinal() != 0; // 0 bit (mask: 1)
 	public final boolean isSingleSubnet = this.name().endsWith("Single"); // 3 bit (mask: 8)
-	public final boolean isAllSubnets = this.name().endsWith("All"); // 4 bit (mask: 16) 
+	public final boolean isAllSubnets = this.name().endsWith("All"); // 4 bit (mask: 16)
 	public final boolean isPlate = this.name().contains("Plate"); // 2 bit (mask: 4)
 	public final boolean isCable = this.name().contains("Cable"); // 1 bit (mask: 2)
 	public final boolean isConnectionForced = this.name().startsWith("Forced"); // 5 bit (mask: 32)
 	public final boolean isDecorative = this.name().contains("Decorative");
-	public final short flags = toFlags(isConnected, isCable, isPlate,
-			isSingleSubnet, isAllSubnets, isConnectionForced);
-	
-	public static final RedNetConnectionType fromFlags(short flags)
-	{
+	public final short flags = toFlags(isConnected, isCable, isPlate, isSingleSubnet, isAllSubnets, isConnectionForced);
+
+	public static final RedNetConnectionType fromFlags(short flags) {
+
 		return connections.get(flags);
 	}
-	
-	private static final short toFlags(boolean ...flags)
-	{
+
+	private static final short toFlags(boolean... flags) {
+
 		short ret = 0;
-		for (int i = flags.length; i --> 0;)
+		for (int i = flags.length; i-- > 0; ) {
 			ret |= (flags[i] ? 1 : 0) << i;
+		}
 		return ret;
 	}
-	
+
 	private static final Map<Short, RedNetConnectionType> connections = new HashMap<Short, RedNetConnectionType>();
-	
+
 	static {
-		for (RedNetConnectionType type : RedNetConnectionType.values())
+		for (RedNetConnectionType type : RedNetConnectionType.values()) {
 			connections.put(type.flags, type);
+		}
 	}
 }

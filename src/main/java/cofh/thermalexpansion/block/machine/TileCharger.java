@@ -11,12 +11,11 @@ import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
 import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileCharger extends TileMachineBase {
 
@@ -223,8 +222,7 @@ public class TileCharger extends TileMachineBase {
 				inventory[1] = null;
 				containerItem = null;
 			} else {
-				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2])
-						&& inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
+				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
 					inventory[2].stackSize++;
 					inventory[1] = null;
 					containerItem = null;
@@ -350,7 +348,7 @@ public class TileCharger extends TileMachineBase {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-        return nbt;
+		return nbt;
 	}
 
 	/* IInventory */

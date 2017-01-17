@@ -10,7 +10,6 @@ import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlayAssembler;
 import cofh.thermalexpansion.gui.element.TabSchematic;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;

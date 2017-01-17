@@ -1,65 +1,65 @@
 {
-    "blockMachineFurnace": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/furnace",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachinePulverizer": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/pulverizer",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachineSawmill": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/sawmill",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachineSmelter": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/smelter",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachineCrucible": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/crucible",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachineTransposer": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/transposer",
-                "stream": false
-            }
-        ]
-    },
-    "blockMachineAccumulator": {
-        "category": "ambient",
-        "sounds": [
-            {
-                "name": "thermalexpansion:blocks/machine/accumulator",
-                "stream": false
-            }
-        ]
-    }
+	"blockMachineFurnace": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/furnace",
+				"stream": false
+			}
+		]
+	},
+	"blockMachinePulverizer": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/pulverizer",
+				"stream": false
+			}
+		]
+	},
+	"blockMachineSawmill": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/sawmill",
+				"stream": false
+			}
+		]
+	},
+	"blockMachineSmelter": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/smelter",
+				"stream": false
+			}
+		]
+	},
+	"blockMachineCrucible": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/crucible",
+				"stream": false
+			}
+		]
+	},
+	"blockMachineTransposer": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/transposer",
+				"stream": false
+			}
+		]
+	},
+	"blockMachineAccumulator": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/machine/accumulator",
+				"stream": false
+			}
+		]
+	}
 }

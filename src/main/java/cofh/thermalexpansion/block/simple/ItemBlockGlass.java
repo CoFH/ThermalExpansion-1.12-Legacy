@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.simple;
 
 import cofh.lib.util.helpers.StringHelper;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;

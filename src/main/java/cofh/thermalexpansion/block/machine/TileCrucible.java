@@ -17,20 +17,19 @@ import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 import javax.annotation.Nullable;
 
@@ -246,7 +245,7 @@ public class TileCrucible extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -290,7 +289,7 @@ public class TileCrucible extends TileMachineBase {
 
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
-        BlockUtils.fireBlockUpdate(getWorld(),getPos());
+		BlockUtils.fireBlockUpdate(getWorld(), getPos());
 	}
 
 	/* IInventory */
@@ -313,50 +312,56 @@ public class TileCrucible extends TileMachineBase {
 		}
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo info = tank.getInfo();
-                    return new IFluidTankProperties[] {new FluidTankProperties(info.fluid, info.capacity, false, true)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    return 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (from != null && sideCache[from.ordinal()] != 2) {
-                        return null;
-                    }
-                    if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-                        return null;
-                    }
-                    return tank.drain(resource.amount, doDrain);
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (from != null && sideCache[from.ordinal()] != 2) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (from != null && sideCache[from.ordinal()] != 2) {
+						return null;
+					}
+					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+						return null;
+					}
+					return tank.drain(resource.amount, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (from != null && sideCache[from.ordinal()] != 2) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 	/* ISidedTexture */
 	@Override
@@ -370,8 +375,7 @@ public class TileCrucible extends TileMachineBase {
 			}
 			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", type);
 		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
 		}
 	}
 

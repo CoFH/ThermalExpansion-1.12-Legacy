@@ -6,14 +6,12 @@ import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IChargerRecipe;
-
 import gnu.trove.map.hash.THashMap;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.Map;
 import java.util.Map.Entry;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class ChargerManager {
 

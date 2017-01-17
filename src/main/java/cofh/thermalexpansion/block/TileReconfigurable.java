@@ -5,11 +5,11 @@ import cofh.api.tileentity.IReconfigurableSides;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
 
@@ -65,7 +65,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 
 		nbt.setByte("Facing", facing);
 		nbt.setByteArray("SideCache", sideCache);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -121,36 +121,36 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 			byte[] tempCache = new byte[6];
 
 			switch (facing) {
-			case 0:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_X[i]];
-				}
-				break;
-			case 1:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_X[i]];
-				}
-				break;
-			case 2:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Y[i]];
-				}
-				break;
-			case 3:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Y[i]];
-				}
-				break;
-			case 4:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Z[i]];
-				}
-				break;
-			case 5:
-				for (int i = 0; i < 6; i++) {
-					tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Z[i]];
-				}
-				break;
+				case 0:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_X[i]];
+					}
+					break;
+				case 1:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_X[i]];
+					}
+					break;
+				case 2:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Y[i]];
+					}
+					break;
+				case 3:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Y[i]];
+					}
+					break;
+				case 4:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.INVERT_AROUND_Z[i]];
+					}
+					break;
+				case 5:
+					for (int i = 0; i < 6; i++) {
+						tempCache[i] = sideCache[BlockHelper.ROTATE_CLOCK_Z[i]];
+					}
+					break;
 			}
 			sideCache = tempCache.clone();
 			facing++;

@@ -9,13 +9,12 @@ import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSmelter extends TileMachineBase {
 
@@ -330,7 +329,7 @@ public class TileSmelter extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

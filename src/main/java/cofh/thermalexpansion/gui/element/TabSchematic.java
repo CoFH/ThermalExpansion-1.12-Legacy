@@ -7,13 +7,11 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
+import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
 import java.util.List;
-
-import net.minecraft.util.ResourceLocation;
-
-import org.lwjgl.opengl.GL11;
 
 public class TabSchematic extends TabBase {
 
@@ -54,7 +52,7 @@ public class TabSchematic extends TabBase {
 	}
 
 	@Override
-	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) throws IOException{
+	public boolean onMousePressed(int mouseX, int mouseY, int mouseButton) throws IOException {
 
 		if (!isFullyOpened()) {
 			return false;

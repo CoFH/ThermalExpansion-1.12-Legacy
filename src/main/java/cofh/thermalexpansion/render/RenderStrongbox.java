@@ -11,8 +11,11 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.render.model.ModelStrongbox;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.block.model.*;
+import net.minecraft.client.renderer.block.model.BakedQuad;
+import net.minecraft.client.renderer.block.model.IBakedModel;
+import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms.TransformType;
+import net.minecraft.client.renderer.block.model.ItemOverrideList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.ItemStack;
@@ -28,98 +31,108 @@ import java.util.List;
 
 public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> implements IItemRenderer, IPerspectiveAwareModel {
 
-    public static final RenderStrongbox instance = new RenderStrongbox();
-    static ResourceLocation[] texture = new ResourceLocation[EnumType.values().length];
+	public static final RenderStrongbox instance = new RenderStrongbox();
+	static ResourceLocation[] texture = new ResourceLocation[EnumType.values().length];
 
-    static ModelStrongbox model = new ModelStrongbox();
+	static ModelStrongbox model = new ModelStrongbox();
 
-    public static void registerRenderers() {
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
-        ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
-    }
+	public static void registerRenderers() {
 
-    public static void initialize() {
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, instance);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongboxCreative.class, instance);
+	}
 
-        texture[EnumType.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_basic.png");
-        texture[EnumType.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_hardened.png");
-        texture[EnumType.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_reinforced.png");
-        texture[EnumType.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_resonant.png");
-        texture[EnumType.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_creative.png");
-    }
+	public static void initialize() {
 
-    public void render(int metadata, int access, int facing, double x, double y, double z) {
+		texture[EnumType.BASIC.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_basic.png");
+		texture[EnumType.HARDENED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_hardened.png");
+		texture[EnumType.REINFORCED.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_reinforced.png");
+		texture[EnumType.RESONANT.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_resonant.png");
+		texture[EnumType.CREATIVE.ordinal()] = new ResourceLocation(TEProps.PATH_RENDER + "strongbox/strongbox_creative.png");
+	}
 
-        RenderHelper.bindTexture(texture[metadata]);
+	public void render(int metadata, int access, int facing, double x, double y, double z) {
 
-        GlStateManager.pushMatrix();
-        GlStateManager.translate(x, y + 1.0, z + 1.0);
-        GlStateManager.scale(1.0F, -1F, -1F);
-        GlStateManager.translate(0.5F, 0.5F, 0.5F);
-        GlStateManager.rotate(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
-        GlStateManager.translate(-0.5F, -0.5F, -0.5F);
-        GlStateManager.enableRescaleNormal();
-        model.render(access);
-        GlStateManager.disableRescaleNormal();
-        GlStateManager.popMatrix();
-    }
+		RenderHelper.bindTexture(texture[metadata]);
 
-    @Override
-    public void renderTileEntityAt(TileStrongbox strongbox, double x, double y, double z, float f, int destroyStage) {
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(x, y + 1.0, z + 1.0);
+		GlStateManager.scale(1.0F, -1F, -1F);
+		GlStateManager.translate(0.5F, 0.5F, 0.5F);
+		GlStateManager.rotate(RenderUtils.facingAngle[facing], 0.0F, 1.0F, 0.0F);
+		GlStateManager.translate(-0.5F, -0.5F, -0.5F);
+		GlStateManager.enableRescaleNormal();
+		model.render(access);
+		GlStateManager.disableRescaleNormal();
+		GlStateManager.popMatrix();
+	}
 
-        model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
-        render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
-    }
+	@Override
+	public void renderTileEntityAt(TileStrongbox strongbox, double x, double y, double z, float f, int destroyStage) {
 
-    @Override
-    public void renderItem(ItemStack item) {
-        double offset = 0;
-        int access = 0;
+		model.boxLid.rotateAngleX = (float) strongbox.getRadianLidAngle(f);
+		render(strongbox.type, strongbox.getAccess().ordinal(), strongbox.getFacing(), x, y, z);
+	}
 
-        if (item.getTagCompound() != null) {
-            access = item.getTagCompound().getByte("Access");
-        }
-        model.boxLid.rotateAngleX = 0;
-        render(item.getItemDamage(), access, 2, offset, offset, offset);
-        GlStateManager.enableRescaleNormal();
-    }
+	@Override
+	public void renderItem(ItemStack item) {
 
-    @Override
-    public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
-        return null;
-    }
+		double offset = 0;
+		int access = 0;
 
-    @Override
-    public boolean isAmbientOcclusion() {
-        return false;
-    }
+		if (item.getTagCompound() != null) {
+			access = item.getTagCompound().getByte("Access");
+		}
+		model.boxLid.rotateAngleX = 0;
+		render(item.getItemDamage(), access, 2, offset, offset, offset);
+		GlStateManager.enableRescaleNormal();
+	}
 
-    @Override
-    public boolean isGui3d() {
-        return false;
-    }
+	@Override
+	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
 
-    @Override
-    public boolean isBuiltInRenderer() {
-        return true;
-    }
+		return null;
+	}
 
-    @Override
-    public TextureAtlasSprite getParticleTexture() {
-        return null;
-    }
+	@Override
+	public boolean isAmbientOcclusion() {
 
-    @Override
-    public ItemCameraTransforms getItemCameraTransforms() {
-        return ItemCameraTransforms.DEFAULT;
-    }
+		return false;
+	}
 
-    @Override
-    public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
-        return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK.getTransforms(), cameraTransformType);
-    }
+	@Override
+	public boolean isGui3d() {
 
-    @Override
-    public ItemOverrideList getOverrides() {
-        return ItemOverrideList.NONE;
-    }
+		return false;
+	}
+
+	@Override
+	public boolean isBuiltInRenderer() {
+
+		return true;
+	}
+
+	@Override
+	public TextureAtlasSprite getParticleTexture() {
+
+		return null;
+	}
+
+	@Override
+	public ItemCameraTransforms getItemCameraTransforms() {
+
+		return ItemCameraTransforms.DEFAULT;
+	}
+
+	@Override
+	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+
+		return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK.getTransforms(), cameraTransformType);
+	}
+
+	@Override
+	public ItemOverrideList getOverrides() {
+
+		return ItemOverrideList.NONE;
+	}
 }

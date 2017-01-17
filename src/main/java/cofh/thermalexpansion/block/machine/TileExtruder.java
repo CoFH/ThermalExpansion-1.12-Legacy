@@ -14,23 +14,22 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.item.TEAugments;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
@@ -150,8 +149,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processLava[curSelection])
-				|| coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
+		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processLava[curSelection]) || coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -180,10 +178,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processFinish() {
 
-		int maxCreate = Math.min(
-				outputItems[prevSelection].stackSize,
-				Math.min(hotTank.getFluidAmount() / Math.max(1, processLava[prevSelection]),
-						coldTank.getFluidAmount() / Math.max(1, processWater[processLevel][prevSelection])));
+		int maxCreate = Math.min(outputItems[prevSelection].stackSize, Math.min(hotTank.getFluidAmount() / Math.max(1, processLava[prevSelection]), coldTank.getFluidAmount() / Math.max(1, processWater[processLevel][prevSelection])));
 
 		if (inventory[0] == null) {
 			inventory[0] = ItemHelper.cloneStack(outputItems[prevSelection], maxCreate);
@@ -320,7 +315,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		nbt.setTag("HotTank", hotTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("ColdTank", coldTank.writeToNBT(new NBTTagCompound()));
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -389,7 +384,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		super.handleFluidPacket(payload);
 		hotRenderFluid = payload.getFluidStack();
 		coldRenderFluid = payload.getFluidStack();
-        BlockUtils.fireBlockUpdate(getWorld(), getPos());
+		BlockUtils.fireBlockUpdate(getWorld(), getPos());
 	}
 
 	@Override
@@ -482,48 +477,54 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		markDirty();
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo hotInfo = hotTank.getInfo();
-                    FluidTankInfo coldInfo = coldTank.getInfo();
-                    return new IFluidTankProperties[] {new FluidTankProperties(hotInfo.fluid, hotInfo.capacity, true, false), new FluidTankProperties(coldInfo.fluid, coldInfo.capacity, true, false)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (from != null && sideCache[from.ordinal()] != 1) {
-                        return 0;
-                    }
-                    if (resource.getFluid() == FluidRegistry.LAVA) {
-                        return hotTank.fill(resource, doFill);
-                    } else if (resource.getFluid() == FluidRegistry.WATER) {
-                        return coldTank.fill(resource, doFill);
-                    }
-                    return 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    return null;
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    return null;
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo hotInfo = hotTank.getInfo();
+					FluidTankInfo coldInfo = coldTank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(hotInfo.fluid, hotInfo.capacity, true, false), new FluidTankProperties(coldInfo.fluid, coldInfo.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (from != null && sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					if (resource.getFluid() == FluidRegistry.LAVA) {
+						return hotTank.fill(resource, doFill);
+					} else if (resource.getFluid() == FluidRegistry.WATER) {
+						return coldTank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 }

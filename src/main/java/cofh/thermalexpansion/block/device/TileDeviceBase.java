@@ -7,10 +7,9 @@ import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.core.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraftforge.fml.relauncher.Side;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TileAugmentable {
 
@@ -24,8 +23,7 @@ public abstract class TileDeviceBase extends TileAugmentable {
 			String comment = "Enable this to allow for " + name + "s to be securable.";
 			enableSecurity[i] = ThermalExpansion.config.get("Security", "Device." + name + ".Securable", true, comment);
 		}
-		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()])
-				+ ".Securable");
+		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()]) + ".Securable");
 		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.PUMP.ordinal()]) + ".Securable");
 		ThermalExpansion.config.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
 	}

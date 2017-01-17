@@ -6,14 +6,13 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.TileDynamoCompression;
 import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.File;
 import java.util.Locale;
 import java.util.Set;
-
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.config.Configuration;
-import net.minecraftforge.fluids.FluidRegistry;
 
 public class FuelManager {
 
@@ -112,8 +111,7 @@ public class FuelManager {
 	public static void parseFuels() {
 
 		String category = "Fuels.Magmatic";
-		configFuels.getCategory(category).setComment(
-				"You can add fuels to the Magmatic Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
+		configFuels.getCategory(category).setComment("You can add fuels to the Magmatic Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
 		addMagmaticFuel("lava", configFuels.get(category, "lava", CoFHProps.LAVA_RF * 9 / 10));
 		addMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
@@ -124,8 +122,7 @@ public class FuelManager {
 		}
 
 		category = "Fuels.Compression";
-		configFuels.getCategory(category).setComment(
-				"You can add fuels to the Compression Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
+		configFuels.getCategory(category).setComment("You can add fuels to the Compression Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
 		addCompressionFuel("coal", configFuels.get(category, "coal", 1000000));
 		addCompressionFuel("biofuel", configFuels.get(category, "biofuel", 500000));
@@ -140,8 +137,7 @@ public class FuelManager {
 		}
 
 		category = "Fuels.Reactant";
-		configFuels.getCategory(category).setComment(
-				"You can add fuels to the Reactant Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
+		configFuels.getCategory(category).setComment("You can add fuels to the Reactant Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
 		addReactantFuel("redstone", configFuels.get(category, "redstone", 600000));
 		addReactantFuel("glowstone", configFuels.get(category, "glowstone", 750000));
@@ -161,8 +157,7 @@ public class FuelManager {
 		}
 
 		category = "Coolants";
-		configFuels.getCategory(category).setComment(
-				"You can add Coolants in this section. Fluid names only, as they are registered in Minecraft. Currently only used by the Compression Dynamo.");
+		configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft. Currently only used by the Compression Dynamo.");
 
 		addCoolant("water", configFuels.get(category, "water", 400000));
 		addCoolant("cryotheum", configFuels.get(category, "cryotheum", 4000000));

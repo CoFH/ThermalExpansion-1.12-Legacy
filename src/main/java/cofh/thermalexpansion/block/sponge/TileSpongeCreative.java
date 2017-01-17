@@ -8,50 +8,50 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSpongeCreative extends TileSponge {
 
-    public static void initialize() {
+	public static void initialize() {
 
-        GameRegistry.registerTileEntity(TileSpongeCreative.class, "thermalexpansion.SpongeCreative");
-    }
+		GameRegistry.registerTileEntity(TileSpongeCreative.class, "thermalexpansion.SpongeCreative");
+	}
 
-    public TileSpongeCreative() {
+	public TileSpongeCreative() {
 
-    }
+	}
 
-    public TileSpongeCreative(int metadata) {
+	public TileSpongeCreative(int metadata) {
 
-        super(metadata);
-    }
+		super(metadata);
+	}
 
-    @Override
-    public int getType() {
+	@Override
+	public int getType() {
 
-        return BlockSponge.Types.CREATIVE.ordinal();
-    }
+		return BlockSponge.Types.CREATIVE.ordinal();
+	}
 
-    @Override
-    public void placeAir() {
+	@Override
+	public void placeAir() {
 
-        if (ServerHelper.isClientWorld(worldObj)) {
-            return;
-        }
-        if (fullOnPlace) {
-            return;
-        }
-        IBlockState query;
-        // int queryMeta;
-        // Fluid queryFluid;
-        // int bucketCounter = 0;
-        for (int x = -1; x <= 1; x++) {
-            for (int y = -1; y <= 1; y++) {
-                for (int z = -1; z <= 1; z++) {
-                    BlockPos offsetPos = getPos().add(x, y, z);
-                    query = worldObj.getBlockState(offsetPos);
-                    if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
-                        worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
-                    }
-                }
-            }
-        }
-    }
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		if (fullOnPlace) {
+			return;
+		}
+		IBlockState query;
+		// int queryMeta;
+		// Fluid queryFluid;
+		// int bucketCounter = 0;
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				for (int z = -1; z <= 1; z++) {
+					BlockPos offsetPos = getPos().add(x, y, z);
+					query = worldObj.getBlockState(offsetPos);
+					if (query.getBlock().isAir(query, worldObj, offsetPos) || query.getMaterial().isLiquid()) {
+						worldObj.setBlockState(offsetPos, TEBlocks.blockAirBarrier.getDefaultState(), 3);
+					}
+				}
+			}
+		}
+	}
 
 }

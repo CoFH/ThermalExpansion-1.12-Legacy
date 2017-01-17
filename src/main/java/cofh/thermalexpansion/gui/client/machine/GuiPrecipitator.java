@@ -1,16 +1,11 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.ElementFluid;
-import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -49,8 +44,7 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(myTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 64, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_SNOWFLAKE, 32, 16));
 	}
 
@@ -79,7 +73,7 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 	}
 
 	@Override
-	protected void mouseClicked(int mX, int mY, int mButton) throws IOException{
+	protected void mouseClicked(int mX, int mY, int mButton) throws IOException {
 
 		if (48 <= mouseX && mouseX < 128 && 18 <= mouseY && mouseY < 36) {
 			if (49 <= mouseX && mouseX < 67) {
@@ -101,30 +95,30 @@ public class GuiPrecipitator extends GuiAugmentableBase {
 			offset = 64;
 		}
 		switch (myTile.getCurSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 192, offset, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 192, offset, 32, 32);
+				break;
 		}
 	}
 
 	protected void drawPrevSelection() {
 
 		switch (myTile.getPrevSelection()) {
-		case 0:
-			drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 1:
-			drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
-			break;
-		case 2:
-			drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
-			break;
+			case 0:
+				drawTexturedModalRect(guiLeft + 42, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 1:
+				drawTexturedModalRect(guiLeft + 72, guiTop + 11, 224, 32, 32, 32);
+				break;
+			case 2:
+				drawTexturedModalRect(guiLeft + 102, guiTop + 11, 224, 32, 32, 32);
+				break;
 		}
 	}
 

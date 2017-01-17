@@ -28,7 +28,7 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 	public ItemCapacitor() {
 
 		super(ThermalExpansion.tabTools, "thermalexpansion:capacitor");
-//		setMaxDamage(1);
+		//		setMaxDamage(1);
 		setMaxStackSize(1);
 	}
 
@@ -51,13 +51,13 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		return "item.thermalexpansion.capacitor." + NAMES[ItemHelper.getItemDamage(item)];
 	}
 
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) &&
-                (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
-    }
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-    @Override
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
@@ -71,13 +71,10 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		}
 		if (ItemHelper.getItemDamage(stack) == Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[Types.CREATIVE.ordinal()]
-					+ " RF/t");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[Types.CREATIVE.ordinal()] + " RF/t");
 		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
-			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)]
-					+ "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / " + StringHelper.getScaledNumber(CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
+			list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + SEND[ItemHelper.getItemDamage(stack)] + "/" + RECEIVE[ItemHelper.getItemDamage(stack)] + " RF/t");
 		}
 		if (isActive(stack)) {
 			list.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.2"));
@@ -115,17 +112,18 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		}
 	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack itemStack, World world, EntityPlayer player, EnumHand hand) {
+
 		if (CoreUtils.isFakePlayer(player)) {
 			return new ActionResult<ItemStack>(EnumActionResult.FAIL, itemStack);
 		}
 		if (player.isSneaking()) {
 			if (setActiveState(itemStack, !isActive(itemStack))) {
 				if (isActive(itemStack)) {
-                    SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.8F);
+					SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.8F);
 				} else {
-                    SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.5F);
+					SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, 0.5F);
 				}
 			}
 		}
@@ -151,13 +149,15 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 		return false;
 	}
 
-    @Override
-    public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+	@Override
+	public EnumActionResult onItemUse(ItemStack stack, EntityPlayer playerIn, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
+
 		return EnumActionResult.FAIL;
 	}
 
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
+
 		return true;//super.showDurabilityBar(stack);
 	}
 
@@ -172,6 +172,7 @@ public class ItemCapacitor extends ItemMultiType implements IEnergyContainerItem
 
 	@Override
 	public int getMaxDamage(ItemStack stack) {
+
 		return super.getMaxDamage(stack);
 	}
 

@@ -6,7 +6,6 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;

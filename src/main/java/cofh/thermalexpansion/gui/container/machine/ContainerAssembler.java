@@ -1,19 +1,14 @@
 package cofh.thermalexpansion.gui.container.machine;
 
 import cofh.core.util.CoreUtils;
-import cofh.lib.gui.slot.SlotCraftingLocked;
-import cofh.lib.gui.slot.SlotEnergy;
-import cofh.lib.gui.slot.SlotFalseCopy;
-import cofh.lib.gui.slot.SlotRemoveOnly;
-import cofh.lib.gui.slot.SlotSpecificItem;
+import cofh.lib.gui.slot.*;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.machine.TileAssembler;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
-import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.network.PacketTEBase;
-import cofh.thermalexpansion.util.helpers.SchematicHelper;
-
+import cofh.thermalfoundation.init.TFItems;
+import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.*;
@@ -39,7 +34,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 74 + i * 18));
 			}
 		}
-		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, TEItems.diagramSchematic).setSlotStackLimit(1));
+		addSlotToContainer(new SlotSpecificItem(myTile, 0, 56, 34, TFItems.itemDiagram.schematic).setSlotStackLimit(1));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 
@@ -82,8 +77,7 @@ public class ContainerAssembler extends ContainerTEBase implements ISchematicCon
 		ItemStack schematic = myTile.getStackInSlot(0);
 
 		if (schematic != null && resultSlot.getHasStack()) {
-			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic,
-					SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
+			ItemStack newSchematic = SchematicHelper.writeNBTToSchematic(schematic, SchematicHelper.getNBTForSchematic(craftMatrix, myTile.getWorld(), craftResult.getStackInSlot(0)));
 			newSchematic.stackSize = schematic.stackSize;
 			myTile.setInventorySlotContents(0, newSchematic);
 			for (int i = 0; i < 9; i++) {

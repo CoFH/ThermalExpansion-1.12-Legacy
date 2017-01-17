@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
@@ -14,32 +15,19 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import codechicken.lib.model.blockbakery.BlockBakery;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import java.util.List;
-import java.util.Locale;
-
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -49,14 +37,28 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.List;
+import java.util.Locale;
 
 public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvider {
 
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
 	public BlockMachine() {
 
@@ -66,61 +68,64 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		setUnlocalizedName("thermalexpansion.machine");
 	}
 
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).meta();
-    }
+		return state.getValue(TYPES).meta();
+	}
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).build();
-    }
+		return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
-    }
+	@Override
+	protected BlockStateContainer createBlockState() {
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+		return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).build();
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return BlockBakery.handleExtendedState((IExtendedBlockState) state, world.getTileEntity(pos));
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
-            return null;
+			return null;
 		}
 		switch (Types.values()[metadata]) {
-		case FURNACE:
-			return new TileFurnace();
-		case PULVERIZER:
-			return new TilePulverizer();
-		case SAWMILL:
-			return new TileSawmill();
-		case SMELTER:
-			return new TileSmelter();
-		case CRUCIBLE:
-			return new TileCrucible();
-		case TRANSPOSER:
-			return new TileTransposer();
-		case PRECIPITATOR:
-			return new TilePrecipitator();
-		case EXTRUDER:
-			return new TileExtruder();
-		case ACCUMULATOR:
-			return new TileAccumulator();
-		case ASSEMBLER:
-			return new TileAssembler();
-		case CHARGER:
-			return new TileCharger();
-		case INSOLATOR:
-			return new TileInsolator();
-		default:
-			return null;
+			case FURNACE:
+				return new TileFurnace();
+			case PULVERIZER:
+				return new TilePulverizer();
+			case SAWMILL:
+				return new TileSawmill();
+			case SMELTER:
+				return new TileSmelter();
+			case CRUCIBLE:
+				return new TileCrucible();
+			case TRANSPOSER:
+				return new TileTransposer();
+			case PRECIPITATOR:
+				return new TilePrecipitator();
+			case EXTRUDER:
+				return new TileExtruder();
+			case ACCUMULATOR:
+				return new TileAccumulator();
+			case ASSEMBLER:
+				return new TileAssembler();
+			case CHARGER:
+				return new TileCharger();
+			case INSOLATOR:
+				return new TileInsolator();
+			default:
+				return null;
 		}
 	}
 
@@ -136,8 +141,9 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		}
 	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
 		if (stack.getTagCompound() != null) {
 			TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
@@ -157,105 +163,111 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
-    }
+	}
 
-    @Override
-    public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
-            if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-                IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-                if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
-                    return true;
-                }
-            }
+			if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+				if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
+					return true;
+				}
+			}
 		}
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+
 		return false;
 	}
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+
 		return true;
 	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
+	@Override
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-        if (side.ordinal() == 0) {
-            return IconRegistry.getIcon("MachineBottom");
-        }
-        if (side.ordinal() == 1) {
-            return IconRegistry.getIcon("MachineTop");
-        }
-        return side.ordinal() != 2 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
+
+		if (side.ordinal() == 0) {
+			return IconRegistry.getIcon("MachineBottom");
+		}
+		if (side.ordinal() == 1) {
+			return IconRegistry.getIcon("MachineTop");
+		}
+		return side.ordinal() != 2 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
 	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
-        TileEntity tileEntity = access.getTileEntity(pos);
-        if (tileEntity instanceof TileMachineBase) {
-            TileMachineBase machine = ((TileMachineBase) tileEntity);
-            //TODO ISidedTexture needs to change to support layers + passes.
-            return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
-        }
-        return TextureUtils.getMissingSprite();
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        // Base Textures
-        IconRegistry.addIcon("MachineBottom", "thermalexpansion:blocks/machine/machine_bottom", textureMap);
-        IconRegistry.addIcon("MachineTop", "thermalexpansion:blocks/machine/machine_top", textureMap);
-        IconRegistry.addIcon("MachineSide", "thermalexpansion:blocks/machine/machine_side", textureMap);
-
-        // Face Textures
-        for (int i = 0; i < Types.values().length; i++) {
-            IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:blocks/machine/machine_face_" + NAMES[i], textureMap);
-            IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:blocks/machine/machine_active_" + NAMES[i], textureMap);
-        }
-
-        // Config Textures
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/config/config_blue", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/config/config_red", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 3, "thermalexpansion:blocks/config/config_yellow", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 4, "thermalexpansion:blocks/config/config_orange", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 5, "thermalexpansion:blocks/config/config_green", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 6, "thermalexpansion:blocks/config/config_purple", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 7, "thermalexpansion:blocks/config/config_open", textureMap);
-
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 1, "thermalexpansion:blocks/config/config_blue_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 2, "thermalexpansion:blocks/config/config_red_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 3, "thermalexpansion:blocks/config/config_yellow_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:blocks/config/config_orange_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:blocks/config/config_green_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:blocks/config/config_purple_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);
-    }
+		TileEntity tileEntity = access.getTileEntity(pos);
+		if (tileEntity instanceof TileMachineBase) {
+			TileMachineBase machine = ((TileMachineBase) tileEntity);
+			//TODO ISidedTexture needs to change to support layers + passes.
+			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+		}
+		return TextureUtils.getMissingSprite();
+	}
 
 	@Override
-    public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerIcons(TextureMap textureMap) {
+		// Base Textures
+		IconRegistry.addIcon("MachineBottom", "thermalexpansion:blocks/machine/machine_bottom", textureMap);
+		IconRegistry.addIcon("MachineTop", "thermalexpansion:blocks/machine/machine_top", textureMap);
+		IconRegistry.addIcon("MachineSide", "thermalexpansion:blocks/machine/machine_side", textureMap);
+
+		// Face Textures
+		for (int i = 0; i < Types.values().length; i++) {
+			IconRegistry.addIcon("MachineFace" + i, "thermalexpansion:blocks/machine/machine_face_" + NAMES[i], textureMap);
+			IconRegistry.addIcon("MachineActive" + i, "thermalexpansion:blocks/machine/machine_active_" + NAMES[i], textureMap);
+		}
+
+		// Config Textures
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 1, "thermalexpansion:blocks/config/config_blue", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 2, "thermalexpansion:blocks/config/config_red", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 3, "thermalexpansion:blocks/config/config_yellow", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 4, "thermalexpansion:blocks/config/config_orange", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 5, "thermalexpansion:blocks/config/config_green", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 6, "thermalexpansion:blocks/config/config_purple", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_DEFAULT + 7, "thermalexpansion:blocks/config/config_open", textureMap);
+
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 0, "thermalexpansion:blocks/config/config_none", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 1, "thermalexpansion:blocks/config/config_blue_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 2, "thermalexpansion:blocks/config/config_red_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 3, "thermalexpansion:blocks/config/config_yellow_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:blocks/config/config_orange_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:blocks/config/config_green_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:blocks/config/config_purple_cb", textureMap);
+		IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
-        TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
+		TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
 		if (tile != null) {
-            if (tag == null) {
+			if (tag == null) {
 				tag = new NBTTagCompound();
 			}
 			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
@@ -306,17 +318,17 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		insolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Types.INSOLATOR.ordinal()));
 
 		ItemStackRegistry.registerCustomItemStack("furnace", furnace);
-        ItemStackRegistry.registerCustomItemStack("pulverizer", pulverizer);
-        ItemStackRegistry.registerCustomItemStack("sawmill", sawmill);
-        ItemStackRegistry.registerCustomItemStack("smelter", smelter);
-        ItemStackRegistry.registerCustomItemStack("crucible", crucible);
-        ItemStackRegistry.registerCustomItemStack("transposer", transposer);
-        ItemStackRegistry.registerCustomItemStack("precipitator", precipitator);
-        ItemStackRegistry.registerCustomItemStack("extruder", extruder);
-        ItemStackRegistry.registerCustomItemStack("accumulator", accumulator);
-        ItemStackRegistry.registerCustomItemStack("assembler", assembler);
-        ItemStackRegistry.registerCustomItemStack("charger", charger);
-        ItemStackRegistry.registerCustomItemStack("insolator", insolator);
+		ItemStackRegistry.registerCustomItemStack("pulverizer", pulverizer);
+		ItemStackRegistry.registerCustomItemStack("sawmill", sawmill);
+		ItemStackRegistry.registerCustomItemStack("smelter", smelter);
+		ItemStackRegistry.registerCustomItemStack("crucible", crucible);
+		ItemStackRegistry.registerCustomItemStack("transposer", transposer);
+		ItemStackRegistry.registerCustomItemStack("precipitator", precipitator);
+		ItemStackRegistry.registerCustomItemStack("extruder", extruder);
+		ItemStackRegistry.registerCustomItemStack("accumulator", accumulator);
+		ItemStackRegistry.registerCustomItemStack("assembler", assembler);
+		ItemStackRegistry.registerCustomItemStack("charger", charger);
+		ItemStackRegistry.registerCustomItemStack("insolator", insolator);
 
 		return true;
 	}
@@ -523,57 +535,50 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
-    public enum Types implements IStringSerializable, IType, IParticleProvider {
-		FURNACE,
-        PULVERIZER,
-        SAWMILL,
-        SMELTER,
-        CRUCIBLE,
-        TRANSPOSER,
-        PRECIPITATOR,
-        EXTRUDER,
-        ACCUMULATOR,
-        ASSEMBLER,
-        CHARGER,
-        INSOLATOR;
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
+		FURNACE, PULVERIZER, SAWMILL, SMELTER, CRUCIBLE, TRANSPOSER, PRECIPITATOR, EXTRUDER, ACCUMULATOR, ASSEMBLER, CHARGER, INSOLATOR;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.US);
-        }
+		@Override
+		public String getName() {
 
+			return name().toLowerCase(Locale.US);
+		}
 
-        public static Types fromMeta(int meta) {
-            try {
-                return values()[meta];
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-            }
-        }
+		public static Types fromMeta(int meta) {
 
-        @Override
-        public int meta() {
-            return ordinal();
-        }
+			try {
+				return values()[meta];
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+			}
+		}
 
-        @Override
-        public IProperty<?> getTypeProperty() {
-            return TYPES;
-        }
+		@Override
+		public int meta() {
 
-        @Override
-        public String getParticleTexture() {
-            return "thermalexpansion:blocks/machine/machine_side";
-        }
+			return ordinal();
+		}
 
-        public static int meta(Types type) {
-            return type.ordinal();
-        }
+		@Override
+		public IProperty<?> getTypeProperty() {
+
+			return TYPES;
+		}
+
+		@Override
+		public String getParticleTexture() {
+
+			return "thermalexpansion:blocks/machine/machine_side";
+		}
+
+		public static int meta(Types type) {
+
+			return type.ordinal();
+		}
 
 	}
 
-	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator",
-			"assembler", "charger", "insolator" };
+	public static final String[] NAMES = { "furnace", "pulverizer", "sawmill", "smelter", "crucible", "transposer", "precipitator", "extruder", "accumulator", "assembler", "charger", "insolator" };
 	public static boolean[] enable = new boolean[Types.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];

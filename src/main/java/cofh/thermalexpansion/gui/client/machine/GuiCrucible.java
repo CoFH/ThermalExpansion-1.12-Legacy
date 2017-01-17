@@ -1,15 +1,10 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.ElementFluid;
-import cofh.lib.gui.element.ElementFluidTank;
+import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -42,8 +37,7 @@ public class GuiCrucible extends GuiAugmentableBase {
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 103, 34).setFluid(myTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_RIGHT, 64, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 103, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 56, 44).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 	}
 

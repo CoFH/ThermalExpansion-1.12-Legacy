@@ -41,8 +41,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	public static final IModel MAGMATIC_MODEL = new ModelFlorb(true);
 
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb");
-	public static final ModelResourceLocation MAGMATIC_MODEL_LOCATION = new ModelResourceLocation(
-			"thermalexpansion:florb_magmatic");
+	public static final ModelResourceLocation MAGMATIC_MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb_magmatic");
 
 	private static final ResourceLocation BASE = new ResourceLocation("thermalexpansion:items/florb/florb");
 	private static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
@@ -80,8 +79,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	}
 
 	@Override
-	public IBakedModel bake(IModelState state, VertexFormat format,
-			Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
+	public IBakedModel bake(IModelState state, VertexFormat format, Function<ResourceLocation, TextureAtlasSprite> bakedTextureGetter) {
 
 		ImmutableMap<TransformType, TRSRTransformation> transformMap = IPerspectiveAwareModel.MapWrapper.getTransforms(state);
 
@@ -94,20 +92,16 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		}
 
 		// build base (insidest)
-		IBakedModel model = (new ItemLayerModel(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)))
-				.bake(state, format, bakedTextureGetter);
+		IBakedModel model = (new ItemLayerModel(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE))).bake(state, format, bakedTextureGetter);
 		builder.addAll(model.getQuads(null, null, 0));
 
 		if (fluidSprite != null) {
 			TextureAtlasSprite liquid = bakedTextureGetter.apply(MASK);
-			builder.addAll(ItemTextureQuadConverter
-					.convertTexture(format, transform, liquid, fluidSprite, NORTH_Z_FLUID, EnumFacing.NORTH, fluid.getColor()));
-			builder.addAll(ItemTextureQuadConverter
-					.convertTexture(format, transform, liquid, fluidSprite, SOUTH_Z_FLUID, EnumFacing.SOUTH, fluid.getColor()));
+			builder.addAll(ItemTextureQuadConverter.convertTexture(format, transform, liquid, fluidSprite, NORTH_Z_FLUID, EnumFacing.NORTH, fluid.getColor()));
+			builder.addAll(ItemTextureQuadConverter.convertTexture(format, transform, liquid, fluidSprite, SOUTH_Z_FLUID, EnumFacing.SOUTH, fluid.getColor()));
 		}
 
-		return new BakedFlorb(this, builder.build(), fluidSprite, format, Maps.immutableEnumMap(transformMap),
-				Maps.<String, IBakedModel>newHashMap());
+		return new BakedFlorb(this, builder.build(), fluidSprite, format, Maps.immutableEnumMap(transformMap), Maps.<String, IBakedModel>newHashMap());
 	}
 
 	@Override
@@ -122,8 +116,9 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		String fluidName = customData.get("fluid");
 		Fluid fluid = FluidRegistry.getFluid(fluidName);
 
-		if (fluid == null)
+		if (fluid == null) {
 			fluid = this.fluid;
+		}
 
 		// create new model with correct liquid
 		return new ModelFlorb(fluid, this.magmatic);
@@ -135,8 +130,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		@Override
 		public boolean accepts(ResourceLocation modelLocation) {
 
-			return modelLocation.getResourceDomain().equals("thermalexpansion") &&
-					modelLocation.getResourcePath().startsWith("florb");
+			return modelLocation.getResourceDomain().equals("thermalexpansion") && modelLocation.getResourcePath().startsWith("florb");
 		}
 
 		@Override
@@ -205,10 +199,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		private final TextureAtlasSprite particle;
 		private final VertexFormat format;
 
-		public BakedFlorb(ModelFlorb parent,
-				ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, VertexFormat format,
-				ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms,
-				Map<String, IBakedModel> cache) {
+		public BakedFlorb(ModelFlorb parent, ImmutableList<BakedQuad> quads, TextureAtlasSprite particle, VertexFormat format, ImmutableMap<ItemCameraTransforms.TransformType, TRSRTransformation> transforms, Map<String, IBakedModel> cache) {
 
 			this.quads = quads;
 			this.particle = particle;
@@ -233,8 +224,9 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		@Override
 		public List<BakedQuad> getQuads(IBlockState state, EnumFacing side, long rand) {
 
-			if (side == null)
+			if (side == null) {
 				return quads;
+			}
 			return ImmutableList.of();
 		}
 

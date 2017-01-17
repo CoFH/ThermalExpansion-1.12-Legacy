@@ -4,9 +4,6 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.block.tank.TileTank;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
@@ -16,6 +13,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
+
+import java.util.List;
 
 public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 
@@ -63,10 +62,10 @@ public class ItemBlockSponge extends ItemBlock implements IFluidContainerItem {
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockSponge.Types.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

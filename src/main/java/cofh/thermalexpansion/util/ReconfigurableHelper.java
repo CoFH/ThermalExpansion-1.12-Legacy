@@ -1,7 +1,6 @@
-package cofh.thermalexpansion.util.helpers;
+package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.block.TileReconfigurable;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 

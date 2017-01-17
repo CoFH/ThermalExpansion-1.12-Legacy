@@ -9,20 +9,19 @@ import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 
@@ -102,40 +101,46 @@ public class TileNullifier extends TileDeviceBase {
 
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    return new IFluidTankProperties[] {new FluidTankProperties(null, Integer.MAX_VALUE, true, false)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    return isSideAccessible(facing) ? resource.amount : 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    return null;
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    return null;
-                }
-            });
-        }
-        return super.getCapability(capability, facing);
-    }
+					return new IFluidTankProperties[] { new FluidTankProperties(null, Integer.MAX_VALUE, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return isSideAccessible(facing) ? resource.amount : 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, facing);
+	}
 
 	/* IInventory */
 	@Override
@@ -204,11 +209,9 @@ public class TileNullifier extends TileDeviceBase {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid)
-					: IconRegistry.getIcon("DeviceFace", type);
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("DeviceFace", type);
 		} else if (side < 6) {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]])
-					: redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", type) : IconRegistry.getIcon("DeviceFace", type);
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", type) : IconRegistry.getIcon("DeviceFace", type);
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}

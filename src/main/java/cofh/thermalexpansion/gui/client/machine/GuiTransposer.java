@@ -1,18 +1,11 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementBase;
-import cofh.lib.gui.element.ElementButton;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.ElementFluid;
-import cofh.lib.gui.element.ElementFluidTank;
-import cofh.lib.gui.element.ElementSimple;
+import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TileTransposer;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -60,10 +53,8 @@ public class GuiTransposer extends GuiAugmentableBase {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
 		progressBackgroundRev = (ElementSimple) addElement(new ElementSimple(this, 112, 19).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 112, 19).setFluid(myTile.getTankFluid()).setSize(24, 16));
-		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(2).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_LEFT, 64, 16));
-		progressOverlayRev = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(1).setBackground(false).setSize(24, 16)
-				.setTexture(TEX_DROP_RIGHT, 64, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
+		progressOverlayRev = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_BUBBLE, 32, 16));
 		mode = (ElementButton) addElement(new ElementButton(this, 116, 49, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
 	}
@@ -131,9 +122,9 @@ public class GuiTransposer extends GuiAugmentableBase {
 		if (buttonName.equals("Mode")) {
 			if (myTile.reverse == myTile.reverseFlag) {
 				if (myTile.reverse) {
-                    playClickSound(1.0F, 0.8F);
+					playClickSound(1.0F, 0.8F);
 				} else {
-                    playClickSound(1.0F, 0.6F);
+					playClickSound(1.0F, 0.6F);
 				}
 				myTile.setMode(!myTile.reverse);
 			}
