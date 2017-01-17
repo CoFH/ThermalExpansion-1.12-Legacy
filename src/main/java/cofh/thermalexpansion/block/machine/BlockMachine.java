@@ -195,37 +195,40 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
 	@Override
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-        if (side.ordinal() == 0) {
-            return TETextures.MACHINE_BOTTOM;
-        }
-        if (side.ordinal() == 1) {
-            return TETextures.MACHINE_TOP;
-        }
-        return side.ordinal() != 2 ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Types.values().length];
-    }
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
-        TileEntity tileEntity = access.getTileEntity(pos);
-        if (tileEntity instanceof TileMachineBase) {
-            TileMachineBase machine = ((TileMachineBase) tileEntity);
-            //TODO ISidedTexture needs to change to support layers + passes.
-            return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
-        }
-        return TextureUtils.getMissingSprite();
-    }
+		if (side.ordinal() == 0) {
+			return TETextures.MACHINE_BOTTOM;
+		}
+		if (side.ordinal() == 1) {
+			return TETextures.MACHINE_TOP;
+		}
+		return side.ordinal() != 2 ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Types.values().length];
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        /*// Base Textures
+		TileEntity tileEntity = access.getTileEntity(pos);
+		if (tileEntity instanceof TileMachineBase) {
+			TileMachineBase machine = ((TileMachineBase) tileEntity);
+			//TODO ISidedTexture needs to change to support layers + passes.
+			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+		}
+		return TextureUtils.getMissingSprite();
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerIcons(TextureMap textureMap) {
+		/*// Base Textures
         IconRegistry.addIcon("MachineBottom", "thermalexpansion:blocks/machine/machine_bottom", textureMap);
         IconRegistry.addIcon("MachineTop", "thermalexpansion:blocks/machine/machine_top", textureMap);
         IconRegistry.addIcon("MachineSide", "thermalexpansion:blocks/machine/machine_side", textureMap);
@@ -254,7 +257,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:blocks/config/config_green_cb", textureMap);
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:blocks/config/config_purple_cb", textureMap);
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);*/
-    }
+	}
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {

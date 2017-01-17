@@ -1,11 +1,7 @@
 package cofh.thermalexpansion.init;
 
-import cofh.thermalexpansion.block.cache.BlockCache;
-import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
-import cofh.thermalexpansion.block.tank.BlockTank;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
@@ -78,10 +74,10 @@ public class TEAchievements {
 		insolator = addAchievement("cofh.te.insolator", "thermalexpansion.insolator", 2, 7, BlockMachine.insolator, machineFrame);
 
 		// Resonant Achievements
-		resonantCell = addAchievement("cofh.te.resonantCell", "thermalexpansion.resonantCell", 0, 3, BlockCell.cellResonant, null);
-		resonantTank = addAchievement("cofh.te.resonantTank", "thermalexpansion.resonantTank", 0, 4, BlockTank.tankResonant, null);
-		resonantCache = addAchievement("cofh.te.resonantCache", "thermalexpansion.resonantCache", 0, 5, BlockCache.cacheResonant, null);
-		resonantStrongbox = addAchievement("cofh.te.resonantStrongbox", "thermalexpansion.resonantStrongbox", 0, 6, BlockStrongbox.strongboxResonant, null);
+//		resonantCell = addAchievement("cofh.te.resonantCell", "thermalexpansion.resonantCell", 0, 3, BlockCell.cellResonant, null);
+//		resonantTank = addAchievement("cofh.te.resonantTank", "thermalexpansion.resonantTank", 0, 4, BlockTank.tankResonant, null);
+//		resonantCache = addAchievement("cofh.te.resonantCache", "thermalexpansion.resonantCache", 0, 5, BlockCache.cacheResonant, null);
+//		resonantStrongbox = addAchievement("cofh.te.resonantStrongbox", "thermalexpansion.resonantStrongbox", 0, 6, BlockStrongbox.strongboxResonant, null);
 
 		// Page
 		page = new AchievementPage("Thermal Expansion", (Achievement[]) achievementList.toArray());

@@ -1,11 +1,6 @@
 package cofh.thermalexpansion.gui;
 
-import codechicken.lib.util.ItemUtils;
 import cofh.core.block.TileCore;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.gui.client.GuiSatchel;
-import cofh.thermalexpansion.gui.container.ContainerSatchel;
-import cofh.thermalexpansion.item.ItemSatchel;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -28,11 +23,11 @@ public class GuiHandler implements IGuiHandler {
 					return ((TileCore) tile).getGuiClient(player.inventory);
 				}
 				return null;
-			case SATCHEL_ID:
-				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
-					return new GuiSatchel(player.inventory, new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory));
-				}
-				return null;
+//			case SATCHEL_ID:
+//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
+//					return new GuiSatchel(player.inventory, new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory));
+//				}
+//				return null;
 			default:
 				return null;
 		}
@@ -49,11 +44,11 @@ public class GuiHandler implements IGuiHandler {
 					return ((TileCore) tile).getGuiServer(player.inventory);
 				}
 				return null;
-			case SATCHEL_ID:
-				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
-					return new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory);
-				}
-				return null;
+//			case SATCHEL_ID:
+//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
+//					return new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory);
+//				}
+//				return null;
 			default:
 				return null;
 		}

@@ -2,8 +2,8 @@ package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;

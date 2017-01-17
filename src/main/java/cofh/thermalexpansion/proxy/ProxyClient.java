@@ -3,64 +3,48 @@ package cofh.thermalexpansion.proxy;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBlockStateKeyGenerator;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
-import cofh.api.tileentity.ISecurable;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
-import cofh.lib.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.init.TEBlocksOld;
-import cofh.thermalexpansion.block.cache.BlockCache;
-import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.block.simple.*;
-import cofh.thermalexpansion.block.sponge.BlockSponge;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
-import cofh.thermalexpansion.block.tank.BlockTank;
-import cofh.thermalexpansion.block.tank.TileTank;
-import cofh.thermalexpansion.block.workbench.BlockWorkbench;
-import cofh.thermalexpansion.item.ItemSatchel;
+import cofh.thermalexpansion.block.simple.BlockAirForce;
+import cofh.thermalexpansion.block.simple.BlockAirSignal;
+import cofh.thermalexpansion.block.simple.BlockFrame;
+import cofh.thermalexpansion.init.TEBlocksOld;
+import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEFlorbs;
-import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.item.tool.ItemToolBase;
-import cofh.thermalexpansion.render.*;
+import cofh.thermalexpansion.render.RenderDynamo;
+import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import cofh.thermalexpansion.render.item.SchematicBakedModel;
 import net.minecraft.block.Block;
 import net.minecraft.block.properties.IProperty;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.IBakedModel;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.client.renderer.block.statemap.StateMap;
-import net.minecraft.client.renderer.block.statemap.StateMapperBase;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.client.model.ModelLoaderRegistry;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
 
 public class ProxyClient extends Proxy {
 
@@ -80,107 +64,106 @@ public class ProxyClient extends Proxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) {
 
-		RenderStrongbox.registerRenderers();
+		//RenderStrongbox.registerRenderers();
 
 		ModelLoaderRegistry.registerLoader(ModelFlorb.LoaderFlorb.INSTANCE);
 
 		TEAugments.itemAugment.registerModelVariants();
-		TEItemsOld.itemCapacitor.registerModelVariants();
+		//TEItemsOld.itemCapacitor.registerModelVariants();
 
 		registerToolModel(TEItemsOld.itemChiller, "chiller");
 		registerToolModel(TEItemsOld.itemIgniter, "igniter");
 		registerModedToolModel(TEItemsOld.itemPump, "pump");
 		registerModedToolModel(TEItemsOld.itemTransfuser, "transfuser");
 
-		final int accessCount = ISecurable.AccessMode.values().length;
-		final ModelResourceLocation[] satchelLocations = new ModelResourceLocation[ItemSatchel.NAMES.length * accessCount];
-		for (int meta = 0; meta < ItemSatchel.NAMES.length; meta++) {
-			for (int access = 0; access < accessCount; access++) {
-				satchelLocations[meta * accessCount + access] = getSatchelLocation(meta, ISecurable.AccessMode.values()[access]);
-			}
-		}
-
-		ModelLoader.setCustomMeshDefinition(TEItemsOld.itemSatchel, new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-
-				return satchelLocations[stack.getMetadata() * accessCount + SecurityHelper.getAccess(stack).ordinal()];
-			}
-		});
-		ModelLoader.registerItemVariants(TEItemsOld.itemSatchel, satchelLocations);
+		//		final int accessCount = ISecurable.AccessMode.values().length;
+		//		final ModelResourceLocation[] satchelLocations = new ModelResourceLocation[ItemSatchel.NAMES.length * accessCount];
+		//		for (int meta = 0; meta < ItemSatchel.NAMES.length; meta++) {
+		//			for (int access = 0; access < accessCount; access++) {
+		//				satchelLocations[meta * accessCount + access] = getSatchelLocation(meta, ISecurable.AccessMode.values()[access]);
+		//			}
+		//		}
+		//
+		//		ModelLoader.setCustomMeshDefinition(TEItemsOld.itemSatchel, new ItemMeshDefinition() {
+		//			@Override
+		//			public ModelResourceLocation getModelLocation(ItemStack stack) {
+		//
+		//				return satchelLocations[stack.getMetadata() * accessCount + SecurityHelper.getAccess(stack).ordinal()];
+		//			}
+		//		});
+		//		ModelLoader.registerItemVariants(TEItemsOld.itemSatchel, satchelLocations);
 
 		ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 0, ModelFlorb.MODEL_LOCATION);
 		ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 1, ModelFlorb.MAGMATIC_MODEL_LOCATION);
 
 		ModelRegistryHelper.register(getDiagramLocation("schematic_override"), new SchematicBakedModel());
 
-		ModelLoader.setCustomStateMapper(TEBlocksOld.blockGlass, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-
-				return new ModelResourceLocation("thermalexpansion:glass", "type=" + state.getValue(BlockGlass.TYPES).getName());
-			}
-		});
-		ModelLoader.setCustomStateMapper(TEBlocksOld.blockRockwool, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-
-				return new ModelResourceLocation("thermalexpansion:rockwool", "color=" + state.getValue(BlockRockwool.COLOR).getName());
-			}
-		});
-		ModelLoader.setCustomStateMapper(TEBlocksOld.blockWorkbench, new StateMapperBase() {
-			@Override
-			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
-
-				return new ModelResourceLocation("thermalexpansion:workbench", "type=" + state.getValue(BlockWorkbench.TYPES).getName());
-			}
-		});
+		//		ModelLoader.setCustomStateMapper(TEBlocksOld.blockGlass, new StateMapperBase() {
+		//			@Override
+		//			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+		//
+		//				return new ModelResourceLocation("thermalexpansion:glass", "type=" + state.getValue(BlockGlass.TYPES).getName());
+		//			}
+		//		});
+		//		ModelLoader.setCustomStateMapper(TEBlocksOld.blockRockwool, new StateMapperBase() {
+		//			@Override
+		//			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+		//
+		//				return new ModelResourceLocation("thermalexpansion:rockwool", "color=" + state.getValue(BlockRockwool.COLOR).getName());
+		//			}
+		//		});
+		//		ModelLoader.setCustomStateMapper(TEBlocksOld.blockWorkbench, new StateMapperBase() {
+		//			@Override
+		//			protected ModelResourceLocation getModelResourceLocation(IBlockState state) {
+		//
+		//				return new ModelResourceLocation("thermalexpansion:workbench", "type=" + state.getValue(BlockWorkbench.TYPES).getName());
+		//			}
+		//		});
 
 		registerBlockToBakery(TEBlocksOld.blockMachine, BlockMachine.Types.values());
 		registerBlockToBakery(TEBlocksOld.blockDevice, BlockDevice.Types.values());
 		registerBlockToBakery(TEBlocksOld.blockDynamo, RenderDynamo.instance, BlockDynamo.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockCell, RenderCell.instance, BlockCell.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockTank, RenderTank.instance, BlockTank.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockCache, BlockCache.Types.values());
 		registerBlockToBakery(TEBlocksOld.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
 
 		registerModelKeyGenerators();
 
-		ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
+		//ModelLoader.setCustomMeshDefinition(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ItemMeshDefinition() {
+		//		@Override public ModelResourceLocation getModelLocation (ItemStack stack){
+		//
+		//			boolean soaked = stack.getTagCompound() != null && stack.getTagCompound().hasKey("Fluid");
+		//			return new ModelResourceLocation("thermalexpansion:sponge", "soaked=" + String.valueOf(soaked).toLowerCase() + ",type=" + BlockSponge.Types.values()[stack.getMetadata()].getName());
+		//		}
+		//	});
 
-				boolean soaked = stack.getTagCompound() != null && stack.getTagCompound().hasKey("Fluid");
-				return new ModelResourceLocation("thermalexpansion:sponge", "soaked=" + String.valueOf(soaked).toLowerCase() + ",type=" + BlockSponge.Types.values()[stack.getMetadata()].getName());
-			}
-		});
+		//		for (int i = 0; i < BlockSponge.NAMES.length; i++) {
+		//			ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=false,type=" + BlockSponge.NAMES[i]));
+		//			ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=true,type=" + BlockSponge.NAMES[i]));
+		//		}
+		//
+		//		for (EnumType type : EnumType.values()) {
+		//			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:workbench", "type=" + type.getName().toLowerCase(Locale.US));
+		//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockWorkbench), type.ordinal(), location);
+		//		}
 
-		for (int i = 0; i < BlockSponge.NAMES.length; i++) {
-			ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=false,type=" + BlockSponge.NAMES[i]));
-			ModelLoader.registerItemVariants(Item.getItemFromBlock(TEBlocksOld.blockSponge), new ModelResourceLocation("thermalexpansion:sponge", "soaked=true,type=" + BlockSponge.NAMES[i]));
-		}
+		//		for (BlockGlass.Types type : BlockGlass.Types.values()) {
+		//			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:glass", "type=" + type.getName().toLowerCase(Locale.US));
+		//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockGlass), type.ordinal(), location);
+		//		}
+		//
+		//		for (EnumDyeColor color : EnumDyeColor.values()) {
+		//			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:rockwool", "color=" + color.getName().toLowerCase(Locale.US));
+		//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockRockwool), color.ordinal(), location);
+		//		}
 
-		for (EnumType type : EnumType.values()) {
-			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:workbench", "type=" + type.getName().toLowerCase(Locale.US));
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockWorkbench), type.ordinal(), location);
-		}
-
-		for (BlockGlass.Types type : BlockGlass.Types.values()) {
-			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:glass", "type=" + type.getName().toLowerCase(Locale.US));
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockGlass), type.ordinal(), location);
-		}
-
-		for (EnumDyeColor color : EnumDyeColor.values()) {
-			ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:rockwool", "color=" + color.getName().toLowerCase(Locale.US));
-			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(TEBlocksOld.blockRockwool), color.ordinal(), location);
-		}
-
-		registerDummyModel(TEBlocksOld.blockStrongbox, BlockStrongbox.TYPES);
-		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocksOld.blockStrongbox), RenderStrongbox.instance);
+		//		registerDummyModel(TEBlocksOld.blockStrongbox, BlockStrongbox.TYPES);
+		//		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocksOld.blockStrongbox), RenderStrongbox.instance);
 
 		registerDummyModel(TEBlocksOld.blockAirBarrier);
+
 		registerDummyModel(TEBlocksOld.blockAirForce, BlockAirForce.FACING);
+
 		registerDummyModel(TEBlocksOld.blockAirLight);
+
 		registerDummyModel(TEBlocksOld.blockAirSignal, BlockAirSignal.INTENSITY);
 
 		RenderEntityFlorb.initialize();
@@ -189,6 +172,7 @@ public class ProxyClient extends Proxy {
 	public void initialize(FMLInitializationEvent event) {
 
 	}
+
 	public void postInit(FMLPostInitializationEvent event) {
 
 	}
@@ -221,10 +205,10 @@ public class ProxyClient extends Proxy {
 		ModelRegistryHelper.register(normalLoc, DUMMY_MODEL);
 	}
 
-	private ModelResourceLocation getSatchelLocation(int meta, ISecurable.AccessMode access) {
-
-		return new ModelResourceLocation("thermalexpansion:satchel", "latch=" + access.toString().toLowerCase() + ",type=" + ItemSatchel.NAMES[meta]);
-	}
+	//	private ModelResourceLocation getSatchelLocation(int meta, ISecurable.AccessMode access) {
+	//
+	//		return new ModelResourceLocation("thermalexpansion:satchel", "latch=" + access.toString().toLowerCase() + ",type=" + ItemSatchel.NAMES[meta]);
+	//	}
 
 	private ModelResourceLocation getToolLocation(String name) {
 
@@ -285,25 +269,25 @@ public class ProxyClient extends Proxy {
 		//            }
 		//        });
 
-		BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocksOld.blockTank), new IItemStackKeyGenerator() {
-			@Override
-			public String generateKey(ItemStack stack) {
-
-				StringBuilder builder = new StringBuilder();
-				builder.append(stack.getMetadata());
-				builder.append(",");
-				builder.append(stack.getItem().getRegistryName().toString());
-				builder.append(",");
-				if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
-					FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
-					int level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) fluid.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[stack.getMetadata()]);
-					builder.append(fluid.getFluid().getName());
-					builder.append(",");
-					builder.append(level);
-				}
-				return builder.toString();
-			}
-		});
+		//		BlockBakery.registerItemKeyGenerator(Item.getItemFromBlock(TEBlocksOld.blockTank), new IItemStackKeyGenerator() {
+		//			@Override
+		//			public String generateKey(ItemStack stack) {
+		//
+		//				StringBuilder builder = new StringBuilder();
+		//				builder.append(stack.getMetadata());
+		//				builder.append(",");
+		//				builder.append(stack.getItem().getRegistryName().toString());
+		//				builder.append(",");
+		//				if (stack.hasTagCompound() && stack.getTagCompound().hasKey("Fluid")) {
+		//					FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+		//					int level = (int) Math.min(TileTank.RENDER_LEVELS - 1, (long) fluid.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[stack.getMetadata()]);
+		//					builder.append(fluid.getFluid().getName());
+		//					builder.append(",");
+		//					builder.append(level);
+		//				}
+		//				return builder.toString();
+		//			}
+		//		});
 		//FIXME, Possible json models: Dynamo,
 
         /*Blocks*/
@@ -321,53 +305,53 @@ public class ProxyClient extends Proxy {
 				return builder.toString();
 			}
 		});
-		BlockBakery.registerBlockKeyGenerator(TEBlocksOld.blockCell, new IBlockStateKeyGenerator() {
-			@Override
-			public String generateKey(IExtendedBlockState state) {
-
-				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
-				builder.append(",");
-				Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
-				for (Entry<EnumFacing, TextureAtlasSprite> spriteEntry : spriteMap.entrySet()) {
-					String tex = spriteEntry.getValue().getIconName();
-					builder.append(spriteEntry.getKey()).append("=").append(tex.substring(tex.lastIndexOf("/") + 1));
-					builder.append(",");
-				}
-				builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
-				builder.append(",");
-				builder.append(state.getValue(BlockCell.CHARGE_PROPERTY));
-				builder.append(",");
-				builder.append(state.getValue(CommonProperties.FACING_PROPERTY));
-				builder.append(",");
-				String tex = state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY).getResourcePath();
-				builder.append(tex.substring(tex.lastIndexOf("/") + 1));
-				return builder.toString();
-			}
-		});
-		BlockBakery.registerBlockKeyGenerator(TEBlocksOld.blockTank, new IBlockStateKeyGenerator() {
-			@Override
-			public String generateKey(IExtendedBlockState state) {
-
-				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
-				builder.append(",");
-				int metadata = state.getBlock().getMetaFromState(state);
-				FluidStack stack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
-				if (stack != null) {
-					builder.append(stack.getUnlocalizedName());
-					builder.append("|");
-					if (stack.getFluid().isGaseous()) {
-						builder.append(32 + 192 * stack.amount / TileTank.CAPACITY[metadata]);
-					} else {
-						builder.append((int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]));
-					}
-					builder.append(",");
-				}
-				builder.append(state.getValue(BlockTank.MODE_PROPERTY));
-				builder.append(",");
-				builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
-				return builder.toString();
-			}
-		});
+		//		BlockBakery.registerBlockKeyGenerator(TEBlocksOld.blockCell, new IBlockStateKeyGenerator() {
+		//			@Override
+		//			public String generateKey(IExtendedBlockState state) {
+		//
+		//				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+		//				builder.append(",");
+		//				Map<EnumFacing, TextureAtlasSprite> spriteMap = state.getValue(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+		//				for (Entry<EnumFacing, TextureAtlasSprite> spriteEntry : spriteMap.entrySet()) {
+		//					String tex = spriteEntry.getValue().getIconName();
+		//					builder.append(spriteEntry.getKey()).append("=").append(tex.substring(tex.lastIndexOf("/") + 1));
+		//					builder.append(",");
+		//				}
+		//				builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+		//				builder.append(",");
+		//				builder.append(state.getValue(BlockCell.CHARGE_PROPERTY));
+		//				builder.append(",");
+		//				builder.append(state.getValue(CommonProperties.FACING_PROPERTY));
+		//				builder.append(",");
+		//				String tex = state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY).getResourcePath();
+		//				builder.append(tex.substring(tex.lastIndexOf("/") + 1));
+		//				return builder.toString();
+		//			}
+		//		});
+		//		BlockBakery.registerBlockKeyGenerator(TEBlocksOld.blockTank, new IBlockStateKeyGenerator() {
+		//			@Override
+		//			public String generateKey(IExtendedBlockState state) {
+		//
+		//				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+		//				builder.append(",");
+		//				int metadata = state.getBlock().getMetaFromState(state);
+		//				FluidStack stack = state.getValue(BlockTank.FLUID_STACK_PROPERTY);
+		//				if (stack != null) {
+		//					builder.append(stack.getUnlocalizedName());
+		//					builder.append("|");
+		//					if (stack.getFluid().isGaseous()) {
+		//						builder.append(32 + 192 * stack.amount / TileTank.CAPACITY[metadata]);
+		//					} else {
+		//						builder.append((int) Math.min(TileTank.RENDER_LEVELS - 1, (long) stack.amount * TileTank.RENDER_LEVELS / TileTank.CAPACITY[metadata]));
+		//					}
+		//					builder.append(",");
+		//				}
+		//				builder.append(state.getValue(BlockTank.MODE_PROPERTY));
+		//				builder.append(",");
+		//				builder.append(state.getValue(CommonProperties.TYPE_PROPERTY));
+		//				return builder.toString();
+		//			}
+		//		});
 		//        BlockBakery.registerBlockKeyGenerator(TEBlocks.blockTesseract, new IBlockStateKeyGenerator() {
 		//            @Override
 		//            public String generateKey(IExtendedBlockState state) {
@@ -443,12 +427,8 @@ public class ProxyClient extends Proxy {
 	@SubscribeEvent
 	public void initializeIcons(TextureStitchEvent.Post event) {
 
-		RenderCache.initialize();
-		RenderCell.initialize();
 		RenderDynamo.initialize();
 		RenderFrame.initialize();
-		RenderStrongbox.initialize();
-		RenderTank.initialize();
 	}
 
 }

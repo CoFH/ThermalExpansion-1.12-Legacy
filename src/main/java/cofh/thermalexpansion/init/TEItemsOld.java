@@ -1,18 +1,14 @@
 package cofh.thermalexpansion.init;
 
-import cofh.core.util.crafting.RecipeUpgrade;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.item.ItemCapacitor;
-import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEFlorbs;
 import cofh.thermalexpansion.item.tool.*;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -26,9 +22,6 @@ public class TEItemsOld {
 	public static ItemPump itemPump;
 	public static ItemTransfuser itemTransfuser;
 	public static ItemMiner itemMiner;
-
-	public static ItemCapacitor itemCapacitor;
-	public static ItemSatchel itemSatchel;
 
 	public static ItemStack toolIgniter;
 	public static ItemStack toolChiller;
@@ -93,8 +86,6 @@ public class TEItemsOld {
 		itemChiller = (ItemChiller) new ItemChiller().setUnlocalizedName("tool", "chiller");
 		itemPump = (ItemPump) new ItemPump().setUnlocalizedName("tool", "pump");
 		itemTransfuser = (ItemTransfuser) new ItemTransfuser().setUnlocalizedName("tool", "transfuser");
-		itemCapacitor = new ItemCapacitor();
-		itemSatchel = (ItemSatchel) new ItemSatchel().setUnlocalizedName("satchel");
 
 		//GameRegistry.register(itemWrench);
 		//GameRegistry.register(itemBattleWrench);
@@ -103,7 +94,6 @@ public class TEItemsOld {
 		//GameRegistry.register(itemChiller);
 		//GameRegistry.register(itemPump);
 		//GameRegistry.register(itemTransfuser);
-		GameRegistry.register(itemCapacitor);
 		//GameRegistry.register(itemSatchel);
 		//GameRegistry.register(itemDiagram);
 
@@ -112,16 +102,6 @@ public class TEItemsOld {
 		toolChiller = new ItemStack(itemChiller);
 		toolPump = new ItemStack(itemPump);
 		toolTransfuser = new ItemStack(itemTransfuser);
-
-
-
-        /* Capacitor */
-		capacitorCreative = itemCapacitor.registerSubItem(ItemCapacitor.Types.CREATIVE.ordinal(), "capacitorCreative", EnumRarity.EPIC);
-		capacitorPotato = EnergyHelper.setDefaultEnergyTag(itemCapacitor.registerSubItem(ItemCapacitor.Types.POTATO.ordinal(), "capacitorPotato", EnumRarity.COMMON), ItemCapacitor.CAPACITY[ItemCapacitor.Types.POTATO.ordinal()]);
-		capacitorBasic = itemCapacitor.registerSubItem(ItemCapacitor.Types.BASIC.ordinal(), "capacitorBasic", EnumRarity.COMMON);
-		capacitorHardened = itemCapacitor.registerSubItem(ItemCapacitor.Types.HARDENED.ordinal(), "capacitorHardened", EnumRarity.COMMON);
-		capacitorReinforced = itemCapacitor.registerSubItem(ItemCapacitor.Types.REINFORCED.ordinal(), "capacitorReinforced", EnumRarity.UNCOMMON);
-		capacitorResonant = itemCapacitor.registerSubItem(ItemCapacitor.Types.RESONANT.ordinal(), "capacitorResonant", EnumRarity.RARE);
 
 		EnergyHelper.setDefaultEnergyTag(capacitorCreative, 0);
 		EnergyHelper.setDefaultEnergyTag(capacitorBasic, 0);
@@ -134,23 +114,6 @@ public class TEItemsOld {
 	}
 
 	public static void initialize() {
-
-		ItemSatchel.configure();
-
-
-
-		/* Satchel */
-		satchelCreative = itemSatchel.addItem(ItemSatchel.Types.CREATIVE.ordinal(), "satchelCreative", EnumRarity.EPIC);
-		satchelBasic = itemSatchel.addItem(ItemSatchel.Types.BASIC.ordinal(), "satchelBasic", EnumRarity.COMMON);
-		satchelHardened = itemSatchel.addItem(ItemSatchel.Types.HARDENED.ordinal(), "satchelHardened", EnumRarity.COMMON);
-		satchelReinforced = itemSatchel.addItem(ItemSatchel.Types.REINFORCED.ordinal(), "satchelReinforced", EnumRarity.UNCOMMON);
-		satchelResonant = itemSatchel.addItem(ItemSatchel.Types.RESONANT.ordinal(), "satchelResonant", EnumRarity.RARE);
-
-		ItemSatchel.setDefaultInventoryTag(satchelCreative);
-		ItemSatchel.setDefaultInventoryTag(satchelBasic);
-		ItemSatchel.setDefaultInventoryTag(satchelHardened);
-		ItemSatchel.setDefaultInventoryTag(satchelReinforced);
-		ItemSatchel.setDefaultInventoryTag(satchelResonant);
 
 		TEAugments.initialize();
 		TEFlorbs.initialize();
@@ -170,39 +133,6 @@ public class TEItemsOld {
 		}
 		if (enableTransfuser) {
 			GameRegistry.addRecipe(ShapedRecipe(toolTransfuser, "RR ", "RGI", " IY", 'I', "ingotInvar", 'R', "dustRedstone", 'X', "ingotSignalum", 'Y', powerCoilElectrum, 'G', "gearElectrum"));
-		}
-
-		/* Capacitors */
-		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.POTATO.ordinal()]) {
-			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, Items.POTATO, "dustRedstone", "nuggetLead"));
-			GameRegistry.addRecipe(ShapelessRecipe(capacitorPotato, Items.POISONOUS_POTATO, "dustRedstone", "nuggetLead"));
-		}
-		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(capacitorBasic, " R ", "IXI", "RYR", 'I', "ingotLead", 'R', "dustRedstone", 'X', "ingotCopper", 'Y', "dustSulfur"));
-		}
-		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(capacitorHardened, new Object[] { " R ", "IXI", "RYR", 'I', "ingotInvar", 'R', "dustRedstone", 'X', capacitorBasic, 'Y', "ingotTin" }));
-		}
-		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(capacitorReinforced, new Object[] { " R ", "IXI", "RYR", 'I', "ingotElectrum", 'R', "dustRedstone", 'X', capacitorHardened, 'Y', Items.DIAMOND }));
-		}
-		if (ItemCapacitor.ENABLE[ItemCapacitor.Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(capacitorResonant, new Object[] { " R ", "IXI", "RYR", 'I', "ingotEnderium", 'R', "dustRedstone", 'X', capacitorReinforced, 'Y', "dustPyrotheum" }));
-		}
-
-		/* Satchels */
-		if (ItemSatchel.enable[ItemSatchel.Types.BASIC.ordinal()]) {
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', Items.LEATHER));
-			GameRegistry.addRecipe(ShapedRecipe(satchelBasic, " Y ", "IXI", "Y Y", 'I', "ingotTin", 'X', "blockCloth", 'Y', "blockClothRock"));
-		}
-		if (ItemSatchel.enable[ItemSatchel.Types.HARDENED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(satchelHardened, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotInvar", 'X', satchelBasic, 'Y', "nuggetTin" }));
-		}
-		if (ItemSatchel.enable[ItemSatchel.Types.REINFORCED.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(satchelReinforced, new Object[] { " Y ", "IXI", "Y Y", 'I', "blockGlassHardened", 'X', satchelHardened, 'Y', "nuggetInvar" }));
-		}
-		if (ItemSatchel.enable[ItemSatchel.Types.RESONANT.ordinal()]) {
-			GameRegistry.addRecipe(new RecipeUpgrade(satchelResonant, new Object[] { " Y ", "IXI", "Y Y", 'I', "ingotEnderium", 'X', satchelReinforced, 'Y', "nuggetElectrum" }));
 		}
 
 		TECraftingHandler.addSecureRecipe(satchelCreative);

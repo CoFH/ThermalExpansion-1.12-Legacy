@@ -3,15 +3,11 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.cache.BlockCache;
-import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
-import cofh.thermalexpansion.block.tank.BlockTank;
 import cofh.thermalexpansion.init.TEAchievements;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TEItemsOld;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -99,15 +95,15 @@ public class TECraftingHandler {
 			player.addStat(TEAchievements.insolator, 1);
 		}
 		// Resonant Achievements
-		else if (stack.isItemEqual(BlockCell.cellResonant)) {
-			player.addStat(TEAchievements.resonantCell, 1);
-		} else if (stack.isItemEqual(BlockTank.tankResonant)) {
-			player.addStat(TEAchievements.resonantTank, 1);
-		} else if (stack.isItemEqual(BlockCache.cacheResonant)) {
-			player.addStat(TEAchievements.resonantCache, 1);
-		} else if (stack.isItemEqual(BlockStrongbox.strongboxResonant)) {
-			player.addStat(TEAchievements.resonantStrongbox, 1);
-		}
+		//		else if (stack.isItemEqual(BlockCell.cellResonant)) {
+		//			player.addStat(TEAchievements.resonantCell, 1);
+		//		} else if (stack.isItemEqual(BlockTank.tankResonant)) {
+		//			player.addStat(TEAchievements.resonantTank, 1);
+		//		} else if (stack.isItemEqual(BlockCache.cacheResonant)) {
+		//			player.addStat(TEAchievements.resonantCache, 1);
+		//		} else if (stack.isItemEqual(BlockStrongbox.strongboxResonant)) {
+		//			player.addStat(TEAchievements.resonantStrongbox, 1);
+		//		}
 	}
 
 	public static void loadRecipes() {

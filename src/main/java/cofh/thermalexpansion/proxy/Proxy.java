@@ -29,6 +29,7 @@ public class Proxy {
 	public void initialize(FMLInitializationEvent event) {
 
 	}
+
 	public void postInit(FMLPostInitializationEvent event) {
 
 	}

@@ -14,8 +14,8 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.init.TEItemsOld;
+import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
 import cofh.thermalfoundation.init.TFEquipment;
@@ -97,8 +97,6 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 			return null;
 		}
 		switch (Types.values()[metadata]) {
-			case WORKBENCH_FALSE:
-				return new TileWorkbenchFalse();
 			case ACTIVATOR:
 				return new TileActivator();
 			case BREAKER:
@@ -266,7 +264,6 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 
 		TileDeviceBase.configure();
 
-		TileWorkbenchFalse.initialize();
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		TileCollector.initialize();

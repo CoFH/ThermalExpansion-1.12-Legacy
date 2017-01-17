@@ -8,7 +8,6 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ISmelterRecipe;
-import cofh.thermalexpansion.block.simple.BlockGlass;
 import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -126,12 +125,12 @@ public class SmelterManager {
 		// sulfur? rich sulfur? what do we even do here?
 
 		{ // variable locality (let's not accidentally use it elsewhere)
-			ItemStack blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardened, 2);
-			addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 4, blockGlass);
-			blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardenedIlluminated, 2);
-			addAlloyRecipe(4000, "dustLumium", 1, "dustObsidian", 4, blockGlass);
-			addAlloyRecipe(4000, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
+			//			ItemStack blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardened, 2);
+			//			addAlloyRecipe(4000, "dustLead", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(4000, "ingotLead", 1, "dustObsidian", 4, blockGlass);
+			//			blockGlass = ItemHelper.cloneStack(BlockGlass.glassHardenedIlluminated, 2);
+			//			addAlloyRecipe(4000, "dustLumium", 1, "dustObsidian", 4, blockGlass);
+			//			addAlloyRecipe(4000, "ingotLumium", 1, "dustObsidian", 4, blockGlass);
 		}
 
 		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ItemMaterial.ingotIron, ItemMaterial.ingotNickel);

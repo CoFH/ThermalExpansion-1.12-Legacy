@@ -5,24 +5,19 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.init.TEBlocksOld;
-import cofh.thermalexpansion.block.cell.BlockCell;
-import cofh.thermalexpansion.block.cell.TileCell;
 import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
-import cofh.thermalexpansion.block.strongbox.TileStrongbox;
-import cofh.thermalexpansion.block.workbench.TileWorkbench;
-import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
+import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEAchievements;
-import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.item.ItemSatchel;
+import cofh.thermalexpansion.init.TEBlocksOld;
 import cofh.thermalexpansion.init.TEItemsOld;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.network.PacketTEBase.PacketTypes;
 import cofh.thermalexpansion.proxy.Proxy;
@@ -213,11 +208,11 @@ public class ThermalExpansion {
 			TileMachineBase.enableSecurity[i] = payload.getBool();
 		}
 		TileDynamoBase.enableSecurity = payload.getBool();
-		TileCell.enableSecurity = payload.getBool();
-		TileStrongbox.enableSecurity = payload.getBool();
-		TileWorkbench.enableSecurity = payload.getBool();
-
-		ItemSatchel.enableSecurity = payload.getBool();
+//		TileCell.enableSecurity = payload.getBool();
+//		TileStrongbox.enableSecurity = payload.getBool();
+//		TileWorkbench.enableSecurity = payload.getBool();
+//
+//		ItemSatchel.enableSecurity = payload.getBool();
 
 		LOG.info("Receiving Server Configuration...");
 		//TeleportChannelRegistry.createClientRegistry();
@@ -234,11 +229,11 @@ public class ThermalExpansion {
 			payload.addBool(TileMachineBase.enableSecurity[i]);
 		}
 		payload.addBool(TileDynamoBase.enableSecurity);
-		payload.addBool(TileCell.enableSecurity);
-		payload.addBool(TileStrongbox.enableSecurity);
-		payload.addBool(TileWorkbench.enableSecurity);
-
-		payload.addBool(ItemSatchel.enableSecurity);
+//		payload.addBool(TileCell.enableSecurity);
+//		payload.addBool(TileStrongbox.enableSecurity);
+//		payload.addBool(TileWorkbench.enableSecurity);
+//
+//		payload.addBool(ItemSatchel.enableSecurity);
 
 		return payload;
 	}
@@ -264,13 +259,9 @@ public class ThermalExpansion {
 	// Called when the client disconnects from the server.
 	public void resetClientConfigs() {
 
-		TileCell.configure();
 		TileDeviceBase.configure();
 		TileDynamoBase.configure();
 		TileMachineBase.configure();
-		TileWorkbench.configure();
-		TileStrongbox.configure();
-		ItemSatchel.configure();
 
 		handleIdMapping();
 
@@ -306,7 +297,7 @@ public class ThermalExpansion {
 			TEProps.textureGuiCommon = TEProps.PATH_COMMON_CB;
 			TEProps.textureGuiAssembler = TEProps.PATH_ASSEMBLER_CB;
 			TEProps.textureSelection = TEProps.TEXTURE_CB;
-			BlockCell.textureSelection = BlockCell.TEXTURE_CB;
+			//BlockCell.textureSelection = BlockCell.TEXTURE_CB;
 		}
 		TEProps.useAlternateStarfieldShader = ThermalExpansion.CONFIG_CLIENT.get("Render", "UseAlternateShader", true, "Set to TRUE for Tesseracts to use an alternate starfield shader.");
 
