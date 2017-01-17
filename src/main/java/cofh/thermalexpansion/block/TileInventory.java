@@ -4,28 +4,15 @@ import codechicken.lib.util.ServerUtils;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.util.Utils;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -34,12 +21,19 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
 
@@ -91,26 +85,26 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		TileEntity adjInv = BlockHelper.getAdjacentTileEntity(this, side);
 
 		if (Utils.isAccessibleInput(adjInv, side)) {
-				IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
-				for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
-					ItemStack queryStack = inv.extractItem(i, amount, true);
-					if (queryStack == null) {
-						continue;
-					}
-					if (stack == null) {
-						if (isItemValidForSlot(slot, queryStack)) {
-							int toExtract = Math.min(amount, queryStack.stackSize);
-							stack = inv.extractItem(i, toExtract, false);
-							amount -= toExtract;
-						}
-					} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
-						int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
-						ItemStack extracted = inv.extractItem(slot, toExtract, false);
-						toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
-						stack.stackSize += toExtract;
+			IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
+			for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
+				ItemStack queryStack = inv.extractItem(i, amount, true);
+				if (queryStack == null) {
+					continue;
+				}
+				if (stack == null) {
+					if (isItemValidForSlot(slot, queryStack)) {
+						int toExtract = Math.min(amount, queryStack.stackSize);
+						stack = inv.extractItem(i, toExtract, false);
 						amount -= toExtract;
 					}
+				} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
+					int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
+					ItemStack extracted = inv.extractItem(slot, toExtract, false);
+					toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
+					stack.stackSize += toExtract;
+					amount -= toExtract;
 				}
+			}
 
 			if (initialAmount != amount) {
 				inventory[slot] = stack;
@@ -191,7 +185,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	@Override
 	public void receiveGuiNetworkData(int i, int j) {
 
-        canAccess = j != 0;
+		canAccess = j != 0;
 	}
 
 	@Override
@@ -199,8 +193,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 		super.sendGuiNetworkData(container, player);
 		if (player instanceof EntityPlayer) {
-            player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
-        }
+			player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
+		}
 	}
 
 	/* NBT METHODS */
@@ -236,7 +230,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		nbt.setString("Owner", owner.getName());
 
 		writeInventoryToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	public void readInventoryFromNBT(NBTTagCompound nbt) {
@@ -392,34 +386,40 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
 		return true;
 	}
 
-    @Override
-    public int getField(int id) {
-        return 0;
-    }
+	@Override
+	public int getField(int id) {
 
-    @Override
-    public void setField(int id, int value) {
-    }
+		return 0;
+	}
 
-    @Override
-    public int getFieldCount() {
-        return 0;
-    }
+	@Override
+	public void setField(int id, int value) {
 
-    @Override
-    public void clear() {
-    }
+	}
 
-    @Nullable
-    @Override
-    public ITextComponent getDisplayName() {
-        return new TextComponentString(getName());
-    }
+	@Override
+	public int getFieldCount() {
 
-    /* ISecurable */
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+
+	}
+
+	@Nullable
+	@Override
+	public ITextComponent getDisplayName() {
+
+		return new TextComponentString(getName());
+	}
+
+	/* ISecurable */
 	@Override
 	public boolean setAccess(AccessMode access) {
 
@@ -436,7 +436,8 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	@Override
 	public boolean setOwnerName(String name) {
-        MinecraftServer server = ServerUtils.mc();
+
+		MinecraftServer server = ServerUtils.mc();
 		if (server == null) {
 			return false;
 		}
@@ -491,20 +492,22 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return name;
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-	    if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-            if (this instanceof ISidedInventory && facing != null) {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
-            } else {
-                return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
-            }
-        }
-        return super.getCapability(capability, facing);
-    }
+		return super.hasCapability(capability, facing) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+
+		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
+			if (this instanceof ISidedInventory && facing != null) {
+				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
+			} else {
+				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
+			}
+		}
+		return super.getCapability(capability, facing);
+	}
 }

@@ -2,15 +2,13 @@ package cofh.thermalexpansion.block.simple;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemDye;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
 
 public class ItemBlockRockwool extends ItemBlock {
 

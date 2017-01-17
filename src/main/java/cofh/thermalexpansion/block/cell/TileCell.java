@@ -11,8 +11,8 @@ import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.gui.client.GuiCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -197,8 +197,7 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyRe
 		if (adjacentHandlers[bSide] == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(EnumFacing.VALUES[bSide ^ 1],
-				Math.min(energySend, energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandlers[bSide].receiveEnergy(EnumFacing.VALUES[bSide ^ 1], Math.min(energySend, energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -291,8 +290,8 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyRe
 		super.readFromNBT(nbt);
 
 		if (nbt.hasKey("Type")) {
-            type = nbt.getByte("Type");
-        }
+			type = nbt.getByte("Type");
+		}
 		outputTracker = nbt.getByte("Tracker");
 		energySend = MathHelper.clamp(nbt.getInteger("Send"), 0, MAX_SEND[type]);
 		energyReceive = MathHelper.clamp(nbt.getInteger("Recv"), 0, MAX_RECEIVE[type]);
@@ -311,7 +310,7 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyRe
 		nbt.setByte("Tracker", outputTracker);
 		nbt.setInteger("Send", energySend);
 		nbt.setInteger("Recv", energyReceive);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

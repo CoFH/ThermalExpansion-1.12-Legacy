@@ -11,19 +11,17 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.init.TFFluids;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import gnu.trove.map.hash.THashMap;
-
-import java.util.Map;
-
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.Map;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
@@ -129,7 +127,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("FuelMax", currentFuelRF);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

@@ -10,6 +10,10 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
@@ -18,15 +22,9 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-
-import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
 
 public class TileCache extends TileReconfigurable implements IDeepStorageUnit, ISidedInventory, IInventoryRetainer, ITileInfo {
 
@@ -41,14 +39,10 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 
 	static {
 		String category = "Cache.";
-		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]),
-				CAPACITY[4] / 8, 1000000 * 1000);
-		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]),
-				CAPACITY[3] / 8, CAPACITY[4]);
-		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]),
-				CAPACITY[2] / 8, CAPACITY[3]);
-		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]),
-				CAPACITY[1] / 8, CAPACITY[2]);
+		CAPACITY[4] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[4]), "Capacity", CAPACITY[4]), CAPACITY[4] / 8, 1000000 * 1000);
+		CAPACITY[3] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[3]), "Capacity", CAPACITY[3]), CAPACITY[3] / 8, CAPACITY[4]);
+		CAPACITY[2] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[2]), "Capacity", CAPACITY[2]), CAPACITY[2] / 8, CAPACITY[3]);
+		CAPACITY[1] = MathHelper.clamp(ThermalExpansion.config.get(category + StringHelper.titleCase(BlockCache.NAMES[1]), "Capacity", CAPACITY[1]), CAPACITY[1] / 8, CAPACITY[2]);
 	}
 
 	int meterTracker;
@@ -421,8 +415,7 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	/* Prototype Handler Stuff */
 	public int getStoredCount() {
 
-		return storedStack == null ? 0 : storedStack.stackSize + (inventory[0] == null ? 0 : inventory[0].stackSize)
-				+ (inventory[1] == null ? 0 : inventory[1].stackSize);
+		return storedStack == null ? 0 : storedStack.stackSize + (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
 	}
 
 	public ItemStack insertItem(EnumFacing from, ItemStack stack, boolean simulate) {
@@ -469,16 +462,16 @@ public class TileCache extends TileReconfigurable implements IDeepStorageUnit, I
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public boolean shouldRenderInPass(int pass) {
 
 		return pass == 0 && storedStack != null;
 	}
 
-    /* IInventoryRetainer */
-    public boolean retainInventory() {
+	/* IInventoryRetainer */
+	public boolean retainInventory() {
 
-        return true;
-    }
+		return true;
+	}
 
 }

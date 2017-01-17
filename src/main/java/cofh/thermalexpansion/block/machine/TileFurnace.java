@@ -10,12 +10,11 @@ import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileFurnace extends TileMachineBase {
 
@@ -199,7 +198,7 @@ public class TileFurnace extends TileMachineBase {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-        return nbt;
+		return nbt;
 	}
 
 	/* AUGMENT HELPERS */

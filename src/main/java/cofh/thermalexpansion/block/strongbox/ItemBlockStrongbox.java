@@ -3,13 +3,10 @@ package cofh.thermalexpansion.block.strongbox;
 import cofh.api.item.IInventoryContainerItem;
 import cofh.core.CoFHProps;
 import cofh.core.enchantment.CoFHEnchantment;
-import cofh.core.item.ItemBlockBase;
+import cofh.core.item.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-
-import java.util.List;
-
 import cofh.thermalexpansion.block.EnumType;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -18,7 +15,9 @@ import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.util.Constants;
 
-public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryContainerItem {
+import java.util.List;
+
+public class ItemBlockStrongbox extends ItemBlockCore implements IInventoryContainerItem {
 
 	public ItemBlockStrongbox(Block block) {
 
@@ -32,8 +31,7 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	@Override
 	public int getItemStackLimit(ItemStack stack) {
 
-		if (stack.getTagCompound() != null && !(!stack.getTagCompound().hasKey("Inventory", Constants.NBT.TAG_LIST)
-				|| stack.getTagCompound().getTagList("Inventory", stack.getTagCompound().getId()).tagCount() <= 0)) {
+		if (stack.getTagCompound() != null && !(!stack.getTagCompound().hasKey("Inventory", Constants.NBT.TAG_LIST) || stack.getTagCompound().getTagList("Inventory", stack.getTagCompound().getId()).tagCount() <= 0)) {
 			return super.getItemStackLimit(stack);
 		}
 		return 64;
@@ -49,14 +47,14 @@ public class ItemBlockStrongbox extends ItemBlockBase implements IInventoryConta
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		case RESONANT:
-			return EnumRarity.RARE;
-		case REINFORCED:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			case RESONANT:
+				return EnumRarity.RARE;
+			case REINFORCED:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

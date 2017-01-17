@@ -1,37 +1,129 @@
 {
-  "forge_marker": 1,
-  "defaults": {
-    "model": "builtin/generated",
-    "textures": {
-      "layer0": "blocks/dirt"
-    },
-    "transform": "forge:default-item"
-  },
-  "variants": {
-    "type": {
-      "dynamocoilduct": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_coil_duct"}},
-      "dynamoefficiency0": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_efficiency0"}},
-      "dynamoefficiency1": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_efficiency1"}},
-      "dynamoefficiency2": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_efficiency2"}},
-      "dynamooutput0": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_output0"}},
-      "dynamooutput1": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_output1"}},
-      "dynamooutput2": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_output2"}},
-      "dynamothrottle": {"textures":{"layer0":"thermalexpansion:items/augment/dynamo_throttle"}},
-      "generalautoinput": {"textures":{"layer0":"thermalexpansion:items/augment/general_auto_input"}},
-      "generalautooutput": {"textures":{"layer0":"thermalexpansion:items/augment/general_auto_output"}},
-      "generalreconfigsides": {"textures":{"layer0":"thermalexpansion:items/augment/general_reconfig_sides"}},
-      "generalredstonecontrol": {"textures":{"layer0":"thermalexpansion:items/augment/general_redstone_control"}},
-      "machineextruderboost0": {"textures":{"layer0":"thermalexpansion:items/augment/machine_extruder_boost0"}},
-      "machineextruderboost1": {"textures":{"layer0":"thermalexpansion:items/augment/machine_extruder_boost1"}},
-      "machineextruderboost2": {"textures":{"layer0":"thermalexpansion:items/augment/machine_extruder_boost2"}},
-      "machinefurnacefood": {"textures":{"layer0":"thermalexpansion:items/augment/machine_furnace_food"}},
-      "machinenull": {"textures":{"layer0":"thermalexpansion:items/augment/machine_null"}},
-      "machinesecondary0": {"textures":{"layer0":"thermalexpansion:items/augment/machine_secondary0"}},
-      "machinesecondary1": {"textures":{"layer0":"thermalexpansion:items/augment/machine_secondary1"}},
-      "machinesecondary2": {"textures":{"layer0":"thermalexpansion:items/augment/machine_secondary2"}},
-      "machinespeed0": {"textures":{"layer0":"thermalexpansion:items/augment/machine_speed0"}},
-      "machinespeed1": {"textures":{"layer0":"thermalexpansion:items/augment/machine_speed1"}},
-      "machinespeed2": {"textures":{"layer0":"thermalexpansion:items/augment/machine_speed2"}}
-    }
-  }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "blocks/dirt"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"type": {
+			"dynamocoilduct": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_coil_duct"
+				}
+			},
+			"dynamoefficiency0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_efficiency0"
+				}
+			},
+			"dynamoefficiency1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_efficiency1"
+				}
+			},
+			"dynamoefficiency2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_efficiency2"
+				}
+			},
+			"dynamooutput0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_output0"
+				}
+			},
+			"dynamooutput1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_output1"
+				}
+			},
+			"dynamooutput2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_output2"
+				}
+			},
+			"dynamothrottle": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_throttle"
+				}
+			},
+			"generalautoinput": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/general_auto_input"
+				}
+			},
+			"generalautooutput": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/general_auto_output"
+				}
+			},
+			"generalreconfigsides": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/general_reconfig_sides"
+				}
+			},
+			"generalredstonecontrol": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/general_redstone_control"
+				}
+			},
+			"machineextruderboost0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_boost0"
+				}
+			},
+			"machineextruderboost1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_boost1"
+				}
+			},
+			"machineextruderboost2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_boost2"
+				}
+			},
+			"machinefurnacefood": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_furnace_food"
+				}
+			},
+			"machinenull": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_null"
+				}
+			},
+			"machinesecondary0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_secondary0"
+				}
+			},
+			"machinesecondary1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_secondary1"
+				}
+			},
+			"machinesecondary2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_secondary2"
+				}
+			},
+			"machinespeed0": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_speed0"
+				}
+			},
+			"machinespeed1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_speed1"
+				}
+			},
+			"machinespeed2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_speed2"
+				}
+			}
+		}
+	}
 }

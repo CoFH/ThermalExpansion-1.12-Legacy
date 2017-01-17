@@ -6,13 +6,11 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.tank.BlockTank;
-import cofh.thermalexpansion.item.TEItems;
-
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
+
+import java.util.ArrayList;
 
 public class TEAchievements {
 
@@ -84,10 +82,6 @@ public class TEAchievements {
 		resonantTank = addAchievement("cofh.te.resonantTank", "thermalexpansion.resonantTank", 0, 4, BlockTank.tankResonant, null);
 		resonantCache = addAchievement("cofh.te.resonantCache", "thermalexpansion.resonantCache", 0, 5, BlockCache.cacheResonant, null);
 		resonantStrongbox = addAchievement("cofh.te.resonantStrongbox", "thermalexpansion.resonantStrongbox", 0, 6, BlockStrongbox.strongboxResonant, null);
-
-		// Tool Achievements
-		wrench = addAchievement("cofh.te.wrench", "thermalexpansion.wrench", -2, -1, TEItems.toolWrench, base).registerStat();
-		multimeter = addAchievement("cofh.te.multimeter", "thermalexpansion.multimeter", 2, -1, TEItems.toolMultimeter, base).registerStat();
 
 		// Page
 		page = new AchievementPage("Thermal Expansion", (Achievement[]) achievementList.toArray());

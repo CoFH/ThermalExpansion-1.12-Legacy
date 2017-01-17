@@ -12,18 +12,17 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.GuiWorkbench;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
-import cofh.thermalexpansion.util.helpers.SchematicHelper;
-import net.minecraft.inventory.IContainerListener;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
+import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileWorkbench extends TileInventory implements ICustomInventory, ISidedInventory, IInventoryRetainer {
 
@@ -43,6 +42,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 	public static int[] SCHEMATICS = { 12, 3, 6, 9, 12 };
 
 	private static int[][] SLOTS;
+
 	static {
 		SLOTS = new int[INVENTORY.length][];
 		for (int i = 0; i < SLOTS.length; ++i) {
@@ -123,9 +123,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 								if (containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 									containerStack = null;
 								}
-								if (containerStack != null
-										&& (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(
-												invCopy, containerStack, SCHEMATICS[type]))) {
+								if (containerStack != null && (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(invCopy, containerStack, SCHEMATICS[type]))) {
 									if (invCopy[j].stackSize <= 0) {
 										invCopy[j] = containerStack;
 										if (containerStack.stackSize <= 0) {
@@ -182,9 +180,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 							if (containerStack == null || containerStack.isItemStackDamageable() && containerStack.getItemDamage() > containerStack.getMaxDamage()) {
 								containerStack = null;
 							}
-							if (containerStack != null
-									&& (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(
-											invCopy, containerStack, 2))) {
+							if (containerStack != null && (/*!invCopy[j].getItem().doesContainerItemLeaveCraftingGrid(invCopy[j]) ||*/ !InventoryHelper.addItemStackToInventory(invCopy, containerStack, 2))) {
 								if (invCopy[j].stackSize <= 0) {
 									invCopy[j] = containerStack;
 									if (containerStack.stackSize <= 0) {
@@ -352,7 +348,7 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		nbt.setByte("Type", type);
 		nbt.setByte("Mode", (byte) selectedSchematic);
 		writeCraftingToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	public void readCraftingFromNBT(NBTTagCompound nbt) {
@@ -436,10 +432,10 @@ public class TileWorkbench extends TileInventory implements ICustomInventory, IS
 		return slot >= SCHEMATICS[type];
 	}
 
-    /* IInventoryRetainer */
-    public boolean retainInventory() {
+	/* IInventoryRetainer */
+	public boolean retainInventory() {
 
-        return true;
-    }
+		return true;
+	}
 
 }

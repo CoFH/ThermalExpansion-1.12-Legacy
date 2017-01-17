@@ -1,25 +1,22 @@
 package cofh.thermalexpansion.render;
 
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
-import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -194,5 +191,4 @@ public class RenderCell implements ILayeredBlockBakery {
 
         return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
     }
-
 }

@@ -3,7 +3,7 @@ package cofh.thermalexpansion.proxy;
 import codechicken.lib.block.IParticleProvider;
 import codechicken.lib.model.DummyBakedModel;
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.BlockBakeryProperties;
+import codechicken.lib.model.blockbakery.*;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.api.tileentity.ISecurable;
@@ -92,12 +92,8 @@ public class ProxyClient extends Proxy {
         TEItems.itemMaterial.registerModelVariants();
         TEItems.itemCapacitor.registerModelVariants();
 
-        registerToolModel(TEItems.itemBattleWrench, "battleWrench");
         registerToolModel(TEItems.itemChiller, "chiller");
-        registerToolModel(TEItems.toolDebugger, "debugger");
         registerToolModel(TEItems.itemIgniter, "igniter");
-        registerToolModel(TEItems.toolMultimeter, "multimeter");
-        registerToolModel(TEItems.itemWrench, "wrench");
         registerModedToolModel(TEItems.itemPump, "pump");
         registerModedToolModel(TEItems.itemTransfuser, "transfuser");
 
@@ -120,10 +116,10 @@ public class ProxyClient extends Proxy {
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 0, ModelFlorb.MODEL_LOCATION);
         ModelLoader.setCustomModelResourceLocation(TEFlorbs.itemFlorb, 1, ModelFlorb.MAGMATIC_MODEL_LOCATION);
 
-        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 0, getDiagramLocation("schematic_override"));
+        //ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 0, getDiagramLocation("schematic_override"));
         ModelRegistryHelper.register(getDiagramLocation("schematic_override"), new SchematicBakedModel());
-        ModelLoader.registerItemVariants(TEItems.itemDiagram, getDiagramLocation("schematic"));
-        ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
+        //ModelLoader.registerItemVariants(TEItems.itemDiagram, getDiagramLocation("schematic"));
+        //ModelLoader.setCustomModelResourceLocation(TEItems.itemDiagram, 1, getDiagramLocation("redprint"));
 
         ModelLoader.setCustomStateMapper(TEBlocks.blockGlass, new StateMapperBase() {
             @Override
@@ -434,5 +430,4 @@ public class ProxyClient extends Proxy {
         RenderStrongbox.initialize();
         RenderTank.initialize();
     }
-
 }

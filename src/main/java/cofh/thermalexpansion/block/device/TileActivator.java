@@ -15,28 +15,23 @@ import cofh.thermalexpansion.gui.client.device.GuiActivator;
 import cofh.thermalexpansion.gui.container.device.ContainerActivator;
 import com.google.common.base.Predicate;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.*;
-import net.minecraft.util.math.BlockPos;
-
-import net.minecraft.util.math.Vec3d;
-
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-
-import java.util.List;
-
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.List;
 
 public class TileActivator extends TileDeviceBase implements ITickable {
 
@@ -125,7 +120,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		if (!redstoneControlOrDisable() && myFakePlayer.activeItemStack != null) {
 			myFakePlayer.stopActiveHand();
 		} else if (myFakePlayer.ping != worldObj.getTotalWorldTime()) {
-			myFakePlayer.ping = (int)(worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
+			myFakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 			IBlockState state = worldObj.getBlockState(offsetPos);
 
@@ -144,9 +139,9 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			cofh_validate();
 		}
 		if (hasEnergy(ACTIVATION_ENERGY)) {
-			myFakePlayer.ping = (int)(worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
+			myFakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			if (!isActive) {
-                BlockUtils.fireBlockUpdate(worldObj, getPos());
+				BlockUtils.fireBlockUpdate(worldObj, getPos());
 			}
 			isActive = true;
 			boolean work = false;
@@ -175,7 +170,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			}
 		} else {
 			if (isActive) {
-                BlockUtils.fireBlockUpdate(worldObj, getPos());
+				BlockUtils.fireBlockUpdate(worldObj, getPos());
 			}
 			isActive = false;
 		}
@@ -285,38 +280,38 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		float yaw;
 
 		switch (facing) {
-		case 0:
-			pitch = this.angle == 0 ? -90.0F : this.angle == 1 ? 0F : 90F;
-			yaw = 0.0F;
-			y -= 0.51D;
-			break;
-		case 1:
-			pitch = this.angle == 0 ? 90.0F : this.angle == 1 ? 0F : -90F;
-			yaw = 0.0F;
-			y += 1.51D;
-			break;
-		case 2:
-			yaw = 180.0F;
-			z -= 0.51D;
-			y += .5D;
-			break;
-		case 3:
-			yaw = 0.0F;
-			z += 0.51D;
-			y += .5D;
-			break;
-		case 4:
-			yaw = 90.0F;
-			x -= 0.51D;
-			y += .5D;
-			break;
-		default:
-			yaw = -90.0F;
-			x += 0.51D;
-			y += .5D;
+			case 0:
+				pitch = this.angle == 0 ? -90.0F : this.angle == 1 ? 0F : 90F;
+				yaw = 0.0F;
+				y -= 0.51D;
+				break;
+			case 1:
+				pitch = this.angle == 0 ? 90.0F : this.angle == 1 ? 0F : -90F;
+				yaw = 0.0F;
+				y += 1.51D;
+				break;
+			case 2:
+				yaw = 180.0F;
+				z -= 0.51D;
+				y += .5D;
+				break;
+			case 3:
+				yaw = 0.0F;
+				z += 0.51D;
+				y += .5D;
+				break;
+			case 4:
+				yaw = 90.0F;
+				x -= 0.51D;
+				y += .5D;
+				break;
+			default:
+				yaw = -90.0F;
+				x += 0.51D;
+				y += .5D;
 		}
 		myFakePlayer.setPositionAndRotation(x, y, z, yaw, pitch);
-        myFakePlayer.setRotationYawHead(yaw);
+		myFakePlayer.setRotationYawHead(yaw);
 		myFakePlayer.isSneaking = actsSneaking;
 		myFakePlayer.eyeHeight = 0.4F;
 		myFakePlayer.setItemInHand(tickSlot);
@@ -336,7 +331,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 
 	public boolean simLeftClick(EntityPlayer thePlayer, ItemStack deployingStack, int side) {
 
-        BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
+		BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 		IBlockState state = worldObj.getBlockState(offsetPos);
 		if (!state.getBlock().isAir(state, worldObj, offsetPos)) {
 			if (myFakePlayer.interactionManager.durabilityRemainingOnBlock == -1) {
@@ -352,8 +347,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		} else {
 			myFakePlayer.interactionManager.cancelDestroyingBlock();
 			myFakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
-			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(getPos(), facing),
-					selectAttackable);
+			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(getPos(), facing), selectAttackable);
 
 			if (entities.size() == 0) {
 				return false;
@@ -390,18 +384,18 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		float f2 = 0.5F;
 		int offsetY = facing == 1 ? 1 : -1;
 
-        int angleY = 0;
+		int angleY = 0;
 
 		if (facing > 1) {
 			if (angle == 0) {
-                angleY = -1;
+				angleY = -1;
 			}
 			if (angle == 2) {
-                angleY = 1;
+				angleY = 1;
 			}
 		}
 		pos = pos.add(0, angleY, 0);
-		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(thePlayer, EnumHand.MAIN_HAND, deployingStack, pos, side, new Vec3d(f,f1,f2));
+		PlayerInteractEvent event = new PlayerInteractEvent.RightClickBlock(thePlayer, EnumHand.MAIN_HAND, deployingStack, pos, side, new Vec3d(f, f1, f2));
 		if (event.isCanceled()) {
 			return false;
 		}
@@ -410,8 +404,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 
 		boolean isAir = state.getBlock().isAir(state, worldObj, pos);
 
-		if (deployingStack != null && deployingStack.getItem() != null
-				&& deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, pos, side, f, f1, f2, EnumHand.MAIN_HAND) != EnumActionResult.PASS) {
+		if (deployingStack != null && deployingStack.getItem() != null && deployingStack.getItem().onItemUseFirst(deployingStack, thePlayer, worldObj, pos, side, f, f1, f2, EnumHand.MAIN_HAND) != EnumActionResult.PASS) {
 			return true;
 		}
 		if (!thePlayer.isSneaking() || thePlayer.getHeldItem(EnumHand.MAIN_HAND) == null) {
@@ -519,7 +512,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		nbt.setBoolean("LeftClick", leftClick);
 		nbt.setByte("TickSlot", tickSlot);
 		nbt.setByte("Angle", angle);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

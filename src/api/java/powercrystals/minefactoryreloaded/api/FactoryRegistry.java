@@ -9,17 +9,16 @@ import java.lang.reflect.Method;
 
 /**
  * @author PowerCrystals
- * 
- * Class used to register plants and other farming-related things with MFR. Will do nothing if MFR does not exist.
- * 
+ *
+ *         Class used to register plants and other farming-related things with MFR. Will do nothing if MFR does not exist.
  */
-public class FactoryRegistry
-{
+public class FactoryRegistry {
+
 	/*
 	 * This may be called at any time during pre-init, init or post-init, assuming all blocks and items
 	 * that are being accessed from the registry have been appropriately registered.
 	 * Possible messages:
-	 * 
+	 *
 	 * // Registration:
 	 * addLaserPreferredOre				| NBTTag with an ItemStack saved on it, with the color on the "value" attribute,
 	 * 									| A ValuedItem with item and value set.
@@ -46,7 +45,7 @@ public class FactoryRegistry
 	 * 									| A ValuedItem with item and value set.
 	 * registerSpawnHandler				| An instance of IMobSpawnHandler.
 	 * registerVillagerTradeMob			| An instance of IRandomMobProvider.
-	 * 
+	 *
 	 * // Simple implementations:
 	 * { Harvestables
 	 * registerHarvestable_Standard		| The String identifier of a block.
@@ -72,11 +71,11 @@ public class FactoryRegistry
 	 * 									  the seed (Item, String identifier) attributes set.
 	 * }
 	 * { Fertilizer
-	 * registerFertilizer				| An NBTTag with the fert (Item, String identifier), meta (Integer), and 
+	 * registerFertilizer				| An NBTTag with the fert (Item, String identifier), meta (Integer), and
 	 * 									  type (Integer, index into FertilizerType.values()) attributes set.
 	 * }
 	 * { Fertilizables
-	 * registerFertilizable_Grass		| The String identifier of a block. Will bonemeal the block and expect 
+	 * registerFertilizable_Grass		| The String identifier of a block. Will bonemeal the block and expect
 	 * 									  tall grass be planted above and around it, must be IGrowable. Works with
 	 * 									  the GrowPlant and Grass type fertilizers, not recommended for crop plants.
 	 * registerFertilizable_Gourd		| The String identifier of a block. Must be IGrowable, and expects identical
@@ -92,21 +91,18 @@ public class FactoryRegistry
 	 * 									  Expects the block to change when successfully grown (e.g., saplings).
 	 * }
 	 */
-	public static void sendMessage(String message, Object value)
-	{
-		if (!Loader.isModLoaded("MineFactoryReloaded") ||
-				Loader.instance().activeModContainer() == null)
+	public static void sendMessage(String message, Object value) {
+
+		if (!Loader.isModLoaded("MineFactoryReloaded") || Loader.instance().activeModContainer() == null) {
 			return;
-		try
-		{
+		}
+		try {
 			Method m = FMLInterModComms.class.getDeclaredMethod("enqueueMessage", Object.class, String.class, IMCMessage.class);
 			m.setAccessible(true);
 			Constructor<IMCMessage> c = IMCMessage.class.getDeclaredConstructor(String.class, Object.class);
 			c.setAccessible(true);
 			m.invoke(null, Loader.instance().activeModContainer(), "MineFactoryReloaded", c.newInstance(message, value));
-		}
-		catch(Exception e)
-		{
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

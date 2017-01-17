@@ -8,26 +8,20 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import gnu.trove.map.hash.TObjectIntHashMap;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 import javax.annotation.Nullable;
 
@@ -156,7 +150,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		nbt.setInteger("ReactMax", currentReactantRF);
 		nbt.setInteger("React", reactantRF);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -204,55 +198,61 @@ public class TileDynamoReactant extends TileDynamoBase {
 		}
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
-                        return 0;
-                    }
-                    if (isValidFuel(resource)) {
-                        return tank.fill(resource, doFill);
-                    }
-                    return 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
-                        return null;
-                    }
-                    if (resource.equals(tank.getFluid())) {
-                        return tank.drain(resource.amount, doDrain);
-                    }
-                    return null;
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (!augmentCoilDuct && from.ordinal() == facing) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+						return 0;
+					}
+					if (isValidFuel(resource)) {
+						return tank.fill(resource, doFill);
+					}
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (resource == null || !augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					if (resource.equals(tank.getFluid())) {
+						return tank.drain(resource.amount, doDrain);
+					}
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (!augmentCoilDuct && from.ordinal() == facing) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 
 	/* IInventory */
 	@Override

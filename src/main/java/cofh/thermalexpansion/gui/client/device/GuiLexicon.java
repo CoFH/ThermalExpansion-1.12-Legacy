@@ -5,7 +5,6 @@ import cofh.thermalexpansion.block.device.TileLexicon;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.device.ContainerLexicon;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;

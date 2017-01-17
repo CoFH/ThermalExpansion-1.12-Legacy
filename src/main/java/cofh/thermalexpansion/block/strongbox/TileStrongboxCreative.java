@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.block.strongbox;
 
 import cofh.lib.util.helpers.ItemHelper;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileStrongboxCreative extends TileStrongbox {
 

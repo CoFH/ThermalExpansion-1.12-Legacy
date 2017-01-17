@@ -1,20 +1,20 @@
 package cofh.thermalexpansion.render;
 
+import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
+import codechicken.lib.render.CCModel;
+import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
+import codechicken.lib.vec.Translation;
+import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
-import codechicken.lib.render.CCModel;
-import codechicken.lib.render.CCRenderState;
-import codechicken.lib.vec.Translation;
-import codechicken.lib.vec.Vector3;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -53,69 +53,73 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 		}
 	}
 
-    @Override
-    public void registerIcons(TextureMap textureMap) {
-        IconRegistry.addIcon("DynamoCoilRedstone", "thermalexpansion:blocks/dynamo/dynamo_coil_redstone", textureMap);
+	@Override
+	public void registerIcons(TextureMap textureMap) {
 
-        IconRegistry.addIcon("Dynamo" + Types.STEAM.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_steam", textureMap);
-        IconRegistry.addIcon("Dynamo" + Types.MAGMATIC.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_magmatic", textureMap);
-        IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_compression", textureMap);
-        IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_reactant", textureMap);
-        IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_enervation", textureMap);
-    }
+		IconRegistry.addIcon("DynamoCoilRedstone", "thermalexpansion:blocks/dynamo/dynamo_coil_redstone", textureMap);
 
-    @Override
-    public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
-        TileDynamoBase dynamo = (TileDynamoBase) tile;
-        state = state.withProperty(CommonProperties.FACING_PROPERTY, dynamo.getFacing());
-        state = state.withProperty(CommonProperties.ACTIVE_PROPERTY, dynamo.isActive);
-        state = state.withProperty(CommonProperties.TYPE_PROPERTY, dynamo.getType());
-        state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
-        return state;
-    }
+		IconRegistry.addIcon("Dynamo" + Types.STEAM.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_steam", textureMap);
+		IconRegistry.addIcon("Dynamo" + Types.MAGMATIC.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_magmatic", textureMap);
+		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_compression", textureMap);
+		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_reactant", textureMap);
+		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_enervation", textureMap);
+	}
 
-    @Override
-    public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
-        if (face == null) {
-            int facing = state.getValue(CommonProperties.FACING_PROPERTY);
-            boolean active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
-            int type = state.getValue(CommonProperties.TYPE_PROPERTY);
-            TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
+	@Override
+	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
 
-            BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.ITEM);
-            CCRenderState ccrs = CCRenderState.instance();
-            ccrs.reset();
-            ccrs.bind(buffer);
-            if (layer == BlockRenderLayer.SOLID) {
-                renderCoil(ccrs, facing, active);
-                renderAnimation(ccrs, facing, active, type, activeSprite);
-            } else {
-                renderBase(ccrs, facing, active, type);
-            }
-            buffer.finishDrawing();
-            return buffer.bake();
-        }
-        return new ArrayList<BakedQuad>();
-    }
+		TileDynamoBase dynamo = (TileDynamoBase) tile;
+		state = state.withProperty(CommonProperties.FACING_PROPERTY, dynamo.getFacing());
+		state = state.withProperty(CommonProperties.ACTIVE_PROPERTY, dynamo.isActive);
+		state = state.withProperty(CommonProperties.TYPE_PROPERTY, dynamo.getType());
+		state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
+		return state;
+	}
 
-    @Override
-    public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-        if(face == null){
-            BakingVertexBuffer buffer = BakingVertexBuffer.create();
-            buffer.begin(7, DefaultVertexFormats.ITEM);
-            CCRenderState ccrs = CCRenderState.instance();
-            ccrs.reset();
-            ccrs.bind(buffer);
-            renderCoil(ccrs, 1, false);
-            renderBase(ccrs, 1, false, stack.getMetadata());
-            buffer.finishDrawing();
-            return buffer.bake();
-        }
-        return new ArrayList<BakedQuad>();
-    }
+	@Override
+	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
-    private static void generateModels() {
+		if (face == null) {
+			int facing = state.getValue(CommonProperties.FACING_PROPERTY);
+			boolean active = state.getValue(CommonProperties.ACTIVE_PROPERTY);
+			int type = state.getValue(CommonProperties.TYPE_PROPERTY);
+			TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
+
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+			if (layer == BlockRenderLayer.SOLID) {
+				renderCoil(ccrs, facing, active);
+				renderAnimation(ccrs, facing, active, type, activeSprite);
+			} else {
+				renderBase(ccrs, facing, active, type);
+			}
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
+
+	@Override
+	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
+		if (face == null) {
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+			renderCoil(ccrs, 1, false);
+			renderBase(ccrs, 1, false, stack.getMetadata());
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
+
+	private static void generateModels() {
 
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
@@ -136,7 +140,6 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 		modelAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 - d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 		modelAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 
-
 		for (int i = 0; i < modelCoil.length; i++) {
 			CCModel.generateSidedModels(modelCoil[i], 1, new Vector3());
 		}
@@ -147,7 +150,6 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 
 	public void renderCoil(CCRenderState ccrs, int facing, boolean active) {
 
-
 		if (active) {
 			modelCoil[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureCoil));
 		} else {
@@ -156,7 +158,6 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 	}
 
 	public void renderBase(CCRenderState ccrs, int facing, boolean active, int type) {
-
 
 		if (active) {
 			modelBase[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(textureBase[type]));

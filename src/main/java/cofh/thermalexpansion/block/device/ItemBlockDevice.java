@@ -1,22 +1,18 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.AugmentHelper;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.core.item.ItemBlockCore;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import java.util.List;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.text.TextFormatting;
 
-public class ItemBlockDevice extends ItemBlockBase {
+import java.util.List;
+
+public class ItemBlockDevice extends ItemBlockCore {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
 
@@ -42,9 +38,10 @@ public class ItemBlockDevice extends ItemBlockBase {
 
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
-	    if (BlockDevice.Types.fromMeta(stack.getMetadata()) == Types.ACTIVATOR) {
-            list.add(TextFormatting.RED + "WIP, May work, may not.");
-        }
+
+		if (BlockDevice.Types.fromMeta(stack.getMetadata()) == Types.ACTIVATOR) {
+			list.add(TextFormatting.RED + "WIP, May work, may not.");
+		}
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
 			list.add(StringHelper.shiftForDetails());

@@ -5,11 +5,9 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.TEBlocks;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.block.Block;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSpongeMagmatic extends TileSponge {
 
@@ -46,10 +44,10 @@ public class TileSpongeMagmatic extends TileSponge {
 		int queryMeta;
 		Fluid queryFluid;
 		int bucketCounter = 0;
-		for (int x =  - 1; x <=  1; x++) {
-			for (int y =  - 1; y <=  1; y++) {
-				for (int z =  - 1; z <=  1; z++) {
-                    BlockPos offsetPos = getPos().add(x,y,z);
+		for (int x = -1; x <= 1; x++) {
+			for (int y = -1; y <= 1; y++) {
+				for (int z = -1; z <= 1; z++) {
+					BlockPos offsetPos = getPos().add(x, y, z);
 					query = worldObj.getBlockState(offsetPos);
 					queryMeta = query.getBlock().getMetaFromState(query);
 

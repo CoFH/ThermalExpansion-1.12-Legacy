@@ -13,23 +13,12 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankAdv;
 import cofh.lib.util.TimeTracker;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.Utils;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.Side;
-
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
@@ -37,9 +26,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
@@ -84,8 +77,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	protected EnergyConfig config;
 	protected TimeTracker tracker = new TimeTracker();
 
-	/* Augment Variables */
-	ItemStack[] augments = new ItemStack[4];
+	/* Augment Variables */ ItemStack[] augments = new ItemStack[4];
 	boolean[] augmentStatus = new boolean[4];
 
 	int energyMod = 1;
@@ -275,8 +267,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		if (adjacentHandler == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(EnumFacing.VALUES[bSide ^ 1],
-				Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(EnumFacing.VALUES[bSide ^ 1], Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -363,7 +354,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		nbt.setByte("Facing", facing);
 		nbt.setBoolean("Active", isActive);
 		nbt.setInteger("Fuel", fuelRF);
-        return nbt;
+		return nbt;
 	}
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {

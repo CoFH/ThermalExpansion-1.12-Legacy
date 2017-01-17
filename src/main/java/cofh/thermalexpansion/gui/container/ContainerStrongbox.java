@@ -5,27 +5,23 @@ import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.strongbox.BlockStrongbox;
 import cofh.thermalexpansion.block.strongbox.TileStrongbox;
-import net.minecraftforge.fml.common.Optional;
-
 import gnu.trove.map.hash.THashMap;
-
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
-
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fml.common.Optional;
 
-@ChestContainer()
+import java.util.List;
+import java.util.Map;
+
+@ChestContainer ()
 public class ContainerStrongbox extends ContainerTEBase implements ISlotValidator {
 
 	int storageIndex;
@@ -89,7 +85,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	}
 
 	/* Inventory Tweaks */
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	@RowSizeCallback
 	public int getRowSize() {
 
@@ -97,7 +93,7 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 	}
 
 	@ContainerSectionCallback
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
 		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();

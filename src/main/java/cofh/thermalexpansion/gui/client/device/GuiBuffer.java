@@ -5,7 +5,6 @@ import cofh.thermalexpansion.block.device.TileBuffer;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -138,7 +137,7 @@ public class GuiBuffer extends GuiAugmentableBase {
 				pitch += 0.1F;
 			}
 		}
-        playClickSound(1.0F, pitch);
+		playClickSound(1.0F, pitch);
 
 		myTile.sendModePacket();
 

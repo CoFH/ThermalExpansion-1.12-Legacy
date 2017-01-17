@@ -9,8 +9,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TorchTransformation extends Transformation {
 
-	public static Transformation[] sideTransformations = { new RedundantTransformation(), new TorchTransformation(1),
-		new TorchTransformation(2), new TorchTransformation(3), new TorchTransformation(4), new TorchTransformation(5), };
+	public static Transformation[] sideTransformations = { new RedundantTransformation(), new TorchTransformation(1), new TorchTransformation(2), new TorchTransformation(3), new TorchTransformation(4), new TorchTransformation(5), };
 
 	int alignment;
 
@@ -39,18 +38,18 @@ public class TorchTransformation extends Transformation {
 				amt += 0.25;
 			}
 			switch (alignment) {
-			case 2:
-				vec.z -= amt;
-				break;
-			case 3:
-				vec.z += amt;
-				break;
-			case 4:
-				vec.x -= amt;
-				break;
-			case 5:
-				vec.x += amt;
-				break;
+				case 2:
+					vec.z -= amt;
+					break;
+				case 3:
+					vec.z += amt;
+					break;
+				case 4:
+					vec.x -= amt;
+					break;
+				case 5:
+					vec.x += amt;
+					break;
 			}
 			vec.y += 3. / 16;
 		} else if (alignment == 1) {
@@ -84,7 +83,7 @@ public class TorchTransformation extends Transformation {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public void glApply() {
 
 	}

@@ -1,25 +1,57 @@
 {
-    "forge_marker": 1,
-    "defaults": {
-        "model": "builtin/generated",
-        "textures": {
-            "layer0": "blocks/dirt",
-            "layer1": "blocks/dirt"
-        },
-        "transform": "forge:default-item"
-    },
-    "variants": {
-        "type": {
-            "creative": {"textures":{"layer0":"thermalexpansion:items/satchel/satchel_creative"}},
-            "basic": {"textures":{"layer0":"thermalexpansion:items/satchel/satchel_basic"}},
-            "hardened": {"textures":{"layer0":"thermalexpansion:items/satchel/satchel_hardened"}},
-            "reinforced": {"textures":{"layer0":"thermalexpansion:items/satchel/satchel_reinforced"}},
-            "resonant": {"textures":{"layer0":"thermalexpansion:items/satchel/satchel_resonant"}}
-        },
-        "latch": {
-            "public": {"textures":{"layer1":"thermalexpansion:items/satchel/latch_public"}},
-            "restricted": {"textures":{"layer1":"thermalexpansion:items/satchel/latch_friends"}},
-            "private": {"textures":{"layer1":"thermalexpansion:items/satchel/latch_private"}}
-        }
-    }
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "blocks/dirt",
+			"layer1": "blocks/dirt"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"type": {
+			"creative": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_creative"
+				}
+			},
+			"basic": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_basic"
+				}
+			},
+			"hardened": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_hardened"
+				}
+			},
+			"reinforced": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_reinforced"
+				}
+			},
+			"resonant": {
+				"textures": {
+					"layer0": "thermalexpansion:items/satchel/satchel_resonant"
+				}
+			}
+		},
+		"latch": {
+			"public": {
+				"textures": {
+					"layer1": "thermalexpansion:items/satchel/latch_public"
+				}
+			},
+			"restricted": {
+				"textures": {
+					"layer1": "thermalexpansion:items/satchel/latch_friends"
+				}
+			},
+			"private": {
+				"textures": {
+					"layer1": "thermalexpansion:items/satchel/latch_private"
+				}
+			}
+		}
+	}
 }

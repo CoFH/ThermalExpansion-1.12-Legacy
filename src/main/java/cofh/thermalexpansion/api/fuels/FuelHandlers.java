@@ -7,7 +7,6 @@ package cofh.thermalexpansion.api.fuels;
  * The methods which are valid for each of these can be found in their respective source files.
  *
  * @author King Lemming
- *
  */
 public class FuelHandlers {
 

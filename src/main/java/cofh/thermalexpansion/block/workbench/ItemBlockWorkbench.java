@@ -1,21 +1,19 @@
 package cofh.thermalexpansion.block.workbench;
 
 import cofh.api.item.IInventoryContainerItem;
-import cofh.core.item.ItemBlockBase;
+import cofh.core.item.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.cell.BlockCell;
-
-import java.util.List;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
-public class ItemBlockWorkbench extends ItemBlockBase implements IInventoryContainerItem {
+import java.util.List;
+
+public class ItemBlockWorkbench extends ItemBlockCore implements IInventoryContainerItem {
 
 	public ItemBlockWorkbench(Block block) {
 
@@ -32,14 +30,14 @@ public class ItemBlockWorkbench extends ItemBlockBase implements IInventoryConta
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (EnumType.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		case RESONANT:
-			return EnumRarity.RARE;
-		case REINFORCED:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			case RESONANT:
+				return EnumRarity.RARE;
+			case REINFORCED:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 

@@ -6,9 +6,17 @@ import cofh.thermalexpansion.ThermalExpansion;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.JsonToNBT;
+import net.minecraft.nbt.NBTBase;
+import net.minecraft.nbt.NBTException;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
-import net.minecraftforge.fml.common.registry.GameData;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
 import java.io.FileReader;
@@ -17,16 +25,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 import java.util.Map.Entry;
-
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.JsonToNBT;
-import net.minecraft.nbt.NBTBase;
-import net.minecraft.nbt.NBTException;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 public class TECraftingParser {
 
@@ -97,10 +95,7 @@ public class TECraftingParser {
 				if (acquireCraftingEntry(craftingEntry.getKey(), craftingEntry.getValue())) {
 					ThermalExpansion.log.debug("Crafting entry added: \"" + craftingEntry.getKey() + "\"");
 				} else {
-					ThermalExpansion.log
-							.error("Error handling entry: \""
-									+ craftingEntry.getKey()
-									+ "\" > Please check the parameters. If adding a recipe, it *may* conflict with an existing recipe or entry. If removing a recipe, the recipe may not have existed.");
+					ThermalExpansion.log.error("Error handling entry: \"" + craftingEntry.getKey() + "\" > Please check the parameters. If adding a recipe, it *may* conflict with an existing recipe or entry. If removing a recipe, the recipe may not have existed.");
 				}
 			}
 		}

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.item;
 
 import codechicken.lib.util.SoundUtils;
-import cofh.core.item.ItemBase;
+import cofh.core.item.ItemCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -9,9 +9,6 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
-
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -28,7 +25,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 
-public class ItemFlorb extends ItemBase {
+import java.util.List;
+
+public class ItemFlorb extends ItemCoFHBase {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 
@@ -58,7 +57,7 @@ public class ItemFlorb extends ItemBase {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
+	public void getSubItems(Item item, CreativeTabs tab, List list) {
 
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
@@ -90,8 +89,7 @@ public class ItemFlorb extends ItemBase {
 			} else {
 				list.add(StringHelper.localize("info.thermalexpansion.florb.1"));
 			}
-			list.add(StringHelper.localize("info.thermalexpansion.florb.2") + " " + StringHelper.YELLOW + StringHelper.ITALIC
-					+ StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
+			list.add(StringHelper.localize("info.thermalexpansion.florb.2") + " " + StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
 			list.add(StringHelper.localize("info.thermalexpansion.florb.3"));
 		} else {
 			list.add(StringHelper.localize("info.thermalexpansion.florb.4"));
@@ -124,8 +122,9 @@ public class ItemFlorb extends ItemBase {
 		return super.getItemStackDisplayName(stack) + openParen + StringHelper.localize(fluidName) + closeParen;
 	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
+
 		if (stack.getTagCompound() == null) {
 			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
 		}
@@ -135,7 +134,7 @@ public class ItemFlorb extends ItemBase {
 		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 
 		if (fluid != null) {
-            SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 			if (ServerHelper.isServerWorld(world)) {
 				world.spawnEntityInWorld(new EntityFlorb(world, player, fluid));

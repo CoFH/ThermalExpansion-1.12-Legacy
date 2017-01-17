@@ -2,27 +2,22 @@ package cofh.thermalexpansion.block.cell;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.item.ItemBlockBase;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import java.util.List;
+import cofh.core.item.ItemBlockCore;
+import cofh.lib.util.helpers.*;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.common.FMLLog;
 
-public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem {
+import java.util.List;
+
+public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem {
 
 	public static ItemStack setDefaultTag(ItemStack container, int energy) {
 
 		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, ItemHelper.getItemDamage(container) == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES
-				: TileCell.DEFAULT_SIDES);
+		ReconfigurableHelper.setSideCache(container, ItemHelper.getItemDamage(container) == BlockCell.Types.CREATIVE.ordinal() ? TileCellCreative.DEFAULT_SIDES : TileCell.DEFAULT_SIDES);
 		RedstoneControlHelper.setControl(container, ControlMode.LOW);
 		EnergyHelper.setDefaultEnergyTag(container, energy);
 		container.getTagCompound().setInteger("Send", TileCell.MAX_SEND[container.getItemDamage()]);
@@ -52,7 +47,7 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (stack.getTagCompound() == null) {
 			return 1;
 		}
-		return 1D - ((double)stack.getTagCompound().getInteger("Energy") / (double)TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]);
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]);
 	}
 
 	@Override
@@ -65,24 +60,24 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 	public EnumRarity getRarity(ItemStack stack) {
 
 		switch (BlockCell.Types.values()[ItemHelper.getItemDamage(stack)]) {
-		case CREATIVE:
-			return EnumRarity.EPIC;
-		case RESONANT:
-			return EnumRarity.RARE;
-		case REINFORCED:
-			return EnumRarity.UNCOMMON;
-		default:
-			return EnumRarity.COMMON;
+			case CREATIVE:
+				return EnumRarity.EPIC;
+			case RESONANT:
+				return EnumRarity.RARE;
+			case REINFORCED:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
 		}
 	}
 
-    @Override
-    public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
-        return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) &&
-                (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
-    }
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
 
-    @Override
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
 
 		if (stack.getTagCompound() == null) {
@@ -100,11 +95,9 @@ public class ItemBlockCell extends ItemBlockBase implements IEnergyContainerItem
 		if (ItemHelper.getItemDamage(stack) == BlockCell.Types.CREATIVE.ordinal()) {
 			list.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
-			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / "
-					+ StringHelper.getScaledNumber(TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
+			list.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(stack.getTagCompound().getInteger("Energy")) + " / " + StringHelper.getScaledNumber(TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]) + " RF");
 		}
-		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.getTagCompound().getInteger("Send")
-				+ "/" + stack.getTagCompound().getInteger("Recv") + " RF/t");
+		list.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.getTagCompound().getInteger("Send") + "/" + stack.getTagCompound().getInteger("Recv") + " RF/t");
 
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}

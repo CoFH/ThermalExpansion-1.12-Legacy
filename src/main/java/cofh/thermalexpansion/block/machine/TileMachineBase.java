@@ -106,6 +106,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	@Override
 	public void update() {
+
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
@@ -215,6 +216,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	}
 
 	protected void onLevelChange() {
+
 		augments = new ItemStack[AUGMENT_COUNT[level]];
 		augmentStatus = new boolean[augments.length];
 		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
@@ -261,7 +263,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 		nbt.setInteger("ProcMax", processMax);
 		nbt.setInteger("ProcRem", processRem);
-        return nbt;
+		return nbt;
 	}
 
 	@Override

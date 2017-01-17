@@ -10,28 +10,27 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
-
-import net.minecraft.entity.EntityLiving;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.item.EntityItem;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
 
 public class TileCollector extends TileDeviceBase implements IInventoryConnection, ITickable {
 
@@ -150,20 +149,17 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		List<EntityItem> result;
 
 		switch (side) {
-		case 0:
-		case 1:
-			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-                    new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
-			break;
-		case 2:
-		case 3:
-			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-                    new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
-			break;
-		default:
-			result = worldObj.getEntitiesWithinAABB(EntityItem.class,
-					new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
-			break;
+			case 0:
+			case 1:
+				result = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+				break;
+			case 2:
+			case 3:
+				result = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+				break;
+			default:
+				result = worldObj.getEntitiesWithinAABB(EntityItem.class, new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+				break;
 		}
 		for (int i = 0; i < result.size(); i++) {
 			EntityItem entity = result.get(i);
@@ -183,37 +179,34 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		List<EntityLivingBase> result;
 
 		switch (side) {
-		case 0:
-		case 1:
-			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                    new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
-			break;
-		case 2:
-		case 3:
-			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                    new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
-			break;
-		default:
-			result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class,
-                    new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
-			break;
+			case 0:
+			case 1:
+				result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x - areaMajor, y, z - areaMajor, x + areaMajor2, y + areaMinor, z + areaMajor2));
+				break;
+			case 2:
+			case 3:
+				result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x - areaMajor, y - areaMajor, z, x + areaMajor2, y + areaMajor2, z + areaMinor));
+				break;
+			default:
+				result = worldObj.getEntitiesWithinAABB(EntityLivingBase.class, new AxisAlignedBB(x, y - areaMajor, z - areaMajor, x + areaMinor, y + areaMajor2, z + areaMajor2));
+				break;
 		}
 		for (int i = 0; i < result.size(); i++) {
 			EntityLivingBase entity = result.get(i);
 			float[] dropChances = defaultDropChances;
 
 			if (entity instanceof EntityLiving) {
-                EntityLiving living = ((EntityLiving) entity);
-                float[] handChances = living.inventoryHandsDropChances;
-                float[] armorChances = living.inventoryArmorDropChances;
-				dropChances = new float[]{handChances[0], handChances[1], armorChances[0], armorChances[1], armorChances[2], armorChances[3]};
+				EntityLiving living = ((EntityLiving) entity);
+				float[] handChances = living.inventoryHandsDropChances;
+				float[] armorChances = living.inventoryArmorDropChances;
+				dropChances = new float[] { handChances[0], handChances[1], armorChances[0], armorChances[1], armorChances[2], armorChances[3] };
 			} else if (isSecured() && entity instanceof EntityPlayer) {
 				if (doNotCollectItemsFrom((EntityPlayer) entity)) {
 					continue;
 				}
 			}
 			for (int j = 0; j < 6; j++) {
-                EntityEquipmentSlot slot = EntityEquipmentSlot.values()[j];
+				EntityEquipmentSlot slot = EntityEquipmentSlot.values()[j];
 				ItemStack equipmentInSlot = entity.getItemStackFromSlot(slot);
 				if (equipmentInSlot != null && dropChances[j] >= 1) {
 					stacks.add(equipmentInSlot);
@@ -266,7 +259,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 			}
 		}
 		nbt.setTag("StuffedInv", list);
-        return nbt;
+		return nbt;
 	}
 
 	/* IInventoryConnection */

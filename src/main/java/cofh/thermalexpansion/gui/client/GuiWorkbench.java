@@ -7,17 +7,15 @@ import cofh.lib.gui.element.ElementButton;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.EnumType;
-import cofh.thermalexpansion.block.workbench.BlockWorkbench;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
 import cofh.thermalexpansion.network.PacketTEBase;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.UUID;
 
 public class GuiWorkbench extends GuiBaseAdv {
 
@@ -51,33 +49,33 @@ public class GuiWorkbench extends GuiBaseAdv {
 		type = myTile.getType();
 
 		switch (type) {
-		case 1:
-			texture = TEXTURES[0];
-			ySize = 210;
-			break;
-		case 2:
-			texture = TEXTURES[1];
-			ySize = 228;
-			gridXOffset = 54;
-			schematicOffset = 10;
-			schematicPerRow = 2;
-			break;
-		case 3:
-			texture = TEXTURES[2];
-			xSize = 212;
-			ySize = 228;
-			gridXOffset = 80;
-			schematicOffset = 16;
-			schematicPerRow = 3;
-			break;
-		default:
-			texture = TEXTURES[3];
-			xSize = 230;
-			ySize = 228;
-			gridXOffset = 98;
-			schematicOffset = 16;
-			schematicPerRow = 4;
-			break;
+			case 1:
+				texture = TEXTURES[0];
+				ySize = 210;
+				break;
+			case 2:
+				texture = TEXTURES[1];
+				ySize = 228;
+				gridXOffset = 54;
+				schematicOffset = 10;
+				schematicPerRow = 2;
+				break;
+			case 3:
+				texture = TEXTURES[2];
+				xSize = 212;
+				ySize = 228;
+				gridXOffset = 80;
+				schematicOffset = 16;
+				schematicPerRow = 3;
+				break;
+			default:
+				texture = TEXTURES[3];
+				xSize = 230;
+				ySize = 228;
+				gridXOffset = 98;
+				schematicOffset = 16;
+				schematicPerRow = 4;
+				break;
 		}
 		name = myTile.getName();
 
@@ -163,15 +161,15 @@ public class GuiWorkbench extends GuiBaseAdv {
 		if (buttonName.equals("Set")) {
 			if (((ContainerWorkbench) inventorySlots).canWriteSchematic()) {
 				PacketTEBase.sendTabSchematicPacketToServer();
-                playClickSound(1.0F, 0.8F);
+				playClickSound(1.0F, 0.8F);
 			}
 		} else if (buttonName.equals("Get")) {
 			if (gridNotEmpty()) {
 				myTile.clearCraftingGrid();
-                playClickSound(1.0F, 0.6F);
+				playClickSound(1.0F, 0.6F);
 			} else if (hasValidSchematic()) {
 				myTile.setCraftingGrid();
-                playClickSound(1.0F, 0.8F);
+				playClickSound(1.0F, 0.8F);
 			}
 		}
 	}

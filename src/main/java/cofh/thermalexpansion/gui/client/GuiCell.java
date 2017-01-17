@@ -13,13 +13,12 @@ import cofh.thermalexpansion.block.cell.TileCell;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.TabConfigCell;
-
-import java.util.UUID;
-
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.UUID;
 
 public class GuiCell extends GuiBaseAdv {
 
@@ -180,7 +179,7 @@ public class GuiCell extends GuiBaseAdv {
 			myTile.energySend += change;
 			pitch += 0.1F;
 		}
-        playClickSound(1.0F, pitch);
+		playClickSound(1.0F, pitch);
 
 		myTile.sendModePacket();
 
@@ -191,10 +190,8 @@ public class GuiCell extends GuiBaseAdv {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxIn") + ":",
-				getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxIn"), xSize / 2), 32, 0x404040);
-		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxOut") + ":",
-				xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxOut"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxIn") + ":", getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxIn"), xSize / 2), 32, 0x404040);
+		fontRendererObj.drawString(StringHelper.localize("info.thermalexpansion.maxOut") + ":", xSize / 2 + getCenteredOffset(StringHelper.localize("info.thermalexpansion.maxOut"), xSize / 2), 32, 0x404040);
 
 		String recv = String.format("%-8s", "" + myTile.energyReceive + " RF/t");
 		String send = String.format("%-8s", "" + myTile.energySend + " RF/t");

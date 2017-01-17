@@ -70,24 +70,24 @@ public class ElementSlotOverlayAssembler extends ElementBase {
 		int offsetY = 4 + slotColor * 40;
 
 		switch (slotRender) {
-		case 0:
-			sizeY -= 17;
-			break;
-		case 1:
-			sizeY -= 17;
-			y += 17;
-			offsetY += 17;
-			break;
-		case 2:
-			sizeY -= 26;
-			break;
-		case 3:
-			sizeY -= 26;
-			y += 26;
-			offsetY += 26;
-			break;
-		default:
-			break;
+			case 0:
+				sizeY -= 17;
+				break;
+			case 1:
+				sizeY -= 17;
+				y += 17;
+				offsetY += 17;
+				break;
+			case 2:
+				sizeY -= 26;
+				break;
+			case 3:
+				sizeY -= 26;
+				y += 26;
+				offsetY += 26;
+				break;
+			default:
+				break;
 		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}
@@ -103,24 +103,24 @@ public class ElementSlotOverlayAssembler extends ElementBase {
 		y -= 2;
 
 		switch (slotRender) {
-		case 0:
-			sizeY -= 19;
-			break;
-		case 1:
-			sizeY -= 19;
-			y += 19;
-			offsetY += 19;
-			break;
-		case 2:
-			sizeY -= 28;
-			break;
-		case 3:
-			sizeY -= 28;
-			y += 28;
-			offsetY += 28;
-			break;
-		default:
-			break;
+			case 0:
+				sizeY -= 19;
+				break;
+			case 1:
+				sizeY -= 19;
+				y += 19;
+				offsetY += 19;
+				break;
+			case 2:
+				sizeY -= 28;
+				break;
+			case 3:
+				sizeY -= 28;
+				y += 28;
+				offsetY += 28;
+				break;
+			default:
+				break;
 		}
 		gui.drawTexturedModalRect(x, y, offsetX, offsetY, sizeX, sizeY);
 	}

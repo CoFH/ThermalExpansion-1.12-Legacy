@@ -2,21 +2,18 @@ package cofh.thermalexpansion.item;
 
 import codechicken.lib.item.ItemMultiType;
 import cofh.api.item.IAugmentItem;
-import cofh.core.item.ItemBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.ItemBlockMachine;
-
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
-
-import java.util.List;
-import java.util.Set;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
+
+import java.util.List;
+import java.util.Set;
 
 public class ItemAugment extends ItemMultiType implements IAugmentItem {
 
@@ -33,8 +30,8 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 	public ItemAugment() {
 
 		super(ThermalExpansion.tabItems, "augment");
-        //TODO temp fix,
-        setUnlocalizedName("thermalexpansion.augment.");
+		//TODO temp fix,
+		setUnlocalizedName("thermalexpansion.augment.");
 	}
 
 	@Override
@@ -77,32 +74,26 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 		}
 		/* DYNAMO EFFICIENCY */
 		else if (type.equals(TEAugments.DYNAMO_EFFICIENCY)) {
-			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.DYNAMO_EFFICIENCY_MOD_SUM[level] + "% " + StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
 		}
 		/* DYNAMO OUTPUT */
 		else if (type.equals(TEAugments.DYNAMO_OUTPUT)) {
-			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.energyProduced") + StringHelper.END);
 			list.add("x" + TEAugments.DYNAMO_OUTPUT_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.fuelConsumed") + StringHelper.END);
-			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
+			list.add(StringHelper.RED + "-" + TEAugments.DYNAMO_OUTPUT_EFFICIENCY_SUM[level] + "% " + StringHelper.localize("info.thermalexpansion.augment.fuelEnergy") + StringHelper.END);
 
 		}
 		/* MACHINE SECONDARY */
 		else if (type.equals(TEAugments.MACHINE_SECONDARY)) {
-			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_TOOLTIP[level] + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "+" + TEAugments.MACHINE_SECONDARY_MOD_TOOLTIP[level] + "% " + StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
 			addMachineInfo(list, level);
 
 		}
 		/* MACHINE SPEED */
 		else if (type.equals(TEAugments.MACHINE_SPEED)) {
-			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
-			list.add(StringHelper.RED + "+" + TEAugments.MACHINE_SPEED_ENERGY_MOD_TOOLTIP[level] + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "x" + TEAugments.MACHINE_SPEED_PROCESS_MOD[level] + " " + StringHelper.localize("info.thermalexpansion.augment.speed") + StringHelper.END);
+			list.add(StringHelper.RED + "+" + TEAugments.MACHINE_SPEED_ENERGY_MOD_TOOLTIP[level] + "% " + StringHelper.localize("info.thermalexpansion.augment.energyUsed") + StringHelper.END);
 			list.add(StringHelper.YELLOW + "(x" + TEAugments.MACHINE_SPEED_ENERGY_MOD[level] + " RF/t)" + StringHelper.END);
 			// list.add(StringHelper.RED + "-" + TEAugments.MACHINE_SPEED_SECONDARY_MOD_TOOLTIP[level] + "% " TODO: May bring this back, not sure.
 			// + StringHelper.localize("info.thermalexpansion.augment.secondaryChance") + StringHelper.END);
@@ -117,17 +108,10 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 		}
 		/* MACHINE - EXTRUDER */
 		else if (type.equals(TEAugments.MACHINE_EXTRUDER_BOOST)) {
-			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.COBBLESTONE.getLocalizedName() + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
-			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[1][level] + " " + Blocks.STONE.getLocalizedName() + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
-			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " "
-					+ TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[2][level] + " " + Blocks.OBSIDIAN.getLocalizedName() + " "
-					+ StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
-			list.add(StringHelper.BRIGHT_GREEN + "-" + (1000 - TEAugments.MACHINE_EXTRUDER_WATER_MOD[level]) / 10D + "% "
-					+ StringHelper.localize("info.thermalexpansion.augment.waterConsumed") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " + TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[0][level] + " " + Blocks.COBBLESTONE.getLocalizedName() + " " + StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " + TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[1][level] + " " + Blocks.STONE.getLocalizedName() + " " + StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + StringHelper.localize("info.thermalexpansion.augment.upTo") + " " + TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[2][level] + " " + Blocks.OBSIDIAN.getLocalizedName() + " " + StringHelper.localize("info.thermalexpansion.augment.perOperation") + StringHelper.END);
+			list.add(StringHelper.BRIGHT_GREEN + "-" + (1000 - TEAugments.MACHINE_EXTRUDER_WATER_MOD[level]) / 10D + "% " + StringHelper.localize("info.thermalexpansion.augment.waterConsumed") + StringHelper.END);
 			addMachineInfo(list, level);
 		}
 		if (level > 1 && augmentChain) {
@@ -136,12 +120,10 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 		}
 	}
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings ({ "rawtypes", "unchecked" })
 	private void addMachineInfo(List list, int level) {
 
-		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + getRarity(level)
-				+ StringHelper.localize("info.thermalexpansion." + ItemBlockMachine.NAMES[level]) + " " + StringHelper.LIGHT_GRAY
-				+ StringHelper.localize("info.thermalexpansion.augment.machine.1"));
+		list.add(StringHelper.localize("info.thermalexpansion.augment.machine.0") + " " + getRarity(level) + StringHelper.localize("info.thermalexpansion." + ItemBlockMachine.NAMES[level]) + " " + StringHelper.LIGHT_GRAY + StringHelper.localize("info.thermalexpansion.augment.machine.1"));
 	}
 
 	public void addAugmentData(int number, String augmentType, int augmentLevel) {
@@ -192,12 +174,12 @@ public class ItemAugment extends ItemMultiType implements IAugmentItem {
 	public String getRarity(int level) {
 
 		switch (level) {
-		case 2:
-			return StringHelper.YELLOW;
-		case 3:
-			return StringHelper.BRIGHT_BLUE;
-		default:
-			return StringHelper.WHITE;
+			case 2:
+				return StringHelper.YELLOW;
+			case 3:
+				return StringHelper.BRIGHT_BLUE;
+			default:
+				return StringHelper.WHITE;
 		}
 	}
 

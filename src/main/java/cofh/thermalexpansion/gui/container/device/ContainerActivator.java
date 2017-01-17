@@ -3,7 +3,6 @@ package cofh.thermalexpansion.gui.container.device;
 import cofh.lib.gui.slot.SlotEnergy;
 import cofh.thermalexpansion.block.device.TileActivator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.tileentity.TileEntity;

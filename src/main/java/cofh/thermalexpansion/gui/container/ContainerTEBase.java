@@ -8,7 +8,6 @@ import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IContainerListener;

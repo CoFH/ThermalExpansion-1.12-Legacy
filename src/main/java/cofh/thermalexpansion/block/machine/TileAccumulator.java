@@ -13,20 +13,19 @@ import cofh.thermalexpansion.gui.client.machine.GuiAccumulator;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Biomes;
+import net.minecraft.init.Blocks;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 
 import javax.annotation.Nullable;
 
@@ -167,12 +166,13 @@ public class TileAccumulator extends TileMachineBase {
 		}
 	}
 
-	private static boolean isWater(IBlockState state){
-        if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER){
-            return state.getValue(BlockLiquid.LEVEL) == 0;
-        }
-        return false;
-    }
+	private static boolean isWater(IBlockState state) {
+
+		if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) {
+			return state.getValue(BlockLiquid.LEVEL) == 0;
+		}
+		return false;
+	}
 
 	protected void transferOutputFluid() {
 
@@ -255,7 +255,7 @@ public class TileAccumulator extends TileMachineBase {
 		nbt.setInteger("Sources", adjacentSources);
 		nbt.setInteger("Tracker", outputTrackerFluid);
 		tank.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -273,54 +273,60 @@ public class TileAccumulator extends TileMachineBase {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
-        if (tank.getFluid() == null){
-            tank.setLock(FluidRegistry.WATER);
-        }
+		if (tank.getFluid() == null) {
+			tank.setLock(FluidRegistry.WATER);
+		}
 		tank.getFluid().amount = payload.getInt();
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
-                @Override
-                public IFluidTankProperties[] getTankProperties() {
-                    FluidTankInfo info = tank.getInfo();
-                    return new IFluidTankProperties[] {new FluidTankProperties(info.fluid, info.capacity, false, true)};
-                }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
 
-                @Override
-                public int fill(FluidStack resource, boolean doFill) {
-                    return 0;
-                }
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
-                @Nullable
-                @Override
-                public FluidStack drain(FluidStack resource, boolean doDrain) {
-                    if (from != null && sideCache[from.ordinal()] < 1) {
-                        return null;
-                    }
-                    if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
-                        return null;
-                    }
-                    return tank.drain(resource.amount, doDrain);
-                }
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
 
-                @Nullable
-                @Override
-                public FluidStack drain(int maxDrain, boolean doDrain) {
-                    if (from != null && sideCache[from.ordinal()] < 1) {
-                        return null;
-                    }
-                    return tank.drain(maxDrain, doDrain);
-                }
-            });
-        }
-        return super.getCapability(capability, from);
-    }
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					if (from != null && sideCache[from.ordinal()] < 1) {
+						return null;
+					}
+					if (resource == null || resource.getFluid() != FluidRegistry.WATER) {
+						return null;
+					}
+					return tank.drain(resource.amount, doDrain);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					if (from != null && sideCache[from.ordinal()] < 1) {
+						return null;
+					}
+					return tank.drain(maxDrain, doDrain);
+				}
+			});
+		}
+		return super.getCapability(capability, from);
+	}
 }

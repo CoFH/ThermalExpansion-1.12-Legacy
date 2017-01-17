@@ -3,19 +3,14 @@ package cofh.thermalexpansion.gui.slot;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.workbench.TileWorkbench;
 import cofh.thermalexpansion.gui.container.ContainerWorkbench;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemHoe;
-import net.minecraft.item.ItemPickaxe;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemSword;
+import net.minecraft.item.*;
 import net.minecraft.stats.AchievementList;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 
 public class SlotCraftingOutputWorkbench extends Slot {
 
@@ -36,8 +31,7 @@ public class SlotCraftingOutputWorkbench extends Slot {
 	@Override
 	public boolean canTakeStack(EntityPlayer player) {
 
-		return ServerHelper.isClientWorld(player.worldObj) ? myTile.createItemClient(false, inventory.getStackInSlot(getSlotIndex())) : myTile.createItem(
-				false, inventory.getStackInSlot(getSlotIndex()));
+		return ServerHelper.isClientWorld(player.worldObj) ? myTile.createItemClient(false, inventory.getStackInSlot(getSlotIndex())) : myTile.createItem(false, inventory.getStackInSlot(getSlotIndex()));
 	}
 
 	@Override

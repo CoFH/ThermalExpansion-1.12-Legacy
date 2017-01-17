@@ -17,8 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Implementable("buildcraft.api.tiles.IHasWork")
-@Strippable(value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
+@Implementable ("buildcraft.api.tiles.IHasWork")
+@Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
 public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
@@ -77,7 +77,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		rsTag.setBoolean("Power", isPowered);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -124,7 +124,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
 		if (ServerHelper.isClientWorld(worldObj)) {
-            BlockUtils.fireBlockUpdate(worldObj, getPos());
+			BlockUtils.fireBlockUpdate(worldObj, getPos());
 		}
 	}
 
@@ -153,12 +153,14 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 	/* ISoundSource */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public ISound getSound() {
+
 		return new SoundTile(this, getSoundName(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
 	}
 
 	public String getSoundName() {
+
 		return "";
 	}
 

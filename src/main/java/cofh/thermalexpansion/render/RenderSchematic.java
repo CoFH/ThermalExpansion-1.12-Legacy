@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-
 public class RenderSchematic //implements IItemRenderer
 {
 

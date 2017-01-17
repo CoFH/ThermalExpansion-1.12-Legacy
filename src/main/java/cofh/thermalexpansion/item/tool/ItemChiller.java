@@ -14,7 +14,10 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumHand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
@@ -24,59 +27,60 @@ import java.util.List;
 
 public class ItemChiller extends ItemEnergyContainerBase {
 
-    public int range = 32;
+	public int range = 32;
 
-    public ItemChiller() {
+	public ItemChiller() {
 
-        super("chiller");
-    }
+		super("chiller");
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-        if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-            return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
-        }
-        RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
-        if (traceResult != null) {
-            boolean success = false;
-            BlockPos pos = traceResult.getBlockPos();
-            BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
+			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+		}
+		RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
 
-            int[] coords = BlockHelper.getAdjacentCoordinatesForSide(traceResult);
-            SoundUtils.playSoundAt(new Vector3(offsetPos).add(0.5), world, SoundCategory.BLOCKS, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
+		if (traceResult != null) {
+			boolean success = false;
+			BlockPos pos = traceResult.getBlockPos();
+			BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
 
-            if (ServerHelper.isServerWorld(world)) {
-                AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(traceResult);
-                List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
-                if (!list.isEmpty()) {
-                    for (EntityLivingBase livingBase : list) {
-                        livingBase.extinguish();
-                    }
-                    success = true;
-                } else {
-                    IBlockState state = world.getBlockState(pos);
-                    Block block = state.getBlock();
+			int[] coords = BlockHelper.getAdjacentCoordinatesForSide(traceResult);
+			SoundUtils.playSoundAt(new Vector3(offsetPos).add(0.5), world, SoundCategory.BLOCKS, SoundEvents.ENTITY_EXPERIENCE_ORB_TOUCH, 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
 
-                    if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && block.getMetaFromState(state) == 0) {
-                        success = world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
-                    } else if ((block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) && block.getMetaFromState(state) == 0) {
-                        success = world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState(), 3);
-                    } else if (block != Blocks.SNOW_LAYER && Blocks.SNOW_LAYER.canPlaceBlockAt(world, offsetPos)) {
-                        success = world.setBlockState(offsetPos, Blocks.SNOW_LAYER.getDefaultState(), 3);
-                    }
-                }
-                if (success) {
-                    player.openContainer.detectAndSendChanges();
-                    ((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+			if (ServerHelper.isServerWorld(world)) {
+				AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(traceResult);
+				List<EntityLivingBase> list = world.getEntitiesWithinAABB(EntityLivingBase.class, axisalignedbb);
+				if (!list.isEmpty()) {
+					for (EntityLivingBase livingBase : list) {
+						livingBase.extinguish();
+					}
+					success = true;
+				} else {
+					IBlockState state = world.getBlockState(pos);
+					Block block = state.getBlock();
 
-                    if (!player.capabilities.isCreativeMode) {
-                        extractEnergy(stack, energyPerUse, false);
-                    }
-                }
-            }
-            player.swingArm(hand);
-        }
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-    }
+					if ((block == Blocks.WATER || block == Blocks.FLOWING_WATER) && block.getMetaFromState(state) == 0) {
+						success = world.setBlockState(pos, Blocks.ICE.getDefaultState(), 3);
+					} else if ((block == Blocks.LAVA || block == Blocks.FLOWING_LAVA) && block.getMetaFromState(state) == 0) {
+						success = world.setBlockState(pos, Blocks.OBSIDIAN.getDefaultState(), 3);
+					} else if (block != Blocks.SNOW_LAYER && Blocks.SNOW_LAYER.canPlaceBlockAt(world, offsetPos)) {
+						success = world.setBlockState(offsetPos, Blocks.SNOW_LAYER.getDefaultState(), 3);
+					}
+				}
+				if (success) {
+					player.openContainer.detectAndSendChanges();
+					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+
+					if (!player.capabilities.isCreativeMode) {
+						extractEnergy(stack, energyPerUse, false);
+					}
+				}
+			}
+			player.swingArm(hand);
+		}
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+	}
 }

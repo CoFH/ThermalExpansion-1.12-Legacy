@@ -1,25 +1,19 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
 import cofh.core.gui.GuiBaseAdv;
-import cofh.core.gui.element.TabAugment;
-import cofh.core.gui.element.TabEnergy;
-import cofh.core.gui.element.TabInfo;
-import cofh.core.gui.element.TabRedstone;
-import cofh.core.gui.element.TabSecurity;
-import cofh.core.gui.element.TabTutorial;
+import cofh.core.gui.element.*;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
-
-import java.util.UUID;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import java.util.UUID;
 
 public abstract class GuiDynamoBase extends GuiBaseAdv {
 

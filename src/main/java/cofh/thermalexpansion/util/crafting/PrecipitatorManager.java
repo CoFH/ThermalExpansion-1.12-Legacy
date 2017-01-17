@@ -1,19 +1,17 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.thermalexpansion.ThermalExpansion;
-
 import gnu.trove.map.hash.THashMap;
-
-import java.util.Map;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 
+import java.util.Map;
+
 public class PrecipitatorManager { // TODO
 
 	private static Map<Fluid, RecipePrecipitator> recipeMap = new THashMap<Fluid, RecipePrecipitator>();
-	@SuppressWarnings("unused")
+	@SuppressWarnings ("unused")
 	private static boolean allowOverwrite = false;
 
 	static {

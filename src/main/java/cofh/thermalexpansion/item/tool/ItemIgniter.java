@@ -27,59 +27,60 @@ import java.util.List;
 
 public class ItemIgniter extends ItemEnergyContainerBase {
 
-    public int range = 32;
+	public int range = 32;
 
-    public ItemIgniter() {
+	public ItemIgniter() {
 
-        super("igniter");
-    }
+		super("igniter");
+	}
 
-    @Override
-    public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
-        if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-            return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
-        }
-        RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
+	@Override
+	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
-        if (traceResult != null) {
-            boolean success = false;
-            BlockPos pos = traceResult.getBlockPos();
-            BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
+			return new ActionResult<ItemStack>(EnumActionResult.FAIL, stack);
+		}
+		RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
 
-            SoundUtils.playSoundAt(new Vector3(offsetPos).add(0.5D), world, SoundCategory.BLOCKS, SoundEvents.ITEM_FLINTANDSTEEL_USE, 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
+		if (traceResult != null) {
+			boolean success = false;
+			BlockPos pos = traceResult.getBlockPos();
+			BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
 
-            if (ServerHelper.isServerWorld(world)) {
-                IBlockState hitState = world.getBlockState(pos);
-                if (hitState.getBlock() == Blocks.TNT) {
-                    world.setBlockToAir(pos);
-                    ((BlockTNT) hitState.getBlock()).explode(world, pos, hitState.withProperty(BlockTNT.EXPLODE, true), player);
-                } else {
-                    AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(traceResult);
-                    List<EntityCreeper> list = world.getEntitiesWithinAABB(EntityCreeper.class, axisalignedbb);
-                    if (!list.isEmpty()) {
-                        for (EntityCreeper creeper : list) {
-                            creeper.ignite();
-                        }
-                        success = true;
-                    } else {
-                        IBlockState offsetState = world.getBlockState(offsetPos);
-                        if (offsetState.getBlock() != Blocks.FIRE && (offsetState.getBlock().isAir(offsetState, world, offsetPos) || offsetState.getMaterial().isReplaceable())) {
-                            success = world.setBlockState(offsetPos, Blocks.FIRE.getDefaultState());
-                        }
-                    }
-                }
-                if (success) {
-                    player.openContainer.detectAndSendChanges();
-                    ((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+			SoundUtils.playSoundAt(new Vector3(offsetPos).add(0.5D), world, SoundCategory.BLOCKS, SoundEvents.ITEM_FLINTANDSTEEL_USE, 0.2F, MathHelper.RANDOM.nextFloat() * 0.4F + 0.8F);
 
-                    if (!player.capabilities.isCreativeMode) {
-                        extractEnergy(stack, energyPerUse, false);
-                    }
-                }
-            }
-            player.swingArm(hand);
-        }
-        return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
-    }
+			if (ServerHelper.isServerWorld(world)) {
+				IBlockState hitState = world.getBlockState(pos);
+				if (hitState.getBlock() == Blocks.TNT) {
+					world.setBlockToAir(pos);
+					((BlockTNT) hitState.getBlock()).explode(world, pos, hitState.withProperty(BlockTNT.EXPLODE, true), player);
+				} else {
+					AxisAlignedBB axisalignedbb = BlockHelper.getAdjacentAABBForSide(traceResult);
+					List<EntityCreeper> list = world.getEntitiesWithinAABB(EntityCreeper.class, axisalignedbb);
+					if (!list.isEmpty()) {
+						for (EntityCreeper creeper : list) {
+							creeper.ignite();
+						}
+						success = true;
+					} else {
+						IBlockState offsetState = world.getBlockState(offsetPos);
+						if (offsetState.getBlock() != Blocks.FIRE && (offsetState.getBlock().isAir(offsetState, world, offsetPos) || offsetState.getMaterial().isReplaceable())) {
+							success = world.setBlockState(offsetPos, Blocks.FIRE.getDefaultState());
+						}
+					}
+				}
+				if (success) {
+					player.openContainer.detectAndSendChanges();
+					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+
+					if (!player.capabilities.isCreativeMode) {
+						extractEnergy(stack, energyPerUse, false);
+					}
+				}
+			}
+			player.swingArm(hand);
+		}
+		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+	}
 
 }

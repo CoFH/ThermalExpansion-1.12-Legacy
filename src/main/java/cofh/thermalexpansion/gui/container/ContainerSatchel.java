@@ -12,24 +12,21 @@ import cofh.thermalexpansion.gui.slot.SlotSatchelCreative;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.network.PacketTEBase;
 import com.mojang.authlib.GameProfile;
-import net.minecraftforge.fml.common.Optional;
-
 import gnu.trove.map.hash.THashMap;
-
 import invtweaks.api.container.ChestContainer;
 import invtweaks.api.container.ChestContainer.RowSizeCallback;
 import invtweaks.api.container.ContainerSection;
 import invtweaks.api.container.ContainerSectionCallback;
-
-import java.util.List;
-import java.util.Map;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.Optional;
 
-@ChestContainer()
+import java.util.List;
+import java.util.Map;
+
+@ChestContainer ()
 public class ContainerSatchel extends ContainerInventoryItem implements ISecurable, ISlotValidator {
 
 	int storageIndex;
@@ -86,7 +83,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	/* Inventory Tweaks */
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	@RowSizeCallback
 	public int getRowSize() {
 
@@ -94,7 +91,7 @@ public class ContainerSatchel extends ContainerInventoryItem implements ISecurab
 	}
 
 	@ContainerSectionCallback
-	@Optional.Method(modid = "inventorytweaks")
+	@Optional.Method (modid = "inventorytweaks")
 	public Map<ContainerSection, List<Slot>> getContainerSections() {
 
 		Map<ContainerSection, List<Slot>> slotRefs = new THashMap<ContainerSection, List<Slot>>();

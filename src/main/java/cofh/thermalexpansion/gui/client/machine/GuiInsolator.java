@@ -1,16 +1,11 @@
 package cofh.thermalexpansion.gui.client.machine;
 
-import cofh.lib.gui.element.ElementButton;
-import cofh.lib.gui.element.ElementDualScaled;
-import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.lib.gui.element.ElementFluidTank;
-import cofh.lib.gui.element.ElementSimple;
+import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
@@ -116,9 +111,9 @@ public class GuiInsolator extends GuiAugmentableBase {
 
 		if (buttonName.equals("Mode")) {
 			if (myTile.lockPrimary) {
-                playClickSound(1.0F, 0.6F);
+				playClickSound(1.0F, 0.6F);
 			} else {
-                playClickSound(1.0F, 0.8F);
+				playClickSound(1.0F, 0.8F);
 			}
 			myTile.setMode(!myTile.lockPrimary);
 		}

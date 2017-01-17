@@ -11,23 +11,22 @@ import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.ITickable;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.LinkedList;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.LinkedList;
 
 public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
 
@@ -97,7 +96,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 
 	public void breakBlock() {
 
-        BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
+		BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 		IBlockState state = worldObj.getBlockState(offsetPos);
 		FluidStack theStack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, offsetPos, true) : null;
 		if (theStack != null) {
@@ -117,7 +116,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		for (EnumFacing face : EnumFacing.VALUES) {
 			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {
 
-                BlockPos offsetPos = getPos().offset(face);
+				BlockPos offsetPos = getPos().offset(face);
 				TileEntity theTile = worldObj.getTileEntity(offsetPos);
 
 				if (InventoryHelper.isInsertion(theTile)) {
@@ -180,21 +179,23 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 			}
 		}
 		nbt.setTag("StuffedInv", list);
-        return nbt;
+		return nbt;
 	}
 
-    @Override
-    public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-        return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-    }
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
-    @Override
-    public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
-	    if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-	        return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(EmptyFluidHandler.INSTANCE);
-        }
-        return super.getCapability(capability, facing);
-    }
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(EmptyFluidHandler.INSTANCE);
+		}
+		return super.getCapability(capability, facing);
+	}
 
 	/* IInventoryConnection */
 	@Override

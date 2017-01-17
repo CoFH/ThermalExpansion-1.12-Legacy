@@ -5,13 +5,12 @@ import cofh.core.util.CoreUtils;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.item.TEFlorbs;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class TECreativeTabFlorbs extends CreativeTabs {
 
@@ -31,14 +30,14 @@ public class TECreativeTabFlorbs extends CreativeTabs {
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public Item getTabIconItem() {
 
 		return getIconItemStack().getItem();
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public String getTabLabel() {
 
 		return "thermalexpansion.creativeTabFlorbs";

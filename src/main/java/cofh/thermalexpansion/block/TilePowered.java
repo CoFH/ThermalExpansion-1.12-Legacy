@@ -7,7 +7,6 @@ import cofh.api.energy.IEnergyStorage;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
-
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
@@ -41,8 +40,7 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 
 		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
-			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false),
-					false);
+			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false), false);
 			if (inventory[chargeSlot].stackSize <= 0) {
 				inventory[chargeSlot] = null;
 			}
@@ -80,7 +78,7 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		super.writeToNBT(nbt);
 
 		energyStorage.writeToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

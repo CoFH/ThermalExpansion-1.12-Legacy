@@ -7,7 +7,6 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileSawmill;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

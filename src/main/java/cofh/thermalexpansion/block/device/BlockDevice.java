@@ -16,8 +16,8 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.init.TFEquipment;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.IProperty;
@@ -53,7 +53,7 @@ import java.util.Locale;
 
 public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvider {
 
-    public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
+	public static final PropertyEnum<Types> TYPES = PropertyEnum.create("type", Types.class);
 
 	public BlockDevice() {
 
@@ -61,54 +61,58 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setUnlocalizedName("thermalexpansion.device");
-        setDefaultState(getDefaultState().withProperty(TYPES, Types.ACTIVATOR));
+		setDefaultState(getDefaultState().withProperty(TYPES, Types.ACTIVATOR));
 	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).meta();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
-    }
+		return state.getValue(TYPES).meta();
+	}
 
-    @Override
-    @SideOnly(Side.CLIENT)
-    public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        return BlockBakery.handleExtendedState((IExtendedBlockState) state, tileEntity);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).build();
-    }
+		return getDefaultState().withProperty(TYPES, Types.fromMeta(meta));
+	}
 
-    @Override
-    public TileEntity createNewTileEntity(World world, int metadata) {
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		return BlockBakery.handleExtendedState((IExtendedBlockState) state, tileEntity);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+
+		return new ExtendedBlockState.Builder(this).add(TYPES).add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP).build();
+	}
+
+	@Override
+	public TileEntity createNewTileEntity(World world, int metadata) {
 
 		if (metadata >= Types.values().length) {
-            return null;
+			return null;
 		}
 		switch (Types.values()[metadata]) {
-		case WORKBENCH_FALSE:
-			return new TileWorkbenchFalse();
-		case ACTIVATOR:
-			return new TileActivator();
-		case BREAKER:
-			return new TileBreaker();
-		case COLLECTOR:
-			return new TileCollector();
-		case NULLIFIER:
-			return new TileNullifier();
-		case BUFFER:
-			return new TileBuffer();
-		case EXTENDER:
-			return new TileExtender();
-		default:
-			return null;
+			case WORKBENCH_FALSE:
+				return new TileWorkbenchFalse();
+			case ACTIVATOR:
+				return new TileActivator();
+			case BREAKER:
+				return new TileBreaker();
+			case COLLECTOR:
+				return new TileCollector();
+			case NULLIFIER:
+				return new TileNullifier();
+			case BUFFER:
+				return new TileBuffer();
+			case EXTENDER:
+				return new TileExtender();
+			default:
+				return null;
 		}
 	}
 
@@ -122,17 +126,18 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		}
 	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
 		if (stack.getTagCompound() != null) {
 			TileEntity aTile = world.getTileEntity(pos);
 
 			if (aTile instanceof TileAugmentable) {
 				TileAugmentable tile = ((TileAugmentable) aTile);
 
-                tile.readAugmentsFromNBT(stack.getTagCompound());
-                tile.installAugments();
-                tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+				tile.readAugmentsFromNBT(stack.getTagCompound());
+				tile.installAugments();
+				tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 				int facing = BlockHelper.determineXZPlaceFacing(living);
 				int storedFacing = ReconfigurableHelper.getFacing(stack);
@@ -149,8 +154,9 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-    @Override
-    public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+
 		return false;
 	}
 
@@ -160,61 +166,65 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		return true;
 	}
 
-    @Override
-    public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+
 		return true;
 	}
 
-    @Override
-    public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	@Override
+	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
-        if (metadata == Types.WORKBENCH_FALSE.ordinal()) {
-            if (side.ordinal() == 0) {
-                return IconRegistry.getIcon("WorkbenchBottom", 1);
-            } else if (side.ordinal() == 1) {
-                return IconRegistry.getIcon("WorkbenchTop", 1);
-            }
-            return IconRegistry.getIcon("WorkbenchSide", 1);
-        }
-        return side.ordinal() != 2 ? IconRegistry.getIcon("DeviceSide"): IconRegistry.getIcon("DeviceFace", metadata % Types.values().length);
-    }
-
-    @Override
-    public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
-        TileEntity tileEntity = world.getTileEntity(pos);
-        if (tileEntity instanceof TileDeviceBase) {
-            TileDeviceBase device = ((TileDeviceBase) tileEntity);
-            return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
-        }
-        return null;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-        return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-    }
-
-    @Override
-    @SideOnly(Side.CLIENT)
-    public void registerIcons(TextureMap textureMap) {
-        IconRegistry.addIcon("DeviceSide", "thermalexpansion:blocks/device/device_side", textureMap);
-
-        // Face Textures
-        for (int i = 0; i < Types.values().length; i++) {
-            if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
-                continue;
-            }
-            IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:blocks/device/device_face_" + NAMES[i], textureMap);
-            IconRegistry.addIcon("DeviceActive" + i, "thermalexpansion:blocks/device/device_active_" + NAMES[i], textureMap);
-        }
-    }
+		if (metadata == Types.WORKBENCH_FALSE.ordinal()) {
+			if (side.ordinal() == 0) {
+				return IconRegistry.getIcon("WorkbenchBottom", 1);
+			} else if (side.ordinal() == 1) {
+				return IconRegistry.getIcon("WorkbenchTop", 1);
+			}
+			return IconRegistry.getIcon("WorkbenchSide", 1);
+		}
+		return side.ordinal() != 2 ? IconRegistry.getIcon("DeviceSide") : IconRegistry.getIcon("DeviceFace", metadata % Types.values().length);
+	}
 
 	@Override
-    public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileDeviceBase) {
+			TileDeviceBase device = ((TileDeviceBase) tileEntity);
+			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+		}
+		return null;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerIcons(TextureMap textureMap) {
+
+		IconRegistry.addIcon("DeviceSide", "thermalexpansion:blocks/device/device_side", textureMap);
+
+		// Face Textures
+		for (int i = 0; i < Types.values().length; i++) {
+			if (i == Types.WORKBENCH_FALSE.ordinal() || i == Types.PUMP.ordinal() || i == Types.EXTENDER.ordinal()) {
+				continue;
+			}
+			IconRegistry.addIcon("DeviceFace" + i, "thermalexpansion:blocks/device/device_face_" + NAMES[i], textureMap);
+			IconRegistry.addIcon("DeviceActive" + i, "thermalexpansion:blocks/device/device_active_" + NAMES[i], textureMap);
+		}
+	}
+
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
 		NBTTagCompound tag = super.getItemStackTag(world, pos);
-        TileEntity tile = world.getTileEntity(pos);
+		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileAugmentable) {
 			TileAugmentable theTile = (TileAugmentable) tile;
@@ -277,11 +287,11 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		buffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.BUFFER.ordinal()));
 		// extender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Types.EXTENDER.ordinal()));
 
-        ItemStackRegistry.registerCustomItemStack("activator", activator);
+		ItemStackRegistry.registerCustomItemStack("activator", activator);
 		ItemStackRegistry.registerCustomItemStack("breaker", breaker);
-        ItemStackRegistry.registerCustomItemStack("collector", collector);
-        ItemStackRegistry.registerCustomItemStack("nullifier", nullifier);
-        ItemStackRegistry.registerCustomItemStack("buffer", buffer);
+		ItemStackRegistry.registerCustomItemStack("collector", collector);
+		ItemStackRegistry.registerCustomItemStack("nullifier", nullifier);
+		ItemStackRegistry.registerCustomItemStack("buffer", buffer);
 		// GameRegistry.registerCustomItemStack("extender", extender);
 
 		return true;
@@ -386,47 +396,46 @@ public class BlockDevice extends BlockTEBase implements IWorldBlockTextureProvid
 		// extender = ItemBlockDevice.setDefaultTag(extender);
 	}
 
-    public enum Types implements IStringSerializable, IType, IParticleProvider {
-		WORKBENCH_FALSE,
-        PUMP,
-        ACTIVATOR,
-        BREAKER,
-        COLLECTOR,
-        NULLIFIER,
-        BUFFER,
-        EXTENDER;
+	public enum Types implements IStringSerializable, IType, IParticleProvider {
+		WORKBENCH_FALSE, PUMP, ACTIVATOR, BREAKER, COLLECTOR, NULLIFIER, BUFFER, EXTENDER;
 
-        @Override
-        public String getName() {
-            return name().toLowerCase(Locale.US);
-        }
+		@Override
+		public String getName() {
 
-        public static Types fromMeta(int meta) {
-            try {
-                return values()[meta];
-            } catch (IndexOutOfBoundsException e){
-                throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-            }
-        }
+			return name().toLowerCase(Locale.US);
+		}
 
-        @Override
-        public int meta() {
-            return ordinal();
-        }
+		public static Types fromMeta(int meta) {
 
-        @Override
-        public IProperty<?> getTypeProperty() {
-            return TYPES;
-        }
+			try {
+				return values()[meta];
+			} catch (IndexOutOfBoundsException e) {
+				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+			}
+		}
 
-        @Override
-        public String getParticleTexture() {
-            return "thermalexpansion:blocks/device/device_side";
-        }
+		@Override
+		public int meta() {
 
-        public static int meta(Types type) {
-            return type.ordinal();
-        }
+			return ordinal();
+		}
+
+		@Override
+		public IProperty<?> getTypeProperty() {
+
+			return TYPES;
+		}
+
+		@Override
+		public String getParticleTexture() {
+
+			return "thermalexpansion:blocks/device/device_side";
+		}
+
+		public static int meta(Types type) {
+
+			return type.ordinal();
+		}
 	}
 
 	public static final String[] NAMES = { "workbench", "pump", "activator", "breaker", "collector", "nullifier", "buffer", "extender" };

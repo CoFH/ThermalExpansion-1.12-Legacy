@@ -1,7 +1,5 @@
 package cofh.thermalexpansion.block.strongbox;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.enchantment.CoFHEnchantment;
 import cofh.core.util.CoreUtils;
@@ -12,20 +10,10 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.EnumType;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.util.crafting.TECraftingHandler;
+import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.util.EnumBlockRenderType;
-import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Explosion;
-import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -36,11 +24,22 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.Explosion;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
 public class BlockStrongbox extends BlockTEBase {
 
-    public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
+	public static final PropertyEnum<EnumType> TYPES = PropertyEnum.create("type", EnumType.class);
 
 	public BlockStrongbox() {
 
@@ -50,20 +49,23 @@ public class BlockStrongbox extends BlockTEBase {
 		setUnlocalizedName("thermalexpansion.strongbox");
 	}
 
-    @Override
-    public int getMetaFromState(IBlockState state) {
-        return state.getValue(TYPES).ordinal();
-    }
+	@Override
+	public int getMetaFromState(IBlockState state) {
 
-    @Override
-    public IBlockState getStateFromMeta(int meta) {
-        return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
-    }
+		return state.getValue(TYPES).ordinal();
+	}
 
-    @Override
-    protected BlockStateContainer createBlockState() {
-        return new BlockStateContainer(this, TYPES);
-    }
+	@Override
+	public IBlockState getStateFromMeta(int meta) {
+
+		return getDefaultState().withProperty(TYPES, EnumType.fromMeta(meta));
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+
+		return new BlockStateContainer(this, TYPES);
+	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
@@ -91,19 +93,22 @@ public class BlockStrongbox extends BlockTEBase {
 		}
 	}
 
-    @Override
-    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-        return new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
-    }
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
-    @Override
-    public boolean isFullCube(IBlockState state) {
-        return false;
-    }
+		return new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+	}
 
-    @Override
-    public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
-        IBlockState state1 = world.getBlockState(pos);
+	@Override
+	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
+		IBlockState state1 = world.getBlockState(pos);
 		if (getMetaFromState(state1) == 0 && !enable[0]) {
 			world.setBlockToAir(pos);
 			return;
@@ -121,20 +126,23 @@ public class BlockStrongbox extends BlockTEBase {
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-    @Override
-    public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+	@Override
+	public float getBlockHardness(IBlockState blockState, World world, BlockPos pos) {
+
 		return HARDNESS[getMetaFromState(blockState)];
 	}
 
-    @Override
-    public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+
 		return RESISTANCE[getMetaFromState(world.getBlockState(pos))];
 	}
 
-    @Override
-    public EnumBlockRenderType getRenderType(IBlockState state) {
-        return EnumBlockRenderType.INVISIBLE;
-    }
+	@Override
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+
+		return EnumBlockRenderType.INVISIBLE;
+	}
 
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
@@ -190,10 +198,10 @@ public class BlockStrongbox extends BlockTEBase {
 		strongboxResonant = new ItemStack(this, 1, EnumType.RESONANT.ordinal());
 
 		ItemStackRegistry.registerCustomItemStack("strongboxCreative", strongboxCreative);
-        ItemStackRegistry.registerCustomItemStack("strongboxBasic", strongboxBasic);
-        ItemStackRegistry.registerCustomItemStack("strongboxHardened", strongboxHardened);
-        ItemStackRegistry.registerCustomItemStack("strongboxReinforced", strongboxReinforced);
-        ItemStackRegistry.registerCustomItemStack("strongboxResonant", strongboxResonant);
+		ItemStackRegistry.registerCustomItemStack("strongboxBasic", strongboxBasic);
+		ItemStackRegistry.registerCustomItemStack("strongboxHardened", strongboxHardened);
+		ItemStackRegistry.registerCustomItemStack("strongboxReinforced", strongboxReinforced);
+		ItemStackRegistry.registerCustomItemStack("strongboxResonant", strongboxResonant);
 
 		return true;
 	}

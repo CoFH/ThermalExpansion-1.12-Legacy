@@ -8,30 +8,30 @@ import java.util.Locale;
  * Base default types.
  */
 public enum EnumType implements IStringSerializable {
-    CREATIVE,
-    BASIC,
-    HARDENED,
-    REINFORCED,
-    RESONANT;
+	CREATIVE, BASIC, HARDENED, REINFORCED, RESONANT;
 
-    @Override
-    public String getName() {
-        return name().toLowerCase(Locale.US);
-    }
+	@Override
+	public String getName() {
 
-    public int meta() {
-        return ordinal();
-    }
+		return name().toLowerCase(Locale.US);
+	}
 
-    public static EnumType fromMeta(int meta) {
-        try {
-            return values()[meta];
-        } catch (IndexOutOfBoundsException e){
-           throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
-        }
-    }
+	public int meta() {
 
-    public static int meta(EnumType type) {
-        return type.ordinal();
-    }
+		return ordinal();
+	}
+
+	public static EnumType fromMeta(int meta) {
+
+		try {
+			return values()[meta];
+		} catch (IndexOutOfBoundsException e) {
+			throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
+		}
+	}
+
+	public static int meta(EnumType type) {
+
+		return type.ordinal();
+	}
 }

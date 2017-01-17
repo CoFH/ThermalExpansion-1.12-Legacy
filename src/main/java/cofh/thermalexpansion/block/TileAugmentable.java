@@ -9,16 +9,16 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalexpansion.util.Utils;
-import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
-import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileAugmentable extends TileReconfigurable implements IAugmentable, IEnergyInfo, ISidedInventory {
 
@@ -111,7 +111,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 		super.writeToNBT(nbt);
 
 		writeAugmentsToNBT(nbt);
-        return nbt;
+		return nbt;
 	}
 
 	public void readAugmentsFromNBT(NBTTagCompound nbt) {

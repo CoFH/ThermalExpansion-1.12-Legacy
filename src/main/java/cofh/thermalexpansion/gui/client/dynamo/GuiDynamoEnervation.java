@@ -5,7 +5,6 @@ import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.core.TEProps;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;

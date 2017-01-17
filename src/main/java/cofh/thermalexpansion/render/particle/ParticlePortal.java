@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render.particle;
 
-
 import codechicken.lib.colour.ColourRGBA;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -14,7 +13,6 @@ import net.minecraft.client.renderer.VertexBuffer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
-
 import org.lwjgl.opengl.GL11;
 
 public class ParticlePortal extends Particle {
@@ -61,8 +59,9 @@ public class ParticlePortal extends Particle {
 		zScale = (float) d[2];
 	}
 
-    @Override
-    public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+	@Override
+	public void renderParticle(VertexBuffer worldRendererIn, Entity entityIn, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
+
 		particleAlpha = (1.0F - (particleAge + partialTicks) / particleMaxAge);
 
 		Entity entity = Minecraft.getMinecraft().getRenderViewEntity();
@@ -101,7 +100,7 @@ public class ParticlePortal extends Particle {
 		int k = i / 65536;
 		OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, j / 1.0F, k / 1.0F);
 
-        CCRenderState ccrs = CCRenderState.instance();
+		CCRenderState ccrs = CCRenderState.instance();
 
 		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 		GlStateManager.depthMask(false);
@@ -110,9 +109,9 @@ public class ParticlePortal extends Particle {
 		GlStateManager.disableTexture2D();
 
 		ccrs.reset();
-        ccrs.startDrawing(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
-        ccrs.setColour(new ColourRGBA(particleRed, particleGreen, particleBlue, particleAlpha));
-        ccrs.pullLightmap();
+		ccrs.startDrawing(7, DefaultVertexFormats.PARTICLE_POSITION_TEX_COLOR_LMAP);
+		ccrs.setColour(new ColourRGBA(particleRed, particleGreen, particleBlue, particleAlpha));
+		ccrs.pullLightmap();
 		model.generateBlock(0, cuboid.set(sx, sy, sz, _x, _y, _z).expand(vector.set(xScale, yScale, zScale).multiply(particleScale))).render(ccrs);
 		// tessellator.addVertex(sx - rX * hScale - rYZ * hScale, sy - rXZ * vScale, sz - rZ * hScale - rXY * hScale);
 		// tessellator.addVertex(_x - rX * hScale + rYZ * hScale, _y + rXZ * vScale, _z - rZ * hScale + rXY * hScale);

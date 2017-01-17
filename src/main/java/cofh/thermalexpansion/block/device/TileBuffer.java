@@ -7,14 +7,13 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
-
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileBuffer extends TileDeviceBase implements ITickable {
 
@@ -147,7 +146,7 @@ public class TileBuffer extends TileDeviceBase implements ITickable {
 		nbt.setInteger("Output", quantityOutput);
 		nbt.setBoolean("EnableIn", enableInput);
 		nbt.setBoolean("EnableOut", enableOutput);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */

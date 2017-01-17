@@ -11,7 +11,12 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.ContainerStrongbox;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.SoundCategory;
@@ -20,12 +25,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 
 public class TileStrongbox extends TileInventory implements ITickable, IReconfigurableFacing, ISidedInventory, IInventoryRetainer {
 
@@ -108,9 +107,9 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 		lidAngle = MathHelper.approachLinear(lidAngle, numUsingPlayers > 0 ? 1 : 0, 0.1);
 
 		if (prevLidAngle >= 0.5 && lidAngle < 0.5) {
-            worldObj.playSound(null, getPos(), SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			worldObj.playSound(null, getPos(), SoundEvents.BLOCK_CHEST_CLOSE, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		} else if (prevLidAngle == 0 && lidAngle > 0) {
-            worldObj.playSound(null, getPos(), SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+			worldObj.playSound(null, getPos(), SoundEvents.BLOCK_CHEST_OPEN, SoundCategory.BLOCKS, 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 		}
 	}
 
@@ -142,14 +141,14 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 			float dist = 5.0F;
 			List<EntityPlayer> nearbyEntities = worldObj.getEntitiesWithinAABB(EntityPlayer.class, new AxisAlignedBB(pos.getX() - dist, pos.getY() - dist, pos.getZ() - dist, pos.getX() + 1 + dist, pos.getY() + 1 + dist, pos.getZ() + 1 + dist));
 
-            for (EntityPlayer player : nearbyEntities) {
-                if (player.openContainer instanceof ContainerStrongbox) {
-                    TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
-                    if (box == this) {
-                        ++numUsingPlayers;
-                    }
-                }
-            }
+			for (EntityPlayer player : nearbyEntities) {
+				if (player.openContainer instanceof ContainerStrongbox) {
+					TileStrongbox box = ((ContainerStrongbox) player.openContainer).getTile();
+					if (box == this) {
+						++numUsingPlayers;
+					}
+				}
+			}
 		}
 	}
 
@@ -190,7 +189,7 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 		nbt.setByte("Type", type);
 		nbt.setByte("Enchant", enchant);
 		nbt.setByte("Facing", facing);
-        return nbt;
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -308,8 +307,8 @@ public class TileStrongbox extends TileInventory implements ITickable, IReconfig
 	}
 
 	/* IInventoryRetainer */
-    public boolean retainInventory() {
+	public boolean retainInventory() {
 
-        return true;
-    }
+		return true;
+	}
 }
