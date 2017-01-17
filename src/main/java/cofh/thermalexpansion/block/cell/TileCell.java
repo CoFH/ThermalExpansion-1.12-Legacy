@@ -1,16 +1,18 @@
 package cofh.thermalexpansion.block.cell;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileReconfigurable;
 import cofh.thermalexpansion.gui.client.GuiCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -473,17 +475,17 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyRe
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return type < 2 ? IconRegistry.getIcon("StorageRedstone") : IconRegistry.getIcon("FluidRedstone");
+			return type < 2 ? TETextures.CELL_CENTER_SOLID : TextureUtils.getTexture(TFFluids.fluidRedstone.getStill());
 		} else if (pass == 1) {
-			return IconRegistry.getIcon("Cell", type * 2);
+			return TETextures.CELL[type * 2];
 		} else if (pass == 2) {
-			return IconRegistry.getIcon(BlockCell.textureSelection, sideCache[side]);
+			return TETextures.CELL_CONFIG[sideCache[side]];
 		}
 		if (side != facing) {
-			return IconRegistry.getIcon(BlockCell.textureSelection, 0);
+			return TETextures.CELL_CONFIG_NONE;
 		}
-		int stored = Math.min(8, getScaledEnergyStored(9));
-		return IconRegistry.getIcon("CellMeter", stored);
+
+		return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
 	}
 
 }

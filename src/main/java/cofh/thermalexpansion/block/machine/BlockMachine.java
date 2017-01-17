@@ -6,7 +6,6 @@ import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -15,7 +14,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import codechicken.lib.model.blockbakery.BlockBakery;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEItems;
 import cofh.thermalexpansion.util.crafting.RecipeMachine;
@@ -188,13 +187,13 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
     @SideOnly(Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
         if (side.ordinal() == 0) {
-            return IconRegistry.getIcon("MachineBottom");
+            return TETextures.MACHINE_BOTTOM;
         }
         if (side.ordinal() == 1) {
-            return IconRegistry.getIcon("MachineTop");
+            return TETextures.MACHINE_TOP;
         }
-        return side.ordinal() != 2 ? IconRegistry.getIcon("MachineSide") : IconRegistry.getIcon("MachineFace", metadata % Types.values().length);
-	}
+        return side.ordinal() != 2 ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Types.values().length];
+    }
 
     @Override
     @SideOnly(Side.CLIENT)
@@ -217,7 +216,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
     @Override
     @SideOnly(Side.CLIENT)
     public void registerIcons(TextureMap textureMap) {
-        // Base Textures
+        /*// Base Textures
         IconRegistry.addIcon("MachineBottom", "thermalexpansion:blocks/machine/machine_bottom", textureMap);
         IconRegistry.addIcon("MachineTop", "thermalexpansion:blocks/machine/machine_top", textureMap);
         IconRegistry.addIcon("MachineSide", "thermalexpansion:blocks/machine/machine_side", textureMap);
@@ -245,7 +244,7 @@ public class BlockMachine extends BlockTEBase implements IWorldBlockTextureProvi
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 4, "thermalexpansion:blocks/config/config_orange_cb", textureMap);
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 5, "thermalexpansion:blocks/config/config_green_cb", textureMap);
         IconRegistry.addIcon(TEProps.TEXTURE_CB + 6, "thermalexpansion:blocks/config/config_purple_cb", textureMap);
-        IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);
+        IconRegistry.addIcon(TEProps.TEXTURE_CB + 7, "thermalexpansion:blocks/config/config_open", textureMap);*/
     }
 
 	@Override

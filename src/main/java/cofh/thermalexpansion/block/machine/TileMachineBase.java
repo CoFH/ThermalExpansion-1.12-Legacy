@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -11,7 +10,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.block.machine.BlockMachine.Types;
-import cofh.thermalexpansion.core.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -546,15 +545,15 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 		if (pass == 0) {
 			if (side == 0) {
-				return IconRegistry.getIcon("MachineBottom");
+				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
-				return IconRegistry.getIcon("MachineTop");
+				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[type] : TETextures.MACHINE_FACE[type];
 		} else if (side < 6) {
-			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
+			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}
-		return IconRegistry.getIcon("MachineSide");
+		return TETextures.MACHINE_SIDE;
 	}
 
 	/* ISoundSource */

@@ -28,6 +28,7 @@ import codechicken.lib.model.blockbakery.IBlockStateKeyGenerator;
 import codechicken.lib.model.blockbakery.IItemStackKeyGenerator;
 import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemSatchel;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.item.TEFlorbs;
@@ -81,6 +82,7 @@ public class ProxyClient extends Proxy {
 
     @Override
     public void preInit() {
+        TextureUtils.addIconRegister(new TETextures());
 
         RenderStrongbox.registerRenderers();
 
@@ -145,7 +147,7 @@ public class ProxyClient extends Proxy {
         registerBlockToBakery(TEBlocks.blockMachine, BlockMachine.Types.values());
         registerBlockToBakery(TEBlocks.blockDevice, BlockDevice.Types.values());
         registerBlockToBakery(TEBlocks.blockDynamo, RenderDynamo.instance, BlockDynamo.Types.values());
-        registerBlockToBakery(TEBlocks.blockCell, RenderCell.instance, BlockCell.Types.values());
+        registerBlockToBakery(TEBlocks.blockCell, BlockCell.Types.values());
         registerBlockToBakery(TEBlocks.blockTank, RenderTank.instance, BlockTank.Types.values());
         registerBlockToBakery(TEBlocks.blockCache, BlockCache.Types.values());
         registerBlockToBakery(TEBlocks.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
@@ -426,7 +428,7 @@ public class ProxyClient extends Proxy {
     public void initializeIcons(TextureStitchEvent.Post event) {
 
         RenderCache.initialize();
-        RenderCell.initialize();
+        //RenderCell.initialize();
         RenderDynamo.initialize();
         RenderFrame.initialize();
         RenderStrongbox.initialize();

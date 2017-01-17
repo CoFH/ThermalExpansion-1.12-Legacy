@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.cell;
 
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -95,13 +98,13 @@ public class TileCellCreative extends TileCell {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return IconRegistry.getIcon("FluidRedstone");
+			return TextureUtils.getTexture(TFFluids.fluidRedstone.getStill());
 		} else if (pass == 1) {
-			return IconRegistry.getIcon("Cell", type * 2);
+			return TETextures.CELL[type * 2];
 		} else if (pass == 2) {
-			return IconRegistry.getIcon(BlockCell.textureSelection, sideCache[side]);
+			return TETextures.CELL_CONFIG[sideCache[side]];
 		}
-		return side != facing ? IconRegistry.getIcon(BlockCell.textureSelection, 0) : IconRegistry.getIcon("CellMeterCreative");
+		return side != facing ? TETextures.CELL_CONFIG_NONE : TETextures.CELL_METER_CREATIVE;
 	}
 
 }

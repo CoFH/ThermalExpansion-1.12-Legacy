@@ -7,14 +7,16 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.texture.TextureUtils.IIconRegister;
 import codechicken.lib.vec.Cuboid6;
+import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.render.IconRegistry;
-import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.cell.BlockCell;
 import cofh.thermalexpansion.block.cell.TileCell;
 import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
+import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
@@ -34,12 +36,10 @@ import java.util.List;
 import java.util.Map;
 
 @SideOnly(Side.CLIENT)
-public class RenderCell implements IIconRegister, ILayeredBlockBakery {
+public class RenderCell implements ILayeredBlockBakery {
 
     public static final RenderCell instance = new RenderCell();
 
-    static TextureAtlasSprite[] textureCenter = new TextureAtlasSprite[2];
-    static TextureAtlasSprite[] textureFrame = new TextureAtlasSprite[BlockCell.Types.values().length * 2];
     static CCModel modelCenter = CCModel.quadModel(24);
     static CCModel modelFrame = CCModel.quadModel(48);
 
@@ -59,13 +59,6 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
     }
 
     public static void initialize() {
-
-        textureCenter[0] = IconRegistry.getIcon("StorageRedstone");
-        textureCenter[1] = IconRegistry.getIcon("FluidRedstone");
-
-        for (int i = 0; i < textureFrame.length; i++) {
-            textureFrame[i] = IconRegistry.getIcon("Cell", i);
-        }
     }
 
     @Override
@@ -143,7 +136,7 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         return new ArrayList<BakedQuad>();
     }
 
-    @Override
+    /*@Override
     public void registerIcons(TextureMap textureMap) {
 
         for (int i = 0; i < 9; i++) {
@@ -170,28 +163,28 @@ public class RenderCell implements IIconRegister, ILayeredBlockBakery {
         IconRegistry.addIcon(BlockCell.TEXTURE_CB + 2, "thermalexpansion:blocks/cell/cell_config_blue_cb", textureMap);
 
         IconRegistry.addIcon("StorageRedstone", "thermalexpansion:blocks/cell/cell_center_solid", textureMap);
-    }
+    }*/
 
     public void renderCenter(CCRenderState ccrs, int metadata) {
 
         if (metadata == 1 || metadata == 2) {
-            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[0]));
+            modelCenter.render(ccrs, new IconTransformation(TETextures.CELL_CENTER_SOLID));
         } else {
-            modelCenter.render(ccrs, RenderUtils.getIconTransformation(textureCenter[1]));
+            modelCenter.render(ccrs, new IconTransformation(TextureUtils.getTexture(TFFluids.fluidRedstone.getStill())));
         }
     }
 
     public void renderFrame(CCRenderState ccrs, int metadata, Map<EnumFacing, TextureAtlasSprite> spriteMap, int facing, TextureAtlasSprite faceTexture) {
 
         for (int i = 0; i < 6; i++) {
-            modelFrame.render(ccrs, i * 4, i * 4 + 4, RenderUtils.getIconTransformation(textureFrame[2 * metadata]));
-            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, RenderUtils.getIconTransformation(textureFrame[2 * metadata + 1]));
+            modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(TETextures.CELL[2 * metadata]));
+            modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(TETextures.CELL[2 * metadata + 1]));
         }
         if (spriteMap != null) {
             for (EnumFacing face : EnumFacing.VALUES) {
-                modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, RenderUtils.getIconTransformation(spriteMap.get(face)));
+                modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, new IconTransformation(spriteMap.get(face)));
             }
-            modelFrame.render(ccrs, facing * 4, facing * 4 + 4, RenderUtils.getIconTransformation(faceTexture));
+            modelFrame.render(ccrs, facing * 4, facing * 4 + 4, new IconTransformation(faceTexture));
         }
     }
 
