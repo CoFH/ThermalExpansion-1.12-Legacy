@@ -4,7 +4,7 @@ import cofh.api.item.IAugmentItem;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.item.TEAugments;
@@ -20,7 +20,7 @@ public class TileFurnace extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.FURNACE.ordinal();
+		int type = BlockMachine.Type.FURNACE.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 4;
@@ -50,7 +50,7 @@ public class TileFurnace extends TileMachineBase {
 
 	public TileFurnace() {
 
-		super(Types.FURNACE);
+		super(Type.FURNACE);
 		inventory = new ItemStack[1 + 1 + 1];
 	}
 

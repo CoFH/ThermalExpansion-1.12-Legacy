@@ -1,6 +1,13 @@
 package cofh.thermalexpansion.init;
 
+import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
+import net.minecraft.block.properties.PropertyBool;
+import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 
 public class TEProps {
@@ -9,18 +16,14 @@ public class TEProps {
 
 	}
 
-	/* General */
+	/* GENERAL */
 	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
-	public enum PacketID {
-		GUI, FLUID, MODE
-	}
-
 	public static boolean enableAchievements = false;
 
-	/* Graphics */
+	/* GRAPHICS */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";
 	public static final String PATH_GUI = PATH_GFX + "gui/";
@@ -30,7 +33,6 @@ public class TEProps {
 
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
-	public static final String PATH_GUI_ENDER = PATH_GUI + "ender/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
 	public static final String PATH_GUI_WORKBENCH = PATH_GUI + "workbench/";
 
@@ -48,14 +50,15 @@ public class TEProps {
 	public static String textureSelection = TEXTURE_DEFAULT;
 	public static boolean useAlternateStarfieldShader = false;
 
-	/* Render Ids */
-	public static int renderIdCell = -1;
-	public static int renderIdDynamo = -1;
-	public static int renderIdFrame = -1;
-	public static int renderIdLight = -1;
-	public static int renderIdMachine = -1;
-	public static int renderIdPlate = -1;
-	public static int renderIdTank = -1;
-	public static int renderIdEnder = -1;
+	/* COMMON BLOCK PROPERTIES */
+	public static final IUnlistedProperty<Boolean> ACTIVE = Properties.toUnlisted(PropertyBool.create("active"));
+	public static final IUnlistedProperty<EnumFacing> FACING = Properties.toUnlisted(PropertyEnum.<EnumFacing> create("facing", EnumFacing.class));
+	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
+
+	static {
+		for (int i = 0; i < 6; i++) {
+			TEProps.SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig> create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
+		}
+	}
 
 }

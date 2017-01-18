@@ -14,24 +14,14 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
 
-	public int getChargeSlot() {
+	protected boolean drainEnergy(int energy) {
 
-		return inventory.length - 1;
-	}
-
-	public boolean hasChargeSlot() {
-
-		return true;
+		return hasEnergy(energy) && energyStorage.extractEnergy(energy, false) == energy;
 	}
 
 	protected boolean hasEnergy(int energy) {
 
 		return energyStorage.getEnergyStored() >= energy;
-	}
-
-	protected boolean drainEnergy(int energy) {
-
-		return hasEnergy(energy) && energyStorage.extractEnergy(energy, false) == energy;
 	}
 
 	protected void chargeEnergy() {
@@ -45,6 +35,16 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 				inventory[chargeSlot] = null;
 			}
 		}
+	}
+
+	public int getChargeSlot() {
+
+		return inventory.length - 1;
+	}
+
+	public boolean hasChargeSlot() {
+
+		return true;
 	}
 
 	public final void setEnergyStored(int quantity) {

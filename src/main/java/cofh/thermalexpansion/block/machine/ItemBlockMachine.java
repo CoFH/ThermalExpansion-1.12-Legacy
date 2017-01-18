@@ -63,7 +63,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)];
+		return "tile.thermalexpansion.machine." + BlockMachine.Type.values()[ItemHelper.getItemDamage(stack)].getName();
 	}
 
 	@Override
@@ -91,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.NAMES[ItemHelper.getItemDamage(stack)]));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.Type.values()[ItemHelper.getItemDamage(stack)].getName()));
 
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}

@@ -32,32 +32,15 @@ import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-import javax.annotation.Nullable;
 import java.util.UUID;
 
-public abstract class TileInventory extends TileTEBase implements IInventory, ISecurable {
+public abstract class TileInventorySecure extends TileTEBase implements IInventory, ISecurable {
 
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
 	protected AccessMode access = AccessMode.PUBLIC;
 	protected boolean canAccess = true;
-	protected boolean inWorld = false;
 
 	public ItemStack[] inventory = new ItemStack[0];
-
-	public void cofh_validate() {
-
-		inWorld = true;
-	}
-
-	public void cofh_invalidate() {
-
-		inWorld = false;
-	}
-
-	public boolean canAccess() {
-
-		return canAccess;
-	}
 
 	public boolean isSecured() {
 
@@ -69,7 +52,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		return true;
 	}
 
-	//Extracts an item FROM an inventory to the machine.
+	/* ITEM TRANSFER */
 	public boolean extractItem(int slot, int amount, EnumFacing side) {
 
 		if (slot > inventory.length) {
@@ -105,7 +88,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 					amount -= toExtract;
 				}
 			}
-
 			if (initialAmount != amount) {
 				inventory[slot] = stack;
 				adjInv.markDirty();
@@ -156,9 +138,27 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	/* GUI METHODS */
 	@Override
-	public int getInvSlotCount() {
+	public void receiveGuiNetworkData(int id, int data) {
 
-		return inventory.length;
+		if (data == 0) {
+			canAccess = false;
+		} else {
+			canAccess = true;
+		}
+	}
+
+	@Override
+	public void sendGuiNetworkData(Container container, IContainerListener listener) {
+
+		super.sendGuiNetworkData(container, listener);
+		if (listener instanceof EntityPlayer) {
+			listener.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) listener)) ? 1 : 0);
+		}
+	}
+
+	public boolean canAccess() {
+
+		return canAccess;
 	}
 
 	@Override
@@ -183,18 +183,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public void receiveGuiNetworkData(int i, int j) {
+	public int getInvSlotCount() {
 
-		canAccess = j != 0;
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, IContainerListener player) {
-
-		super.sendGuiNetworkData(container, player);
-		if (player instanceof EntityPlayer) {
-			player.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) player)) ? 1 : 0);
-		}
+		return inventory.length;
 	}
 
 	/* NBT METHODS */
@@ -351,18 +342,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public String getName() {
-
-		return tileName.isEmpty() ? getName() : tileName;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-
-		return !tileName.isEmpty();
-	}
-
-	@Override
 	public int getInventoryStackLimit() {
 
 		return 64;
@@ -412,7 +391,19 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 
 	}
 
-	@Nullable
+	/* IWorldNameable */
+	@Override
+	public String getName() {
+
+		return tileName.isEmpty() ? getName() : tileName;
+	}
+
+	@Override
+	public boolean hasCustomName() {
+
+		return !tileName.isEmpty();
+	}
+
 	@Override
 	public ITextComponent getDisplayName() {
 
@@ -426,12 +417,6 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		this.access = access;
 		sendUpdatePacket(Side.SERVER);
 		return true;
-	}
-
-	@Override
-	public AccessMode getAccess() {
-
-		return access;
 	}
 
 	@Override
@@ -477,9 +462,9 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
-	public GameProfile getOwner() {
+	public AccessMode getAccess() {
 
-		return owner;
+		return access;
 	}
 
 	@Override
@@ -493,6 +478,13 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	}
 
 	@Override
+	public GameProfile getOwner() {
+
+		return owner;
+	}
+
+	/* CAPABILITIES */
+	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
 		return super.hasCapability(capability, facing) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
@@ -502,7 +494,7 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
 
 		if (capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY) {
-			if (this instanceof ISidedInventory && facing != null) {
+			if (this instanceof ISidedInventory) {
 				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new SidedInvWrapper(((ISidedInventory) this), facing));
 			} else {
 				return CapabilityItemHandler.ITEM_HANDLER_CAPABILITY.cast(new InvWrapper(this));
@@ -510,4 +502,5 @@ public abstract class TileInventory extends TileTEBase implements IInventory, IS
 		}
 		return super.getCapability(capability, facing);
 	}
+
 }

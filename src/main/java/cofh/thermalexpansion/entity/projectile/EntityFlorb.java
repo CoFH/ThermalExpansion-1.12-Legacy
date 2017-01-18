@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.entity.projectile;
 
-import codechicken.lib.util.BlockUtils;
 import cofh.core.CoFHProps;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ServerHelper;
@@ -31,15 +30,15 @@ public class EntityFlorb extends EntityThrowable {
 
 	private static DataParameter<String> FLUID = EntityDataManager.createKey(EntityFlorb.class, DataSerializers.STRING);
 
+	protected static ItemStack blockCheck = new ItemStack(Blocks.STONE);
+
+	protected float gravity = 0.03F;
+	protected Fluid fluid;
+
 	public static void initialize() {
 
 		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", CoreUtils.getEntityId(), ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1, true);
 	}
-
-	public static ItemStack blockCheck = new ItemStack(Blocks.STONE);
-
-	protected Fluid fluid;
-	protected float gravity = 0.03F;
 
 	/* Required Constructor */
 	public EntityFlorb(World world) {
@@ -96,53 +95,28 @@ public class EntityFlorb extends EntityThrowable {
 		this.setThrowableHeading(this.motionX, this.motionY, this.motionZ, velocity, 1.0F);
 	}
 
-	protected void setGravity() {
+	public EntityFlorb setFluid(Fluid fluid) {
+
+		this.fluid = fluid;
+
+		return this;
+	}
+
+	private void setGravity() {
 
 		if (fluid.getDensity() < 0) {
 			this.gravity = cofh.lib.util.helpers.MathHelper.minF(0.01F, 0.03F + 0.03F * fluid.getDensity() / 1000F);
 		}
 	}
 
-	@Override
-	protected void entityInit() {
-
-		//this.dataWatcher.addObject(16, Integer.valueOf(0));
-		dataManager.register(FLUID, "");
-	}
-
-	public void setSyncFluid() {
+	private void setSyncFluid() {
 
 		this.dataManager.set(FLUID, fluid.getName());
 	}
 
-	public Fluid getSyncFluid() {
+	private Fluid getSyncFluid() {
 
 		return FluidRegistry.getFluid(dataManager.get(FLUID));
-	}
-
-	public Fluid getFluid() {
-
-		return fluid;
-	}
-
-	public void setFluid(Fluid fluid) {
-
-		this.fluid = fluid;
-	}
-
-	@Override
-	protected float getGravityVelocity() {
-
-		return gravity;
-	}
-
-	@Override
-	public void onEntityUpdate() {
-
-		if (fluid == null && ServerHelper.isClientWorld(worldObj)) {
-			fluid = getSyncFluid();
-		}
-		super.onEntityUpdate();
 	}
 
 	@Override
@@ -171,6 +145,15 @@ public class EntityFlorb extends EntityThrowable {
 	}
 
 	@Override
+	public void onEntityUpdate() {
+
+		if (fluid == null && ServerHelper.isClientWorld(worldObj)) {
+			fluid = getSyncFluid();
+		}
+		super.onEntityUpdate();
+	}
+
+	@Override
 	protected void onImpact(RayTraceResult traceResult) {
 
 		BlockPos pos = traceResult.getBlockPos();
@@ -190,22 +173,40 @@ public class EntityFlorb extends EntityThrowable {
 				return;
 			}
 			Block block = fluid.getBlock();
+			IBlockState state = worldObj.getBlockState(pos);
 
 			if ("water".equals(fluid.getName())) {
 				block = Blocks.FLOWING_WATER;
 			} else if ("lava".equals(fluid.getName())) {
 				block = Blocks.FLOWING_LAVA;
 			}
-			if (worldObj.isAirBlock(pos) || worldObj.getBlockState(pos).getMaterial() == Material.FIRE || worldObj.getBlockState(pos).getBlock() == Blocks.SNOW_LAYER) {
-				// if (fluid.getName() != "water" || !worldObj.getBiomeGenForCoords(x / 16, z / 16).biomeName.toLowerCase().equals("hell")) {
-				worldObj.setBlockState(pos, block.getDefaultState(), 3);
-				BlockUtils.fireBlockUpdate(worldObj, pos);
-				// }
+			if (worldObj.isAirBlock(pos) || state.getMaterial() == Material.FIRE || state.getBlock() == Blocks.SNOW_LAYER) {
+				if (!fluid.getName().equals("water") || !worldObj.getBiome(pos).getBiomeName().toLowerCase().equals("hell")) {
+					worldObj.setBlockState(pos, block.getDefaultState(), 3);
+					worldObj.notifyBlockUpdate(pos, state, state, 3);
+				}
 			} else {
 				ItemFlorb.dropFlorb(getFluid(), worldObj, pos);
 			}
 		}
 		this.setDead();
+	}
+
+	@Override
+	protected void entityInit() {
+
+		dataManager.register(FLUID, "");
+	}
+
+	@Override
+	protected float getGravityVelocity() {
+
+		return gravity;
+	}
+
+	public Fluid getFluid() {
+
+		return fluid;
 	}
 
 	/* NBT METHODS */

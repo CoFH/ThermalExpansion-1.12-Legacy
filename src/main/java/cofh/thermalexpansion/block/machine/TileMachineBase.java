@@ -9,7 +9,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -21,12 +21,12 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileMachineBase extends TileAugmentable implements ITickable {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Types.values().length];
-	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Types.values().length];
-	protected static final String[] sounds = new String[BlockMachine.Types.values().length];
-	protected static final boolean[] enableSound = new boolean[BlockMachine.Types.values().length];
+	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
+	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
+	protected static final String[] sounds = new String[BlockMachine.Type.values().length];
+	protected static final boolean[] enableSound = new boolean[BlockMachine.Type.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 1, 0, 14, 0, 0, 7, 15 };
-	public static final boolean[] enableSecurity = new boolean[BlockMachine.Types.values().length];
+	public static final boolean[] enableSecurity = new boolean[BlockMachine.Type.values().length];
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
@@ -35,10 +35,10 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	protected static final int AUTO_TRANSFER[] = new int[] { 8, 16, 32, 64 };
 	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8 };
 
-	public static void configure() {
+	public static void config() {
 
-		for (int i = 0; i < BlockMachine.Types.values().length; i++) {
-			String name = StringHelper.titleCase(BlockMachine.NAMES[i]);
+		for (int i = 0; i < BlockMachine.Type.values().length; i++) {
+			String name = StringHelper.titleCase(BlockMachine.Type.values()[i].getName());
 			String comment = "Enable this to allow for " + name + "s to be securable.";
 			enableSecurity[i] = ThermalExpansion.CONFIG.get("Security", "Machine." + name + ".Securable", true, comment);
 
@@ -64,13 +64,13 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	public TileMachineBase() {
 
-		this(Types.FURNACE);
+		this(Type.FURNACE);
 		if (getClass() != TileMachineBase.class) {
 			throw new IllegalArgumentException();
 		}
 	}
 
-	public TileMachineBase(Types type) {
+	public TileMachineBase(Type type) {
 
 		this.type = (byte) type.ordinal();
 
@@ -89,7 +89,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.NAMES[type] + ".name";
+		return BlockMachine.Type.values()[type].getName();
 	}
 
 	@Override

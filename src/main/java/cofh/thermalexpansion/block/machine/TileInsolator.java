@@ -2,11 +2,11 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
@@ -35,7 +35,7 @@ public class TileInsolator extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.INSOLATOR.ordinal();
+		int type = BlockMachine.Type.INSOLATOR.ordinal();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 8;
@@ -65,11 +65,11 @@ public class TileInsolator extends TileMachineBase {
 
 	public boolean lockPrimary = false;
 
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	public TileInsolator() {
 
-		super(Types.INSOLATOR);
+		super(Type.INSOLATOR);
 		inventory = new ItemStack[2 + 1 + 1 + 1];
 		tank.setLock(FluidRegistry.WATER);
 	}
@@ -365,7 +365,7 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}

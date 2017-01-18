@@ -4,14 +4,14 @@ import codechicken.lib.util.BlockUtils;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
 import cofh.core.util.CoreUtils;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.init.TEProps;
@@ -39,7 +39,7 @@ public class TileTransposer extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.TRANSPOSER.ordinal();
+		int type = BlockMachine.Type.TRANSPOSER.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 6;
@@ -68,7 +68,7 @@ public class TileTransposer extends TileMachineBase {
 
 	FluidStack outputBuffer;
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	IFluidContainerItem containerItem = null;
 
 	public boolean reverseFlag;
@@ -76,7 +76,7 @@ public class TileTransposer extends TileMachineBase {
 
 	public TileTransposer() {
 
-		super(Types.TRANSPOSER);
+		super(Type.TRANSPOSER);
 		inventory = new ItemStack[1 + 1 + 1 + 1];
 	}
 
@@ -505,7 +505,7 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}

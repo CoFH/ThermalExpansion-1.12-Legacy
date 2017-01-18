@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -28,7 +28,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
-	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
+	FluidTankCore tank = new FluidTankCore(MAX_FLUID);
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 
 	@Override
@@ -81,7 +81,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		return tank;
 	}

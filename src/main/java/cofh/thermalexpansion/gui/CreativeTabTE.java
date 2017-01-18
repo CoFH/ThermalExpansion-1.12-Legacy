@@ -24,7 +24,7 @@ public class CreativeTabTE extends CreativeTabs {
 
 	protected ItemStack getStack() {
 
-		return BlockMachine.furnace;
+		return BlockMachine.machineFurnace;
 	}
 
 	@Override

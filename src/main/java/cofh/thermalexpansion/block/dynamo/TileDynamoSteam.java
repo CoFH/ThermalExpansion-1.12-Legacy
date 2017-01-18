@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
@@ -44,8 +44,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	static final int STEAM_MIN = 2000;
 
-	FluidTankAdv steamTank = new FluidTankAdv(MAX_FLUID);
-	FluidTankAdv waterTank = new FluidTankAdv(MAX_FLUID);
+	FluidTankCore steamTank = new FluidTankCore(MAX_FLUID);
+	FluidTankCore waterTank = new FluidTankCore(MAX_FLUID);
 
 	int currentFuelRF = getEnergyValue(coal);
 	int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
@@ -159,7 +159,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return steamTank;

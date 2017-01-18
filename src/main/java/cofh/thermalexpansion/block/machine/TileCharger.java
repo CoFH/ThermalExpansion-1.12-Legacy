@@ -6,7 +6,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.util.crafting.ChargerManager;
@@ -23,7 +23,7 @@ public class TileCharger extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.CHARGER.ordinal();
+		int type = BlockMachine.Type.CHARGER.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 4;
@@ -57,7 +57,7 @@ public class TileCharger extends TileMachineBase {
 
 	public TileCharger() {
 
-		super(Types.CHARGER);
+		super(Type.CHARGER);
 		inventory = new ItemStack[1 + 1 + 1 + 1];
 	}
 

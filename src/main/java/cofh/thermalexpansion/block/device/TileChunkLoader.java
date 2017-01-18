@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -24,7 +24,7 @@ public class TileChunkLoader extends TileAugmentable {
 	static final int TYPE = 0;
 	static SideConfig defaultSideConfig = new SideConfig();
 
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	EnergyStorage energyStorage = new EnergyStorage(400000);
 	Ticket ticket;
 	byte radius;

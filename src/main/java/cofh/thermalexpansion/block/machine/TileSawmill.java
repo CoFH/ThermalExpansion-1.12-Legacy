@@ -4,7 +4,7 @@ import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.init.TEItemsOld;
@@ -20,7 +20,7 @@ public class TileSawmill extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.SAWMILL.ordinal();
+		int type = BlockMachine.Type.SAWMILL.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 6;
@@ -49,7 +49,7 @@ public class TileSawmill extends TileMachineBase {
 
 	public TileSawmill() {
 
-		super(Types.SAWMILL);
+		super(Type.SAWMILL);
 		inventory = new ItemStack[1 + 2 + 1 + 1];
 	}
 

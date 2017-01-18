@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block;
 
-import codechicken.lib.util.BlockUtils;
 import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
@@ -19,9 +18,11 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Implementable ("buildcraft.api.tiles.IHasWork")
 @Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
-public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
+public abstract class TileRSControl extends TileInventorySecure implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
+
+	protected int powerLevel;
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
@@ -31,12 +32,17 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public void onNeighborBlockChange() {
 
 		wasPowered = isPowered;
-		isPowered = worldObj.isBlockPowered(getPos());
+		powerLevel = worldObj.isBlockIndirectlyGettingPowered(pos);
+		isPowered = powerLevel > 0;
 
 		if (wasPowered != isPowered && sendRedstoneUpdates()) {
-			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, getPos());
+			PacketTEBase.sendRSPowerUpdatePacketToClients(this, worldObj, pos);
 			onRedstoneUpdate();
 		}
+	}
+
+	public void onRedstoneUpdate() {
+
 	}
 
 	protected boolean sendRedstoneUpdates() {
@@ -49,10 +55,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
 	}
 
-	public void onRedstoneUpdate() {
-
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -63,6 +65,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		NBTTagCompound rsTag = nbt.getCompoundTag("RS");
 
 		isPowered = rsTag.getBoolean("Power");
+		powerLevel = rsTag.getByte("Level");
 		rsMode = ControlMode.values()[rsTag.getByte("Mode")];
 	}
 
@@ -75,6 +78,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		NBTTagCompound rsTag = new NBTTagCompound();
 
 		rsTag.setBoolean("Power", isPowered);
+		rsTag.setByte("Level", (byte) powerLevel);
 		rsTag.setByte("Mode", (byte) rsMode.ordinal());
 		nbt.setTag("RS", rsTag);
 		return nbt;
@@ -104,7 +108,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 		if (!isServer) {
 			boolean prevActive = isActive;
-
 			isActive = payload.getBool();
 
 			if (isActive && !prevActive) {
@@ -124,7 +127,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 		wasPowered = this.isPowered;
 		this.isPowered = isPowered;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			BlockUtils.fireBlockUpdate(worldObj, getPos());
+			callBlockUpdate();
 		}
 	}
 
@@ -139,7 +142,7 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketTEBase.sendRSConfigUpdatePacketToServer(this, getPos());
+			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 		}

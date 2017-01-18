@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util;
 
-import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -32,7 +31,7 @@ public class TickHandlerClientConfig {
 
 	public void onMainMenu() {
 
-		ThermalExpansion.instance.resetClientConfigs();
+		//ThermalExpansion.instance.resetClientConfigs();
 	}
 
 }

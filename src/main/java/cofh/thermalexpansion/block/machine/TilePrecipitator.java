@@ -3,10 +3,10 @@ package cofh.thermalexpansion.block.machine;
 import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.init.TEProps;
@@ -33,7 +33,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.PRECIPITATOR.ordinal();
+		int type = BlockMachine.Type.PRECIPITATOR.getMetadata();
 
 		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
 		processItems[1] = new ItemStack(Blocks.SNOW);
@@ -66,11 +66,11 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	byte curSelection;
 	byte prevSelection;
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	public TilePrecipitator() {
 
-		super(Types.PRECIPITATOR);
+		super(Type.PRECIPITATOR);
 		inventory = new ItemStack[1 + 1];
 	}
 
@@ -184,7 +184,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}

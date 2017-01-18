@@ -28,11 +28,6 @@ public class TEBlocksOld {
 		blockDynamo = addBlock(new BlockDynamo());
 		blockFrame = addBlock(new BlockFrame());
 
-		blockAirSignal = new BlockAirSignal();
-		blockAirLight = new BlockAirLight();
-		blockAirForce = new BlockAirForce();
-		blockAirBarrier = new BlockAirBarrier();
-
 		GameRegistry.registerBlock(blockMachine, ItemBlockMachine.class, "Machine");
 		GameRegistry.registerBlock(blockDevice, ItemBlockDevice.class, "Device");
 		GameRegistry.registerBlock(blockDynamo, ItemBlockDynamo.class, "Dynamo");

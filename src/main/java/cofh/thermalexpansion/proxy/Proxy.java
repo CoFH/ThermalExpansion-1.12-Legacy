@@ -3,7 +3,6 @@ package cofh.thermalexpansion.proxy;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
-import net.minecraftforge.event.world.WorldEvent.Save;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -32,14 +31,6 @@ public class Proxy {
 
 	public void postInit(FMLPostInitializationEvent event) {
 
-	}
-
-	@SubscribeEvent
-	public void save(Save evt) {
-
-		//		if (evt.getWorld().provider.getDimension() == 0) {
-		//			TeleportChannelRegistry.save();
-		//		}
 	}
 
 	@SideOnly (Side.CLIENT)

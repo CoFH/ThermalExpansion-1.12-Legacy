@@ -10,7 +10,6 @@ import cofh.core.block.TileCore;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.Utils;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -23,6 +22,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
+import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -53,7 +53,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileTEBase) {
-			((TileTEBase) tile).setInvName(ItemHelper.getNameFromItemStack(stack));
+			((TileTEBase) tile).setName(ItemHelper.getNameFromItemStack(stack));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -68,7 +68,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		}
 		if (player.isSneaking()) {
 			if (WrenchHelper.isHoldingUsableWrench(player, traceResult)) {
-				if (ServerHelper.isServerWorld(world)) {
+				if (ServerHelper.isServerWorld(world) && canDismantle(world, pos, state, player)) {
 					dismantleBlock(world, pos, state, player, false);
 					WrenchHelper.usedWrench(player, traceResult);
 				}
@@ -77,30 +77,23 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		}
 		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
 
-		if (tile == null) {
+		if (tile == null || tile.isInvalid()) {
 			return false;
 		}
-		if (Utils.isHoldingUsableWrench(player, traceResult)) {
+		if (WrenchHelper.isHoldingUsableWrench(player, traceResult)) {
 			if (ServerHelper.isServerWorld(world)) {
 				tile.onWrench(player, side);
 			}
-			Utils.usedWrench(player, traceResult);
+			WrenchHelper.usedWrench(player, traceResult);
 			return true;
 		}
-		if (basicGui) {
-			if (ServerHelper.isServerWorld(world)) {
-				return tile.openGui(player);
-			}
-			return tile.hasGui();
+		if (basicGui && ServerHelper.isServerWorld(world)) {
+			return tile.openGui(player);
 		}
-		return false;
+		return basicGui;
 	}
 
-	//@Override
-	//public IIcon getIcon(int side, int metadata) {
-	//	return BlockGlass.TEXTURE[0];
-	//}
-
+	/* HELPERS */
 	@Override
 	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
 
@@ -111,7 +104,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		if (tile instanceof TileTEBase && (!((TileTEBase) tile).tileName.isEmpty())) {
 			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
 		}
-		if (tile instanceof TileInventory && ((TileInventory) tile).isSecured()) {
+		if (tile instanceof TileInventorySecure && ((TileInventorySecure) tile).isSecured()) {
 			retTag = SecurityHelper.setItemStackTagSecure(retTag, (ISecurable) tile);
 		}
 		if (tile instanceof IRedstoneControl) {
@@ -120,23 +113,33 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		return retTag;
 	}
 
-	/* Drop Helper */
+	@Override
 	public ArrayList<ItemStack> dropDelegate(NBTTagCompound nbt, IBlockAccess world, BlockPos pos, int fortune) {
 
-		return dismantleDelegate(nbt, (World) world, pos, null, false, true);
+		TileEntity tile = world.getTileEntity(pos);
+		IBlockState state = world.getBlockState(pos);
+		int meta = state.getBlock().getMetaFromState(state);
+
+		ItemStack dropBlock = new ItemStack(this, 1, meta);
+
+		if (nbt != null) {
+			dropBlock.setTagCompound(nbt);
+		}
+		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ret.add(dropBlock);
+		return ret;
 	}
 
-	/* Dismantle Helper */
 	@Override
 	public ArrayList<ItemStack> dismantleDelegate(NBTTagCompound nbt, World world, BlockPos pos, EntityPlayer player, boolean returnDrops, boolean simulate) {
 
 		TileEntity tile = world.getTileEntity(pos);
 		IBlockState state = world.getBlockState(pos);
-		int bMeta = state.getBlock().getMetaFromState(state);
+		int meta = state.getBlock().getMetaFromState(state);
 
-		ItemStack dropBlock = new ItemStack(this, 1, bMeta);
+		ItemStack dropBlock = new ItemStack(this, 1, meta);
 
-		if (nbt != null && !nbt.hasNoTags()) {
+		if (nbt != null) {
 			dropBlock.setTagCompound(nbt);
 		}
 		if (!simulate) {
@@ -150,22 +153,33 @@ public abstract class BlockTEBase extends BlockCoreTile {
 				double x2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				double y2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
 				double z2 = world.rand.nextFloat() * f + (1.0F - f) * 0.5D;
-				EntityItem item = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
-				item.setPickupDelay(10);
+				EntityItem dropEntity = new EntityItem(world, pos.getX() + x2, pos.getY() + y2, pos.getZ() + z2, dropBlock);
+				dropEntity.setPickupDelay(10);
 				if (tile instanceof ISecurable && !((ISecurable) tile).getAccess().isPublic()) {
-					item.setOwner(player.getName());
-					// set owner (not thrower) - ensures wrenching player can pick it up first
+					dropEntity.setOwner(player.getName());
+					// Set Owner (ot Thrower) - ensures dismantling player can pick it up first.
 				}
-				world.spawnEntityInWorld(item);
+				world.spawnEntityInWorld(dropEntity);
 
 				if (player != null) {
-					CoreUtils.dismantleLog(player.getName(), this, bMeta, pos);
+					CoreUtils.dismantleLog(player.getName(), state.getBlock(), meta, pos);
 				}
 			}
 		}
 		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
 		ret.add(dropBlock);
 		return ret;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+
+		if (this instanceof IWorldBlockTextureProvider) {
+			CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -179,14 +193,47 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		return false;
 	}
 
-	@Override
-	@SideOnly (Side.CLIENT)
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+	/* SIDE CONFIG */
+	public enum EnumSideConfig implements IStringSerializable {
 
-		if (this instanceof IWorldBlockTextureProvider) {
-			CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
-			return true;
+		// @formatter:off
+		NONE(0, "none"),
+		BLUE(1, "blue"),
+		RED(2, "red"),
+		YELLOW(3, "yellow"),
+		ORANGE(4, "orange"),
+		GREEN(5, "green"),
+		PURPLE(6, "purple"),
+		OPEN(7, "open");
+		// @formatter:on
+
+		private final int index;
+		private final String name;
+
+		EnumSideConfig(int index, String name) {
+
+			this.index = index;
+			this.name = name;
 		}
-		return false;
+
+		public int getIndex() {
+
+			return this.index;
+		}
+
+		@Override
+		public String getName() {
+
+			return this.name;
+		}
+
+		public static final BlockTEBase.EnumSideConfig[] VALUES = new BlockTEBase.EnumSideConfig[values().length];
+
+		static {
+			for (EnumSideConfig config : values()) {
+				VALUES[config.getIndex()] = config;
+			}
+		}
+
 	}
 }

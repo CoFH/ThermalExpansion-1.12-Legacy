@@ -4,12 +4,12 @@ import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
 import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.init.TEProps;
@@ -39,7 +39,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.EXTRUDER.ordinal();
+		int type = BlockMachine.Type.EXTRUDER.getMetadata();
 
 		processItems = new ItemStack[3];
 
@@ -95,12 +95,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	byte prevSelection;
 	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankAdv hotTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
-	FluidTankAdv coldTank = new FluidTankAdv(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore hotTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	public TileExtruder() {
 
-		super(Types.EXTRUDER);
+		super(Type.EXTRUDER);
 		inventory = new ItemStack[1];
 
 		for (int i = 0; i < 3; i++) {
@@ -274,7 +274,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return prevSelection;
 	}
 
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		if (tankIndex == 0) {
 			return hotTank;

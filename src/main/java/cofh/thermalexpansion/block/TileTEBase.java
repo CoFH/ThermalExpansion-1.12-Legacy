@@ -2,11 +2,13 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
 import cofh.core.block.TileCore;
-import cofh.core.network.*;
+import cofh.core.network.ITileInfoPacketHandler;
+import cofh.core.network.ITilePacketHandler;
+import cofh.core.network.PacketCoFHBase;
+import cofh.core.network.PacketHandler;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
@@ -17,7 +19,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	protected String tileName = "";
 
-	public boolean setInvName(String name) {
+	protected boolean setName(String name) {
 
 		if (name.isEmpty()) {
 			return false;
@@ -52,7 +54,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public boolean openGui(EntityPlayer player) {
 
 		if (hasGui()) {
-			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, getPos().getX(), getPos().getY(), getPos().getZ());
+			player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, pos.getX(), pos.getY(), pos.getZ());
 			return true;
 		}
 		return false;
@@ -101,52 +103,6 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		return payload;
 	}
 
-	public PacketCoFHBase getGuiPacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.GUI.ordinal());
-		return payload;
-	}
-
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.FLUID.ordinal());
-		return payload;
-	}
-
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = PacketTileInfo.newPacket(this);
-		payload.addByte(TEProps.PacketID.MODE.ordinal());
-		return payload;
-	}
-
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-	}
-
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-	}
-
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		markChunkDirty();
-	}
-
-	public void sendFluidPacket() {
-
-		PacketHandler.sendToDimension(getFluidPacket(), worldObj.provider.getDimension());
-	}
-
-	public void sendModePacket() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			PacketHandler.sendToServer(getModePacket());
-		}
-	}
-
 	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
@@ -162,7 +118,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	@Override
 	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
-		switch (TEProps.PacketID.values()[payload.getByte()]) {
+		switch (TilePacketID.values()[payload.getByte()]) {
 			case GUI:
 				handleGuiPacket(payload);
 				return;

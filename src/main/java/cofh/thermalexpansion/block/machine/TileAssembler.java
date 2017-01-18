@@ -1,14 +1,14 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.inventory.InventoryCraftingFalse;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
 import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
 import cofh.thermalexpansion.init.TEProps;
@@ -34,7 +34,7 @@ public class TileAssembler extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.ASSEMBLER.ordinal();
+		int type = BlockMachine.Type.CRAFTER.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 6;
@@ -63,7 +63,7 @@ public class TileAssembler extends TileMachineBase {
 	private boolean needsCraft = false;
 
 	int outputTracker;
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	InventoryCrafting crafting = new InventoryCraftingFalse(3, 3);
 	ItemStack recipeOutput;
 
@@ -73,7 +73,7 @@ public class TileAssembler extends TileMachineBase {
 
 	public TileAssembler() {
 
-		super(Types.ASSEMBLER);
+		super(Type.CRAFTER);
 		inventory = new ItemStack[1 + 1 + 1 + 18];
 	}
 
@@ -278,7 +278,7 @@ public class TileAssembler extends TileMachineBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}

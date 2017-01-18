@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
@@ -34,7 +34,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
-	FluidTankAdv tank = new FluidTankAdv(MAX_FLUID);
+	FluidTankCore tank = new FluidTankCore(MAX_FLUID);
 
 	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 	int reactantRF;
@@ -116,7 +116,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	@Override
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		return tank;
 	}

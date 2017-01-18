@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
@@ -52,7 +52,7 @@ public class TilePump extends TileAugmentable {
 	public static boolean enableSecurity = true;
 
 	int outputTracker;
-	FluidTankAdv tank = new FluidTankAdv(TEProps.MAX_FLUID_LARGE);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	public boolean reverse;
 
@@ -109,7 +109,7 @@ public class TilePump extends TileAugmentable {
 	}
 
 	@Override
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return tank;
 	}

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.item;
 
-import codechicken.lib.util.SoundUtils;
 import cofh.core.item.ItemCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
@@ -134,7 +133,7 @@ public class ItemFlorb extends ItemCoFHBase {
 		Fluid fluid = FluidRegistry.getFluid(stack.getTagCompound().getString("Fluid"));
 
 		if (fluid != null) {
-			SoundUtils.playSoundAt(player, SoundCategory.NEUTRAL, SoundEvents.ENTITY_ARROW_SHOOT, 0.5F, 0.4F / (itemRand.nextFloat() * 0.4F + 0.8F));
+			world.playSound(null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ARROW_SHOOT, SoundCategory.NEUTRAL, 1.0F, 1.0F / (itemRand.nextFloat() * 0.4F + 0.8F));
 
 			if (ServerHelper.isServerWorld(world)) {
 				world.spawnEntityInWorld(new EntityFlorb(world, player, fluid));
@@ -142,4 +141,5 @@ public class ItemFlorb extends ItemCoFHBase {
 		}
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
+
 }

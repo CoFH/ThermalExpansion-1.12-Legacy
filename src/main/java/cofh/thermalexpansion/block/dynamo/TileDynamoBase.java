@@ -11,7 +11,7 @@ import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -318,7 +318,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
-	public FluidTankAdv getTank(int tankIndex) {
+	public FluidTankCore getTank(int tankIndex) {
 
 		return null;
 	}

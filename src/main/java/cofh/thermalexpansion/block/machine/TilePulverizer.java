@@ -3,7 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
@@ -18,7 +18,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.PULVERIZER.ordinal();
+		int type = BlockMachine.Type.PULVERIZER.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 6;
@@ -47,7 +47,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	public TilePulverizer() {
 
-		super(Types.PULVERIZER);
+		super(Type.PULVERIZER);
 		inventory = new ItemStack[1 + 2 + 1 + 1];
 	}
 

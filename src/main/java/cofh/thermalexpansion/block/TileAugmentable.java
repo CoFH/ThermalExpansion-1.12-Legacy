@@ -4,7 +4,7 @@ import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankAdv;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -24,7 +24,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 
 	protected SideConfig sideConfig;
 
-	/* Augment Variables */
+	/* AUGMENT VARIABLES */
 	protected boolean[] augmentStatus = new boolean[3];
 	protected ItemStack[] augments = new ItemStack[3];
 
@@ -84,7 +84,7 @@ public abstract class TileAugmentable extends TileReconfigurable implements IAug
 		return 0;
 	}
 
-	public FluidTankAdv getTank() {
+	public FluidTankCore getTank() {
 
 		return null;
 	}

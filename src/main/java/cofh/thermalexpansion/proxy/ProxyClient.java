@@ -11,12 +11,6 @@ import codechicken.lib.texture.TextureUtils.IIconRegister;
 import cofh.core.render.IconRegistry;
 import cofh.core.render.RenderItemModular;
 import cofh.thermalexpansion.block.CommonProperties;
-import cofh.thermalexpansion.block.device.BlockDevice;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo;
-import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.block.simple.BlockAirForce;
-import cofh.thermalexpansion.block.simple.BlockAirSignal;
-import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.init.TEBlocksOld;
 import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.item.TEAugments;
@@ -120,10 +114,10 @@ public class ProxyClient extends Proxy {
 		//			}
 		//		});
 
-		registerBlockToBakery(TEBlocksOld.blockMachine, BlockMachine.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockDevice, BlockDevice.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockDynamo, RenderDynamo.instance, BlockDynamo.Types.values());
-		registerBlockToBakery(TEBlocksOld.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
+		//		registerBlockToBakery(TEBlocksOld.blockMachine, BlockMachine.Types.values());
+		//		registerBlockToBakery(TEBlocksOld.blockDevice, BlockDevice.Types.values());
+		//		registerBlockToBakery(TEBlocksOld.blockDynamo, RenderDynamo.instance, BlockDynamo.Types.values());
+		//		registerBlockToBakery(TEBlocksOld.blockFrame, RenderFrame.instance, BlockFrame.Types.values());
 
 		registerModelKeyGenerators();
 
@@ -158,13 +152,13 @@ public class ProxyClient extends Proxy {
 		//		registerDummyModel(TEBlocksOld.blockStrongbox, BlockStrongbox.TYPES);
 		//		ModelRegistryHelper.registerItemRenderer(Item.getItemFromBlock(TEBlocksOld.blockStrongbox), RenderStrongbox.instance);
 
-		registerDummyModel(TEBlocksOld.blockAirBarrier);
-
-		registerDummyModel(TEBlocksOld.blockAirForce, BlockAirForce.FACING);
-
-		registerDummyModel(TEBlocksOld.blockAirLight);
-
-		registerDummyModel(TEBlocksOld.blockAirSignal, BlockAirSignal.INTENSITY);
+		//		registerDummyModel(TEBlocksOld.blockAirBarrier);
+		//
+		//		registerDummyModel(TEBlocksOld.blockAirForce, BlockAirForce.FACING);
+		//
+		//		registerDummyModel(TEBlocksOld.blockAirLight);
+		//
+		//		registerDummyModel(TEBlocksOld.blockAirSignal, BlockAirSignal.INTENSITY);
 
 		RenderEntityFlorb.initialize();
 	}

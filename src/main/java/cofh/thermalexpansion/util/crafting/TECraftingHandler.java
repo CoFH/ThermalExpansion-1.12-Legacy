@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.init.TEAchievements;
 import cofh.thermalexpansion.init.TEItemsOld;
@@ -69,31 +68,31 @@ public class TECraftingHandler {
 			player.addStat(TEAchievements.machineFrame, 1);
 		}
 		// Machine Achievements
-		else if (stack.isItemEqual(BlockMachine.furnace)) {
-			player.addStat(TEAchievements.furnace, 1);
-		} else if (stack.isItemEqual(BlockMachine.pulverizer)) {
-			player.addStat(TEAchievements.pulverizer, 1);
-		} else if (stack.isItemEqual(BlockMachine.sawmill)) {
-			player.addStat(TEAchievements.sawmill, 1);
-		} else if (stack.isItemEqual(BlockMachine.smelter)) {
-			player.addStat(TEAchievements.smelter, 1);
-		} else if (stack.isItemEqual(BlockMachine.crucible)) {
-			player.addStat(TEAchievements.crucible, 1);
-		} else if (stack.isItemEqual(BlockMachine.transposer)) {
-			player.addStat(TEAchievements.transposer, 1);
-		} else if (stack.isItemEqual(BlockMachine.precipitator)) {
-			player.addStat(TEAchievements.precipitator, 1);
-		} else if (stack.isItemEqual(BlockMachine.extruder)) {
-			player.addStat(TEAchievements.extruder, 1);
-		} else if (stack.isItemEqual(BlockMachine.accumulator)) {
-			player.addStat(TEAchievements.accumulator, 1);
-		} else if (stack.isItemEqual(BlockMachine.assembler)) {
-			player.addStat(TEAchievements.assembler, 1);
-		} else if (stack.isItemEqual(BlockMachine.charger)) {
-			player.addStat(TEAchievements.charger, 1);
-		} else if (stack.isItemEqual(BlockMachine.insolator)) {
-			player.addStat(TEAchievements.insolator, 1);
-		}
+		//		else if (stack.isItemEqual(BlockMachine.furnace)) {
+		//			player.addStat(TEAchievements.furnace, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.pulverizer)) {
+		//			player.addStat(TEAchievements.pulverizer, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.sawmill)) {
+		//			player.addStat(TEAchievements.sawmill, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.smelter)) {
+		//			player.addStat(TEAchievements.smelter, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.crucible)) {
+		//			player.addStat(TEAchievements.crucible, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.transposer)) {
+		//			player.addStat(TEAchievements.transposer, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.precipitator)) {
+		//			player.addStat(TEAchievements.precipitator, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.extruder)) {
+		//			player.addStat(TEAchievements.extruder, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.accumulator)) {
+		//			player.addStat(TEAchievements.accumulator, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.assembler)) {
+		//			player.addStat(TEAchievements.assembler, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.charger)) {
+		//			player.addStat(TEAchievements.charger, 1);
+		//		} else if (stack.isItemEqual(BlockMachine.insolator)) {
+		//			player.addStat(TEAchievements.insolator, 1);
+		//		}
 		// Resonant Achievements
 		//		else if (stack.isItemEqual(BlockCell.cellResonant)) {
 		//			player.addStat(TEAchievements.resonantCell, 1);

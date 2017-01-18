@@ -4,7 +4,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Types;
+import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
@@ -20,7 +20,7 @@ public class TileSmelter extends TileMachineBase {
 
 	public static void initialize() {
 
-		int type = BlockMachine.Types.SMELTER.ordinal();
+		int type = BlockMachine.Type.SMELTER.getMetadata();
 
 		defaultSideConfig[type] = new SideConfig();
 		defaultSideConfig[type].numConfig = 8;
@@ -52,7 +52,7 @@ public class TileSmelter extends TileMachineBase {
 
 	public TileSmelter() {
 
-		super(Types.SMELTER);
+		super(Type.SMELTER);
 		inventory = new ItemStack[2 + 2 + 1 + 1];
 	}
 
