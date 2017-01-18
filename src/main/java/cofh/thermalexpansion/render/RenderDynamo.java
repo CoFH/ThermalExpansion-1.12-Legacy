@@ -13,7 +13,7 @@ import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
-import cofh.thermalexpansion.block.dynamo.BlockDynamo.Types;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo.Type;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -34,7 +34,7 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 	public static final RenderDynamo instance = new RenderDynamo();
 
 	static TextureAtlasSprite textureCoil;
-	static TextureAtlasSprite[] textureBase = new TextureAtlasSprite[BlockDynamo.Types.values().length];
+	static TextureAtlasSprite[] textureBase = new TextureAtlasSprite[BlockDynamo.Type.values().length];
 	static CCModel[][] modelCoil = new CCModel[2][6];
 	static CCModel[][] modelBase = new CCModel[2][6];
 	static CCModel[] modelAnimation = new CCModel[6];
@@ -58,11 +58,11 @@ public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 
 		IconRegistry.addIcon("DynamoCoilRedstone", "thermalexpansion:blocks/dynamo/dynamo_coil_redstone", textureMap);
 
-		IconRegistry.addIcon("Dynamo" + Types.STEAM.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_steam", textureMap);
-		IconRegistry.addIcon("Dynamo" + Types.MAGMATIC.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_magmatic", textureMap);
-		IconRegistry.addIcon("Dynamo" + Types.COMPRESSION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_compression", textureMap);
-		IconRegistry.addIcon("Dynamo" + Types.REACTANT.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_reactant", textureMap);
-		IconRegistry.addIcon("Dynamo" + Types.ENERVATION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_enervation", textureMap);
+		IconRegistry.addIcon("Dynamo" + Type.STEAM.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_steam", textureMap);
+		IconRegistry.addIcon("Dynamo" + Type.MAGMATIC.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_magmatic", textureMap);
+		IconRegistry.addIcon("Dynamo" + Type.COMPRESSION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_compression", textureMap);
+		IconRegistry.addIcon("Dynamo" + Type.REACTANT.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_reactant", textureMap);
+		IconRegistry.addIcon("Dynamo" + Type.ENERVATION.ordinal(), "thermalexpansion:blocks/dynamo/dynamo_enervation", textureMap);
 	}
 
 	@Override

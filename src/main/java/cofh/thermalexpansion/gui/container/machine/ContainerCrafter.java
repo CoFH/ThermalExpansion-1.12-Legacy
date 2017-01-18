@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.container.machine;
 import cofh.core.util.CoreUtils;
 import cofh.lib.gui.slot.*;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.block.machine.TileAssembler;
+import cofh.thermalexpansion.block.machine.TileCrafter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.network.PacketTEBase;
@@ -15,20 +15,20 @@ import net.minecraft.inventory.*;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 
-public class ContainerAssembler extends ContainerTEBase implements ISchematicContainer {
+public class ContainerCrafter extends ContainerTEBase implements ISchematicContainer {
 
-	TileAssembler myTile;
+	TileCrafter myTile;
 	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
 	IInventory craftResult = new InventoryCraftResult();
 
 	public Slot craftSlots[] = new Slot[9];
 	public Slot resultSlot;
 
-	public ContainerAssembler(InventoryPlayer inventory, TileEntity tile) {
+	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 
 		super(inventory, tile);
 
-		myTile = (TileAssembler) tile;
+		myTile = (TileCrafter) tile;
 		for (int i = 0; i < 2; i++) {
 			for (int j = 0; j < 9; j++) {
 				addSlotToContainer(new Slot(myTile, 3 + j + i * 9, 8 + j * 18, 74 + i * 18));

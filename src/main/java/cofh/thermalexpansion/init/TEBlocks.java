@@ -1,6 +1,9 @@
 package cofh.thermalexpansion.init;
 
 import cofh.api.core.IInitializer;
+import cofh.thermalexpansion.block.device.BlockDevice;
+import cofh.thermalexpansion.block.dynamo.BlockDynamo;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 
 import java.util.ArrayList;
 
@@ -12,6 +15,13 @@ public class TEBlocks {
 
 	public static void preInit() {
 
+		blockMachine = new BlockMachine();
+		blockDevice = new BlockDevice();
+		blockDynamo = new BlockDynamo();
+
+		initList.add(blockMachine);
+		initList.add(blockDevice);
+		initList.add(blockDynamo);
 	}
 
 	public static void initialize() {
@@ -31,5 +41,8 @@ public class TEBlocks {
 	static ArrayList<IInitializer> initList = new ArrayList<IInitializer>();
 
 	/* REFERENCES */
+	public static BlockMachine blockMachine;
+	public static BlockDevice blockDevice;
+	public static BlockDynamo blockDynamo;
 
 }

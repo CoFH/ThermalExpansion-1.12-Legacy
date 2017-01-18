@@ -1,15 +1,13 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
-import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,29 +16,33 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSawmill extends TileMachineBase {
 
+	static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockMachine.Type.SAWMILL.getMetadata();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 6;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 6;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false, false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:sawmill");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Machine.Sawmill";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineSawmill");
-
-		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion.Sawmill");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
 	int inputTracker;
@@ -49,8 +51,14 @@ public class TileSawmill extends TileMachineBase {
 
 	public TileSawmill() {
 
-		super(Type.SAWMILL);
+		super();
 		inventory = new ItemStack[1 + 2 + 1 + 1];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -154,7 +162,7 @@ public class TileSawmill extends TileMachineBase {
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}
-				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, TEItemsOld.sawdust)) {
+				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, ItemMaterial.dustWood)) {
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}

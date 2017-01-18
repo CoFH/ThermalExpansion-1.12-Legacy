@@ -6,31 +6,31 @@ import cofh.lib.gui.element.ElementBase;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 
-public class ElementSlotOverlayAssembler extends ElementBase {
+public class ElementSlotOverlayCrafter extends ElementBase {
 
 	public int slotColor;
 	public int slotRender;
 
-	public ElementSlotOverlayAssembler(GuiBase gui, int posX, int posY) {
+	public ElementSlotOverlayCrafter(GuiBase gui, int posX, int posY) {
 
 		super(gui, posX, posY);
 		this.texture = TEProps.textureGuiAssembler;
 	}
 
-	public ElementSlotOverlayAssembler setSlotInfo(int color, int render) {
+	public ElementSlotOverlayCrafter setSlotInfo(int color, int render) {
 
 		slotColor = color;
 		slotRender = render;
 		return this;
 	}
 
-	public ElementSlotOverlayAssembler setSlotColor(int color) {
+	public ElementSlotOverlayCrafter setSlotColor(int color) {
 
 		slotColor = color;
 		return this;
 	}
 
-	public ElementSlotOverlayAssembler setSlotRender(int render) {
+	public ElementSlotOverlayCrafter setSlotRender(int render) {
 
 		slotRender = render;
 		return this;

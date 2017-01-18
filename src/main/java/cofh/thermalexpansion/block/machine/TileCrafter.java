@@ -8,9 +8,8 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
-import cofh.thermalexpansion.gui.client.machine.GuiAssembler;
-import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
+import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
+import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.util.helpers.SchematicHelper;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,31 +29,35 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
-public class TileAssembler extends TileMachineBase {
+public class TileCrafter extends TileMachineBase {
+
+	static final int TYPE = BlockMachine.Type.CRAFTER.getMetadata();
 
 	public static void initialize() {
 
-		int type = BlockMachine.Type.CRAFTER.getMetadata();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 6;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 6;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:crafter");
+	}
 
-		String category = "Machine.Assembler";
+	public static void config() {
+
+		String category = "Machine.Crafter";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		GameRegistry.registerTileEntity(TileAssembler.class, "thermalexpansion.Assembler");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
 	public static final int PROCESS_ENERGY = 20;
@@ -71,10 +74,16 @@ public class TileAssembler extends TileMachineBase {
 	ItemStack[] recipeSlot = new ItemStack[9];
 	String[] recipeOre = new String[9];
 
-	public TileAssembler() {
+	public TileCrafter() {
 
-		super(Type.CRAFTER);
+		super();
 		inventory = new ItemStack[1 + 1 + 1 + 18];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -268,13 +277,13 @@ public class TileAssembler extends TileMachineBase {
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiAssembler(inventory, this);
+		return new GuiCrafter(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerAssembler(inventory, this);
+		return new ContainerCrafter(inventory, this);
 	}
 
 	@Override

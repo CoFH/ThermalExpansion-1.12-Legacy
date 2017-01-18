@@ -1,11 +1,9 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.core.util.crafting.RecipeSecure;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.simple.BlockFrame;
 import cofh.thermalexpansion.init.TEAchievements;
-import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -46,7 +44,7 @@ public class TECraftingHandler {
 
 	public static void addSecureRecipe(ItemStack stack) {
 
-		GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItemsOld.lock, 'S', "nuggetSignalum", 'X', stack }));
+		//GameRegistry.addRecipe(new RecipeSecure(stack, new Object[] { " L ", "SXS", " S ", 'L', TEItemsOld.lock, 'S', "nuggetSignalum", 'X', stack }));
 	}
 
 	@SubscribeEvent

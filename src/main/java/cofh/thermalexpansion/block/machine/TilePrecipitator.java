@@ -6,7 +6,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.init.TEProps;
@@ -31,31 +30,37 @@ import javax.annotation.Nullable;
 
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
 
-	public static void initialize() {
+	static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
 
-		int type = BlockMachine.Type.PRECIPITATOR.getMetadata();
+	public static void initialize() {
 
 		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
 		processItems[1] = new ItemStack(Blocks.SNOW);
 		processItems[2] = new ItemStack(Blocks.ICE);
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:precipitator");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Machine.Precipitator";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion.Precipitator");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
 	static int[] processWater = { 500, 500, 1000 };
@@ -70,8 +75,14 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	public TilePrecipitator() {
 
-		super(Type.PRECIPITATOR);
+		super();
 		inventory = new ItemStack[1 + 1];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override

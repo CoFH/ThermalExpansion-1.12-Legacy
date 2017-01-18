@@ -3,14 +3,12 @@ package cofh.thermalexpansion.block.machine;
 import codechicken.lib.util.BlockUtils;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.IconRegistry;
-import cofh.core.util.CoreUtils;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.init.TEProps;
@@ -35,29 +33,33 @@ import javax.annotation.Nullable;
 
 public class TileCrucible extends TileMachineBase {
 
+	static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockMachine.Type.CRUCIBLE.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:crucible");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Machine.Crucible";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 400), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineCrucible");
-
-		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion.Crucible");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 	}
 
 	int inputTracker;
@@ -69,8 +71,14 @@ public class TileCrucible extends TileMachineBase {
 
 	public TileCrucible() {
 
-		super(Type.CRUCIBLE);
+		super();
 		inventory = new ItemStack[1 + 1];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -373,9 +381,9 @@ public class TileCrucible extends TileMachineBase {
 			} else if (side == 1) {
 				return IconRegistry.getIcon("MachineTop");
 			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", type);
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", getType());
 		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", type) : IconRegistry.getIcon("MachineFace", type);
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
 		}
 	}
 

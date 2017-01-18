@@ -56,9 +56,9 @@ public class PacketTEBase extends PacketCoFHBase {
 						((ISchematicContainer) player.openContainer).writeSchematic();
 					}
 					return;
-//				case CONFIG_SYNC:
-//					ThermalExpansion.instance.handleConfigSync(this);
-//					return;
+				//				case CONFIG_SYNC:
+				//					ThermalExpansion.instance.handleConfigSync(this);
+				//					return;
 				default:
 					ThermalExpansion.LOG.error("Unknown Packet! Internal: TEPH, ID: " + type);
 			}
@@ -103,10 +103,10 @@ public class PacketTEBase extends PacketCoFHBase {
 		PacketHandler.sendToServer(getPacket(PacketTypes.TAB_SCHEMATIC));
 	}
 
-//	public static void sendConfigSyncPacketToClient(EntityPlayer player) {
-//
-//		PacketHandler.sendTo(ThermalExpansion.instance.getConfigSync(), player);
-//	}
+	//	public static void sendConfigSyncPacketToClient(EntityPlayer player) {
+	//
+	//		PacketHandler.sendTo(ThermalExpansion.instance.getConfigSync(), player);
+	//	}
 
 	public static PacketCoFHBase getPacket(PacketTypes theType) {
 

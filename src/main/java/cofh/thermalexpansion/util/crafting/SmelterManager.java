@@ -8,7 +8,6 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ISmelterRecipe;
-import cofh.thermalexpansion.init.TEItemsOld;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -114,14 +113,14 @@ public class SmelterManager {
 
 		addFlux(blockSand);
 		addFlux(blockSoulSand);
-		addFlux(TEItemsOld.slagRich);
+		addFlux(ItemMaterial.crystalSlagRich);
 		addFlux(ItemMaterial.crystalCinnabar);
 		addFlux(ItemMaterial.dustPyrotheum);
 
-		addTERecipe(4000, new ItemStack(Blocks.COBBLESTONE, 2), blockSand, new ItemStack(Blocks.STONEBRICK, 1), TEItemsOld.slag, 100);
-		addTERecipe(4000, new ItemStack(Blocks.REDSTONE_ORE), blockSand, new ItemStack(Blocks.REDSTONE_BLOCK), TEItemsOld.slagRich, 50);
+		addTERecipe(4000, new ItemStack(Blocks.COBBLESTONE, 2), blockSand, new ItemStack(Blocks.STONEBRICK, 1), ItemMaterial.crystalSlag, 100);
+		addTERecipe(4000, new ItemStack(Blocks.REDSTONE_ORE), blockSand, new ItemStack(Blocks.REDSTONE_BLOCK), ItemMaterial.crystalSlagRich, 50);
 		addTERecipe(4000, new ItemStack(Blocks.NETHERRACK, 4), blockSoulSand, new ItemStack(Blocks.NETHER_BRICK_STAIRS, 2), ItemMaterial.dustSulfur, 25);
-		addTERecipe(4000, new ItemStack(Blocks.QUARTZ_ORE), blockSoulSand, new ItemStack(Blocks.QUARTZ_BLOCK), TEItemsOld.slagRich, 25);
+		addTERecipe(4000, new ItemStack(Blocks.QUARTZ_ORE), blockSoulSand, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
 		// sulfur? rich sulfur? what do we even do here?
 
 		{ // variable locality (let's not accidentally use it elsewhere)
@@ -413,14 +412,14 @@ public class SmelterManager {
 
 		if (registeredOres.size() > 0) {
 			ItemStack ore = registeredOres.get(0);
-			addRecipe(3200, ore, blockSand, ingot2, TEItemsOld.slagRich, richSlagChance);
-			addRecipe(4000, ore, TEItemsOld.slagRich, ingot3, TEItemsOld.slag, slagOreChance);
-			addRecipe(4000, ore, ItemMaterial.dustPyrotheum, ingot2, TEItemsOld.slagRich, Math.min(60, richSlagChance * 3));
+			addRecipe(3200, ore, blockSand, ingot2, ItemMaterial.crystalSlagRich, richSlagChance);
+			addRecipe(4000, ore, ItemMaterial.crystalSlagRich, ingot3, ItemMaterial.crystalSlag, slagOreChance);
+			addRecipe(4000, ore, ItemMaterial.dustPyrotheum, ingot2, ItemMaterial.crystalSlagRich, Math.min(60, richSlagChance * 3));
 
 			if (ingotSecondary != null) {
 				addRecipe(4000, ore, ItemMaterial.crystalCinnabar, ingot3, ingotSecondary, 100);
 			} else {
-				addRecipe(4000, ore, ItemMaterial.crystalCinnabar, ingot3, TEItemsOld.slagRich, 75);
+				addRecipe(4000, ore, ItemMaterial.crystalCinnabar, ingot3, ItemMaterial.crystalSlagRich, 75);
 			}
 		}
 	}
@@ -430,7 +429,7 @@ public class SmelterManager {
 		List<ItemStack> registeredOres = OreDictionary.getOres(dustName);
 
 		if (registeredOres.size() > 0) {
-			addRecipe(800, ItemHelper.cloneStack(registeredOres.get(0), 2), blockSand, ingot2, TEItemsOld.slag, slagDustChance);
+			addRecipe(800, ItemHelper.cloneStack(registeredOres.get(0), 2), blockSand, ingot2, ItemMaterial.crystalSlag, slagDustChance);
 		}
 	}
 
@@ -510,7 +509,7 @@ public class SmelterManager {
 
 	public static boolean addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
-		return addRecipe(energy, blockSand, input, ItemHelper.cloneStack(output, outputSize), TEItemsOld.slag, outputSize * 5 + 5, false);
+		return addRecipe(energy, blockSand, input, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5, false);
 	}
 
 	/* RECIPE CLASS */

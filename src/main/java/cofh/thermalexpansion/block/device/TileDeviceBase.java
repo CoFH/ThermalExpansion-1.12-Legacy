@@ -1,48 +1,27 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.render.IconRegistry;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TileAugmentable {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Types.values().length];
-	public static final boolean[] enableSecurity = new boolean[BlockDevice.Types.values().length];
+	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Type.values().length];
+	public static boolean enableSecurity = true;
 
-	public static void configure() {
+	public static void config() {
 
-		for (int i = 0; i < BlockDevice.Types.values().length; i++) {
-			String name = StringHelper.titleCase(BlockDevice.NAMES[i]);
-			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.CONFIG.get("Security", "Device." + name + ".Securable", true, comment);
-		}
-		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.WORKBENCH_FALSE.ordinal()]) + ".Securable");
-		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.PUMP.ordinal()]) + ".Securable");
-		ThermalExpansion.CONFIG.removeProperty("Security", "Device." + StringHelper.titleCase(BlockDevice.NAMES[Types.EXTENDER.ordinal()]) + ".Securable");
+		String comment = "Enable this to allow for Devices to be securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Device.All.Securable", true, comment);
 	}
-
-	protected final byte type;
 
 	public TileDeviceBase() {
 
-		this(Types.BREAKER);
-		if (getClass() != TileDeviceBase.class) {
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public TileDeviceBase(Types type) {
-
-		this.type = (byte) type.ordinal();
-
-		sideConfig = defaultSideConfig[this.type];
+		sideConfig = defaultSideConfig[this.getType()];
 		setDefaultSides();
 
 		augmentStatus = new boolean[4];
@@ -50,31 +29,21 @@ public abstract class TileDeviceBase extends TileAugmentable {
 	}
 
 	@Override
-	public int getType() {
-
-		return type;
-	}
-
-	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.device." + BlockDevice.NAMES[getType()] + ".name";
+		return BlockDevice.Type.byMetadata(getType()).getName();
 	}
 
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity[getType()];
+		return enableSecurity;
 	}
 
 	@Override
 	public boolean sendRedstoneUpdates() {
 
 		return true;
-	}
-
-	public void onEntityCollidedWithBlock(Entity entity) {
-
 	}
 
 	/* IReconfigurableFacing */
@@ -103,7 +72,7 @@ public abstract class TileDeviceBase extends TileAugmentable {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", type) : IconRegistry.getIcon("DeviceFace", type);
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]);
 		}

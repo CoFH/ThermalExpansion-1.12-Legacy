@@ -5,28 +5,28 @@ import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
-import cofh.thermalexpansion.gui.container.machine.ContainerAssembler;
+import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
-import cofh.thermalexpansion.gui.element.ElementSlotOverlayAssembler;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlayCrafter;
 import cofh.thermalexpansion.gui.element.TabSchematic;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiAssembler extends GuiAugmentableBase {
+public class GuiCrafter extends GuiAugmentableBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "assembler.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crafter.png");
 
-	ElementSlotOverlayAssembler[] slotInput = new ElementSlotOverlayAssembler[3];
+	ElementSlotOverlayCrafter[] slotInput = new ElementSlotOverlayCrafter[3];
 	ElementBase slotOutput;
 	ElementBase slotInputFluid;
 
-	public GuiAssembler(InventoryPlayer inventory, TileEntity tile) {
+	public GuiCrafter(InventoryPlayer inventory, TileEntity tile) {
 
-		super(new ContainerAssembler(inventory, tile), tile, inventory.player, TEXTURE);
+		super(new ContainerCrafter(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.assembler", 3);
+		generateInfo("tab.thermalexpansion.machine.crafter", 3);
 
 		ySize = 205;
 	}
@@ -38,9 +38,9 @@ public class GuiAssembler extends GuiAugmentableBase {
 
 		addTab(new TabSchematic(this, (ISchematicContainer) inventorySlots));
 
-		slotInput[0] = (ElementSlotOverlayAssembler) addElement(new ElementSlotOverlayAssembler(this, 8, 74).setSlotInfo(0, 4));
-		slotInput[1] = (ElementSlotOverlayAssembler) addElement(new ElementSlotOverlayAssembler(this, 8, 74).setSlotInfo(4, 0));
-		slotInput[2] = (ElementSlotOverlayAssembler) addElement(new ElementSlotOverlayAssembler(this, 8, 74).setSlotInfo(5, 1));
+		slotInput[0] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(0, 4));
+		slotInput[1] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(4, 0));
+		slotInput[2] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(5, 1));
 
 		slotInputFluid = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
 		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));

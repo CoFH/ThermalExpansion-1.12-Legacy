@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.item.IAugmentItem;
-import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.item.TEAugments;
@@ -18,29 +16,33 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileFurnace extends TileMachineBase {
 
+	static final int TYPE = BlockMachine.Type.FURNACE.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockMachine.Type.FURNACE.getMetadata();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:furnace");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Machine.Furnace";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineFurnace");
-
-		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion.Furnace");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
 	int inputTracker;
@@ -50,8 +52,14 @@ public class TileFurnace extends TileMachineBase {
 
 	public TileFurnace() {
 
-		super(Type.FURNACE);
+		super();
 		inventory = new ItemStack[1 + 1 + 1];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override

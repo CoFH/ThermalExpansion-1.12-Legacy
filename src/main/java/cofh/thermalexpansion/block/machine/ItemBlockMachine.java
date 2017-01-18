@@ -63,7 +63,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.Type.values()[ItemHelper.getItemDamage(stack)].getName();
+		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 	}
 
 	@Override
@@ -80,7 +80,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
 
 		SecurityHelper.addOwnerInformation(stack, list);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
@@ -91,7 +91,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.Type.values()[ItemHelper.getItemDamage(stack)].getName()));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
 
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}

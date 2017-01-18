@@ -4,7 +4,6 @@ import cofh.core.CoFHProps;
 import cofh.core.render.IconRegistry;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;
 import cofh.thermalexpansion.gui.container.device.ContainerNullifier;
 import cofh.thermalexpansion.init.TEProps;
@@ -27,21 +26,21 @@ import javax.annotation.Nullable;
 
 public class TileNullifier extends TileDeviceBase {
 
+	static final int TYPE = BlockDevice.Type.NULLIFIER.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockDevice.Types.NULLIFIER.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 2;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, false };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 2;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0 }, {} };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false, false };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, false };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4 };
-		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
-
-		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion.Nullifier");
+		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion:nullifier");
 	}
 
 	protected static final int[] SLOTS = { 0 };
@@ -49,8 +48,14 @@ public class TileNullifier extends TileDeviceBase {
 
 	public TileNullifier() {
 
-		super(Types.NULLIFIER);
+		super();
 		inventory = new ItemStack[1];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -209,9 +214,9 @@ public class TileNullifier extends TileDeviceBase {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("DeviceFace", type);
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", type) : IconRegistry.getIcon("DeviceFace", type);
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		}
 		return IconRegistry.getIcon("DeviceSide");
 	}

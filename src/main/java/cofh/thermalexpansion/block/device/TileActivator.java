@@ -10,7 +10,6 @@ import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiActivator;
 import cofh.thermalexpansion.gui.container.device.ContainerActivator;
 import com.google.common.base.Predicate;
@@ -35,23 +34,30 @@ import java.util.List;
 
 public class TileActivator extends TileDeviceBase implements ITickable {
 
+	static final int TYPE = BlockDevice.Type.ACTIVATOR.getMetadata();
+
 	static EnergyConfig energyConfig;
 	static int ACTIVATION_ENERGY = 20;
 	static int MAX_SLOT = 9;
 
 	public static void initialize() {
 
-		int type = BlockDevice.Types.ACTIVATOR.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion:activator");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Device.Activator";
 		int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 0, 500);
@@ -63,8 +69,6 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);
 		ThermalExpansion.CONFIG.set("Device.Activator", "ActivationEnergy", maxPower);
 		ACTIVATION_ENERGY = maxPower;
-
-		GameRegistry.registerTileEntity(TileActivator.class, "thermalexpansion.Activator");
 	}
 
 	public boolean leftClick = false;
@@ -87,9 +91,15 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 
 	public TileActivator() {
 
-		super(Types.ACTIVATOR);
+		super();
 		inventory = new ItemStack[10];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 3);
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override

@@ -1,12 +1,10 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.CoreUtils;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
@@ -33,29 +31,33 @@ import javax.annotation.Nullable;
 
 public class TileInsolator extends TileMachineBase {
 
+	static final int TYPE = BlockMachine.Type.INSOLATOR.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockMachine.Type.INSOLATOR.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 8;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 8;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, false, false, false };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:insolator");
+
+		config();
+	}
+
+	public static void config() {
 
 		String category = "Machine.Insolator";
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-		defaultEnergyConfig[type] = new EnergyConfig();
-		defaultEnergyConfig[type].setParamsPower(basePower);
 
-		sounds[type] = CoreUtils.getSoundName(ThermalExpansion.MOD_ID, "blockMachineInsolator");
-
-		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion.Insolator");
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
 	int inputTrackerPrimary;
@@ -69,9 +71,15 @@ public class TileInsolator extends TileMachineBase {
 
 	public TileInsolator() {
 
-		super(Type.INSOLATOR);
+		super();
 		inventory = new ItemStack[2 + 1 + 1 + 1];
 		tank.setLock(FluidRegistry.WATER);
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override

@@ -5,10 +5,13 @@ import cofh.core.CoFHProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.CustomProperty;
@@ -17,6 +20,7 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.network.NetworkRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -64,6 +68,7 @@ public class ThermalExpansion {
 		CONFIG.setConfiguration(new Configuration(new File(CoFHProps.configDir, "/cofh/" + MOD_ID + "/common.cfg"), true));
 		CONFIG_CLIENT.setConfiguration(new Configuration(new File(CoFHProps.configDir, "/cofh/" + MOD_ID + "/client.cfg"), true));
 
+		TEProps.preInit();
 		TEBlocks.preInit();
 
 		proxy.preInit(event);
@@ -73,6 +78,9 @@ public class ThermalExpansion {
 	public void initialize(FMLInitializationEvent event) {
 
 		TEBlocks.initialize();
+
+		/* Register Handlers */
+		registerHandlers();
 
 		proxy.initialize(event);
 	}
@@ -90,6 +98,7 @@ public class ThermalExpansion {
 
 		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
 
+		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
 		CONFIG_CLIENT.cleanUp(false, true);
 
@@ -115,6 +124,10 @@ public class ThermalExpansion {
 	/* HELPERS */
 	private void registerHandlers() {
 
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, GUI_HANDLER);
+		MinecraftForge.EVENT_BUS.register(proxy);
+
+		PacketTEBase.initialize();
 	}
 
 }

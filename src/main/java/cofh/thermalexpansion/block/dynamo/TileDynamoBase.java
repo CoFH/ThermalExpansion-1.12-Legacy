@@ -36,30 +36,31 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
-	public static void configure() {
+	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
+	public static boolean enableSecurity = true;
+
+	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
+	protected static final int[] SLOTS = { 0 };
+	public static final int FUEL_MOD = 100;
+
+	public static void config() {
 
 		String comment = "Enable this to allow for Dynamos to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
 
-		for (int i = 0; i < BlockDynamo.Types.values().length; i++) {
-			String name = StringHelper.titleCase(BlockDynamo.NAMES[i]);
+		for (int i = 0; i < BlockDynamo.Type.values().length; i++) {
+			String name = StringHelper.titleCase(BlockDynamo.Type.values()[i].getName());
+
 			int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get("Dynamo." + name, "BasePower", 80), 10, 160);
 			ThermalExpansion.CONFIG.set("Dynamo." + name, "BasePower", maxPower);
+
 			maxPower /= 10;
 			maxPower *= 10;
+
 			defaultEnergyConfig[i] = new EnergyConfig();
 			defaultEnergyConfig[i].setParamsDefault(maxPower);
 		}
 	}
-
-	public static boolean enableSecurity = true;
-
-	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Types.values().length];
-
-	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
-	protected static final int[] SLOTS = { 0 };
-
-	public static final int FUEL_MOD = 100;
 
 	int compareTracker;
 	int fuelRF;
@@ -92,7 +93,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	@Override
 	public String getName() {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[getType()] + ".name";
+		return BlockDynamo.Type.values()[getType()].getName();
 	}
 
 	@Override

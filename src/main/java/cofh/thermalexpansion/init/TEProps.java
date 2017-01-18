@@ -16,6 +16,14 @@ public class TEProps {
 
 	}
 
+	public static void preInit() {
+
+	}
+
+	public static void loadComplete() {
+
+	}
+
 	/* GENERAL */
 	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
@@ -52,12 +60,12 @@ public class TEProps {
 
 	/* COMMON BLOCK PROPERTIES */
 	public static final IUnlistedProperty<Boolean> ACTIVE = Properties.toUnlisted(PropertyBool.create("active"));
-	public static final IUnlistedProperty<EnumFacing> FACING = Properties.toUnlisted(PropertyEnum.<EnumFacing> create("facing", EnumFacing.class));
+	public static final IUnlistedProperty<EnumFacing> FACING = Properties.toUnlisted(PropertyEnum.<EnumFacing>create("facing", EnumFacing.class));
 	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
 
 	static {
 		for (int i = 0; i < 6; i++) {
-			TEProps.SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig> create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
+			TEProps.SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
 		}
 	}
 

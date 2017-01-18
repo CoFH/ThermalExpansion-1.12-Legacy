@@ -4,7 +4,6 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -17,21 +16,21 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileBuffer extends TileDeviceBase implements ITickable {
 
+	static final int TYPE = BlockDevice.Type.BUFFER.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockDevice.Types.BUFFER.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 4;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 4;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[type].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
-
-		GameRegistry.registerTileEntity(TileBuffer.class, "thermalexpansion.Buffer");
+		GameRegistry.registerTileEntity(TileBuffer.class, "thermalexpansion:buffer");
 	}
 
 	int inputTracker;
@@ -45,8 +44,14 @@ public class TileBuffer extends TileDeviceBase implements ITickable {
 
 	public TileBuffer() {
 
-		super(Types.BUFFER);
+		super();
 		inventory = new ItemStack[9];
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override

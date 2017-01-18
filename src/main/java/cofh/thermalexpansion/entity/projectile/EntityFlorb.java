@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.entity.projectile;
 
 import cofh.core.CoFHProps;
-import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
@@ -35,9 +34,9 @@ public class EntityFlorb extends EntityThrowable {
 	protected float gravity = 0.03F;
 	protected Fluid fluid;
 
-	public static void initialize() {
+	public static void initialize(int id) {
 
-		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", CoreUtils.getEntityId(), ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1, true);
+		EntityRegistry.registerModEntity(EntityFlorb.class, "florb", id, ThermalExpansion.instance, CoFHProps.ENTITY_TRACKING_DISTANCE, 1, true);
 	}
 
 	/* Required Constructor */

@@ -9,7 +9,6 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.block.machine.BlockMachine.Type;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -23,10 +22,8 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
-	protected static final String[] sounds = new String[BlockMachine.Type.values().length];
-	protected static final boolean[] enableSound = new boolean[BlockMachine.Type.values().length];
-	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 1, 0, 14, 0, 0, 7, 15 };
-	public static final boolean[] enableSecurity = new boolean[BlockMachine.Type.values().length];
+	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 14 };
+	public static boolean enableSecurity = true;
 
 	protected static final int RATE = 500;
 	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
@@ -37,13 +34,11 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	public static void config() {
 
+		String comment = "Enable this to allow for Machines to be securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Machine.All.Securable", true, comment);
+
 		for (int i = 0; i < BlockMachine.Type.values().length; i++) {
 			String name = StringHelper.titleCase(BlockMachine.Type.values()[i].getName());
-			String comment = "Enable this to allow for " + name + "s to be securable.";
-			enableSecurity[i] = ThermalExpansion.CONFIG.get("Security", "Machine." + name + ".Securable", true, comment);
-
-			comment = "Enable sounds for the " + name + ".";
-			enableSound[i] = ThermalExpansion.CONFIG_CLIENT.get("Machine." + name, "Sound.Enable", true, comment);
 		}
 	}
 
@@ -51,7 +46,6 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	int processRem;
 	boolean wasActive;
 
-	protected final byte type;
 	protected EnergyConfig energyConfig;
 	protected TimeTracker tracker = new TimeTracker();
 
@@ -64,44 +58,28 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	public TileMachineBase() {
 
-		this(Type.FURNACE);
-		if (getClass() != TileMachineBase.class) {
-			throw new IllegalArgumentException();
-		}
-	}
-
-	public TileMachineBase(Type type) {
-
-		this.type = (byte) type.ordinal();
-
-		sideConfig = defaultSideConfig[this.type];
-		energyConfig = defaultEnergyConfig[this.type].copy();
+		sideConfig = defaultSideConfig[this.getType()];
+		energyConfig = defaultEnergyConfig[this.getType()];
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * ENERGY_TRANSFER[level]);
 		setDefaultSides();
 	}
 
 	@Override
-	public int getType() {
-
-		return type;
-	}
-
-	@Override
 	public String getName() {
 
-		return BlockMachine.Type.values()[type].getName();
+		return BlockMachine.Type.byMetadata(getType()).getName();
 	}
 
 	@Override
 	public int getLightValue() {
 
-		return isActive ? lightValue[type] : 0;
+		return isActive ? lightValue[getType()] : 0;
 	}
 
 	@Override
 	public boolean enableSecurity() {
 
-		return enableSecurity[type];
+		return enableSecurity;
 	}
 
 	@Override
@@ -202,13 +180,13 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	protected void updateIfChanged(boolean curActive) {
 
 		if (curActive != isActive && !wasActive) {
-			if (lightValue[type] != 0) {
+			if (lightValue[getType()] != 0) {
 				updateLighting();
 			}
 			sendUpdatePacket(Side.CLIENT);
 		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
-			if (lightValue[type] != 0) {
+			if (lightValue[getType()] != 0) {
 				updateLighting();
 			}
 			sendUpdatePacket(Side.CLIENT);
@@ -528,10 +506,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	@Override
 	public boolean setFacing(int side) {
 
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		if (!allowYAxisFacing() && side < 2) {
+		if (side < 2 || side > 5) {
 			return false;
 		}
 		sideCache[side] = 0;
@@ -551,18 +526,11 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 			} else if (side == 1) {
 				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[type] : TETextures.MACHINE_FACE[type];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}
 		return TETextures.MACHINE_SIDE;
-	}
-
-	/* ISoundSource */
-	@Override
-	public String getSoundName() {
-
-		return enableSound[type] ? sounds[type] : null;
 	}
 
 }

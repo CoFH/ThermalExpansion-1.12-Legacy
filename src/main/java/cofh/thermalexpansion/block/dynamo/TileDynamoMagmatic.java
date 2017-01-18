@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Types.MAGMATIC.ordinal();
+	static final int TYPE = BlockDynamo.Type.MAGMATIC.getMetadata();
 
 	public static void initialize() {
 

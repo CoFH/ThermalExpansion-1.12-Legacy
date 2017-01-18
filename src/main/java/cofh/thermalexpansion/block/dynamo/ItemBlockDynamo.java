@@ -31,9 +31,9 @@ public class ItemBlockDynamo extends ItemBlockCore {
 	}
 
 	@Override
-	public String getUnlocalizedName(ItemStack item) {
+	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(item)] + ".name";
+		return "tile.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 	}
 
 	@Override
@@ -49,9 +49,9 @@ public class ItemBlockDynamo extends ItemBlockCore {
 		SecurityHelper.addAccessInformation(stack, list);
 
 		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
-		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.NAMES[ItemHelper.getItemDamage(stack)]));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
 
-		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Types.STEAM.ordinal()) {
+		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Type.STEAM.getMetadata()) {
 			list.add(StringHelper.getNoticeText("info.thermalexpansion.dynamo.steam.0"));
 		}
 		RedstoneControlHelper.addRSControlInformation(stack, list);

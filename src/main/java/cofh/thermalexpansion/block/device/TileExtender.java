@@ -4,7 +4,6 @@ import cofh.api.energy.IEnergyReceiver;
 import cofh.core.CoFHProps;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -19,21 +18,21 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
+	static final int TYPE = BlockDevice.Type.EXTENDER.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockDevice.Types.EXTENDER.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 2;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 7 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 2;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[type].sideTex = new int[] { 0, 7 };
-		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
-
-		GameRegistry.registerTileEntity(TileExtender.class, "thermalexpansion.Extender");
+		GameRegistry.registerTileEntity(TileExtender.class, "thermalexpansion:extender");
 	}
 
 	static final int MAX_CACHE_LEVEL = 128;
@@ -66,12 +65,12 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
 	TileEntity targetTile;
 	boolean cached = false;
-
 	boolean polling = false;
 
-	public TileExtender() {
+	@Override
+	public int getType() {
 
-		super(Types.EXTENDER);
+		return TYPE;
 	}
 
 	@Override

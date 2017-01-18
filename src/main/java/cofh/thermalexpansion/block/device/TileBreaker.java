@@ -7,7 +7,6 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.device.BlockDevice.Types;
 import cofh.thermalexpansion.gui.client.device.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
@@ -30,21 +29,21 @@ import java.util.LinkedList;
 
 public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
 
+	static final int TYPE = BlockDevice.Type.BREAKER.getMetadata();
+
 	public static void initialize() {
 
-		int type = BlockDevice.Types.BREAKER.ordinal();
+		defaultSideConfig[TYPE] = new SideConfig();
+		defaultSideConfig[TYPE].numConfig = 2;
+		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
+		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
+		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
+		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		defaultSideConfig[type] = new SideConfig();
-		defaultSideConfig[type].numConfig = 2;
-		defaultSideConfig[type].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[type].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[type].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[type].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[type].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[type].sideTex = new int[] { 0, 4 };
-		defaultSideConfig[type].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
-
-		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion.Breaker");
+		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:breaker");
 	}
 
 	CoFHFakePlayer myFakePlayer;
@@ -52,9 +51,10 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 
 	public boolean augmentFluid;
 
-	public TileBreaker() {
+	@Override
+	public int getType() {
 
-		super(Types.BREAKER);
+		return TYPE;
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import codechicken.lib.texture.TextureUtils;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -13,7 +12,6 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -76,6 +74,7 @@ public class BlockMachine extends BlockTEBase {
 		}
 	}
 
+	/* TYPE METHODS */
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
@@ -101,7 +100,7 @@ public class BlockMachine extends BlockTEBase {
 		if (metadata >= BlockMachine.Type.values().length) {
 			return null;
 		}
-		switch (BlockMachine.Type.values()[metadata]) {
+		switch (BlockMachine.Type.byMetadata(metadata)) {
 			case FURNACE:
 				return new TileFurnace();
 			case PULVERIZER:
@@ -118,11 +117,18 @@ public class BlockMachine extends BlockTEBase {
 				return new TileCrucible();
 			case TRANSPOSER:
 				return new TileTransposer();
+			case CRAFTER:
+				return new TileCrafter();
+			case PRECIPITATOR:
+				return new TilePrecipitator();
+			case EXTRUDER:
+				return new TileExtruder();
 			default:
 				return null;
 		}
 	}
 
+	/* BLOCK METHODS */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
@@ -148,12 +154,19 @@ public class BlockMachine extends BlockTEBase {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
-			if (tile != null && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 				if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
 					return true;
@@ -161,38 +174,6 @@ public class BlockMachine extends BlockTEBase {
 			}
 		}
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
-	}
-
-//	@Override
-//	@SideOnly (Side.CLIENT)
-//	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
-//
-//		if (side.ordinal() == 0) {
-//			return TETextures.MACHINE_BOTTOM;
-//		}
-//		if (side.ordinal() == 1) {
-//			return TETextures.MACHINE_TOP;
-//		}
-//		return side.ordinal() != 2 ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Type.values().length];
-//	}
-
-	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess access, BlockPos pos) {
-
-		TileEntity tileEntity = access.getTileEntity(pos);
-		if (tileEntity instanceof TileMachineBase) {
-			TileMachineBase machine = ((TileMachineBase) tileEntity);
-			//TODO ISidedTexture needs to change to support layers + passes.
-			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
-		}
-		return TextureUtils.getMissingSprite();
-	}
-
-	@Override
-	@SideOnly (Side.CLIENT)
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
 	}
 
 	@Override
@@ -216,7 +197,14 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean preInit() {
 
-		GameRegistry.registerBlock(this, ItemBlockMachine.class, "machine");
+		this.setRegistryName("machine");
+		GameRegistry.register(this);
+
+		ItemBlockMachine itemBlock = new ItemBlockMachine(this);
+		itemBlock.setRegistryName(this.getRegistryName());
+		GameRegistry.register(itemBlock);
+
+		System.out.println("called preINit");
 
 		return true;
 	}
@@ -225,16 +213,17 @@ public class BlockMachine extends BlockTEBase {
 	public boolean initialize() {
 
 		TileMachineBase.config();
+
 		TileFurnace.initialize();
 		TilePulverizer.initialize();
 		TileSawmill.initialize();
 		TileSmelter.initialize();
+		TileInsolator.initialize();
+		TileCharger.initialize();
 		TileCrucible.initialize();
 		TileTransposer.initialize();
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
-		TileCharger.initialize();
-		TileInsolator.initialize();
 
 		if (defaultAutoTransfer) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoOutput);
@@ -245,19 +234,27 @@ public class BlockMachine extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		machineFurnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
-		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
-		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
-		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
-		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
-		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
-		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
-		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
+		machineFurnace = new ItemStack(this, 1, Type.FURNACE.getMetadata());
 
-		//		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.ordinal()));
-		//		machineExtruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.ordinal()));
-		//		machineAccumulator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.ACCUMULATOR.ordinal()));
-		//		machineAssembler = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.ASSEMBLER.ordinal()));
+		if (machineFurnace.getItem() == null) {
+			System.out.println("fucking panic");
+		}
+		ItemBlockMachine.setDefaultTag(machineFurnace);
+
+//		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
+//		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
+//		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
+//		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
+//		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
+//		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
+//		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
+//		// transcapsulator
+//		// centrifuge
+//		machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+//		// brewer
+//		// enchanter
+//		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
+//		machineExtruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
 		return true;
 	}
@@ -265,207 +262,15 @@ public class BlockMachine extends BlockTEBase {
 	@Override
 	public boolean postInit() {
 
-		//		String machineFrame = "thermalexpansion:machineFrame";
-		//		String copperPart = "thermalexpansion:machineCopper";
-		//		String invarPart = "thermalexpansion:machineInvar";
-		//
-		//		// @formatter:off
-//		if (enable[Type.FURNACE.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(furnace, defaultAugments, new Object[]{
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', "dustRedstone",
-//					'Y', Blocks.BRICK_BLOCK
-//			}));
-//		}
-//		if (enable[Type.PULVERIZER.ordinal()]) {
-//			String category = "Machine.Pulverizer";
-//			String comment = "If enabled, the Pulverizer will require Diamonds instead of Flint.";
-//			Item component = ThermalExpansion.CONFIG.get(category, "RequireDiamonds", false, comment) ? Items.DIAMOND : Items.FLINT;
-//			GameRegistry.addRecipe(new RecipeMachine(pulverizer, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Blocks.PISTON,
-//					'Y', component
-//			}));
-//		}
-//		if (enable[Type.SAWMILL.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(sawmill, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Items.IRON_AXE,
-//					'Y', "plankWood"
-//			}));
-//		}
-//		if (enable[Type.SMELTER.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(smelter, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', invarPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Items.BUCKET,
-//					'Y', "ingotInvar"
-//			}));
-//		}
-//		if (enable[Type.CRUCIBLE.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(crucible, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', invarPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', BlockFrame.frameCellBasic,
-//					'Y', Blocks.NETHER_BRICK
-//			}));
-//		}
-//		if (enable[Type.TRANSPOSER.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(transposer, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Items.BUCKET,
-//					'Y', "blockGlass"
-//			}));
-//		}
-//		if (enable[Type.PRECIPITATOR.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(precipitator, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Blocks.PISTON,
-//					'Y', "ingotInvar"
-//			}));
-//		}
-//		if (enable[Type.EXTRUDER.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(extruder, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.pneumaticServo,
-//					'X', Blocks.PISTON,
-//					'Y', "blockGlass"
-//			}));
-//		}
-//		if (enable[Type.ACCUMULATOR.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(accumulator, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.pneumaticServo,
-//					'X', Items.BUCKET,
-//					'Y', "blockGlass"
-//			}));
-//		}
-//		if (enable[Type.ASSEMBLER.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(assembler, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', Blocks.CHEST,
-//					'Y', "gearTin"
-//			}));
-//		}
-//		if (enable[Type.CHARGER.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(charger, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', BlockFrame.frameCellBasic,
-//					'Y', TEItemsOld.powerCoilSilver
-//			}));
-//		}
-//		if (enable[Type.INSOLATOR.ordinal()]) {
-//			GameRegistry.addRecipe(new RecipeMachine(insolator, defaultAugments, new Object[] {
-//					" X ",
-//					"YCY",
-//					"IPI",
-//					'C', machineFrame,
-//					'I', copperPart,
-//					'P', TEItemsOld.powerCoilGold,
-//					'X', "gearLumium",
-//					'Y', Blocks.DIRT
-//			}));
-//		}
-		// @formatter:on
-
-		//		TECraftingHandler.addMachineUpgradeRecipes(furnace);
-		//		TECraftingHandler.addMachineUpgradeRecipes(pulverizer);
-		//		TECraftingHandler.addMachineUpgradeRecipes(sawmill);
-		//		TECraftingHandler.addMachineUpgradeRecipes(smelter);
-		//		TECraftingHandler.addMachineUpgradeRecipes(crucible);
-		//		TECraftingHandler.addMachineUpgradeRecipes(transposer);
-		//		TECraftingHandler.addMachineUpgradeRecipes(precipitator);
-		//		TECraftingHandler.addMachineUpgradeRecipes(extruder);
-		//		TECraftingHandler.addMachineUpgradeRecipes(accumulator);
-		//		TECraftingHandler.addMachineUpgradeRecipes(assembler);
-		//		TECraftingHandler.addMachineUpgradeRecipes(charger);
-		//		TECraftingHandler.addMachineUpgradeRecipes(insolator);
-		//
-		//		TECraftingHandler.addSecureRecipe(furnace);
-		//		TECraftingHandler.addSecureRecipe(pulverizer);
-		//		TECraftingHandler.addSecureRecipe(sawmill);
-		//		TECraftingHandler.addSecureRecipe(smelter);
-		//		TECraftingHandler.addSecureRecipe(crucible);
-		//		TECraftingHandler.addSecureRecipe(transposer);
-		//		TECraftingHandler.addSecureRecipe(precipitator);
-		//		TECraftingHandler.addSecureRecipe(extruder);
-		//		TECraftingHandler.addSecureRecipe(accumulator);
-		//		TECraftingHandler.addSecureRecipe(assembler);
-		//		TECraftingHandler.addSecureRecipe(charger);
-		//		TECraftingHandler.addSecureRecipe(insolator);
-
 		return true;
 	}
 
 	public static void refreshItemStacks() {
 
-		//		furnace = ItemBlockMachine.setDefaultTag(furnace);
-		//		pulverizer = ItemBlockMachine.setDefaultTag(pulverizer);
-		//		sawmill = ItemBlockMachine.setDefaultTag(sawmill);
-		//		smelter = ItemBlockMachine.setDefaultTag(smelter);
-		//		crucible = ItemBlockMachine.setDefaultTag(crucible);
-		//		transposer = ItemBlockMachine.setDefaultTag(transposer);
-		//		precipitator = ItemBlockMachine.setDefaultTag(precipitator);
-		//		extruder = ItemBlockMachine.setDefaultTag(extruder);
-		//		accumulator = ItemBlockMachine.setDefaultTag(accumulator);
-		//		assembler = ItemBlockMachine.setDefaultTag(assembler);
-		//		charger = ItemBlockMachine.setDefaultTag(charger);
-		//		insolator = ItemBlockMachine.setDefaultTag(insolator);
 	}
 
 	/* TYPE */
-	public static enum Type implements IStringSerializable {
+	public enum Type implements IStringSerializable {
 
 		// @formatter:off
 		FURNACE(0, "furnace", machineFurnace),
@@ -476,11 +281,11 @@ public class BlockMachine extends BlockTEBase {
 		CHARGER(5, "charger", machineCharger),
 		CRUCIBLE(6, "crucible", machineCrucible),
 		TRANSPOSER(7, "transposer", machineTransposer),
-		// TRANSCAPSULATOR
+		TRANSCAPSULATOR(8, "transcapsulator", machineTranscapsulator),
 		CENTRIFUGE(9, "centrifuge", machineCentrifuge),
 		CRAFTER(10, "crafter", machineCrafter),
-		// BREWER
-		// ENCHANTER
+		BREWER(11, "brewer", machineBrewer),
+		ENCHANTER(12, "enchanter", machineEnchanter),
 		PRECIPITATOR(13, "precipitator", machinePrecipitator),
 		EXTRUDER(14, "extruder", machineExtruder);
 		// @formatter:on

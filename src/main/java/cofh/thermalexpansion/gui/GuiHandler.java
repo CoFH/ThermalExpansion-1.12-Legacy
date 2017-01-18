@@ -23,11 +23,11 @@ public class GuiHandler implements IGuiHandler {
 					return ((TileCore) tile).getGuiClient(player.inventory);
 				}
 				return null;
-//			case SATCHEL_ID:
-//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
-//					return new GuiSatchel(player.inventory, new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory));
-//				}
-//				return null;
+			//			case SATCHEL_ID:
+			//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
+			//					return new GuiSatchel(player.inventory, new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory));
+			//				}
+			//				return null;
 			default:
 				return null;
 		}
@@ -44,11 +44,11 @@ public class GuiHandler implements IGuiHandler {
 					return ((TileCore) tile).getGuiServer(player.inventory);
 				}
 				return null;
-//			case SATCHEL_ID:
-//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
-//					return new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory);
-//				}
-//				return null;
+			//			case SATCHEL_ID:
+			//				if (ItemHelper.isPlayerHoldingItem(ItemSatchel.class, player)) {
+			//					return new ContainerSatchel(ItemUtils.getHeldStack(player), player.inventory);
+			//				}
+			//				return null;
 			default:
 				return null;
 		}

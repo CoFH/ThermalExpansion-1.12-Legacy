@@ -7,7 +7,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IInsolatorRecipe;
-import cofh.thermalexpansion.init.TEItemsOld;
+import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
@@ -102,8 +102,9 @@ public class InsolatorManager {
 		boolean recipePumpkin = ThermalExpansion.CONFIG.get(category, "Pumpkin", true);
 		boolean recipeMelon = ThermalExpansion.CONFIG.get(category, "Melon", true);
 
-		addFertilizer(TEItemsOld.fertilizer);
-		addFertilizer(TEItemsOld.fertilizerRich);
+		addFertilizer(ItemFertilizer.fertilizerBasic);
+		addFertilizer(ItemFertilizer.fertilizerRich);
+		addFertilizer(ItemFertilizer.fertilizerFlux);
 
 		addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
 		addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 150);
@@ -251,15 +252,15 @@ public class InsolatorManager {
 	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (secondaryOutput != null) {
-			addRecipe(DEFAULT_ENERGY, primaryInput, TEItemsOld.fertilizer, primaryOutput, secondaryOutput, secondaryChance);
+			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance);
 
 			if (secondaryChance < 100) {
 				secondaryChance = Math.min(100, secondaryChance * cropMultiplierSpecial);
 			}
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItemsOld.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial), secondaryOutput, secondaryChance);
+			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial), secondaryOutput, secondaryChance);
 		} else {
-			addRecipe(DEFAULT_ENERGY, primaryInput, TEItemsOld.fertilizer, primaryOutput);
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, TEItemsOld.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial));
+			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput);
+			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial));
 		}
 	}
 
