@@ -158,7 +158,7 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 				if (getOwner().getId().equals(i.getId())) {
 					break l;
 				}
-			} else if (canPlayerAccess((EntityPlayer) entity)) {
+			} else if (entity instanceof EntityPlayer && canPlayerAccess((EntityPlayer) entity)) {
 				break l;
 			}
 			return;
