@@ -600,6 +600,11 @@ public class TilePlateTeleporter extends TilePlatePoweredBase implements IEnderD
 	@Override
 	public boolean setAccess(AccessMode access) {
 
+		if (this.frequency != -1 || this.destination != -1) {
+			return false;
+			// TODO: proper solution for this hacky solution
+			// we need to carry over the name of this, and erase the destination entirely
+		}
 		if (worldObj.isRemote && this.access != access) {
 			PacketHandler.sendToServer(PacketTileInfo.newPacket(this).addBool(false).addByte(access.ordinal()));
 		}
