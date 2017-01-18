@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -38,7 +39,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockMachine extends BlockTEBase {
+public class BlockMachine extends BlockTEBase implements IModelRegister {
 
 	public static final PropertyEnum<BlockMachine.Type> VARIANT = PropertyEnum.<BlockMachine.Type>create("type", BlockMachine.Type.class);
 
@@ -65,13 +66,23 @@ public class BlockMachine extends BlockTEBase {
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		for (int i = 0; i < BlockMachine.Type.METADATA_LOOKUP.length; i++) {
-			for (int j = 0; j < 4; j++) {
-				if (creativeTiers[j]) {
-					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
-				}
-			}
-		}
+//		for (int i = 0; i < BlockMachine.Type.METADATA_LOOKUP.length; i++) {
+//			for (int j = 0; j < 4; j++) {
+//				if (creativeTiers[j]) {
+//					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
+//				}
+//			}
+//		}
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 3));
+		list.add(new ItemStack(item, 1, 4));
+		list.add(new ItemStack(item, 1, 5));
+		list.add(new ItemStack(item, 1, 6));
+		list.add(new ItemStack(item, 1, 7));
+		list.add(new ItemStack(item, 1, 13));
+		list.add(new ItemStack(item, 1, 14));
 	}
 
 	/* TYPE METHODS */
@@ -193,6 +204,16 @@ public class BlockMachine extends BlockTEBase {
 		return tag;
 	}
 
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+//		for (int i = 0; i < BlockMachine.Type.values().length; i++) {
+//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(modName + ":" + name, "type=" + BlockMachine.Type.byMetadata(i).getName()));
+//		}
+	}
+
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
@@ -203,8 +224,6 @@ public class BlockMachine extends BlockTEBase {
 		ItemBlockMachine itemBlock = new ItemBlockMachine(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
-
-		System.out.println("called preINit");
 
 		return true;
 	}
@@ -222,6 +241,11 @@ public class BlockMachine extends BlockTEBase {
 		TileCharger.initialize();
 		TileCrucible.initialize();
 		TileTransposer.initialize();
+		// transcapsulator
+		// centrifuge
+		// crafter
+		// brewer
+		// enchanter
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
 
@@ -234,27 +258,21 @@ public class BlockMachine extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		machineFurnace = new ItemStack(this, 1, Type.FURNACE.getMetadata());
-
-		if (machineFurnace.getItem() == null) {
-			System.out.println("fucking panic");
-		}
-		ItemBlockMachine.setDefaultTag(machineFurnace);
-
-//		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
-//		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
-//		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
-//		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
-//		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
-//		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
-//		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
-//		// transcapsulator
-//		// centrifuge
-//		machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
-//		// brewer
-//		// enchanter
-//		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
-//		machineExtruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
+		machineFurnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.FURNACE.getMetadata()));
+		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.PULVERIZER.getMetadata()));
+		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.SAWMILL.getMetadata()));
+		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.SMELTER.getMetadata()));
+		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.INSOLATOR.getMetadata()));
+		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.CHARGER.getMetadata()));
+		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.CRUCIBLE.getMetadata()));
+		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.TRANSPOSER.getMetadata()));
+		// transcapsulator
+		// centrifuge
+		//machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.CRAFTER.getMetadata()));
+		// brewer
+		// enchanter
+		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.PRECIPITATOR.getMetadata()));
+		machineExtruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.EXTRUDER.getMetadata()));
 
 		return true;
 	}
@@ -347,7 +365,7 @@ public class BlockMachine extends BlockTEBase {
 		}
 	}
 
-	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean[] enable = new boolean[BlockMachine.Type.values().length];
 	public static boolean[] creativeTiers = new boolean[4];
 	public static ItemStack[] defaultAugments = new ItemStack[3];
 

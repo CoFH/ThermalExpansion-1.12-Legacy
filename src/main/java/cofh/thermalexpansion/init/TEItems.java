@@ -12,6 +12,9 @@ public class TEItems {
 
 	public static void preInit() {
 
+		for (int i = 0; i < initList.size(); i++) {
+			initList.get(i).preInit();
+		}
 	}
 
 	public static void initialize() {

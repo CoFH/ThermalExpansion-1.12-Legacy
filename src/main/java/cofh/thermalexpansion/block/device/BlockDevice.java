@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
+import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
@@ -33,7 +34,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class BlockDevice extends BlockTEBase {
+public class BlockDevice extends BlockTEBase implements IModelRegister {
 
 	public static final PropertyEnum<BlockDevice.Type> VARIANT = PropertyEnum.<BlockDevice.Type>create("type", BlockDevice.Type.class);
 
@@ -60,9 +61,14 @@ public class BlockDevice extends BlockTEBase {
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
-			list.add(new ItemStack(item, 1, i));
-		}
+//		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
+//			list.add(new ItemStack(item, 1, i));
+//		}
+		list.add(new ItemStack(item, 1, 0));
+		list.add(new ItemStack(item, 1, 1));
+		list.add(new ItemStack(item, 1, 2));
+		list.add(new ItemStack(item, 1, 4));
+		list.add(new ItemStack(item, 1, 5));
 	}
 
 	/* TYPE METHODS */
@@ -88,7 +94,7 @@ public class BlockDevice extends BlockTEBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= Type.values().length) {
+		if (metadata >= BlockDevice.Type.values().length) {
 			return null;
 		}
 		switch (Type.byMetadata(metadata)) {
@@ -179,6 +185,16 @@ public class BlockDevice extends BlockTEBase {
 		return tag;
 	}
 
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+//		for (int i = 0; i < BlockDevice.Type.values().length; i++) {
+//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(modName + ":" + name, "type=" + BlockDevice.Type.byMetadata(i).getName()));
+//		}
+	}
+
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
@@ -201,6 +217,7 @@ public class BlockDevice extends BlockTEBase {
 		TileActivator.initialize();
 		TileBreaker.initialize();
 		TileCollector.initialize();
+		//watergen
 		TileNullifier.initialize();
 		TileBuffer.initialize();
 		TileExtender.initialize();
@@ -211,12 +228,12 @@ public class BlockDevice extends BlockTEBase {
 		if (defaultReconfigSides) {
 			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
 		}
-		deviceActivator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ACTIVATOR.getMetadata()));
-		deviceBreaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
-		deviceCollector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
-		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATERGEN.getMetadata()));
-		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
-		deviceBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.BUFFER.getMetadata()));
+		deviceActivator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.ACTIVATOR.getMetadata()));
+		deviceBreaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.BREAKER.getMetadata()));
+		deviceCollector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.COLLECTOR.getMetadata()));
+		//deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.WATERGEN.getMetadata()));
+		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.NULLIFIER.getMetadata()));
+		deviceBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.BUFFER.getMetadata()));
 
 		return true;
 	}
@@ -301,7 +318,7 @@ public class BlockDevice extends BlockTEBase {
 		}
 	}
 
-	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean[] enable = new boolean[BlockDevice.Type.values().length];
 	public static ItemStack[] defaultAugments = new ItemStack[4];
 
 	public static boolean defaultRedstoneControl = true;

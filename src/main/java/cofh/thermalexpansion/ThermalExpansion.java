@@ -3,6 +3,7 @@ package cofh.thermalexpansion;
 import cofh.CoFHCore;
 import cofh.core.CoFHProps;
 import cofh.core.util.ConfigHandler;
+import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEProps;
@@ -50,7 +51,7 @@ public class ThermalExpansion {
 	public static final ConfigHandler CONFIG_CLIENT = new ConfigHandler(VERSION);
 	public static final GuiHandler GUI_HANDLER = new GuiHandler();
 
-	public static CreativeTabs tabCommon = null;
+	public static CreativeTabs tabCommon = new CreativeTabTE();
 	public static CreativeTabs tabBlocks = tabCommon;
 	public static CreativeTabs tabItems = tabCommon;
 	public static CreativeTabs tabTools = tabCommon;

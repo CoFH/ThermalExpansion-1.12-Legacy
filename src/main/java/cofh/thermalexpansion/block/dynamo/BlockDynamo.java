@@ -5,11 +5,11 @@ import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
 import codechicken.lib.vec.Vector3;
+import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.machine.ItemBlockMachine;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.block.material.Material;
@@ -47,7 +47,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockDynamo extends BlockTEBase {
+public class BlockDynamo extends BlockTEBase implements IModelRegister {
 
 	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", BlockDynamo.Type.class);
 
@@ -121,7 +121,7 @@ public class BlockDynamo extends BlockTEBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= Type.values().length) {
+		if (metadata >= BlockDynamo.Type.values().length) {
 			return null;
 		}
 		switch (Type.values()[metadata]) {
@@ -266,11 +266,11 @@ public class BlockDynamo extends BlockTEBase {
 		if (defaultRedstoneControl) {
 			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
 		}
-		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
-		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
-		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
-		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
-		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
+		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.STEAM.getMetadata()));
+		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.MAGMATIC.getMetadata()));
+		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.COMPRESSION.getMetadata()));
+		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.REACTANT.getMetadata()));
+		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.ENERVATION.getMetadata()));
 
 		ItemStackRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
 		ItemStackRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
@@ -279,6 +279,16 @@ public class BlockDynamo extends BlockTEBase {
 		ItemStackRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 
 		return true;
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+//		for (int i = 0; i < BlockDynamo.Type.values().length; i++) {
+//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(modName + ":" + name, "type=" + BlockDynamo.Type.byMetadata(i).getName()));
+//		}
 	}
 
 	@Override
@@ -371,7 +381,7 @@ public class BlockDynamo extends BlockTEBase {
 		}
 	}
 
-	public static boolean[] enable = new boolean[Type.values().length];
+	public static boolean[] enable = new boolean[BlockDynamo.Type.values().length];
 	public static ItemStack[] defaultAugments = new ItemStack[4];
 
 	public static boolean defaultRedstoneControl = true;
