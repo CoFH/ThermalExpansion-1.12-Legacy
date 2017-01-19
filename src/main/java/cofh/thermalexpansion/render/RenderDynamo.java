@@ -33,7 +33,7 @@ import java.util.List;
 
 public class RenderDynamo implements IIconRegister, ILayeredBlockBakery {
 
-	public static final RenderDynamo instance = new RenderDynamo();
+	public static final RenderDynamo INSTANCE = new RenderDynamo();
 
 	static CCModel[][] modelCoil = new CCModel[2][6];
 	static CCModel[][] modelBase = new CCModel[2][6];

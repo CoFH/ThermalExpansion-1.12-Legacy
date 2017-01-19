@@ -66,9 +66,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	protected BlockStateContainer createBlockState() {
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
-		//Listed
+		// Listed
 		builder.add(VARIANT);
-		//UnListed
+		// UnListed
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
@@ -180,6 +180,24 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	}
 
 	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+
+		return true;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
+
+		return true;
+	}
+
+	@Override
 	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
 
 		TileEntity tile = world.getTileEntity(pos);
@@ -212,7 +230,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		return tag;
 	}
 
-	/* Rendering */
+	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
@@ -230,6 +248,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@Override //Inv.
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+
 		if (side == EnumFacing.DOWN) {
 			return TETextures.MACHINE_BOTTOM;
 		}
@@ -242,6 +261,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@Override //World
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
 			TileMachineBase machine = ((TileMachineBase) tileEntity);

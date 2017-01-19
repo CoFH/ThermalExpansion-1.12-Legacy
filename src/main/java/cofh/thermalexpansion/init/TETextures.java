@@ -21,7 +21,7 @@ public class TETextures {
 
 		TextureMap map = event.getMap();
 
-		//@formatter:off \o/ Formatter!
+		// @formatter:off \o/ Formatter!
 		CONFIG_NONE =   register(map, CONFIG_ + "none");
 		CONFIG_BLUE =   registerCB(map, CONFIG_ + "blue");
 		CONFIG_RED =    registerCB(map, CONFIG_ + "red");
@@ -166,16 +166,16 @@ public class TETextures {
 				DYNAMO_REACTANT,
 				DYNAMO_ENERVATION
 		};
-		//@formatter:on
+		// @formatter:on
 	}
 
-	//Bouncer to make the class readable.
+	// Bouncer to make the class readable.
 	private static TextureAtlasSprite register(TextureMap map, String sprite) {
 
 		return map.registerSprite(new ResourceLocation(sprite));
 	}
 
-	//Bouncer for registering ColourBlind textures.
+	// Bouncer for registering ColourBlind textures.
 	private static TextureAtlasSprite registerCB(TextureMap map, String sprite) {
 
 		if (CoFHProps.enableColorBlindTextures) {

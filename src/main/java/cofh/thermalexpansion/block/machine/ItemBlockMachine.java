@@ -8,7 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.translation.I18n;
 
 import java.util.List;
 
@@ -53,17 +52,13 @@ public class ItemBlockMachine extends ItemBlockCore {
 		String unloc = getUnlocalizedNameInefficiently(stack);
 		String unloc2 = '.' + NAMES[getLevel(stack)];
 
-		if (I18n.canTranslate(unloc + unloc2 + ".name")) {
-			return StringHelper.localize(unloc + unloc2 + ".name");
-		}
-
-		return StringHelper.localize(unloc + ".name") + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
+		return StringHelper.localize(unloc) + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override

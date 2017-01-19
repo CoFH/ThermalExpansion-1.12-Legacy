@@ -52,7 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryBlock {
+public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
 	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", BlockDynamo.Type.class);
 
@@ -87,10 +87,11 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryB
 
 	@Override
 	protected BlockStateContainer createBlockState() {
+
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
-		//Listed
+		// Listed
 		builder.add(VARIANT);
-		//UnListed
+		// UnListed
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
 		builder.add(CommonProperties.ACTIVE_SPRITE_PROPERTY);
@@ -254,10 +255,19 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryB
 		return tag;
 	}
 
+	/* RENDERING METHODS */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
+	}
+
 	/* IBakeryBlock */
 	@Override
 	public ICustomBlockBakery getCustomBakery() {
-		return RenderDynamo.instance;
+
+		return RenderDynamo.INSTANCE;
 	}
 
 	/* IModelRegister */
@@ -288,14 +298,6 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryB
 				return builder.toString();
 			}
 		});
-	}
-
-	/* Rendering */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
-
-		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
 	}
 
 	/* IInitializer */

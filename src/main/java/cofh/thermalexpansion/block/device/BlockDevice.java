@@ -16,7 +16,6 @@ import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -36,9 +35,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
-import net.minecraftforge.common.property.ExtendedBlockState;
 import net.minecraftforge.common.property.IExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -64,9 +61,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	protected BlockStateContainer createBlockState() {
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
-		//Listed
+		// Listed
 		builder.add(VARIANT);
-		//UnListed
+		// UnListed
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
@@ -79,9 +76,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-//		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
-//			list.add(new ItemStack(item, 1, i));
-//		}
+		//		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
+		//			list.add(new ItemStack(item, 1, i));
+		//		}
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
 		list.add(new ItemStack(item, 1, 2));
@@ -158,8 +155,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-
-
 	@Override
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 
@@ -197,7 +192,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		}
 		return tag;
 	}
-	/* Rendering */
+
+	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
@@ -215,7 +211,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@Override
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE: TETextures.DEVICE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[metadata % Type.values().length];
 	}
 
 	@Override
