@@ -277,7 +277,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 		return false;
 	}
 
-	public enum Types implements IStringSerializable, IType, IParticleProvider {
+	public enum Types implements IStringSerializable {
 		MACHINE_BASIC, MACHINE_HARDENED, MACHINE_REINFORCED, MACHINE_RESONANT, CELL_BASIC, CELL_HARDENED, CELL_REINFORCED_EMPTY, CELL_REINFORCED_FULL, CELL_RESONANT_EMPTY, CELL_RESONANT_FULL, TESSERACT_EMPTY, TESSERACT_FULL, ILLUMINATOR;
 
 		@Override
@@ -295,19 +295,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 			}
 		}
 
-		@Override
-		public int meta() {
 
-			return ordinal();
-		}
-
-		@Override
-		public IProperty<?> getTypeProperty() {
-
-			return TYPES;
-		}
-
-		@Override
 		public String getParticleTexture() {
 
 			switch (this) {

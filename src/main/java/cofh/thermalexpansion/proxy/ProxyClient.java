@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.proxy;
 
 import cofh.api.core.IModelRegister;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -14,7 +16,7 @@ public class ProxyClient extends Proxy {
 	public void preInit(FMLPreInitializationEvent event) {
 
 		super.preInit(event);
-
+		MinecraftForge.EVENT_BUS.register(new TETextures());
 		for (int i = 0; i < modelList.size(); i++) {
 			modelList.get(i).registerModels();
 		}

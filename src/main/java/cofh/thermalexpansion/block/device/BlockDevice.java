@@ -1,11 +1,18 @@
 package cofh.thermalexpansion.block.device;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.BlockBakeryProperties;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.texture.IWorldBlockTextureProvider;
+import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.material.Material;
@@ -13,6 +20,9 @@ import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
@@ -25,7 +35,9 @@ import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.ExtendedBlockState;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -34,7 +46,7 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-public class BlockDevice extends BlockTEBase implements IModelRegister {
+public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
 	public static final PropertyEnum<BlockDevice.Type> VARIANT = PropertyEnum.<BlockDevice.Type>create("type", BlockDevice.Type.class);
 
@@ -51,10 +63,16 @@ public class BlockDevice extends BlockTEBase implements IModelRegister {
 	@Override
 	protected BlockStateContainer createBlockState() {
 
-		IProperty[] listed = new IProperty[] { VARIANT };
-		IUnlistedProperty[] unlisted = new IUnlistedProperty[] { TEProps.ACTIVE, TEProps.FACING, TEProps.SIDE_CONFIG[0], TEProps.SIDE_CONFIG[1], TEProps.SIDE_CONFIG[2], TEProps.SIDE_CONFIG[3], TEProps.SIDE_CONFIG[4], TEProps.SIDE_CONFIG[5] };
+		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+		//Listed
+		builder.add(VARIANT);
+		//UnListed
+		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+		builder.add(TEProps.ACTIVE);
+		builder.add(TEProps.FACING);
+		builder.add(TEProps.SIDE_CONFIG[0]).add(TEProps.SIDE_CONFIG[1]).add(TEProps.SIDE_CONFIG[2]).add(TEProps.SIDE_CONFIG[3]).add(TEProps.SIDE_CONFIG[4]).add(TEProps.SIDE_CONFIG[5]);
 
-		return new ExtendedBlockState(this, listed, unlisted);
+		return builder.build();
 	}
 
 	@Override
@@ -140,12 +158,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister {
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-	@Override
-	@SideOnly (Side.CLIENT)
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
-		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
-	}
 
 	@Override
 	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
@@ -184,15 +197,52 @@ public class BlockDevice extends BlockTEBase implements IModelRegister {
 		}
 		return tag;
 	}
+	/* Rendering */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.SOLID || layer == BlockRenderLayer.CUTOUT;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
+	}
+
+	@Override
+	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE: TETextures.DEVICE_FACE[metadata % Type.values().length];
+	}
+
+	@Override
+	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileDeviceBase) {
+			TileDeviceBase device = ((TileDeviceBase) tileEntity);
+			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+		}
+		return TextureUtils.getMissingSprite();
+	}
 
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-//		for (int i = 0; i < BlockDevice.Type.values().length; i++) {
-//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(modName + ":" + name, "type=" + BlockDevice.Type.byMetadata(i).getName()));
-//		}
+		StateMap.Builder stateMap = new StateMap.Builder();
+		stateMap.ignore(VARIANT);
+		ModelLoader.setCustomStateMapper(this, stateMap.build());
+
+		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
+		for (Type type : Type.values()) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
+		}
+		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/device/device_side"));
 	}
 
 	/* IInitializer */

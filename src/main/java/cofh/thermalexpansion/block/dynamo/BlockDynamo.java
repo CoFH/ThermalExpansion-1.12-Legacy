@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.item.ItemStackRegistry;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.*;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
@@ -10,13 +12,16 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.render.RenderDynamo;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -35,8 +40,8 @@ import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.property.ExtendedBlockState;
-import net.minecraftforge.common.property.IUnlistedProperty;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -47,7 +52,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class BlockDynamo extends BlockTEBase implements IModelRegister {
+public class BlockDynamo extends BlockTEBase implements IModelRegister, IBakeryBlock {
 
 	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", BlockDynamo.Type.class);
 
@@ -82,11 +87,14 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister {
 
 	@Override
 	protected BlockStateContainer createBlockState() {
-
-		IProperty[] listed = new IProperty[] { VARIANT };
-		IUnlistedProperty[] unlisted = new IUnlistedProperty[] { TEProps.ACTIVE, TEProps.FACING };
-
-		return new ExtendedBlockState(this, listed, unlisted);
+		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+		//Listed
+		builder.add(VARIANT);
+		//UnListed
+		builder.add(TEProps.ACTIVE);
+		builder.add(TEProps.FACING);
+		builder.add(CommonProperties.ACTIVE_SPRITE_PROPERTY);
+		return builder.build();
 	}
 
 	@Override
@@ -246,9 +254,60 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister {
 		return tag;
 	}
 
+	/* IBakeryBlock */
+	@Override
+	public ICustomBlockBakery getCustomBakery() {
+		return RenderDynamo.instance;
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		StateMap.Builder stateMap = new StateMap.Builder();
+		stateMap.ignore(VARIANT);
+		ModelLoader.setCustomStateMapper(this, stateMap.build());
+
+		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
+		for (Type type : Type.values()) {
+			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
+		}
+		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
+		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
+			@Override
+			public String generateKey(IExtendedBlockState state) {
+				//TODO CCL internal classes for helping with this / phase in hashing instead of string gen.
+				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+				builder.append(",");
+				builder.append(state.getValue(TEProps.FACING));
+				builder.append(",");
+				builder.append(state.getValue(TEProps.ACTIVE));
+				builder.append(",");
+				builder.append(state.getValue(VARIANT));
+				return builder.toString();
+			}
+		});
+	}
+
+	/* Rendering */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
+	}
+
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
+
+		this.setRegistryName("dynamo");
+		GameRegistry.register(this);
+
+		ItemBlockDynamo itemBlock = new ItemBlockDynamo(this);
+		itemBlock.setRegistryName(this.getRegistryName());
+		GameRegistry.register(itemBlock);
 
 		return true;
 	}
@@ -281,25 +340,8 @@ public class BlockDynamo extends BlockTEBase implements IModelRegister {
 		return true;
 	}
 
-	/* IModelRegister */
-	@Override
-	@SideOnly (Side.CLIENT)
-	public void registerModels() {
-
-//		for (int i = 0; i < BlockDynamo.Type.values().length; i++) {
-//			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), i, new ModelResourceLocation(modName + ":" + name, "type=" + BlockDynamo.Type.byMetadata(i).getName()));
-//		}
-	}
-
 	@Override
 	public boolean postInit() {
-
-		this.setRegistryName("dynamo");
-		GameRegistry.register(this);
-
-		ItemBlockDynamo itemBlock = new ItemBlockDynamo(this);
-		itemBlock.setRegistryName(this.getRegistryName());
-		GameRegistry.register(itemBlock);
 
 		return true;
 	}
