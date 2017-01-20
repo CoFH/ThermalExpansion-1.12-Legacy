@@ -6,7 +6,7 @@ import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.TilePowered;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.tileentity.TileEntity;
@@ -14,9 +14,9 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public abstract class GuiAugmentableBase extends GuiBaseAdv {
+public abstract class GuiTEBase extends GuiBaseAdv {
 
-	protected TileAugmentable myTile;
+	protected TilePowered myTile;
 	protected UUID playerName;
 
 	public String myTutorial = StringHelper.tutorialTabAugment();
@@ -24,23 +24,22 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
 
-	public GuiAugmentableBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
+	public GuiTEBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
 		super(container, texture);
 
-		myTile = (TileAugmentable) tile;
+		myTile = (TilePowered) tile;
 		name = myTile.getName();
 		playerName = SecurityHelper.getID(player);
 
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
 		}
-		if (myTile.augmentRedstoneControl) {
+		if (myTile.hasRedstoneControl) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
 		}
-		if (myTile.augmentReconfigSides) {
-			myTutorial += "\n\n" + StringHelper.tutorialTabConfiguration();
-		}
+		myTutorial += "\n\n" + StringHelper.tutorialTabConfiguration();
+
 		if (myTile.getMaxEnergyStored(null) > 0) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
 		}
@@ -82,8 +81,7 @@ public abstract class GuiAugmentableBase extends GuiBaseAdv {
 
 		super.updateElementInformation();
 
-		redstoneTab.setVisible(myTile.augmentRedstoneControl);
-		configTab.setVisible(myTile.augmentReconfigSides);
+		redstoneTab.setVisible(myTile.hasRedstoneControl);
 	}
 
 }

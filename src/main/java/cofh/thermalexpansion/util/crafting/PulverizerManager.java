@@ -13,7 +13,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -595,24 +594,10 @@ public class PulverizerManager {
 			return -1;
 		}
 
-		public static int getOreID(String oreName) {
-
-			if (!safeOreType(oreName)) {
-				return -1;
-			}
-			return ItemHelper.oreProxy.getOreID(oreName);
-		}
-
 		public ComparableItemStackPulverizer(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);
-		}
-
-		public ComparableItemStackPulverizer(Item item, int damage, int stackSize) {
-
-			super(item, damage, stackSize);
-			this.oreID = getOreID(this.toItemStack());
 		}
 
 		@Override

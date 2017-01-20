@@ -1,56 +1,25 @@
 package cofh.thermalexpansion.block;
 
-import codechicken.lib.util.ServerUtils;
-import cofh.api.tileentity.ISecurable;
-import cofh.core.CoFHProps;
-import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.*;
-import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.util.Utils;
-import com.google.common.base.Strings;
-import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.management.PreYggdrasilConverter;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentString;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.items.CapabilityItemHandler;
 import net.minecraftforge.items.IItemHandler;
 import net.minecraftforge.items.wrapper.InvWrapper;
 import net.minecraftforge.items.wrapper.SidedInvWrapper;
 
-import java.util.UUID;
-
-public abstract class TileInventorySecure extends TileTEBase implements IInventory, ISecurable {
-
-	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
-	protected AccessMode access = AccessMode.PUBLIC;
-	protected boolean canAccess = true;
+public abstract class TileInventory extends TileAugmentableSecure implements IInventory {
 
 	public ItemStack[] inventory = new ItemStack[0];
-
-	public boolean isSecured() {
-
-		return !SecurityHelper.isDefaultUUID(owner.getId());
-	}
-
-	public boolean enableSecurity() {
-
-		return true;
-	}
 
 	/* ITEM TRANSFER */
 	public boolean extractItem(int slot, int amount, EnumFacing side) {
@@ -138,27 +107,9 @@ public abstract class TileInventorySecure extends TileTEBase implements IInvento
 
 	/* GUI METHODS */
 	@Override
-	public void receiveGuiNetworkData(int id, int data) {
+	public int getInvSlotCount() {
 
-		if (data == 0) {
-			canAccess = false;
-		} else {
-			canAccess = true;
-		}
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, IContainerListener listener) {
-
-		super.sendGuiNetworkData(container, listener);
-		if (listener instanceof EntityPlayer) {
-			listener.sendProgressBarUpdate(container, 0, canPlayerAccess(((EntityPlayer) listener)) ? 1 : 0);
-		}
-	}
-
-	public boolean canAccess() {
-
-		return canAccess;
+		return inventory.length;
 	}
 
 	@Override
@@ -167,47 +118,11 @@ public abstract class TileInventorySecure extends TileTEBase implements IInvento
 		return true;
 	}
 
-	@Override
-	public boolean openGui(EntityPlayer player) {
-
-		if (canPlayerAccess(player)) {
-			if (hasGui()) {
-				player.openGui(ThermalExpansion.instance, GuiHandler.TILE_ID, worldObj, getPos().getX(), getPos().getY(), getPos().getZ());
-			}
-			return hasGui();
-		}
-		if (ServerHelper.isServerWorld(worldObj)) {
-			player.addChatMessage(new TextComponentTranslation("chat.cofh.secure", getOwnerName()));
-		}
-		return false;
-	}
-
-	@Override
-	public int getInvSlotCount() {
-
-		return inventory.length;
-	}
-
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
-		owner = CoFHProps.DEFAULT_OWNER;
-		access = AccessMode.values()[nbt.getByte("Access")];
-
-		String uuid = nbt.getString("OwnerUUID");
-		String name = nbt.getString("Owner");
-		if (!Strings.isNullOrEmpty(uuid)) {
-			setOwner(new GameProfile(UUID.fromString(uuid), name));
-		} else {
-			setOwnerName(name);
-		}
-
-		if (!enableSecurity()) {
-			access = AccessMode.PUBLIC;
-		}
 		readInventoryFromNBT(nbt);
 	}
 
@@ -215,11 +130,6 @@ public abstract class TileInventorySecure extends TileTEBase implements IInvento
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
-
-		nbt.setByte("Access", (byte) access.ordinal());
-		nbt.setString("OwnerUUID", owner.getId().toString());
-		nbt.setString("Owner", owner.getName());
-
 		writeInventoryToNBT(nbt);
 		return nbt;
 	}
@@ -254,36 +164,6 @@ public abstract class TileInventorySecure extends TileTEBase implements IInvento
 		}
 		if (list.tagCount() > 0) {
 			nbt.setTag("Inventory", list);
-		}
-	}
-
-	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte((byte) access.ordinal());
-		payload.addUUID(owner.getId());
-		payload.addString(owner.getName());
-
-		return payload;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		access = ISecurable.AccessMode.values()[payload.getByte()];
-
-		if (!isServer) {
-			owner = CoFHProps.DEFAULT_OWNER;
-			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
-		} else {
-			payload.getUUID();
-			payload.getString();
 		}
 	}
 
@@ -389,98 +269,6 @@ public abstract class TileInventorySecure extends TileTEBase implements IInvento
 	@Override
 	public void clear() {
 
-	}
-
-	/* IWorldNameable */
-	@Override
-	public String getName() {
-
-		return tileName.isEmpty() ? getName() : tileName;
-	}
-
-	@Override
-	public boolean hasCustomName() {
-
-		return !tileName.isEmpty();
-	}
-
-	@Override
-	public ITextComponent getDisplayName() {
-
-		return new TextComponentString(getName());
-	}
-
-	/* ISecurable */
-	@Override
-	public boolean setAccess(AccessMode access) {
-
-		this.access = access;
-		sendUpdatePacket(Side.SERVER);
-		return true;
-	}
-
-	@Override
-	public boolean setOwnerName(String name) {
-
-		MinecraftServer server = ServerUtils.mc();
-		if (server == null) {
-			return false;
-		}
-		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
-			return false;
-		}
-		String uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(server, name);
-		if (Strings.isNullOrEmpty(uuid)) {
-			return false;
-		}
-		return setOwner(new GameProfile(UUID.fromString(uuid), name));
-	}
-
-	@Override
-	public boolean setOwner(GameProfile profile) {
-
-		if (SecurityHelper.isDefaultUUID(owner.getId())) {
-			owner = profile;
-			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
-				if (ServerUtils.mc() != null) {
-					new Thread("CoFH User Loader") {
-
-						@Override
-						public void run() {
-
-							owner = SecurityHelper.getProfile(owner.getId(), owner.getName());
-						}
-					}.start();
-				}
-				if (inWorld) {
-					markChunkDirty();
-				}
-				return true;
-			}
-		}
-		return false;
-	}
-
-	@Override
-	public AccessMode getAccess() {
-
-		return access;
-	}
-
-	@Override
-	public String getOwnerName() {
-
-		String name = owner.getName();
-		if (name == null) {
-			return StringHelper.localize("info.cofh.anotherplayer");
-		}
-		return name;
-	}
-
-	@Override
-	public GameProfile getOwner() {
-
-		return owner;
 	}
 
 	/* CAPABILITIES */

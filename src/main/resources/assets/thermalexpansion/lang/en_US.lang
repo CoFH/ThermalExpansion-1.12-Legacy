@@ -1,11 +1,108 @@
 #en_US
 
-tile.thermalexpansion.device.accumulator.name=Aqueous Accumulator
+info.thermalexpansion.device.activator=Does more than a tooltip can explain.
+info.thermalexpansion.device.breaker=Breaks blocks. Simple enough.
+info.thermalexpansion.device.buffer=Stores and transfers items.
+info.thermalexpansion.device.collector=Procures items from an area.
+info.thermalexpansion.device.nullifier=Removes things from existence.
+info.thermalexpansion.device.watergen=Pulls water from surroundings.
+
+info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
+info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
+info.thermalexpansion.dynamo.enervation=Extracts flux from various objects.
+info.thermalexpansion.dynamo.magmatic=Requires hot fluids.
+info.thermalexpansion.dynamo.reactant=Requires fluid fuel and solid reactant.
+info.thermalexpansion.dynamo.steam.0=Steam may be pumped in instead.
+info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
+
+info.thermalexpansion.machine.brewer=
+info.thermalexpansion.machine.centrifuge=
+info.thermalexpansion.machine.charger=Charges items with RF.
+info.thermalexpansion.machine.crafter=Crafts items.
+info.thermalexpansion.machine.crucible=Melts items into fluids.
+info.thermalexpansion.machine.enchanter=
+info.thermalexpansion.machine.extruder=Mixes hot and cold fluids.
+info.thermalexpansion.machine.furnace=Smelts items.
+info.thermalexpansion.machine.insolator=Infuses plants with 'sun' and RF.
+info.thermalexpansion.machine.precipitator=Freezes fluids into solids.
+info.thermalexpansion.machine.pulverizer=Crushes items.
+info.thermalexpansion.machine.sawmill=Provides additional lumber.
+info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
+info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
+
+itemGroup.thermalexpansion.creativeTab=Thermal Expansion
+itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blocks
+itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
+itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Tools
+
+tab.thermalexpansion.device.activator.0=It slices! It dices! It pours things, it throws things!
+tab.thermalexpansion.device.activator.1=Maybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.
+tab.thermalexpansion.device.activator.2=Deceptively versatile!
+tab.thermalexpansion.device.breaker.0=Breaks all the things!
+tab.thermalexpansion.device.breaker.1=Keep face away from front of device.
+tab.thermalexpansion.device.buffer.0=Stores and transfers items. Can automatically extract.
+tab.thermalexpansion.device.buffer.1=Better than a Hopper, really!
+tab.thermalexpansion.device.buffer.2=Hold Shift or Ctrl to fine tune quantities.
+tab.thermalexpansion.device.collector.0=Picks up items in an area.
+tab.thermalexpansion.device.collector.1=Anything not nailed down is fair game!
+tab.thermalexpansion.device.collector.2=Probably won't steal from your inventory. Probably.
+tab.thermalexpansion.device.nullifier.0=Sends all the things to /dev/null!
+tab.thermalexpansion.device.nullifier.1=It is a horrible place; even fluids cannot escape.
+tab.thermalexpansion.device.watergen.0=Extracts water from its surroundings.
+tab.thermalexpansion.device.watergen.1=Place in a pool of water to speed this up.
+tab.thermalexpansion.device.watergen.2=Don't drown.
+
+tab.thermalexpansion.dynamo.0=Generation rate varies according to energy demand.
+tab.thermalexpansion.dynamo.compression.0=Generates Redstone Flux using fluid fuels and coolants.
+tab.thermalexpansion.dynamo.enervation.0=Extracts Redstone Flux directly from natural sources or from objects which store it.
+tab.thermalexpansion.dynamo.magmatic.0=Generates Redstone Flux using extremely hot fluids.
+tab.thermalexpansion.dynamo.reactant.0=Generates Redstone Flux using alchemical reactions.
+tab.thermalexpansion.dynamo.reactant.1=A solid reactant and a fluid fuel must be provided.
+tab.thermalexpansion.dynamo.steam.0=Generates Redstone Flux using Steam.
+tab.thermalexpansion.dynamo.steam.1=Solid Fuels and Water can be used to generate Steam.
+
+tab.thermalexpansion.machine.crafter.0=Crafts recipes saved in Schematics.
+tab.thermalexpansion.machine.crafter.1=Uses 20 Redstone Flux per item.
+tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
+tab.thermalexpansion.machine.charger.0=Infuses energy into compatible items.
+tab.thermalexpansion.machine.charger.1=Charge rate may be limited by the item.
+tab.thermalexpansion.machine.charger.2=Feel the hum.
+tab.thermalexpansion.machine.crucible.0=Turns solid materials into fluids!
+tab.thermalexpansion.machine.crucible.1=Very useful for building advanced devices.
+tab.thermalexpansion.machine.crucible.2=Keep away from small children and pets.
+tab.thermalexpansion.machine.extruder.0=Mixes water and lava to make different types of igneous rock.
+tab.thermalexpansion.machine.extruder.1=The selected item is what you'll get, if there is enough water and lava in the tanks.
+tab.thermalexpansion.machine.extruder.2=Minecraft physics are fun!
+tab.thermalexpansion.machine.furnace.0=Smelts things using Redstone Flux.
+tab.thermalexpansion.machine.furnace.1=Uses very little energy to cook food.
+tab.thermalexpansion.machine.furnace.2=Om nom nom.
+tab.thermalexpansion.machine.insolator.0=Infuses nutrients and light into plants using Redstone Flux.
+tab.thermalexpansion.machine.insolator.1=Not exactly 'organic' farming.
+tab.thermalexpansion.machine.insolator.2=Left slot can be locked to only contain certain items.
+tab.thermalexpansion.machine.insolator.3=Gloriously incandescent!
+tab.thermalexpansion.machine.precipitator.0=Uses Redstone Flux to freeze various fluids!
+tab.thermalexpansion.machine.precipitator.1=The selected item is what you'll get, if there is enough fluid in the tank.
+tab.thermalexpansion.machine.precipitator.2=Have a snowball fight.
+tab.thermalexpansion.machine.pulverizer.0=Smashes things into other things.
+tab.thermalexpansion.machine.pulverizer.1=Useful for processing ores or converting items.
+tab.thermalexpansion.machine.pulverizer.2=This is typically not reversible.
+tab.thermalexpansion.machine.sawmill.0=Cuts logs into planks and reprocesses wooden things.
+tab.thermalexpansion.machine.sawmill.1=Very useful for making the most out of a tree.
+tab.thermalexpansion.machine.sawmill.2=Watch your hands.
+tab.thermalexpansion.machine.smelter.0=Smelts metals and things that require high temperatures.
+tab.thermalexpansion.machine.smelter.1=Useful for processing ores and building advanced devices.
+tab.thermalexpansion.machine.smelter.2=Left slot can be locked to only contain certain items.
+tab.thermalexpansion.machine.smelter.3=Will absolutely not cook food.
+tab.thermalexpansion.machine.transposer.0=Fills or empties things that hold fluids.
+tab.thermalexpansion.machine.transposer.1=Click the button to change between Fill and Extract modes.
+tab.thermalexpansion.machine.transposer.2=Typically reversible.
+
 tile.thermalexpansion.device.activator.name=Autonomous Activator
 tile.thermalexpansion.device.breaker.name=Terrain Smasher
 tile.thermalexpansion.device.buffer.name=Item Allocator
 tile.thermalexpansion.device.collector.name=Acquisition Apparatus
 tile.thermalexpansion.device.nullifier.name=Nullifier
+tile.thermalexpansion.device.watergen.name=Aqueous Accumulator
 
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo

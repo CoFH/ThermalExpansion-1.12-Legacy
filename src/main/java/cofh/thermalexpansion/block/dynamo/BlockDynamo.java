@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.*;
 import codechicken.lib.raytracer.RayTracer;
@@ -10,12 +9,11 @@ import codechicken.lib.vec.Vector3;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.render.RenderDynamo;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -28,7 +26,6 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -51,6 +48,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
@@ -239,22 +239,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		return super.collisionRayTrace(blockState, worldIn, pos, start, end);
 	}
 
-	@Override
-	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
-
-		NBTTagCompound tag = super.getItemStackTag(world, pos);
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
-
-		if (tile != null) {
-			if (tag == null) {
-				tag = new NBTTagCompound();
-			}
-			tag.setInteger("Energy", tile.getEnergyStored(null));
-			tile.writeAugmentsToNBT(tag);
-		}
-		return tag;
-	}
-
 	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -318,26 +302,18 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public boolean initialize() {
 
 		TileDynamoBase.config();
+
 		TileDynamoSteam.initialize();
 		TileDynamoMagmatic.initialize();
 		TileDynamoCompression.initialize();
 		TileDynamoReactant.initialize();
 		TileDynamoEnervation.initialize();
 
-		if (defaultRedstoneControl) {
-			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
-		}
 		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.STEAM.getMetadata()));
 		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.MAGMATIC.getMetadata()));
 		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.COMPRESSION.getMetadata()));
 		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.REACTANT.getMetadata()));
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.ENERVATION.getMetadata()));
-
-		ItemStackRegistry.registerCustomItemStack("dynamoSteam", dynamoSteam);
-		ItemStackRegistry.registerCustomItemStack("dynamoMagmatic", dynamoMagmatic);
-		ItemStackRegistry.registerCustomItemStack("dynamoCompression", dynamoCompression);
-		ItemStackRegistry.registerCustomItemStack("dynamoReactant", dynamoReactant);
-		ItemStackRegistry.registerCustomItemStack("dynamoEnervation", dynamoEnervation);
 
 		return true;
 	}
@@ -345,16 +321,65 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public boolean postInit() {
 
+		// @formatter:off
+		if (enable[BlockDynamo.Type.STEAM.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoSteam,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearCopper",
+					'I', "ingotCopper",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[BlockDynamo.Type.MAGMATIC.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoMagmatic,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearInvar",
+					'I', "ingotInvar",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[BlockDynamo.Type.COMPRESSION.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoCompression,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearIron",
+					'I', "gearIron",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[BlockDynamo.Type.REACTANT.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoReactant,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearBronze",
+					'I', "ingotBronze",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[BlockDynamo.Type.ENERVATION.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoEnervation,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearElectrum",
+					'I', "ingotElectrum",
+					'R', "dustRedstone"
+			));
+		}
+		// @formatter:on
+
 		return true;
-	}
-
-	public static void refreshItemStacks() {
-
-		dynamoSteam = ItemBlockDynamo.setDefaultTag(dynamoSteam);
-		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(dynamoMagmatic);
-		dynamoCompression = ItemBlockDynamo.setDefaultTag(dynamoCompression);
-		dynamoReactant = ItemBlockDynamo.setDefaultTag(dynamoReactant);
-		dynamoEnervation = ItemBlockDynamo.setDefaultTag(dynamoEnervation);
 	}
 
 	/* TYPE */
@@ -426,9 +451,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	}
 
 	public static boolean[] enable = new boolean[BlockDynamo.Type.values().length];
-	public static ItemStack[] defaultAugments = new ItemStack[4];
-
-	public static boolean defaultRedstoneControl = true;
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

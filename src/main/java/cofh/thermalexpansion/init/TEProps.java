@@ -8,7 +8,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 
 public class TEProps {
 
@@ -25,13 +25,13 @@ public class TEProps {
 	}
 
 	/* GENERAL */
-	public static final int MAX_FLUID_SMALL = FluidContainerRegistry.BUCKET_VOLUME * 4;
-	public static final int MAX_FLUID_LARGE = FluidContainerRegistry.BUCKET_VOLUME * 10;
+	public static final int MAX_FLUID_SMALL = Fluid.BUCKET_VOLUME * 4;
+	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
 	public static boolean enableAchievements = false;
 
-	/* GRAPHICS */
+	/* TEXTURES */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";
 	public static final String PATH_GUI = PATH_GFX + "gui/";

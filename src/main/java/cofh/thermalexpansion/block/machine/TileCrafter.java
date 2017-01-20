@@ -114,7 +114,7 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -125,20 +125,12 @@ public class TileCrafter extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	@Override

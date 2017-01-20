@@ -12,7 +12,7 @@ import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.ForgeRegistries;
@@ -718,7 +718,7 @@ public class TECraftingParser {
 			return null;
 		}
 		FluidStack stack;
-		int amount = FluidContainerRegistry.BUCKET_VOLUME;
+		int amount = Fluid.BUCKET_VOLUME;
 
 		if (fluidElement.isJsonPrimitive()) {
 			stack = new FluidStack(FluidRegistry.getFluid(fluidElement.getAsString()), amount);
@@ -729,7 +729,7 @@ public class TECraftingParser {
 				amount = fluid.get("amount").getAsInt();
 			}
 			if (amount <= 0) {
-				amount = FluidContainerRegistry.BUCKET_VOLUME;
+				amount = Fluid.BUCKET_VOLUME;
 			}
 			if (!fluid.has("name")) {
 				ThermalExpansion.LOG.error("Fluid entry missing valid name!");

@@ -176,7 +176,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 				}
 			}
 			if (work) {
-				drainEnergy(ACTIVATION_ENERGY);
+				energyStorage.modifyEnergyStored(-ACTIVATION_ENERGY);
 			}
 		} else {
 			if (isActive) {

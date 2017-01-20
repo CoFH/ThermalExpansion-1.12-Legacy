@@ -1,5 +1,6 @@
-package cofh.thermalexpansion.item;
+package cofh.thermalexpansion.init;
 
+import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -77,11 +78,6 @@ public class TEAugments {
 
 	public static String ENERGY_STORAGE = "energyStorage";
 
-	public static String GENERAL_AUTO_OUTPUT = "generalAutoOutput";
-	public static String GENERAL_AUTO_INPUT = "generalAutoInput";
-	public static String GENERAL_RECONFIG_SIDES = "generalReconfigSides";
-	public static String GENERAL_REDSTONE_CONTROL = "generalRedstoneControl";
-
 	public static String MACHINE_SECONDARY = "machineSecondary";
 	public static String MACHINE_SPEED = "machineSpeed";
 
@@ -99,16 +95,6 @@ public class TEAugments {
 
 		itemAugment = new ItemAugment();
 		GameRegistry.register(itemAugment);
-
-		generalAutoOutput = itemAugment.registerSubItem(0, GENERAL_AUTO_OUTPUT);
-		generalAutoInput = itemAugment.registerSubItem(1, GENERAL_AUTO_INPUT);
-		generalReconfigSides = itemAugment.registerSubItem(16, GENERAL_RECONFIG_SIDES);
-		generalRedstoneControl = itemAugment.registerSubItem(32, GENERAL_REDSTONE_CONTROL);
-
-		itemAugment.addAugmentData(0, GENERAL_AUTO_OUTPUT, 1);
-		itemAugment.addAugmentData(1, GENERAL_AUTO_INPUT, 1);
-		itemAugment.addAugmentData(16, GENERAL_RECONFIG_SIDES, 1);
-		itemAugment.addAugmentData(32, GENERAL_REDSTONE_CONTROL, 1);
 
 		dynamoCoilDuct = itemAugment.registerSubItem(48, DYNAMO_COIL_DUCT);
 		itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);

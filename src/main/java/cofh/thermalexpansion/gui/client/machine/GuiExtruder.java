@@ -6,7 +6,7 @@ import cofh.lib.gui.element.ElementFluid;
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.machine.TileExtruder;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -16,7 +16,7 @@ import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 
-public class GuiExtruder extends GuiAugmentableBase {
+public class GuiExtruder extends GuiTEBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "extruder.png");
 

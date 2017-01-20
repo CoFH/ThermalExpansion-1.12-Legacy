@@ -4,7 +4,7 @@ import cofh.CoFHCore;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.item.TEFlorbs;
+import cofh.thermalexpansion.init.TEFlorbs;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

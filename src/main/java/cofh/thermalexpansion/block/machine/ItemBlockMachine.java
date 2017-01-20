@@ -25,7 +25,6 @@ public class ItemBlockMachine extends ItemBlockCore {
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
 		container.getTagCompound().setByte("Level", level);
-		AugmentHelper.writeAugments(container, BlockMachine.defaultAugments);
 
 		return container;
 	}
@@ -46,14 +45,14 @@ public class ItemBlockMachine extends ItemBlockCore {
 		setNoRepair();
 	}
 
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		String unloc = getUnlocalizedNameInefficiently(stack);
-		String unloc2 = '.' + NAMES[getLevel(stack)];
-
-		return StringHelper.localize(unloc) + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
-	}
+	//	@Override
+	//	public String getItemStackDisplayName(ItemStack stack) {
+	//
+	//		String unloc = getUnlocalizedNameInefficiently(stack);
+	//		String unloc2 = '.' + NAMES[getLevel(stack)];
+	//
+	//		return StringHelper.localize(unloc) + " (" + StringHelper.localize("info.thermalexpansion" + unloc2) + ")";
+	//	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
@@ -91,6 +90,6 @@ public class ItemBlockMachine extends ItemBlockCore {
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}
 
-	public static final String[] NAMES = { "basic", "hardened", "reinforced", "resonant" };
+	public static final String[] NAMES = { "basic", "hardened", "reinforced", "signalum", "resonant" };
 
 }

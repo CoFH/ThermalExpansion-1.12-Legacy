@@ -1,15 +1,12 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.render.IconRegistry;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileDeviceBase extends TileAugmentable {
+public abstract class TileDeviceBase extends TilePowered {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Type.values().length];
 	public static boolean enableSecurity = true;
@@ -24,15 +21,12 @@ public abstract class TileDeviceBase extends TileAugmentable {
 
 		sideConfig = defaultSideConfig[this.getType()];
 		setDefaultSides();
-
-		augmentStatus = new boolean[4];
-		augments = new ItemStack[4];
 	}
 
 	@Override
-	public String getName() {
+	public String getTileName() {
 
-		return BlockDevice.Type.byMetadata(getType()).getName();
+		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	@Override

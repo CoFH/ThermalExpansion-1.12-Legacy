@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.gui.element.ElementFluidTank;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -10,17 +10,17 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiAccumulator extends GuiAugmentableBase {
+public class GuiWaterGen extends GuiTEBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "accumulator.png");
+	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DEVICE + "watergen.png");
 
 	ElementBase slotOutput;
 
-	public GuiAccumulator(InventoryPlayer inventory, TileEntity tile) {
+	public GuiWaterGen(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.accumulator", 3);
+		generateInfo("tab.thermalexpansion.device.watergen", 3);
 	}
 
 	@Override

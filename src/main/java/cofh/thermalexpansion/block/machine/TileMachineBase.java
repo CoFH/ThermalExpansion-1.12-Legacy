@@ -1,36 +1,27 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentable;
+import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.item.TEAugments;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileMachineBase extends TileAugmentable implements ITickable {
+public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 14 };
-	public static boolean enableSecurity = true;
 
-	protected static final int RATE = 500;
-	protected static final int AUGMENT_COUNT[] = new int[] { 3, 4, 5, 6 };
-	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5 };
-	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24 };
-	protected static final int AUTO_TRANSFER[] = new int[] { 8, 16, 32, 64 };
-	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8 };
+	public static boolean enableSecurity = true;
 
 	public static void config() {
 
@@ -51,7 +42,6 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 
 	boolean augmentSecondaryNull;
 
-	byte level = 0;
 	int processMod = 1;
 	int energyMod = 1;
 	int secondaryChance = 100;
@@ -65,9 +55,9 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 	}
 
 	@Override
-	public String getName() {
+	public String getTileName() {
 
-		return BlockMachine.Type.byMetadata(getType()).getName();
+		return "tile.thermalexpansion.machine." + BlockMachine.Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	@Override
@@ -193,15 +183,6 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 		}
 	}
 
-	protected void onLevelChange() {
-
-		augments = new ItemStack[AUGMENT_COUNT[level]];
-		augmentStatus = new boolean[augments.length];
-		energyConfig.setParams(energyConfig.minPower, energyConfig.maxPower, energyConfig.maxEnergy * ENERGY_CAPACITY[level] / 2);
-		energyStorage.setCapacity(energyConfig.maxEnergy);
-		energyStorage.setMaxTransfer(energyConfig.maxPower * ENERGY_TRANSFER[level]);
-	}
-
 	/* GUI METHODS */
 	@Override
 	public int getScaledProgress(int scale) {
@@ -244,54 +225,7 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 		return nbt;
 	}
 
-	@Override
-	public void readAugmentsFromNBT(NBTTagCompound nbt) {
-
-		level = nbt.getByte("Level");
-		onLevelChange();
-
-		NBTTagList list = nbt.getTagList("Augments", 10);
-
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound tag = list.getCompoundTagAt(i);
-			int slot = tag.getInteger("Slot");
-			if (slot >= 0 && slot < augments.length) {
-				augments[slot] = ItemStack.loadItemStackFromNBT(tag);
-			}
-		}
-	}
-
-	@Override
-	public void writeAugmentsToNBT(NBTTagCompound nbt) {
-
-		nbt.setByte("Level", level);
-
-		if (augments.length <= 0) {
-			return;
-		}
-		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < augments.length; i++) {
-			if (augments[i] != null) {
-				NBTTagCompound tag = new NBTTagCompound();
-				tag.setInteger("Slot", i);
-				augments[i].writeToNBT(tag);
-				list.appendTag(tag);
-			}
-		}
-		nbt.setTag("Augments", list);
-	}
-
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte(level);
-
-		return payload;
-	}
-
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -316,112 +250,91 @@ public abstract class TileMachineBase extends TileAugmentable implements ITickab
 		energyMod = payload.getInt();
 	}
 
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-			byte curLevel = level;
-			level = payload.getByte();
-
-			if (curLevel != level) {
-				onLevelChange();
-			}
-		} else {
-			payload.getByte();
-		}
-	}
-
 	/* AUGMENT HELPERS */
 	@Override
 	protected boolean installAugment(int slot) {
 
-		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-		boolean installed = false;
-
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY) > 0) {
-			int augLevel = Math.min(TEAugments.NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY));
-
-			if (augLevel > level) {
-				return false;
-			}
-			if (hasDuplicateAugment(TEAugments.MACHINE_SECONDARY, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.MACHINE_SECONDARY, augLevel)) {
-				secondaryChance -= TEAugments.MACHINE_SECONDARY_MOD[augLevel];
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
-			int augLevel = Math.min(TEAugments.NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED));
-
-			if (augLevel > level) {
-				return false;
-			}
-			if (hasDuplicateAugment(TEAugments.MACHINE_SPEED, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
-				// secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel]; TODO: May bring this back; not sure.
-				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
-				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE) > 0) {
-			int augLevel = Math.min(TEAugments.NUM_ENERGY_STORAGE, augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE));
-
-			if (augLevel > level) {
-				return false;
-			}
-			if (hasDuplicateAugment(TEAugments.ENERGY_STORAGE, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.ENERGY_STORAGE, augLevel)) {
-				energyStorage.setCapacity(Math.max(energyStorage.getMaxEnergyStored(), energyConfig.maxEnergy * TEAugments.ENERGY_STORAGE_MOD[augLevel]));
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_NULL) > 0) {
-			augmentSecondaryNull = true;
-			installed = true;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_OUTPUT) > 0) {
-			augmentAutoOutput = true;
-			installed = true;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_INPUT) > 0) {
-			augmentAutoInput = true;
-			installed = true;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
-			augmentReconfigSides = true;
-			installed = true;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
-			augmentRedstoneControl = true;
-			installed = true;
-		}
-		return installed;
+		//		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+		//		boolean installed = false;
+		//
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY) > 0) {
+		//			int augLevel = Math.min(TEAugments.NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY));
+		//
+		//			if (augLevel > level) {
+		//				return false;
+		//			}
+		//			if (hasDuplicateAugment(TEAugments.MACHINE_SECONDARY, augLevel, slot)) {
+		//				return false;
+		//			}
+		//			if (hasAugmentChain(TEAugments.MACHINE_SECONDARY, augLevel)) {
+		//				secondaryChance -= TEAugments.MACHINE_SECONDARY_MOD[augLevel];
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
+		//			int augLevel = Math.min(TEAugments.NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED));
+		//
+		//			if (augLevel > level) {
+		//				return false;
+		//			}
+		//			if (hasDuplicateAugment(TEAugments.MACHINE_SPEED, augLevel, slot)) {
+		//				return false;
+		//			}
+		//			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
+		//				// secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel]; TODO: May bring this back; not sure.
+		//				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
+		//				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE) > 0) {
+		//			int augLevel = Math.min(TEAugments.NUM_ENERGY_STORAGE, augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE));
+		//
+		//			if (augLevel > level) {
+		//				return false;
+		//			}
+		//			if (hasDuplicateAugment(TEAugments.ENERGY_STORAGE, augLevel, slot)) {
+		//				return false;
+		//			}
+		//			if (hasAugmentChain(TEAugments.ENERGY_STORAGE, augLevel)) {
+		//				energyStorage.setCapacity(Math.max(energyStorage.getMaxEnergyStored(), energyConfig.maxEnergy * TEAugments.ENERGY_STORAGE_MOD[augLevel]));
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_NULL) > 0) {
+		//			augmentSecondaryNull = true;
+		//			installed = true;
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_OUTPUT) > 0) {
+		//			hasAutoOutput = true;
+		//			installed = true;
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_INPUT) > 0) {
+		//			hasAutoInput = true;
+		//			installed = true;
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
+		//			augmentReconfigSides = true;
+		//			installed = true;
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
+		//			hasRedstoneControl = true;
+		//			installed = true;
+		//		}
+		//		return installed;
+		return true;
 	}
 
 	@Override
 	protected void onInstalled() {
 
-		if (!augmentReconfigSides) {
-			setDefaultSides();
-			sideCache[facing] = 0;
-		}
-		if (!augmentRedstoneControl) {
+		if (!hasRedstoneControl) {
 			this.rsMode = ControlMode.DISABLED;
 		}
 		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {

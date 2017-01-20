@@ -61,7 +61,7 @@ public class TETextures {
 		MACHINE_ACTIVE_TRANSPOSER =      register(map, MACHINE_ACTIVE_ + "transposer");
 		MACHINE_ACTIVE_TRANSCAPSULATOR = map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "transcapsulator");
 		MACHINE_ACTIVE_CENTRIFUGE =      map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
-		MACHINE_ACTIVE_CRAFTER =         register(map, MACHINE_ACTIVE_ + "assembler");
+		MACHINE_ACTIVE_CRAFTER =         register(map, MACHINE_ACTIVE_ + "crafter");
 		MACHINE_ACTIVE_BREWER =          map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
 		MACHINE_ACTIVE_ENCHANTER =       map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "enchanter");
 		MACHINE_ACTIVE_PRECIPITATOR =    register(map, MACHINE_ACTIVE_ + "precipitator");

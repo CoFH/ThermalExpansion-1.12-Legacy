@@ -12,7 +12,7 @@ import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
@@ -57,30 +57,30 @@ public class CrucibleManager {
 
 		if (recipeNetherrack) {
 			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
+				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 				ThermalExpansion.LOG.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.CONFIG.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
 			}
 		}
 		if (recipeBlazeRod) {
 			if (tweakBlazeRodRF >= CoFHProps.LAVA_RF / 20 && tweakBlazeRodRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
+				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
 			} else {
-				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME / 4));
+				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
 				ThermalExpansion.LOG.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
 				ThermalExpansion.CONFIG.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
 			}
 		}
 		int defaultCost = CoFHProps.LAVA_RF * 8 / 5;
 
-		addTERecipe(defaultCost, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME));
-		addTERecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 8));
-		addTERecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME / 2));
-		addTERecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME));
+		addTERecipe(defaultCost, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addTERecipe(defaultCost, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addTERecipe(defaultCost, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addTERecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 8));
+		addTERecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 2));
+		addTERecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
 		addTERecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
 		addTERecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
 		addTERecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));

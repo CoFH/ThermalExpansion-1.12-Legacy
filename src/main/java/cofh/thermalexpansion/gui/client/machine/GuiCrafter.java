@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.machine;
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementFluidTank;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
@@ -14,7 +14,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiCrafter extends GuiAugmentableBase {
+public class GuiCrafter extends GuiTEBase {
 
 	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crafter.png");
 

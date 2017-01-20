@@ -1,10 +1,10 @@
-package cofh.thermalexpansion.item;
+package cofh.thermalexpansion.init;
 
 import cofh.core.CoFHProps;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemFlorb;
 import cofh.thermalexpansion.util.crafting.TransposerManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Items;

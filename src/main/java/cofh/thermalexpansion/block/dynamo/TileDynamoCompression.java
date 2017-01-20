@@ -5,13 +5,17 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -28,10 +32,10 @@ public class TileDynamoCompression extends TileDynamoBase {
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
 	}
 
-	FluidTankCore fuelTank = new FluidTankCore(MAX_FLUID);
-	FluidTankCore coolantTank = new FluidTankCore(MAX_FLUID);
+	FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore coolantTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 	int coolantRF;
 
 	@Override
@@ -166,7 +170,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		renderFluid = payload.getFluidStack();
 		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 		}
 	}
 

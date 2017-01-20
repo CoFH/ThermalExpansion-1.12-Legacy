@@ -144,14 +144,14 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!hasAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -161,14 +161,14 @@ public class TileCrucible extends TileMachineBase {
 
 	protected void transferOutputFluid() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 
@@ -193,14 +193,6 @@ public class TileCrucible extends TileMachineBase {
 		transferOutputFluid();
 
 		super.update();
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	/* GUI METHODS */

@@ -8,13 +8,11 @@ import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.TileAugmentable;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -24,9 +22,10 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -42,6 +41,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -173,26 +175,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		return true;
 	}
 
-	@Override
-	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
-
-		NBTTagCompound tag = super.getItemStackTag(world, pos);
-		TileEntity tile = world.getTileEntity(pos);
-
-		if (tile instanceof TileAugmentable) {
-			TileAugmentable theTile = (TileAugmentable) tile;
-
-			if (tag == null) {
-				tag = new NBTTagCompound();
-			}
-			ReconfigurableHelper.setItemStackTagReconfig(tag, theTile);
-			tag.setInteger("Energy", theTile.getEnergyStored(null));
-
-			theTile.writeAugmentsToNBT(tag);
-		}
-		return tag;
-	}
-
 	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -268,12 +250,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileBuffer.initialize();
 		TileExtender.initialize();
 
-		if (defaultRedstoneControl) {
-			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
-		}
-		if (defaultReconfigSides) {
-			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
-		}
 		deviceActivator = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.ACTIVATOR.getMetadata()));
 		deviceBreaker = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.BREAKER.getMetadata()));
 		deviceCollector = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, BlockDevice.Type.COLLECTOR.getMetadata()));
@@ -287,11 +263,85 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@Override
 	public boolean postInit() {
 
+		String machineFrame = "thermalexpansion:machineFrame";
+		String tinPart = "thermalexpansion:machineTin";
+
+		// @formatter:off
+		if (enable[BlockDevice.Type.ACTIVATOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceActivator,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.CHEST,
+					'Y', "ingotIron"
+			));
+		}
+		if (enable[BlockDevice.Type.BREAKER.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceBreaker,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Items.IRON_PICKAXE,
+					'Y', "ingotIron"
+			));
+		}
+		if (enable[BlockDevice.Type.COLLECTOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceCollector,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.HOPPER,
+					'Y', "ingotIron"
+			));
+		}
+		if (enable[BlockDevice.Type.WATERGEN.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceWaterGen,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
+					'X', Items.BUCKET,
+					'Y', "dustRedstone"
+			));
+		}
+		if (enable[BlockDevice.Type.NULLIFIER.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceNullifier,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
+					'X', Items.LAVA_BUCKET,
+					'Y', "dustRedstone"
+			));
+		}
+		if (enable[BlockDevice.Type.BUFFER.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceBuffer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', tinPart,
+					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
+					'X', Items.LAVA_BUCKET,
+					'Y', "dustRedstone"
+			));
+		}
+		// @formatter:on
+
 		return true;
-	}
-
-	public static void refreshItemStacks() {
-
 	}
 
 	/* TYPE */
@@ -365,10 +415,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	}
 
 	public static boolean[] enable = new boolean[BlockDevice.Type.values().length];
-	public static ItemStack[] defaultAugments = new ItemStack[4];
-
-	public static boolean defaultRedstoneControl = true;
-	public static boolean defaultReconfigSides = true;
 
 	/* REFERENCES */
 	public static ItemStack deviceActivator;

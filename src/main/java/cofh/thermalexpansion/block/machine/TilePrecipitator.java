@@ -129,7 +129,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -140,20 +140,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	@Override

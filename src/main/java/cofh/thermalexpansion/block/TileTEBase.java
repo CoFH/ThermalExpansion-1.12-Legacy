@@ -6,6 +6,7 @@ import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
+import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
@@ -13,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
@@ -30,17 +32,27 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		return false;
+		return true;
 	}
 
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		return false;
+		return true;
 	}
 
 	/* GUI METHODS */
 	@Override
 	public int getInvSlotCount() {
+
+		return 0;
+	}
+
+	public int getScaledProgress(int scale) {
+
+		return 0;
+	}
+
+	public int getScaledSpeed(int scale) {
 
 		return 0;
 	}
@@ -69,6 +81,16 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 				PacketHandler.sendTo(guiPacket, (EntityPlayer) listener);
 			}
 		}
+	}
+
+	public FluidTankCore getTank() {
+
+		return null;
+	}
+
+	public FluidStack getTankFluid() {
+
+		return null;
 	}
 
 	/* NBT METHODS */
@@ -136,7 +158,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	@Override
 	public String getDataType() {
 
-		return getName();
+		return getTileName();
 	}
 
 	@Override

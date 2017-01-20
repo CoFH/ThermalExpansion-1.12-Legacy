@@ -6,7 +6,6 @@ import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.item.IAugmentItem;
-import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.CoFHProps;
@@ -16,7 +15,6 @@ import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileRSControl;
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -30,16 +28,14 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IAugmentable, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
 	public static boolean enableSecurity = true;
 
-	protected static final int MAX_FLUID = FluidContainerRegistry.BUCKET_VOLUME * 4;
 	protected static final int[] SLOTS = { 0 };
 	public static final int FUEL_MOD = 100;
 
@@ -67,19 +63,15 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	byte facing = 1;
 	boolean wasActive;
 
-	public boolean augmentRedstoneControl;
 	public boolean augmentThrottle;
 	public boolean augmentCoilDuct;
 
 	boolean cached = false;
-	IEnergyReceiver adjacentHandler = null;
+	IEnergyReceiver adjacentReceiver = null;
 
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
 	protected EnergyConfig config;
 	protected TimeTracker tracker = new TimeTracker();
-
-	/* Augment Variables */ ItemStack[] augments = new ItemStack[4];
-	boolean[] augmentStatus = new boolean[4];
 
 	int energyMod = 1;
 	int fuelMod = FUEL_MOD;
@@ -91,9 +83,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	}
 
 	@Override
-	public String getName() {
+	public String getTileName() {
 
-		return BlockDynamo.Type.values()[getType()].getName();
+		return "tile.thermalexpansion.dynamo." + BlockDynamo.Type.values()[getType()].getName() + ".name";
 	}
 
 	@Override
@@ -265,10 +257,10 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 
 	protected void transferEnergy(int bSide) {
 
-		if (adjacentHandler == null) {
+		if (adjacentReceiver == null) {
 			return;
 		}
-		energyStorage.modifyEnergyStored(-adjacentHandler.receiveEnergy(EnumFacing.VALUES[bSide ^ 1], Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
+		energyStorage.modifyEnergyStored(-adjacentReceiver.receiveEnergy(EnumFacing.VALUES[bSide ^ 1], Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -279,9 +271,9 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(this, facing);
 
 		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[facing ^ 1])) {
-			adjacentHandler = (IEnergyReceiver) tile;
+			adjacentReceiver = (IEnergyReceiver) tile;
 		} else {
-			adjacentHandler = null;
+			adjacentReceiver = null;
 		}
 		cached = true;
 	}
@@ -289,23 +281,6 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	public TextureAtlasSprite getActiveIcon() {
 
 		return TextureUtils.getTexture(FluidRegistry.WATER.getStill());
-	}
-
-	@Override
-	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
-
-		if (augmentRedstoneControl) {
-			rsMode = RedstoneControlHelper.getControlFromNBT(tag);
-		}
-		return true;
-	}
-
-	@Override
-	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
-
-		RedstoneControlHelper.setItemStackTagRS(tag, this);
-
-		return true;
 	}
 
 	/* GUI METHODS */
@@ -395,7 +370,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		PacketCoFHBase payload = super.getPacket();
 
 		payload.addByte(facing);
-		payload.addBool(augmentRedstoneControl);
+		payload.addBool(hasRedstoneControl);
 
 		return payload;
 	}
@@ -409,7 +384,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(fuelRF);
 
-		payload.addBool(augmentRedstoneControl);
+		payload.addBool(hasRedstoneControl);
 
 		return payload;
 	}
@@ -423,10 +398,10 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		energyStorage.setEnergyStored(payload.getInt());
 		fuelRF = payload.getInt();
 
-		boolean prevControl = augmentRedstoneControl;
-		augmentRedstoneControl = payload.getBool();
+		boolean prevControl = hasRedstoneControl;
+		hasRedstoneControl = payload.getBool();
 
-		if (augmentRedstoneControl != prevControl) {
+		if (hasRedstoneControl != prevControl) {
 			onInstalled();
 			sendUpdatePacket(Side.SERVER);
 		}
@@ -440,7 +415,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 
 		if (!isServer) {
 			facing = payload.getByte();
-			augmentRedstoneControl = payload.getBool();
+			hasRedstoneControl = payload.getBool();
 		} else {
 			payload.getByte();
 			payload.getBool();
@@ -508,63 +483,64 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 
 	protected boolean installAugment(int slot) {
 
-		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-		boolean installed = false;
-
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY) > 0) {
-			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
-				return false;
-			}
-			int augLevel = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
-			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, augLevel)) {
-				fuelMod += TEAugments.DYNAMO_EFFICIENCY_MOD[augLevel];
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
-			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
-			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
-				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
-				energyStorage.setMaxTransfer(Math.max(energyStorage.getMaxExtract(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
-				fuelMod -= TEAugments.DYNAMO_OUTPUT_EFFICIENCY_MOD[augLevel];
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_COIL_DUCT) > 0) {
-			augmentCoilDuct = true;
-			installed = true;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
-			if (hasAugment(TEAugments.GENERAL_REDSTONE_CONTROL, 0)) {
-				augmentThrottle = true;
-				installed = true;
-			} else {
-				return false;
-			}
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
-
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
-			augmentRedstoneControl = true;
-			installed = true;
-		}
-		return installed;
+//		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+//		boolean installed = false;
+//
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY) > 0) {
+//			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
+//				return false;
+//			}
+//			int augLevel = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
+//			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, augLevel, slot)) {
+//				return false;
+//			}
+//			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, augLevel)) {
+//				fuelMod += TEAugments.DYNAMO_EFFICIENCY_MOD[augLevel];
+//				installed = true;
+//			} else {
+//				return false;
+//			}
+//		}
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
+//			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
+//			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, augLevel, slot)) {
+//				return false;
+//			}
+//			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
+//				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
+//				energyStorage.setMaxTransfer(Math.max(energyStorage.getMaxExtract(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
+//				fuelMod -= TEAugments.DYNAMO_OUTPUT_EFFICIENCY_MOD[augLevel];
+//				installed = true;
+//			} else {
+//				return false;
+//			}
+//		}
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_COIL_DUCT) > 0) {
+//			augmentCoilDuct = true;
+//			installed = true;
+//		}
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
+//			if (hasAugment(TEAugments.GENERAL_REDSTONE_CONTROL, 0)) {
+//				augmentThrottle = true;
+//				installed = true;
+//			} else {
+//				return false;
+//			}
+//		}
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
+//
+//		}
+//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
+//			hasRedstoneControl = true;
+//			installed = true;
+//		}
+//		return installed;
+		return true;
 	}
 
 	protected void onInstalled() {
 
-		if (!augmentRedstoneControl) {
+		if (!hasRedstoneControl) {
 			this.rsMode = ControlMode.DISABLED;
 		}
 	}
@@ -575,7 +551,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		fuelMod = FUEL_MOD;
 		energyStorage.setMaxTransfer(config.maxPower * 2);
 
-		augmentRedstoneControl = false;
+		hasRedstoneControl = false;
 		augmentThrottle = false;
 		augmentCoilDuct = false;
 	}
@@ -670,7 +646,7 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
 			return false;
 		}
-		if (adjacentHandler != null) {
+		if (adjacentReceiver != null) {
 			byte oldFacing = facing;
 			for (int i = facing + 1, e = facing + 6; i < e; i++) {
 				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {

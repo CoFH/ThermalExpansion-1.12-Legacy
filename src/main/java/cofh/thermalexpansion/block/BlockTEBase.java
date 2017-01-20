@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
+import cofh.api.energy.IEnergyHandler;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.block.BlockCoreTile;
@@ -104,11 +105,15 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		if (tile instanceof TileTEBase && (!((TileTEBase) tile).tileName.isEmpty())) {
 			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
 		}
-		if (tile instanceof TileInventorySecure && ((TileInventorySecure) tile).isSecured()) {
+		if (tile instanceof TileAugmentableSecure && ((TileAugmentableSecure) tile).isSecured()) {
 			retTag = SecurityHelper.setItemStackTagSecure(retTag, (ISecurable) tile);
+			((TileAugmentableSecure) tile).writeAugmentsToNBT(retTag);
 		}
 		if (tile instanceof IRedstoneControl) {
 			retTag = RedstoneControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
+		}
+		if (tile instanceof IEnergyHandler) {
+			retTag.setInteger("Energy", ((IEnergyHandler)tile).getEnergyStored(null));
 		}
 		return retTag;
 	}

@@ -17,7 +17,6 @@ public class ItemBlockDynamo extends ItemBlockCore {
 		ReconfigurableHelper.setFacing(container, 1);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
-		AugmentHelper.writeAugments(container, BlockDynamo.defaultAugments);
 
 		return container;
 	}
@@ -48,7 +47,7 @@ public class ItemBlockDynamo extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		list.add(StringHelper.localize("info.thermalexpansion.dynamo.generate"));
+		list.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
 		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
 
 		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Type.STEAM.getMetadata()) {

@@ -8,25 +8,67 @@ import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
 import cofh.lib.audio.SoundTile;
+import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.client.audio.ISound;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 @Implementable ("buildcraft.api.tiles.IHasWork")
 @Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
-public abstract class TileRSControl extends TileInventorySecure implements IRedstoneControl, ISoundSource {
+public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
 
+	/* REDSTONE CONTROL */
 	protected int powerLevel;
 	protected boolean isPowered;
 	protected boolean wasPowered;
 
 	protected ControlMode rsMode = ControlMode.DISABLED;
+
+	/* LEVEL FEATURES */
+	public boolean hasRedstoneControl = false;
+	public boolean hasAdvRedstoneControl = false;
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		rsMode = RedstoneControlHelper.getControlFromNBT(tag);
+		return true;
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		RedstoneControlHelper.setItemStackTagRS(tag, this);
+		return true;
+	}
+
+	protected void onLevelChange() {
+
+		if (level > 4) {
+			level = 4;
+		}
+
+		switch(level) {
+			case 0:
+				break;
+			default:	// Creative
+			case 4:		// Ender
+			case 3:		// Signalum
+				hasAdvRedstoneControl = true;
+			case 2:		// Reinforced
+				hasRedstoneControl = true;
+			case 1:		// Hardened
+				hasAutoInput = true;
+				hasAutoOutput = true;
+		}
+	}
 
 	@Override
 	public void onNeighborBlockChange() {

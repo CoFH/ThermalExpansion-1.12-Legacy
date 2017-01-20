@@ -18,7 +18,6 @@ public class ItemBlockDevice extends ItemBlockCore {
 		ReconfigurableHelper.setSideCache(container, TileDeviceBase.defaultSideConfig[container.getItemDamage()].defaultSides);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
-		AugmentHelper.writeAugments(container, BlockDevice.defaultAugments);
 
 		return container;
 	}

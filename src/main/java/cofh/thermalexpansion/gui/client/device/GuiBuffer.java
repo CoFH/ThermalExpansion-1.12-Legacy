@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
 import cofh.thermalexpansion.block.device.TileBuffer;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.gui.GuiScreen;
@@ -10,7 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiBuffer extends GuiAugmentableBase {
+public class GuiBuffer extends GuiTEBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "buffer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);

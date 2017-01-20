@@ -5,7 +5,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
-import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.init.TEAugments;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -140,14 +140,14 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!hasAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -158,7 +158,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (inventory[1] == null) {
@@ -168,7 +168,7 @@ public class TileFurnace extends TileMachineBase {
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 2) {
-				if (transferItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}

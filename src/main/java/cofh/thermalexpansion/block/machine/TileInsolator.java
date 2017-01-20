@@ -260,14 +260,14 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!hasAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1 || sideCache[side] == 5) {
-				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerPrimary = side;
 					break;
 				}
@@ -276,7 +276,7 @@ public class TileInsolator extends TileMachineBase {
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1 || sideCache[side] == 6) {
-				if (extractItem(1, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerSecondary = side;
 					break;
 				}
@@ -287,7 +287,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		int side;
@@ -296,7 +296,7 @@ public class TileInsolator extends TileMachineBase {
 				side = i % 6;
 
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
@@ -310,20 +310,12 @@ public class TileInsolator extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	@Override

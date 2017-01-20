@@ -8,6 +8,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
+import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +17,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
@@ -34,9 +38,9 @@ public class TileDynamoReactant extends TileDynamoBase {
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
 	}
 
-	FluidTankCore tank = new FluidTankCore(MAX_FLUID);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 	int reactantRF;
 	int currentReactantRF;
 	int reactantMod = FUEL_MOD;
@@ -194,7 +198,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		renderFluid = payload.getFluidStack();
 		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 		}
 	}
 

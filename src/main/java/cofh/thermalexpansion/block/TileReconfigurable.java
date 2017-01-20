@@ -8,14 +8,46 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileReconfigurable extends TilePowered implements IReconfigurableFacing, IReconfigurableSides, ISidedTexture {
+public abstract class TileReconfigurable extends TileRSControl implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
+
+	protected SideConfig sideConfig;
 
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
+
+	@Override
+	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		int storedFacing = ReconfigurableHelper.getFacingFromNBT(tag);
+		byte[] storedSideCache = ReconfigurableHelper.getSideCacheFromNBT(tag, getDefaultSides());
+
+		sideCache[0] = storedSideCache[0];
+		sideCache[1] = storedSideCache[1];
+		sideCache[facing] = storedSideCache[storedFacing];
+		sideCache[BlockHelper.getLeftSide(facing)] = storedSideCache[BlockHelper.getLeftSide(storedFacing)];
+		sideCache[BlockHelper.getRightSide(facing)] = storedSideCache[BlockHelper.getRightSide(storedFacing)];
+		sideCache[BlockHelper.getOppositeSide(facing)] = storedSideCache[BlockHelper.getOppositeSide(storedFacing)];
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+		return super.readPortableTagInternal(player, tag);
+	}
+
+	@Override
+	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
+
+		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+		return super.writePortableTagInternal(player, tag);
+	}
 
 	@Override
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
@@ -25,7 +57,7 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 
 	public byte[] getDefaultSides() {
 
-		return new byte[] { 0, 0, 0, 0, 0, 0 };
+		return sideConfig.defaultSides.clone();
 	}
 
 	public void setDefaultSides() {
@@ -242,7 +274,29 @@ public abstract class TileReconfigurable extends TilePowered implements IReconfi
 	}
 
 	@Override
-	public abstract int getNumConfig(int side);
+	public int getNumConfig(int side) {
+
+		return sideConfig.numConfig;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		return sideConfig.slotGroups[sideCache[side.ordinal()]];
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+
+		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && sideConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+
+		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && sideConfig.allowExtractionSlot[slot];
+	}
 
 	/* ISidedTexture */
 	@Override

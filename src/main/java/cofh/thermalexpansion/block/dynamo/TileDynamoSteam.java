@@ -8,6 +8,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.TObjectIntHashMap;
@@ -44,8 +45,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	static final int STEAM_MIN = 2000;
 
-	FluidTankCore steamTank = new FluidTankCore(MAX_FLUID);
-	FluidTankCore waterTank = new FluidTankCore(MAX_FLUID);
+	FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	int currentFuelRF = getEnergyValue(coal);
 	int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;

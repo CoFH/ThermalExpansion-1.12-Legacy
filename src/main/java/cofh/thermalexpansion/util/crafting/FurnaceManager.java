@@ -11,7 +11,6 @@ import gnu.trove.set.hash.THashSet;
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -135,6 +134,8 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "dustElectrum", ItemMaterial.ingotElectrum);
 		addOreDictRecipe(energy, "dustInvar", ItemMaterial.ingotInvar);
 		addOreDictRecipe(energy, "dustBronze", ItemMaterial.ingotBronze);
+		addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
+		addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
 
 		energy = DEFAULT_ENERGY * 6 / 16;
 
@@ -146,6 +147,11 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "oreberryLead", ItemMaterial.nuggetLead);
 		addOreDictRecipe(energy, "oreberryNickel", ItemMaterial.nuggetNickel);
 		addOreDictRecipe(energy, "oreberryPlatinum", ItemMaterial.nuggetPlatinum);
+		addOreDictRecipe(energy, "oreberryElectrum", ItemMaterial.nuggetElectrum);
+		addOreDictRecipe(energy, "oreberryInvar", ItemMaterial.nuggetInvar);
+		addOreDictRecipe(energy, "oreberryBronze", ItemMaterial.nuggetBronze);
+		addOreDictRecipe(energy, "oreberrySignalum", ItemMaterial.nuggetSignalum);
+		addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
 	}
 
 	public static void loadRecipes() {
@@ -324,12 +330,6 @@ public class FurnaceManager {
 
 			super(stack);
 			oreID = getOreID(stack);
-		}
-
-		public ComparableItemStackFurnace(Item item, int damage, int stackSize) {
-
-			super(item, damage, stackSize);
-			this.oreID = getOreID(this.toItemStack());
 		}
 
 		@Override

@@ -6,6 +6,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.ItemBlockMachine;
+import cofh.thermalexpansion.init.TEAugments;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.entity.player.EntityPlayer;

@@ -9,12 +9,11 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.item.TEAugments;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
@@ -25,9 +24,10 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -47,6 +47,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
@@ -81,13 +84,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		//for (int i = 0; i < BlockMachine.Type.METADATA_LOOKUP.length; i++) {
-		//	for (int j = 0; j < 4; j++) {
-		//		if (creativeTiers[j]) {
-		//			list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), (byte) j));
-		//		}
-		//	}
-		//}
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));
 		list.add(new ItemStack(item, 1, 2));
@@ -213,23 +209,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
-	@Override
-	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
-
-		NBTTagCompound tag = super.getItemStackTag(world, pos);
-		TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
-
-		if (tile != null) {
-			if (tag == null) {
-				tag = new NBTTagCompound();
-			}
-			ReconfigurableHelper.setItemStackTagReconfig(tag, tile);
-			tag.setInteger("Energy", tile.getEnergyStored(null));
-			tile.writeAugmentsToNBT(tag);
-		}
-		return tag;
-	}
-
 	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -322,15 +301,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
 
-		if (defaultAutoTransfer) {
-			defaultAugments[0] = ItemHelper.cloneStack(TEAugments.generalAutoOutput);
-		}
-		if (defaultRedstoneControl) {
-			defaultAugments[1] = ItemHelper.cloneStack(TEAugments.generalRedstoneControl);
-		}
-		if (defaultReconfigSides) {
-			defaultAugments[2] = ItemHelper.cloneStack(TEAugments.generalReconfigSides);
-		}
 		machineFurnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.FURNACE.getMetadata()));
 		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.PULVERIZER.getMetadata()));
 		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.SAWMILL.getMetadata()));
@@ -353,11 +323,146 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@Override
 	public boolean postInit() {
 
+		String machineFrame = "thermalexpansion:machineFrame";
+		String copperPart = "thermalexpansion:machineCopper";
+		String invarPart = "thermalexpansion:machineInvar";
+
+		// @formatter:off
+		if (enable[BlockMachine.Type.FURNACE.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineFurnace,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "dustRedstone",
+					'Y', Blocks.BRICK_BLOCK
+			));
+		}
+		if (enable[BlockMachine.Type.PULVERIZER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machinePulverizer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.PISTON,
+					'Y', Blocks.BRICK_BLOCK
+			));
+		}
+		if (enable[BlockMachine.Type.SAWMILL.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineSawmill,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "gearIron",
+					'Y', "plankWood"
+			));
+		}
+		if (enable[BlockMachine.Type.SMELTER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineSmelter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', invarPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Items.BUCKET,
+					'Y', "ingotInvar"
+			));
+		}
+		if (enable[BlockMachine.Type.INSOLATOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineInsolator,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "gearLumium",
+					'Y', "dirt"
+			));
+		}
+		if (enable[BlockMachine.Type.CHARGER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineCharger,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "gearLumium",		// TODO: CELL
+					'Y', ItemMaterial.powerCoilSilver
+			));
+		}
+		if (enable[BlockMachine.Type.CRUCIBLE.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineCrucible,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', invarPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "gearLumium",		// TODO: CELL
+					'Y', Blocks.NETHER_BRICK
+			));
+		}
+		if (enable[BlockMachine.Type.TRANSPOSER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineTransposer,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.CHEST,
+					'Y', "gearTin"
+			));
+		}
+		if (enable[BlockMachine.Type.CRAFTER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineCrafter,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.PISTON,
+					'Y', "ingotInvar"
+			));
+		}
+		if (enable[BlockMachine.Type.PRECIPITATOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(machinePrecipitator,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.PISTON,
+					'Y', "ingotInvar"
+			));
+		}
+		if (enable[BlockMachine.Type.EXTRUDER.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineExtruder,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', invarPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.PISTON,
+					'Y', "blockGlass"
+			));
+		}
+		// @formatter:on
+
 		return true;
-	}
-
-	public static void refreshItemStacks() {
-
 	}
 
 	/* TYPE */
@@ -439,12 +544,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	}
 
 	public static boolean[] enable = new boolean[BlockMachine.Type.values().length];
-	public static boolean[] creativeTiers = new boolean[4];
-	public static ItemStack[] defaultAugments = new ItemStack[3];
-
-	public static boolean defaultAutoTransfer = true;
-	public static boolean defaultRedstoneControl = true;
-	public static boolean defaultReconfigSides = true;
 
 	/* REFERENCES */
 	public static ItemStack machineFurnace;

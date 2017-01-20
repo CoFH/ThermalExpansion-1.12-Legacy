@@ -205,14 +205,14 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!hasAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -223,7 +223,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {
@@ -252,18 +252,12 @@ public class TileCharger extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(2, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
 	}
 
 	protected void processContainerItem() {

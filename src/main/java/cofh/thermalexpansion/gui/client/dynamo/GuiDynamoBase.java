@@ -20,7 +20,6 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 	protected TileDynamoBase myTile;
 	protected UUID playerName;
 
-	public String myInfo = "";
 	public String myTutorial = StringHelper.tutorialTabAugment();
 
 	protected TabBase redstoneTab;
@@ -33,7 +32,10 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		name = myTile.getName();
 		playerName = SecurityHelper.getID(player);
 
-		if (myTile.augmentRedstoneControl) {
+		if (myTile.enableSecurity() && myTile.isSecured()) {
+			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
+		}
+		if (myTile.hasRedstoneControl) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
 		}
 	}
@@ -73,7 +75,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.updateElementInformation();
 
-		redstoneTab.setVisible(myTile.augmentRedstoneControl);
+		redstoneTab.setVisible(myTile.hasRedstoneControl);
 	}
 
 }

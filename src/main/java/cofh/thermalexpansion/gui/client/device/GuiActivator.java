@@ -3,14 +3,14 @@ package cofh.thermalexpansion.gui.client.device;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.thermalexpansion.block.device.TileActivator;
-import cofh.thermalexpansion.gui.client.GuiAugmentableBase;
+import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.device.ContainerActivator;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiActivator extends GuiAugmentableBase {
+public class GuiActivator extends GuiTEBase {
 
 	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "activator.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);

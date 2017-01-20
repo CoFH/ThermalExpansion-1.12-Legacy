@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -28,8 +29,8 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
 	}
 
-	FluidTankCore tank = new FluidTankCore(MAX_FLUID);
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
 	@Override
 	public int getType() {
@@ -148,7 +149,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		renderFluid = payload.getFluidStack();
 		if (renderFluid == null) {
-			renderFluid = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 		}
 	}
 

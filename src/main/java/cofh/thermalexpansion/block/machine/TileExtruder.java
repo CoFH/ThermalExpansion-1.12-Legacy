@@ -2,7 +2,6 @@ package cofh.thermalexpansion.block.machine;
 
 import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
-import cofh.api.item.IAugmentItem;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.helpers.ItemHelper;
@@ -12,7 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.item.TEAugments;
+import cofh.thermalexpansion.init.TEAugments;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -20,7 +19,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -155,7 +154,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processLava[curSelection]) || coldTank.getFluidAmount() < Math.max(FluidContainerRegistry.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
+		if (hotTank.getFluidAmount() < Math.max(Fluid.BUCKET_VOLUME / 8, processLava[curSelection]) || coldTank.getFluidAmount() < Math.max(Fluid.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -204,7 +203,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
@@ -215,21 +214,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				if (transferItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		hotTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
-		coldTank.setCapacity(TEProps.MAX_FLUID_SMALL * FLUID_CAPACITY[level]);
 	}
 
 	@Override
@@ -409,59 +399,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		curSelection = (byte) i;
 		sendModePacket();
 		curSelection = lastSelection;
-	}
-
-	/* AUGMENT HELPERS */
-	@Override
-	protected boolean installAugment(int slot) {
-
-		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-		boolean installed = false;
-
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
-			return false;
-		}
-		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST) > 0) {
-			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_EXTRUDER_BOOST);
-
-			if (augLevel > level) {
-				return false;
-			}
-			if (hasDuplicateAugment(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel, slot)) {
-				return false;
-			}
-			if (hasAugmentChain(TEAugments.MACHINE_EXTRUDER_BOOST, augLevel)) {
-				processLevel = (byte) Math.max(augLevel, processLevel);
-				for (int i = 0; i < 3; i++) {
-					outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
-				}
-			} else {
-				return false;
-			}
-			installed = true;
-		}
-		return installed || super.installAugment(slot);
-	}
-
-	@Override
-	protected void onInstalled() {
-
-		super.onInstalled();
-
-		for (int i = 0; i < 3; i++) {
-			outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
-		}
-	}
-
-	@Override
-	protected void resetAugments() {
-
-		super.resetAugments();
-
-		processLevel = 0;
-		for (int i = 0; i < 3; i++) {
-			outputItems[i].stackSize = 1;
-		}
 	}
 
 	/* ICustomInventory */

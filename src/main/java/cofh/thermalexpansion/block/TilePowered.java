@@ -4,31 +4,34 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
+import cofh.api.tileentity.IEnergyInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.MathHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 
-public abstract class TilePowered extends TileRSControl implements IEnergyReceiver {
+public abstract class TilePowered extends TileReconfigurable implements IEnergyInfo, IEnergyReceiver {
 
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
-
-	protected boolean drainEnergy(int energy) {
-
-		return hasEnergy(energy) && energyStorage.extractEnergy(energy, false) == energy;
-	}
 
 	protected boolean hasEnergy(int energy) {
 
 		return energyStorage.getEnergyStored() >= energy;
 	}
 
+	protected boolean hasChargeSlot() {
+
+		return true;
+	}
+
 	protected void chargeEnergy() {
 
+		if (!hasChargeSlot()) {
+			return;
+		}
 		int chargeSlot = getChargeSlot();
 
-		if (hasChargeSlot() && EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
+		if (EnergyHelper.isEnergyContainerItem(inventory[chargeSlot])) {
 			int energyRequest = Math.min(energyStorage.getMaxReceive(), energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored());
 			energyStorage.receiveEnergy(((IEnergyContainerItem) inventory[chargeSlot].getItem()).extractEnergy(inventory[chargeSlot], energyRequest, false), false);
 			if (inventory[chargeSlot].stackSize <= 0) {
@@ -42,11 +45,6 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		return inventory.length - 1;
 	}
 
-	public boolean hasChargeSlot() {
-
-		return true;
-	}
-
 	public final void setEnergyStored(int quantity) {
 
 		energyStorage.setEnergyStored(quantity);
@@ -56,11 +54,6 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 	public IEnergyStorage getEnergyStorage() {
 
 		return energyStorage;
-	}
-
-	public int getScaledEnergyStored(int scale) {
-
-		return MathHelper.round((long) energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored());
 	}
 
 	/* NBT METHODS */
@@ -92,6 +85,28 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		return payload;
 	}
 
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(isActive);
+		payload.addInt(energyStorage.getMaxEnergyStored());
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		isActive = payload.getBool();
+		energyStorage.setCapacity(payload.getInt());
+		energyStorage.setEnergyStored(payload.getInt());
+	}
+
 	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
@@ -103,6 +118,31 @@ public abstract class TilePowered extends TileRSControl implements IEnergyReceiv
 		if (!isServer) {
 			energyStorage.setEnergyStored(energy);
 		}
+	}
+
+	/* IEnergyInfo */
+	@Override
+	public int getInfoEnergyPerTick() {
+
+		return 0;
+	}
+
+	@Override
+	public int getInfoMaxEnergyPerTick() {
+
+		return 0;
+	}
+
+	@Override
+	public int getInfoEnergyStored() {
+
+		return energyStorage.getEnergyStored();
+	}
+
+	@Override
+	public int getInfoMaxEnergyStored() {
+
+		return energyStorage.getMaxEnergyStored();
 	}
 
 	/* IEnergyReceiver */

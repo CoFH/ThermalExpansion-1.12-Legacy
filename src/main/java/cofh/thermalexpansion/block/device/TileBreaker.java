@@ -182,6 +182,18 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		return nbt;
 	}
 
+	/* IInventoryConnection */
+	@Override
+	public ConnectionType canConnectInventory(EnumFacing from) {
+
+		if (from != null && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
+			return ConnectionType.FORCE;
+		} else {
+			return ConnectionType.DEFAULT;
+		}
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -195,17 +207,6 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(EmptyFluidHandler.INSTANCE);
 		}
 		return super.getCapability(capability, facing);
-	}
-
-	/* IInventoryConnection */
-	@Override
-	public ConnectionType canConnectInventory(EnumFacing from) {
-
-		if (from != null && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
-			return ConnectionType.FORCE;
-		} else {
-			return ConnectionType.DEFAULT;
-		}
 	}
 
 }

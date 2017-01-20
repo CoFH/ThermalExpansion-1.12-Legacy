@@ -68,9 +68,9 @@ public class TileTransposer extends TileMachineBase {
 	int outputTracker;
 	int outputTrackerFluid;
 
+	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	FluidStack outputBuffer;
 	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 	IFluidContainerItem containerItem = null;
 
 	public boolean reverseFlag;
@@ -292,14 +292,14 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!augmentAutoInput) {
+		if (!hasAutoInput) {
 			return;
 		}
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 1) {
-				if (extractItem(0, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
 				}
@@ -310,7 +310,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {
@@ -339,7 +339,7 @@ public class TileTransposer extends TileMachineBase {
 			side = i % 6;
 
 			if (sideCache[side] == 2 || sideCache[side] == 4) {
-				if (transferItem(2, AUTO_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
 				}
@@ -349,14 +349,14 @@ public class TileTransposer extends TileMachineBase {
 
 	protected void transferOutputFluid() {
 
-		if (!augmentAutoOutput) {
+		if (!hasAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), RATE));
+		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 
@@ -370,14 +370,6 @@ public class TileTransposer extends TileMachineBase {
 				}
 			}
 		}
-	}
-
-	@Override
-	protected void onLevelChange() {
-
-		super.onLevelChange();
-
-		tank.setCapacity(TEProps.MAX_FLUID_LARGE * FLUID_CAPACITY[level]);
 	}
 
 	protected void processContainerItem() {
@@ -715,6 +707,23 @@ public class TileTransposer extends TileMachineBase {
 		return slot != 0 || (FluidHelper.isFluidContainerItem(stack) || TransposerManager.isItemValid(stack));
 	}
 
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return IconRegistry.getIcon("MachineBottom");
+			} else if (side == 1) {
+				return IconRegistry.getIcon("MachineTop");
+			}
+			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", getType());
+		} else {
+			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
+		}
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -764,22 +773,6 @@ public class TileTransposer extends TileMachineBase {
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return IconRegistry.getIcon("MachineBottom");
-			} else if (side == 1) {
-				return IconRegistry.getIcon("MachineTop");
-			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", getType());
-		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
-		}
 	}
 
 }
