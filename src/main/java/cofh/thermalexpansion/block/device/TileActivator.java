@@ -34,7 +34,7 @@ import java.util.List;
 
 public class TileActivator extends TileDeviceBase implements ITickable {
 
-	static final int TYPE = BlockDevice.Type.ACTIVATOR.getMetadata();
+	private static final int TYPE = BlockDevice.Type.ACTIVATOR.getMetadata();
 
 	static EnergyConfig energyConfig;
 	static int ACTIVATION_ENERGY = 20;

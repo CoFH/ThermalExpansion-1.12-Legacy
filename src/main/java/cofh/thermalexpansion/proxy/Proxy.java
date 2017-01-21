@@ -8,7 +8,6 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class Proxy {
 
-
 	/* INIT */
 	public void preInit(FMLPreInitializationEvent event) {
 

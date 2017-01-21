@@ -10,6 +10,7 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
+import cofh.thermalexpansion.util.crafting.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -71,6 +72,7 @@ public class ThermalExpansion {
 
 		TEProps.preInit();
 		TEBlocks.preInit();
+		// TEFlorbs.preInit();
 
 		proxy.preInit(event);
 	}
@@ -79,6 +81,7 @@ public class ThermalExpansion {
 	public void initialize(FMLInitializationEvent event) {
 
 		TEBlocks.initialize();
+		// TEFlorbs.initialize();
 
 		/* Register Handlers */
 		registerHandlers();
@@ -90,6 +93,9 @@ public class ThermalExpansion {
 	public void postInit(FMLPostInitializationEvent event) {
 
 		TEBlocks.postInit();
+		// TEFlorbs.postInit();
+
+		addDefaultRecipes();
 
 		proxy.postInit(event);
 	}
@@ -129,6 +135,21 @@ public class ThermalExpansion {
 		MinecraftForge.EVENT_BUS.register(proxy);
 
 		PacketTEBase.initialize();
+	}
+
+	private void addDefaultRecipes() {
+
+		FurnaceManager.addDefaultRecipes();
+		PulverizerManager.addDefaultRecipes();
+		SawmillManager.addDefaultRecipes();
+		SmelterManager.addDefaultRecipes();
+		InsolatorManager.addDefaultRecipes();
+		ChargerManager.addDefaultRecipes();
+		CrucibleManager.addDefaultRecipes();
+		TransposerManager.addDefaultRecipes();
+
+		PrecipitatorManager.addDefaultRecipes();
+		ExtruderManager.addDefaultRecipes();
 	}
 
 }

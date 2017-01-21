@@ -3,8 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ISawmillRecipe;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -13,7 +11,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -25,18 +22,9 @@ import java.util.Map.Entry;
 public class SawmillManager {
 
 	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
-	private static boolean allowOverwrite = false;
-	public static final int DEFAULT_ENERGY = 1600;
 
-	private static float logMultiplier = 1.5F;
-
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Sawmill", "AllowRecipeOverwrite", false);
-
-		String category = "RecipeManagers.Sawmill.Log";
-		String comment = "This sets the default rate for Log->Plank conversion. This number is used in all automatically generated recipes.";
-		logMultiplier = MathHelper.clamp((float) ThermalExpansion.CONFIG.get(category, "DefaultMultiplier", logMultiplier, comment), 1F, 64F);
-	}
+	static final float LOG_MULTIPLIER = 1.5F;
+	static final int DEFAULT_ENERGY = 1600;
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
@@ -153,9 +141,9 @@ public class SawmillManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (input == null || primaryOutput == null || energy <= 0) {
+		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
 			return false;
 		}
 		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
@@ -163,14 +151,14 @@ public class SawmillManager {
 		return true;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
-		if (input == null || primaryOutput == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeExists(input)) {
-			return false;
-		}
-		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
-		return true;
+		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100);
+	}
+
+	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+
+		return addRecipe(energy, input, primaryOutput, null, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -180,7 +168,7 @@ public class SawmillManager {
 	}
 
 	/* HELPER FUNCTIONS */
-	public static void addAllLogs() {
+	private static void addAllLogs() {
 
 		Container tempContainer = new Container() {
 
@@ -209,7 +197,7 @@ public class SawmillManager {
 
 					if (resultEntry != null) {
 						ItemStack result = resultEntry.copy();
-						result.stackSize *= logMultiplier;
+						result.stackSize *= LOG_MULTIPLIER;
 						addRecipe(800, log, result, ItemMaterial.dustWood);
 					}
 				}
@@ -220,46 +208,11 @@ public class SawmillManager {
 
 				if (resultEntry != null) {
 					ItemStack result = resultEntry.copy();
-					result.stackSize *= logMultiplier;
+					result.stackSize *= LOG_MULTIPLIER;
 					addRecipe(800, log, result, ItemMaterial.dustWood);
 				}
 			}
 		}
-	}
-
-	public static boolean addTERecipe(int energy, ItemStack input, ItemStack primaryOutput) {
-
-		return addTERecipe(energy, input, primaryOutput, null, 0);
-	}
-
-	public static boolean addTERecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
-
-		return addTERecipe(energy, input, primaryOutput, secondaryOutput, 100);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
-
-		return addRecipe(energy, input, primaryOutput, false);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, boolean overwrite) {
-
-		return addRecipe(energy, input, primaryOutput, null, 0, overwrite);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
-
-		return addRecipe(energy, input, primaryOutput, secondaryOutput, false);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, boolean overwrite) {
-
-		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100, overwrite);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-
-		return addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance, false);
 	}
 
 	/* RECIPE CLASS */
@@ -333,12 +286,12 @@ public class SawmillManager {
 
 		static final String RUBBER = "woodRubber";
 
-		public static boolean safeOreType(String oreName) {
+		static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(RUBBER);
 		}
 
-		public static int getOreID(ItemStack stack) {
+		static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -353,24 +306,10 @@ public class SawmillManager {
 			return -1;
 		}
 
-		public static int getOreID(String oreName) {
-
-			if (!safeOreType(oreName)) {
-				return -1;
-			}
-			return ItemHelper.oreProxy.getOreID(oreName);
-		}
-
-		public ComparableItemStackSawmill(ItemStack stack) {
+		ComparableItemStackSawmill(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);
-		}
-
-		public ComparableItemStackSawmill(Item item, int damage, int stackSize) {
-
-			super(item, damage, stackSize);
-			this.oreID = getOreID(this.toItemStack());
 		}
 
 		@Override

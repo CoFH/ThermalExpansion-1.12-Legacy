@@ -9,7 +9,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public abstract class TileDeviceBase extends TilePowered {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Type.values().length];
-	public static boolean enableSecurity = true;
+	private static boolean enableSecurity = true;
 
 	public static void config() {
 

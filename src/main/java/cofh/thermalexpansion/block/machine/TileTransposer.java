@@ -35,7 +35,7 @@ import javax.annotation.Nullable;
 
 public class TileTransposer extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.TRANSPOSER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.TRANSPOSER.getMetadata();
 
 	public static void initialize() {
 
@@ -292,7 +292,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -310,7 +310,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {
@@ -349,7 +349,7 @@ public class TileTransposer extends TileMachineBase {
 
 	protected void transferOutputFluid() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {

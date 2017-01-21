@@ -36,7 +36,7 @@ import javax.annotation.Nullable;
 
 public class TileDynamoSteam extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Type.STEAM.getMetadata();
+	private static final int TYPE = BlockDynamo.Type.STEAM.getMetadata();
 
 	public static void initialize() {
 

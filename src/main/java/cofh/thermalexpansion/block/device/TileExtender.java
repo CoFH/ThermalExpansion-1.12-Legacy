@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileExtender extends TileDeviceBase implements IFluidHandler {
 
-	static final int TYPE = BlockDevice.Type.EXTENDER.getMetadata();
+	private static final int TYPE = BlockDevice.Type.EXTENDER.getMetadata();
 
 	public static void initialize() {
 

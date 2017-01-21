@@ -25,7 +25,7 @@ import java.util.Map;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Type.ENERVATION.getMetadata();
+	private static final int TYPE = BlockDynamo.Type.ENERVATION.getMetadata();
 
 	public static void initialize() {
 

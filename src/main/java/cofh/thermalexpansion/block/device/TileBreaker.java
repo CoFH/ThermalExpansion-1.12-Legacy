@@ -29,7 +29,7 @@ import java.util.LinkedList;
 
 public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
 
-	static final int TYPE = BlockDevice.Type.BREAKER.getMetadata();
+	private static final int TYPE = BlockDevice.Type.BREAKER.getMetadata();
 
 	public static void initialize() {
 
@@ -46,16 +46,11 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:breaker");
 	}
 
-	CoFHFakePlayer myFakePlayer;
-	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	private CoFHFakePlayer myFakePlayer;
+	private LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
-	public boolean augmentFluid;
-
-	@Override
-	public int getType() {
-
-		return TYPE;
-	}
+	/* AUGMENTS */
+	protected boolean augmentFluid;
 
 	@Override
 	public void cofh_validate() {
@@ -64,6 +59,12 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 		}
 		super.cofh_validate();
+	}
+
+	@Override
+	public int getType() {
+
+		return TYPE;
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		return stuffedItems.size() == 0;
 	}
 
-	public void breakBlock() {
+	private void breakBlock() {
 
 		BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 		IBlockState state = worldObj.getBlockState(offsetPos);
@@ -111,7 +112,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		}
 	}
 
-	public void outputBuffer() {
+	private void outputBuffer() {
 
 		for (EnumFacing face : EnumFacing.VALUES) {
 			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {

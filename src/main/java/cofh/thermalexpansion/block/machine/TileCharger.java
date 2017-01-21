@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileCharger extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
 	static int RATE[];
 
 	public static void initialize() {
@@ -54,8 +54,8 @@ public class TileCharger extends TileMachineBase {
 		RATE[3] = basePower * 4;
 	}
 
-	int inputTracker;
-	int outputTracker;
+	private int inputTracker;
+	private int outputTracker;
 
 	IEnergyContainerItem containerItem = null;
 
@@ -147,13 +147,7 @@ public class TileCharger extends TileMachineBase {
 		}
 		ItemStack output = recipe.getOutput();
 
-		if (inventory[2] == null) {
-			return true;
-		}
-		if (!inventory[2].isItemEqual(output)) {
-			return false;
-		}
-		return inventory[2].stackSize + output.stackSize <= output.getMaxStackSize();
+		return inventory[2] == null || inventory[2].isItemEqual(output) && inventory[2].stackSize + output.stackSize <= output.getMaxStackSize();
 	}
 
 	@Override
@@ -205,7 +199,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -223,7 +217,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (containerItem != null) {

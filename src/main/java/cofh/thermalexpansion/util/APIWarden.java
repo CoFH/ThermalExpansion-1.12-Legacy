@@ -36,9 +36,9 @@ public class APIWarden {
 	public static class FurnaceHandler implements IFurnaceHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack input, ItemStack output) {
 
-			return FurnaceManager.addRecipe(energy, input, output, overwrite);
+			return FurnaceManager.addRecipe(energy, input, output);
 		}
 
 		@Override
@@ -52,9 +52,9 @@ public class APIWarden {
 	public static class PulverizerHandler implements IPulverizerHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-			return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance, overwrite);
+			return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
 		}
 
 		@Override
@@ -68,9 +68,9 @@ public class APIWarden {
 	public static class SawmillHandler implements ISawmillHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-			return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance, overwrite);
+			return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
 		}
 
 		@Override
@@ -84,9 +84,9 @@ public class APIWarden {
 	public static class SmelterHandler implements ISmelterHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-			return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, overwrite);
+			return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
 		}
 
 		@Override
@@ -100,9 +100,9 @@ public class APIWarden {
 	public static class CrucibleHandler implements ICrucibleHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack input, FluidStack output, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack input, FluidStack output) {
 
-			return CrucibleManager.addRecipe(energy, input, output, overwrite);
+			return CrucibleManager.addRecipe(energy, input, output);
 		}
 
 		@Override
@@ -116,15 +116,15 @@ public class APIWarden {
 	public static class TransposerHandler implements ITransposerHandler {
 
 		@Override
-		public boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible, boolean overwrite) {
+		public boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
-			return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible, overwrite);
+			return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible);
 		}
 
 		@Override
-		public boolean addExtractionRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible, boolean overwrite) {
+		public boolean addExtractionRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
-			return TransposerManager.addExtractionRecipe(energy, input, output, fluid, chance, reversible, overwrite);
+			return TransposerManager.addExtractionRecipe(energy, input, output, fluid, chance, reversible);
 		}
 
 		@Override
@@ -144,9 +144,9 @@ public class APIWarden {
 	public static class ChargerHandler implements IChargerHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack input, ItemStack output) {
 
-			return ChargerManager.addRecipe(energy, input, output, overwrite);
+			return ChargerManager.addRecipe(energy, input, output);
 		}
 
 		@Override
@@ -160,9 +160,9 @@ public class APIWarden {
 	public static class InsolatorHandler implements IInsolatorHandler {
 
 		@Override
-		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+		public boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-			return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, overwrite);
+			return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
 		}
 
 		@Override

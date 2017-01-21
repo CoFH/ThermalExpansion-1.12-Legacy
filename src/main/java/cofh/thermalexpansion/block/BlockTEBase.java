@@ -113,7 +113,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			retTag = RedstoneControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
 		}
 		if (tile instanceof IEnergyHandler) {
-			retTag.setInteger("Energy", ((IEnergyHandler)tile).getEnergyStored(null));
+			retTag.setInteger("Energy", ((IEnergyHandler) tile).getEnergyStored(null));
 		}
 		return retTag;
 	}

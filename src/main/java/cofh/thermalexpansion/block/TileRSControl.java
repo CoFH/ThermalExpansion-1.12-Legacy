@@ -32,8 +32,8 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	protected ControlMode rsMode = ControlMode.DISABLED;
 
 	/* LEVEL FEATURES */
-	public boolean hasRedstoneControl = false;
-	public boolean hasAdvRedstoneControl = false;
+	protected boolean hasRedstoneControl = false;
+	protected boolean hasAdvRedstoneControl = false;
 
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
@@ -55,16 +55,16 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 			level = 4;
 		}
 
-		switch(level) {
+		switch (level) {
 			case 0:
 				break;
-			default:	// Creative
-			case 4:		// Ender
-			case 3:		// Signalum
+			default:    // Creative
+			case 4:        // Ender
+			case 3:        // Signalum
 				hasAdvRedstoneControl = true;
-			case 2:		// Reinforced
+			case 2:        // Reinforced
 				hasRedstoneControl = true;
-			case 1:		// Hardened
+			case 1:        // Hardened
 				hasAutoInput = true;
 				hasAutoOutput = true;
 		}
@@ -95,6 +95,16 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public final boolean redstoneControlOrDisable() {
 
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
+	}
+
+	public final boolean hasRedstoneControl() {
+
+		return hasRedstoneControl;
+	}
+
+	public final boolean hasAdvRedstoneControl() {
+
+		return hasAdvRedstoneControl;
 	}
 
 	/* NBT METHODS */

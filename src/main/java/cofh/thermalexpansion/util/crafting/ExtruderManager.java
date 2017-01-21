@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -11,12 +10,6 @@ import java.util.Map;
 public class ExtruderManager { // TODO
 
 	private static Map<List<?>, RecipeExtruder> recipeMap = new THashMap<List<?>, RecipeExtruder>();
-	@SuppressWarnings ("unused")
-	private static boolean allowOverwrite = false;
-
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Extruder", "AllowRecipeOverwrite", false);
-	}
 
 	public static RecipeExtruder[] getRecipeList() {
 

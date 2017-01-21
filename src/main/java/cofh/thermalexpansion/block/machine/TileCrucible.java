@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 
 public class TileCrucible extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
+	private static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
 
 	public static void initialize() {
 
@@ -144,7 +144,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -161,7 +161,7 @@ public class TileCrucible extends TileMachineBase {
 
 	protected void transferOutputFluid() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (tank.getFluidAmount() <= 0) {

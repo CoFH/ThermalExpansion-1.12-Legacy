@@ -3,16 +3,13 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IInsolatorRecipe;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -24,20 +21,12 @@ public class InsolatorManager {
 	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
 	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
 	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<ComparableItemStackInsolator>();
-	private static boolean allowOverwrite = false;
 
-	private static int cropMultiplierSpecial = 3;
-
-	public static final int DEFAULT_ENERGY = 7200;
-	public static final int DEFAULT_ENERGY_SPECIAL = 9600;
-
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Insolator", "AllowRecipeOverwrite", false);
-
-		String category = "RecipeManagers.Insolator.Crop";
-		String comment = "This sets the boosted rate for Crop growth - when Rich Phyto-Gro is used. This number is used in all automatically generated recipes.";
-		cropMultiplierSpecial = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "DefaultMultiplier", cropMultiplierSpecial, comment), 1, 64);
-	}
+	static final int CROP_MULTIPLIER_RICH = 3;
+	static final int CROP_MULTIPLIER_FLUX = 5;
+	static final int DEFAULT_ENERGY = 4800;
+	static final int DEFAULT_ENERGY_RICH = 7200;
+	static final int DEFAULT_ENERGY_FLUX = 9600;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
@@ -92,52 +81,27 @@ public class InsolatorManager {
 
 	public static void addDefaultRecipes() {
 
-		String category = "RecipeManagers.Insolator.Recipes";
-
-		boolean recipeCocoaBean = ThermalExpansion.CONFIG.get(category, "CocoaBean", true);
-		boolean recipeReeds = ThermalExpansion.CONFIG.get(category, "Reeds", true);
-		boolean recipeCactus = ThermalExpansion.CONFIG.get(category, "Cactus", true);
-		boolean recipeVine = ThermalExpansion.CONFIG.get(category, "Vine", true);
-		boolean recipeLilyPad = ThermalExpansion.CONFIG.get(category, "LilyPad", true);
-		boolean recipePumpkin = ThermalExpansion.CONFIG.get(category, "Pumpkin", true);
-		boolean recipeMelon = ThermalExpansion.CONFIG.get(category, "Melon", true);
-
 		addFertilizer(ItemFertilizer.fertilizerBasic);
 		addFertilizer(ItemFertilizer.fertilizerRich);
 		addFertilizer(ItemFertilizer.fertilizerFlux);
 
 		addDefaultRecipe(new ItemStack(Items.WHEAT_SEEDS), new ItemStack(Items.WHEAT), new ItemStack(Items.WHEAT_SEEDS), 150);
 		addDefaultRecipe(new ItemStack(Items.BEETROOT_SEEDS), new ItemStack(Items.BEETROOT), new ItemStack(Items.BEETROOT_SEEDS), 150);
-		addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 2);
+		addDefaultRecipe(new ItemStack(Items.POTATO), new ItemStack(Items.POTATO, 3), new ItemStack(Items.POISONOUS_POTATO), 5);
 		addDefaultRecipe(new ItemStack(Items.CARROT), new ItemStack(Items.CARROT, 3), null, 0);
-
-		if (recipeCocoaBean) {
-			addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), null, 0);
-		}
-		if (recipeReeds) {
-			addDefaultRecipe(new ItemStack(Items.REEDS), new ItemStack(Items.REEDS, 2), null, 0);
-		}
-		if (recipeCactus) {
-			addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), null, 0);
-		}
-		if (recipeVine) {
-			addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), null, 0);
-		}
-		if (recipeLilyPad) {
-			addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), null, 0);
-		}
-		if (recipePumpkin) {
-			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), null, 0);
-		}
-		if (recipeMelon) {
-			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
-		}
+		addDefaultRecipe(new ItemStack(Items.DYE, 1, 3), new ItemStack(Items.DYE, 3, 3), null, 0);
+		addDefaultRecipe(new ItemStack(Items.REEDS), new ItemStack(Items.REEDS, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Blocks.CACTUS), new ItemStack(Blocks.CACTUS, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Blocks.VINE), new ItemStack(Blocks.VINE, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Blocks.WATERLILY), new ItemStack(Blocks.WATERLILY, 2), null, 0);
+		addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), null, 0);
+		addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
 	}
 
 	public static void loadRecipes() {
 
 		String[] oreNameList = OreDictionary.getOreNames();
-		String oreName = "";
+		String oreName;
 
 		for (int i = 0; i < oreNameList.length; i++) {
 			if (oreNameList[i].startsWith("seed")) {
@@ -177,9 +141,9 @@ public class InsolatorManager {
 	}
 
 	/* ADD RECIPES */
-	protected static boolean addTERecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
-		if (primaryInput == null || secondaryInput == null || energy <= 0) {
+		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return false;
 		}
 		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
@@ -189,16 +153,14 @@ public class InsolatorManager {
 		return true;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean overwrite) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
-		if (primaryInput == null || secondaryInput == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeExists(primaryInput, secondaryInput)) {
-			return false;
-		}
-		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
-		validationSet.add(new ComparableItemStackInsolator(primaryInput));
-		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
-		return true;
+		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
+	}
+
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+
+		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
 	}
 
 	/* REMOVE RECIPES */
@@ -213,7 +175,7 @@ public class InsolatorManager {
 		lockSet.add(new ComparableItemStackInsolator(fertilizer));
 	}
 
-	public static void addDefaultOreDictionaryRecipe(String oreType) {
+	private static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		if (oreType.length() <= 0) {
 			return;
@@ -249,44 +211,17 @@ public class InsolatorManager {
 		}
 	}
 
-	public static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	private static void addDefaultRecipe(ItemStack primaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (secondaryOutput != null) {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput, secondaryOutput, secondaryChance);
-
-			if (secondaryChance < 100) {
-				secondaryChance = Math.min(100, secondaryChance * cropMultiplierSpecial);
-			}
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial), secondaryOutput, secondaryChance);
+			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH), secondaryOutput, secondaryChance < 100 ? 100 : secondaryChance);
+			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX), secondaryOutput, secondaryChance < 150 ? 150 : secondaryChance);
 		} else {
 			addRecipe(DEFAULT_ENERGY, primaryInput, ItemFertilizer.fertilizerBasic, primaryOutput);
-			addRecipe(DEFAULT_ENERGY_SPECIAL, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * cropMultiplierSpecial));
+			addRecipe(DEFAULT_ENERGY_RICH, primaryInput, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_RICH));
+			addRecipe(DEFAULT_ENERGY_FLUX, primaryInput, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(primaryOutput, primaryOutput.stackSize * CROP_MULTIPLIER_FLUX));
 		}
-	}
-
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
-
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, false);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, boolean overwrite) {
-
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0, overwrite);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
-
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, false);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, boolean overwrite) {
-
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100, overwrite);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
-
-		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, false);
 	}
 
 	/* RECIPE CLASS */
@@ -375,12 +310,12 @@ public class InsolatorManager {
 		static final String SEED = "seed";
 		static final String CROP = "crop";
 
-		public static boolean safeOreType(String oreName) {
+		static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(SEED) || oreName.startsWith(CROP);
 		}
 
-		public static int getOreID(ItemStack stack) {
+		static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -395,24 +330,10 @@ public class InsolatorManager {
 			return -1;
 		}
 
-		public static int getOreID(String oreName) {
-
-			if (!safeOreType(oreName)) {
-				return -1;
-			}
-			return ItemHelper.oreProxy.getOreID(oreName);
-		}
-
-		public ComparableItemStackInsolator(ItemStack stack) {
+		ComparableItemStackInsolator(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);
-		}
-
-		public ComparableItemStackInsolator(Item item, int damage, int stackSize) {
-
-			super(item, damage, stackSize);
-			this.oreID = getOreID(this.toItemStack());
 		}
 
 		@Override

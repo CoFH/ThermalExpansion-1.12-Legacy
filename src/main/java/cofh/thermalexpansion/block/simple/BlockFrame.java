@@ -1,7 +1,5 @@
 package cofh.thermalexpansion.block.simple;
 
-import codechicken.lib.block.IParticleProvider;
-import codechicken.lib.block.IType;
 import codechicken.lib.item.ItemStackRegistry;
 import codechicken.lib.model.blockbakery.IBakeryBlock;
 import codechicken.lib.model.blockbakery.ICustomBlockBakery;
@@ -19,7 +17,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -242,17 +239,17 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 		PulverizerManager.addRecipe(8000, frameCellHardened, ItemHelper.cloneStack(Items.REDSTONE, 8), ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3));
 
 		GameRegistry.addRecipe(ShapedRecipe(frameCellReinforcedEmpty, "IGI", "GXG", "IGI", 'I', "ingotElectrum", 'G', "blockGlassHardened", 'X', "gemDiamond"));
-		TransposerManager.addTEFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
+		TransposerManager.addFillRecipe(16000, frameCellReinforcedEmpty, frameCellReinforcedFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
 		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantEmpty, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedEmpty));
 		GameRegistry.addRecipe(ShapedRecipe(frameCellResonantFull, " I ", "IXI", " I ", 'I', "ingotEnderium", 'X', frameCellReinforcedFull));
-		TransposerManager.addTEFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
+		TransposerManager.addFillRecipe(16000, frameCellResonantEmpty, frameCellResonantFull, new FluidStack(TFFluids.fluidRedstone, 4000), false);
 
 		if (recipe[Types.TESSERACT_EMPTY.ordinal()]) {
 			GameRegistry.addRecipe(ShapedRecipe(frameTesseractEmpty, "IGI", "GXG", "IGI", 'I', "ingotEnderium", 'G', "blockGlassHardened", 'X', "gemDiamond"));
 		}
 		if (recipe[Types.TESSERACT_FULL.ordinal()]) {
-			TransposerManager.addTEFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
+			TransposerManager.addFillRecipe(16000, frameTesseractEmpty, frameTesseractFull, new FluidStack(TFFluids.fluidEnder, 1000), false);
 		}
 		GameRegistry.addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameIlluminator, 2), " Q ", "G G", " S ", 'G', "blockGlassHardened", 'Q', "gemQuartz", 'S', "ingotSignalum"));
 
@@ -294,7 +291,6 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 				throw new RuntimeException("Someone has requested an invalid metadata for a block inside ThermalExpansion.", e);
 			}
 		}
-
 
 		public String getParticleTexture() {
 

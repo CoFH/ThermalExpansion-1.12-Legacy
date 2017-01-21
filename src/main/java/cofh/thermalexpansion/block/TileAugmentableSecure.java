@@ -43,16 +43,16 @@ public abstract class TileAugmentableSecure extends TileTEBase implements IAugme
 
 	/* LEVEL FEATURES */
 	protected byte level = 0;
-	public boolean hasAutoInput = false;
-	public boolean hasAutoOutput = false;
+	protected boolean hasAutoInput = false;
+	protected boolean hasAutoOutput = false;
 
-	public boolean enableAutoInput = false;
-	public boolean enableAutoOutput = false;
+	protected boolean enableAutoInput = false;
+	protected boolean enableAutoOutput = false;
 
 	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5, 5 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24, 24 };
 	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8, 8 };
-	protected static final int FLUID_TRANSFER[] = new int [] { 100, 200, 400, 800, 800 };
+	protected static final int FLUID_TRANSFER[] = new int[] { 100, 200, 400, 800, 800 };
 	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 32, 64, 64 };
 
 	public boolean isSecured() {

@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class TileCrafter extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.CRAFTER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.CRAFTER.getMetadata();
 
 	public static void initialize() {
 
@@ -114,7 +114,7 @@ public class TileCrafter extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (inventory[1] == null) {

@@ -20,8 +20,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 14 };
-
-	public static boolean enableSecurity = true;
+	private static boolean enableSecurity = true;
 
 	public static void config() {
 
@@ -40,7 +39,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	protected EnergyConfig energyConfig;
 	protected TimeTracker tracker = new TimeTracker();
 
-	boolean augmentSecondaryNull;
+	/* AUGMENTS */
+	protected boolean augmentSecondaryNull;
 
 	int processMod = 1;
 	int energyMod = 1;

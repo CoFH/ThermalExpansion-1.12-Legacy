@@ -5,7 +5,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public interface ICrucibleHandler {
 
-	boolean addRecipe(int energy, ItemStack input, FluidStack output, boolean overwrite);
+	boolean addRecipe(int energy, ItemStack input, FluidStack output);
 
 	boolean removeRecipe(ItemStack input);
 

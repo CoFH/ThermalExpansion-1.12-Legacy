@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSmelter extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.SMELTER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.SMELTER.getMetadata();
 
 	public static void initialize() {
 
@@ -45,10 +45,10 @@ public class TileSmelter extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
-	int inputTrackerPrimary;
-	int inputTrackerSecondary;
-	int outputTrackerPrimary;
-	int outputTrackerSecondary;
+	private int inputTrackerPrimary;
+	private int inputTrackerSecondary;
+	private int outputTrackerPrimary;
+	private int outputTrackerSecondary;
 
 	public boolean lockPrimary = false;
 
@@ -219,7 +219,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -246,7 +246,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		int side;

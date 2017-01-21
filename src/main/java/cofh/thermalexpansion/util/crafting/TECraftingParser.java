@@ -36,7 +36,7 @@ public class TECraftingParser {
 
 	public static void initialize() {
 
-		craftingFolder = new File(CoFHProps.configDir, "/cofh/thermalexpansion/crafting/");
+		craftingFolder = new File(CoFHProps.configDir, "/cofh/" + ThermalExpansion.MOD_ID + "/crafting/");
 
 		if (!craftingFolder.exists()) {
 			try {
@@ -121,14 +121,14 @@ public class TECraftingParser {
 				return addSawmillRecipe(name, recipe);
 			} else if (type.equals("smelter") || type.equalsIgnoreCase("smelterAdd")) {
 				return addSmelterRecipe(name, recipe);
+			} else if (type.equals("insolator") || type.equalsIgnoreCase("insolatorAdd")) {
+				return addInsolatorRecipe(name, recipe);
+			} else if (type.equals("charger") || type.equalsIgnoreCase("chargerAdd")) {
+				return addChargerRecipe(name, recipe);
 			} else if (type.equals("crucible") || type.equalsIgnoreCase("crucibleAdd")) {
 				return addCrucibleRecipe(name, recipe);
 			} else if (type.equals("transposer") || type.equalsIgnoreCase("transposerAdd")) {
 				return addTransposerRecipe(name, recipe);
-			} else if (type.equals("charger") || type.equalsIgnoreCase("chargerAdd")) {
-				return addChargerRecipe(name, recipe);
-			} else if (type.equals("insolator") || type.equalsIgnoreCase("insolatorAdd")) {
-				return addInsolatorRecipe(name, recipe);
 			}
 		}
 		/* REMOVAL */
@@ -140,14 +140,14 @@ public class TECraftingParser {
 			return removeSawmillRecipe(name, recipe);
 		} else if (type.equals("smelter") || type.equals("smelterRemove") || type.equalsIgnoreCase("smelterRem")) {
 			return removeSmelterRecipe(name, recipe);
+		} else if (type.equals("insolator") || type.equals("insolatorRemove") || type.equalsIgnoreCase("insolatorRem")) {
+			return removeInsolatorRecipe(name, recipe);
+		} else if (type.equals("charger") || type.equals("chargerRemove") || type.equalsIgnoreCase("chargerRem")) {
+			return removeChargerRecipe(name, recipe);
 		} else if (type.equals("crucible") || type.equals("crucibleRemove") || type.equalsIgnoreCase("crucibleRem")) {
 			return removeCrucibleRecipe(name, recipe);
 		} else if (type.equals("transposer") || type.equals("transposerRemove") || type.equalsIgnoreCase("transposerRem")) {
 			return removeTransposerRecipe(name, recipe);
-		} else if (type.equals("charger") || type.equals("chargerRemove") || type.equalsIgnoreCase("chargerRem")) {
-			return removeChargerRecipe(name, recipe);
-		} else if (type.equals("insolator") || type.equals("insolatorRemove") || type.equalsIgnoreCase("insolatorRem")) {
-			return removeInsolatorRecipe(name, recipe);
 		}
 		return false;
 	}
@@ -169,7 +169,7 @@ public class TECraftingParser {
 		if (energy <= 0) {
 			energy = FurnaceManager.DEFAULT_ENERGY;
 		}
-		return FurnaceManager.addRecipe(energy, input, output, true);
+		return FurnaceManager.addRecipe(energy, input, output);
 	}
 
 	private static boolean addPulverizerRecipe(String name, JsonObject templateObject) {
@@ -225,7 +225,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance, true);
+		return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
 	}
 
 	private static boolean addSawmillRecipe(String name, JsonObject templateObject) {
@@ -281,7 +281,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance, true);
+		return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
 	}
 
 	private static boolean addSmelterRecipe(String name, JsonObject templateObject) {
@@ -359,94 +359,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, true);
-	}
-
-	private static boolean addCrucibleRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input") || !templateObject.has("output")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		FluidStack output = parseFluidStack(templateObject.get("output"));
-		int energy = CrucibleManager.DEFAULT_ENERGY;
-
-		/* ENERGY */
-		if (templateObject.has("energy")) {
-			energy = templateObject.get("energy").getAsInt();
-		}
-		if (energy <= 0) {
-			energy = CrucibleManager.DEFAULT_ENERGY;
-		}
-		return CrucibleManager.addRecipe(energy, input, output, true);
-	}
-
-	private static boolean addTransposerRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input") || !templateObject.has("output") || !templateObject.has("fluid")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		ItemStack output = parseItemStack(templateObject.get("output"));
-		FluidStack fluid = parseFluidStack(templateObject.get("fluid"));
-		int energy = TransposerManager.DEFAULT_ENERGY;
-		int chance = 100;
-		boolean extractRecipe = false;
-		boolean reversible = false;
-
-		/* STYLE */
-		if (templateObject.has("style")) {
-			String style = templateObject.get("style").getAsString();
-
-			if (style.equalsIgnoreCase("extract")) {
-				extractRecipe = true;
-			}
-		}
-		/* REVERSIBLE */
-		if (templateObject.has("reversible")) {
-			reversible = templateObject.get("reversible").getAsBoolean();
-		}
-		/* ENERGY */
-		if (templateObject.has("energy")) {
-			energy = templateObject.get("energy").getAsInt();
-		}
-		if (energy <= 0) {
-			energy = TransposerManager.DEFAULT_ENERGY;
-		}
-		/* CHANCE */
-		if (templateObject.has("chance")) {
-			chance = templateObject.get("chance").getAsInt();
-			extractRecipe = true;
-		} else if (templateObject.has("secondaryChance")) {
-			chance = templateObject.get("secondaryChance").getAsInt();
-			extractRecipe = true;
-		}
-		if (chance <= 0) {
-			chance = 100;
-		}
-		if (extractRecipe) {
-			return TransposerManager.addExtractionRecipe(energy, input, output, fluid, chance, reversible, true);
-		}
-		return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible, true);
-	}
-
-	private static boolean addChargerRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input") || !templateObject.has("output")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		ItemStack output = parseItemStack(templateObject.get("output"));
-		int energy = ChargerManager.DEFAULT_ENERGY;
-
-		/* ENERGY */
-		if (templateObject.has("energy")) {
-			energy = templateObject.get("energy").getAsInt();
-		}
-		if (energy <= 0) {
-			energy = ChargerManager.DEFAULT_ENERGY;
-		}
-		return ChargerManager.addRecipe(energy, input, output, true);
+		return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
 	}
 
 	private static boolean addInsolatorRecipe(String name, JsonObject templateObject) {
@@ -523,7 +436,94 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, true);
+		return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
+	}
+
+	private static boolean addChargerRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input") || !templateObject.has("output")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		ItemStack output = parseItemStack(templateObject.get("output"));
+		int energy = ChargerManager.DEFAULT_ENERGY;
+
+		/* ENERGY */
+		if (templateObject.has("energy")) {
+			energy = templateObject.get("energy").getAsInt();
+		}
+		if (energy <= 0) {
+			energy = ChargerManager.DEFAULT_ENERGY;
+		}
+		return ChargerManager.addRecipe(energy, input, output);
+	}
+
+	private static boolean addCrucibleRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input") || !templateObject.has("output")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		FluidStack output = parseFluidStack(templateObject.get("output"));
+		int energy = CrucibleManager.DEFAULT_ENERGY;
+
+		/* ENERGY */
+		if (templateObject.has("energy")) {
+			energy = templateObject.get("energy").getAsInt();
+		}
+		if (energy <= 0) {
+			energy = CrucibleManager.DEFAULT_ENERGY;
+		}
+		return CrucibleManager.addRecipe(energy, input, output);
+	}
+
+	private static boolean addTransposerRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input") || !templateObject.has("output") || !templateObject.has("fluid")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		ItemStack output = parseItemStack(templateObject.get("output"));
+		FluidStack fluid = parseFluidStack(templateObject.get("fluid"));
+		int energy = TransposerManager.DEFAULT_ENERGY;
+		int chance = 100;
+		boolean extractRecipe = false;
+		boolean reversible = false;
+
+		/* STYLE */
+		if (templateObject.has("style")) {
+			String style = templateObject.get("style").getAsString();
+
+			if (style.equalsIgnoreCase("extract")) {
+				extractRecipe = true;
+			}
+		}
+		/* REVERSIBLE */
+		if (templateObject.has("reversible")) {
+			reversible = templateObject.get("reversible").getAsBoolean();
+		}
+		/* ENERGY */
+		if (templateObject.has("energy")) {
+			energy = templateObject.get("energy").getAsInt();
+		}
+		if (energy <= 0) {
+			energy = TransposerManager.DEFAULT_ENERGY;
+		}
+		/* CHANCE */
+		if (templateObject.has("chance")) {
+			chance = templateObject.get("chance").getAsInt();
+			extractRecipe = true;
+		} else if (templateObject.has("secondaryChance")) {
+			chance = templateObject.get("secondaryChance").getAsInt();
+			extractRecipe = true;
+		}
+		if (chance <= 0) {
+			chance = 100;
+		}
+		if (extractRecipe) {
+			return TransposerManager.addExtractionRecipe(energy, input, output, fluid, chance, reversible);
+		}
+		return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible);
 	}
 
 	/* REMOVE RECIPES */
@@ -586,43 +586,6 @@ public class TECraftingParser {
 		return SmelterManager.removeRecipe(primaryInput, secondaryInput);
 	}
 
-	private static boolean removeCrucibleRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		return CrucibleManager.removeRecipe(input);
-	}
-
-	private static boolean removeTransposerRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		FluidStack fluid = null;
-		boolean extractRecipe = true;
-
-		if (templateObject.has("fluid")) {
-			fluid = parseFluidStack(templateObject.get("fluid"));
-			extractRecipe = false;
-		}
-		if (extractRecipe) {
-			return TransposerManager.removeExtractionRecipe(input);
-		}
-		return TransposerManager.removeFillRecipe(input, fluid);
-	}
-
-	private static boolean removeChargerRecipe(String name, JsonObject templateObject) {
-
-		if (!templateObject.has("input")) {
-			return false;
-		}
-		ItemStack input = parseItemStack(templateObject.get("input"));
-		return ChargerManager.removeRecipe(input);
-	}
-
 	private static boolean removeInsolatorRecipe(String name, JsonObject templateObject) {
 
 		if (!templateObject.has("input") && !templateObject.has("primaryInput")) {
@@ -655,8 +618,45 @@ public class TECraftingParser {
 		return InsolatorManager.removeRecipe(primaryInput, secondaryInput);
 	}
 
+	private static boolean removeChargerRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		return ChargerManager.removeRecipe(input);
+	}
+
+	private static boolean removeCrucibleRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		return CrucibleManager.removeRecipe(input);
+	}
+
+	private static boolean removeTransposerRecipe(String name, JsonObject templateObject) {
+
+		if (!templateObject.has("input")) {
+			return false;
+		}
+		ItemStack input = parseItemStack(templateObject.get("input"));
+		FluidStack fluid = null;
+		boolean extractRecipe = true;
+
+		if (templateObject.has("fluid")) {
+			fluid = parseFluidStack(templateObject.get("fluid"));
+			extractRecipe = false;
+		}
+		if (extractRecipe) {
+			return TransposerManager.removeExtractionRecipe(input);
+		}
+		return TransposerManager.removeFillRecipe(input, fluid);
+	}
+
 	/* HELPERS */
-	public static ItemStack parseItemStack(JsonElement itemElement) {
+	private static ItemStack parseItemStack(JsonElement itemElement) {
 
 		if (itemElement.isJsonNull()) {
 			return null;
@@ -712,7 +712,7 @@ public class TECraftingParser {
 		return stack;
 	}
 
-	public static FluidStack parseFluidStack(JsonElement fluidElement) {
+	private static FluidStack parseFluidStack(JsonElement fluidElement) {
 
 		if (fluidElement.isJsonNull()) {
 			return null;
@@ -739,12 +739,7 @@ public class TECraftingParser {
 
 			if (fluid.has("nbt")) {
 				try {
-					NBTBase nbtbase = JsonToNBT.getTagFromJson(fluid.get("nbt").getAsString());
-
-					if (!(nbtbase instanceof NBTTagCompound)) {
-						ThermalExpansion.LOG.error("Fluid has invalid NBT data.");
-					}
-					stack.tag = (NBTTagCompound) nbtbase;
+					stack.tag = JsonToNBT.getTagFromJson(fluid.get("nbt").getAsString());
 				} catch (NBTException t) {
 					ThermalExpansion.LOG.error("Fluid has invalid NBT data.", t);
 				}

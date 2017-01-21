@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class TileDynamoReactant extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
+	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
 
 	public static void initialize() {
 

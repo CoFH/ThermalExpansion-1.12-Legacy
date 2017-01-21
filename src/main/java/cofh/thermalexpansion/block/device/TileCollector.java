@@ -33,7 +33,7 @@ import java.util.UUID;
 
 public class TileCollector extends TileDeviceBase implements IInventoryConnection, ITickable {
 
-	static final int TYPE = BlockDevice.Type.COLLECTOR.getMetadata();
+	private static final int TYPE = BlockDevice.Type.COLLECTOR.getMetadata();
 
 	public static void initialize() {
 
@@ -50,16 +50,19 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:collector");
 	}
 
-	int areaMajor = 2;
-	int areaMinor = 1;
-	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	private int areaMajor = 2;
+	private int areaMinor = 1;
+
+	private LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
 	static float[] defaultDropChances = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 
-	boolean ignoreFriends = true;
-	boolean ignoreOwner = true;
+	private boolean ignoreTeam = true;
+	private boolean ignoreFriends = true;
+	private boolean ignoreOwner = true;
 
-	public boolean augmentEntityCollection;
+	/* AUGMENTS */
+	protected boolean augmentEntityCollection;
 
 	@Override
 	public int getType() {
@@ -95,7 +98,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		return stuffedItems.size() == 0;
 	}
 
-	public boolean doNotCollectItemsFrom(EntityPlayer player) {
+	private boolean doNotCollectItemsFrom(EntityPlayer player) {
 
 		String name = player.getName();
 
@@ -107,7 +110,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		return ignoreFriends && RegistrySocial.playerHasAccess(name, owner);
 	}
 
-	public void collectItems() {
+	private void collectItems() {
 
 		int coords[] = BlockHelper.getAdjacentCoordinatesForSide(getPos().getX(), getPos().getY(), getPos().getZ(), facing);
 		stuffedItems.addAll(collectItemsInArea(worldObj, coords[0], coords[1], coords[2], facing, areaMajor, areaMinor));
@@ -117,7 +120,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		}
 	}
 
-	public void outputBuffer() {
+	private void outputBuffer() {
 
 		for (EnumFacing face : EnumFacing.VALUES) {
 			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {
@@ -142,7 +145,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		}
 	}
 
-	public List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
+	private List<ItemStack> collectItemsInArea(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
 
 		int areaMajor2 = 1 + areaMajor;
 		List<ItemStack> stacks = new ArrayList<ItemStack>();
@@ -172,7 +175,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		return stacks;
 	}
 
-	public List<ItemStack> collectItemsFromEntities(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
+	private List<ItemStack> collectItemsFromEntities(World worldObj, int x, int y, int z, int side, int areaMajor, int areaMinor) {
 
 		int areaMajor2 = 1 + areaMajor;
 		List<ItemStack> stacks = new ArrayList<ItemStack>();

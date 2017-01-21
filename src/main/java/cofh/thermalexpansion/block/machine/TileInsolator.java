@@ -31,7 +31,7 @@ import javax.annotation.Nullable;
 
 public class TileInsolator extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.INSOLATOR.getMetadata();
+	private static final int TYPE = BlockMachine.Type.INSOLATOR.getMetadata();
 
 	public static void initialize() {
 
@@ -60,14 +60,14 @@ public class TileInsolator extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
-	int inputTrackerPrimary;
-	int inputTrackerSecondary;
-	int outputTrackerPrimary;
-	int outputTrackerSecondary;
+	private int inputTrackerPrimary;
+	private int inputTrackerSecondary;
+	private int outputTrackerPrimary;
+	private int outputTrackerSecondary;
 
 	public boolean lockPrimary = false;
 
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
 
 	public TileInsolator() {
 
@@ -166,13 +166,7 @@ public class TileInsolator extends TileMachineBase {
 				return false;
 			}
 		}
-		if (inventory[2] == null) {
-			return true;
-		}
-		if (!inventory[2].isItemEqual(primaryItem)) {
-			return false;
-		}
-		return inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
+		return inventory[2] == null || inventory[2].isItemEqual(primaryItem) && inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -260,7 +254,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -287,7 +281,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		int side;
@@ -509,4 +503,5 @@ public class TileInsolator extends TileMachineBase {
 		}
 		return super.getCapability(capability, facing);
 	}
+
 }

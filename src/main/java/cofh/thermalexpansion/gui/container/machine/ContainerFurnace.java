@@ -28,7 +28,7 @@ public class ContainerFurnace extends ContainerTEBase implements ISlotValidator 
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		if (myTile.foodBoost && !FurnaceManager.isFoodItem(stack)) {
+		if (myTile.augmentFood && !FurnaceManager.isFoodItem(stack)) {
 			return false;
 		}
 		return FurnaceManager.recipeExists(stack);

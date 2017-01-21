@@ -28,13 +28,11 @@ public class TEFlorbs {
 
 	public static void preInit() {
 
-		configFlorbs.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/florbs.cfg"), true));
+		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
 
 		String category = "General";
-		String comment = null;
-
-		comment = "This allows you to disable recipes for Florbs. It also means that you actively dislike fun things.";
-		enable = configFlorbs.get(category, "Recipe.Enable", true, comment);
+		String comment = "This allows you to disable recipes for Florbs. It also means that you actively dislike fun things.";
+		enable = CONFIG_FLORBS.get(category, "Recipe.Enable", true, comment);
 
 		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
 	}
@@ -49,7 +47,7 @@ public class TEFlorbs {
 
 		parseFlorbs();
 
-		configFlorbs.cleanUp(true, false);
+		CONFIG_FLORBS.cleanUp(false, false);
 	}
 
 	public static void parseFlorbs() {
@@ -67,7 +65,7 @@ public class TEFlorbs {
 				if (!enable) {
 					continue;
 				}
-				if (configFlorbs.get("Whitelist", fluid.getName(), true)) {
+				if (CONFIG_FLORBS.get("Whitelist", fluid.getName(), true)) {
 					if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
 						TransposerManager.addFillRecipe(1600, florb, florbList.get(florbList.size() - 1), new FluidStack(fluid, 1000), false);
 					} else {
@@ -84,13 +82,15 @@ public class TEFlorbs {
 		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", ItemMaterial.crystalSlag, Items.MAGMA_CREAM));
 	}
 
+	public static boolean enable = true;
+	public static ArrayList<ItemStack> florbList = new ArrayList<ItemStack>();
+
+	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);
+
+	/* REFERENCES */
 	public static ItemFlorb itemFlorb;
 
 	public static ItemStack florb;
 	public static ItemStack florbMagmatic;
-	public static ArrayList<ItemStack> florbList = new ArrayList<ItemStack>();
-
-	public static boolean enable = true;
-	public static ConfigHandler configFlorbs = new ConfigHandler(ThermalExpansion.VERSION);
 
 }

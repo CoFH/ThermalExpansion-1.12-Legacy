@@ -25,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class TileDynamoCompression extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
+	private static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
 
 	public static void initialize() {
 

@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 
 public class TileNullifier extends TileDeviceBase {
 
-	static final int TYPE = BlockDevice.Type.NULLIFIER.getMetadata();
+	private static final int TYPE = BlockDevice.Type.NULLIFIER.getMetadata();
 
 	public static void initialize() {
 
@@ -43,8 +43,8 @@ public class TileNullifier extends TileDeviceBase {
 		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion:nullifier");
 	}
 
-	protected static final int[] SLOTS = { 0 };
-	protected static final Fluid renderFluid = FluidRegistry.LAVA;
+	private static final int[] SLOTS = { 0 };
+	private static final Fluid RENDER_FLUID = FluidRegistry.LAVA;
 
 	public TileNullifier() {
 
@@ -68,7 +68,7 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public int getLightValue() {
 
-		return FluidHelper.getFluidLuminosity(renderFluid);
+		return FluidHelper.getFluidLuminosity(RENDER_FLUID);
 	}
 
 	@Override
@@ -104,47 +104,6 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public void writeInventoryToNBT(NBTTagCompound nbt) {
 
-	}
-
-	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
-
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
-	}
-
-	@Override
-	public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
-
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
-				@Override
-				public IFluidTankProperties[] getTankProperties() {
-
-					return new IFluidTankProperties[] { new FluidTankProperties(null, Integer.MAX_VALUE, true, false) };
-				}
-
-				@Override
-				public int fill(FluidStack resource, boolean doFill) {
-
-					return isSideAccessible(facing) ? resource.amount : 0;
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-					return null;
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(int maxDrain, boolean doDrain) {
-
-					return null;
-				}
-			});
-		}
-		return super.getCapability(capability, facing);
 	}
 
 	/* IInventory */
@@ -214,7 +173,7 @@ public class TileNullifier extends TileDeviceBase {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("DeviceFace", getType());
+			return side != facing ? IconRegistry.getIcon("DeviceSide") : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(RENDER_FLUID) : IconRegistry.getIcon("DeviceFace", getType());
 		} else if (side < 6) {
 			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : redstoneControlOrDisable() ? IconRegistry.getIcon("DeviceActive", getType()) : IconRegistry.getIcon("DeviceFace", getType());
 		}
@@ -238,6 +197,49 @@ public class TileNullifier extends TileDeviceBase {
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return false;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+
+		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing facing) {
+
+		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					return new IFluidTankProperties[] { new FluidTankProperties(null, Integer.MAX_VALUE, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return isSideAccessible(facing) ? resource.amount : 0;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, facing);
 	}
 
 }

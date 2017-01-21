@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 public class TileWaterGen extends TileDeviceBase implements ITickable {
 
-	static final int TYPE = BlockDevice.Type.WATERGEN.getMetadata();
+	private static final int TYPE = BlockDevice.Type.WATERGEN.getMetadata();
 
 	public static void initialize() {
 

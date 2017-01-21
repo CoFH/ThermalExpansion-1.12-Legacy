@@ -35,7 +35,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
 		}
-		if (myTile.hasRedstoneControl) {
+		if (myTile.hasRedstoneControl()) {
 			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
 		}
 	}
@@ -75,7 +75,7 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.updateElementInformation();
 
-		redstoneTab.setVisible(myTile.hasRedstoneControl);
+		redstoneTab.setVisible(myTile.hasRedstoneControl());
 	}
 
 }

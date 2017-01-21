@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TilePulverizer extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.PULVERIZER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.PULVERIZER.getMetadata();
 
 	public static void initialize() {
 
@@ -43,9 +43,9 @@ public class TilePulverizer extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
-	int inputTracker;
-	int outputTrackerPrimary;
-	int outputTrackerSecondary;
+	private int inputTracker;
+	private int outputTrackerPrimary;
+	private int outputTrackerSecondary;
 
 	public TilePulverizer() {
 
@@ -157,12 +157,19 @@ public class TilePulverizer extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 
-					if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
-						inventory[3].stackSize = inventory[3].getMaxStackSize();
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
 					}
+				}
+				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
+					inventory[3].stackSize = inventory[3].getMaxStackSize();
 				}
 			}
 		}
@@ -176,7 +183,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -194,7 +201,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		int side;

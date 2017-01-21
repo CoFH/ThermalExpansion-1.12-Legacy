@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
@@ -11,12 +10,6 @@ import java.util.Map;
 public class PrecipitatorManager { // TODO
 
 	private static Map<Fluid, RecipePrecipitator> recipeMap = new THashMap<Fluid, RecipePrecipitator>();
-	@SuppressWarnings ("unused")
-	private static boolean allowOverwrite = false;
-
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Precipitator", "AllowRecipeOverwrite", false);
-	}
 
 	public static RecipePrecipitator getRecipe(Fluid fluid) {
 

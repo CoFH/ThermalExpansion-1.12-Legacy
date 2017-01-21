@@ -10,8 +10,8 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TEAugments;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -33,7 +33,7 @@ import javax.annotation.Nullable;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
-	static final int TYPE = BlockMachine.Type.EXTRUDER.getMetadata();
+	private static final int TYPE = BlockMachine.Type.EXTRUDER.getMetadata();
 
 	public static void initialize() {
 
@@ -203,7 +203,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {

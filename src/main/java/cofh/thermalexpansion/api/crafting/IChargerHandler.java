@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 
 public interface IChargerHandler {
 
-	boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite);
+	boolean addRecipe(int energy, ItemStack input, ItemStack output);
 
 	boolean removeRecipe(ItemStack input);
 

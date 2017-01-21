@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
-import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.IChargerRecipe;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
@@ -17,12 +15,8 @@ import java.util.Map.Entry;
 public class ChargerManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCharger>();
-	private static boolean allowOverwrite = false;
-	public static final int DEFAULT_ENERGY = 4000;
 
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Charger", "AllowRecipeOverwrite", false);
-	}
+	static final int DEFAULT_ENERGY = 3200;
 
 	public static RecipeCharger getRecipe(ItemStack input) {
 
@@ -31,7 +25,7 @@ public class ChargerManager {
 		}
 		ComparableItemStackSafe query = new ComparableItemStackSafe(input);
 
-		RecipeCharger recipe = recipeMap.get(input);
+		RecipeCharger recipe = recipeMap.get(query);
 
 		if (recipe == null) {
 			query.metadata = OreDictionary.WILDCARD_VALUE;
@@ -52,13 +46,13 @@ public class ChargerManager {
 
 	public static void addDefaultRecipes() {
 
-		addTERecipe(3200, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
+		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
 	}
 
 	public static void loadRecipes() {
 
 		if (ItemHelper.oreNameExists("crystalCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartzCharged")) {
-			addRecipe(3200, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("crystalCertusQuartzCharged").get(0));
+			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("crystalCertusQuartzCharged").get(0));
 		}
 	}
 
@@ -76,24 +70,9 @@ public class ChargerManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack input, ItemStack output) {
-
-		if (input == null || output == null || energy <= 0) {
-			return false;
-		}
-		RecipeCharger recipe = new RecipeCharger(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
-		return true;
-	}
-
 	public static boolean addRecipe(int energy, ItemStack input, ItemStack output) {
 
-		return addRecipe(energy, input, output, false);
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack output, boolean overwrite) {
-
-		if (input == null || output == null || energy <= 0 || !(allowOverwrite & overwrite) && recipeMap.get(new ComparableItemStack(input)) != null) {
+		if (input == null || output == null || energy <= 0 || recipeExists(input)) {
 			return false;
 		}
 		RecipeCharger recipe = new RecipeCharger(input, output, energy);
@@ -108,15 +87,15 @@ public class ChargerManager {
 	}
 
 	/* HELPER FUNCTIONS */
-	public static void addOreDictRecipe(String oreName, ItemStack output) {
+	private static void addOreDictRecipe(String oreName, ItemStack output) {
 
 		addOreDictRecipe(DEFAULT_ENERGY, oreName, output);
 	}
 
-	public static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
+	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
 		if (ItemHelper.oreNameExists(oreName)) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionaryArbiter.getOres(oreName).get(0), 1), output, false);
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionaryArbiter.getOres(oreName).get(0), 1), output);
 		}
 	}
 

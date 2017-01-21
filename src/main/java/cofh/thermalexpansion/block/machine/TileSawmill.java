@@ -1,13 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
-import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,7 +14,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TileSawmill extends TileMachineBase {
 
-	static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
+	private static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
 
 	public static void initialize() {
 
@@ -45,9 +43,9 @@ public class TileSawmill extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
-	int inputTracker;
-	int outputTrackerPrimary;
-	int outputTrackerSecondary;
+	private int inputTracker;
+	private int outputTrackerPrimary;
+	private int outputTrackerSecondary;
 
 	public TileSawmill() {
 
@@ -159,10 +157,13 @@ public class TileSawmill extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = secondaryItem;
+
+					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
-				}
-				if (ItemHelper.itemsEqualWithMetadata(secondaryItem, ItemMaterial.dustWood)) {
+
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}
@@ -182,7 +183,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferInput() {
 
-		if (!hasAutoInput) {
+		if (!enableAutoInput) {
 			return;
 		}
 		int side;
@@ -200,7 +201,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		int side;

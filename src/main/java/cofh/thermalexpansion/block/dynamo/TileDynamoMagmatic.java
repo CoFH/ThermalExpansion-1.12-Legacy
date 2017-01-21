@@ -12,7 +12,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
@@ -22,7 +25,7 @@ import javax.annotation.Nullable;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
-	static final int TYPE = BlockDynamo.Type.MAGMATIC.getMetadata();
+	private static final int TYPE = BlockDynamo.Type.MAGMATIC.getMetadata();
 
 	public static void initialize() {
 

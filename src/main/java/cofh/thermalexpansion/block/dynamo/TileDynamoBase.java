@@ -34,10 +34,9 @@ import net.minecraftforge.fml.relauncher.Side;
 public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
-	public static boolean enableSecurity = true;
-
 	protected static final int[] SLOTS = { 0 };
-	public static final int FUEL_MOD = 100;
+	protected static final int FUEL_MOD = 100;
+	private static boolean enableSecurity = true;
 
 	public static void config() {
 
@@ -63,15 +62,16 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 	byte facing = 1;
 	boolean wasActive;
 
-	public boolean augmentThrottle;
-	public boolean augmentCoilDuct;
-
 	boolean cached = false;
 	IEnergyReceiver adjacentReceiver = null;
 
 	protected EnergyStorage energyStorage = new EnergyStorage(0);
 	protected EnergyConfig config;
 	protected TimeTracker tracker = new TimeTracker();
+
+	/* AUGMENTS */
+	protected boolean augmentThrottle;
+	protected boolean augmentCoilDuct;
 
 	int energyMod = 1;
 	int fuelMod = FUEL_MOD;
@@ -483,58 +483,58 @@ public abstract class TileDynamoBase extends TileRSControl implements ITickable,
 
 	protected boolean installAugment(int slot) {
 
-//		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-//		boolean installed = false;
-//
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY) > 0) {
-//			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
-//				return false;
-//			}
-//			int augLevel = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
-//			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, augLevel, slot)) {
-//				return false;
-//			}
-//			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, augLevel)) {
-//				fuelMod += TEAugments.DYNAMO_EFFICIENCY_MOD[augLevel];
-//				installed = true;
-//			} else {
-//				return false;
-//			}
-//		}
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
-//			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
-//			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, augLevel, slot)) {
-//				return false;
-//			}
-//			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
-//				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
-//				energyStorage.setMaxTransfer(Math.max(energyStorage.getMaxExtract(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
-//				fuelMod -= TEAugments.DYNAMO_OUTPUT_EFFICIENCY_MOD[augLevel];
-//				installed = true;
-//			} else {
-//				return false;
-//			}
-//		}
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_COIL_DUCT) > 0) {
-//			augmentCoilDuct = true;
-//			installed = true;
-//		}
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
-//			if (hasAugment(TEAugments.GENERAL_REDSTONE_CONTROL, 0)) {
-//				augmentThrottle = true;
-//				installed = true;
-//			} else {
-//				return false;
-//			}
-//		}
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
-//
-//		}
-//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
-//			hasRedstoneControl = true;
-//			installed = true;
-//		}
-//		return installed;
+		//		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
+		//		boolean installed = false;
+		//
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY) > 0) {
+		//			if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
+		//				return false;
+		//			}
+		//			int augLevel = Math.min(TEAugments.NUM_DYNAMO_EFFICIENCY, augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_EFFICIENCY));
+		//			if (hasDuplicateAugment(TEAugments.DYNAMO_EFFICIENCY, augLevel, slot)) {
+		//				return false;
+		//			}
+		//			if (hasAugmentChain(TEAugments.DYNAMO_EFFICIENCY, augLevel)) {
+		//				fuelMod += TEAugments.DYNAMO_EFFICIENCY_MOD[augLevel];
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT) > 0) {
+		//			int augLevel = augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_OUTPUT);
+		//			if (hasDuplicateAugment(TEAugments.DYNAMO_OUTPUT, augLevel, slot)) {
+		//				return false;
+		//			}
+		//			if (hasAugmentChain(TEAugments.DYNAMO_OUTPUT, augLevel)) {
+		//				energyMod = Math.max(energyMod, TEAugments.DYNAMO_OUTPUT_MOD[augLevel]);
+		//				energyStorage.setMaxTransfer(Math.max(energyStorage.getMaxExtract(), config.maxPower * 2 * TEAugments.DYNAMO_OUTPUT_MOD[augLevel]));
+		//				fuelMod -= TEAugments.DYNAMO_OUTPUT_EFFICIENCY_MOD[augLevel];
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_COIL_DUCT) > 0) {
+		//			augmentCoilDuct = true;
+		//			installed = true;
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.DYNAMO_THROTTLE) > 0) {
+		//			if (hasAugment(TEAugments.GENERAL_REDSTONE_CONTROL, 0)) {
+		//				augmentThrottle = true;
+		//				installed = true;
+		//			} else {
+		//				return false;
+		//			}
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENDER_ENERGY) > 0) {
+		//
+		//		}
+		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
+		//			hasRedstoneControl = true;
+		//			installed = true;
+		//		}
+		//		return installed;
 		return true;
 	}
 

@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileBuffer extends TileDeviceBase implements ITickable {
 
-	static final int TYPE = BlockDevice.Type.BUFFER.getMetadata();
+	private static final int TYPE = BlockDevice.Type.BUFFER.getMetadata();
 
 	public static void initialize() {
 

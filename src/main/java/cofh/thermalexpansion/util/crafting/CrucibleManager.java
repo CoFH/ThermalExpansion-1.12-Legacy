@@ -4,7 +4,6 @@ import cofh.core.CoFHProps;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.api.crafting.recipes.ICrucibleRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -23,12 +22,8 @@ import java.util.Map.Entry;
 public class CrucibleManager {
 
 	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>();
-	private static boolean allowOverwrite = false;
-	public static final int DEFAULT_ENERGY = 8000;
 
-	static {
-		allowOverwrite = ThermalExpansion.CONFIG.get("RecipeManagers.Crucible", "AllowRecipeOverwrite", false);
-	}
+	static final int DEFAULT_ENERGY = 8000;
 
 	public static RecipeCrucible getRecipe(ItemStack input) {
 
@@ -47,50 +42,29 @@ public class CrucibleManager {
 
 	public static void addDefaultRecipes() {
 
-		String category = "RecipeManagers.Crucible.Recipes";
+		int netherrack_RF = CoFHProps.LAVA_RF * 6 / 10;
+		int blaze_rod_RF = CoFHProps.LAVA_RF / 10;
+		int rock_RF = CoFHProps.LAVA_RF * 8 / 5;
 
-		boolean recipeNetherrack = ThermalExpansion.CONFIG.get(category, "Netherrack", true);
-		boolean recipeBlazeRod = ThermalExpansion.CONFIG.get(category, "BlazeRod", true);
+		addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addRecipe(blaze_rod_RF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
+		addRecipe(rock_RF, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addRecipe(rock_RF, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
+		addRecipe(rock_RF, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 
-		int tweakNetherrackRF = ThermalExpansion.CONFIG.get(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
-		int tweakBlazeRodRF = ThermalExpansion.CONFIG.get(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
-
-		if (recipeNetherrack) {
-			if (tweakNetherrackRF >= CoFHProps.LAVA_RF / 100 && tweakNetherrackRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakNetherrackRF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-			} else {
-				addTERecipe(CoFHProps.LAVA_RF * 6 / 10, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-				ThermalExpansion.LOG.info("'Netherrack.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.CONFIG.set(category, "Netherrack.Energy", CoFHProps.LAVA_RF * 6 / 10);
-			}
-		}
-		if (recipeBlazeRod) {
-			if (tweakBlazeRodRF >= CoFHProps.LAVA_RF / 20 && tweakBlazeRodRF <= CoFHProps.LAVA_RF) {
-				addTERecipe(tweakBlazeRodRF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
-			} else {
-				addTERecipe(CoFHProps.LAVA_RF / 100, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));
-				ThermalExpansion.LOG.info("'BlazeRod.Energy' config value is out of acceptable range. Using default.");
-				ThermalExpansion.CONFIG.set(category, "BlazeRod.Energy", CoFHProps.LAVA_RF / 10);
-			}
-		}
-		int defaultCost = CoFHProps.LAVA_RF * 8 / 5;
-
-		addTERecipe(defaultCost, new ItemStack(Blocks.COBBLESTONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.STONE), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-		addTERecipe(defaultCost, new ItemStack(Blocks.OBSIDIAN), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
-		addTERecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 8));
-		addTERecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 2));
-		addTERecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
-		addTERecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
-		addTERecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
-		addTERecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
-		addTERecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, 1000));
-		addTERecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
-		addTERecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
-		addTERecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
-		addTERecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
-		addTERecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
-		addTERecipe(8000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
+		addRecipe(200, new ItemStack(Items.SNOWBALL), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 8));
+		addRecipe(800, new ItemStack(Blocks.SNOW), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME / 2));
+		addRecipe(1600, new ItemStack(Blocks.ICE), new FluidStack(FluidRegistry.WATER, Fluid.BUCKET_VOLUME));
+		addRecipe(8000, new ItemStack(Items.REDSTONE), new FluidStack(TFFluids.fluidRedstone, 100));
+		addRecipe(8000 * 9, new ItemStack(Blocks.REDSTONE_BLOCK), new FluidStack(TFFluids.fluidRedstone, 100 * 9));
+		addRecipe(20000, new ItemStack(Items.GLOWSTONE_DUST), new FluidStack(TFFluids.fluidGlowstone, 250));
+		addRecipe(20000 * 4, new ItemStack(Blocks.GLOWSTONE), new FluidStack(TFFluids.fluidGlowstone, 1000));
+		addRecipe(20000, new ItemStack(Items.ENDER_PEARL), new FluidStack(TFFluids.fluidEnder, 250));
+		addRecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
+		addRecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
+		addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
+		addRecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
+		addRecipe(8000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 	}
 
 	public static void loadRecipes() {
@@ -111,19 +85,9 @@ public class CrucibleManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addTERecipe(int energy, ItemStack input, FluidStack output) {
+	public static boolean addRecipe(int energy, ItemStack input, FluidStack output) {
 
-		if (input == null || output == null || output.amount <= 0 || energy <= 0) {
-			return false;
-		}
-		RecipeCrucible recipe = new RecipeCrucible(input, output, energy);
-		recipeMap.put(new ComparableItemStackSafe(input), recipe);
-		return true;
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, FluidStack output, boolean overwrite) {
-
-		if (input == null || output == null || output.amount <= 0 || energy <= 0 || !(allowOverwrite & overwrite) && recipeExists(input)) {
+		if (input == null || output == null || output.amount <= 0 || energy <= 0 || recipeExists(input)) {
 			return false;
 		}
 		RecipeCrucible recipe = new RecipeCrucible(input, output, energy);
@@ -138,17 +102,12 @@ public class CrucibleManager {
 	}
 
 	/* HELPER FUNCTIONS */
-	public static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
+	private static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
 
 		ArrayList<ItemStack> registeredOres = OreDictionaryArbiter.getOres(oreName);
 		for (int i = 0; i < registeredOres.size(); i++) {
-			addTERecipe(energy, ItemHelper.cloneStack(registeredOres.get(i), stackSize), output);
+			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(i), stackSize), output);
 		}
-	}
-
-	public static boolean addRecipe(int energy, ItemStack input, FluidStack output) {
-
-		return addRecipe(energy, input, output, false);
 	}
 
 	/* RECIPE CLASS */
@@ -182,7 +141,6 @@ public class CrucibleManager {
 
 			return energy;
 		}
-
 	}
 
 }

@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
 
-	static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
+	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
 
 	public static void initialize() {
 
@@ -129,7 +129,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void transferOutput() {
 
-		if (!hasAutoOutput) {
+		if (!enableAutoOutput) {
 			return;
 		}
 		if (inventory[0] == null) {
