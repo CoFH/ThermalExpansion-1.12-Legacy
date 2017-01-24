@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.item;
 
-import cofh.core.item.ItemCoFHBase;
+import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 
 import java.util.List;
 
-public class ItemFlorb extends ItemCoFHBase {
+public class ItemFlorb extends ItemMulti {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 

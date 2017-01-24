@@ -75,17 +75,21 @@ public class FurnaceManager {
 		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.PORKCHOP), new ItemStack(Items.COOKED_PORKCHOP));
 		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.BEEF), new ItemStack(Items.COOKED_BEEF));
 		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.CHICKEN), new ItemStack(Items.COOKED_CHICKEN));
+		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.MUTTON), new ItemStack(Items.COOKED_MUTTON));
+		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.RABBIT), new ItemStack(Items.COOKED_RABBIT));
 		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.POTATO), new ItemStack(Items.BAKED_POTATO));
+		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.FISH, 1, 0), new ItemStack(Items.COOKED_FISH, 1, 0));
+		addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.FISH, 1, 1), new ItemStack(Items.COOKED_FISH, 1, 1));
 
 		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.PORKCHOP)));
 		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.BEEF)));
 		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.CHICKEN)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.MUTTON)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.RABBIT)));
 		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.POTATO)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 0)));
+		foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 1)));
 
-		for (int i = 0; i < 2; i++) {
-			addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Items.FISH, 1, i), new ItemStack(Items.COOKED_FISH, 1, i));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, i)));
-		}
 		int energy = DEFAULT_ENERGY;
 
 		addOreDictRecipe(energy, "oreIron", ItemMaterial.ingotIron);
@@ -94,8 +98,11 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "oreTin", ItemMaterial.ingotTin);
 		addOreDictRecipe(energy, "oreSilver", ItemMaterial.ingotSilver);
 		addOreDictRecipe(energy, "oreLead", ItemMaterial.ingotLead);
+		// No Aluminum
 		addOreDictRecipe(energy, "oreNickel", ItemMaterial.ingotNickel);
+		// No Iridium
 		addOreDictRecipe(energy, "orePlatinum", ItemMaterial.ingotPlatinum);
+		// No Mithril
 
 		addOreDictRecipe(energy, "oreCoal", new ItemStack(Items.COAL, 1, 0));
 		addOreDictRecipe(energy, "oreDiamond", new ItemStack(Items.DIAMOND, 1, 0));
@@ -112,29 +119,39 @@ public class FurnaceManager {
 		addOreDictRecipe(energy, "dustTin", ItemMaterial.ingotTin);
 		addOreDictRecipe(energy, "dustSilver", ItemMaterial.ingotSilver);
 		addOreDictRecipe(energy, "dustLead", ItemMaterial.ingotLead);
+		addOreDictRecipe(energy, "dustAluminum", ItemMaterial.ingotAluminum);
 		addOreDictRecipe(energy, "dustNickel", ItemMaterial.ingotNickel);
 		addOreDictRecipe(energy, "dustPlatinum", ItemMaterial.ingotPlatinum);
+		// No Iridium
+		// No Mithril
+		// No Steel
 		addOreDictRecipe(energy, "dustElectrum", ItemMaterial.ingotElectrum);
 		addOreDictRecipe(energy, "dustInvar", ItemMaterial.ingotInvar);
 		addOreDictRecipe(energy, "dustBronze", ItemMaterial.ingotBronze);
 		addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
 		addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
+		// No Enderium
 
 		energy = DEFAULT_ENERGY * 6 / 16;
 
-		addOreDictRecipe(energy, "oreberryIron", ItemMaterial.nuggetIron);
-		addOreDictRecipe(energy, "oreberryGold", ItemMaterial.nuggetGold);
+		//		addOreDictRecipe(energy, "oreberryIron", ItemMaterial.nuggetIron);
+		//		addOreDictRecipe(energy, "oreberryGold", ItemMaterial.nuggetGold);
 		addOreDictRecipe(energy, "oreberryCopper", ItemMaterial.nuggetCopper);
 		addOreDictRecipe(energy, "oreberryTin", ItemMaterial.nuggetTin);
 		addOreDictRecipe(energy, "oreberrySilver", ItemMaterial.nuggetSilver);
 		addOreDictRecipe(energy, "oreberryLead", ItemMaterial.nuggetLead);
+		addOreDictRecipe(energy, "oreberryAluminum", ItemMaterial.nuggetAluminum);
 		addOreDictRecipe(energy, "oreberryNickel", ItemMaterial.nuggetNickel);
 		addOreDictRecipe(energy, "oreberryPlatinum", ItemMaterial.nuggetPlatinum);
+		// No Iridium
+		// No Mithril
+		// No Steel
 		addOreDictRecipe(energy, "oreberryElectrum", ItemMaterial.nuggetElectrum);
 		addOreDictRecipe(energy, "oreberryInvar", ItemMaterial.nuggetInvar);
 		addOreDictRecipe(energy, "oreberryBronze", ItemMaterial.nuggetBronze);
 		addOreDictRecipe(energy, "oreberrySignalum", ItemMaterial.nuggetSignalum);
 		addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
+		// No Enderium
 	}
 
 	public static void loadRecipes() {
