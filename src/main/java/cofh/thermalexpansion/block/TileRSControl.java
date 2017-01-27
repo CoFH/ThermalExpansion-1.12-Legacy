@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block;
 import codechicken.lib.vec.Vector3;
 import cofh.api.tileentity.IRedstoneControl;
 import cofh.asm.relauncher.CoFHSide;
-import cofh.asm.relauncher.Implementable;
 import cofh.asm.relauncher.Strippable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.audio.ISoundSource;
@@ -18,9 +17,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
-@Implementable ("buildcraft.api.tiles.IHasWork")
 @Strippable (value = "cofh.lib.audio.ISoundSource", side = CoFHSide.SERVER)
-public abstract class TileRSControl extends TileInventory implements IRedstoneControl, ISoundSource {
+public abstract class TileRSControl extends TileTEBase implements IRedstoneControl, ISoundSource {
 
 	public boolean isActive;
 
@@ -30,10 +28,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	protected boolean wasPowered;
 
 	protected ControlMode rsMode = ControlMode.DISABLED;
-
-	/* LEVEL FEATURES */
-	protected boolean hasRedstoneControl = false;
-	protected boolean hasAdvRedstoneControl = false;
 
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
@@ -47,27 +41,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 
 		RedstoneControlHelper.setItemStackTagRS(tag, this);
 		return true;
-	}
-
-	protected void onLevelChange() {
-
-		if (level > 4) {
-			level = 4;
-		}
-
-		switch (level) {
-			case 0:
-				break;
-			default:    // Creative
-			case 4:        // Ender
-			case 3:        // Signalum
-				hasAdvRedstoneControl = true;
-			case 2:        // Reinforced
-				hasRedstoneControl = true;
-			case 1:        // Hardened
-				hasAutoInput = true;
-				hasAutoOutput = true;
-		}
 	}
 
 	@Override
@@ -95,16 +68,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public final boolean redstoneControlOrDisable() {
 
 		return rsMode.isDisabled() || isPowered == rsMode.getState();
-	}
-
-	public final boolean hasRedstoneControl() {
-
-		return hasRedstoneControl;
-	}
-
-	public final boolean hasAdvRedstoneControl() {
-
-		return hasAdvRedstoneControl;
 	}
 
 	/* NBT METHODS */
@@ -223,12 +186,6 @@ public abstract class TileRSControl extends TileInventory implements IRedstoneCo
 	public boolean shouldPlaySound() {
 
 		return !tileEntityInvalid && isActive;
-	}
-
-	/* IHasWork */
-	public boolean hasWork() {
-
-		return isActive;
 	}
 
 }

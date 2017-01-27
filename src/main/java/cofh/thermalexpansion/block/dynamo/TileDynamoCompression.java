@@ -29,14 +29,13 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion.DynamoCompression");
+		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 	}
 
-	FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	FluidTankCore coolantTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
-	int coolantRF;
+	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore coolantTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+	private int coolantRF;
 
 	@Override
 	public int getType() {
@@ -240,8 +239,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
 
 	public static boolean isValidFuel(FluidStack stack) {
 

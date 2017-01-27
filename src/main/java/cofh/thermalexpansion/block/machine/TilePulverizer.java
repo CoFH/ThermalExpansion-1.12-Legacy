@@ -28,7 +28,7 @@ public class TilePulverizer extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:pulverizer");
+		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:machine_pulverizer");
 
 		config();
 	}

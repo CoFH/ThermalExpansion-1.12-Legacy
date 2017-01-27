@@ -12,8 +12,6 @@ import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IContainerListener;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -45,7 +43,7 @@ public class TileInsolator extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:insolator");
+		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
 
 		config();
 	}
@@ -346,19 +344,6 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	public void receiveGuiNetworkData(int i, int j) {
-
-	}
-
-	@Override
-	public void sendGuiNetworkData(Container container, IContainerListener player) {
-
-		super.sendGuiNetworkData(container, player);
-
-		player.sendProgressBarUpdate(container, 0, tank.getFluidAmount());
-	}
-
-	@Override
 	public FluidTankCore getTank() {
 
 		return tank;
@@ -462,6 +447,7 @@ public class TileInsolator extends TileMachineBase {
 		return slot > 1 || InsolatorManager.isItemValid(stack);
 	}
 
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 

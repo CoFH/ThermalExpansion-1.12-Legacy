@@ -22,76 +22,76 @@ public class TETextures {
 		TextureMap map = event.getMap();
 
 		// @formatter:off \o/ Formatter!
-		CONFIG_NONE =   register(map, CONFIG_ + "none");
-		CONFIG_BLUE =   registerCB(map, CONFIG_ + "blue");
-		CONFIG_RED =    registerCB(map, CONFIG_ + "red");
-		CONFIG_YELLOW = registerCB(map, CONFIG_ + "yellow");
-		CONFIG_ORANGE = registerCB(map, CONFIG_ + "orange");
-		CONFIG_GREEN =  registerCB(map, CONFIG_ + "green");
-		CONFIG_PURPLE = registerCB(map, CONFIG_ + "purple");
-		CONFIG_OPEN =   register(map, CONFIG_ + "open");
+		CONFIG_NONE =						register(map, CONFIG_ + "none");
+		CONFIG_BLUE =						registerCB(map, CONFIG_ + "blue");
+		CONFIG_RED =						registerCB(map, CONFIG_ + "red");
+		CONFIG_YELLOW =						registerCB(map, CONFIG_ + "yellow");
+		CONFIG_ORANGE =						registerCB(map, CONFIG_ + "orange");
+		CONFIG_GREEN =						registerCB(map, CONFIG_ + "green");
+		CONFIG_PURPLE =						registerCB(map, CONFIG_ + "purple");
+		CONFIG_OPEN =						register(map, CONFIG_ + "open");
 
-		MACHINE_BOTTOM = register(map, BLOCKS_ + "machine/machine_bottom");
-		MACHINE_TOP =    register(map, BLOCKS_ + "machine/machine_top");
-		MACHINE_SIDE =  register(map, BLOCKS_ + "machine/machine_side");
+		MACHINE_BOTTOM =					register(map, BLOCKS_ + "machine/machine_bottom");
+		MACHINE_TOP =						register(map, BLOCKS_ + "machine/machine_top");
+		MACHINE_SIDE =						register(map, BLOCKS_ + "machine/machine_side");
 
-		MACHINE_FACE_FURNACE =         register(map, MACHINE_FACE_ + "furnace");
-		MACHINE_FACE_PULVERIZER =      register(map, MACHINE_FACE_ + "pulverizer");
-		MACHINE_FACE_SAWMILL =         register(map, MACHINE_FACE_ + "sawmill");
-		MACHINE_FACE_SMELTER =         register(map, MACHINE_FACE_ + "smelter");
-		MACHINE_FACE_INSOLATOR =       register(map, MACHINE_FACE_ + "insolator");
-		MACHINE_FACE_CHARGER =         register(map, MACHINE_FACE_ + "charger");
-		MACHINE_FACE_CRUCIBLE =        register(map, MACHINE_FACE_ + "crucible");
-		MACHINE_FACE_TRANSPOSER =      register(map, MACHINE_FACE_ + "transposer");
-		MACHINE_FACE_TRANSCAPSULATOR = map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "transcapsulator");
-		MACHINE_FACE_CENTRIFUGE =      map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
-		MACHINE_FACE_CRAFTER =         register(map, MACHINE_FACE_ + "crafter");
-		MACHINE_FACE_BREWER =          map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "brewer");
-		MACHINE_FACE_ENCHANTER =       map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "enchanter");
-		MACHINE_FACE_PRECIPITATOR =    register(map, MACHINE_FACE_ + "precipitator");
-		MACHINE_FACE_EXTRUDER =        register(map, MACHINE_FACE_ + "extruder");
+		MACHINE_FACE_FURNACE =				register(map, MACHINE_FACE_ + "furnace");
+		MACHINE_FACE_PULVERIZER =			register(map, MACHINE_FACE_ + "pulverizer");
+		MACHINE_FACE_SAWMILL =				register(map, MACHINE_FACE_ + "sawmill");
+		MACHINE_FACE_SMELTER =				register(map, MACHINE_FACE_ + "smelter");
+		MACHINE_FACE_INSOLATOR =			register(map, MACHINE_FACE_ + "insolator");
+		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
+		MACHINE_FACE_CRUCIBLE =				register(map, MACHINE_FACE_ + "crucible");
+		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
+		MACHINE_FACE_TRANSCAPSULATOR =		map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "transcapsulator");
+		MACHINE_FACE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
+		MACHINE_FACE_CRAFTER =				register(map, MACHINE_FACE_ + "crafter");
+		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "brewer");
+		MACHINE_FACE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "enchanter");
+		MACHINE_FACE_PRECIPITATOR =			register(map, MACHINE_FACE_ + "precipitator");
+		MACHINE_FACE_EXTRUDER =				register(map, MACHINE_FACE_ + "extruder");
 
-		MACHINE_ACTIVE_FURNACE =         register(map, MACHINE_ACTIVE_ + "furnace");
-		MACHINE_ACTIVE_PULVERIZER =      register(map, MACHINE_ACTIVE_ + "pulverizer");
-		MACHINE_ACTIVE_SAWMILL =         register(map, MACHINE_ACTIVE_ + "sawmill");
-		MACHINE_ACTIVE_SMELTER =         register(map, MACHINE_ACTIVE_ + "smelter");
-		MACHINE_ACTIVE_INSOLATOR =       register(map, MACHINE_ACTIVE_ + "insolator");
-		MACHINE_ACTIVE_CHARGER =         register(map, MACHINE_ACTIVE_ + "charger");
-		MACHINE_ACTIVE_CRUCIBLE =        register(map, MACHINE_ACTIVE_ + "crucible");
-		MACHINE_ACTIVE_TRANSPOSER =      register(map, MACHINE_ACTIVE_ + "transposer");
-		MACHINE_ACTIVE_TRANSCAPSULATOR = map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "transcapsulator");
-		MACHINE_ACTIVE_CENTRIFUGE =      map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
-		MACHINE_ACTIVE_CRAFTER =         register(map, MACHINE_ACTIVE_ + "crafter");
-		MACHINE_ACTIVE_BREWER =          map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
-		MACHINE_ACTIVE_ENCHANTER =       map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "enchanter");
-		MACHINE_ACTIVE_PRECIPITATOR =    register(map, MACHINE_ACTIVE_ + "precipitator");
-		MACHINE_ACTIVE_EXTRUDER =        register(map, MACHINE_ACTIVE_ + "extruder");
+		MACHINE_ACTIVE_FURNACE =			register(map, MACHINE_ACTIVE_ + "furnace");
+		MACHINE_ACTIVE_PULVERIZER =			register(map, MACHINE_ACTIVE_ + "pulverizer");
+		MACHINE_ACTIVE_SAWMILL =			register(map, MACHINE_ACTIVE_ + "sawmill");
+		MACHINE_ACTIVE_SMELTER =			register(map, MACHINE_ACTIVE_ + "smelter");
+		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
+		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
+		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
+		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
+		MACHINE_ACTIVE_TRANSCAPSULATOR =	map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "transcapsulator");
+		MACHINE_ACTIVE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
+		MACHINE_ACTIVE_CRAFTER =			register(map, MACHINE_ACTIVE_ + "crafter");
+		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
+		MACHINE_ACTIVE_ENCHANTER =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "enchanter");
+		MACHINE_ACTIVE_PRECIPITATOR =		register(map, MACHINE_ACTIVE_ + "precipitator");
+		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
 
-		DEVICE_SIDE = register(map, BLOCKS_ + "device/device_side");
+		DEVICE_SIDE =						register(map, BLOCKS_ + "device/device_side");
 
-		DEVICE_FACE_ACTIVATOR = register(map, DEVICE_FACE_ + "activator");
-		DEVICE_FACE_BREAKER =   register(map, DEVICE_FACE_ + "breaker");
-		DEVICE_FACE_COLLECTOR = register(map, DEVICE_FACE_ + "collector");
-		DEVICE_FACE_WATERGEN =  map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "watergen");
-		DEVICE_FACE_NULLIFIER = register(map, DEVICE_FACE_ + "nullifier");
-		DEVICE_FACE_BUFFER =    register(map, DEVICE_FACE_ + "buffer");
-		DEVICE_FACE_EXTENDER =  map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
+		DEVICE_FACE_ACTIVATOR =				register(map, DEVICE_FACE_ + "activator");
+		DEVICE_FACE_BREAKER =				register(map, DEVICE_FACE_ + "breaker");
+		DEVICE_FACE_COLLECTOR =				register(map, DEVICE_FACE_ + "collector");
+		DEVICE_FACE_WATERGEN =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "watergen");
+		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
+		DEVICE_FACE_BUFFER =				register(map, DEVICE_FACE_ + "buffer");
+		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 
-		DEVICE_ACTIVE_ACTIVATOR = register(map, DEVICE_ACTIVE_ + "activator");
-		DEVICE_ACTIVE_BREAKER =   register(map, DEVICE_ACTIVE_ + "breaker");
-		DEVICE_ACTIVE_COLLECTOR = register(map, DEVICE_ACTIVE_ + "collector");
-		DEVICE_ACTIVE_WATERGEN =  map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "watergen");
-		DEVICE_ACTIVE_NULLIFIER = register(map, DEVICE_ACTIVE_ + "nullifier");
-		DEVICE_ACTIVE_BUFFER =    register(map, DEVICE_ACTIVE_ + "buffer");
-		DEVICE_ACTIVE_EXTENDER =  map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
+		DEVICE_ACTIVE_ACTIVATOR =			register(map, DEVICE_ACTIVE_ + "activator");
+		DEVICE_ACTIVE_BREAKER =				register(map, DEVICE_ACTIVE_ + "breaker");
+		DEVICE_ACTIVE_COLLECTOR =			register(map, DEVICE_ACTIVE_ + "collector");
+		DEVICE_ACTIVE_WATERGEN =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "watergen");
+		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
+		DEVICE_ACTIVE_BUFFER =				register(map, DEVICE_ACTIVE_ + "buffer");
+		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
 
-		DYNAMO_COIL_REDSTONE = register(map, DYNAMO_ + "coil_redstone");
+		DYNAMO_COIL_REDSTONE =				register(map, DYNAMO_ + "coil_redstone");
 
-		DYNAMO_STEAM =       register(map, DYNAMO_ + "steam");
-		DYNAMO_MAGMATIC =    register(map, DYNAMO_ + "magmatic");
-		DYNAMO_COMPRESSION = register(map, DYNAMO_ + "compression");
-		DYNAMO_REACTANT =    register(map, DYNAMO_ + "reactant");
-		DYNAMO_ENERVATION =  register(map, DYNAMO_ + "enervation");
+		DYNAMO_STEAM =						register(map, DYNAMO_ + "steam");
+		DYNAMO_MAGMATIC =					register(map, DYNAMO_ + "magmatic");
+		DYNAMO_COMPRESSION =				register(map, DYNAMO_ + "compression");
+		DYNAMO_REACTANT =					register(map, DYNAMO_ + "reactant");
+		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
 
 
 		CONFIG = new TextureAtlasSprite[] {
@@ -175,7 +175,7 @@ public class TETextures {
 		return map.registerSprite(new ResourceLocation(sprite));
 	}
 
-	// Bouncer for registering ColourBlind textures.
+	// Bouncer for registering ColorBlind textures.
 	private static TextureAtlasSprite registerCB(TextureMap map, String sprite) {
 
 		if (CoFHProps.enableColorBlindTextures) {
@@ -186,13 +186,13 @@ public class TETextures {
 
 	private static String CB_POSTFIX = "_cb";
 
-	private static String BLOCKS_ = "thermalexpansion:blocks/";
-	private static String CONFIG_ = BLOCKS_ + "config/config_";
-	private static String MACHINE_FACE_ = BLOCKS_ + "machine/machine_face_";
-	private static String MACHINE_ACTIVE_ = BLOCKS_ + "machine/machine_active_";
-	private static String DEVICE_FACE_ = BLOCKS_ + "device/device_face_";
-	private static String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
-	private static String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
+	private static final String BLOCKS_ = "thermalexpansion:blocks/";
+	private static final String CONFIG_ = BLOCKS_ + "config/config_";
+	private static final String MACHINE_FACE_ = BLOCKS_ + "machine/machine_face_";
+	private static final String MACHINE_ACTIVE_ = BLOCKS_ + "machine/machine_active_";
+	private static final String DEVICE_FACE_ = BLOCKS_ + "device/device_face_";
+	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
+	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
 
 	public static TextureAtlasSprite[] CONFIG;
 	public static TextureAtlasSprite CONFIG_NONE;

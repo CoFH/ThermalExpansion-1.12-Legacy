@@ -14,7 +14,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileReconfigurable extends TileRSControl implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
+public abstract class TileReconfigurable extends TileInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
 
 	protected SideConfig sideConfig;
 

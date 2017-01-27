@@ -198,12 +198,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
-			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
-				IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-				if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
-					return true;
-				}
+		if (tile instanceof TileInsolator || tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
+			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
+				return true;
 			}
 		}
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
@@ -224,7 +222,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
 	}
 
-	@Override //Inv.
+	@Override // Inventory
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
@@ -237,7 +235,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Type.values().length];
 	}
 
-	@Override //World
+	@Override // World
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
@@ -311,7 +309,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.TRANSPOSER.getMetadata()));
 		// transcapsulator
 		// centrifuge
-		//machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.CRAFTER.getMetadata()));
+		// machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.CRAFTER.getMetadata()));
 		// brewer
 		// enchanter
 		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, BlockMachine.Type.PRECIPITATOR.getMetadata()));

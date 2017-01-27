@@ -40,18 +40,18 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.DynamoSteam");
+		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
 	}
 
-	static final int STEAM_MIN = 2000;
+	private static final int STEAM_MIN = 2000;
 
-	FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
-	int currentFuelRF = getEnergyValue(coal);
-	int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
+	private int currentFuelRF = getEnergyValue(coal);
+	private int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
 
-	FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+	private FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
 
 	public TileDynamoSteam() {
 
@@ -240,6 +240,21 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() * energyMod : 0;
 	}
 
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return getEnergyValue(stack) > 0;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -299,32 +314,18 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return super.getCapability(capability, from);
 	}
 
-	/* IInventory */
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-
-		return getEnergyValue(stack) > 0;
-	}
-
-	/* ISidedInventory */
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-
-		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
-	}
-
 	/* FUEL MANAGER */
-	static int coalRF = 48000;
-	static int charcoalRF = 32000;
-	static int woodRF = 4500;
-	static int blockCoalRF = coalRF * 10;
-	static int otherRF = woodRF / 3;
+	private static int coalRF = 48000;
+	private static int charcoalRF = 32000;
+	private static int woodRF = 4500;
+	private static int blockCoalRF = coalRF * 10;
+	private static int otherRF = woodRF / 3;
 
-	static ItemStack coal = new ItemStack(Items.COAL, 1, 0);
-	static ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
-	static ItemStack blockCoal = new ItemStack(Blocks.COAL_BLOCK);
+	private static ItemStack coal = new ItemStack(Items.COAL, 1, 0);
+	private static ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
+	private static ItemStack blockCoal = new ItemStack(Blocks.COAL_BLOCK);
 
-	static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
+	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
 
 	static {
 		String category = "Fuels.Steam";

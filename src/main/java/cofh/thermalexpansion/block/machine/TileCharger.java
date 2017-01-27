@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
-	static int RATE[];
+	private static int RATE[];
 
 	public static void initialize() {
 
@@ -33,7 +33,7 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:charger");
+		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:machine_charger");
 
 		config();
 	}
@@ -57,7 +57,7 @@ public class TileCharger extends TileMachineBase {
 	private int inputTracker;
 	private int outputTracker;
 
-	IEnergyContainerItem containerItem = null;
+	private IEnergyContainerItem containerItem = null;
 
 	public TileCharger() {
 
@@ -71,6 +71,10 @@ public class TileCharger extends TileMachineBase {
 		return TYPE;
 	}
 
+	/* HANDLER */
+	// TODO
+
+	/* STANDARD */
 	@Override
 	public void update() {
 
@@ -217,16 +221,13 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
 		if (containerItem != null) {
 			if (inventory[2] == null) {
 				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
 				inventory[1] = null;
 				containerItem = null;
 			} else {
-				if (inventory[1].getMaxStackSize() > 1 && ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
+				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
 					inventory[2].stackSize++;
 					inventory[1] = null;
 					containerItem = null;
@@ -241,6 +242,9 @@ public class TileCharger extends TileMachineBase {
 				inventory[0] = null;
 			}
 		}
+		if (!enableAutoOutput) {
+			return;
+		}
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
@@ -254,7 +258,7 @@ public class TileCharger extends TileMachineBase {
 		}
 	}
 
-	protected void processContainerItem() {
+	private void processContainerItem() {
 
 		if (isActive) {
 			updateContainerCharge();
@@ -289,7 +293,7 @@ public class TileCharger extends TileMachineBase {
 		}
 	}
 
-	protected void updateContainerItem() {
+	private void updateContainerItem() {
 
 		containerItem = (IEnergyContainerItem) inventory[1].getItem();
 
@@ -299,7 +303,7 @@ public class TileCharger extends TileMachineBase {
 		}
 	}
 
-	protected void updateContainerCharge() {
+	private void updateContainerCharge() {
 
 		int energy = Math.min(energyStorage.getEnergyStored(), calcEnergy());
 		int received = energyStorage.extractEnergy(containerItem.receiveEnergy(inventory[1], energy, false), false);

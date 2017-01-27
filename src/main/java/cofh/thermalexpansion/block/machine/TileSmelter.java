@@ -30,7 +30,7 @@ public class TileSmelter extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:smelter");
+		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
 		config();
 	}

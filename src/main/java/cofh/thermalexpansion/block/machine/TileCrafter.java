@@ -47,7 +47,7 @@ public class TileCrafter extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:crafter");
+		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
 	}
 
 	public static void config() {
@@ -65,14 +65,14 @@ public class TileCrafter extends TileMachineBase {
 	private boolean needsCache = true;
 	private boolean needsCraft = false;
 
-	int outputTracker;
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
-	InventoryCrafting crafting = new InventoryCraftingFalse(3, 3);
-	ItemStack recipeOutput;
+	private int outputTracker;
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private InventoryCrafting crafting = new InventoryCraftingFalse(3, 3);
+	private ItemStack recipeOutput;
 
-	FluidStack[] filledContainer = new FluidStack[9];
-	ItemStack[] recipeSlot = new ItemStack[9];
-	String[] recipeOre = new String[9];
+	private FluidStack[] filledContainer = new FluidStack[9];
+	private ItemStack[] recipeSlot = new ItemStack[9];
+	private String[] recipeOre = new String[9];
 
 	public TileCrafter() {
 
@@ -139,12 +139,12 @@ public class TileCrafter extends TileMachineBase {
 		return 2;
 	}
 
-	public boolean canCreate(ItemStack recipe) {
+	private boolean canCreate(ItemStack recipe) {
 
 		return recipe != null && (inventory[1] == null || recipe.isItemEqual(inventory[1]) && inventory[1].stackSize + recipe.stackSize <= recipe.getMaxStackSize());
 	}
 
-	public boolean createItem() {
+	private boolean createItem() {
 
 		if (energyStorage.getEnergyStored() < PROCESS_ENERGY) {
 			return false;
@@ -220,7 +220,7 @@ public class TileCrafter extends TileMachineBase {
 		return true;
 	}
 
-	public void updateOutput() {
+	private void updateOutput() {
 
 		if (inventory[0] != null) {
 			if (needsCache) {
@@ -356,6 +356,7 @@ public class TileCrafter extends TileMachineBase {
 		}
 	}
 
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -413,4 +414,5 @@ public class TileCrafter extends TileMachineBase {
 		}
 		return super.getCapability(capability, from);
 	}
+
 }

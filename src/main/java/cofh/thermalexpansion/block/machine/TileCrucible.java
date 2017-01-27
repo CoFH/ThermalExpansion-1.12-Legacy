@@ -1,8 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
-import codechicken.lib.util.BlockUtils;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.render.IconRegistry;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -12,6 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.crafting.CrucibleManager;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -47,7 +46,7 @@ public class TileCrucible extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:crucible");
+		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
 		config();
 	}
@@ -62,12 +61,11 @@ public class TileCrucible extends TileMachineBase {
 		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
 	}
 
-	int inputTracker;
-	int outputTrackerFluid;
+	private int inputTracker;
+	private int outputTrackerFluid;
 
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
-	FluidStack outputBuffer;
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, 0);
 
 	public TileCrucible() {
 
@@ -159,7 +157,7 @@ public class TileCrucible extends TileMachineBase {
 		}
 	}
 
-	protected void transferOutputFluid() {
+	private void transferOutputFluid() {
 
 		if (!enableAutoOutput) {
 			return;
@@ -168,7 +166,7 @@ public class TileCrucible extends TileMachineBase {
 			return;
 		}
 		int side;
-		outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
+		FluidStack outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 
@@ -289,14 +287,7 @@ public class TileCrucible extends TileMachineBase {
 
 		super.handleFluidPacket(payload);
 		renderFluid = payload.getFluidStack();
-		BlockUtils.fireBlockUpdate(getWorld(), getPos());
-	}
-
-	/* IInventory */
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-
-		return slot != 0 || CrucibleManager.recipeExists(stack);
+		callBlockUpdate();
 	}
 
 	/* ITilePacketHandler */
@@ -312,6 +303,31 @@ public class TileCrucible extends TileMachineBase {
 		}
 	}
 
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return slot != 0 || CrucibleManager.recipeExists(stack);
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.MACHINE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.MACHINE_TOP;
+			}
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[getType()];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
+		}
+		return TETextures.MACHINE_SIDE;
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -361,22 +377,6 @@ public class TileCrucible extends TileMachineBase {
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
-
-		if (pass == 0) {
-			if (side == 0) {
-				return IconRegistry.getIcon("MachineBottom");
-			} else if (side == 1) {
-				return IconRegistry.getIcon("MachineTop");
-			}
-			return side != facing ? IconRegistry.getIcon("MachineSide") : isActive ? RenderHelper.getFluidTexture(renderFluid) : IconRegistry.getIcon("MachineFace", getType());
-		} else {
-			return side != facing ? IconRegistry.getIcon(TEProps.textureSelection, sideConfig.sideTex[sideCache[side]]) : isActive ? IconRegistry.getIcon("MachineActive", getType()) : IconRegistry.getIcon("MachineFace", getType());
-		}
 	}
 
 }

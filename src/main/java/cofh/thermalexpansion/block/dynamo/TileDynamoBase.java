@@ -14,7 +14,7 @@ import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileRSControl;
+import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
@@ -31,7 +31,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileDynamoBase extends TileRSControl implements ITickable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileInventory implements ITickable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
 	protected static final int[] SLOTS = { 0 };

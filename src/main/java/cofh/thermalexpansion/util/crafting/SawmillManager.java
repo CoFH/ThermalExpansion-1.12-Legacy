@@ -116,6 +116,7 @@ public class SawmillManager {
 
 		addAllLogs();
 
+		/* RUBBER WOOD */
 		if (ItemHelper.oreNameExists("woodRubber")) {
 			if (ItemHelper.oreNameExists("itemRawRubber")) {
 				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRawRubber").get(0), 50);

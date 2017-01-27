@@ -35,15 +35,14 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.DynamoReactant");
+		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
 	}
 
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
-	int reactantRF;
-	int currentReactantRF;
-	int reactantMod = FUEL_MOD;
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+	private int reactantRF;
+	private int currentReactantRF;
+	private int reactantMod = FUEL_MOD;
 
 	public TileDynamoReactant() {
 
@@ -273,21 +272,21 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	static int sugarRF = 16000;
-	static int gunpowderRF = 160000;
-	static int blazePowderRF = 640000;
-	static int ghastTearRF = 1600000;
-	static int netherStarRF = 6400000;
+	private static int sugarRF = 16000;
+	private static int gunpowderRF = 160000;
+	private static int blazePowderRF = 640000;
+	private static int ghastTearRF = 1600000;
+	private static int netherStarRF = 6400000;
 
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
 
 	static {
-		addReactant(new ItemStack(Items.SUGAR, 1, 0), 16000);
-		addReactant(new ItemStack(Items.GUNPOWDER, 1, 0), 160000);
-		addReactant(new ItemStack(Items.BLAZE_POWDER, 1, 0), 640000);
-		addReactant(new ItemStack(Items.GHAST_TEAR, 1, 0), 1600000);
-		addReactant(new ItemStack(Items.NETHER_STAR, 1, 0), 6400000);
+		addReactant(new ItemStack(Items.SUGAR, 1, 0), sugarRF);
+		addReactant(new ItemStack(Items.GUNPOWDER, 1, 0), gunpowderRF);
+		addReactant(new ItemStack(Items.BLAZE_POWDER, 1, 0), blazePowderRF);
+		addReactant(new ItemStack(Items.GHAST_TEAR, 1, 0), ghastTearRF);
+		addReactant(new ItemStack(Items.NETHER_STAR, 1, 0), netherStarRF);
 	}
 
 	public static boolean isValidFuel(FluidStack stack) {
@@ -342,10 +341,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	public static int getReactantMod(ItemStack stack) {
 
-		if (stack == null) {
-			return 0;
-		}
-		return FUEL_MOD;
+		return stack == null ? 0 : FUEL_MOD;
 	}
 
 }

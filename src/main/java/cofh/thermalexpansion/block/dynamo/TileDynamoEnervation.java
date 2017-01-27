@@ -29,10 +29,10 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.DynamoEnervation");
+		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.dynamo_enervation");
 	}
 
-	int currentFuelRF = getEnergyValue(redstone);
+	private int currentFuelRF = getEnergyValue(redstone);
 
 	public TileDynamoEnervation() {
 
@@ -171,11 +171,11 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	static int redstoneRF = 64000;
-	static int blockRedstoneRF = redstoneRF * 10;
+	private static int redstoneRF = 64000;
+	private static int blockRedstoneRF = redstoneRF * 10;
 
-	static ItemStack redstone = new ItemStack(Items.REDSTONE);
-	static ItemStack blockRedstone = new ItemStack(Blocks.REDSTONE_BLOCK);
+	private static ItemStack redstone = new ItemStack(Items.REDSTONE);
+	private static ItemStack blockRedstone = new ItemStack(Blocks.REDSTONE_BLOCK);
 
 	static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
 

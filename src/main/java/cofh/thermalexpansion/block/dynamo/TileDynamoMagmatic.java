@@ -29,11 +29,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.DynamoMagmatic");
+		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.dynamo_magmatic");
 	}
 
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 
 	@Override
 	public int getType() {
@@ -156,6 +156,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		}
 	}
 
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
 
@@ -176,12 +177,18 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
+					System.out.println("in here");
+
 					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 						return 0;
 					}
+					System.out.println("fill 2");
+
 					if (isValidFuel(resource)) {
 						return tank.fill(resource, doFill);
 					}
+					System.out.println("fail 2");
+
 					return 0;
 				}
 
@@ -213,7 +220,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
 
 	public static boolean isValidFuel(FluidStack stack) {
 

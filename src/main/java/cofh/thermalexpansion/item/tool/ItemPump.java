@@ -1,27 +1,19 @@
 package cofh.thermalexpansion.item.tool;
 
-import codechicken.lib.raytracer.RayTracer;
-import codechicken.lib.util.BlockUtils;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.MaterialLiquid;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 
 public class ItemPump extends ItemEnergyContainerBase {
 
@@ -70,135 +62,135 @@ public class ItemPump extends ItemEnergyContainerBase {
 
 	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
-		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-			return false;
-		}
-		RayTraceResult traceResult = RayTracer.retrace(player, getMode(stack) == INPUT);
-
-		if (traceResult != null && world.isBlockModifiable(player, traceResult.getBlockPos())) {
-			TileEntity tile = world.getTileEntity(traceResult.getBlockPos());
-			FluidStack resource;
-			boolean success = false;
-
-			if (getMode(stack) == INPUT && player.canPlayerEdit(traceResult.getBlockPos(), traceResult.sideHit, stack)) {
-				if (FluidHelper.isFluidHandler(tile)) {
-					if (ServerHelper.isServerWorld(world)) {
-						IFluidHandler handler = (IFluidHandler) tile;
-						resource = handler.drain(traceResult.sideHit, FluidHelper.BUCKET_VOLUME, false);
-
-						if (resource == null) {
-							resource = handler.drain(null, FluidHelper.BUCKET_VOLUME, false);
-							handler.drain(null, fillFluidContainerItems(resource, player.inventory, true), true);
-						} else {
-							handler.drain(traceResult.sideHit, fillFluidContainerItems(resource, player.inventory, true), true);
-						}
-					}
-					success = true;
-				} else {
-					resource = FluidHelper.getFluidFromWorld(world, traceResult.getBlockPos(), false);
-					if (canFillFluidContainerItems(resource, player.inventory)) {
-						if (ServerHelper.isServerWorld(world)) {
-							fillFluidContainerItems(resource, player.inventory, true);
-							world.setBlockToAir(traceResult.getBlockPos());
-						}
-						success = true;
-					}
-				}
-			} else if (getMode(stack) == OUTPUT) {
-				if (FluidHelper.isFluidHandler(tile)) {
-					IFluidHandler handler = (IFluidHandler) tile;
-					FluidTankInfo[] tankInfo = handler.getTankInfo(traceResult.sideHit);
-
-					if (tankInfo != null) {
-						ItemStack container = null;
-						for (int i = 0; i < tankInfo.length; i++) {
-							resource = tankInfo[i].fluid;
-							container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
-							if (container != null) {
-								break;
-							}
-						}
-						if (container != null) {
-							if (ServerHelper.isServerWorld(world)) {
-								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME);
-
-								if (handler.fill(traceResult.sideHit, fillStack, false) > 0) {
-									containerItem.drain(container, handler.fill(traceResult.sideHit, fillStack, true), true);
-								} else {
-									containerItem.drain(container, handler.fill(null, fillStack, true), true);
-								}
-							}
-							success = true;
-						}
-					} else {
-						tankInfo = handler.getTankInfo(null);
-						if (tankInfo != null) {
-							ItemStack container = null;
-							for (int i = 0; i < tankInfo.length; i++) {
-								resource = tankInfo[i].fluid;
-								container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
-								if (container != null) {
-									break;
-								}
-							}
-							if (container != null) {
-								if (ServerHelper.isServerWorld(world)) {
-									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME), true), true);
-								}
-								success = true;
-							}
-						}
-					}
-				} else {
-					Block block = null;
-					ItemStack container = null;
-					container = findDrainContainerItem(null, FluidHelper.BUCKET_VOLUME, player.inventory);
-
-					if (container != null) {
-						IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
-						Fluid fluid = containerItem.getFluid(container).getFluid();
-						block = fluid.getBlock();
-
-						if (fluid.getName().equals("water")) {
-							block = Blocks.FLOWING_WATER;
-						} else if (fluid.getName().equals("lava")) {
-							block = Blocks.FLOWING_LAVA;
-						}
-						if (block != null) {
-							BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
-							IBlockState worldState = world.getBlockState(offsetPos);
-
-							if (worldState.getBlock().getMetaFromState(worldState) == 0 && worldState.getMaterial() instanceof MaterialLiquid) {
-								// do not replace source blocks
-							} else {
-								if (world.isAirBlock(offsetPos) || worldState.getMaterial().isReplaceable() || worldState.getBlock() == Blocks.SNOW_LAYER) {
-									if (ServerHelper.isServerWorld(world)) {
-										world.setBlockState(offsetPos, block.getDefaultState(), 3);
-										BlockUtils.fireBlockUpdate(world, offsetPos);
-										containerItem.drain(container, FluidHelper.BUCKET_VOLUME, true);
-									}
-									success = true;
-								}
-							}
-						}
-					}
-				}
-			}
-			if (success) {
-				player.swingArm(hand);
-				if (ServerHelper.isServerWorld(world)) {
-					player.openContainer.detectAndSendChanges();
-					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
-
-					if (!player.capabilities.isCreativeMode) {
-						extractEnergy(stack, energyPerUse, false);
-					}
-				}
-				return true;
-			}
-		}
+		//		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
+		//			return false;
+		//		}
+		//		RayTraceResult traceResult = RayTracer.retrace(player, getMode(stack) == INPUT);
+		//
+		//		if (traceResult != null && world.isBlockModifiable(player, traceResult.getBlockPos())) {
+		//			TileEntity tile = world.getTileEntity(traceResult.getBlockPos());
+		//			FluidStack resource;
+		//			boolean success = false;
+		//
+		//			if (getMode(stack) == INPUT && player.canPlayerEdit(traceResult.getBlockPos(), traceResult.sideHit, stack)) {
+		//				if (FluidHelper.isFluidHandler(tile)) {
+		//					if (ServerHelper.isServerWorld(world)) {
+		//						IFluidHandler handler = (IFluidHandler) tile;
+		//						resource = handler.drain(traceResult.sideHit, FluidHelper.BUCKET_VOLUME, false);
+		//
+		//						if (resource == null) {
+		//							resource = handler.drain(null, FluidHelper.BUCKET_VOLUME, false);
+		//							handler.drain(null, fillFluidContainerItems(resource, player.inventory, true), true);
+		//						} else {
+		//							handler.drain(traceResult.sideHit, fillFluidContainerItems(resource, player.inventory, true), true);
+		//						}
+		//					}
+		//					success = true;
+		//				} else {
+		//					resource = FluidHelper.getFluidFromWorld(world, traceResult.getBlockPos(), false);
+		//					if (canFillFluidContainerItems(resource, player.inventory)) {
+		//						if (ServerHelper.isServerWorld(world)) {
+		//							fillFluidContainerItems(resource, player.inventory, true);
+		//							world.setBlockToAir(traceResult.getBlockPos());
+		//						}
+		//						success = true;
+		//					}
+		//				}
+		//			} else if (getMode(stack) == OUTPUT) {
+		//				if (FluidHelper.isFluidHandler(tile)) {
+		//					IFluidHandler handler = (IFluidHandler) tile;
+		//					FluidTankInfo[] tankInfo = handler.getTankInfo(traceResult.sideHit);
+		//
+		//					if (tankInfo != null) {
+		//						ItemStack container = null;
+		//						for (int i = 0; i < tankInfo.length; i++) {
+		//							resource = tankInfo[i].fluid;
+		//							container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
+		//							if (container != null) {
+		//								break;
+		//							}
+		//						}
+		//						if (container != null) {
+		//							if (ServerHelper.isServerWorld(world)) {
+		//								IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+		//								FluidStack fillStack = new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME);
+		//
+		//								if (handler.fill(traceResult.sideHit, fillStack, false) > 0) {
+		//									containerItem.drain(container, handler.fill(traceResult.sideHit, fillStack, true), true);
+		//								} else {
+		//									containerItem.drain(container, handler.fill(null, fillStack, true), true);
+		//								}
+		//							}
+		//							success = true;
+		//						}
+		//					} else {
+		//						tankInfo = handler.getTankInfo(null);
+		//						if (tankInfo != null) {
+		//							ItemStack container = null;
+		//							for (int i = 0; i < tankInfo.length; i++) {
+		//								resource = tankInfo[i].fluid;
+		//								container = findDrainContainerItem(resource, FluidHelper.BUCKET_VOLUME, player.inventory);
+		//								if (container != null) {
+		//									break;
+		//								}
+		//							}
+		//							if (container != null) {
+		//								if (ServerHelper.isServerWorld(world)) {
+		//									IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+		//									containerItem.drain(container, handler.fill(null, new FluidStack(containerItem.getFluid(container), FluidHelper.BUCKET_VOLUME), true), true);
+		//								}
+		//								success = true;
+		//							}
+		//						}
+		//					}
+		//				} else {
+		//					Block block = null;
+		//					ItemStack container = null;
+		//					container = findDrainContainerItem(null, FluidHelper.BUCKET_VOLUME, player.inventory);
+		//
+		//					if (container != null) {
+		//						IFluidContainerItem containerItem = (IFluidContainerItem) container.getItem();
+		//						Fluid fluid = containerItem.getFluid(container).getFluid();
+		//						block = fluid.getBlock();
+		//
+		//						if (fluid.getName().equals("water")) {
+		//							block = Blocks.FLOWING_WATER;
+		//						} else if (fluid.getName().equals("lava")) {
+		//							block = Blocks.FLOWING_LAVA;
+		//						}
+		//						if (block != null) {
+		//							BlockPos offsetPos = traceResult.getBlockPos().offset(traceResult.sideHit);
+		//							IBlockState worldState = world.getBlockState(offsetPos);
+		//
+		//							if (worldState.getBlock().getMetaFromState(worldState) == 0 && worldState.getMaterial() instanceof MaterialLiquid) {
+		//								// do not replace source blocks
+		//							} else {
+		//								if (world.isAirBlock(offsetPos) || worldState.getMaterial().isReplaceable() || worldState.getBlock() == Blocks.SNOW_LAYER) {
+		//									if (ServerHelper.isServerWorld(world)) {
+		//										world.setBlockState(offsetPos, block.getDefaultState(), 3);
+		//										BlockUtils.fireBlockUpdate(world, offsetPos);
+		//										containerItem.drain(container, FluidHelper.BUCKET_VOLUME, true);
+		//									}
+		//									success = true;
+		//								}
+		//							}
+		//						}
+		//					}
+		//				}
+		//			}
+		//			if (success) {
+		//				player.swingArm(hand);
+		//				if (ServerHelper.isServerWorld(world)) {
+		//					player.openContainer.detectAndSendChanges();
+		//					((EntityPlayerMP) player).updateCraftingInventory(player.openContainer, player.openContainer.getInventory());
+		//
+		//					if (!player.capabilities.isCreativeMode) {
+		//						extractEnergy(stack, energyPerUse, false);
+		//					}
+		//				}
+		//				return true;
+		//			}
+		//		}
 		return false;
 	}
 
@@ -208,8 +200,8 @@ public class ItemPump extends ItemEnergyContainerBase {
 
 		if (fluid == null) {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-					net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+				if (FluidHelper.isFluidHandler(inventory.getStackInSlot(i))) {
+					IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
 					FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);
@@ -219,8 +211,8 @@ public class ItemPump extends ItemEnergyContainerBase {
 			}
 		} else {
 			for (int i = 0; i < inventory.getSizeInventory(); i++) {
-				if (FluidHelper.isFluidContainerItem(inventory.getStackInSlot(i))) {
-					net.minecraftforge.fluids.capability.IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
+				if (FluidHelper.isFluidHandler(inventory.getStackInSlot(i))) {
+					IFluidHandler handler = inventory.getStackInSlot(i).getCapability(FluidHelper.FLUID_HANDLER, null);
 					FluidStack containerFluid = handler.drain(amount, false);
 					if (containerFluid != null && FluidHelper.isFluidEqual(fluid, containerFluid) && containerFluid.amount >= amount) {
 						retStack = inventory.getStackInSlot(i);

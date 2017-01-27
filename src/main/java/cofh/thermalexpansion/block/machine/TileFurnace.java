@@ -28,7 +28,7 @@ public class TileFurnace extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:furnace");
+		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:machine_furnace");
 
 		config();
 	}

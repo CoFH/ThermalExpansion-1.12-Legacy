@@ -12,7 +12,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -32,15 +31,6 @@ public class SmelterManager {
 	static final int ORE_MULTIPLIER = 2;
 	static final int ORE_MULTIPLIER_SPECIAL = 3;
 	static final int DEFAULT_ENERGY = 4000;
-
-	static {
-		blastList.add("mithril");
-		blastList.add("steel");
-		blastList.add("enderium");
-
-		blastList.add("ardite");
-		blastList.add("cobalt");
-	}
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
@@ -96,18 +86,22 @@ public class SmelterManager {
 	public static void addDefaultRecipes() {
 
 		/* FLUXES */
-		addFlux(BLOCK_SAND);
-		addFlux(BLOCK_SOUL_SAND);
-		addFlux(ItemMaterial.crystalSlagRich);
-		addFlux(ItemMaterial.crystalCinnabar);
-		addFlux(ItemMaterial.dustPyrotheum);
+		{
+			addFlux(BLOCK_SAND);
+			addFlux(BLOCK_SOUL_SAND);
+			addFlux(ItemMaterial.crystalSlagRich);
+			addFlux(ItemMaterial.crystalCinnabar);
+			addFlux(ItemMaterial.dustPyrotheum);
+		}
+		/* SPECIAL */
+		{
+			int energy = DEFAULT_ENERGY;
 
-		/* VANILLA */
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.COBBLESTONE, 2), BLOCK_SAND, new ItemStack(Blocks.STONEBRICK, 1), ItemMaterial.crystalSlag, 100);
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.REDSTONE_ORE), BLOCK_SAND, new ItemStack(Blocks.REDSTONE_BLOCK), ItemMaterial.crystalSlagRich, 50);
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.NETHERRACK, 4), BLOCK_SOUL_SAND, new ItemStack(Blocks.NETHER_BRICK_STAIRS, 2), ItemMaterial.dustSulfur, 25);
-		addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.QUARTZ_ORE), BLOCK_SOUL_SAND, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
-
+			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE, 2), BLOCK_SAND, new ItemStack(Blocks.STONEBRICK, 1), ItemMaterial.crystalSlag, 100);
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), BLOCK_SAND, new ItemStack(Blocks.REDSTONE_BLOCK), ItemMaterial.crystalSlagRich, 50);
+			addRecipe(energy, new ItemStack(Blocks.NETHERRACK, 4), BLOCK_SOUL_SAND, new ItemStack(Blocks.NETHER_BRICK_STAIRS, 2), ItemMaterial.dustSulfur, 25);
+			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), BLOCK_SOUL_SAND, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
+		}
 		/* GLASS */
 		{
 			ItemStack blockGlass;
@@ -163,20 +157,40 @@ public class SmelterManager {
 			addAlloyRecipe(energy, "ingotEnderium", 1, "dustObsidian", 4, blockGlass);
 		}
 
-		addDefaultOreDictionaryRecipe("oreIron", "dustIron", ItemMaterial.ingotIron, ItemMaterial.ingotNickel);
-		addDefaultOreDictionaryRecipe("oreGold", "dustGold", ItemMaterial.ingotGold, null, 20, 75, 25);
-		addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", ItemMaterial.ingotCopper, ItemMaterial.ingotGold);
-		addDefaultOreDictionaryRecipe("oreTin", "dustTin", ItemMaterial.ingotTin, ItemMaterial.ingotIron);
-		addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", ItemMaterial.ingotSilver, ItemMaterial.ingotLead);
-		addDefaultOreDictionaryRecipe("oreLead", "dustLead", ItemMaterial.ingotLead, ItemMaterial.ingotSilver);
-		addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", ItemMaterial.ingotNickel, ItemMaterial.ingotPlatinum, 15, 75, 25);
-		addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", ItemMaterial.ingotPlatinum, ItemMaterial.ingotIridium);
-		addDefaultOreDictionaryRecipe(null, "dustElectrum", ItemMaterial.ingotElectrum);
-		addDefaultOreDictionaryRecipe(null, "dustInvar", ItemMaterial.ingotInvar);
-		addDefaultOreDictionaryRecipe(null, "dustBronze", ItemMaterial.ingotBronze);
+		/* ORES */
+		{
+			addDefaultOreDictionaryRecipe("oreIron", "dustIron", ItemMaterial.ingotIron, ItemMaterial.ingotNickel);
+			addDefaultOreDictionaryRecipe("oreGold", "dustGold", ItemMaterial.ingotGold, null, 20, 75, 25);
+			addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", ItemMaterial.ingotCopper, ItemMaterial.ingotGold);
+			addDefaultOreDictionaryRecipe("oreTin", "dustTin", ItemMaterial.ingotTin, ItemMaterial.ingotIron);
+			addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", ItemMaterial.ingotSilver, ItemMaterial.ingotLead);
+			addDefaultOreDictionaryRecipe("oreAluminum", "dustAluminum", ItemMaterial.ingotAluminum, ItemMaterial.ingotIron);
+			addDefaultOreDictionaryRecipe("oreLead", "dustLead", ItemMaterial.ingotLead, ItemMaterial.ingotSilver);
+			addDefaultOreDictionaryRecipe("oreNickel", "dustNickel", ItemMaterial.ingotNickel, ItemMaterial.ingotPlatinum, 15, 75, 25);
+			addDefaultOreDictionaryRecipe("orePlatinum", "dustPlatinum", ItemMaterial.ingotPlatinum, ItemMaterial.ingotIridium);
+			addDefaultOreDictionaryRecipe("oreIridium", "dustIridium", ItemMaterial.ingotIridium, ItemMaterial.ingotPlatinum);
+			addDefaultOreDictionaryRecipe("oreMithril", "dustMithril", ItemMaterial.ingotMithril, ItemMaterial.ingotGold);
+		}
+
+		/* DUSTS */
+		{
+			addDefaultOreDictionaryRecipe(null, "dustSteel", ItemMaterial.ingotSteel);
+			addDefaultOreDictionaryRecipe(null, "dustElectrum", ItemMaterial.ingotElectrum);
+			addDefaultOreDictionaryRecipe(null, "dustInvar", ItemMaterial.ingotInvar);
+			addDefaultOreDictionaryRecipe(null, "dustBronze", ItemMaterial.ingotBronze);
+			addDefaultOreDictionaryRecipe(null, "dustSignalum", ItemMaterial.ingotSignalum);
+			addDefaultOreDictionaryRecipe(null, "dustLumium", ItemMaterial.ingotLumium);
+			addDefaultOreDictionaryRecipe(null, "dustEnderium", ItemMaterial.ingotEnderium);
+		}
 
 		/* ALLOYS */
 		{
+			ItemStack stackSteel = ItemHelper.cloneStack(ItemMaterial.ingotSteel, 1);
+			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
+			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
+			addAlloyRecipe(1600, "dustIron", 1, "dustCharoal", 4, stackSteel);
+			addAlloyRecipe(2400, "ingotIron", 1, "dustCharoal", 4, stackSteel);
+
 			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
 			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
 			addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
@@ -189,94 +203,10 @@ public class SmelterManager {
 			addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
 			addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
 		}
-		/* RECYCLING */
-		{
-			ItemStack ingot;
-			int energy = 4800;
-
-			ingot = new ItemStack(Items.IRON_INGOT, 1);
-			// no minecart, rails. Railcraft causes resource duplication there
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT, 1), ItemMaterial.crystalSlag, 90); // make a use for flint: slag!
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 6);
-			addRecycleRecipe(energy, new ItemStack(Items.BUCKET), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.CAULDRON), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_PICKAXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_AXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_SHOVEL), ingot, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HOE), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_HELMET), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_CHESTPLATE), ingot, 8);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 4);
-
-			for (int i = 0; i < 3; ++i) {
-				addRecycleRecipe(3600 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
-			}
-			ingot = new ItemStack(Items.GOLD_INGOT);
-			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
-			addRecycleRecipe(energy, new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_PICKAXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_AXE), ingot, 3);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SHOVEL), ingot, 1);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HOE), ingot, 2);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HELMET), ingot, 5);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_CHESTPLATE), ingot, 8);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 7);
-			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 4);
-
-			//			for (TFEquipment.ToolSetVanilla e : new TFEquipment.ToolSetVanilla[] { TFEquipment.ToolSetVanilla.IRON, TFEquipment.ToolSetVanilla.GOLD }) {
-			//
-			//				ingot = OreDictionaryArbiter.getOres("ingot" + StringHelper.titleCase(e.name())).get(0);
-			//				addRecycleRecipe(energy, e.toolBow, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolFishingRod, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolShears, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolSickle, ingot, 3);
-			//			}
-			//
-			//			for (TFEquipment.ArmorSet e : TFEquipment.ArmorSet.values()) {
-			//
-			//				ingot = ItemStackRegistry.findItemStack("thermalfoundation", "ingot" + StringHelper.titleCase(e.name()), 1); // suck it, oredict
-			//				addRecycleRecipe(energy, e.armorHelmet, ingot, 5);
-			//				addRecycleRecipe(energy, e.armorPlate, ingot, 8);
-			//				addRecycleRecipe(energy, e.armorLegs, ingot, 7);
-			//				addRecycleRecipe(energy, e.armorBoots, ingot, 4);
-			//			}
-			//
-			//			for (TFEquipment.ToolSet e : TFEquipment.ToolSet.values()) {
-			//
-			//				ingot = ItemStackRegistry.findItemStack("thermalfoundation", "ingot" + StringHelper.titleCase(e.name()), 1); // suck it, oredict
-			//				addRecycleRecipe(energy, e.toolSword, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolPickaxe, ingot, 3);
-			//				addRecycleRecipe(energy, e.toolAxe, ingot, 3);
-			//				addRecycleRecipe(energy, e.toolShovel, ingot, 1);
-			//				addRecycleRecipe(energy, e.toolHoe, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolBow, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolFishingRod, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolShears, ingot, 2);
-			//				addRecycleRecipe(energy, e.toolSickle, ingot, 3);
-			//				addRecycleRecipe(energy, e.toolHammer, ingot, 5);
-			//			}
-		}
 	}
 
 	public static void loadRecipes() {
 
-		if (ItemHelper.oreNameExists("ingotSteel")) {
-			ItemStack ingotSteel = ItemHelper.cloneStack(OreDictionary.getOres("ingotSteel").get(0), 1);
-
-			addAlloyRecipe(8000, "dustCoal", 2, "dustSteel", 1, ingotSteel);
-			addAlloyRecipe(8000, "dustCoal", 2, "dustIron", 1, ingotSteel);
-			addAlloyRecipe(8000, "dustCoal", 2, "ingotIron", 1, ingotSteel);
-			addAlloyRecipe(8000, "dustCharcoal", 4, "dustSteel", 1, ingotSteel);
-			addAlloyRecipe(8000, "dustCharcoal", 4, "dustIron", 1, ingotSteel);
-			addAlloyRecipe(8000, "dustCharcoal", 4, "ingotIron", 1, ingotSteel);
-		}
 		String[] oreNameList = OreDictionary.getOreNames();
 		String oreName;
 

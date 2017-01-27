@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.machine;
 
-import codechicken.lib.util.BlockUtils;
 import cofh.api.core.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
@@ -299,7 +298,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
-		BlockUtils.fireBlockUpdate(getWorld(), pos);
+		callBlockUpdate();
 	}
 
 	@Override

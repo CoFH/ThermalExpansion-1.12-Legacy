@@ -28,7 +28,7 @@ public class TileSawmill extends TileMachineBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:sawmill");
+		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");
 
 		config();
 	}

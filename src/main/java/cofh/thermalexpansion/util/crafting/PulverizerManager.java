@@ -7,7 +7,6 @@ import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
-import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
@@ -55,155 +54,129 @@ public class PulverizerManager {
 
 	public static void addDefaultRecipes() {
 
-		/* VANILLA */
-		int energy = DEFAULT_ENERGY;
+		/* SPECIAL */
+		{
+			int energy = DEFAULT_ENERGY;
 
-		addRecipe(energy, new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND), 15);
-		addRecipe(energy, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.SAND), new ItemStack(Blocks.GRAVEL), 15);
-		addRecipe(energy, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), 15);
-		addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
+			addRecipe(energy, new ItemStack(Blocks.STONE), new ItemStack(Blocks.GRAVEL), new ItemStack(Blocks.SAND), 15);
+			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.SAND), new ItemStack(Blocks.GRAVEL), 15);
+			addRecipe(energy, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), 15);
+			addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
 
-		energy = DEFAULT_ENERGY * 2 / 3;
+			addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
+			addRecipe(energy * 5 / 4, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));
 
-		addRecipe(energy, new ItemStack(Items.COAL, 1, 0), ItemMaterial.dustCoal, ItemMaterial.dustSulfur, 15);
-		addRecipe(energy, new ItemStack(Items.COAL, 1, 1), ItemMaterial.dustCharcoal);
-		addRecipe(4000, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));
+			energy = DEFAULT_ENERGY * 2 / 3;
 
-		addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
-		addRecipe(energy, new ItemStack(Blocks.COAL_ORE), new ItemStack(Items.COAL, 3, 0), ItemMaterial.dustCoal, 25);
-		addRecipe(energy, new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2, 0));
-		addRecipe(energy, new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Items.EMERALD, 2, 0));
-		addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
-		addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 12, 4), ItemMaterial.dustSulfur, 20);
-		addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
-		addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
+			addRecipe(energy, new ItemStack(Items.COAL, 1, 0), ItemMaterial.dustCoal, ItemMaterial.dustSulfur, 15);
+			addRecipe(energy, new ItemStack(Items.COAL, 1, 1), ItemMaterial.dustCharcoal);
+
+			addRecipe(energy, new ItemStack(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 4), ItemMaterial.dustSulfur, 50);
+			addRecipe(energy, ItemMaterial.rodBlizz, ItemHelper.cloneStack(ItemMaterial.dustBlizz, 4), new ItemStack(Items.SNOWBALL), 50);
+			addRecipe(energy, ItemMaterial.rodBlitz, ItemHelper.cloneStack(ItemMaterial.dustBlitz, 4), ItemMaterial.dustNiter, 50);
+			addRecipe(energy, ItemMaterial.rodBasalz, ItemHelper.cloneStack(ItemMaterial.dustBasalz, 4), ItemMaterial.dustObsidian, 50);
+		}
 
 		/* PLANTS */
-		energy = DEFAULT_ENERGY / 2;
+		{
+			int energy = DEFAULT_ENERGY / 2;
 
-		addRecipe(energy, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(ItemMaterial.dustWood, 8));
+			addRecipe(energy, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(ItemMaterial.dustWood, 8));
 
-		addRecipe(energy, new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 4, 11));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 4, 1));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 4, 12));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Items.DYE, 4, 13));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Items.DYE, 4, 7));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Items.DYE, 4, 1));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Items.DYE, 4, 14));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Items.DYE, 4, 7));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Items.DYE, 4, 9));
-		addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Items.DYE, 4, 7));
+			addRecipe(energy, new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 4, 11));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 4, 1));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 1), new ItemStack(Items.DYE, 4, 12));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 2), new ItemStack(Items.DYE, 4, 13));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 3), new ItemStack(Items.DYE, 4, 7));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 4), new ItemStack(Items.DYE, 4, 1));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 5), new ItemStack(Items.DYE, 4, 14));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 6), new ItemStack(Items.DYE, 4, 7));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 7), new ItemStack(Items.DYE, 4, 9));
+			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 8), new ItemStack(Items.DYE, 4, 7));
 
-		addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Items.DYE, 8, 11));
-		addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 8, 13));
-		addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 8, 1));
-		addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 8, 9));
+			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 0), new ItemStack(Items.DYE, 8, 11));
+			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 1), new ItemStack(Items.DYE, 8, 13));
+			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 4), new ItemStack(Items.DYE, 8, 1));
+			addRecipe(energy, new ItemStack(Blocks.DOUBLE_PLANT, 1, 5), new ItemStack(Items.DYE, 8, 9));
 
-		addRecipe(energy, new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR, 2));
-
-		/* DYE */
-		int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
-		ItemStack stringStack = new ItemStack(Items.STRING, 4);
-
-		for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-			dyeChance[i] = 5;
+			addRecipe(energy, new ItemStack(Items.REEDS), new ItemStack(Items.SUGAR, 2));
 		}
-		dyeChance[0] = 0;
-		dyeChance[12] = 0;
-		dyeChance[13] = 0;
-		dyeChance[15] = 0;
 
-		for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
-			if (dyeChance[i] > 0) {
-				addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
-			} else {
-				addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack);
+		/* DYES */
+		{
+			int energy = DEFAULT_ENERGY * 2 / 3;
+
+			int[] dyeChance = new int[ColorHelper.WOOL_COLOR_CONFIG.length];
+			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+				dyeChance[i] = 5;
 			}
+			dyeChance[0] = 0;
+			dyeChance[12] = 0;
+			dyeChance[13] = 0;
+			dyeChance[15] = 0;
+
+			ItemStack stringStack = ItemHelper.cloneStack(Items.STRING, 4);
+
+			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
+				if (dyeChance[i] > 0) {
+					addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack, new ItemStack(Items.DYE, 1, 15 - i), dyeChance[i]);
+				} else {
+					addRecipe(energy, new ItemStack(Blocks.WOOL, 1, i), stringStack);
+				}
+			}
+			addRecipe(energy, new ItemStack(Items.BONE), new ItemStack(Items.DYE, 6, 15));
 		}
-		addRecipe(energy, new ItemStack(Items.BONE), new ItemStack(Items.DYE, 6, 15));
-		addRecipe(energy, new ItemStack(Items.BLAZE_ROD), new ItemStack(Items.BLAZE_POWDER, 4), ItemMaterial.dustSulfur, 50);
-		addRecipe(energy, ItemMaterial.rodBlizz, ItemHelper.cloneStack(ItemMaterial.dustBlizz, 4), new ItemStack(Items.SNOWBALL), 50);
-		addRecipe(energy, ItemMaterial.rodBlitz, ItemHelper.cloneStack(ItemMaterial.dustBlitz, 4), ItemMaterial.dustNiter, 50);
-		addRecipe(energy, ItemMaterial.rodBasalz, ItemHelper.cloneStack(ItemMaterial.dustBasalz, 4), ItemMaterial.dustObsidian, 50);
 
-		energy = DEFAULT_ENERGY * 5 / 4;
+		/* ORES */
+		{
+			int energy = DEFAULT_ENERGY;
 
-		addOreToDustRecipe(energy, "oreIron", ItemMaterial.dustIron, ItemMaterial.dustNickel, 10);
-		addOreToDustRecipe(energy, "oreGold", ItemMaterial.dustGold, ItemMaterial.crystalCinnabar, 5);
-		addOreToDustRecipe(energy, "oreCopper", ItemMaterial.dustCopper, ItemMaterial.dustGold, 10);
-		addOreToDustRecipe(energy, "oreTin", ItemMaterial.dustTin, ItemMaterial.dustIron, 10);
-		addOreToDustRecipe(energy, "oreSilver", ItemMaterial.dustSilver, ItemMaterial.dustLead, 10);
-		addOreToDustRecipe(energy, "oreAluminum", ItemMaterial.dustAluminum, ItemMaterial.dustIron, 10);
-		addOreToDustRecipe(energy, "oreLead", ItemMaterial.dustLead, ItemMaterial.dustSilver, 10);
-		addOreToDustRecipe(energy, "oreNickel", ItemMaterial.dustNickel, ItemMaterial.dustPlatinum, 10);
-		addOreToDustRecipe(energy, "orePlatinum", ItemMaterial.dustPlatinum, ItemMaterial.dustIridium, 5);
-		addOreToDustRecipe(energy, "oreIridium", ItemMaterial.dustIridium, ItemMaterial.dustPlatinum, 10);
+			addRecipe(energy, new ItemStack(Blocks.COAL_ORE), new ItemStack(Items.COAL, 3, 0), ItemMaterial.dustCoal, 25);
+			addRecipe(energy, new ItemStack(Blocks.DIAMOND_ORE), new ItemStack(Items.DIAMOND, 2, 0));
+			addRecipe(energy, new ItemStack(Blocks.EMERALD_ORE), new ItemStack(Items.EMERALD, 2, 0));
+			addRecipe(energy, new ItemStack(Blocks.GLOWSTONE), new ItemStack(Items.GLOWSTONE_DUST, 4));
+			addRecipe(energy, new ItemStack(Blocks.LAPIS_ORE), new ItemStack(Items.DYE, 12, 4), ItemMaterial.dustSulfur, 20);
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_ORE), new ItemStack(Items.REDSTONE, 6), ItemMaterial.crystalCinnabar, 25);
+			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), new ItemStack(Items.QUARTZ, 3), ItemMaterial.dustSulfur, 15);
 
-		energy = DEFAULT_ENERGY * 2 / 3;
+			addOreToDustRecipe(energy, "oreIron", ItemMaterial.dustIron, ItemMaterial.dustNickel, 10);
+			addOreToDustRecipe(energy, "oreGold", ItemMaterial.dustGold, ItemMaterial.crystalCinnabar, 5);
 
-		addIngotToDustRecipe(energy, "ingotIron", ItemMaterial.dustIron);
-		addIngotToDustRecipe(energy, "ingotGold", ItemMaterial.dustGold);
-		addIngotToDustRecipe(energy, "ingotCopper", ItemMaterial.dustCopper);
-		addIngotToDustRecipe(energy, "ingotTin", ItemMaterial.dustTin);
-		addIngotToDustRecipe(energy, "ingotSilver", ItemMaterial.dustSilver);
-		addIngotToDustRecipe(energy, "ingotLead", ItemMaterial.dustLead);
-		addIngotToDustRecipe(energy, "ingotAluminum", ItemMaterial.dustAluminum);
-		addIngotToDustRecipe(energy, "ingotNickel", ItemMaterial.dustNickel);
-		addIngotToDustRecipe(energy, "ingotPlatinum", ItemMaterial.dustPlatinum);
-		addIngotToDustRecipe(energy, "ingotSteel", ItemMaterial.dustSteel);
-		addIngotToDustRecipe(energy, "ingotElectrum", ItemMaterial.dustElectrum);
-		addIngotToDustRecipe(energy, "ingotInvar", ItemMaterial.dustInvar);
-		addIngotToDustRecipe(energy, "ingotBronze", ItemMaterial.dustBronze);
-
-		/* RECYCLING */
-		addRecipe(3200, new ItemStack(Blocks.GLASS), new ItemStack(Blocks.SAND));
-		for (int i = 0; i < 15; i++) {
-			addRecipe(3200, new ItemStack(Blocks.STAINED_GLASS, 1, i), new ItemStack(Blocks.SAND));
+			addOreToDustRecipe(energy, "oreCopper", ItemMaterial.dustCopper, ItemMaterial.dustGold, 10);
+			addOreToDustRecipe(energy, "oreTin", ItemMaterial.dustTin, ItemMaterial.dustIron, 10);
+			addOreToDustRecipe(energy, "oreSilver", ItemMaterial.dustSilver, ItemMaterial.dustLead, 10);
+			addOreToDustRecipe(energy, "oreAluminum", ItemMaterial.dustAluminum, ItemMaterial.dustIron, 10);
+			addOreToDustRecipe(energy, "oreLead", ItemMaterial.dustLead, ItemMaterial.dustSilver, 10);
+			addOreToDustRecipe(energy, "oreNickel", ItemMaterial.dustNickel, ItemMaterial.dustPlatinum, 10);
+			addOreToDustRecipe(energy, "orePlatinum", ItemMaterial.dustPlatinum, ItemMaterial.dustIridium, 5);
+			addOreToDustRecipe(energy, "oreIridium", ItemMaterial.dustIridium, ItemMaterial.dustPlatinum, 10);
+			addOreToDustRecipe(energy, "oreMithril", ItemMaterial.dustMithril, ItemMaterial.dustGold, 10);
 		}
-		addRecipe(3200, new ItemStack(Blocks.REDSTONE_LAMP), new ItemStack(Items.GLOWSTONE_DUST, 4), new ItemStack(Items.REDSTONE, 4));
-		addRecipe(2400, new ItemStack(Blocks.BRICK_BLOCK), new ItemStack(Items.BRICK, 4));
-		addRecipe(2400, new ItemStack(Blocks.NETHER_BRICK), new ItemStack(Items.NETHERBRICK, 4));
-		for (int i = 0; i < 3; i++) {
-			addRecipe(2400, new ItemStack(Blocks.QUARTZ_BLOCK, 1, i), new ItemStack(Items.QUARTZ, 4));
+
+		/* DUSTS */
+		{
+			int energy = DEFAULT_ENERGY * 2 / 3;
+
+			addIngotToDustRecipe(energy, "ingotIron", ItemMaterial.dustIron);
+			addIngotToDustRecipe(energy, "ingotGold", ItemMaterial.dustGold);
+			addIngotToDustRecipe(energy, "ingotCopper", ItemMaterial.dustCopper);
+			addIngotToDustRecipe(energy, "ingotTin", ItemMaterial.dustTin);
+			addIngotToDustRecipe(energy, "ingotSilver", ItemMaterial.dustSilver);
+			addIngotToDustRecipe(energy, "ingotLead", ItemMaterial.dustLead);
+			addIngotToDustRecipe(energy, "ingotAluminum", ItemMaterial.dustAluminum);
+			addIngotToDustRecipe(energy, "ingotNickel", ItemMaterial.dustNickel);
+			addIngotToDustRecipe(energy, "ingotPlatinum", ItemMaterial.dustPlatinum);
+			addIngotToDustRecipe(energy, "ingotIridium", ItemMaterial.dustIridium);
+			addIngotToDustRecipe(energy, "ingotMithril", ItemMaterial.dustMithril);
+
+			addIngotToDustRecipe(energy, "ingotSteel", ItemMaterial.dustSteel);
+			addIngotToDustRecipe(energy, "ingotElectrum", ItemMaterial.dustElectrum);
+			addIngotToDustRecipe(energy, "ingotInvar", ItemMaterial.dustInvar);
+			addIngotToDustRecipe(energy, "ingotBronze", ItemMaterial.dustBronze);
+			addIngotToDustRecipe(energy, "ingotSignalum", ItemMaterial.ingotSignalum);
+			addIngotToDustRecipe(energy, "ingotLumium", ItemMaterial.dustLumium);
+			addIngotToDustRecipe(energy, "ingotEnderium", ItemMaterial.dustEnderium);
 		}
-		addRecipe(2400, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 6));
-		addRecipe(2400, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 6));
-		addRecipe(2400, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 6));
-		addRecipe(1200, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
-		addRecipe(1200, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
-		addRecipe(1200, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));
-
-		for (int i = 0; i < 3; i++) {
-			addRecipe(3200, new ItemStack(Blocks.SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 50);
-		}
-		addRecipe(4800, new ItemStack(Blocks.SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 75);
-		addRecipe(2400, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 25);
-
-		addRecipe(800, new ItemStack(Items.FLOWER_POT), new ItemStack(Items.BRICK, 3));
-		addRecipe(800, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND, 1));
-
-		addRecipe(4800, new ItemStack(Items.IRON_HORSE_ARMOR), ItemHelper.cloneStack(ItemMaterial.dustIron, 5));
-		addRecipe(4800, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ItemHelper.cloneStack(ItemMaterial.dustGold, 5));
-		addRecipe(4800, new ItemStack(Items.DIAMOND_HORSE_ARMOR), new ItemStack(Items.DIAMOND, 5, 0));
-
-		// Main Ingredient * 600 + (Stick/String) * 300
-		addRecipe(3000, new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND, 5));
-		addRecipe(4800, new ItemStack(Items.DIAMOND_CHESTPLATE), new ItemStack(Items.DIAMOND, 8));
-		addRecipe(4200, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
-		addRecipe(2400, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
-
-		addRecipe(1500, new ItemStack(Items.DIAMOND_SWORD), new ItemStack(Items.DIAMOND, 2));
-		addRecipe(2400, new ItemStack(Items.DIAMOND_PICKAXE), new ItemStack(Items.DIAMOND, 3));
-		addRecipe(2400, new ItemStack(Items.DIAMOND_AXE), new ItemStack(Items.DIAMOND, 3));
-		addRecipe(1200, new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(Items.DIAMOND, 1));
-		addRecipe(1800, new ItemStack(Items.DIAMOND_HOE), new ItemStack(Items.DIAMOND, 2));
-
-		addRecipe(2400, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
-		addRecipe(2100, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
-		addRecipe(1200, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
-		addRecipe(2100, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
-		addRecipe(3600, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, new ItemStack(Items.DIAMOND, 5));
-		// addRecipe(3900, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, new ItemStack(Items.DIAMOND, 6));
 	}
 
 	public static void loadRecipes() {

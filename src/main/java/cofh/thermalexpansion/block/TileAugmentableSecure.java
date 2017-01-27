@@ -30,11 +30,11 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.UUID;
 
-public abstract class TileAugmentableSecure extends TileTEBase implements IAugmentable, ISecurable, IWorldNameable {
+public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, IWorldNameable {
 
 	/* AUGMENTS */
-	protected boolean[] augmentStatus = new boolean[3];
-	protected ItemStack[] augments = new ItemStack[3];
+	protected boolean[] augmentStatus = new boolean[4];
+	protected ItemStack[] augments = new ItemStack[4];
 
 	/* SECURITY */
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
@@ -48,6 +48,9 @@ public abstract class TileAugmentableSecure extends TileTEBase implements IAugme
 
 	protected boolean enableAutoInput = false;
 	protected boolean enableAutoOutput = false;
+
+	protected boolean hasRedstoneControl = false;
+	protected boolean hasAdvRedstoneControl = false;
 
 	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5, 5 };
 	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24, 24 };
@@ -65,8 +68,63 @@ public abstract class TileAugmentableSecure extends TileTEBase implements IAugme
 		return true;
 	}
 
-	protected void onLevelChange() {
+	public final boolean hasRedstoneControl() {
 
+		return hasRedstoneControl;
+	}
+
+	public final boolean hasAdvRedstoneControl() {
+
+		return hasAdvRedstoneControl;
+	}
+
+	public boolean changeLevel(byte level) {
+
+		if (level > 4) {
+			level = 4;
+		}
+		if (level < this.level) {
+			return false;
+		}
+		this.level = level;
+
+		// Keep Old Augments
+		ItemStack[] tempAugments = new ItemStack[augments.length];
+		for (int i = 0; i < augments.length; i++) {
+			tempAugments[i] = augments[i] == null ? null : augments[i].copy();
+		}
+		augments = new ItemStack[level];
+		for (int i = 0; i < tempAugments.length; i++) {
+			augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
+		}
+		setLevelFlags();
+
+		return true;
+	}
+
+	protected void setLevelFlags() {
+
+		if (level > 4 || level < 0) {
+			level = 4;
+		}
+		hasAutoInput = false;
+		hasAutoOutput = false;
+
+		hasRedstoneControl = false;
+		hasAdvRedstoneControl = false;
+
+		switch (level) {
+			default:		// Creative
+			case 4:			// Ender
+			case 3:			// Signalum
+				hasAdvRedstoneControl = true;
+			case 2:			// Reinforced
+				hasRedstoneControl = true;
+			case 1:			// Hardened
+				hasAutoInput = true;
+			case 0:			// Basic;
+				hasAutoOutput = true;
+		}
 	}
 
 	/* GUI METHODS */
@@ -130,7 +188,7 @@ public abstract class TileAugmentableSecure extends TileTEBase implements IAugme
 			access = AccessMode.PUBLIC;
 		}
 		level = nbt.getByte("Level");
-		onLevelChange();
+		changeLevel(level);
 
 		readAugmentsFromNBT(nbt);
 		installAugments();
@@ -212,7 +270,7 @@ public abstract class TileAugmentableSecure extends TileTEBase implements IAugme
 			level = payload.getByte();
 
 			if (curLevel != level) {
-				onLevelChange();
+				changeLevel(level);
 			}
 		} else {
 			payload.getUUID();

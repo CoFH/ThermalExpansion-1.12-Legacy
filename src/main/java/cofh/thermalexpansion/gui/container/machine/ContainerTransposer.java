@@ -30,7 +30,7 @@ public class ContainerTransposer extends ContainerTEBase implements ISlotValidat
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TransposerManager.isItemValid(stack) || FluidHelper.isFluidContainerItem(stack);
+		return TransposerManager.isItemValid(stack) || FluidHelper.isFluidHandler(stack);
 	}
 
 }

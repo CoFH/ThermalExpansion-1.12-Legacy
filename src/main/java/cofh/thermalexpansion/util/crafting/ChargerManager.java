@@ -51,6 +51,7 @@ public class ChargerManager {
 
 	public static void loadRecipes() {
 
+		/* APPLIED ENERGISTICS 2 */
 		if (ItemHelper.oreNameExists("crystalCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartzCharged")) {
 			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("crystalCertusQuartzCharged").get(0));
 		}

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.device;
 
-import codechicken.lib.util.BlockUtils;
 import cofh.api.energy.EnergyStorage;
 import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
@@ -151,7 +150,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 		if (hasEnergy(ACTIVATION_ENERGY)) {
 			myFakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			if (!isActive) {
-				BlockUtils.fireBlockUpdate(worldObj, getPos());
+				callBlockUpdate();
 			}
 			isActive = true;
 			boolean work = false;
@@ -180,7 +179,7 @@ public class TileActivator extends TileDeviceBase implements ITickable {
 			}
 		} else {
 			if (isActive) {
-				BlockUtils.fireBlockUpdate(worldObj, getPos());
+				callBlockUpdate();
 			}
 			isActive = false;
 		}

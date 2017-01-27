@@ -9,6 +9,7 @@ import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
+import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.*;
 import cofh.thermalfoundation.ThermalFoundation;
@@ -150,6 +151,10 @@ public class ThermalExpansion {
 
 		PrecipitatorManager.addDefaultRecipes();
 		ExtruderManager.addDefaultRecipes();
+
+		FuelManager.addDefaultFuels();
+
+		// FuelManager.parseFuels();
 	}
 
 }
