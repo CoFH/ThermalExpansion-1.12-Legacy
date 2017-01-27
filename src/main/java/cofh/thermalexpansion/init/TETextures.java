@@ -167,6 +167,9 @@ public class TETextures {
 				DYNAMO_ENERVATION
 		};
 		// @formatter:on
+		ICON_SCHEMATIC = map.getMissingSprite();//TODO
+		ICON_ACCEPT = map.getMissingSprite();//TODO
+		ICON_ACCEPT_INACTIVE = map.getMissingSprite();//TODO
 	}
 
 	// Bouncer to make the class readable.
@@ -193,6 +196,11 @@ public class TETextures {
 	private static final String DEVICE_FACE_ = BLOCKS_ + "device/device_face_";
 	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
+
+
+	public static TextureAtlasSprite ICON_SCHEMATIC;
+	public static TextureAtlasSprite ICON_ACCEPT;
+	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
 
 	public static TextureAtlasSprite[] CONFIG;
 	public static TextureAtlasSprite CONFIG_NONE;

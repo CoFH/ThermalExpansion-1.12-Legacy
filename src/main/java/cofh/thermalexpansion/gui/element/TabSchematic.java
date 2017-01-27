@@ -6,6 +6,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
@@ -16,8 +17,8 @@ import java.util.List;
 public class TabSchematic extends TabBase {
 
 	public static int defaultSide = TabBase.LEFT;
-	public static ResourceLocation GRID_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Grid_Schematic.png");
-	public static ResourceLocation OUTPUT_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "Slot_Output_Schematic.png");
+	public static ResourceLocation GRID_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "slot_grid_schematic.png");
+	public static ResourceLocation OUTPUT_TEXTURE = new ResourceLocation(TEProps.PATH_ELEMENTS + "slot_output_schematic.png");
 
 	ISchematicContainer myContainer;
 
@@ -102,16 +103,16 @@ public class TabSchematic extends TabBase {
 	@Override
 	protected void drawForeground() {
 
-		drawTabIcon("IconSchematic");
+		drawTabIcon(TETextures.ICON_SCHEMATIC);
 		if (!isFullyOpened()) {
 			return;
 		}
 		getFontRenderer().drawStringWithShadow(StringHelper.localize("item.thermalexpansion.diagram.schematic.name"), posXOffset() + 18, posY + 6, headerColor);
 
 		if (myContainer.canWriteSchematic()) {
-			gui.drawButton("IconAccept", posX() + 77, posY + 60, 0);
+			gui.drawButton(TETextures.ICON_ACCEPT, posX() + 77, posY + 60, 0);
 		} else {
-			gui.drawButton("IconAcceptInactive", posX() + 77, posY + 60, 2);
+			gui.drawButton(TETextures.ICON_ACCEPT_INACTIVE, posX() + 77, posY + 60, 2);
 		}
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 	}
