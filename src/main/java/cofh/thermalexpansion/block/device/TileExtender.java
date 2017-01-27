@@ -32,7 +32,7 @@ public class TileExtender extends TileDeviceBase implements IFluidHandler {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		GameRegistry.registerTileEntity(TileExtender.class, "thermalexpansion:extender");
+		GameRegistry.registerTileEntity(TileExtender.class, "thermalexpansion:device_extender");
 	}
 
 	static final int MAX_CACHE_LEVEL = 128;

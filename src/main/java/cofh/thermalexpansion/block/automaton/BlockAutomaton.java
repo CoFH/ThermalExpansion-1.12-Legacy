@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.device;
+package cofh.thermalexpansion.block.automaton;
 
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.BlockBakery;
@@ -22,6 +22,7 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -44,15 +45,15 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
+public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
-	public static final PropertyEnum<BlockDevice.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<BlockAutomaton.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
-	public BlockDevice() {
+	public BlockAutomaton() {
 
 		super(Material.IRON);
 
-		setUnlocalizedName("device");
+		setUnlocalizedName("automaton");
 
 		setHardness(15.0F);
 		setResistance(25.0F);
@@ -77,7 +78,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		//		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+		//		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
 		//			list.add(new ItemStack(item, 1, i));
 		//		}
 		//		list.add(new ItemStack(item, 1, 0));
@@ -112,37 +113,16 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			return null;
 		}
 		switch (Type.byMetadata(metadata)) {
-			case WATERGEN:
-				return new TileWaterGen();
-			case NULLIFIER:
-				return new TileNullifier();
-			case EXTENDER:						// TODO
-				return null;
-			case CONCENTRATOR:					// TODO
-				return null;
-			case ITEM_BUFFER:
-				return new TileItemBuffer();
-			case FLUID_BUFFER:					// TODO
-				return null;
-			case ENERGY_BUFFER:					// TODO
-				return null;
-			case LEXICON:						// TODO
-				return null;
-			case FISHER:						// TODO
-				return null;
-			case CHUNK_LOADER:					// TODO
-				return null;
 			default:
 				return null;
 		}
 	}
 
-	/* BLOCK METHODS */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.getTagCompound() != null) {
-			TileDeviceBase tile = (TileDeviceBase) world.getTileEntity(pos);
+			TileAutomatonBase tile = (TileAutomatonBase) world.getTileEntity(pos);
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
@@ -204,8 +184,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity instanceof TileDeviceBase) {
-			TileDeviceBase device = ((TileDeviceBase) tileEntity);
+		if (tileEntity instanceof TileAutomatonBase) {
+			TileAutomatonBase device = ((TileAutomatonBase) tileEntity);
 			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
@@ -224,38 +204,32 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/device/device_side"));
+		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/automaton/automaton_side"));
 	}
 
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
 
-		this.setRegistryName("device");
+		this.setRegistryName("automaton");
 		GameRegistry.register(this);
 
-		ItemBlockDevice itemBlock = new ItemBlockDevice(this);
+		ItemBlockAutomaton itemBlock = new ItemBlockAutomaton(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
 		return true;
 	}
 
-	@Override
 	public boolean initialize() {
 
-		TileDeviceBase.config();
+		TileActivator.initialize();
+		TileBreaker.initialize();
+		TileCollector.initialize();
 
-		TileWaterGen.initialize();
-		TileNullifier.initialize();
-		//TileExtender.initialize();
-
-		//TileItemBuffer.initialize();
-
-		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATERGEN.getMetadata()));
-		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
-//		deviceExtender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.EXTENDER.getMetadata()));
-//		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
+		automatonActivator = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.ACTIVATOR.getMetadata()));
+		automatonBreaker = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
+		automatonCollector = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
 
 		return true;
 	}
@@ -266,45 +240,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		String machineFrame = "thermalexpansion:machineFrame";
 		String tinPart = "thermalexpansion:machineTin";
 
-		// @formatter:off
-		if (enable[Type.WATERGEN.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceWaterGen,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', machineFrame,
-					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
-					'X', Items.BUCKET,
-					'Y', "dustRedstone"
-			));
+		if (enable[Type.ACTIVATOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(automatonActivator, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.CHEST, 'Y', "ingotIron"));
 		}
-		if (enable[Type.NULLIFIER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceNullifier,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', machineFrame,
-					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
-					'X', Items.LAVA_BUCKET,
-					'Y', "dustRedstone"
-			));
+		if (enable[Type.BREAKER.getMetadata()]) {
+			addRecipe(ShapedRecipe(automatonBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron"));
 		}
-		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
-			addRecipe(ShapedRecipe(deviceItemBuffer,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', machineFrame,
-					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
-					'X', Items.LAVA_BUCKET,
-					'Y', "dustRedstone"
-			));
+		if (enable[Type.COLLECTOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(automatonCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron"));
 		}
-		// @formatter:on
-
 		return true;
 	}
 
@@ -312,19 +256,12 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		WATERGEN(0, "watergen", deviceWaterGen),
-		NULLIFIER(1, "nullifier", deviceNullifier),
-		EXTENDER(2, "extender", deviceExtender),
-		CONCENTRATOR(3, "concentrator", deviceConcentrator),
-		ITEM_BUFFER(4, "item_buffer", deviceItemBuffer),
-		FLUID_BUFFER(5, "fluid_buffer", deviceFluidBuffer),
-		ENERGY_BUFFER(6, "energy_buffer", deviceEnergyBuffer),
-		LEXICON(7, "lexicon", deviceLexicon),
-		FISHER(8, "fisher", deviceFisher),
-		CHUNK_LOADER(9, "chunk_loader", deviceChunkLoader);
+		ACTIVATOR(0, "activator", automatonActivator),
+		BREAKER(1, "breaker", automatonBreaker),
+		COLLECTOR(2, "collector", automatonCollector);
 		// @formatter:on
 
-		private static final BlockDevice.Type[] METADATA_LOOKUP = new BlockDevice.Type[values().length];
+		private static final BlockAutomaton.Type[] METADATA_LOOKUP = new BlockAutomaton.Type[values().length];
 		private final int metadata;
 		private final String name;
 		private final ItemStack stack;
@@ -384,16 +321,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static boolean[] enable = new boolean[Type.values().length];
 
 	/* REFERENCES */
-	public static ItemStack deviceWaterGen;
-	public static ItemStack deviceNullifier;
-	public static ItemStack deviceExtender;
-	public static ItemStack deviceConcentrator;
-
-	public static ItemStack deviceItemBuffer;
-	public static ItemStack deviceFluidBuffer;
-	public static ItemStack deviceEnergyBuffer;
-	public static ItemStack deviceLexicon;
-	public static ItemStack deviceFisher;
-	public static ItemStack deviceChunkLoader;
+	public static ItemStack automatonActivator;
+	public static ItemStack automatonBreaker;
+	public static ItemStack automatonCollector;
+	// Forcefield
+	// Charger
+	// Trap
+	// Fertilizer
+	// Harvester
+	// Planter
 
 }

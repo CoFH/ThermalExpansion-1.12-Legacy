@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.device;
+package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.CoFHProps;
@@ -7,6 +7,7 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.gui.client.device.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
@@ -33,7 +34,7 @@ import java.util.UUID;
 
 public class TileCollector extends TileDeviceBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockDevice.Type.COLLECTOR.getMetadata();
+	private static final int TYPE = BlockAutomaton.Type.COLLECTOR.getMetadata();
 
 	public static void initialize() {
 
@@ -47,7 +48,7 @@ public class TileCollector extends TileDeviceBase implements IInventoryConnectio
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:collector");
+		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:automaton_collector");
 	}
 
 	private int areaMajor = 2;

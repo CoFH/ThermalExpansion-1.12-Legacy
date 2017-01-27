@@ -36,7 +36,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:watergen");
+		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_watergen");
 
 		config();
 	}

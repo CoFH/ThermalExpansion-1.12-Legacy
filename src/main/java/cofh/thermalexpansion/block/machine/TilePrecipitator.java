@@ -47,7 +47,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:precipitator");
+		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
 
 		config();
 	}

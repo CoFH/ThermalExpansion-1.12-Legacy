@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
-import cofh.thermalexpansion.block.device.TileBuffer;
+import cofh.thermalexpansion.block.device.TileItemBuffer;
 import cofh.thermalexpansion.gui.client.GuiTEBase;
 import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
 import cofh.thermalexpansion.init.TEProps;
@@ -15,7 +15,7 @@ public class GuiBuffer extends GuiTEBase {
 	static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "buffer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	TileBuffer myTile;
+	TileItemBuffer myTile;
 
 	ElementButton decInput;
 	ElementButton incInput;
@@ -31,7 +31,7 @@ public class GuiBuffer extends GuiTEBase {
 
 		generateInfo("tab.thermalexpansion.device.buffer", 3);
 
-		myTile = (TileBuffer) tile;
+		myTile = (TileItemBuffer) tile;
 	}
 
 	@Override

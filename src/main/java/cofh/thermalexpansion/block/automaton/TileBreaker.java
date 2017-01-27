@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.device;
+package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.CoFHProps;
@@ -7,6 +7,7 @@ import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.gui.client.device.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
@@ -29,7 +30,7 @@ import java.util.LinkedList;
 
 public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockDevice.Type.BREAKER.getMetadata();
+	private static final int TYPE = BlockAutomaton.Type.BREAKER.getMetadata();
 
 	public static void initialize() {
 
@@ -43,7 +44,7 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:breaker");
+		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:automaton_breaker");
 	}
 
 	private CoFHFakePlayer myFakePlayer;

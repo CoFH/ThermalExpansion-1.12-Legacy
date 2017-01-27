@@ -55,7 +55,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
 		defaultEnergyConfig[TYPE].setParamsPower(0);
 
-		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:extruder");
+		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
 		config();
 	}

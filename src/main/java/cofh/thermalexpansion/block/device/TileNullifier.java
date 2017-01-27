@@ -40,7 +40,7 @@ public class TileNullifier extends TileDeviceBase {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
-		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion:nullifier");
+		GameRegistry.registerTileEntity(TileNullifier.class, "thermalexpansion:device_nullifier");
 	}
 
 	private static final int[] SLOTS = { 0 };

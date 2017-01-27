@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.device;
+package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.core.CoFHProps;
@@ -19,7 +19,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.*;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.WorldServer;
@@ -31,9 +34,9 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
-public class TileActivator extends TileDeviceBase implements ITickable {
+public class TileActivator extends TileAutomatonBase {
 
-	private static final int TYPE = BlockDevice.Type.ACTIVATOR.getMetadata();
+	private static final int TYPE = BlockAutomaton.Type.ACTIVATOR.getMetadata();
 
 	static EnergyConfig energyConfig;
 	static int ACTIVATION_ENERGY = 20;

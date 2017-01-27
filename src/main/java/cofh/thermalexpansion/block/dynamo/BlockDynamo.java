@@ -54,7 +54,7 @@ import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
-	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", BlockDynamo.Type.class);
+	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", Type.class);
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
 
@@ -102,7 +102,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		for (int i = 0; i < BlockDynamo.Type.METADATA_LOOKUP.length; i++) {
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			list.add(new ItemStack(item, 1, i));
 		}
 	}
@@ -111,7 +111,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public IBlockState getStateFromMeta(int meta) {
 
-		return this.getDefaultState().withProperty(VARIANT, BlockDynamo.Type.byMetadata(meta));
+		return this.getDefaultState().withProperty(VARIANT, Type.byMetadata(meta));
 	}
 
 	@Override
@@ -130,7 +130,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= BlockDynamo.Type.values().length) {
+		if (metadata >= Type.values().length) {
 			return null;
 		}
 		switch (Type.values()[metadata]) {
@@ -309,11 +309,11 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		TileDynamoReactant.initialize();
 		TileDynamoEnervation.initialize();
 
-		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.STEAM.getMetadata()));
-		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.MAGMATIC.getMetadata()));
-		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.COMPRESSION.getMetadata()));
-		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.REACTANT.getMetadata()));
-		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, BlockDynamo.Type.ENERVATION.getMetadata()));
+		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
+		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
+		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
+		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
+		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
 
 		return true;
 	}
@@ -322,7 +322,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public boolean postInit() {
 
 		// @formatter:off
-		if (enable[BlockDynamo.Type.STEAM.getMetadata()]) {
+		if (enable[Type.STEAM.getMetadata()]) {
 			addRecipe(ShapedRecipe(dynamoSteam,
 					" C ",
 					"GIG",
@@ -333,7 +333,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					'R', "dustRedstone"
 			));
 		}
-		if (enable[BlockDynamo.Type.MAGMATIC.getMetadata()]) {
+		if (enable[Type.MAGMATIC.getMetadata()]) {
 			addRecipe(ShapedRecipe(dynamoMagmatic,
 					" C ",
 					"GIG",
@@ -344,7 +344,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					'R', "dustRedstone"
 			));
 		}
-		if (enable[BlockDynamo.Type.COMPRESSION.getMetadata()]) {
+		if (enable[Type.COMPRESSION.getMetadata()]) {
 			addRecipe(ShapedRecipe(dynamoCompression,
 					" C ",
 					"GIG",
@@ -355,7 +355,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					'R', "dustRedstone"
 			));
 		}
-		if (enable[BlockDynamo.Type.REACTANT.getMetadata()]) {
+		if (enable[Type.REACTANT.getMetadata()]) {
 			addRecipe(ShapedRecipe(dynamoReactant,
 					" C ",
 					"GIG",
@@ -366,7 +366,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					'R', "dustRedstone"
 			));
 		}
-		if (enable[BlockDynamo.Type.ENERVATION.getMetadata()]) {
+		if (enable[Type.ENERVATION.getMetadata()]) {
 			addRecipe(ShapedRecipe(dynamoEnervation,
 					" C ",
 					"GIG",
@@ -450,7 +450,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		}
 	}
 
-	public static boolean[] enable = new boolean[BlockDynamo.Type.values().length];
+	public static boolean[] enable = new boolean[Type.values().length];
 
 	/* REFERENCES */
 	public static ItemStack dynamoSteam;

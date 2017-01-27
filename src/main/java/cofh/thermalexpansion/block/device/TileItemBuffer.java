@@ -14,9 +14,9 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileBuffer extends TileDeviceBase implements ITickable {
+public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = BlockDevice.Type.BUFFER.getMetadata();
+	private static final int TYPE = BlockDevice.Type.ITEM_BUFFER.getMetadata();
 
 	public static void initialize() {
 
@@ -30,7 +30,7 @@ public class TileBuffer extends TileDeviceBase implements ITickable {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		GameRegistry.registerTileEntity(TileBuffer.class, "thermalexpansion:buffer");
+		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
 	}
 
 	int inputTracker;
@@ -42,7 +42,7 @@ public class TileBuffer extends TileDeviceBase implements ITickable {
 	public boolean enableInput = true;
 	public boolean enableOutput = true;
 
-	public TileBuffer() {
+	public TileItemBuffer() {
 
 		super();
 		inventory = new ItemStack[9];
