@@ -70,8 +70,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected TimeTracker tracker = new TimeTracker();
 
 	/* AUGMENTS */
-	protected boolean augmentThrottle;
-	protected boolean augmentCoilDuct;
+	public boolean augmentThrottle;
+	public boolean augmentCoilDuct;
 
 	int energyMod = 1;
 	int fuelMod = FUEL_MOD;

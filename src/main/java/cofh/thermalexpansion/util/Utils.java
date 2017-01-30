@@ -45,63 +45,16 @@ public class Utils {
 
 	public static int addToInsertion(TileEntity theTile, EnumFacing from, ItemStack stack) {
 
-		if (!(InventoryHelper.isInsertion(theTile))) {
-			return stack.stackSize;
-		}
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-
 		return stack == null ? 0 : stack.stackSize;
 	}
 
 	public static int addToInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
 
 		TileEntity theTile = worldObj.getTileEntity(pos);
-
-		if (!InventoryHelper.isInsertion(theTile)) {
-			return stack.stackSize;
-		}
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-
 		return stack == null ? 0 : stack.stackSize;
 	}
-
-	//	@Deprecated
-	//	public static int addToInsertion(IInventory tile, EnumFacing from, ItemStack stack) {
-	//
-	//		if (!InventoryHelper.isInsertion(tile)) {
-	//			return stack.stackSize;
-	//		}
-	//		stack = InventoryHelper.addToInsertion(tile, from, stack);
-	//
-	//		return stack == null ? 0 : stack.stackSize;
-	//	}
-	//
-	//  @Deprecated
-	//	public static int canAddToInventory(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
-	//
-	//		TileEntity tile = worldObj.getTileEntity(pos);
-	//
-	//		if (!InventoryHelper.isInventory(tile)) {
-	//			return stack.stackSize;
-	//		}
-	//		stack = InventoryHelper.simulateInsertItemStackIntoInventory((IInventory) tile, stack, from.getOpposite());
-	//
-	//		return stack == null ? 0 : stack.stackSize;
-	//	}
-
-	/* TILE FUNCTIONS - EXTRACTION */
-	// public static ItemStack extractFromAdjacentInventoryIntoSlot(TileEntity tile, int from, int slot, int amount) {
-	//
-	// IInventory theInv = (IInventory) tile;
-	// TileEntity theTile = BlockHelper.getAdjacentTileEntity(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, from);
-	// ItemStack stack = theInv.getStackInSlot(slot);
-	//
-	// if (!InventoryHelper.isInventory(theTile)) {
-	// return stack;
-	// }
-	// stack = InventoryHelper.addToInsertion(theTile, from, stack);
-	// return stack == null ? 0 : stack.stackSize;
-	// }
 
 	/* QUERY FUNCTIONS */
 	public static boolean isAdjacentInput(TileEntity tile, EnumFacing side) {
@@ -112,7 +65,6 @@ public class Utils {
 	public static boolean isAdjacentInput(BlockPos pos, World worldObj, EnumFacing side) {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
-
 		return isAccessibleInput(tile, side);
 	}
 

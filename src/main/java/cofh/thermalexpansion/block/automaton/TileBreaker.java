@@ -1,34 +1,23 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.CoFHProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.InventoryHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.block.device.TileDeviceBase;
 import cofh.thermalexpansion.gui.client.automaton.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.LinkedList;
-
-public class TileBreaker extends TileDeviceBase implements IInventoryConnection, ITickable {
+public class TileBreaker extends TileAutomatonBase implements IInventoryConnection, ITickable {
 
 	private static final int TYPE = BlockAutomaton.Type.BREAKER.getMetadata();
 
@@ -45,22 +34,16 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:automaton_breaker");
+
+		config();
 	}
 
-	private CoFHFakePlayer myFakePlayer;
-	private LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	public static void config() {
+
+	}
 
 	/* AUGMENTS */
-	protected boolean augmentFluid;
-
-	@Override
-	public void cofh_validate() {
-
-		if (ServerHelper.isServerWorld(worldObj)) {
-			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
-		}
-		super.cofh_validate();
-	}
+	public boolean augmentFluid;
 
 	@Override
 	public int getType() {
@@ -68,73 +51,51 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 		return TYPE;
 	}
 
-	@Override
-	public void setDefaultSides() {
+	protected void activate() {
 
-		sideCache = getDefaultSides();
-		sideCache[facing ^ 1] = 1;
+		breakBlocksInArea();
 	}
 
-	@Override
-	public void update() {
+	private void breakBlocksInArea() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
+		Iterable<BlockPos> area;
+
+		switch (facing) {
+			case 0:
+				area = BlockPos.getAllInBox(pos.add(-radius, -depth, -radius), pos.add(radius, 0, radius));
+				break;
+			case 1:
+				area = BlockPos.getAllInBox(pos.add(-radius, 0, -radius), pos.add(radius, 1, radius));
+				break;
+			case 2:
+				area = BlockPos.getAllInBox(pos.add(-radius, -radius, -1), pos.add(radius, radius, 0));
+				break;
+			case 3:
+				area = BlockPos.getAllInBox(pos.add(-radius, -radius, 0), pos.add(radius, radius, 1));
+				break;
+			case 4:
+				area = BlockPos.getAllInBox(pos.add(-1, -radius, -radius), pos.add(0, radius, radius));
+				break;
+			default:
+				area = BlockPos.getAllInBox(pos.add(0, -radius, -radius), pos.add(1, radius, radius));
+				break;
 		}
-		if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
-			if (!isEmpty()) {
-				outputBuffer();
-			}
-			if (isEmpty()) {
-				breakBlock();
-			}
-		}
-	}
-
-	public boolean isEmpty() {
-
-		return stuffedItems.size() == 0;
-	}
-
-	private void breakBlock() {
-
-		BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
-		IBlockState state = worldObj.getBlockState(offsetPos);
-		FluidStack theStack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, offsetPos, true) : null;
-		if (theStack != null) {
-			for (int i = 0; i < 6 && theStack.amount > 0; i++) {
-				if (sideCache[i] == 1) {
-					theStack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[i], theStack, true);
-				}
-			}
-			worldObj.setBlockToAir(offsetPos);
-		} else if (CoFHFakePlayer.isBlockBreakable(myFakePlayer, worldObj, offsetPos)) {
-			stuffedItems.addAll(BlockHelper.breakBlock(worldObj, myFakePlayer, offsetPos, state, 0, true, false));
-		}
-	}
-
-	private void outputBuffer() {
-
-		for (EnumFacing face : EnumFacing.VALUES) {
-			if (face.ordinal() != facing && sideCache[face.ordinal()] == 1) {
-
-				BlockPos offsetPos = getPos().offset(face);
-				TileEntity theTile = worldObj.getTileEntity(offsetPos);
-
-				if (InventoryHelper.isInsertion(theTile)) {
-					LinkedList<ItemStack> newStuffed = new LinkedList<ItemStack>();
-					for (ItemStack curItem : stuffedItems) {
-						if (curItem == null || curItem.getItem() == null) {
-							curItem = null;
-						} else {
-							curItem = InventoryHelper.addToInsertion(theTile, face, curItem);
-						}
-						if (curItem != null) {
-							newStuffed.add(curItem);
+		for (BlockPos target : area) {
+			if (augmentFluid) {
+				FluidStack stack = augmentFluid ? FluidHelper.getFluidFromWorld(worldObj, target, true) : null;
+				if (stack != null) {
+					for (int i = 0; i < 6 && stack.amount > 0; i++) {
+						if (sideCache[i] == 1) {
+							stack.amount -= FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[i], stack, true);
 						}
 					}
-					stuffedItems = newStuffed;
+					worldObj.setBlockToAir(target);
+					continue;
 				}
+			}
+			if (CoFHFakePlayer.isBlockBreakable(fakePlayer, worldObj, target)) {
+				IBlockState state = worldObj.getBlockState(target);
+				stuffedItems.addAll(BlockHelper.breakBlock(worldObj, fakePlayer, target, state, 0, true, false));
 			}
 		}
 	}
@@ -150,49 +111,6 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
-	}
-
-	/* NBT METHODS */
-	@Override
-	public void readFromNBT(NBTTagCompound nbt) {
-
-		super.readFromNBT(nbt);
-
-		NBTTagList list = nbt.getTagList("StuffedInv", 10);
-		stuffedItems.clear();
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound compound = list.getCompoundTagAt(i);
-			stuffedItems.add(ItemStack.loadItemStackFromNBT(compound));
-		}
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		NBTTagList list = new NBTTagList();
-		list = new NBTTagList();
-		for (int i = 0; i < stuffedItems.size(); i++) {
-			if (stuffedItems.get(i) != null) {
-				NBTTagCompound compound = new NBTTagCompound();
-				stuffedItems.get(i).writeToNBT(compound);
-				list.appendTag(compound);
-			}
-		}
-		nbt.setTag("StuffedInv", list);
-		return nbt;
-	}
-
-	/* IInventoryConnection */
-	@Override
-	public ConnectionType canConnectInventory(EnumFacing from) {
-
-		if (from != null && from.ordinal() != facing && sideCache[from.ordinal()] == 1) {
-			return ConnectionType.FORCE;
-		} else {
-			return ConnectionType.DEFAULT;
-		}
 	}
 
 	/* CAPABILITIES */

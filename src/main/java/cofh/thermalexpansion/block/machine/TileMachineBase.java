@@ -31,15 +31,15 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	int processRem;
 	boolean wasActive;
 
-	protected EnergyConfig energyConfig;
-	protected TimeTracker tracker = new TimeTracker();
-
-	/* AUGMENTS */
-	protected boolean augmentSecondaryNull;
+	EnergyConfig energyConfig;
+	TimeTracker tracker = new TimeTracker();
 
 	int processMod = 1;
 	int energyMod = 1;
 	int secondaryChance = 100;
+
+	/* AUGMENTS */
+	public boolean augmentSecondaryNull;
 
 	public TileMachineBase() {
 
@@ -196,7 +196,6 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		}
 		double power = energyStorage.getEnergyStored() / energyConfig.energyRamp;
 		power = MathHelper.clip(power, energyConfig.minPower, energyConfig.maxPower);
-
 		return MathHelper.round(scale * power / energyConfig.maxPower);
 	}
 
