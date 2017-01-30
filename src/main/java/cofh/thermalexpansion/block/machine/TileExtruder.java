@@ -3,13 +3,10 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.core.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
-import cofh.thermalexpansion.init.TEAugments;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -52,9 +49,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(0);
-
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
 		config();
@@ -62,48 +56,35 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	public static void config() {
 
-		String category = "RecipeManagers.Extruder.Recipes";
+		String category = "Machine.Extruder";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		processLava[0] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Cobblestone.Lava", processLava[0]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[1] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Stone.Lava", processLava[1]), 0, TEProps.MAX_FLUID_SMALL);
-		processLava[2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Obsidian.Lava", processLava[2]), 0, TEProps.MAX_FLUID_SMALL);
+		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
+		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 
-		processWater[0][0] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Cobblestone.Water", processWater[0][0]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[0][1] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Stone.Water", processWater[0][1]), 0, TEProps.MAX_FLUID_SMALL);
-		processWater[0][2] = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "Obsidian.Water", processWater[0][2]), 0, TEProps.MAX_FLUID_SMALL);
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 
-		for (int i = 1; i < 3; i++) {
-			for (int j = 0; j < 3; j++) {
-				processWater[i][j] = processWater[i - 1][j] / 2;
-			}
-		}
 	}
 
-	static int[] processLava = { 0, 0, 1000 };
-	static int[][] processWater = { { 0, 1000, 1000 }, { 0, 500, 500 }, { 0, 250, 250 }, { 0, 125, 125 } };
-	static int[][] processTime = { { 40, 80, 120 }, { 40, 80, 60 }, { 40, 80, 30 }, { 40, 80, 15 } };
-	static ItemStack[] processItems = new ItemStack[3];
+	private static int[] processLava = { 0, 0, 1000 };
+	private static int[] processWater = { 0, 1000, 1000 };
+	private static int[] processEnergy = { 800, 800, 1600 };
+	private static ItemStack[] processItems = new ItemStack[3];
 
-	ItemStack[] outputItems = new ItemStack[3];
+	private int outputTracker;
+	private byte curSelection;
+	private byte prevSelection;
 
-	byte processLevel;
-
-	int outputTracker;
-	byte curSelection;
-	byte prevSelection;
-	FluidStack hotRenderFluid = new FluidStack(FluidRegistry.LAVA, 0);
-	FluidStack coldRenderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankCore hotTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore hotTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	public TileExtruder() {
 
 		super();
-		inventory = new ItemStack[1];
-
-		for (int i = 0; i < 3; i++) {
-			outputItems[i] = processItems[i].copy();
-		}
+		inventory = new ItemStack[1 + 1];
+		hotTank.setLock(FluidRegistry.LAVA);
+		coldTank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -113,56 +94,18 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	public void update() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
-
-		if (isActive) {
-			if (processRem > 0) {
-				processRem -= processMod;
-			}
-			if (canFinish()) {
-				processFinish();
-				transferOutput();
-				processRem = processMax;
-
-				if (!redstoneControlOrDisable() || !canStart()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-				} else {
-					processStart();
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferOutput();
-			}
-			if (timeCheckEighth() && canStart()) {
-				processStart();
-				processRem -= processMod;
-				isActive = true;
-			}
-		}
-		updateIfChanged(curActive);
-	}
-
-	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Math.max(Fluid.BUCKET_VOLUME / 8, processLava[curSelection]) || coldTank.getFluidAmount() < Math.max(Fluid.BUCKET_VOLUME / 8, processWater[processLevel][curSelection])) {
+		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 			return false;
 		}
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
+		if (!inventory[0].isItemEqual(processItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize != outputItems[curSelection].getMaxStackSize();
+		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -174,7 +117,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processStart() {
 
-		processMax = processTime[processLevel][curSelection];
+		processMax = processEnergy[curSelection];
 		processRem = processMax;
 		prevSelection = curSelection;
 	}
@@ -182,20 +125,14 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processFinish() {
 
-		int maxCreate = Math.min(outputItems[prevSelection].stackSize, Math.min(hotTank.getFluidAmount() / Math.max(1, processLava[prevSelection]), coldTank.getFluidAmount() / Math.max(1, processWater[processLevel][prevSelection])));
-
 		if (inventory[0] == null) {
-			inventory[0] = ItemHelper.cloneStack(outputItems[prevSelection], maxCreate);
+			inventory[0] = processItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += maxCreate;
-			int maxStack = inventory[0].getMaxStackSize();
-			if (inventory[0].stackSize > maxStack) {
-				maxCreate -= inventory[0].stackSize - maxStack;
-				inventory[0].stackSize = maxStack;
-			}
+			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			;
 		}
-		hotTank.drain(processLava[prevSelection] * maxCreate, true);
-		coldTank.drain(processWater[processLevel][prevSelection] * maxCreate, true);
+		hotTank.drain(processLava[prevSelection], true);
+		coldTank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
 	}
 
@@ -211,7 +148,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 2) {
 				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
@@ -318,29 +254,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
+		payload.addInt(hotTank.getFluidAmount());
+		payload.addInt(coldTank.getFluidAmount());
 
-		if (hotTank.getFluid() == null) {
-			payload.addFluidStack(hotRenderFluid);
-		} else {
-			payload.addFluidStack(hotTank.getFluid());
-		}
-		if (coldTank.getFluid() == null) {
-			payload.addFluidStack(coldRenderFluid);
-		} else {
-			payload.addFluidStack(coldTank.getFluid());
-		}
-		payload.addByte(processLevel);
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = super.getFluidPacket();
-		payload.addFluidStack(hotRenderFluid);
-		payload.addFluidStack(coldRenderFluid);
 		return payload;
 	}
 
@@ -356,30 +275,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
-
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
-		hotTank.setFluid(payload.getFluidStack());
-		coldTank.setFluid(payload.getFluidStack());
-
-		byte tempLevel = processLevel;
-
-		processLevel = payload.getByte();
-
-		if (tempLevel != processLevel) {
-			for (int i = 0; i < 3; i++) {
-				outputItems[i].stackSize = TEAugments.MACHINE_EXTRUDER_PROCESS_MOD[i][processLevel];
-			}
-		}
-	}
-
-	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-		hotRenderFluid = payload.getFluidStack();
-		coldRenderFluid = payload.getFluidStack();
-		callBlockUpdate();
+		hotTank.getFluid().amount = payload.getInt();
+		coldTank.getFluid().amount = payload.getInt();
 	}
 
 	@Override
@@ -404,7 +303,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return outputItems;
+		return processItems;
 	}
 
 	@Override
@@ -419,10 +318,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		markDirty();
 	}
 
+	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

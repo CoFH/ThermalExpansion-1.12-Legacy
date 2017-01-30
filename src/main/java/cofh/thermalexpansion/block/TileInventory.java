@@ -74,7 +74,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		ItemStack stack = inventory[slot].copy();
 		amount = Math.min(amount, stack.stackSize);
 		stack.stackSize = amount;
-		int added = 0;
+		int added;
 
 		TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 		/* Add to Adjacent Inventory */
@@ -84,19 +84,6 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 				return false;
 			}
 			inventory[slot].stackSize -= amount - added;
-			if (inventory[slot].stackSize <= 0) {
-				inventory[slot] = null;
-			}
-			return true;
-		}
-		added = 0;
-		/* Add to Adjacent Pipe */
-		if (Utils.isPipeTile(curTile)) {
-			added = Utils.addToPipeTile(curTile, side, stack);
-			if (added <= 0) {
-				return false;
-			}
-			inventory[slot].stackSize -= added;
 			if (inventory[slot].stackSize <= 0) {
 				inventory[slot] = null;
 			}
@@ -273,9 +260,9 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
 	}
 
 	@Override

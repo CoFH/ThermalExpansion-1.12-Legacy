@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.api.crafting.recipes.IFurnaceRecipe;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -267,13 +266,13 @@ public class FurnaceManager {
 	/* HELPER FUNCTIONS */
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
-		if (ItemHelper.oreNameExists(oreName)) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionaryArbiter.getOres(oreName).get(0), 1), output);
+		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
 		}
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeFurnace implements IFurnaceRecipe {
+	public static class RecipeFurnace {
 
 		final ItemStack input;
 		final ItemStack output;
@@ -298,25 +297,21 @@ public class FurnaceManager {
 			}
 		}
 
-		@Override
 		public boolean isOutputFood() {
 
 			return isOutputFood;
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public ItemStack getOutput() {
 
 			return output.copy();
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

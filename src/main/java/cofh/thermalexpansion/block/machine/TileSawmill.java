@@ -36,6 +36,8 @@ public class TileSawmill extends TileMachineBase {
 	public static void config() {
 
 		String category = "Machine.Sawmill";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 

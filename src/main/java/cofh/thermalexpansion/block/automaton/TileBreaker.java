@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
-import cofh.thermalexpansion.gui.client.device.GuiBreaker;
+import cofh.thermalexpansion.gui.client.automaton.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -197,9 +197,9 @@ public class TileBreaker extends TileDeviceBase implements IInventoryConnection,
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

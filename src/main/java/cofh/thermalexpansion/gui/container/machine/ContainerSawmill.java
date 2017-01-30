@@ -13,7 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerSawmill extends ContainerTEBase implements ISlotValidator {
 
-	TileSawmill myTile;
+	protected TileSawmill myTile;
 
 	public ContainerSawmill(InventoryPlayer inventory, TileEntity tile) {
 

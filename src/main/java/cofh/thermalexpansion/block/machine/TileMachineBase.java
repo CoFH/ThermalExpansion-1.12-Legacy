@@ -5,7 +5,6 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TETextures;
@@ -19,17 +18,13 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
-	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 14 };
+	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 0, 14 };
 	private static boolean enableSecurity = true;
 
 	public static void config() {
 
 		String comment = "Enable this to allow for Machines to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Machine.All.Securable", true, comment);
-
-		for (int i = 0; i < BlockMachine.Type.values().length; i++) {
-			String name = StringHelper.titleCase(BlockMachine.Type.values()[i].getName());
-		}
 	}
 
 	int processMax;
@@ -431,9 +426,9 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 
-		if (pass == 0) {
+		if (layer == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

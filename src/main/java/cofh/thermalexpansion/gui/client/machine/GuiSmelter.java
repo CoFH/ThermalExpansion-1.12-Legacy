@@ -5,7 +5,7 @@ import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementSimple;
 import cofh.thermalexpansion.block.machine.TileSmelter;
-import cofh.thermalexpansion.gui.client.GuiTEBase;
+import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -13,7 +13,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiSmelter extends GuiTEBase {
+public class GuiSmelter extends GuiPoweredBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "smelter.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);

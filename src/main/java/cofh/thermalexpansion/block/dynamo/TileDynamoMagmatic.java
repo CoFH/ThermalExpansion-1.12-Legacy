@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -30,6 +31,14 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.dynamo_magmatic");
+
+		config();
+	}
+
+	public static void config() {
+
+		String category = "Dynamo.Magmatic";
+		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -158,9 +167,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

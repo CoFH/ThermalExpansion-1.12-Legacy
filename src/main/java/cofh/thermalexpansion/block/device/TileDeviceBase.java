@@ -29,6 +29,11 @@ public abstract class TileDeviceBase extends TilePowered {
 		return "tile.thermalexpansion.device." + BlockDevice.Type.byMetadata(getType()).getName() + ".name";
 	}
 
+	public boolean isAugmentable() {
+
+		return false;
+	}
+
 	@Override
 	public boolean enableSecurity() {
 
@@ -41,22 +46,25 @@ public abstract class TileDeviceBase extends TilePowered {
 		return true;
 	}
 
-	/* IReconfigurableFacing */
-	@Override
-	public boolean allowYAxisFacing() {
+	protected void setLevelFlags() {
 
-		return true;
+		level = 0;
+		hasAutoInput = true;
+		hasAutoOutput = true;
+
+		hasRedstoneControl = true;
+		hasAdvRedstoneControl = false;
 	}
 
+	/* IReconfigurableFacing */
 	@Override
 	public boolean setFacing(int side) {
 
-		if (side < 0 || side > 5) {
+		if (side < 2 || side > 5) {
 			return false;
 		}
 		facing = (byte) side;
 		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 1;
 		markDirty();
 		sendUpdatePacket(Side.CLIENT);
 		return true;
@@ -64,9 +72,9 @@ public abstract class TileDeviceBase extends TilePowered {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 
-		if (pass == 0) {
+		if (layer == 0) {
 			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];

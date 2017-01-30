@@ -78,12 +78,11 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		//		for (int i = 0; i < BlockDevice.Type.METADATA_LOOKUP.length; i++) {
-		//			list.add(new ItemStack(item, 1, i));
-		//		}
-		//		list.add(new ItemStack(item, 1, 0));
-		//		list.add(new ItemStack(item, 1, 1));
-		//		list.add(new ItemStack(item, 1, 4));
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				list.add(ItemBlockAutomaton.setDefaultTag(new ItemStack(item, 1, i)));
+			}
+		}
 	}
 
 	/* TYPE METHODS */
@@ -186,7 +185,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileAutomatonBase) {
 			TileAutomatonBase device = ((TileAutomatonBase) tileEntity);
-			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -256,30 +255,26 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		ACTIVATOR(0, "activator", automatonActivator),
-		BREAKER(1, "breaker", automatonBreaker),
-		COLLECTOR(2, "collector", automatonCollector);
+		ACTIVATOR(0, "activator"),
+		BREAKER(1, "breaker"),
+		COLLECTOR(2, "collector");
 		// @formatter:on
 
 		private static final BlockAutomaton.Type[] METADATA_LOOKUP = new BlockAutomaton.Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final ItemStack stack;
-
 		private final int light;
 
-		Type(int metadata, String name, ItemStack stack, int light) {
+		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.stack = stack;
-
 			this.light = light;
 		}
 
-		Type(int metadata, String name, ItemStack stack) {
+		Type(int metadata, String name) {
 
-			this(metadata, name, stack, 0);
+			this(metadata, name, 0);
 		}
 
 		public int getMetadata() {
@@ -291,11 +286,6 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		public String getName() {
 
 			return this.name;
-		}
-
-		public ItemStack getStack() {
-
-			return this.stack;
 		}
 
 		public int getLight() {

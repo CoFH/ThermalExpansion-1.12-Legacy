@@ -40,10 +40,8 @@ public class TileCrafter extends TileMachineBase {
 		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
 		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
 		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
-
 		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
-
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
@@ -209,7 +207,7 @@ public class TileCrafter extends TileMachineBase {
 				crafting.setInventorySlotContents(i, null);
 			}
 		}
-		// Update the inventories since we can make it.
+		// Craftable - Update inventories.
 		inventory = invCopy;
 
 		if (fluidCopy == null || fluidCopy.amount <= 0) {
@@ -331,7 +329,6 @@ public class TileCrafter extends TileMachineBase {
 	public void markDirty() {
 
 		needsCraft = true;
-		// needsCache = true;
 		super.markDirty();
 	}
 
@@ -358,9 +355,9 @@ public class TileCrafter extends TileMachineBase {
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

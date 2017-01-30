@@ -7,6 +7,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalexpansion.util.FuelManager;
@@ -30,6 +31,14 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.dynamo_enervation");
+
+		config();
+	}
+
+	public static void config() {
+
+		String category = "Dynamo.Enervation";
+		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private int currentFuelRF = getEnergyValue(redstone);

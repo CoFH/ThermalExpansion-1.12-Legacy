@@ -41,6 +41,8 @@ public class TileCharger extends TileMachineBase {
 	public static void config() {
 
 		String category = "Machine.Charger";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 8000), 100, 20000);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 

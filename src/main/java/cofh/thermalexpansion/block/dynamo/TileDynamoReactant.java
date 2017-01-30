@@ -6,6 +6,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 import cofh.thermalexpansion.init.TEProps;
@@ -36,6 +37,14 @@ public class TileDynamoReactant extends TileDynamoBase {
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
+
+		config();
+	}
+
+	public static void config() {
+
+		String category = "Dynamo.Reactant";
+		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -202,9 +211,9 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

@@ -11,9 +11,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoSteam extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "dynamo_steam.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "steam.png");
 
-	ElementDualScaled duration;
+	private ElementDualScaled duration;
 
 	public GuiDynamoSteam(InventoryPlayer inventory, TileEntity tile) {
 
@@ -27,8 +27,8 @@ public class GuiDynamoSteam extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementFluidTank(this, 8, 9, myTile.getTank(0)));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)));
+		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(1)));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 	}
 
@@ -37,7 +37,7 @@ public class GuiDynamoSteam extends GuiDynamoBase {
 
 		super.updateElementInformation();
 
-		duration.setQuantity(myTile.getScaledDuration(SPEED));
+		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

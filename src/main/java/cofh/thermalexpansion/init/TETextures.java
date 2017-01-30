@@ -41,10 +41,11 @@ public class TETextures {
 		MACHINE_FACE_SAWMILL =				register(map, MACHINE_FACE_ + "sawmill");
 		MACHINE_FACE_SMELTER =				register(map, MACHINE_FACE_ + "smelter");
 		MACHINE_FACE_INSOLATOR =			register(map, MACHINE_FACE_ + "insolator");
-		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
+		MACHINE_FACE_COMPACTOR =			map.getMissingSprite();
 		MACHINE_FACE_CRUCIBLE =				register(map, MACHINE_FACE_ + "crucible");
 		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
 		MACHINE_FACE_TRANSCAPSULATOR =		map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "transcapsulator");
+		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
 		MACHINE_FACE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
 		MACHINE_FACE_CRAFTER =				register(map, MACHINE_FACE_ + "crafter");
 		MACHINE_FACE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "brewer");
@@ -57,10 +58,11 @@ public class TETextures {
 		MACHINE_ACTIVE_SAWMILL =			register(map, MACHINE_ACTIVE_ + "sawmill");
 		MACHINE_ACTIVE_SMELTER =			register(map, MACHINE_ACTIVE_ + "smelter");
 		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
-		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
+		MACHINE_ACTIVE_COMPACTOR =			map.getMissingSprite();
 		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
 		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
 		MACHINE_ACTIVE_TRANSCAPSULATOR =	map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "transcapsulator");
+		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
 		MACHINE_ACTIVE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
 		MACHINE_ACTIVE_CRAFTER =			register(map, MACHINE_ACTIVE_ + "crafter");
 		MACHINE_ACTIVE_BREWER =				map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "brewer");
@@ -82,12 +84,12 @@ public class TETextures {
 		/* DEVICES */
 		DEVICE_SIDE =						register(map, BLOCKS_ + "device/device_side");
 
-		DEVICE_FACE_WATERGEN =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "watergen");
+		DEVICE_FACE_WATERGEN =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "water_gen");
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 
-		DEVICE_ACTIVE_WATERGEN =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "watergen");
+		DEVICE_ACTIVE_WATERGEN =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
 		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
@@ -101,6 +103,10 @@ public class TETextures {
 		DYNAMO_REACTANT =					register(map, DYNAMO_ + "reactant");
 		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
 
+		/* ICONS */
+		ICON_ACCEPT =						map.getMissingSprite();//TODO
+		ICON_ACCEPT_INACTIVE =				map.getMissingSprite();//TODO
+		ICON_SCHEMATIC =					map.getMissingSprite();//TODO
 
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
@@ -119,7 +125,7 @@ public class TETextures {
 				MACHINE_FACE_SAWMILL,
 				MACHINE_FACE_SMELTER,
 				MACHINE_FACE_INSOLATOR,
-				MACHINE_FACE_COMPRESSOR,
+				MACHINE_FACE_COMPACTOR,
 				MACHINE_FACE_CRUCIBLE,
 				MACHINE_FACE_TRANSPOSER,
 				MACHINE_FACE_TRANSCAPSULATOR,
@@ -138,7 +144,7 @@ public class TETextures {
 				MACHINE_ACTIVE_SAWMILL,
 				MACHINE_ACTIVE_SMELTER,
 				MACHINE_ACTIVE_INSOLATOR,
-				MACHINE_ACTIVE_COMPRESSOR,
+				MACHINE_ACTIVE_COMPACTOR,
 				MACHINE_ACTIVE_CRUCIBLE,
 				MACHINE_ACTIVE_TRANSPOSER,
 				MACHINE_ACTIVE_TRANSCAPSULATOR,
@@ -164,12 +170,20 @@ public class TETextures {
 		DEVICE_FACE = new TextureAtlasSprite[] {
 				DEVICE_FACE_WATERGEN,
 				DEVICE_FACE_NULLIFIER,
-				DEVICE_FACE_EXTENDER
+				DEVICE_FACE_EXTENDER,
+				DEVICE_FACE_CONCENTRATOR,
+				DEVICE_FACE_ITEM_BUFFER,
+				DEVICE_FACE_FLUID_BUFFER,
+				DEVICE_FACE_ENERGY_BUFFER
 		};
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
 				DEVICE_ACTIVE_WATERGEN,
 				DEVICE_ACTIVE_NULLIFIER,
-				DEVICE_ACTIVE_EXTENDER
+				DEVICE_ACTIVE_EXTENDER,
+				DEVICE_ACTIVE_CONCENTRATOR,
+				DEVICE_ACTIVE_ITEM_BUFFER,
+				DEVICE_ACTIVE_FLUID_BUFFER,
+				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
 		DYNAMO = new TextureAtlasSprite[] {
 				DYNAMO_STEAM,
@@ -179,9 +193,6 @@ public class TETextures {
 				DYNAMO_ENERVATION
 		};
 		// @formatter:on
-		ICON_SCHEMATIC = map.getMissingSprite();//TODO
-		ICON_ACCEPT = map.getMissingSprite();//TODO
-		ICON_ACCEPT_INACTIVE = map.getMissingSprite();//TODO
 	}
 
 	// Bouncer to make the class readable.
@@ -211,11 +222,6 @@ public class TETextures {
 	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
 
-
-	public static TextureAtlasSprite ICON_SCHEMATIC;
-	public static TextureAtlasSprite ICON_ACCEPT;
-	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
-
 	public static TextureAtlasSprite[] CONFIG;
 	public static TextureAtlasSprite CONFIG_NONE;
 	public static TextureAtlasSprite CONFIG_BLUE;
@@ -236,7 +242,7 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_FACE_SAWMILL;
 	public static TextureAtlasSprite MACHINE_FACE_SMELTER;
 	public static TextureAtlasSprite MACHINE_FACE_INSOLATOR;
-	public static TextureAtlasSprite MACHINE_FACE_COMPRESSOR;
+	public static TextureAtlasSprite MACHINE_FACE_COMPACTOR;
 	public static TextureAtlasSprite MACHINE_FACE_CRUCIBLE;
 	public static TextureAtlasSprite MACHINE_FACE_TRANSPOSER;
 	public static TextureAtlasSprite MACHINE_FACE_TRANSCAPSULATOR;
@@ -254,7 +260,7 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_SAWMILL;
 	public static TextureAtlasSprite MACHINE_ACTIVE_SMELTER;
 	public static TextureAtlasSprite MACHINE_ACTIVE_INSOLATOR;
-	public static TextureAtlasSprite MACHINE_ACTIVE_COMPRESSOR;
+	public static TextureAtlasSprite MACHINE_ACTIVE_COMPACTOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_CRUCIBLE;
 	public static TextureAtlasSprite MACHINE_ACTIVE_TRANSPOSER;
 	public static TextureAtlasSprite MACHINE_ACTIVE_TRANSCAPSULATOR;
@@ -306,5 +312,9 @@ public class TETextures {
 	public static TextureAtlasSprite DYNAMO_COMPRESSION;
 	public static TextureAtlasSprite DYNAMO_REACTANT;
 	public static TextureAtlasSprite DYNAMO_ENERVATION;
+
+	public static TextureAtlasSprite ICON_ACCEPT;
+	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
+	public static TextureAtlasSprite ICON_SCHEMATIC;
 
 }

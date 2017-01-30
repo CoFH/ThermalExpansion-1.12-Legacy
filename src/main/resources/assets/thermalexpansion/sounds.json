@@ -1,5 +1,14 @@
 {
-	"blockMachineFurnace": {
+	"device_water_gen": {
+		"category": "ambient",
+		"sounds": [
+			{
+				"name": "thermalexpansion:blocks/device/water_gen",
+				"stream": false
+			}
+		]
+	},
+	"machine_furnace": {
 		"category": "ambient",
 		"sounds": [
 			{
@@ -8,7 +17,7 @@
 			}
 		]
 	},
-	"blockMachinePulverizer": {
+	"machine_pulverizer": {
 		"category": "ambient",
 		"sounds": [
 			{
@@ -17,7 +26,7 @@
 			}
 		]
 	},
-	"blockMachineSawmill": {
+	"machine_sawmill": {
 		"category": "ambient",
 		"sounds": [
 			{
@@ -26,7 +35,7 @@
 			}
 		]
 	},
-	"blockMachineSmelter": {
+	"machine_smelter": {
 		"category": "ambient",
 		"sounds": [
 			{
@@ -35,7 +44,7 @@
 			}
 		]
 	},
-	"blockMachineCrucible": {
+	"machine_crucible": {
 		"category": "ambient",
 		"sounds": [
 			{
@@ -44,20 +53,11 @@
 			}
 		]
 	},
-	"blockMachineTransposer": {
+	"machine_transposer": {
 		"category": "ambient",
 		"sounds": [
 			{
 				"name": "thermalexpansion:blocks/machine/transposer",
-				"stream": false
-			}
-		]
-	},
-	"blockMachineAccumulator": {
-		"category": "ambient",
-		"sounds": [
-			{
-				"name": "thermalexpansion:blocks/machine/accumulator",
 				"stream": false
 			}
 		]

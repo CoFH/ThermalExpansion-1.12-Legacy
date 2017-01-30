@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.gui.client.dynamo;
 
-import cofh.core.gui.GuiBaseAdv;
+import cofh.core.gui.GuiCore;
 import cofh.core.gui.element.*;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.ElementEnergyStored;
@@ -15,12 +15,12 @@ import net.minecraft.util.ResourceLocation;
 
 import java.util.UUID;
 
-public abstract class GuiDynamoBase extends GuiBaseAdv {
+public abstract class GuiDynamoBase extends GuiCore {
 
-	protected TileDynamoBase myTile;
+	protected TileDynamoBase baseTile;
 	protected UUID playerName;
 
-	public String myTutorial = StringHelper.tutorialTabAugment();
+	protected String myTutorial = StringHelper.tutorialTabAugment();
 
 	protected TabBase redstoneTab;
 
@@ -28,15 +28,18 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super(container, texture);
 
-		myTile = (TileDynamoBase) tile;
-		name = myTile.getName();
+		baseTile = (TileDynamoBase) tile;
+		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
 
-		if (myTile.enableSecurity() && myTile.isSecured()) {
-			myTutorial += "\n\n" + StringHelper.tutorialTabSecurity();
+		if (baseTile.isAugmentable()) {
+			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
 		}
-		if (myTile.hasRedstoneControl()) {
-			myTutorial += "\n\n" + StringHelper.tutorialTabRedstone();
+		if (baseTile.enableSecurity() && baseTile.isSecured()) {
+			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
+		}
+		if (baseTile.hasRedstoneControl()) {
+			myTutorial += StringHelper.tutorialTabRedstone();
 		}
 	}
 
@@ -45,16 +48,19 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.initGui();
 
-		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
+		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
-		addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
-		if (myTile.enableSecurity() && myTile.isSecured()) {
-			addTab(new TabSecurity(this, myTile, playerName));
+		if (baseTile.isAugmentable()) {
+			addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 		}
-		redstoneTab = addTab(new TabRedstone(this, myTile));
-
-		if (myTile.getMaxEnergyStored(null) > 0) {
-			addTab(new TabEnergy(this, myTile, true));
+		if (baseTile.enableSecurity() && baseTile.isSecured()) {
+			addTab(new TabSecurity(this, baseTile, playerName));
+		}
+		if (baseTile.hasRedstoneControl()) {
+			redstoneTab = addTab(new TabRedstone(this, baseTile));
+		}
+		if (baseTile.getMaxEnergyStored(null) > 0) {
+			addTab(new TabEnergy(this, baseTile, true));
 		}
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
 		addTab(new TabTutorial(this, myTutorial));
@@ -65,17 +71,9 @@ public abstract class GuiDynamoBase extends GuiBaseAdv {
 
 		super.updateScreen();
 
-		if (!myTile.canAccess()) {
+		if (!baseTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
-	}
-
-	@Override
-	protected void updateElementInformation() {
-
-		super.updateElementInformation();
-
-		redstoneTab.setVisible(myTile.hasRedstoneControl());
 	}
 
 }

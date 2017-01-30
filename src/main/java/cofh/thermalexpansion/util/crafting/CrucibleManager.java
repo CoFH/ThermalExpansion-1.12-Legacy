@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.core.CoFHProps;
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.api.crafting.recipes.ICrucibleRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -14,8 +12,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -115,14 +114,15 @@ public class CrucibleManager {
 	/* HELPER FUNCTIONS */
 	private static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
 
-		ArrayList<ItemStack> registeredOres = OreDictionaryArbiter.getOres(oreName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
+
 		for (int i = 0; i < registeredOres.size(); i++) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(i), stackSize), output);
 		}
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCrucible implements ICrucibleRecipe {
+	public static class RecipeCrucible {
 
 		final ItemStack input;
 		final FluidStack output;
@@ -135,19 +135,16 @@ public class CrucibleManager {
 			this.energy = energy;
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public FluidStack getOutput() {
 
 			return output.copy();
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

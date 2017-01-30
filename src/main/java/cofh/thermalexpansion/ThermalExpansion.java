@@ -145,9 +145,10 @@ public class ThermalExpansion {
 		SawmillManager.addDefaultRecipes();
 		SmelterManager.addDefaultRecipes();
 		InsolatorManager.addDefaultRecipes();
-		ChargerManager.addDefaultRecipes();
+		CompactorManager.addDefaultRecipes();
 		CrucibleManager.addDefaultRecipes();
 		TransposerManager.addDefaultRecipes();
+		ChargerManager.addDefaultRecipes();
 
 		PrecipitatorManager.addDefaultRecipes();
 		ExtruderManager.addDefaultRecipes();

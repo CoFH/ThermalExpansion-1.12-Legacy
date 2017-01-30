@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.api.crafting.recipes.ITransposerRecipe;
 import cofh.thermalfoundation.init.TFFluids;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
@@ -158,7 +157,7 @@ public class TransposerManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeTransposer implements ITransposerRecipe {
+	public static class RecipeTransposer {
 
 		final ItemStack input;
 		final ItemStack output;
@@ -175,13 +174,11 @@ public class TransposerManager {
 			this.chance = chance;
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public ItemStack getOutput() {
 
 			if (output != null) {
@@ -190,19 +187,16 @@ public class TransposerManager {
 			return null;
 		}
 
-		@Override
 		public FluidStack getFluid() {
 
 			return fluid.copy();
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;
 		}
 
-		@Override
 		public int getChance() {
 
 			return chance;

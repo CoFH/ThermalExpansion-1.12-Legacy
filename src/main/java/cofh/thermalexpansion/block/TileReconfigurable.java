@@ -300,6 +300,6 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 
 	/* ISidedTexture */
 	@Override
-	public abstract TextureAtlasSprite getTexture(int side, int pass);
+	public abstract TextureAtlasSprite getTexture(int side, int layer, int pass);
 
 }

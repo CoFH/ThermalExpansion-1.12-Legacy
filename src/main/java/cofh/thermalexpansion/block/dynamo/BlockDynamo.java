@@ -103,7 +103,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
-			list.add(new ItemStack(item, 1, i));
+			if (enable[i]) {
+				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
+			}
 		}
 	}
 
@@ -386,32 +388,28 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		STEAM(0, "steam", dynamoSteam),
-		MAGMATIC(1, "magmatic", dynamoMagmatic),
-		COMPRESSION(2, "compression", dynamoCompression),
-		REACTANT(3, "reactant", dynamoReactant),
-		ENERVATION(4, "enervation", dynamoEnervation);
+		STEAM(0, "steam"),
+		MAGMATIC(1, "magmatic"),
+		COMPRESSION(2, "compression"),
+		REACTANT(3, "reactant"),
+		ENERVATION(4, "enervation");
 		// @formatter:on
 
 		private static final BlockDynamo.Type[] METADATA_LOOKUP = new BlockDynamo.Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final ItemStack stack;
-
 		private final int light;
 
-		Type(int metadata, String name, ItemStack stack, int light) {
+		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.stack = stack;
-
 			this.light = light;
 		}
 
-		Type(int metadata, String name, ItemStack stack) {
+		Type(int metadata, String name) {
 
-			this(metadata, name, stack, 0);
+			this(metadata, name, 0);
 		}
 
 		public int getMetadata() {
@@ -423,11 +421,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		public String getName() {
 
 			return this.name;
-		}
-
-		public ItemStack getStack() {
-
-			return this.stack;
 		}
 
 		public int getLight() {

@@ -107,7 +107,6 @@ public class FuelManager {
 
 	/* ENERVATION */
 
-
 	public static void addDefaultFuels() {
 
 		/* STEAM */
@@ -173,6 +172,7 @@ public class FuelManager {
 			addCoolant("ice", configFuels.get(category, "ice", 2000000));
 		}
 	}
+
 	/* PARSER */
 	public static void parseFuels() {
 

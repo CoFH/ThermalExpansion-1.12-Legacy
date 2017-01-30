@@ -89,24 +89,6 @@ public class Utils {
 	//		return stack == null ? 0 : stack.stackSize;
 	//	}
 
-	public static int addToPipeTile(TileEntity theTile, EnumFacing side, ItemStack stack) {
-
-		if (bcPipeExists) {
-			return addToPipeTile_do(theTile, side, stack);
-		}
-		return 0;
-	}
-
-	private static int addToPipeTile_do(TileEntity tile, EnumFacing side, ItemStack stack) {
-
-		//if (tile instanceof IPipeTile) {
-		//	@SuppressWarnings("deprecation")
-		//	int used = ((IPipeTile) tile).injectItem(stack, true, ForgeDirection.VALID_DIRECTIONS[side ^ 1]);
-		//	return used;
-		//}
-		return 0;
-	}
-
 	/* TILE FUNCTIONS - EXTRACTION */
 	// public static ItemStack extractFromAdjacentInventoryIntoSlot(TileEntity tile, int from, int slot, int amount) {
 	//

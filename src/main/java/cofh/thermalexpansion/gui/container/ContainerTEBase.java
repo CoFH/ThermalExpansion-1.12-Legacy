@@ -18,7 +18,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTEBase extends ContainerBase implements IAugmentableContainer {
 
-	public final TileCore baseTile;
+	protected final TileCore baseTile;
 
 	protected Slot[] augmentSlots = new Slot[0];
 	protected boolean[] augmentStatus = new boolean[0];

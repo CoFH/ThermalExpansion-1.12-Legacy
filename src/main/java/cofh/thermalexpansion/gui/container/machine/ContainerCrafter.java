@@ -17,12 +17,12 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerCrafter extends ContainerTEBase implements ISchematicContainer {
 
-	TileCrafter myTile;
-	InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
-	IInventory craftResult = new InventoryCraftResult();
+	protected TileCrafter myTile;
+	protected InventoryCrafting craftMatrix = new InventoryCrafting(this, 3, 3);
+	protected IInventory craftResult = new InventoryCraftResult();
 
-	public Slot craftSlots[] = new Slot[9];
-	public Slot resultSlot;
+	private Slot craftSlots[] = new Slot[9];
+	private Slot resultSlot;
 
 	public ContainerCrafter(InventoryPlayer inventory, TileEntity tile) {
 

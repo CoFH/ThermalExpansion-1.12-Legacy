@@ -6,7 +6,6 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.api.crafting.recipes.IPulverizerRecipe;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
@@ -363,7 +362,7 @@ public class PulverizerManager {
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
 
-		if (!registeredOres.isEmpty()) {
+		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, ORE_MULTIPLIER), secondaryOutput, secondaryChance);
 		}
 	}
@@ -375,13 +374,13 @@ public class PulverizerManager {
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres(ingotName);
 
-		if (!registeredOres.isEmpty()) {
+		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, null, 0);
 		}
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipePulverizer implements IPulverizerRecipe {
+	public static class RecipePulverizer {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;
@@ -408,19 +407,16 @@ public class PulverizerManager {
 			}
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -429,13 +425,11 @@ public class PulverizerManager {
 			return secondaryOutput.copy();
 		}
 
-		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

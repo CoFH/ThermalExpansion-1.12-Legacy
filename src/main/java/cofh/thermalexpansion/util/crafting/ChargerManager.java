@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.api.crafting.recipes.IChargerRecipe;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.item.ItemStack;
@@ -95,13 +93,13 @@ public class ChargerManager {
 
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
-		if (ItemHelper.oreNameExists(oreName)) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionaryArbiter.getOres(oreName).get(0), 1), output);
+		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
 		}
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeCharger implements IChargerRecipe {
+	public static class RecipeCharger {
 
 		final ItemStack input;
 		final ItemStack output;
@@ -114,19 +112,16 @@ public class ChargerManager {
 			this.energy = energy;
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public ItemStack getOutput() {
 
 			return output.copy();
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

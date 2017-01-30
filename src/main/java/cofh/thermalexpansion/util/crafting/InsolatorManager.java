@@ -4,7 +4,6 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.api.crafting.recipes.IInsolatorRecipe;
 import cofh.thermalfoundation.item.ItemFertilizer;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
@@ -231,7 +230,7 @@ public class InsolatorManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeInsolator implements IInsolatorRecipe {
+	public static class RecipeInsolator {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;
@@ -270,25 +269,21 @@ public class InsolatorManager {
 			}
 		}
 
-		@Override
 		public ItemStack getPrimaryInput() {
 
 			return primaryInput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryInput() {
 
 			return secondaryInput.copy();
 		}
 
-		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -297,13 +292,11 @@ public class InsolatorManager {
 			return secondaryOutput.copy();
 		}
 
-		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

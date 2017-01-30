@@ -77,12 +77,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		//		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
-		//			list.add(new ItemStack(item, 1, i));
-		//		}
-		//		list.add(new ItemStack(item, 1, 0));
-		//		list.add(new ItemStack(item, 1, 1));
-		//		list.add(new ItemStack(item, 1, 4));
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				list.add(ItemBlockDevice.setDefaultTag(new ItemStack(item, 1, i)));
+			}
+		}
 	}
 
 	/* TYPE METHODS */
@@ -112,25 +111,25 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			return null;
 		}
 		switch (Type.byMetadata(metadata)) {
-			case WATERGEN:
+			case WATER_GEN:
 				return new TileWaterGen();
 			case NULLIFIER:
 				return new TileNullifier();
-			case EXTENDER:						// TODO
-				return null;
-			case CONCENTRATOR:					// TODO
+			case EXTENDER:
+				return new TileExtender();
+			case CONCENTRATOR:                      // TODO
 				return null;
 			case ITEM_BUFFER:
 				return new TileItemBuffer();
-			case FLUID_BUFFER:					// TODO
+			case FLUID_BUFFER:                      // TODO
 				return null;
-			case ENERGY_BUFFER:					// TODO
+			case ENERGY_BUFFER:                     // TODO
 				return null;
-			case LEXICON:						// TODO
+			case LEXICON:                           // TODO
 				return null;
-			case FISHER:						// TODO
+			case FISHER:                            // TODO
 				return null;
-			case CHUNK_LOADER:					// TODO
+			case CHUNK_LOADER:                      // TODO
 				return null;
 			default:
 				return null;
@@ -206,7 +205,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileDeviceBase) {
 			TileDeviceBase device = ((TileDeviceBase) tileEntity);
-			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -248,14 +247,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileWaterGen.initialize();
 		TileNullifier.initialize();
-		//TileExtender.initialize();
+		TileExtender.initialize();
+		//TileConcentrator.initialize();
+		TileItemBuffer.initialize();
 
-		//TileItemBuffer.initialize();
-
-		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATERGEN.getMetadata()));
+		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
-//		deviceExtender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.EXTENDER.getMetadata()));
-//		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
+		deviceExtender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.EXTENDER.getMetadata()));
+
+		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		return true;
 	}
@@ -263,16 +263,16 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@Override
 	public boolean postInit() {
 
-		String machineFrame = "thermalexpansion:machineFrame";
+		String deviceFrame = "thermalexpansion:deviceFrame";
 		String tinPart = "thermalexpansion:machineTin";
 
 		// @formatter:off
-		if (enable[Type.WATERGEN.getMetadata()]) {
+		if (enable[Type.WATER_GEN.getMetadata()]) {
 			addRecipe(ShapedRecipe(deviceWaterGen,
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', deviceFrame,
 					'I', tinPart,
 					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
 					'X', Items.BUCKET,
@@ -284,19 +284,20 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', deviceFrame,
 					'I', tinPart,
 					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
 					'X', Items.LAVA_BUCKET,
 					'Y', "dustRedstone"
 			));
 		}
+
 		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
 			addRecipe(ShapedRecipe(deviceItemBuffer,
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', deviceFrame,
 					'I', tinPart,
 					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
 					'X', Items.LAVA_BUCKET,
@@ -312,37 +313,33 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		WATERGEN(0, "watergen", deviceWaterGen),
-		NULLIFIER(1, "nullifier", deviceNullifier),
-		EXTENDER(2, "extender", deviceExtender),
-		CONCENTRATOR(3, "concentrator", deviceConcentrator),
-		ITEM_BUFFER(4, "item_buffer", deviceItemBuffer),
-		FLUID_BUFFER(5, "fluid_buffer", deviceFluidBuffer),
-		ENERGY_BUFFER(6, "energy_buffer", deviceEnergyBuffer),
-		LEXICON(7, "lexicon", deviceLexicon),
-		FISHER(8, "fisher", deviceFisher),
-		CHUNK_LOADER(9, "chunk_loader", deviceChunkLoader);
+		WATER_GEN(0, "water_gen"),
+		NULLIFIER(1, "nullifier"),
+		EXTENDER(2, "extender"),
+		CONCENTRATOR(3, "concentrator"),
+		ITEM_BUFFER(4, "item_buffer"),
+		FLUID_BUFFER(5, "fluid_buffer"),
+		ENERGY_BUFFER(6, "energy_buffer"),
+		LEXICON(7, "lexicon"),
+		FISHER(8, "fisher"),
+		CHUNK_LOADER(9, "chunk_loader");
 		// @formatter:on
 
 		private static final BlockDevice.Type[] METADATA_LOOKUP = new BlockDevice.Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final ItemStack stack;
-
 		private final int light;
 
-		Type(int metadata, String name, ItemStack stack, int light) {
+		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.stack = stack;
-
 			this.light = light;
 		}
 
-		Type(int metadata, String name, ItemStack stack) {
+		Type(int metadata, String name) {
 
-			this(metadata, name, stack, 0);
+			this(metadata, name, 0);
 		}
 
 		public int getMetadata() {
@@ -354,11 +351,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		public String getName() {
 
 			return this.name;
-		}
-
-		public ItemStack getStack() {
-
-			return this.stack;
 		}
 
 		public int getLight() {

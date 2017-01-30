@@ -36,6 +36,8 @@ public class TilePulverizer extends TileMachineBase {
 	public static void config() {
 
 		String category = "Machine.Pulverizer";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 

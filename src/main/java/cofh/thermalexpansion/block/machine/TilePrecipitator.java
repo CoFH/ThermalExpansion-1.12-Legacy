@@ -55,6 +55,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	public static void config() {
 
 		String category = "Machine.Precipitator";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 
@@ -62,20 +64,21 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		defaultEnergyConfig[TYPE].setParamsPower(basePower);
 	}
 
-	static int[] processWater = { 500, 500, 1000 };
-	static int[] processEnergy = { 800, 800, 1600 };
-	static ItemStack[] processItems = new ItemStack[3];
+	private static int[] processWater = { 500, 500, 1000 };
+	private static int[] processEnergy = { 800, 800, 1600 };
+	private static ItemStack[] processItems = new ItemStack[3];
 
-	int outputTracker;
-	byte curSelection;
-	byte prevSelection;
-	FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
-	FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private int outputTracker;
+	private byte curSelection;
+	private byte prevSelection;
+
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	public TilePrecipitator() {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		tank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -137,7 +140,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 2) {
 				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
@@ -185,6 +187,16 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return new ContainerPrecipitator(inventory, this);
 	}
 
+	public int getCurSelection() {
+
+		return curSelection;
+	}
+
+	public int getPrevSelection() {
+
+		return prevSelection;
+	}
+
 	@Override
 	public FluidTankCore getTank() {
 
@@ -195,16 +207,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
-	}
-
-	public int getCurSelection() {
-
-		return curSelection;
-	}
-
-	public int getPrevSelection() {
-
-		return prevSelection;
 	}
 
 	/* NBT METHODS */
@@ -218,10 +220,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		curSelection = nbt.getByte("Sel");
 
 		tank.readFromNBT(nbt);
-
-		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
-		}
 	}
 
 	@Override
@@ -232,20 +230,12 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		nbt.setInteger("Tracker", outputTracker);
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
+
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addFluidStack(renderFluid);
-		return payload;
-	}
-
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -253,22 +243,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
-
-		if (tank.getFluid() == null) {
-			payload.addFluidStack(renderFluid);
-		} else {
-			payload.addFluidStack(tank.getFluid());
-		}
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = super.getFluidPacket();
-
-		payload.addFluidStack(renderFluid);
-
+		payload.addInt(tank.getFluidAmount());
 		return payload;
 	}
 
@@ -276,9 +251,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	public PacketCoFHBase getModePacket() {
 
 		PacketCoFHBase payload = super.getModePacket();
-
 		payload.addByte(curSelection);
-
 		return payload;
 	}
 
@@ -286,26 +259,15 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
-
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
-		tank.setFluid(payload.getFluidStack());
-	}
-
-	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-
-		renderFluid = payload.getFluidStack();
-		callBlockUpdate();
+		tank.getFluid().amount = payload.getInt();
 	}
 
 	@Override
 	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
-
 		curSelection = payload.getByte();
 		if (!isActive) {
 			prevSelection = curSelection;
@@ -318,19 +280,6 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		curSelection = (byte) i;
 		sendModePacket();
 		curSelection = lastSelection;
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
 	}
 
 	/* ICustomInventory */
@@ -352,10 +301,11 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		markDirty();
 	}
 
+	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

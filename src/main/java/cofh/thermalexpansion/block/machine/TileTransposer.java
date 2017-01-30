@@ -56,6 +56,8 @@ public class TileTransposer extends TileMachineBase {
 	public static void config() {
 
 		String category = "Machine.Transposer";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 40), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 
@@ -251,7 +253,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	public int getLightValue() {
 
-		return super.getLightValue() != 0 ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
+		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
 	}
 
 	@Override
@@ -539,7 +541,7 @@ public class TileTransposer extends TileMachineBase {
 		outputTracker = nbt.getInteger("TrackOut1");
 		outputTrackerFluid = nbt.getInteger("TrackOut2");
 
-		if(inventory[1] != null && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
+		if (inventory[1] != null && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			hasFluidHandler = true;
 		}
 		reverse = nbt.getBoolean("Rev");
@@ -723,9 +725,9 @@ public class TileTransposer extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 
-		if (pass == 0) {
+		if (layer == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
@@ -740,9 +742,9 @@ public class TileTransposer extends TileMachineBase {
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

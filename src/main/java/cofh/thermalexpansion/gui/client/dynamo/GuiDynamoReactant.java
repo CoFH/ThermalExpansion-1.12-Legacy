@@ -12,9 +12,9 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoReactant extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "dynamo_reactant.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "reactant.png");
 
-	ElementDualScaled duration;
+	private ElementDualScaled duration;
 
 	public GuiDynamoReactant(InventoryPlayer inventory, TileEntity tile) {
 
@@ -28,8 +28,8 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementEnergyStored(this, 80, 18, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)));
+		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
 		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
 	}
 
@@ -38,7 +38,7 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 		super.updateElementInformation();
 
-		duration.setQuantity(myTile.getScaledDuration(SPEED));
+		duration.setQuantity(baseTile.getScaledDuration(SPEED));
 	}
 
 }

@@ -19,17 +19,17 @@ public class TEBlocks {
 
 		blockMachine = new BlockMachine();
 		//blockAutomaton = new BlockAutomaton();
-		//blockDevice = new BlockDevice();
+		blockDevice = new BlockDevice();
 		blockDynamo = new BlockDynamo();
 
 		initList.add(blockMachine);
 		//initList.add(blockAutomaton);
-		//initList.add(blockDevice);
+		initList.add(blockDevice);
 		initList.add(blockDynamo);
 
 		ThermalExpansion.proxy.addIModelRegister(blockMachine);
 		//ThermalExpansion.proxy.addIModelRegister(blockAutomaton);
-		//ThermalExpansion.proxy.addIModelRegister(blockDevice);
+		ThermalExpansion.proxy.addIModelRegister(blockDevice);
 		ThermalExpansion.proxy.addIModelRegister(blockDynamo);
 
 		for (int i = 0; i < initList.size(); i++) {

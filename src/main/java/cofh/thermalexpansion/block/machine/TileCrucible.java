@@ -54,6 +54,8 @@ public class TileCrucible extends TileMachineBase {
 	public static void config() {
 
 		String category = "Machine.Crucible";
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 400), 10, 500);
 		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
 
@@ -77,6 +79,23 @@ public class TileCrucible extends TileMachineBase {
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	public void update() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		transferOutputFluid();
+
+		super.update();
+	}
+
+	@Override
+	public int getLightValue() {
+
+		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
 	}
 
 	@Override
@@ -166,12 +185,12 @@ public class TileCrucible extends TileMachineBase {
 			return;
 		}
 		int side;
-		FluidStack outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 
 			if (sideCache[side] == 2) {
-				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], outputBuffer, true);
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
@@ -180,17 +199,6 @@ public class TileCrucible extends TileMachineBase {
 				}
 			}
 		}
-	}
-
-	@Override
-	public void update() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		transferOutputFluid();
-
-		super.update();
 	}
 
 	/* GUI METHODS */
@@ -312,9 +320,9 @@ public class TileCrucible extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int pass) {
+	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 
-		if (pass == 0) {
+		if (layer == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
@@ -329,9 +337,9 @@ public class TileCrucible extends TileMachineBase {
 
 	/* CAPABILITIES */
 	@Override
-	public boolean hasCapability(Capability<?> capability, EnumFacing facing) {
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, facing) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
 	@Override

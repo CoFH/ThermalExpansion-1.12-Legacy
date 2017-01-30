@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.client.machine;
 import cofh.lib.gui.element.ElementBase;
 import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
-import cofh.thermalexpansion.gui.client.GuiTEBase;
+import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -11,7 +11,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiSawmill extends GuiTEBase {
+public class GuiSawmill extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "sawmill.png");
 
@@ -39,7 +39,7 @@ public class GuiSawmill extends GuiTEBase {
 		slotSecondaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(3, 0, 2));
 		slotSecondaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(2, 0, 1));
 
-		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
+		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 56, 44).setSize(16, 16).setTexture(TEX_SAW, 32, 16));
 	}
@@ -49,22 +49,22 @@ public class GuiSawmill extends GuiTEBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSide(1));
+		slotInput.setVisible(baseTile.hasSide(1));
 
-		slotPrimaryOutput[0].setVisible(myTile.hasSide(4));
-		slotPrimaryOutput[1].setVisible(myTile.hasSide(2));
-		slotSecondaryOutput[0].setVisible(myTile.hasSide(4));
-		slotSecondaryOutput[1].setVisible(myTile.hasSide(3));
+		slotPrimaryOutput[0].setVisible(baseTile.hasSide(4));
+		slotPrimaryOutput[1].setVisible(baseTile.hasSide(2));
+		slotSecondaryOutput[0].setVisible(baseTile.hasSide(4));
+		slotSecondaryOutput[1].setVisible(baseTile.hasSide(3));
 
-		if (!myTile.hasSide(4)) {
+		if (!baseTile.hasSide(4)) {
 			slotPrimaryOutput[1].slotRender = 2;
 			slotSecondaryOutput[1].slotRender = 2;
 		} else {
 			slotPrimaryOutput[1].slotRender = 1;
 			slotSecondaryOutput[1].slotRender = 1;
 		}
-		progress.setQuantity(myTile.getScaledProgress(PROGRESS));
-		speed.setQuantity(myTile.getScaledSpeed(SPEED));
+		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
+		speed.setQuantity(baseTile.getScaledSpeed(SPEED));
 	}
 
 }

@@ -19,6 +19,11 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 		return energyStorage.getEnergyStored() >= energy;
 	}
 
+	protected int getEnergySpace() {
+
+		return energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored();
+	}
+
 	protected boolean hasChargeSlot() {
 
 		return true;

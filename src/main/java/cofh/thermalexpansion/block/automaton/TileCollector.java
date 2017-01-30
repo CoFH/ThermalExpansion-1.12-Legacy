@@ -8,7 +8,7 @@ import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.block.device.TileDeviceBase;
-import cofh.thermalexpansion.gui.client.device.GuiCollector;
+import cofh.thermalexpansion.gui.client.automaton.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;

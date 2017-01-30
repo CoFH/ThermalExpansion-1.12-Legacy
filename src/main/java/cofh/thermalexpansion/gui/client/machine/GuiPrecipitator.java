@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TilePrecipitator;
-import cofh.thermalexpansion.gui.client.GuiTEBase;
+import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -12,17 +12,17 @@ import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 
-public class GuiPrecipitator extends GuiTEBase {
+public class GuiPrecipitator extends GuiPoweredBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "precipitator.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "precipitator.png");
 
-	TilePrecipitator myTile;
+	private TilePrecipitator myTile;
 
-	ElementBase slotInput;
-	ElementBase slotOutput;
-	ElementFluid progressFluid;
-	ElementDualScaled progressOverlay;
-	ElementDualScaled speed;
+	private ElementBase slotInput;
+	private ElementBase slotOutput;
+	private ElementFluid progressFluid;
+	private ElementDualScaled progressOverlay;
+	private ElementDualScaled speed;
 
 	public GuiPrecipitator(InventoryPlayer inventory, TileEntity tile) {
 
@@ -88,7 +88,7 @@ public class GuiPrecipitator extends GuiTEBase {
 		}
 	}
 
-	protected void drawCurSelection() {
+	private void drawCurSelection() {
 
 		int offset = 32;
 		if (myTile.getPrevSelection() == myTile.getCurSelection() && myTile.isActive) {
@@ -107,7 +107,7 @@ public class GuiPrecipitator extends GuiTEBase {
 		}
 	}
 
-	protected void drawPrevSelection() {
+	private void drawPrevSelection() {
 
 		switch (myTile.getPrevSelection()) {
 			case 0:

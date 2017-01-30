@@ -4,15 +4,14 @@ import cofh.core.CoFHProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
-import cofh.thermalexpansion.gui.client.device.GuiBuffer;
-import cofh.thermalexpansion.gui.container.device.ContainerBuffer;
+import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
+import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
@@ -33,19 +32,19 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
 	}
 
-	int inputTracker;
-	int outputTracker;
+	private int inputTracker;
+	private int outputTracker;
 
-	public int quantityInput = 1;
-	public int quantityOutput = 1;
-
-	public boolean enableInput = true;
-	public boolean enableOutput = true;
+	public int amountInput = 4;
+	public int amountOutput = 4;
 
 	public TileItemBuffer() {
 
 		super();
 		inventory = new ItemStack[9];
+
+		enableAutoInput = true;
+		enableAutoOutput = true;
 	}
 
 	@Override
@@ -76,7 +75,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferInput() {
 
-		if (!enableInput || quantityInput <= 0) {
+		if (!enableAutoInput || amountInput <= 0) {
 			return;
 		}
 		int side;
@@ -84,7 +83,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 			side = i % 6;
 			if (sideCache[side] == 1) {
 				for (int j = 0; j < inventory.length; j++) {
-					if (extractItem(j, quantityInput, EnumFacing.VALUES[side])) {
+					if (extractItem(j, amountInput, EnumFacing.VALUES[side])) {
 						inputTracker = side;
 						return;
 					}
@@ -95,7 +94,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	protected void transferOutput() {
 
-		if (!enableOutput || quantityOutput <= 0) {
+		if (!enableAutoOutput || amountOutput <= 0) {
 			return;
 		}
 		int side;
@@ -103,7 +102,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 			side = i % 6;
 			if (sideCache[side] == 2) {
 				for (int j = inventory.length - 1; j >= 0; j--) {
-					if (transferItem(j, quantityOutput, EnumFacing.VALUES[side])) {
+					if (transferItem(j, amountOutput, EnumFacing.VALUES[side])) {
 						outputTracker = side;
 						return;
 					}
@@ -116,13 +115,13 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiBuffer(inventory, this);
+		return new GuiItemBuffer(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerBuffer(inventory, this);
+		return new ContainerItemBuffer(inventory, this);
 	}
 
 	/* NBT METHODS */
@@ -134,10 +133,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		quantityInput = MathHelper.clamp(nbt.getInteger("Input"), 0, 64);
-		quantityOutput = MathHelper.clamp(nbt.getInteger("Output"), 0, 64);
-		enableInput = nbt.getBoolean("EnableIn");
-		enableOutput = nbt.getBoolean("EnableOut");
+		amountInput = MathHelper.clamp(nbt.getInteger("Input"), 0, 64);
+		amountOutput = MathHelper.clamp(nbt.getInteger("Output"), 0, 64);
 	}
 
 	@Override
@@ -147,10 +144,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setInteger("Input", quantityInput);
-		nbt.setInteger("Output", quantityOutput);
-		nbt.setBoolean("EnableIn", enableInput);
-		nbt.setBoolean("EnableOut", enableOutput);
+		nbt.setInteger("Input", amountInput);
+		nbt.setInteger("Output", amountOutput);
 		return nbt;
 	}
 
@@ -160,10 +155,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getPacket();
 
-		payload.addInt(quantityInput);
-		payload.addInt(quantityOutput);
-		payload.addBool(enableInput);
-		payload.addBool(enableOutput);
+		payload.addInt(amountInput);
+		payload.addInt(amountOutput);
 
 		return payload;
 	}
@@ -173,10 +166,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addInt(quantityInput);
-		payload.addInt(quantityOutput);
-		payload.addBool(enableInput);
-		payload.addBool(enableOutput);
+		payload.addInt(amountInput);
+		payload.addInt(amountOutput);
 
 		return payload;
 	}
@@ -186,10 +177,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addInt(MathHelper.clamp(quantityInput, 0, 64));
-		payload.addInt(MathHelper.clamp(quantityOutput, 0, 64));
-		payload.addBool(enableInput);
-		payload.addBool(enableOutput);
+		payload.addInt(MathHelper.clamp(amountInput, 0, 64));
+		payload.addInt(MathHelper.clamp(amountOutput, 0, 64));
 
 		return payload;
 	}
@@ -199,10 +188,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
-		quantityInput = payload.getInt();
-		quantityOutput = payload.getInt();
-		enableInput = payload.getBool();
-		enableOutput = payload.getBool();
+		amountInput = payload.getInt();
+		amountOutput = payload.getInt();
 	}
 
 	@Override
@@ -210,10 +197,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super.handleModePacket(payload);
 
-		quantityInput = payload.getInt();
-		quantityOutput = payload.getInt();
-		enableInput = payload.getBool();
-		enableOutput = payload.getBool();
+		amountInput = payload.getInt();
+		amountOutput = payload.getInt();
 	}
 
 	/* ITilePacketHandler */
@@ -223,30 +208,12 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		super.handleTilePacket(payload, isServer);
 
 		if (!isServer) {
-			quantityInput = payload.getInt();
-			quantityOutput = payload.getInt();
-			enableInput = payload.getBool();
-			enableOutput = payload.getBool();
+			amountInput = payload.getInt();
+			amountOutput = payload.getInt();
 		} else {
 			payload.getInt();
 			payload.getInt();
-			payload.getBool();
-			payload.getBool();
 		}
-	}
-
-	/* IReconfigurableFacing */
-	@Override
-	public boolean setFacing(int side) {
-
-		if (side < 0 || side > 5) {
-			return false;
-		}
-		facing = (byte) side;
-		sideCache[facing] = 0;
-		markDirty();
-		sendUpdatePacket(Side.CLIENT);
-		return true;
 	}
 
 }

@@ -33,8 +33,8 @@ import java.util.UUID;
 public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, IWorldNameable {
 
 	/* AUGMENTS */
-	protected boolean[] augmentStatus = new boolean[4];
-	protected ItemStack[] augments = new ItemStack[4];
+	protected boolean[] augmentStatus = new boolean[0];
+	protected ItemStack[] augments = new ItemStack[0];
 
 	/* SECURITY */
 	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
@@ -46,8 +46,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected boolean hasAutoInput = false;
 	protected boolean hasAutoOutput = false;
 
-	protected boolean enableAutoInput = false;
-	protected boolean enableAutoOutput = false;
+	public boolean enableAutoInput = false;
+	public boolean enableAutoOutput = false;
 
 	protected boolean hasRedstoneControl = false;
 	protected boolean hasAdvRedstoneControl = false;
@@ -57,6 +57,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8, 8 };
 	protected static final int FLUID_TRANSFER[] = new int[] { 100, 200, 400, 800, 800 };
 	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 32, 64, 64 };
+
+	public boolean isAugmentable() {
+
+		return augments.length > 0;
+	}
 
 	public boolean isSecured() {
 
@@ -89,13 +94,15 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		this.level = level;
 
 		// Keep Old Augments
-		ItemStack[] tempAugments = new ItemStack[augments.length];
-		for (int i = 0; i < augments.length; i++) {
-			tempAugments[i] = augments[i] == null ? null : augments[i].copy();
-		}
-		augments = new ItemStack[level];
-		for (int i = 0; i < tempAugments.length; i++) {
-			augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
+		if (augments.length > 0) {
+			ItemStack[] tempAugments = new ItemStack[augments.length];
+			for (int i = 0; i < augments.length; i++) {
+				tempAugments[i] = augments[i] == null ? null : augments[i].copy();
+			}
+			augments = new ItemStack[level];
+			for (int i = 0; i < tempAugments.length; i++) {
+				augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
+			}
 		}
 		setLevelFlags();
 
@@ -114,15 +121,15 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		hasAdvRedstoneControl = false;
 
 		switch (level) {
-			default:		// Creative
-			case 4:			// Ender
-			case 3:			// Signalum
+			default:        // Creative
+			case 4:            // Ender
+			case 3:            // Signalum
 				hasAdvRedstoneControl = true;
-			case 2:			// Reinforced
+			case 2:            // Reinforced
 				hasRedstoneControl = true;
-			case 1:			// Hardened
+			case 1:            // Hardened
 				hasAutoInput = true;
-			case 0:			// Basic;
+			case 0:            // Basic;
 				hasAutoOutput = true;
 		}
 	}
@@ -183,11 +190,12 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		} else {
 			setOwnerName(name);
 		}
-
 		if (!enableSecurity()) {
 			access = AccessMode.PUBLIC;
 		}
 		level = nbt.getByte("Level");
+		enableAutoInput = nbt.getBoolean("EnableIn");
+		enableAutoOutput = nbt.getBoolean("EnableOut");
 		changeLevel(level);
 
 		readAugmentsFromNBT(nbt);
@@ -204,6 +212,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		nbt.setString("Owner", owner.getName());
 
 		nbt.setByte("Level", level);
+		nbt.setBoolean("EnableIn", enableAutoInput);
+		nbt.setBoolean("EnableOut", enableAutoOutput);
 
 		writeAugmentsToNBT(nbt);
 		return nbt;
@@ -250,8 +260,50 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		payload.addString(owner.getName());
 
 		payload.addByte(level);
+		payload.addBool(enableAutoInput);
+		payload.addBool(enableAutoOutput);
 
 		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(enableAutoInput);
+		payload.addBool(enableAutoOutput);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(enableAutoInput);
+		payload.addBool(enableAutoOutput);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		enableAutoInput = payload.getBool();
+		enableAutoOutput = payload.getBool();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		enableAutoInput = payload.getBool();
+		enableAutoOutput = payload.getBool();
 	}
 
 	/* ITilePacketHandler */
@@ -261,13 +313,14 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		super.handleTilePacket(payload, isServer);
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
-
 		if (!isServer) {
 			owner = CoFHProps.DEFAULT_OWNER;
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
 			byte curLevel = level;
 			level = payload.getByte();
+			enableAutoInput = payload.getBool();
+			enableAutoOutput = payload.getBool();
 
 			if (curLevel != level) {
 				changeLevel(level);
@@ -276,6 +329,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			payload.getUUID();
 			payload.getString();
 			payload.getByte();
+			payload.getBool();
+			payload.getBool();
 		}
 	}
 

@@ -14,7 +14,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerTransposer extends ContainerTEBase implements ISlotValidator {
 
-	TileTransposer myTile;
+	protected TileTransposer myTile;
 
 	public ContainerTransposer(InventoryPlayer inventory, TileEntity tile) {
 

@@ -84,20 +84,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
-		//		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
-		//			list.add(new ItemStack(item, 1, i));
-		//		}
-		list.add(new ItemStack(item, 1, Type.FURNACE.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.PULVERIZER.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.SAWMILL.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.SMELTER.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.INSOLATOR.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.CRUCIBLE.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.TRANSPOSER.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.CHARGER.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.CRAFTER.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.PRECIPITATOR.getMetadata()));
-		list.add(new ItemStack(item, 1, Type.EXTRUDER.getMetadata()));
+		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
+			if (enable[i]) {
+				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i)));
+			}
+		}
 	}
 
 	/* TYPE METHODS */
@@ -137,23 +128,23 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 				return new TileSmelter();
 			case INSOLATOR:
 				return new TileInsolator();
-			case COMPRESSOR:				// TODO
-				return null;
+			case COMPACTOR:
+				return new TileCompactor();
 			case CRUCIBLE:
 				return new TileCrucible();
 			case TRANSPOSER:
 				return new TileTransposer();
-			case TRANSCAPSULATOR:			// TODO
+			case TRANSCAPSULATOR:               // TODO
 				return null;
 			case CHARGER:
 				return new TileCharger();
-			case CENTRIFUGE:				// TODO
+			case CENTRIFUGE:                    // TODO
 				return null;
-			case CRAFTER:
-				return new TileCrafter();
-			case BREWER:					// TODO
+			case CRAFTER:                       // TODO
 				return null;
-			case ENCHANTER:					// TODO
+			case BREWER:                        // TODO
+				return null;
+			case ENCHANTER:                     // TODO
 				return null;
 			case PRECIPITATOR:
 				return new TilePrecipitator();
@@ -256,8 +247,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
 			TileMachineBase machine = ((TileMachineBase) tileEntity);
-			//TODO ISidedTexture needs to change to support layers + passes.
-			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
+			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -302,11 +292,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileSawmill.initialize();
 		TileSmelter.initialize();
 		TileInsolator.initialize();
-		// compressor
+		TileCompactor.initialize();
 		TileCrucible.initialize();
 		TileTransposer.initialize();
-		TileCharger.initialize();
 		// transcapsulator
+		TileCharger.initialize();
 		// centrifuge
 		// crafter
 		// brewer
@@ -319,11 +309,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
 		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
 		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
-		// compressor
+		machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
 		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
 		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
-		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		// transcapsulator
+		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		// centrifuge
 		// machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// brewer
@@ -483,43 +473,39 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		FURNACE(0, "furnace", machineFurnace),
-		PULVERIZER(1, "pulverizer", machinePulverizer),
-		SAWMILL(2, "sawmill", machineSawmill),
-		SMELTER(3, "smelter", machineSmelter),
-		INSOLATOR(4, "insolator", machineInsolator),
-		COMPRESSOR(5, "compressor", machineCompressor),
-		CRUCIBLE(6, "crucible", machineCrucible),
-		TRANSPOSER(7, "transposer", machineTransposer),
-		TRANSCAPSULATOR(8, "transcapsulator", machineTranscapsulator),
-		CHARGER(9, "charger", machineCharger),
-		CENTRIFUGE(10, "centrifuge", machineCentrifuge),
-		CRAFTER(11, "crafter", machineCrafter),
-		BREWER(12, "brewer", machineBrewer),
-		ENCHANTER(13, "enchanter", machineEnchanter),
-		PRECIPITATOR(14, "precipitator", machinePrecipitator),
-		EXTRUDER(15, "extruder", machineExtruder);
+		FURNACE(0, "furnace"),
+		PULVERIZER(1, "pulverizer"),
+		SAWMILL(2, "sawmill"),
+		SMELTER(3, "smelter"),
+		INSOLATOR(4, "insolator"),
+		COMPACTOR(5, "compactor"),
+		CRUCIBLE(6, "crucible"),
+		TRANSPOSER(7, "transposer"),
+		TRANSCAPSULATOR(8, "transcapsulator"),
+		CHARGER(9, "charger"),
+		CENTRIFUGE(10, "centrifuge"),
+		CRAFTER(11, "crafter"),
+		BREWER(12, "brewer"),
+		ENCHANTER(13, "enchanter"),
+		PRECIPITATOR(14, "precipitator"),
+		EXTRUDER(15, "extruder");
 		// @formatter:on
 
 		private static final BlockMachine.Type[] METADATA_LOOKUP = new BlockMachine.Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final ItemStack stack;
-
 		private final int light;
 
-		Type(int metadata, String name, ItemStack stack, int light) {
+		Type(int metadata, String name, int light) {
 
 			this.metadata = metadata;
 			this.name = name;
-			this.stack = stack;
-
 			this.light = light;
 		}
 
-		Type(int metadata, String name, ItemStack stack) {
+		Type(int metadata, String name) {
 
-			this(metadata, name, stack, 0);
+			this(metadata, name, 0);
 		}
 
 		public int getMetadata() {
@@ -531,11 +517,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		public String getName() {
 
 			return this.name;
-		}
-
-		public ItemStack getStack() {
-
-			return this.stack;
 		}
 
 		public int getLight() {
@@ -566,7 +547,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public static ItemStack machineSawmill;
 	public static ItemStack machineSmelter;
 	public static ItemStack machineInsolator;
-	public static ItemStack machineCompressor;
+	public static ItemStack machineCompactor;
 	public static ItemStack machineCrucible;
 	public static ItemStack machineTransposer;
 	public static ItemStack machineTranscapsulator;

@@ -12,7 +12,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerCrucible extends ContainerTEBase implements ISlotValidator {
 
-	TileCrucible myTile;
+	protected TileCrucible myTile;
 
 	public ContainerCrucible(InventoryPlayer inventory, TileEntity tile) {
 

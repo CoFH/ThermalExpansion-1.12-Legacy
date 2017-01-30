@@ -5,7 +5,6 @@ import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.api.crafting.recipes.ISmelterRecipe;
 import cofh.thermalfoundation.block.BlockGlass;
 import cofh.thermalfoundation.block.BlockGlassAlloy;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -456,7 +455,7 @@ public class SmelterManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSmelter implements ISmelterRecipe {
+	public static class RecipeSmelter {
 
 		final ItemStack primaryInput;
 		final ItemStack secondaryInput;
@@ -488,25 +487,21 @@ public class SmelterManager {
 			}
 		}
 
-		@Override
 		public ItemStack getPrimaryInput() {
 
 			return primaryInput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryInput() {
 
 			return secondaryInput.copy();
 		}
 
-		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -515,13 +510,11 @@ public class SmelterManager {
 			return secondaryOutput.copy();
 		}
 
-		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

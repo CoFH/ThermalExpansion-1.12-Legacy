@@ -11,13 +11,14 @@ public class TESounds {
 	}
 
 	static {
-		MACHINE_FURNACE = getRegisteredSoundEvent("blockMachineFurnace");
-		MACHINE_PULVERIZER = getRegisteredSoundEvent("blockMachinePulverizer");
-		MACHINE_SAWMILL = getRegisteredSoundEvent("blockMachineSawmill");
-		MACHINE_SMELTER = getRegisteredSoundEvent("blockMachineSmelter");
-		MACHINE_CRUCIBLE = getRegisteredSoundEvent("blockMachineCrucible");
-		MACHINE_TRANSPOSER = getRegisteredSoundEvent("blockMachineTransposer");
-		MACHINE_ACCUMULATOR = getRegisteredSoundEvent("blockMachineAccumulator");
+		MACHINE_FURNACE = getRegisteredSoundEvent("machine_furnace");
+		MACHINE_PULVERIZER = getRegisteredSoundEvent("machine_pulverizer");
+		MACHINE_SAWMILL = getRegisteredSoundEvent("machine_sawmill");
+		MACHINE_SMELTER = getRegisteredSoundEvent("machine_smelter");
+		MACHINE_CRUCIBLE = getRegisteredSoundEvent("machine_crucible");
+		MACHINE_TRANSPOSER = getRegisteredSoundEvent("machine_transposer");
+
+		DEVICE_WATER_GEN = getRegisteredSoundEvent("device_water_gen");
 	}
 
 	private static SoundEvent getRegisteredSoundEvent(String id) {
@@ -31,6 +32,7 @@ public class TESounds {
 	public static final SoundEvent MACHINE_SMELTER;
 	public static final SoundEvent MACHINE_CRUCIBLE;
 	public static final SoundEvent MACHINE_TRANSPOSER;
-	public static final SoundEvent MACHINE_ACCUMULATOR;
+
+	public static final SoundEvent DEVICE_WATER_GEN;
 
 }

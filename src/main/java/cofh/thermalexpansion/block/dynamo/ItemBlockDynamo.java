@@ -14,9 +14,15 @@ public class ItemBlockDynamo extends ItemBlockCore {
 
 	public static ItemStack setDefaultTag(ItemStack container) {
 
+		return setDefaultTag(container, (byte) 0);
+	}
+
+	public static ItemStack setDefaultTag(ItemStack container, byte level) {
+
 		ReconfigurableHelper.setFacing(container, 1);
 		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(container, 0);
+		container.getTagCompound().setByte("Level", level);
 
 		return container;
 	}

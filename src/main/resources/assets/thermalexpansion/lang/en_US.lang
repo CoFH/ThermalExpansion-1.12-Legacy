@@ -1,11 +1,13 @@
 #en_US
 
-info.thermalexpansion.device.activator=Does more than a tooltip can explain.
-info.thermalexpansion.device.breaker=Breaks blocks. Simple enough.
-info.thermalexpansion.device.buffer=Stores and transfers items.
-info.thermalexpansion.device.collector=Procures items from an area.
+info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
+info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
+info.thermalexpansion.automaton.collector=Procures items from an area.
+
+info.thermalexpansion.device.extender=Allows for more connections to a given block.
+info.thermalexpansion.device.item_buffer=Stores and transfers items.
 info.thermalexpansion.device.nullifier=Removes things from existence.
-info.thermalexpansion.device.watergen=Pulls water from surroundings.
+info.thermalexpansion.device.water_gen=Pulls water from surroundings.
 
 info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
 info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
@@ -18,6 +20,7 @@ info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
 info.thermalexpansion.machine.brewer=
 info.thermalexpansion.machine.centrifuge=
 info.thermalexpansion.machine.charger=Charges items with RF.
+info.thermalexpansion.machine.compactor=Compresses items.
 info.thermalexpansion.machine.crafter=Crafts items.
 info.thermalexpansion.machine.crucible=Melts items into fluids.
 info.thermalexpansion.machine.enchanter=
@@ -35,22 +38,25 @@ itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blocks
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
 itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Tools
 
-tab.thermalexpansion.device.activator.0=It slices! It dices! It pours things, it throws things!
-tab.thermalexpansion.device.activator.1=Maybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.
-tab.thermalexpansion.device.activator.2=Deceptively versatile!
-tab.thermalexpansion.device.breaker.0=Breaks all the things!
-tab.thermalexpansion.device.breaker.1=Keep face away from front of device.
-tab.thermalexpansion.device.buffer.0=Stores and transfers items. Can automatically extract.
-tab.thermalexpansion.device.buffer.1=Better than a Hopper, really!
-tab.thermalexpansion.device.buffer.2=Hold Shift or Ctrl to fine tune quantities.
-tab.thermalexpansion.device.collector.0=Picks up items in an area.
-tab.thermalexpansion.device.collector.1=Anything not nailed down is fair game!
-tab.thermalexpansion.device.collector.2=Probably won't steal from your inventory. Probably.
+tab.thermalexpansion.automaton.activator.0=It slices! It dices! It pours things, it throws things!
+tab.thermalexpansion.automaton.activator.1=Maybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.
+tab.thermalexpansion.automaton.activator.2=Deceptively versatile!
+tab.thermalexpansion.automaton.breaker.0=Breaks all the things!
+tab.thermalexpansion.automaton.breaker.1=Keep face away from front of device.
+tab.thermalexpansion.automaton.collector.0=Picks up items in an area.
+tab.thermalexpansion.automaton.collector.1=Anything not nailed down is fair game!
+tab.thermalexpansion.automaton.collector.2=Probably won't steal from your inventory. Probably.
+
+tab.thermalexpansion.device.extender.0=Point this at something with not enough sides.
+tab.thermalexpansion.device.extender.1=Ta-da! It now has more sides.
+tab.thermalexpansion.device.item_buffer.0=Stores and transfers items. Can automatically extract.
+tab.thermalexpansion.device.item_buffer.1=Better than a Hopper, really!
+tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quantities.
 tab.thermalexpansion.device.nullifier.0=Sends all the things to /dev/null!
 tab.thermalexpansion.device.nullifier.1=It is a horrible place; even fluids cannot escape.
-tab.thermalexpansion.device.watergen.0=Extracts water from its surroundings.
-tab.thermalexpansion.device.watergen.1=Place in a pool of water to speed this up.
-tab.thermalexpansion.device.watergen.2=Don't drown.
+tab.thermalexpansion.device.water_gen.0=Extracts water from its surroundings.
+tab.thermalexpansion.device.water_gen.1=Place in a pool of water to speed this up.
+tab.thermalexpansion.device.water_gen.2=Don't drown.
 
 tab.thermalexpansion.dynamo.0=Generation rate varies according to energy demand.
 tab.thermalexpansion.dynamo.compression.0=Generates Redstone Flux using fluid fuels and coolants.
@@ -97,12 +103,14 @@ tab.thermalexpansion.machine.transposer.0=Fills or empties things that hold flui
 tab.thermalexpansion.machine.transposer.1=Click the button to change between Fill and Extract modes.
 tab.thermalexpansion.machine.transposer.2=Typically reversible.
 
-tile.thermalexpansion.device.activator.name=Autonomous Activator
-tile.thermalexpansion.device.breaker.name=Terrain Smasher
-tile.thermalexpansion.device.buffer.name=Item Allocator
-tile.thermalexpansion.device.collector.name=Acquisition Apparatus
+tile.thermalexpansion.automaton.activator.name=Autonomous Activator
+tile.thermalexpansion.automaton.breaker.name=Terrain Smasher
+tile.thermalexpansion.automaton.collector.name=Acquisition Apparatus
+
+tile.thermalexpansion.device.extender.name=Surface Junction
+tile.thermalexpansion.device.item_buffer.name=Item Allocator
 tile.thermalexpansion.device.nullifier.name=Nullifier
-tile.thermalexpansion.device.watergen.name=Aqueous Accumulator
+tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
 
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo
 tile.thermalexpansion.dynamo.enervation.name=Enervation Dynamo
@@ -113,6 +121,7 @@ tile.thermalexpansion.dynamo.steam.name=Steam Dynamo
 tile.thermalexpansion.machine.brewer.name=
 tile.thermalexpansion.machine.centrifuge.name=
 tile.thermalexpansion.machine.charger.name=Energetic Infuser
+tile.thermalexpansion.machine.compactor.name=Compactor
 tile.thermalexpansion.machine.crafter.name=Cyclic Assembler
 tile.thermalexpansion.machine.crucible.name=Magma Crucible
 tile.thermalexpansion.machine.enchanter.name=

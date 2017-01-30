@@ -3,7 +3,6 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.thermalexpansion.api.crafting.recipes.ISawmillRecipe;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.entity.player.EntityPlayer;
@@ -217,7 +216,7 @@ public class SawmillManager {
 	}
 
 	/* RECIPE CLASS */
-	public static class RecipeSawmill implements ISawmillRecipe {
+	public static class RecipeSawmill {
 
 		final ItemStack input;
 		final ItemStack primaryOutput;
@@ -244,19 +243,16 @@ public class SawmillManager {
 			}
 		}
 
-		@Override
 		public ItemStack getInput() {
 
 			return input.copy();
 		}
 
-		@Override
 		public ItemStack getPrimaryOutput() {
 
 			return primaryOutput.copy();
 		}
 
-		@Override
 		public ItemStack getSecondaryOutput() {
 
 			if (secondaryOutput == null) {
@@ -265,13 +261,11 @@ public class SawmillManager {
 			return secondaryOutput.copy();
 		}
 
-		@Override
 		public int getSecondaryOutputChance() {
 
 			return secondaryChance;
 		}
 
-		@Override
 		public int getEnergy() {
 
 			return energy;

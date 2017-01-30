@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoCompression extends GuiDynamoBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "dynamo_compression.png");
+	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "compression.png");
 
 	public GuiDynamoCompression(InventoryPlayer inventory, TileEntity tile) {
 
@@ -24,8 +24,8 @@ public class GuiDynamoCompression extends GuiDynamoBase {
 
 		super.initGui();
 
-		addElement(new ElementFluidTank(this, 8, 9, myTile.getTank(0)));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)));
+		addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(0)));
+		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(1)));
 	}
 
 }

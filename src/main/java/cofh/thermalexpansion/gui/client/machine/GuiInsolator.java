@@ -2,7 +2,7 @@ package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.block.machine.TileInsolator;
-import cofh.thermalexpansion.gui.client.GuiTEBase;
+import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.init.TEProps;
@@ -10,7 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiInsolator extends GuiTEBase {
+public class GuiInsolator extends GuiPoweredBase {
 
 	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "insolator.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);

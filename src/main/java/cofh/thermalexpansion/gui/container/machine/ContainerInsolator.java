@@ -13,33 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 
 public class ContainerInsolator extends ContainerTEBase {
 
-	TileInsolator myTile;
-
-	ISlotValidator lockSlot = new ISlotValidator() {
-
-		@Override
-		public boolean isItemValid(ItemStack stack) {
-
-			if (myTile.lockPrimary) {
-				return InsolatorManager.isItemFertilizer(stack);
-			}
-			return InsolatorManager.isItemValid(stack);
-		}
-
-	};
-
-	ISlotValidator otherSlot = new ISlotValidator() {
-
-		@Override
-		public boolean isItemValid(ItemStack stack) {
-
-			if (myTile.lockPrimary) {
-				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
-			}
-			return InsolatorManager.isItemValid(stack);
-		}
-
-	};
+	protected TileInsolator myTile;
 
 	public ContainerInsolator(InventoryPlayer inventory, TileEntity tile) {
 
@@ -52,5 +26,31 @@ public class ContainerInsolator extends ContainerTEBase {
 		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 116, 53));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
+
+	private ISlotValidator lockSlot = new ISlotValidator() {
+
+		@Override
+		public boolean isItemValid(ItemStack stack) {
+
+			if (myTile.lockPrimary) {
+				return InsolatorManager.isItemFertilizer(stack);
+			}
+			return InsolatorManager.isItemValid(stack);
+		}
+
+	};
+
+	private ISlotValidator otherSlot = new ISlotValidator() {
+
+		@Override
+		public boolean isItemValid(ItemStack stack) {
+
+			if (myTile.lockPrimary) {
+				return !InsolatorManager.isItemFertilizer(stack) && InsolatorManager.isItemValid(stack);
+			}
+			return InsolatorManager.isItemValid(stack);
+		}
+
+	};
 
 }
