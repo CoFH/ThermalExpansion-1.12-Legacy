@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -62,8 +62,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		passiveGen = ThermalExpansion.CONFIG.getConfiguration().get(category, "PassiveGeneration", false, comment).getBoolean();
 	}
 
-	private static int genRate = 50 * CoFHProps.TIME_CONSTANT;
-	private static int genRatePassive = 1 * CoFHProps.TIME_CONSTANT;
+	private static int genRate = 50 * CoreProps.TIME_CONSTANT;
+	private static int genRatePassive = 1 * CoreProps.TIME_CONSTANT;
 	private static boolean passiveGen = false;
 
 	private int adjacentSources = -1;
@@ -290,9 +290,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
 					if (from == null || sideCache[from.ordinal()] < 1) {
-						return null;
-					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);

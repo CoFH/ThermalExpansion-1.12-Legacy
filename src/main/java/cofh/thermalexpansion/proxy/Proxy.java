@@ -24,7 +24,7 @@ public class Proxy {
 	/* REGISTRATION */
 	public void registerEntities() {
 
-		EntityFlorb.initialize(1);
+		EntityFlorb.initialize(0);
 	}
 
 	/* HELPERS */

@@ -8,9 +8,9 @@ import cofh.api.energy.IEnergyStorage;
 import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -678,7 +678,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return CoFHProps.EMPTY_INVENTORY;
+		return CoreProps.EMPTY_INVENTORY;
 	}
 
 	@Override

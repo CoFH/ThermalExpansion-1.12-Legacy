@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.item.tool;
 
 import cofh.api.item.IMultiModeItem;
-import cofh.core.util.KeyBindingMultiMode;
+import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -46,7 +46,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		addInformationDelegate(stack, player, list, check);
 
 		if (getNumModes(stack) > 0) {
-			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " " + Keyboard.getKeyName(KeyBindingMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
+			list.add(StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("info.cofh.press") + " " + Keyboard.getKeyName(KeyBindingItemMultiMode.instance.getKey()) + " " + StringHelper.localize("info.cofh.modeChange") + StringHelper.END);
 		}
 	}
 

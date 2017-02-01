@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
@@ -53,6 +53,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 	public TileAutomatonBase() {
 
 		sideConfig = defaultSideConfig[this.getType()];
+		enableAutoOutput = true;
 		setDefaultSides();
 	}
 
@@ -78,6 +79,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();
+		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
 	}
 
@@ -87,7 +89,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 			if (!isEmpty()) {
 				outputBuffer();
 			}
@@ -95,6 +97,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 				activate();
 			}
 		}
+		chargeEnergy();
 	}
 
 	protected void activate() {

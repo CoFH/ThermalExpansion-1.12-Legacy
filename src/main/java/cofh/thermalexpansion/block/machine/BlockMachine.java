@@ -246,8 +246,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
-			TileMachineBase machine = ((TileMachineBase) tileEntity);
-			return machine.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			TileMachineBase tile = ((TileMachineBase) tileEntity);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}

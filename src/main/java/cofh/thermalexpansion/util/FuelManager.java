@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.TileDynamoCompression;
@@ -19,7 +19,7 @@ public class FuelManager {
 	public static ConfigHandler configFuels = new ConfigHandler(ThermalExpansion.VERSION);
 
 	static {
-		configFuels.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/thermalexpansion/fuels.cfg"), true));
+		configFuels.setConfiguration(new Configuration(new File(CoreProps.configDir, "cofh/thermalexpansion/fuels.cfg"), true));
 	}
 
 	private FuelManager() {
@@ -119,7 +119,7 @@ public class FuelManager {
 			String category = "Fuels.Magmatic";
 			configFuels.getCategory(category).setComment("You can add fuels to the Magmatic Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addMagmaticFuel("lava", configFuels.get(category, "lava", CoFHProps.LAVA_RF * 9 / 10));
+			addMagmaticFuel("lava", configFuels.get(category, "lava", CoreProps.LAVA_RF * 9 / 10));
 			addMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
 
 		}
@@ -188,7 +188,7 @@ public class FuelManager {
 
 			Set<String> catKeys = configFuels.getCategoryKeys(category);
 			for (String s : catKeys) {
-				addMagmaticFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, CoFHProps.LAVA_RF * 9 / 10));
+				addMagmaticFuel(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, CoreProps.LAVA_RF * 9 / 10));
 			}
 		}
 

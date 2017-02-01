@@ -204,8 +204,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileDeviceBase) {
-			TileDeviceBase device = ((TileDeviceBase) tileEntity);
-			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			TileDeviceBase tile = ((TileDeviceBase) tileEntity);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}

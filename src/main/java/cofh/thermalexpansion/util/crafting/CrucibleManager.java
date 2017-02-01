@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.lib.inventory.ComparableItemStackSafe;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
@@ -43,9 +43,9 @@ public class CrucibleManager {
 
 		/* LAVA */
 		{
-			int netherrack_RF = CoFHProps.LAVA_RF * 6 / 10;
-			int blaze_rod_RF = CoFHProps.LAVA_RF / 10;
-			int rock_RF = CoFHProps.LAVA_RF * 8 / 5;
+			int netherrack_RF = CoreProps.LAVA_RF * 6 / 10;
+			int blaze_rod_RF = CoreProps.LAVA_RF / 10;
+			int rock_RF = CoreProps.LAVA_RF * 8 / 5;
 
 			addRecipe(netherrack_RF, new ItemStack(Blocks.NETHERRACK), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME));
 			addRecipe(blaze_rod_RF, new ItemStack(Items.BLAZE_ROD), new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME / 4));

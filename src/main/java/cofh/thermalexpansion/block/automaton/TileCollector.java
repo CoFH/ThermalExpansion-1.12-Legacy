@@ -1,8 +1,9 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.RegistrySocial;
+import cofh.core.util.RegistrySocial;
 import cofh.lib.util.helpers.SecurityHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.automaton.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
@@ -46,6 +47,8 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 
 	public static void config() {
 
+		String category = "Automaton.Collector";
+		BlockAutomaton.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private boolean ignoreTeam = true;
@@ -54,6 +57,15 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 
 	/* AUGMENTS */
 	public boolean augmentEntityCollection;
+
+	public TileCollector() {
+
+		super();
+		inventory = new ItemStack[1];
+
+		radius = 1;
+		depth = 1;
+	}
 
 	@Override
 	public int getType() {
@@ -71,22 +83,22 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 		AxisAlignedBB area;
 		switch (facing) {
 			case 0:
-				area = new AxisAlignedBB(pos.add(-radius, -depth, -radius), pos.add(radius, 0, radius));
+				area = new AxisAlignedBB(pos.add(-radius, -1 - depth, -radius), pos.add(1 + radius, 0, 1 + radius));
 				break;
 			case 1:
-				area = new AxisAlignedBB(pos.add(-radius, 0, -radius), pos.add(radius, 1, radius));
+				area = new AxisAlignedBB(pos.add(-radius, 1, -radius), pos.add(1 + radius, 2 + depth, 1 + radius));
 				break;
 			case 2:
-				area = new AxisAlignedBB(pos.add(-radius, -radius, -1), pos.add(radius, radius, 0));
+				area = new AxisAlignedBB(pos.add(-radius, -radius, -1 - depth), pos.add(1 + radius, 1 + radius, 0));
 				break;
 			case 3:
-				area = new AxisAlignedBB(pos.add(-radius, -radius, 0), pos.add(radius, radius, 1));
+				area = new AxisAlignedBB(pos.add(-radius, -radius, 1), pos.add(1 + radius, 1 + radius, 2 + depth));
 				break;
 			case 4:
-				area = new AxisAlignedBB(pos.add(-1, -radius, -radius), pos.add(0, radius, radius));
+				area = new AxisAlignedBB(pos.add(-1 - depth, -radius, -radius), pos.add(0, 1 + radius, 1 + radius));
 				break;
 			default:
-				area = new AxisAlignedBB(pos.add(0, -radius, -radius), pos.add(1, radius, radius));
+				area = new AxisAlignedBB(pos.add(1, -radius, -radius), pos.add(2 + depth, 1 + radius, 1 + radius));
 				break;
 		}
 		List<EntityItem> entityItems = worldObj.getEntitiesWithinAABB(EntityItem.class, area);

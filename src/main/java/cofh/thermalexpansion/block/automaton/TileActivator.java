@@ -1,8 +1,7 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.energy.EnergyStorage;
-import cofh.core.CoFHProps;
-import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
@@ -25,7 +24,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerDestroyItemEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
@@ -61,7 +59,9 @@ public class TileActivator extends TileAutomatonBase {
 
 	public static void config() {
 
-		String category = "Device.Activator";
+		String category = "Automaton.Activator";
+		BlockAutomaton.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
 		int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 0, 500);
 		ThermalExpansion.CONFIG.set("Device.Activator", "BasePower", maxPower);
 		energyConfig = new EnergyConfig();
@@ -78,7 +78,6 @@ public class TileActivator extends TileAutomatonBase {
 	public boolean actsSneaking = false;
 	public byte angle = 1;
 
-	CoFHFakePlayer myFakePlayer;
 	int slotTracker = 0;
 	int[] tracker;
 
@@ -105,19 +104,9 @@ public class TileActivator extends TileAutomatonBase {
 	}
 
 	@Override
-	public void cofh_validate() {
-
-		if (ServerHelper.isServerWorld(worldObj)) {
-			myFakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
-		}
-		super.cofh_validate();
-	}
-
-	@Override
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();
-		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 2;
 	}
 
@@ -129,10 +118,10 @@ public class TileActivator extends TileAutomatonBase {
 		} else if (!inWorld) {
 			cofh_validate();
 		}
-		if (!redstoneControlOrDisable() && myFakePlayer.activeItemStack != null) {
-			myFakePlayer.stopActiveHand();
-		} else if (myFakePlayer.ping != worldObj.getTotalWorldTime()) {
-			myFakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
+		if (!redstoneControlOrDisable() && fakePlayer.activeItemStack != null) {
+			fakePlayer.stopActiveHand();
+		} else if (fakePlayer.ping != worldObj.getTotalWorldTime()) {
+			fakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 			IBlockState state = worldObj.getBlockState(offsetPos);
 
@@ -151,29 +140,29 @@ public class TileActivator extends TileAutomatonBase {
 			cofh_validate();
 		}
 		if (hasEnergy(ACTIVATION_ENERGY)) {
-			myFakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
+			fakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
 			if (!isActive) {
 				callBlockUpdate();
 			}
 			isActive = true;
 			boolean work = false;
 
-			if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+			if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 				work = doDeploy();
 			} else {
 
-				if (leftClick && myFakePlayer.interactionManager.durabilityRemainingOnBlock > -1) {
+				if (leftClick && fakePlayer.interactionManager.durabilityRemainingOnBlock > -1) {
 					work = true;
 					int tickSlot = getNextStackIndex();
-					myFakePlayer.interactionManager.updateBlockRemoving();
-					if (myFakePlayer.interactionManager.durabilityRemainingOnBlock >= 9) {
-						work = simLeftClick(myFakePlayer, getStackInSlot(tickSlot), facing);
+					fakePlayer.interactionManager.updateBlockRemoving();
+					if (fakePlayer.interactionManager.durabilityRemainingOnBlock >= 9) {
+						work = simLeftClick(fakePlayer, getStackInSlot(tickSlot), facing);
 					}
-				} else if (!leftClick && myFakePlayer.activeItemStack != null) {
+				} else if (!leftClick && fakePlayer.activeItemStack != null) {
 					work = true;
 					int slot = getNextStackIndex();
-					myFakePlayer.inventory.currentItem = slot;
-					myFakePlayer.tickItemInUse(getStackInSlot(slot));
+					fakePlayer.inventory.currentItem = slot;
+					fakePlayer.tickItemInUse(getStackInSlot(slot));
 					checkItemsUpdated();
 				}
 			}
@@ -197,9 +186,9 @@ public class TileActivator extends TileAutomatonBase {
 
 		boolean r = false;
 		if (leftClick) {
-			r = simLeftClick(myFakePlayer, theStack, facing);
+			r = simLeftClick(fakePlayer, theStack, facing);
 		} else {
-			r = simRightClick(myFakePlayer, theStack, getPos().offset(EnumFacing.VALUES[facing]), EnumFacing.UP);
+			r = simRightClick(fakePlayer, theStack, getPos().offset(EnumFacing.VALUES[facing]), EnumFacing.UP);
 		}
 		if (theStack != null && theStack.stackSize <= 0) {
 			setInventorySlotContents(tickSlot, null);
@@ -210,7 +199,7 @@ public class TileActivator extends TileAutomatonBase {
 
 	public void checkItemsUpdated() {
 
-		ItemStack[] pInventory = myFakePlayer.inventory.mainInventory;
+		ItemStack[] pInventory = fakePlayer.inventory.mainInventory;
 		int i = 0;
 		for (; i < MAX_SLOT; i++) {
 			setInventorySlotContents(i, pInventory[i]);
@@ -230,7 +219,7 @@ public class TileActivator extends TileAutomatonBase {
 
 		// FIXME: is this called too frequently? round-robin is wrong
 
-		if ((leftClick && myFakePlayer.interactionManager.durabilityRemainingOnBlock > -1) || myFakePlayer.activeItemStack != null) {
+		if ((leftClick && fakePlayer.interactionManager.durabilityRemainingOnBlock > -1) || fakePlayer.activeItemStack != null) {
 			return slotTracker;
 		}
 		if (tickSlot == 0) {
@@ -283,7 +272,7 @@ public class TileActivator extends TileAutomatonBase {
 	public void updateFakePlayer(int tickSlot) {
 
 		for (int i = 0; i < MAX_SLOT; i++) {
-			myFakePlayer.inventory.mainInventory[i] = getStackInSlot(i);
+			fakePlayer.inventory.mainInventory[i] = getStackInSlot(i);
 		}
 		double x = getPos().getX() + 0.5D;
 		double y = getPos().getY() - 1.1D;
@@ -322,21 +311,21 @@ public class TileActivator extends TileAutomatonBase {
 				x += 0.51D;
 				y += .5D;
 		}
-		myFakePlayer.setPositionAndRotation(x, y, z, yaw, pitch);
-		myFakePlayer.setRotationYawHead(yaw);
-		myFakePlayer.isSneaking = actsSneaking;
-		myFakePlayer.eyeHeight = 0.4F;
-		myFakePlayer.setItemInHand(tickSlot);
+		fakePlayer.setPositionAndRotation(x, y, z, yaw, pitch);
+		fakePlayer.setRotationYawHead(yaw);
+		fakePlayer.isSneaking = actsSneaking;
+		fakePlayer.eyeHeight = 0.4F;
+		fakePlayer.setItemInHand(tickSlot);
 
-		myFakePlayer.onUpdate();
+		fakePlayer.onUpdate();
 	}
 
 	@Override
 	public boolean rotateBlock() {
 
 		if (inWorld && ServerHelper.isServerWorld(worldObj)) {
-			myFakePlayer.interactionManager.cancelDestroyingBlock();
-			myFakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
+			fakePlayer.interactionManager.cancelDestroyingBlock();
+			fakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
 		}
 		return super.rotateBlock();
 	}
@@ -346,19 +335,19 @@ public class TileActivator extends TileAutomatonBase {
 		BlockPos offsetPos = getPos().offset(EnumFacing.VALUES[facing]);
 		IBlockState state = worldObj.getBlockState(offsetPos);
 		if (!state.getBlock().isAir(state, worldObj, offsetPos)) {
-			if (myFakePlayer.interactionManager.durabilityRemainingOnBlock == -1) {
-				myFakePlayer.interactionManager.onBlockClicked(offsetPos, EnumFacing.VALUES[facing ^ 1]);
-			} else if (myFakePlayer.interactionManager.durabilityRemainingOnBlock >= 9) {
-				myFakePlayer.interactionManager.blockRemoving(offsetPos);
-				myFakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
+			if (fakePlayer.interactionManager.durabilityRemainingOnBlock == -1) {
+				fakePlayer.interactionManager.onBlockClicked(offsetPos, EnumFacing.VALUES[facing ^ 1]);
+			} else if (fakePlayer.interactionManager.durabilityRemainingOnBlock >= 9) {
+				fakePlayer.interactionManager.blockRemoving(offsetPos);
+				fakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
 
 				if (deployingStack != null) {
-					deployingStack.getItem().onBlockDestroyed(deployingStack, worldObj, state, offsetPos, myFakePlayer);
+					deployingStack.getItem().onBlockDestroyed(deployingStack, worldObj, state, offsetPos, fakePlayer);
 				}
 			}
 		} else {
-			myFakePlayer.interactionManager.cancelDestroyingBlock();
-			myFakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
+			fakePlayer.interactionManager.cancelDestroyingBlock();
+			fakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
 			List<Entity> entities = worldObj.getEntitiesWithinAABB(Entity.class, BlockHelper.getAdjacentAABBForSide(getPos(), facing), selectAttackable);
 
 			if (entities.size() == 0) {
@@ -383,7 +372,7 @@ public class TileActivator extends TileAutomatonBase {
 				//	return false;
 				//}
 				ActionResult<ItemStack> result = deployingStack.useItemRightClick(worldObj, thePlayer, EnumHand.MAIN_HAND);
-				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, result.getResult() == null || result.getResult().stackSize <= 0 ? null : result.getResult());
+				thePlayer.inventory.setInventorySlotContents(fakePlayer.inventory.currentItem, result.getResult() == null || result.getResult().stackSize <= 0 ? null : result.getResult());
 			}
 		}
 		return true;
@@ -456,7 +445,7 @@ public class TileActivator extends TileAutomatonBase {
 			}
 			if (deployingStack.stackSize <= 0) {
 				MinecraftForge.EVENT_BUS.post(new PlayerDestroyItemEvent(thePlayer, deployingStack, EnumHand.MAIN_HAND));
-				thePlayer.inventory.setInventorySlotContents(myFakePlayer.inventory.currentItem, null);
+				thePlayer.inventory.setInventorySlotContents(fakePlayer.inventory.currentItem, null);
 			}
 			return true;
 		}

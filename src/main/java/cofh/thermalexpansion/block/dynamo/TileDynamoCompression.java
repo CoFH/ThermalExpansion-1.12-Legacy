@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;

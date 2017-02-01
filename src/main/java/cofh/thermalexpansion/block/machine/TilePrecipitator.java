@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;

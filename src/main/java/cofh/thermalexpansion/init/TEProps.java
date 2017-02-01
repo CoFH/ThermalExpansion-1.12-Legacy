@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.init;
 
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
+import cofh.thermalexpansion.gui.CreativeTabTE;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
@@ -18,6 +20,11 @@ public class TEProps {
 
 	public static void preInit() {
 
+		String category;
+		String comment;
+
+		/* CREATIVE TABS */
+		ThermalExpansion.tabCommon = new CreativeTabTE();
 	}
 
 	public static void loadComplete() {
@@ -39,6 +46,7 @@ public class TEProps {
 	public static final String PATH_RENDER = PATH_GFX + "blocks/";
 	public static final String PATH_ELEMENTS = PATH_GUI + "elements/";
 
+	public static final String PATH_GUI_AUTOMATON = PATH_GUI + "automaton/";
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";

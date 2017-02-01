@@ -4,7 +4,7 @@ import codechicken.lib.util.ServerUtils;
 import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.ISecurable;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -37,7 +37,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected ItemStack[] augments = new ItemStack[0];
 
 	/* SECURITY */
-	protected GameProfile owner = CoFHProps.DEFAULT_OWNER;
+	protected GameProfile owner = CoreProps.DEFAULT_OWNER;
 	protected AccessMode access = AccessMode.PUBLIC;
 	protected boolean canAccess = true;
 
@@ -180,7 +180,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		super.readFromNBT(nbt);
 
-		owner = CoFHProps.DEFAULT_OWNER;
+		owner = CoreProps.DEFAULT_OWNER;
 		access = AccessMode.values()[nbt.getByte("Access")];
 
 		String uuid = nbt.getString("OwnerUUID");
@@ -314,7 +314,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
 		if (!isServer) {
-			owner = CoFHProps.DEFAULT_OWNER;
+			owner = CoreProps.DEFAULT_OWNER;
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
 			byte curLevel = level;
@@ -413,7 +413,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (server == null) {
 			return false;
 		}
-		if (Strings.isNullOrEmpty(name) || CoFHProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
+		if (Strings.isNullOrEmpty(name) || CoreProps.DEFAULT_OWNER.getName().equalsIgnoreCase(name)) {
 			return false;
 		}
 		String uuid = PreYggdrasilConverter.convertMobOwnerIfNeeded(server, name);

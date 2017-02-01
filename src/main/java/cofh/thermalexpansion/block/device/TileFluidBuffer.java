@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -69,7 +69,7 @@ public class TileFluidBuffer extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoFHProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
 			transferOutput();
 			transferInput();
 		}

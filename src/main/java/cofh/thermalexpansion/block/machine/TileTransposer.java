@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;

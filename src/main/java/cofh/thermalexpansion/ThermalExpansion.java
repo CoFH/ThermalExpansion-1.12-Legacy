@@ -1,9 +1,8 @@
 package cofh.thermalexpansion;
 
 import cofh.CoFHCore;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
-import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEProps;
@@ -53,7 +52,7 @@ public class ThermalExpansion {
 	public static final ConfigHandler CONFIG_CLIENT = new ConfigHandler(VERSION);
 	public static final GuiHandler GUI_HANDLER = new GuiHandler();
 
-	public static CreativeTabs tabCommon = new CreativeTabTE();
+	public static CreativeTabs tabCommon;
 	public static CreativeTabs tabBlocks = tabCommon;
 	public static CreativeTabs tabItems = tabCommon;
 	public static CreativeTabs tabTools = tabCommon;
@@ -68,8 +67,8 @@ public class ThermalExpansion {
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 
-		CONFIG.setConfiguration(new Configuration(new File(CoFHProps.configDir, "/cofh/" + MOD_ID + "/common.cfg"), true));
-		CONFIG_CLIENT.setConfiguration(new Configuration(new File(CoFHProps.configDir, "/cofh/" + MOD_ID + "/client.cfg"), true));
+		CONFIG.setConfiguration(new Configuration(new File(CoreProps.configDir, "/cofh/" + MOD_ID + "/common.cfg"), true));
+		CONFIG_CLIENT.setConfiguration(new Configuration(new File(CoreProps.configDir, "/cofh/" + MOD_ID + "/client.cfg"), true));
 
 		TEProps.preInit();
 		TEBlocks.preInit();
@@ -124,9 +123,9 @@ public class ThermalExpansion {
 	}
 
 	@EventHandler
-	public void handleIMC(IMCEvent theIMC) {
+	public void handleIMC(IMCEvent event) {
 
-		IMCHandler.instance.handleIMC(theIMC.getMessages());
+		IMCHandler.instance.handleIMC(event.getMessages());
 	}
 
 	/* HELPERS */

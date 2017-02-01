@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.init;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -28,7 +28,7 @@ public class TEFlorbs {
 
 	public static void preInit() {
 
-		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoFHProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
+		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoreProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
 
 		String category = "General";
 		String comment = "This allows you to disable recipes for Florbs. It also means that you actively dislike fun things.";

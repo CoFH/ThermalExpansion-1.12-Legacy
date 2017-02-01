@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.automaton;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.helpers.*;
-import cofh.thermalexpansion.block.device.BlockDevice;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -40,7 +39,7 @@ public class ItemBlockAutomaton extends ItemBlockCore {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.automaton." + BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.automaton." + BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
 	}
 
 	@Override
@@ -55,7 +54,7 @@ public class ItemBlockAutomaton extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, list);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.automaton." + BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		list.add(StringHelper.getInfoText("info.thermalexpansion.automaton." + BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
 
 		RedstoneControlHelper.addRSControlInformation(stack, list);
 	}

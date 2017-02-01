@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -177,7 +177,7 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return isSideAccessible(side) ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return isSideAccessible(side) ? SLOTS : CoreProps.EMPTY_INVENTORY;
 	}
 
 	@Override

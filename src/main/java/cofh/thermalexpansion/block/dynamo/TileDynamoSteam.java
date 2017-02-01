@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -260,7 +260,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoreProps.EMPTY_INVENTORY;
 	}
 
 	/* CAPABILITIES */
@@ -377,7 +377,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (item == Items.STICK || item instanceof ItemBlock && ((ItemBlock) item).block == Blocks.SAPLING) {
 			return otherRF;
 		}
-		return GameRegistry.getFuelValue(stack) * CoFHProps.RF_PER_MJ * 3 / 2;
+		return GameRegistry.getFuelValue(stack) * CoreProps.RF_PER_MJ * 3 / 2;
 	}
 
 }

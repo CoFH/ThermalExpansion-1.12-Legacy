@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.util.fluid.FluidTankCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -277,7 +277,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoFHProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoreProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */

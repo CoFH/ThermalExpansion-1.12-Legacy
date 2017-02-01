@@ -1,23 +1,18 @@
 package cofh.thermalexpansion.init;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-/**
- * Holds references for TE's Textures.
- *
- * TODO Order entries based on Registry order.
- *
- * Created by covers1624 on 17/01/2017.
- */
 public class TETextures {
 
-	@SubscribeEvent
-	public void registerIcons(TextureStitchEvent.Pre event) {
+	private TETextures() {
+
+	}
+
+	public static void registerIcons(TextureStitchEvent.Pre event) {
 
 		TextureMap map = event.getMap();
 
@@ -204,7 +199,7 @@ public class TETextures {
 	// Bouncer for registering ColorBlind textures.
 	private static TextureAtlasSprite registerCB(TextureMap map, String sprite) {
 
-		if (CoFHProps.enableColorBlindTextures) {
+		if (CoreProps.enableColorBlindTextures) {
 			sprite += CB_POSTFIX;
 		}
 		return register(map, sprite);

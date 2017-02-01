@@ -9,14 +9,14 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCollector extends GuiPoweredBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "breaker.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_AUTOMATON + "breaker.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	public GuiCollector(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.collector", 3);
+		generateInfo("tab.thermalexpansion.automaton.collector", 3);
 	}
 
 }

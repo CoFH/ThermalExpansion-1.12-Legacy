@@ -112,6 +112,10 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 			return null;
 		}
 		switch (Type.byMetadata(metadata)) {
+			case BREAKER:
+				return new TileBreaker();
+			case COLLECTOR:
+				return new TileCollector();
 			default:
 				return null;
 		}
@@ -124,6 +128,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 			TileAutomatonBase tile = (TileAutomatonBase) world.getTileEntity(pos);
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
+			tile.installAugments();
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
@@ -176,7 +181,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
 
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[metadata % Type.values().length];
 	}
 
 	@Override
@@ -184,8 +189,8 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileAutomatonBase) {
-			TileAutomatonBase device = ((TileAutomatonBase) tileEntity);
-			return device.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			TileAutomatonBase tile = ((TileAutomatonBase) tileEntity);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -222,11 +227,11 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 	public boolean initialize() {
 
-		TileActivator.initialize();
+		// TileActivator.initialize();
 		TileBreaker.initialize();
 		TileCollector.initialize();
 
-		automatonActivator = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.ACTIVATOR.getMetadata()));
+		//automatonActivator = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.ACTIVATOR.getMetadata()));
 		automatonBreaker = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
 		automatonCollector = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
 

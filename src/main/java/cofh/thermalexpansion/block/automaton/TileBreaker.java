@@ -4,10 +4,12 @@ import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.automaton.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
@@ -40,10 +42,21 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 
 	public static void config() {
 
+		String category = "Automaton.Breaker";
+		BlockAutomaton.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	/* AUGMENTS */
 	public boolean augmentFluid;
+
+	public TileBreaker() {
+
+		super();
+		inventory = new ItemStack[1];
+
+		radius = 0;
+		depth = 0;
+	}
 
 	@Override
 	public int getType() {
@@ -62,22 +75,22 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 
 		switch (facing) {
 			case 0:
-				area = BlockPos.getAllInBox(pos.add(-radius, -depth, -radius), pos.add(radius, 0, radius));
+				area = BlockPos.getAllInBox(pos.add(-radius, -1 - depth, -radius), pos.add(radius, -1, radius));
 				break;
 			case 1:
-				area = BlockPos.getAllInBox(pos.add(-radius, 0, -radius), pos.add(radius, 1, radius));
+				area = BlockPos.getAllInBox(pos.add(-radius, 1, -radius), pos.add(radius, 1 + depth, radius));
 				break;
 			case 2:
-				area = BlockPos.getAllInBox(pos.add(-radius, -radius, -1), pos.add(radius, radius, 0));
+				area = BlockPos.getAllInBox(pos.add(-radius, -radius, -1 - depth), pos.add(radius, radius, -1));
 				break;
 			case 3:
-				area = BlockPos.getAllInBox(pos.add(-radius, -radius, 0), pos.add(radius, radius, 1));
+				area = BlockPos.getAllInBox(pos.add(-radius, -radius, 1), pos.add(radius, radius, 1 + depth));
 				break;
 			case 4:
-				area = BlockPos.getAllInBox(pos.add(-1, -radius, -radius), pos.add(0, radius, radius));
+				area = BlockPos.getAllInBox(pos.add(-1 - depth, -radius, -radius), pos.add(-1, radius, radius));
 				break;
 			default:
-				area = BlockPos.getAllInBox(pos.add(0, -radius, -radius), pos.add(1, radius, radius));
+				area = BlockPos.getAllInBox(pos.add(1, -radius, -radius), pos.add(1 + depth, radius, radius));
 				break;
 		}
 		for (BlockPos target : area) {

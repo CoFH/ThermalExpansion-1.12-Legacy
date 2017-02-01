@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.core.CoFHProps;
+import cofh.core.init.CoreProps;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import com.google.gson.JsonElement;
@@ -36,7 +36,7 @@ public class TECraftingParser {
 
 	public static void initialize() {
 
-		craftingFolder = new File(CoFHProps.configDir, "/cofh/" + ThermalExpansion.MOD_ID + "/crafting/");
+		craftingFolder = new File(CoreProps.configDir, "/cofh/" + ThermalExpansion.MOD_ID + "/crafting/");
 
 		if (!craftingFolder.exists()) {
 			try {
