@@ -439,9 +439,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 						}
 					}.start();
 				}
-				if (inWorld) {
-					markChunkDirty();
-				}
+				markChunkDirty();
+
 				return true;
 			}
 		}

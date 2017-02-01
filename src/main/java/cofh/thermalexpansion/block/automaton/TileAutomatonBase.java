@@ -42,12 +42,11 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 	/* AUGMENTS */
 
 	@Override
-	public void cofh_validate() {
+	public void onLoad() {
 
 		if (ServerHelper.isServerWorld(worldObj)) {
 			fakePlayer = new CoFHFakePlayer((WorldServer) worldObj);
 		}
-		super.cofh_validate();
 	}
 
 	public TileAutomatonBase() {

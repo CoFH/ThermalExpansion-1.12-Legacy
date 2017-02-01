@@ -115,8 +115,6 @@ public class TileActivator extends TileAutomatonBase {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
-		} else if (!inWorld) {
-			cofh_validate();
 		}
 		if (!redstoneControlOrDisable() && fakePlayer.activeItemStack != null) {
 			fakePlayer.stopActiveHand();
@@ -136,8 +134,6 @@ public class TileActivator extends TileAutomatonBase {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
-		} else if (!inWorld) {
-			cofh_validate();
 		}
 		if (hasEnergy(ACTIVATION_ENERGY)) {
 			fakePlayer.ping = (int) (worldObj.getTotalWorldTime() & 0x7FFFFFFFL);
@@ -323,7 +319,7 @@ public class TileActivator extends TileAutomatonBase {
 	@Override
 	public boolean rotateBlock() {
 
-		if (inWorld && ServerHelper.isServerWorld(worldObj)) {
+		if (ServerHelper.isServerWorld(worldObj)) {
 			fakePlayer.interactionManager.cancelDestroyingBlock();
 			fakePlayer.interactionManager.durabilityRemainingOnBlock = -1;
 		}

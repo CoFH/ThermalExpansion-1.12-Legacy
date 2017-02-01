@@ -203,9 +203,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
-		if (inWorld) {
-			markChunkDirty();
-		}
+		markChunkDirty();
 	}
 
 	@Override
