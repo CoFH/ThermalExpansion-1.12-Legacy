@@ -137,12 +137,12 @@ public class CrucibleManager {
 
 		public ItemStack getInput() {
 
-			return input.copy();
+			return input;
 		}
 
 		public FluidStack getOutput() {
 
-			return output.copy();
+			return output;
 		}
 
 		public int getEnergy() {

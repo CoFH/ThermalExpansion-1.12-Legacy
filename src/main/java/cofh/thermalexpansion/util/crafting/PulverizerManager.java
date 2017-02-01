@@ -409,20 +409,17 @@ public class PulverizerManager {
 
 		public ItemStack getInput() {
 
-			return input.copy();
+			return input;
 		}
 
 		public ItemStack getPrimaryOutput() {
 
-			return primaryOutput.copy();
+			return primaryOutput;
 		}
 
 		public ItemStack getSecondaryOutput() {
 
-			if (secondaryOutput == null) {
-				return null;
-			}
-			return secondaryOutput.copy();
+			return secondaryOutput;
 		}
 
 		public int getSecondaryOutputChance() {

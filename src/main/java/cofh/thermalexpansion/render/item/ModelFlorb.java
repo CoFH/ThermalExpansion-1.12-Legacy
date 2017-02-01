@@ -40,6 +40,9 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	public static final IModel MODEL = new ModelFlorb();
 	public static final IModel MAGMATIC_MODEL = new ModelFlorb(true);
 
+	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb");
+	public static final ModelResourceLocation MAGMATIC_MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb_magmatic");
+
 	private static final ResourceLocation BASE = new ResourceLocation("thermalexpansion:items/florb/florb");
 	private static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
 	private static final ResourceLocation MASK = new ResourceLocation("thermalexpansion:items/florb/florb_mask");

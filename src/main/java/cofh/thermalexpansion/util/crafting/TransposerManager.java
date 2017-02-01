@@ -176,20 +176,17 @@ public class TransposerManager {
 
 		public ItemStack getInput() {
 
-			return input.copy();
+			return input;
 		}
 
 		public ItemStack getOutput() {
 
-			if (output != null) {
-				return output.copy();
-			}
-			return null;
+			return output;
 		}
 
 		public FluidStack getFluid() {
 
-			return fluid.copy();
+			return fluid;
 		}
 
 		public int getEnergy() {

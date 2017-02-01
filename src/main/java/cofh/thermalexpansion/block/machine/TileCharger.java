@@ -195,7 +195,7 @@ public class TileCharger extends TileMachineBase {
 		}
 		ItemStack output = recipe.getOutput();
 		if (inventory[2] == null) {
-			inventory[2] = output;
+			inventory[2] = ItemHelper.cloneStack(output);
 		} else {
 			inventory[2].stackSize += output.stackSize;
 		}

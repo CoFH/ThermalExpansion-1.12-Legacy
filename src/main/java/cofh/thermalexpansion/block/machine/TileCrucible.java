@@ -130,7 +130,7 @@ public class TileCrucible extends TileMachineBase {
 		processRem = processMax;
 
 		String prevID = renderFluid.getFluid().getName();
-		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
+		renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		renderFluid.amount = 0;
 
 		if (prevID != renderFluid.getFluid().getName()) {
@@ -239,7 +239,7 @@ public class TileCrucible extends TileMachineBase {
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid();
 		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
-			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput();
+			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		}
 	}
 

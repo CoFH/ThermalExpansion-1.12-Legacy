@@ -360,7 +360,7 @@ public class TileTransposer extends TileMachineBase {
 		} else {
 			recipe = TransposerManager.getExtractionRecipe(inventory[0]);
 			processMax = recipe.getEnergy();
-			renderFluid = recipe.getFluid();
+			renderFluid = recipe.getFluid().copy();
 		}
 		renderFluid.amount = 0;
 		processRem = processMax;
@@ -391,7 +391,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			ItemStack output = recipe.getOutput();
 			if (inventory[2] == null) {
-				inventory[2] = output;
+				inventory[2] = ItemHelper.cloneStack(output);
 			} else {
 				inventory[2].stackSize += output.stackSize;
 			}
@@ -411,7 +411,7 @@ public class TileTransposer extends TileMachineBase {
 			int recipeChance = recipe.getChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[2] == null) {
-					inventory[2] = output;
+					inventory[2] = ItemHelper.cloneStack(output);
 				} else {
 					inventory[2].stackSize += output.stackSize;
 				}
@@ -551,7 +551,7 @@ public class TileTransposer extends TileMachineBase {
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid();
 		} else if (TransposerManager.getExtractionRecipe(inventory[1]) != null) {
-			renderFluid = TransposerManager.getExtractionRecipe(inventory[1]).getFluid();
+			renderFluid = TransposerManager.getExtractionRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
 		}
 	}

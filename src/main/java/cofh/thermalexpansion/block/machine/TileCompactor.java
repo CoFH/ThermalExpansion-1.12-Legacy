@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
@@ -105,7 +106,7 @@ public class TileCompactor extends TileMachineBase {
 		}
 		ItemStack output = recipe.getOutput();
 		if (inventory[1] == null) {
-			inventory[1] = output;
+			inventory[1] = ItemHelper.cloneStack(output);
 		} else {
 			inventory[1].stackSize += output.stackSize;
 		}

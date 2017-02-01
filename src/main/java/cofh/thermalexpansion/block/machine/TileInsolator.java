@@ -1,7 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -211,7 +212,7 @@ public class TileInsolator extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 		if (inventory[2] == null) {
-			inventory[2] = primaryItem;
+			inventory[2] = ItemHelper.cloneStack(primaryItem);
 		} else {
 			inventory[2].stackSize += primaryItem.stackSize;
 		}
@@ -219,7 +220,7 @@ public class TileInsolator extends TileMachineBase {
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
-					inventory[3] = secondaryItem;
+					inventory[3] = ItemHelper.cloneStack(secondaryItem);
 
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;

@@ -31,8 +31,8 @@ public class TEFlorbs {
 		CONFIG_FLORBS.setConfiguration(new Configuration(new File(CoreProps.configDir, "cofh/" + ThermalExpansion.MOD_ID + "/florbs.cfg"), true));
 
 		String category = "General";
-		String comment = "This allows you to disable recipes for Florbs. It also means that you actively dislike fun things.";
-		enable = CONFIG_FLORBS.get(category, "Recipe.Enable", true, comment);
+		String comment = "If TRUE, the recipe for Florbs is enabled. Setting this to FALSE means that you actively dislike fun things.";
+		enable = CONFIG_FLORBS.getConfiguration().getBoolean("EnableRecipe", category, enable, comment);
 
 		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
 	}

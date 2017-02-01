@@ -271,25 +271,22 @@ public class InsolatorManager {
 
 		public ItemStack getPrimaryInput() {
 
-			return primaryInput.copy();
+			return primaryInput;
 		}
 
 		public ItemStack getSecondaryInput() {
 
-			return secondaryInput.copy();
+			return secondaryInput;
 		}
 
 		public ItemStack getPrimaryOutput() {
 
-			return primaryOutput.copy();
+			return primaryOutput;
 		}
 
 		public ItemStack getSecondaryOutput() {
 
-			if (secondaryOutput == null) {
-				return null;
-			}
-			return secondaryOutput.copy();
+			return secondaryOutput;
 		}
 
 		public int getSecondaryOutputChance() {

@@ -304,12 +304,12 @@ public class FurnaceManager {
 
 		public ItemStack getInput() {
 
-			return input.copy();
+			return input;
 		}
 
 		public ItemStack getOutput() {
 
-			return output.copy();
+			return output;
 		}
 
 		public int getEnergy() {

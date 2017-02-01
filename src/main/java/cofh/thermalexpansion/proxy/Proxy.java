@@ -11,6 +11,7 @@ public class Proxy {
 	/* INIT */
 	public void preInit(FMLPreInitializationEvent event) {
 
+		registerEntities();
 	}
 
 	public void initialize(FMLInitializationEvent event) {
