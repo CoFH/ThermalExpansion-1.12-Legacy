@@ -45,7 +45,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 
 		super(material);
 		setSoundType(SoundType.STONE);
-		setCreativeTab(ThermalExpansion.tabBlocks);
+		setCreativeTab(ThermalExpansion.tabCommon);
 	}
 
 	@Override

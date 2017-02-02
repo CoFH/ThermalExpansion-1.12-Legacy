@@ -54,10 +54,8 @@ public class ThermalExpansion {
 	public static final GuiHandler GUI_HANDLER = new GuiHandler();
 
 	public static CreativeTabs tabCommon;
-	public static CreativeTabs tabBlocks = tabCommon;
-	public static CreativeTabs tabItems = tabCommon;
-	public static CreativeTabs tabTools = tabCommon;
-	public static CreativeTabs tabFlorbs = tabCommon;
+	public static CreativeTabs tabItems;
+	public static CreativeTabs tabFlorbs;
 
 	public ThermalExpansion() {
 

@@ -8,7 +8,6 @@ import cofh.core.item.tool.ItemSwordCore;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -38,7 +37,7 @@ public class ItemWrenchBattle extends ItemSwordCore implements IToolHammer {
 		setHarvestLevel("wrench", 1);
 
 		setUnlocalizedName("thermalexpansion.tool.battlewrench");
-		setCreativeTab(ThermalExpansion.tabTools);
+		//setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

@@ -6,31 +6,31 @@ import cofh.lib.gui.element.ElementBase;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 
-public class ElementSlotOverlayCrafter extends ElementBase {
+public class ElementSlotOverlayCentrifuge extends ElementBase {
 
 	public int slotColor;
 	public int slotRender;
 
-	public ElementSlotOverlayCrafter(GuiBase gui, int posX, int posY) {
+	public ElementSlotOverlayCentrifuge(GuiBase gui, int posX, int posY) {
 
 		super(gui, posX, posY);
-		this.texture = TEProps.textureGuiCrafter;
+		this.texture = TEProps.textureGuiCentrifuge;
 	}
 
-	public ElementSlotOverlayCrafter setSlotInfo(int color, int render) {
+	public ElementSlotOverlayCentrifuge setSlotInfo(int color, int render) {
 
 		slotColor = color;
 		slotRender = render;
 		return this;
 	}
 
-	public ElementSlotOverlayCrafter setSlotColor(int color) {
+	public ElementSlotOverlayCentrifuge setSlotColor(int color) {
 
 		slotColor = color;
 		return this;
 	}
 
-	public ElementSlotOverlayCrafter setSlotRender(int render) {
+	public ElementSlotOverlayCentrifuge setSlotRender(int render) {
 
 		slotRender = render;
 		return this;
@@ -63,7 +63,7 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 
 	protected void drawSlotNoBorder(int x, int y) {
 
-		sizeX = 160;
+		sizeX = 34;
 		sizeY = 34;
 		int offsetX = 8;
 		int offsetY = 4 + slotColor * 40;
@@ -85,7 +85,7 @@ public class ElementSlotOverlayCrafter extends ElementBase {
 
 	protected void drawSlotWithBorder(int x, int y) {
 
-		int sizeX = 164;
+		int sizeX = 38;
 		int sizeY = 38;
 		int offsetX = 6;
 		int offsetY = 2 + slotColor * 40;

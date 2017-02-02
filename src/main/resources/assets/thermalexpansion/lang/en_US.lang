@@ -17,6 +17,13 @@ info.thermalexpansion.dynamo.reactant=Requires fluid fuel and solid reactant.
 info.thermalexpansion.dynamo.steam.0=Steam may be pumped in instead.
 info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
 
+info.thermalexpansion.florb.a.0=Holds 1000 mB of most fluids.
+info.thermalexpansion.florb.b.0=Holds 1000 mB of most hot fluids.
+info.thermalexpansion.florb.c.0=Fill with a
+info.thermalexpansion.florb.c.1=Yes, you can throw it.
+info.thermalexpansion.florb.d.0=This fluid is lighter than air.
+info.thermalexpansion.florb.d.1=The Florb will travel further.
+
 info.thermalexpansion.machine.brewer=
 info.thermalexpansion.machine.centrifuge=
 info.thermalexpansion.machine.charger=Charges items with RF.
@@ -33,10 +40,12 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
+item.thermalexpansion.florb.florb.name=Florb
+item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
+
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
-itemGroup.thermalexpansion.creativeTabBlocks=Thermal Expansion: Blocks
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs
-itemGroup.thermalexpansion.creativeTabTools=Thermal Expansion: Tools
+itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
 
 tab.thermalexpansion.automaton.activator.0=It slices! It dices! It pours things, it throws things!
 tab.thermalexpansion.automaton.activator.1=Maybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.

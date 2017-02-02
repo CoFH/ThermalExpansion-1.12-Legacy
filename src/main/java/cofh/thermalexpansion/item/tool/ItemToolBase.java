@@ -4,7 +4,6 @@ import cofh.api.item.IMultiModeItem;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +30,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 		super();
 		this.itemName = name;
 		setMaxStackSize(1);
-		setCreativeTab(ThermalExpansion.tabTools);
+		//setCreativeTab(ThermalExpansion.tabTools);
 	}
 
 	@Override

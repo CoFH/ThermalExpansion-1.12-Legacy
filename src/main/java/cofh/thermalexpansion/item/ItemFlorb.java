@@ -85,15 +85,15 @@ public class ItemFlorb extends ItemMulti {
 		}
 		if (stack.getTagCompound() == null) {
 			if (ItemHelper.getItemDamage(stack) == 0) {
-				list.add(StringHelper.localize("info.thermalexpansion.florb.0"));
+				list.add(StringHelper.localize("info.thermalexpansion.florb.a.0"));
 			} else {
-				list.add(StringHelper.localize("info.thermalexpansion.florb.1"));
+				list.add(StringHelper.localize("info.thermalexpansion.florb.b.0"));
 			}
-			list.add(StringHelper.localize("info.thermalexpansion.florb.2") + " " + StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
-			list.add(StringHelper.localize("info.thermalexpansion.florb.3"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.c.0") + " " + StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
+			list.add(StringHelper.localize("info.thermalexpansion.florb.c.1"));
 		} else {
-			list.add(StringHelper.localize("info.thermalexpansion.florb.4"));
-			list.add(StringHelper.localize("info.thermalexpansion.florb.5"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.d.0"));
+			list.add(StringHelper.localize("info.thermalexpansion.florb.d.1"));
 		}
 	}
 

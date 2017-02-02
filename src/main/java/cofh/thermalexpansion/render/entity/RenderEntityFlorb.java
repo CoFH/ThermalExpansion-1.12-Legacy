@@ -13,28 +13,13 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import org.lwjgl.opengl.GL11;
 
 public class RenderEntityFlorb extends Render<EntityFlorb> {
 
-	//public static final RenderEntityFlorb instance = new RenderEntityFlorb();
-
-	protected RenderEntityFlorb(RenderManager renderManager) {
+	public RenderEntityFlorb(RenderManager renderManager) {
 
 		super(renderManager);
-	}
-
-	public static void initialize() {
-
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, new IRenderFactory<EntityFlorb>() {
-			@Override
-			public Render<? super EntityFlorb> createRenderFor(RenderManager manager) {
-
-				return new RenderEntityFlorb(manager);
-			}
-		});
 	}
 
 	@Override

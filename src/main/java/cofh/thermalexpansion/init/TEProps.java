@@ -4,6 +4,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
 import cofh.thermalexpansion.gui.CreativeTabTE;
+import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.util.EnumFacing;
@@ -20,14 +21,38 @@ public class TEProps {
 
 	public static void preInit() {
 
-		String category;
-		String comment;
-
-		/* CREATIVE TABS */
-		ThermalExpansion.tabCommon = new CreativeTabTE();
+		configClient();
 	}
 
 	public static void loadComplete() {
+
+	}
+
+	private static void configClient() {
+
+		String category;
+		String comment;
+
+		category = "Interface";
+		boolean itemTabCommon = false;
+		boolean florbTabCommon = false;
+
+		comment = "If TRUE, Thermal Expansion Items and Tools appear under the general \"Thermal Expansion\" Creative Tab.";
+		itemTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ItemsInCommonTab", category, itemTabCommon, comment);
+
+		comment = "If TRUE, Thermal Expansion Florbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
+		florbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("FlorbsInCommonTab", category, florbTabCommon, comment);
+
+
+		/* CREATIVE TABS */
+		ThermalExpansion.tabCommon = new CreativeTabTE();
+
+		if (itemTabCommon) {
+			ThermalExpansion.tabItems = ThermalExpansion.tabCommon;
+		} else {
+			ThermalExpansion.tabItems = new CreativeTabTE("Items");
+		}
+		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabTEFlorbs();
 
 	}
 
@@ -53,16 +78,19 @@ public class TEProps {
 	public static final String PATH_GUI_WORKBENCH = PATH_GUI + "workbench/";
 
 	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "slots.png");
-	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_c_b.png");
-	public static final ResourceLocation PATH_ASSEMBLER = new ResourceLocation(PATH_ELEMENTS + "slots_assembler.png");
-	public static final ResourceLocation PATH_ASSEMBLER_CB = new ResourceLocation(PATH_ELEMENTS + "slots_assembler_c_b.png");
+	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");
+	public static final ResourceLocation PATH_CENTRIFUGE = new ResourceLocation(PATH_ELEMENTS + "slots_centrifuge.png");
+	public static final ResourceLocation PATH_CENTRIFUGE_CB = new ResourceLocation(PATH_ELEMENTS + "slots_centrifuge_cb.png");
+	public static final ResourceLocation PATH_CRAFTER = new ResourceLocation(PATH_ELEMENTS + "slots_crafter.png");
+	public static final ResourceLocation PATH_CRAFTER_CB = new ResourceLocation(PATH_ELEMENTS + "slots_crafter_cb.png");
 	public static final String PATH_ICON = PATH_GUI + "icons/";
 
-	public static final String TEXTURE_DEFAULT = "Config_";
-	public static final String TEXTURE_CB = "Config_CB_";
+	public static final String TEXTURE_DEFAULT = "config_";
+	public static final String TEXTURE_CB = "config_cb_";
 
 	public static ResourceLocation textureGuiCommon = PATH_COMMON;
-	public static ResourceLocation textureGuiAssembler = PATH_ASSEMBLER;
+	public static ResourceLocation textureGuiCentrifuge = PATH_CENTRIFUGE;
+	public static ResourceLocation textureGuiCrafter = PATH_CRAFTER;
 	public static String textureSelection = TEXTURE_DEFAULT;
 	public static boolean useAlternateStarfieldShader = false;
 

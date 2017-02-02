@@ -69,7 +69,7 @@ public class BlockFrame extends Block implements IDismantleable, IInitializer, I
 		setHardness(15.0F);
 		setResistance(25.0F);
 		setSoundType(SoundType.METAL);
-		setCreativeTab(ThermalExpansion.tabBlocks);
+		setCreativeTab(ThermalExpansion.tabCommon);
 		setUnlocalizedName("thermalexpansion.frame");
 	}
 
