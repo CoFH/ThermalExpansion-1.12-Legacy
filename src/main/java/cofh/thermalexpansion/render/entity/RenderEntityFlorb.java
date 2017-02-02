@@ -3,6 +3,7 @@ package cofh.thermalexpansion.render.entity;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IconRegistry;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
+import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -46,7 +47,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-		renderIcon(Tessellator.getInstance(), IconRegistry.getIcon("FlorbMask"));
+		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(ModelFlorb.MASK));
 
 		GlStateManager.depthFunc(GL11.GL_EQUAL);
 		GlStateManager.depthMask(false);
@@ -56,7 +57,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.depthMask(true);
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 
-		renderIcon(Tessellator.getInstance(), IconRegistry.getIcon("FlorbOutline"));
+		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(ModelFlorb.OUTLINE));
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();

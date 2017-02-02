@@ -44,9 +44,10 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	public static final ModelResourceLocation MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb");
 	public static final ModelResourceLocation MAGMATIC_MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb_magmatic");
 
-	private static final ResourceLocation BASE = new ResourceLocation("thermalexpansion:items/florb/florb");
-	private static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
-	private static final ResourceLocation MASK = new ResourceLocation("thermalexpansion:items/florb/florb_mask");
+	public static final ResourceLocation BASE = new ResourceLocation("thermalexpansion:items/florb/florb");
+    public static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
+    public static final ResourceLocation MASK = new ResourceLocation("thermalexpansion:items/florb/florb_mask");
+    public static final ResourceLocation OUTLINE = new ResourceLocation("thermalexpansion:items/florb/florb_outline");
 
 	private static final Map<String, IBakedModel> modelCache = new HashMap<String, IBakedModel>();
 
@@ -78,7 +79,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	@Override
 	public Collection<ResourceLocation> getTextures() {
 
-		return ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE, MASK);
+		return ImmutableList.of(MAGMATIC_BASE, BASE, MASK, OUTLINE);
 	}
 
 	@Override
