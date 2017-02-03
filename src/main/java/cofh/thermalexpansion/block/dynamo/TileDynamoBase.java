@@ -402,7 +402,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		hasRedstoneControl = payload.getBool();
 
 		if (hasRedstoneControl != prevControl) {
-			onInstalled();
+			onAugmentInstalled();
 			sendUpdatePacket(Side.SERVER);
 		}
 	}
@@ -446,7 +446,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			}
 		}
 		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
-			onInstalled();
+			onAugmentInstalled();
 			sendUpdatePacket(Side.CLIENT);
 		}
 	}
@@ -536,13 +536,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		//		}
 		//		return installed;
 		return true;
-	}
-
-	protected void onInstalled() {
-
-		if (!hasRedstoneControl) {
-			this.rsMode = ControlMode.DISABLED;
-		}
 	}
 
 	protected void resetAugments() {

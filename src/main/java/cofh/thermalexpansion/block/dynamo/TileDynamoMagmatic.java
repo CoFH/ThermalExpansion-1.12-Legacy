@@ -186,18 +186,12 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					System.out.println("in here");
-
 					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 						return 0;
 					}
-					System.out.println("fill 2");
-
 					if (isValidFuel(resource)) {
 						return tank.fill(resource, doFill);
 					}
-					System.out.println("fail 2");
-
 					return 0;
 				}
 

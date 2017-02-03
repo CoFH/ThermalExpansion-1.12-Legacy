@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block;
 
-import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import cofh.api.energy.IEnergyHandler;
@@ -9,6 +8,7 @@ import cofh.api.tileentity.ISecurable;
 import cofh.core.block.BlockCoreTile;
 import cofh.core.block.TileCore;
 import cofh.core.util.CoreUtils;
+import cofh.lib.util.RayTracer;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.block.SoundType;
@@ -100,7 +100,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		NBTTagCompound retTag = null;
+		NBTTagCompound retTag = new NBTTagCompound();
 
 		if (tile instanceof TileTEBase && (!((TileTEBase) tile).tileName.isEmpty())) {
 			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
@@ -121,7 +121,6 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	@Override
 	public ArrayList<ItemStack> dropDelegate(NBTTagCompound nbt, IBlockAccess world, BlockPos pos, int fortune) {
 
-		TileEntity tile = world.getTileEntity(pos);
 		IBlockState state = world.getBlockState(pos);
 		int meta = state.getBlock().getMetaFromState(state);
 
@@ -162,7 +161,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 				dropEntity.setPickupDelay(10);
 				if (tile instanceof ISecurable && !((ISecurable) tile).getAccess().isPublic()) {
 					dropEntity.setOwner(player.getName());
-					// Set Owner (ot Thrower) - ensures dismantling player can pick it up first.
+					// Set Owner - ensures dismantling player can pick it up first.
 				}
 				world.spawnEntityInWorld(dropEntity);
 

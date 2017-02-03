@@ -6,6 +6,7 @@ import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEFlorbs;
+import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
@@ -71,6 +72,7 @@ public class ThermalExpansion {
 
 		TEProps.preInit();
 		TEBlocks.preInit();
+		TEItems.preInit();
 		TEFlorbs.preInit();
 
 		proxy.preInit(event);
@@ -80,6 +82,7 @@ public class ThermalExpansion {
 	public void initialize(FMLInitializationEvent event) {
 
 		TEBlocks.initialize();
+		TEItems.initialize();
 		TEFlorbs.initialize();
 
 		/* Register Handlers */
@@ -92,6 +95,7 @@ public class ThermalExpansion {
 	public void postInit(FMLPostInitializationEvent event) {
 
 		TEBlocks.postInit();
+		TEItems.initialize();
 		TEFlorbs.postInit();
 
 		addDefaultRecipes();

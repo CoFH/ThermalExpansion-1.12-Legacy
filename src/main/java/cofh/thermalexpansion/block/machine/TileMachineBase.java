@@ -326,11 +326,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	}
 
 	@Override
-	protected void onInstalled() {
+	protected void onAugmentInstalled() {
 
-		if (!hasRedstoneControl) {
-			this.rsMode = ControlMode.DISABLED;
-		}
 		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
 			processRem = 0;
 			isActive = false;

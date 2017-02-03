@@ -229,9 +229,9 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	/* AUGMENT HELPERS */
 	@Override
-	protected void onInstalled() {
+	protected void onAugmentInstalled() {
 
-		super.onInstalled();
+		super.onAugmentInstalled();
 		steam.amount = steamAmount * energyMod;
 	}
 

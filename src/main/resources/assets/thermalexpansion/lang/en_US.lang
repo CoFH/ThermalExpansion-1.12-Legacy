@@ -1,5 +1,11 @@
 #en_US
 
+gui.thermalexpansion.machine.insolator.toggleLock=Lock Fertilizer Slot
+gui.thermalexpansion.machine.insolator.toggleUnlock=Unlock Fertilizer Slot
+
+gui.thermalexpansion.machine.smelter.toggleLock=Lock Flux Slot
+gui.thermalexpansion.machine.smelter.toggleUnlock=Unlock Flux Slot
+
 info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
 info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.automaton.collector=Procures items from an area.
@@ -76,15 +82,27 @@ tab.thermalexpansion.dynamo.reactant.1=A solid reactant and a fluid fuel must be
 tab.thermalexpansion.dynamo.steam.0=Generates Redstone Flux using Steam.
 tab.thermalexpansion.dynamo.steam.1=Solid Fuels and Water can be used to generate Steam.
 
-tab.thermalexpansion.machine.crafter.0=Crafts recipes saved in Schematics.
-tab.thermalexpansion.machine.crafter.1=Uses 20 Redstone Flux per item.
-tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
+tab.thermalexpansion.machine.brewer.0=
+tab.thermalexpansion.machine.brewer.1=
+tab.thermalexpansion.machine.brewer.2=
+tab.thermalexpansion.machine.centrifuge.0=
+tab.thermalexpansion.machine.centrifuge.1=
+tab.thermalexpansion.machine.centrifuge.2=
 tab.thermalexpansion.machine.charger.0=Infuses energy into compatible items.
 tab.thermalexpansion.machine.charger.1=Charge rate may be limited by the item.
 tab.thermalexpansion.machine.charger.2=Feel the hum.
+tab.thermalexpansion.machine.compactor.0=
+tab.thermalexpansion.machine.compactor.1=
+tab.thermalexpansion.machine.compactor.2=
+tab.thermalexpansion.machine.crafter.0=Crafts recipes saved in Schematics.
+tab.thermalexpansion.machine.crafter.1=Uses 20 Redstone Flux per item.
+tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
 tab.thermalexpansion.machine.crucible.0=Turns solid materials into fluids!
 tab.thermalexpansion.machine.crucible.1=Very useful for building advanced devices.
 tab.thermalexpansion.machine.crucible.2=Keep away from small children and pets.
+tab.thermalexpansion.machine.enchanter.0=
+tab.thermalexpansion.machine.enchanter.1=
+tab.thermalexpansion.machine.enchanter.2=
 tab.thermalexpansion.machine.extruder.0=Mixes water and lava to make different types of igneous rock.
 tab.thermalexpansion.machine.extruder.1=The selected item is what you'll get, if there is enough water and lava in the tanks.
 tab.thermalexpansion.machine.extruder.2=Minecraft physics are fun!

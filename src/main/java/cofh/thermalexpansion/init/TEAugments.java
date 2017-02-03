@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.init;
 
-import cofh.thermalexpansion.item.ItemAugment;
+import cofh.thermalexpansion.item.ItemAugment2;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -41,7 +41,7 @@ public class TEAugments {
 	public static final int[][] MACHINE_EXTRUDER_PROCESS_MOD = { { 1, 16, 32, 64 }, { 1, 8, 16, 32 }, { 1, 4, 8, 16 } };
 	public static final int[] MACHINE_EXTRUDER_WATER_MOD = { 1000, 500, 250, 125 };
 
-	public static ItemAugment itemAugment;
+	public static ItemAugment2 itemAugment;
 
 	public static ItemStack dynamoCoilDuct;
 	public static ItemStack[] dynamoEfficiency = new ItemStack[NUM_DYNAMO_EFFICIENCY];
@@ -93,46 +93,6 @@ public class TEAugments {
 
 	public static void preInit() {
 
-		itemAugment = new ItemAugment();
-		GameRegistry.register(itemAugment);
-
-		dynamoCoilDuct = itemAugment.registerSubItem(48, DYNAMO_COIL_DUCT);
-		itemAugment.addAugmentData(48, DYNAMO_COIL_DUCT, 1);
-
-		dynamoThrottle = itemAugment.registerSubItem(49, DYNAMO_THROTTLE);
-		itemAugment.addAugmentData(49, DYNAMO_THROTTLE, 2);
-
-		for (int i = 0; i < NUM_DYNAMO_EFFICIENCY; i++) {
-			dynamoEfficiency[i] = itemAugment.registerSubItem(64 + i, DYNAMO_EFFICIENCY + i);
-			itemAugment.addAugmentData(64 + i, DYNAMO_EFFICIENCY, 1 + i, 0);
-		}
-		for (int i = 0; i < NUM_DYNAMO_OUTPUT; i++) {
-			dynamoOutput[i] = itemAugment.registerSubItem(80 + i, DYNAMO_OUTPUT + i);
-			itemAugment.addAugmentData(80 + i, DYNAMO_OUTPUT, 1 + i, 0);
-		}
-
-		for (int i = 0; i < NUM_MACHINE_SECONDARY; i++) {
-			machineSecondary[i] = itemAugment.registerSubItem(112 + i, MACHINE_SECONDARY + i);
-			itemAugment.addAugmentData(112 + i, MACHINE_SECONDARY, 1 + i, 0);
-		}
-		for (int i = 0; i < NUM_MACHINE_SPEED; i++) {
-			machineSpeed[i] = itemAugment.registerSubItem(128 + i, MACHINE_SPEED + i);
-			itemAugment.addAugmentData(128 + i, MACHINE_SPEED, 1 + i, 0);
-		}
-		machineNull = itemAugment.registerSubItem(144, MACHINE_NULL);
-		itemAugment.addAugmentData(144, MACHINE_NULL, 1);
-
-		machineFurnaceFood = itemAugment.registerSubItem(256, MACHINE_FURNACE_FOOD);
-		itemAugment.addAugmentData(256, MACHINE_FURNACE_FOOD, 1);
-
-		for (int i = 0; i < NUM_MACHINE_EXTRUDER; i++) {
-			machineExtruderBoost[i] = itemAugment.registerSubItem(312 + i, MACHINE_EXTRUDER_BOOST + i);
-			itemAugment.addAugmentData(312 + i, MACHINE_EXTRUDER_BOOST, 1 + i, 0);
-		}
-		// for (int i = 0; i < NUM_MACHINE_CHARGER; i++) {
-		// machineExtruderBoost[i] = itemAugment.addItem(336 + i, MACHINE_CHARGER_BOOST + i);
-		// itemAugment.addAugmentData(312 + i, MACHINE_CHARGER_BOOST, 1 + i, 0);
-		// }
 	}
 
 	public static void initialize() {

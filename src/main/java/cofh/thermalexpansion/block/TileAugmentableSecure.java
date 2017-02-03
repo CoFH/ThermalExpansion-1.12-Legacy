@@ -85,14 +85,18 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	public boolean changeLevel(byte level) {
 
-		if (level > 4) {
+		if (level >= 0) {
+			if (level > 4) {
+				level = 4;
+			}
+			if (level < this.level) {
+				return false;
+			}
+			this.level = level;
+		} else {
 			level = 4;
+			this.level = -1;
 		}
-		if (level < this.level) {
-			return false;
-		}
-		this.level = level;
-
 		// Keep Old Augments
 		if (augments.length > 0) {
 			ItemStack[] tempAugments = new ItemStack[augments.length];
@@ -103,17 +107,17 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			for (int i = 0; i < tempAugments.length; i++) {
 				augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
 			}
+			augmentStatus = new boolean[level];
+		} else {
+			augments = new ItemStack[level];
+			augmentStatus = new boolean[level];
 		}
 		setLevelFlags();
-
 		return true;
 	}
 
 	protected void setLevelFlags() {
 
-		if (level > 4 || level < 0) {
-			level = 4;
-		}
 		hasAutoInput = false;
 		hasAutoOutput = false;
 
@@ -121,15 +125,15 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		hasAdvRedstoneControl = false;
 
 		switch (level) {
-			default:        // Creative
-			case 4:            // Ender
-			case 3:            // Signalum
+			default:            // Creative
+			case 4:             // Resonant
+			case 3:             // Signalum
 				hasAdvRedstoneControl = true;
-			case 2:            // Reinforced
+			case 2:             // Reinforced
 				hasRedstoneControl = true;
-			case 1:            // Hardened
+			case 1:             // Hardened
 				hasAutoInput = true;
-			case 0:            // Basic;
+			case 0:             // Basic;
 				hasAutoOutput = true;
 		}
 	}
@@ -360,28 +364,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return true;
 	}
 
-	protected void onInstalled() {
-
-	}
-
-	protected void resetAugments() {
-
-	}
-
-	/* IAugmentable */
-	@Override
-	public ItemStack[] getAugmentSlots() {
-
-		return augments;
-	}
-
-	@Override
-	public boolean[] getAugmentStatus() {
-
-		return augmentStatus;
-	}
-
-	@Override
 	public void installAugments() {
 
 		resetAugments();
@@ -392,9 +374,36 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			}
 		}
 		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
-			onInstalled();
+			onAugmentInstalled();
 			sendUpdatePacket(Side.CLIENT);
 		}
+	}
+
+	protected void onAugmentInstalled() {
+
+	}
+
+	protected void resetAugments() {
+
+	}
+
+	/* IAugmentable */
+	@Override
+	public boolean installAugment(ItemStack augment) {
+
+		return false;
+	}
+
+	@Override
+	public ItemStack[] getAugmentSlots() {
+
+		return augments;
+	}
+
+	@Override
+	public boolean[] getAugmentStatus() {
+
+		return augmentStatus;
 	}
 
 	/* ISecurable */
