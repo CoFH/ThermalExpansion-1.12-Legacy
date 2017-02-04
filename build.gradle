@@ -1,5 +1,3 @@
-import scala.tools.nsc.io.Jar
-
 buildscript {
     repositories {
         jcenter()
@@ -31,15 +29,15 @@ configFile.withReader {
 
 repositories {
     maven {
-        name = "ChickenBones repo"
+        name = "ChickenBones Maven"
         url = "http://chickenbones.net/maven/"
     }
     maven {
-        name = "Covers maven"
+        name = "Covers Maven"
         url = "http://maven.podgeweb.com"
     }
     maven {
-        name = "JEI Maven."
+        name = "JEI Maven"
         url = "http://dvs1.progwml6.com/files/maven"
     }
 }
