@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
@@ -39,11 +38,8 @@ public class TileFurnace extends TileMachineBase {
 		String category = "Machine.Furnace";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -51,6 +47,7 @@ public class TileFurnace extends TileMachineBase {
 
 	/* AUGMENTS */
 	public boolean augmentFood;
+	public boolean augmentOre;
 
 	public TileFurnace() {
 
@@ -70,12 +67,12 @@ public class TileFurnace extends TileMachineBase {
 		if (inventory[0] == null) {
 			return false;
 		}
-		if (augmentFood && !FurnaceManager.isFoodItem(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
 		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
@@ -88,7 +85,7 @@ public class TileFurnace extends TileMachineBase {
 
 		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
 
-		if (augmentFood && !FurnaceManager.isFoodItem(inventory[0])) {
+		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
 			return false;
 		}
 		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
@@ -97,10 +94,10 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = FurnaceManager.getRecipe(inventory[0]).getEnergy();
+		processMax = FurnaceManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 
-		if (augmentFood) {
-			processMax /= 2;
+		if (augmentOre) {
+			processMax *= 2;
 		}
 		processRem = processMax;
 	}
@@ -123,7 +120,7 @@ public class TileFurnace extends TileMachineBase {
 		} else {
 			inventory[1].stackSize += output.stackSize;
 		}
-		if (augmentFood && recipe.isOutputFood() && inventory[1].stackSize < inventory[1].getMaxStackSize()) {
+		if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].stackSize < inventory[1].getMaxStackSize()) {
 			inventory[1].stackSize += output.stackSize;
 		}
 		inventory[0].stackSize -= recipe.getInput().stackSize;
@@ -209,7 +206,7 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || (augmentFood ? FurnaceManager.isFoodItem(stack) : FurnaceManager.recipeExists(stack));
+		return slot != 0 || (augmentFood ? FurnaceManager.isFood(stack) : augmentOre ? FurnaceManager.isOre(stack) : FurnaceManager.recipeExists(stack));
 	}
 
 }

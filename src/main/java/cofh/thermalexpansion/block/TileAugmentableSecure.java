@@ -53,7 +53,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected boolean hasAdvRedstoneControl = false;
 
 	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5, 5 };
-	protected static final int ENERGY_TRANSFER[] = new int[] { 3, 6, 12, 24, 24 };
 	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8, 8 };
 	protected static final int FLUID_TRANSFER[] = new int[] { 100, 200, 400, 800, 800 };
 	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 32, 64, 64 };

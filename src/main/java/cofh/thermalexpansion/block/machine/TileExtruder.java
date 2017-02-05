@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -59,11 +58,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		String category = "Machine.Extruder";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 
 	}
 
@@ -96,7 +92,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -117,7 +113,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected void processStart() {
 
-		processMax = processEnergy[curSelection];
+		processMax = processEnergy[curSelection] * energyMod / ENERGY_BASE;
 		processRem = processMax;
 		prevSelection = curSelection;
 	}

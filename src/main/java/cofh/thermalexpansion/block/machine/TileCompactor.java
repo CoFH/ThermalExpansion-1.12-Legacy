@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
@@ -39,11 +38,8 @@ public class TileCompactor extends TileMachineBase {
 		String category = "Machine.Compactor";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -69,7 +65,7 @@ public class TileCompactor extends TileMachineBase {
 		}
 		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
@@ -88,7 +84,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = CompactorManager.getRecipe(inventory[0]).getEnergy();
+		processMax = CompactorManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 

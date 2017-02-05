@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
@@ -43,17 +42,14 @@ public class TileCharger extends TileMachineBase {
 		String category = "Machine.Charger";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 8000), 100, 20000);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(1, basePower, Math.max(400000, basePower * 50));
+		defaultEnergyConfig[TYPE].setDefaultParams(50);
 
 		RATE = new int[4];
-		RATE[0] = basePower;
-		RATE[1] = basePower * 2;
-		RATE[2] = basePower * 3;
-		RATE[3] = basePower * 4;
+		RATE[0] = 50;
+		RATE[1] = 50 * 2;
+		RATE[2] = 50 * 3;
+		RATE[3] = 50 * 4;
 	}
 
 	private int inputTracker;
@@ -145,7 +141,7 @@ public class TileCharger extends TileMachineBase {
 		}
 		RecipeCharger recipe = ChargerManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
+		if (recipe == null) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -170,7 +166,7 @@ public class TileCharger extends TileMachineBase {
 	protected void processStart() {
 
 		RecipeCharger recipe = ChargerManager.getRecipe(inventory[0]);
-		processMax = recipe.getEnergy();
+		processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		inventory[1] = ItemHelper.cloneStack(inventory[0], recipe.getInput().stackSize);

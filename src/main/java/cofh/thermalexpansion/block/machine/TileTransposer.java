@@ -1,11 +1,10 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
@@ -58,11 +57,8 @@ public class TileTransposer extends TileMachineBase {
 		String category = "Machine.Transposer";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 40), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -96,14 +92,14 @@ public class TileTransposer extends TileMachineBase {
 		if (isActive) {
 			if (processRem > 0) {
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
 			} else {
 				if (processFinishHandler()) {
 					transferOutput();
 					transferInput();
 				}
-				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
+				energyStorage.modifyEnergyStored(-processRem);
 
 				if (!redstoneControlOrDisable() || !canStartHandler()) {
 					isActive = false;
@@ -121,8 +117,8 @@ public class TileTransposer extends TileMachineBase {
 			if (timeCheckEighth() && canStartHandler()) {
 				processStartHandler();
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
 				isActive = true;
 			}
 		}
@@ -173,7 +169,7 @@ public class TileTransposer extends TileMachineBase {
 		} else {
 			renderFluid.amount = 0;
 		}
-		processMax = TransposerManager.DEFAULT_ENERGY;
+		processMax = TransposerManager.DEFAULT_ENERGY * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		if (!prevID.equals(renderFluid.getFluid().getName())) {
@@ -355,11 +351,11 @@ public class TileTransposer extends TileMachineBase {
 
 		if (!reverse) {
 			recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
-			processMax = recipe.getEnergy();
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 			renderFluid = tank.getFluid().copy();
 		} else {
 			recipe = TransposerManager.getExtractionRecipe(inventory[0]);
-			processMax = recipe.getEnergy();
+			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 			renderFluid = recipe.getFluid().copy();
 		}
 		renderFluid.amount = 0;

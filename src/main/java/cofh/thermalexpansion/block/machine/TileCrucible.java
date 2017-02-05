@@ -1,10 +1,9 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
@@ -56,11 +55,8 @@ public class TileCrucible extends TileMachineBase {
 		String category = "Machine.Crucible";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 400), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParams(basePower / 10, basePower, Math.max(400000, basePower * 1000));
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -106,7 +102,7 @@ public class TileCrucible extends TileMachineBase {
 		}
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -126,7 +122,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy();
+		processMax = CrucibleManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 
 		String prevID = renderFluid.getFluid().getName();

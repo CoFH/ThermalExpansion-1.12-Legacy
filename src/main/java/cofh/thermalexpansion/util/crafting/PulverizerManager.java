@@ -23,7 +23,7 @@ public class PulverizerManager {
 	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>();
 
 	static final int ORE_MULTIPLIER = 2;
-	static final int DEFAULT_ENERGY = 3200;
+	static final int DEFAULT_ENERGY = 4000;
 
 	public static RecipePulverizer getRecipe(ItemStack input) {
 

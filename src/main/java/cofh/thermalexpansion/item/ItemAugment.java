@@ -74,10 +74,14 @@ public class ItemAugment extends ItemMulti implements IInitializer {
 
 		public String type;
 		public int level;
+		public boolean advanced;
 	}
 
 	/* REFERENCES */
 	TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<AugmentEntry>();
+
+	/* Fluid */
+	public static ItemStack fluidStorage;
 
 	/* Ender */
 	public static ItemStack enderReception;
@@ -99,24 +103,33 @@ public class ItemAugment extends ItemMulti implements IInitializer {
 	public static ItemStack machineSpeed;
 
 	public static ItemStack machineSecondaryNull;
+	public static ItemStack machineEssenceCrystals;             // Experience Gathering
 
 	public static ItemStack machineFurnaceFood;
 	public static ItemStack machineFurnaceOre;
+
+	public static ItemStack machineSmelterPyrotheum;
 
 	public static ItemStack machineInsolatorNether;
 	public static ItemStack machineInsolatorEnd;
 
 	public static ItemStack machineCompactorMint;
 
+	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
+
+	public static ItemStack machinePrecipitatorBatchSize;
+	public static ItemStack machinePrecipitatorPackedIce;
+
+	public static ItemStack machineExtruderBatchSize;
 	public static ItemStack machineExtruderAndesite;
 	public static ItemStack machineExtruderDiorite;
 	public static ItemStack machineExtruderGranite;
 
 	/* Automaton */
 	public static ItemStack automatonDepth;
-	public static ItemStack automatonRange;
+	public static ItemStack automatonRadius;
 
 	public static ItemStack automatonBreakerFluid;
-	public static ItemStack automatonCollectorPlayer;
+	public static ItemStack automatonCollectorEntity;
 
 }

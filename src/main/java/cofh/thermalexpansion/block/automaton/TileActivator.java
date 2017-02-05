@@ -65,7 +65,7 @@ public class TileActivator extends TileAutomatonBase {
 		int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 0, 500);
 		ThermalExpansion.CONFIG.set("Device.Activator", "BasePower", maxPower);
 		energyConfig = new EnergyConfig();
-		energyConfig.setParamsPower(maxPower);
+		energyConfig.setDefaultParams(maxPower);
 
 		String comment = "This value sets how much energy the Activator uses when it actually does something. Set to 0 to disable it requiring energy.";
 		maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "ActivationEnergy", ACTIVATION_ENERGY, comment), 0, 500);

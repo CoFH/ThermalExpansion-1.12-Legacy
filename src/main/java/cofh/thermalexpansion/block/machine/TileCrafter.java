@@ -1,11 +1,10 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.InventoryCraftingFalse;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrafter;
@@ -46,16 +45,17 @@ public class TileCrafter extends TileMachineBase {
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
+
+		config();
 	}
 
 	public static void config() {
 
 		String category = "Machine.Crafter";
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
+		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	public static final int PROCESS_ENERGY = 20;

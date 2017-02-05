@@ -53,7 +53,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 			maxPower *= 10;
 
 			defaultEnergyConfig[i] = new EnergyConfig();
-			defaultEnergyConfig[i].setParamsDefault(maxPower);
+			defaultEnergyConfig[i].setDefaultParams(maxPower);
 		}
 	}
 

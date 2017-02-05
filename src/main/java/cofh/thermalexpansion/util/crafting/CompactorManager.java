@@ -8,6 +8,7 @@ import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -47,6 +48,9 @@ public class CompactorManager {
 	}
 
 	public static void addDefaultRecipes() {
+
+		addStorageRecipe(ItemHelper.cloneStack(Items.WHEAT,1), ItemHelper.cloneStack(Blocks.HAY_BLOCK, 1));
+		addStorageRecipe(ItemHelper.cloneStack(Items.REDSTONE,1), ItemHelper.cloneStack(Blocks.REDSTONE_BLOCK, 1));
 
 		addStorageRecipe(ItemMaterial.ingotIron, ItemHelper.cloneStack(Blocks.IRON_BLOCK, 1));
 		addStorageRecipe(ItemMaterial.ingotGold, ItemHelper.cloneStack(Blocks.GOLD_BLOCK, 1));

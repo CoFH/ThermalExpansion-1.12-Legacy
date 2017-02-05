@@ -2,12 +2,12 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -41,11 +41,8 @@ public class TileSmelter extends TileMachineBase {
 		String category = "Machine.Smelter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 40), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTrackerPrimary;
@@ -54,6 +51,9 @@ public class TileSmelter extends TileMachineBase {
 	private int outputTrackerSecondary;
 
 	public boolean lockPrimary = false;
+
+	/* AUGMENTS */
+	public boolean augmentPyrotheum;
 
 	public TileSmelter() {
 
@@ -81,7 +81,7 @@ public class TileSmelter extends TileMachineBase {
 		}
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		if (SmelterManager.isRecipeReversed(inventory[0], inventory[1])) {
@@ -104,19 +104,20 @@ public class TileSmelter extends TileMachineBase {
 				return false;
 			}
 		}
-		if (inventory[2] == null || inventory[3] == null) {
-			return true;
+		final int start = 2, end = start + 2;
+
+		int room = 0;
+		for (int i = start; i < end; ++i) {
+			ItemStack stack = inventory[i];
+			if (stack == null) {
+				return true;
+			}
+			if (!stack.isItemEqual(primaryItem)) {
+				continue;
+			}
+			room += stack.getMaxStackSize() - stack.stackSize;
 		}
-		if (!inventory[2].isItemEqual(primaryItem) && !inventory[3].isItemEqual(primaryItem)) {
-			return false;
-		}
-		if (!inventory[2].isItemEqual(primaryItem)) {
-			return inventory[3].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
-		}
-		if (!inventory[3].isItemEqual(primaryItem)) {
-			return inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
-		}
-		return inventory[2].stackSize + inventory[3].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize() * 2;
+		return room >= primaryItem.stackSize;
 	}
 
 	@Override
@@ -142,7 +143,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = SmelterManager.getRecipe(inventory[0], inventory[1]).getEnergy();
+		processMax = SmelterManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
@@ -160,27 +161,30 @@ public class TileSmelter extends TileMachineBase {
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
-		if (inventory[2] == null) {
-			inventory[2] = ItemHelper.cloneStack(primaryItem);
-		} else if (inventory[2].isItemEqual(primaryItem)) {
-			if (inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize()) {
-				inventory[2].stackSize += primaryItem.stackSize;
-			} else {
-				int overflow = primaryItem.getMaxStackSize() - inventory[2].stackSize;
-				inventory[2].stackSize += overflow;
 
-				if (inventory[3] == null) {
-					inventory[3] = primaryItem;
-					inventory[3].stackSize = primaryItem.stackSize - overflow;
-				} else {
-					inventory[3].stackSize += primaryItem.stackSize - overflow;
-				}
+		final int start = 2, end = start + 2;
+
+		int outputAmt = primaryItem.stackSize;
+
+		if (augmentPyrotheum && (inventory[0] == ItemMaterial.dustPyrotheum || inventory[1] == ItemMaterial.dustPyrotheum)) {
+			if (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) {
+				++outputAmt;
 			}
-		} else {
-			if (inventory[3] == null) {
-				inventory[3] = primaryItem;
-			} else {
-				inventory[3].stackSize += primaryItem.stackSize;
+		}
+		for (int i = start; i < end; ++i) {
+			ItemStack stack = inventory[i];
+			if (stack == null) {
+				inventory[i] = ItemHelper.cloneStack(primaryItem);
+				break;
+			}
+			if (!stack.isItemEqual(primaryItem)) {
+				continue;
+			}
+			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
+			outputAmt -= add;
+			stack.stackSize += add;
+			if (outputAmt == 0) {
+				break;
 			}
 		}
 		if (secondaryItem != null) {

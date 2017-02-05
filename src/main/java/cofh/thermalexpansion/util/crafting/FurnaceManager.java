@@ -23,8 +23,9 @@ public class FurnaceManager {
 
 	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<ComparableItemStackFurnace>();
+	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<ComparableItemStackFurnace>();
 
-	static final int DEFAULT_ENERGY = 1600;
+	static final int DEFAULT_ENERGY = 2000;
 
 	public static RecipeFurnace getRecipe(ItemStack input) {
 
@@ -52,7 +53,7 @@ public class FurnaceManager {
 		return recipeMap.values().toArray(new RecipeFurnace[0]);
 	}
 
-	public static boolean isFoodItem(ItemStack input) {
+	public static boolean isFood(ItemStack input) {
 
 		if (input == null) {
 			return false;
@@ -64,6 +65,20 @@ public class FurnaceManager {
 		}
 		query.metadata = OreDictionary.WILDCARD_VALUE;
 		return foodSet.contains(query);
+	}
+
+	public static boolean isOre(ItemStack input) {
+
+		if (input == null) {
+			return false;
+		}
+		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+
+		if (oreSet.contains(query)) {
+			return true;
+		}
+		query.metadata = OreDictionary.WILDCARD_VALUE;
+		return oreSet.contains(query);
 	}
 
 	public static void addDefaultRecipes() {
@@ -125,7 +140,7 @@ public class FurnaceManager {
 
 		/* DUSTS */
 		{
-			int energy = DEFAULT_ENERGY * 10 / 16;
+			int energy = DEFAULT_ENERGY * 14 / 20;
 
 			addOreDictRecipe(energy, "dustIron", ItemMaterial.ingotIron);
 			addOreDictRecipe(energy, "dustGold", ItemMaterial.ingotGold);
@@ -147,12 +162,11 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "dustSignalum", ItemMaterial.ingotSignalum);
 			addOreDictRecipe(energy, "dustLumium", ItemMaterial.ingotLumium);
 			// No Enderium
-
 		}
 
 		/* OREBERRIES */
 		{
-			int energy = DEFAULT_ENERGY * 6 / 16;
+			int energy = DEFAULT_ENERGY * 8 / 20;
 			// addOreDictRecipe(energy, "oreberryIron", ItemMaterial.nuggetIron);
 			// addOreDictRecipe(energy, "oreberryGold", ItemMaterial.nuggetGold);
 			addOreDictRecipe(energy, "oreberryCopper", ItemMaterial.nuggetCopper);
@@ -208,7 +222,7 @@ public class FurnaceManager {
 			}
 			/* DUST */
 			if (ItemHelper.isDust(key) && ItemHelper.isIngot(output)) {
-				addRecipe(energy * 10 / 16, key, output);
+				addRecipe(energy * 14 / 20, key, output);
 
 			/* STANDARD */
 			} else {
@@ -229,21 +243,28 @@ public class FurnaceManager {
 	public static void refreshRecipes() {
 
 		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>(recipeMap.size());
-		Set<ComparableItemStackFurnace> tempSet = new THashSet<ComparableItemStackFurnace>();
+		Set<ComparableItemStackFurnace> tempFood = new THashSet<ComparableItemStackFurnace>();
+		Set<ComparableItemStackFurnace> tempOre = new THashSet<ComparableItemStackFurnace>();
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
-
-			if (tempRecipe.isOutputFood()) {
-				tempSet.add(new ComparableItemStackFurnace(tempRecipe.input));
-			}
+		}
+		for (ComparableItemStackFurnace entry : foodSet) {
+			ComparableItemStackFurnace food = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+			tempFood.add(food);
+		}
+		for (ComparableItemStackFurnace entry : oreSet) {
+			ComparableItemStackFurnace ore = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
+			tempOre.add(ore);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
 		foodSet.clear();
-		foodSet = tempSet;
+		foodSet = tempFood;
+		oreSet.clear();
+		oreSet = tempOre;
 	}
 
 	/* ADD RECIPES */
@@ -268,6 +289,10 @@ public class FurnaceManager {
 
 		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
+
+			if(oreName.startsWith("ore") && ItemHelper.isIngot(output)) {
+				oreSet.add(new ComparableItemStackFurnace(OreDictionary.getOres(oreName).get(0)));
+			}
 		}
 	}
 
@@ -277,8 +302,6 @@ public class FurnaceManager {
 		final ItemStack input;
 		final ItemStack output;
 		final int energy;
-
-		boolean isOutputFood;
 
 		RecipeFurnace(ItemStack input, ItemStack output, int energy) {
 
@@ -292,14 +315,6 @@ public class FurnaceManager {
 			if (output.stackSize <= 0) {
 				output.stackSize = 1;
 			}
-			if (output.getItem() instanceof ItemFood) {
-				isOutputFood = true;
-			}
-		}
-
-		public boolean isOutputFood() {
-
-			return isOutputFood;
 		}
 
 		public ItemStack getInput() {

@@ -21,6 +21,9 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 0, 14 };
 	private static boolean enableSecurity = true;
 
+	protected static final int ENERGY_BASE = 100;
+	protected static final int SECONDARY_BASE = 100;
+
 	public static void config() {
 
 		String comment = "Enable this to allow for Machines to be securable.";
@@ -34,9 +37,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	EnergyConfig energyConfig;
 	TimeTracker tracker = new TimeTracker();
 
-	int processMod = 1;
-	int energyMod = 1;
-	int secondaryChance = 100;
+	int energyMod = ENERGY_BASE;
+	int secondaryChance = SECONDARY_BASE;
 
 	/* AUGMENTS */
 	public boolean augmentSecondaryNull;
@@ -44,8 +46,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	public TileMachineBase() {
 
 		sideConfig = defaultSideConfig[this.getType()];
-		energyConfig = defaultEnergyConfig[this.getType()];
-		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * ENERGY_TRANSFER[level]);
+		energyConfig = defaultEnergyConfig[this.getType()].copy();
+		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 		setDefaultSides();
 	}
 
@@ -68,6 +70,18 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	}
 
 	@Override
+	public boolean changeLevel(byte level) {
+
+		if (super.changeLevel(level)) {
+			int basePower = defaultEnergyConfig[getType()].maxPower;
+			energyConfig.setDefaultParams(basePower + this.level * basePower / 4);
+			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
@@ -78,14 +92,14 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		if (isActive) {
 			if (processRem > 0) {
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
 			}
 			if (canFinish()) {
 				processFinish();
 				transferOutput();
 				transferInput();
-				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
+				energyStorage.modifyEnergyStored(-processRem);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
 					isActive = false;
@@ -103,8 +117,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 			if (timeCheckEighth() && canStart()) {
 				processStart();
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
 				isActive = true;
 			}
 		}
@@ -114,14 +128,11 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 	protected int calcEnergy() {
 
-		if (!isActive) {
-			return 0;
-		}
 		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
 			return energyConfig.maxPower;
 		}
 		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {
-			return energyConfig.minPower;
+			return Math.min(energyConfig.minPower, energyStorage.getEnergyStored());
 		}
 		return energyStorage.getEnergyStored() / energyConfig.energyRamp;
 	}
@@ -227,8 +238,6 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 		payload.addInt(processMax);
 		payload.addInt(processRem);
-		payload.addInt(processMod);
-		payload.addInt(energyMod);
 
 		return payload;
 	}
@@ -240,8 +249,6 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 		processMax = payload.getInt();
 		processRem = payload.getInt();
-		processMod = payload.getInt();
-		energyMod = payload.getInt();
 	}
 
 	/* AUGMENT HELPERS */
@@ -328,12 +335,6 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	@Override
 	protected void onAugmentInstalled() {
 
-		if (isActive && energyStorage.getMaxEnergyStored() > 0 && processRem * energyMod / processMod > energyStorage.getEnergyStored()) {
-			processRem = 0;
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-		}
 	}
 
 	@Override
@@ -342,9 +343,6 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		super.resetAugments();
 
 		augmentSecondaryNull = false;
-
-		processMod = 1;
-		energyMod = 1;
 		secondaryChance = 100;
 	}
 
@@ -397,13 +395,16 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	@Override
 	public int getInfoEnergyPerTick() {
 
-		return calcEnergy() * energyMod;
+		if (!isActive) {
+			return 0;
+		}
+		return calcEnergy();
 	}
 
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		return energyConfig.maxPower * energyMod;
+		return energyConfig.maxPower;
 	}
 
 	/* IReconfigurableFacing */

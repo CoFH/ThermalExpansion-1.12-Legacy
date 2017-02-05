@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.core.ICustomInventory;
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
-import cofh.lib.util.helpers.MathHelper;
+import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
 import cofh.thermalexpansion.gui.container.machine.ContainerPrecipitator;
@@ -57,11 +56,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		String category = "Machine.Precipitator";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private static int[] processWater = { 500, 500, 1000 };
@@ -90,7 +86,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected boolean canStart() {
 
-		if (energyStorage.getEnergyStored() < processEnergy[curSelection] || tank.getFluidAmount() < processWater[curSelection]) {
+		if (tank.getFluidAmount() < processWater[curSelection]) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -111,7 +107,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected void processStart() {
 
-		processMax = processEnergy[curSelection];
+		processMax = processEnergy[curSelection] * energyMod / ENERGY_BASE;
 		processRem = processMax;
 		prevSelection = curSelection;
 	}

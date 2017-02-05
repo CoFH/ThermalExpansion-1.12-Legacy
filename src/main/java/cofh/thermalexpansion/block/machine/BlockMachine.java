@@ -292,7 +292,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileSawmill.initialize();
 		TileSmelter.initialize();
 		TileInsolator.initialize();
-		TileCompactor.initialize();
+		// TileCompactor.initialize();
 		TileCrucible.initialize();
 		TileTransposer.initialize();
 		// transcapsulator
@@ -309,7 +309,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
 		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
 		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
-		machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
+		// machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
 		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
 		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
 		// transcapsulator
@@ -353,7 +353,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.PISTON,
-					'Y', Blocks.BRICK_BLOCK
+					'Y', Items.FLINT
 			));
 		}
 		if (enable[Type.SAWMILL.getMetadata()]) {
@@ -392,6 +392,18 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					'Y', "dirt"
 			));
 		}
+		if (enable[Type.COMPACTOR.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineCompactor,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', machineFrame,
+					'I', invarPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', Blocks.PISTON,
+					'Y', "ingotBronze"
+			));
+		}
 		if (enable[Type.CRUCIBLE.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineCrucible,
 					" X ",
@@ -400,7 +412,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					'C', machineFrame,
 					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', "gearLumium",		// TODO: CELL
+					'X', ItemMaterial.powerCoilElectrum,
 					'Y', Blocks.NETHER_BRICK
 			));
 		}
@@ -410,7 +422,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					"YCY",
 					"IPI",
 					'C', machineFrame,
-					'I', copperPart,
+					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.CHEST,
 					'Y', "gearTin"
@@ -424,7 +436,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					'C', machineFrame,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', "gearLumium",		// TODO: CELL
+					'X', ItemMaterial.powerCoilElectrum,
 					'Y', ItemMaterial.powerCoilSilver
 			));
 		}
@@ -436,8 +448,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					'C', machineFrame,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.PISTON,
-					'Y', "ingotInvar"
+					'X', Blocks.CHEST,
+					'Y', "gearTin"
 			));
 		}
 		if (enable[Type.PRECIPITATOR.getMetadata()]) {

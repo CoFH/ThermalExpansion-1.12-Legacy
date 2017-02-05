@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
@@ -39,11 +38,8 @@ public class TilePulverizer extends TileMachineBase {
 		String category = "Machine.Pulverizer";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 40), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -70,7 +66,7 @@ public class TilePulverizer extends TileMachineBase {
 		}
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod) {
+		if (recipe == null) {
 			return false;
 		}
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
@@ -87,19 +83,20 @@ public class TilePulverizer extends TileMachineBase {
 				return false;
 			}
 		}
-		if (inventory[1] == null || inventory[2] == null) {
-			return true;
+		final int start = 1, end = start + 2;
+
+		int room = 0;
+		for (int i = start; i < end; ++i) {
+			ItemStack stack = inventory[i];
+			if (stack == null) {
+				return true;
+			}
+			if (!stack.isItemEqual(primaryItem)) {
+				continue;
+			}
+			room += stack.getMaxStackSize() - stack.stackSize;
 		}
-		if (!inventory[1].isItemEqual(primaryItem) && !inventory[2].isItemEqual(primaryItem)) {
-			return false;
-		}
-		if (!inventory[1].isItemEqual(primaryItem)) {
-			return inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
-		}
-		if (!inventory[2].isItemEqual(primaryItem)) {
-			return inventory[1].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
-		}
-		return inventory[1].stackSize + inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize() * 2;
+		return room >= primaryItem.stackSize;
 	}
 
 	@Override
@@ -112,7 +109,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = PulverizerManager.getRecipe(inventory[0]).getEnergy();
+		processMax = PulverizerManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
@@ -130,29 +127,24 @@ public class TilePulverizer extends TileMachineBase {
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
-		if (inventory[1] == null) {
-			inventory[1] = ItemHelper.cloneStack(primaryItem);
-		} else if (inventory[1].isItemEqual(primaryItem)) {
-			int result = inventory[1].stackSize + primaryItem.stackSize;
 
-			if (result <= primaryItem.getMaxStackSize()) {
-				inventory[1].stackSize += primaryItem.stackSize;
-			} else {
-				int overflow = primaryItem.getMaxStackSize() - inventory[1].stackSize;
-				inventory[1].stackSize += overflow;
+		final int start = 1, end = start + 2;
 
-				if (inventory[2] == null) {
-					inventory[2] = primaryItem;
-					inventory[2].stackSize = primaryItem.stackSize - overflow;
-				} else {
-					inventory[2].stackSize += primaryItem.stackSize - overflow;
-				}
+		int outputAmt = primaryItem.stackSize;
+		for (int i = start; i < end; ++i) {
+			ItemStack stack = inventory[i];
+			if (stack == null) {
+				inventory[i] = ItemHelper.cloneStack(primaryItem);
+				break;
 			}
-		} else {
-			if (inventory[2] == null) {
-				inventory[2] = primaryItem;
-			} else {
-				inventory[2].stackSize += primaryItem.stackSize;
+			if (!stack.isItemEqual(primaryItem)) {
+				continue;
+			}
+			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
+			outputAmt -= add;
+			stack.stackSize += add;
+			if (outputAmt == 0) {
+				break;
 			}
 		}
 		if (secondaryItem != null) {
@@ -160,13 +152,11 @@ public class TilePulverizer extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
-
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
-
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
 						inventory[3].stackSize += secondaryItem.stackSize;
 					}

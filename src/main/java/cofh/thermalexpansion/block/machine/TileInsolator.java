@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
@@ -54,11 +53,8 @@ public class TileInsolator extends TileMachineBase {
 		String category = "Machine.Insolator";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		int basePower = MathHelper.clamp(ThermalExpansion.CONFIG.get(category, "BasePower", 20), 10, 500);
-		ThermalExpansion.CONFIG.set(category, "BasePower", basePower);
-
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setParamsPower(basePower);
+		defaultEnergyConfig[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTrackerPrimary;
@@ -94,15 +90,15 @@ public class TileInsolator extends TileMachineBase {
 		if (isActive) {
 			if (processRem > 0) {
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
-				tank.drain(energy * processMod / 10, true);
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
+				tank.drain(energy / 10, true);
 			}
 			if (canFinish()) {
 				processFinish();
 				transferOutput();
 				transferInput();
-				energyStorage.modifyEnergyStored(-processRem * energyMod / processMod);
+				energyStorage.modifyEnergyStored(-processRem);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
 					isActive = false;
@@ -120,9 +116,9 @@ public class TileInsolator extends TileMachineBase {
 			if (timeCheckEighth() && canStart()) {
 				processStart();
 				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy * energyMod);
-				processRem -= energy * processMod;
-				tank.drain(energy * processMod / 10, true);
+				energyStorage.modifyEnergyStored(-energy);
+				processRem -= energy;
+				tank.drain(energy / 10, true);
 				isActive = true;
 			}
 		}
@@ -144,7 +140,7 @@ public class TileInsolator extends TileMachineBase {
 		}
 		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
 
-		if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy() * energyMod / processMod || tank.getFluidAmount() < recipe.getEnergy() / 10) {
+		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
@@ -193,7 +189,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = InsolatorManager.getRecipe(inventory[0], inventory[1]).getEnergy();
+		processMax = InsolatorManager.getRecipe(inventory[0], inventory[1]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
