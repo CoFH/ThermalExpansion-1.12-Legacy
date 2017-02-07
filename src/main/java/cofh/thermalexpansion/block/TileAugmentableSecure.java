@@ -1,17 +1,21 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.util.ServerUtils;
-import cofh.api.item.IAugmentItem;
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.ISecurable;
+import cofh.api.tileentity.ITransferControl;
+import cofh.api.tileentity.IUpgradeable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.util.Utils;
+import cofh.thermalexpansion.network.PacketTEBase;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
 import net.minecraft.entity.player.EntityPlayer;
@@ -30,7 +34,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.UUID;
 
-public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, IWorldNameable {
+public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, ITransferControl, IUpgradeable, IWorldNameable {
 
 	/* AUGMENTS */
 	protected boolean[] augmentStatus = new boolean[0];
@@ -82,16 +86,13 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return hasAdvRedstoneControl;
 	}
 
-	public boolean changeLevel(byte level) {
+	protected boolean setLevel(int level) {
 
 		if (level >= 0) {
 			if (level > 4) {
 				level = 4;
 			}
-			if (level < this.level) {
-				return false;
-			}
-			this.level = level;
+			this.level = (byte) level;
 		} else {
 			level = 4;
 			this.level = -1;
@@ -199,7 +200,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		level = nbt.getByte("Level");
 		enableAutoInput = nbt.getBoolean("EnableIn");
 		enableAutoOutput = nbt.getBoolean("EnableOut");
-		changeLevel(level);
+		setLevel(level);
 
 		readAugmentsFromNBT(nbt);
 		installAugments();
@@ -263,50 +264,12 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		payload.addString(owner.getName());
 
 		payload.addByte(level);
+		payload.addBool(hasAutoInput);
+		payload.addBool(hasAutoOutput);
 		payload.addBool(enableAutoInput);
 		payload.addBool(enableAutoOutput);
 
 		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getGuiPacket() {
-
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addBool(enableAutoInput);
-		payload.addBool(enableAutoOutput);
-
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-
-		payload.addBool(enableAutoInput);
-		payload.addBool(enableAutoOutput);
-
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-
-		enableAutoInput = payload.getBool();
-		enableAutoOutput = payload.getBool();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		enableAutoInput = payload.getBool();
-		enableAutoOutput = payload.getBool();
 	}
 
 	/* ITilePacketHandler */
@@ -320,62 +283,25 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			owner = CoreProps.DEFAULT_OWNER;
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
-			byte curLevel = level;
 			level = payload.getByte();
+			hasAutoInput = payload.getBool();
+			hasAutoOutput = payload.getBool();
 			enableAutoInput = payload.getBool();
 			enableAutoOutput = payload.getBool();
-
-			if (curLevel != level) {
-				changeLevel(level);
-			}
+			setLevel(level);
 		} else {
 			payload.getUUID();
 			payload.getString();
 			payload.getByte();
 			payload.getBool();
 			payload.getBool();
+			payload.getBool();
+			payload.getBool();
 		}
-	}
-
-	/* HELPERS */
-	protected boolean hasAugment(String type, int augLevel) {
-
-		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean hasDuplicateAugment(String type, int augLevel, int slot) {
-
-		for (int i = 0; i < augments.length; i++) {
-			if (i != slot && Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean installAugment(int slot) {
-
-		return true;
 	}
 
 	public void installAugments() {
 
-		resetAugments();
-		for (int i = 0; i < augments.length; i++) {
-			augmentStatus[i] = false;
-			if (Utils.isAugmentItem(augments[i])) {
-				augmentStatus[i] = installAugment(i);
-			}
-		}
-		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
-			onAugmentInstalled();
-			sendUpdatePacket(Side.CLIENT);
-		}
 	}
 
 	protected void onAugmentInstalled() {
@@ -475,6 +401,100 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public GameProfile getOwner() {
 
 		return owner;
+	}
+
+	/* ITransferControl */
+	@Override
+	public boolean hasTransferIn() {
+
+		return hasAutoInput;
+	}
+
+	@Override
+	public boolean hasTransferOut() {
+
+		return hasAutoOutput;
+	}
+
+	@Override
+	public boolean getTransferIn() {
+
+		return enableAutoInput;
+	}
+
+	@Override
+	public boolean getTransferOut() {
+
+		return enableAutoOutput;
+	}
+
+	@Override
+	public boolean setTransferIn(boolean input) {
+
+		if (!hasAutoInput) {
+			return false;
+		}
+		enableAutoInput = input;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean setTransferOut(boolean output) {
+
+		if (!hasAutoOutput) {
+			return false;
+		}
+		enableAutoOutput = output;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+		}
+		return true;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					setLevel(uLevel);
+					break;
+				}
+				return false;
+			case FULL:
+				if (uLevel > level) {
+					setLevel(uLevel);
+					break;
+				}
+				return false;
+			case CREATIVE:
+				if (level >= 0) {
+					setLevel(-1);
+					break;
+				}
+				return false;
+		}
+		return true;
+	}
+
+	@Override
+	public int getLevel() {
+
+		return level;
 	}
 
 	/* IWorldNameable */

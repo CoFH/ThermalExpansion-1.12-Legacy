@@ -97,7 +97,7 @@ public class TileCrucible extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);

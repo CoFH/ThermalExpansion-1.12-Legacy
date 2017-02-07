@@ -12,22 +12,22 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiInsolator extends GuiPoweredBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "insolator.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "insolator.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	TileInsolator myTile;
+	private TileInsolator myTile;
 
-	ElementSlotOverlay[] slotPrimaryInput = new ElementSlotOverlay[2];
-	ElementSlotOverlay[] slotSecondaryInput = new ElementSlotOverlay[2];
+	private ElementSlotOverlay[] slotPrimaryInput = new ElementSlotOverlay[2];
+	private ElementSlotOverlay[] slotSecondaryInput = new ElementSlotOverlay[2];
 
-	ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
-	ElementSlotOverlay[] slotSecondaryOutput = new ElementSlotOverlay[2];
+	private ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
+	private ElementSlotOverlay[] slotSecondaryOutput = new ElementSlotOverlay[2];
 
-	ElementDualScaled progress;
-	ElementDualScaled speed;
+	private ElementDualScaled progress;
+	private ElementDualScaled speed;
 
-	ElementButton mode;
-	ElementSimple modeOverlay;
+	private ElementButton mode;
+	private ElementSimple modeOverlay;
 
 	public GuiInsolator(InventoryPlayer inventory, TileEntity tile) {
 

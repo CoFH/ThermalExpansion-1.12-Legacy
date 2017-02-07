@@ -131,6 +131,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			tileName = payload.getString();
+			worldObj.checkLight(pos);
 		} else {
 			payload.getString();
 		}

@@ -10,7 +10,7 @@ import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
-import cofh.thermalexpansion.util.FuelManager;
+import cofh.thermalexpansion.util.fuels.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.*;
 import cofh.thermalfoundation.ThermalFoundation;

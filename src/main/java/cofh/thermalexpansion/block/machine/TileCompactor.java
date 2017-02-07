@@ -60,7 +60,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0]);

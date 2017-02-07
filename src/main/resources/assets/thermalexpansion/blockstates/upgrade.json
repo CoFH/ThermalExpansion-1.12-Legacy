@@ -1,0 +1,54 @@
+{
+	"forge_marker": 1,
+	"defaults": {
+		"model": "builtin/generated",
+		"textures": {
+			"layer0": "thermalexpansion:items/upgrade/placeholder"
+		},
+		"transform": "forge:default-item"
+	},
+	"variants": {
+		"type": {
+			"incremental1": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"incremental2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"incremental3": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"incremental4": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"full2": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"full3": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"full4": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			},
+			"creative": {
+				"textures": {
+					"layer0": "thermalexpansion:items/upgrade/placeholder"
+				}
+			}
+		}
+	}
+}

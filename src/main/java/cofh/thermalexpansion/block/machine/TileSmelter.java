@@ -76,7 +76,7 @@ public class TileSmelter extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null && inventory[1] == null) {
+		if (inventory[0] == null || inventory[1] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);

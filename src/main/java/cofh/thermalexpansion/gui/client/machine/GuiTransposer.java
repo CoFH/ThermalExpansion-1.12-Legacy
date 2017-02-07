@@ -12,21 +12,21 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiTransposer extends GuiPoweredBase {
 
-	static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "transposer.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_MACHINE + "transposer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	TileTransposer myTile;
+	private TileTransposer myTile;
 
-	ElementBase slotInput;
-	ElementSlotOverlay[] slotOutput = new ElementSlotOverlay[2];
-	ElementBase slotTank;
-	ElementSlotOverlay[] slotTankRev = new ElementSlotOverlay[2];
-	ElementFluid progressFluid;
-	ElementSimple progressBackgroundRev;
-	ElementDualScaled progressOverlay;
-	ElementDualScaled progressOverlayRev;
-	ElementDualScaled speed;
-	ElementButton mode;
+	private ElementBase slotInput;
+	private ElementSlotOverlay[] slotOutput = new ElementSlotOverlay[2];
+	private ElementBase slotTank;
+	private ElementSlotOverlay[] slotTankRev = new ElementSlotOverlay[2];
+	private ElementFluid progressFluid;
+	private ElementSimple progressBackgroundRev;
+	private ElementDualScaled progressOverlay;
+	private ElementDualScaled progressOverlayRev;
+	private ElementDualScaled speed;
+	private ElementButton mode;
 
 	public GuiTransposer(InventoryPlayer inventory, TileEntity tile) {
 
@@ -95,20 +95,20 @@ public class GuiTransposer extends GuiPoweredBase {
 
 		if (myTile.reverse) {
 			if (!myTile.reverseFlag) {
-				mode.setToolTip("info.thermalexpansion.transposer.toggleWait");
+				mode.setToolTip("gui.thermalexpansion.transposer.toggleWait");
 				mode.setDisabled();
 			} else {
-				mode.setToolTip("info.thermalexpansion.transposer.toggleFill");
+				mode.setToolTip("gui.thermalexpansion.transposer.toggleFill");
 				mode.setSheetX(192);
 				mode.setHoverX(192);
 				mode.setActive();
 			}
 		} else {
 			if (myTile.reverseFlag) {
-				mode.setToolTip("info.thermalexpansion.transposer.toggleWait");
+				mode.setToolTip("gui.thermalexpansion.transposer.toggleWait");
 				mode.setDisabled();
 			} else {
-				mode.setToolTip("info.thermalexpansion.transposer.toggleEmpty");
+				mode.setToolTip("gui.thermalexpansion.transposer.toggleEmpty");
 				mode.setSheetX(176);
 				mode.setHoverX(176);
 				mode.setActive();

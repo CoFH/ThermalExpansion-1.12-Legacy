@@ -15,11 +15,11 @@ public class GuiSawmill extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "sawmill.png");
 
-	ElementBase slotInput;
-	ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
-	ElementSlotOverlay[] slotSecondaryOutput = new ElementSlotOverlay[2];
-	ElementDualScaled progress;
-	ElementDualScaled speed;
+	private ElementBase slotInput;
+	private ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
+	private ElementSlotOverlay[] slotSecondaryOutput = new ElementSlotOverlay[2];
+	private ElementDualScaled progress;
+	private ElementDualScaled speed;
 
 	public GuiSawmill(InventoryPlayer inventory, TileEntity tile) {
 

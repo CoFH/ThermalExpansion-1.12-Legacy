@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.crafting.*;
+import cofh.thermalexpansion.util.fuels.FuelManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;

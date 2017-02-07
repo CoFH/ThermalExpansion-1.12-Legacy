@@ -61,7 +61,7 @@ public class TileSawmill extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);

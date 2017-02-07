@@ -1,10 +1,14 @@
 #en_US
 
-gui.thermalexpansion.machine.insolator.toggleLock=Lock Fertilizer Slot
-gui.thermalexpansion.machine.insolator.toggleUnlock=Unlock Fertilizer Slot
+gui.thermalexpansion.machine.insolator.toggleLock=Fertilizer Slot Unlocked
+gui.thermalexpansion.machine.insolator.toggleUnlock=Fertilizer Slot Locked
 
-gui.thermalexpansion.machine.smelter.toggleLock=Lock Flux Slot
-gui.thermalexpansion.machine.smelter.toggleUnlock=Unlock Flux Slot
+gui.thermalexpansion.machine.smelter.toggleLock=Flux Slot Unlocked
+gui.thermalexpansion.machine.smelter.toggleUnlock=Flux Slot Locked
+
+gui.thermalexpansion.transposer.toggleEmpty=Mode: Fill
+gui.thermalexpansion.transposer.toggleFill=Mode: Empty
+gui.thermalexpansion.transposer.toggleWait=Processing
 
 info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
 info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
@@ -46,8 +50,22 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
+item.thermalexpansion.augment.machineFurnaceFood.name=PH Furnace Food
+item.thermalexpansion.augment.machinePower.name=PH Power
+item.thermalexpansion.augment.machineSecondary.name=PH Secondary
+
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
+
+item.thermalexpansion.upgrade.creative.name=Creative Conversion Kit
+item.thermalexpansion.upgrade.full1.name=Hardened Conversion Kit
+item.thermalexpansion.upgrade.full2.name=Reinforced Conversion Kit
+item.thermalexpansion.upgrade.full3.name=Signalum Conversion Kit
+item.thermalexpansion.upgrade.full4.name=Resonant Conversion Kit
+item.thermalexpansion.upgrade.incremental1.name=Hardened Upgrade Kit
+item.thermalexpansion.upgrade.incremental2.name=Reinforced Upgrade Kit
+item.thermalexpansion.upgrade.incremental3.name=Signalum Upgrade Kit
+item.thermalexpansion.upgrade.incremental4.name=Resonant Upgrade Kit
 
 itemGroup.thermalexpansion.creativeTab=Thermal Expansion
 itemGroup.thermalexpansion.creativeTabFlorbs=Thermal Expansion: Florbs

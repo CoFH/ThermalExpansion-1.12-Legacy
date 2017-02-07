@@ -1,14 +1,17 @@
 package cofh.thermalexpansion.item;
 
 import cofh.api.core.IInitializer;
+import cofh.api.item.IUpgradeItem;
+import cofh.api.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileAugmentableSecure;
+import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumActionResult;
@@ -22,10 +25,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
-import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+import static cofh.lib.util.helpers.ItemHelper.*;
 
-public class ItemUpgrade extends ItemMulti implements IInitializer {
+public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem {
 
 	public ItemUpgrade() {
 
@@ -62,8 +64,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof TileAugmentableSecure) {
-			if (((TileAugmentableSecure) tile).changeLevel((byte) ItemHelper.getItemDamage(stack))) {
+		if (tile instanceof IUpgradeable) {
+			if (((IUpgradeable) tile).installUpgrade(stack)) {
 				if (!player.capabilities.isCreativeMode) {
 					stack.stackSize--;
 				}
@@ -73,15 +75,37 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 		return EnumActionResult.PASS;
 	}
 
+	/* IUpgradeItem */
+	public UpgradeType getUpgradeType(ItemStack stack) {
+
+		return upgradeMap.get(ItemHelper.getItemDamage(stack)).type;
+	}
+
+	public int getUpgradeLevel(ItemStack stack) {
+
+		return upgradeMap.get(ItemHelper.getItemDamage(stack)).level;
+	}
+
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
 
-		// upgradeCreative = addItem(0, "upgradeCreative");
-		upgradeHardened = addItem(1, "upgradeHardened");
-		upgradeReinforced = addItem(2, "upgradeReinforced");
-		upgradeSignalum = addItem(3, "upgradeSignalum");
-		upgradeResonant = addItem(4, "upgradeResonant");
+		upgradeIncremental = new ItemStack[4];
+		for (int i = 0; i < 4; i++) {
+			int level = i + 1;
+			upgradeIncremental[i] = addItem(i, "incremental" + level, EnumRarity.values()[level / 2]);
+			addUpgradeEntry(i, UpgradeType.INCREMENTAL, level);
+		}
+
+		upgradeFull = new ItemStack[4];
+		for (int i = 1; i < 4; i++) {
+			int level = i + 1;
+			upgradeFull[i] = addItem(32 + i, "full" + level, EnumRarity.values()[level / 2]);
+			addUpgradeEntry(32 + i, UpgradeType.FULL, level);
+		}
+
+		upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
+		addUpgradeEntry(256, UpgradeType.CREATIVE, -1);
 
 		return true;
 	}
@@ -96,7 +120,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 	public boolean postInit() {
 
 		// @formatter:off
-		addRecipe(ShapedRecipe(upgradeHardened,
+		addRecipe(ShapedRecipe(upgradeIncremental[0],
 				" I ",
 				"IGI",
 				"DID",
@@ -104,7 +128,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 				'G', "gearBronze",
 				'I', "ingotInvar"
 		));
-		addRecipe(ShapedRecipe(upgradeReinforced,
+		addRecipe(ShapedRecipe(upgradeIncremental[1],
 				" I ",
 				"IGI",
 				"DID",
@@ -112,7 +136,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 				'G', "gearSilver",
 				'I', "glassHardened"
 		));
-		addRecipe(ShapedRecipe(upgradeSignalum,
+		addRecipe(ShapedRecipe(upgradeIncremental[2],
 				" I ",
 				"IGI",
 				"DID",
@@ -120,7 +144,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 				'G', "gearElectrum",
 				'I', "ingotSignalum"
 		));
-		addRecipe(ShapedRecipe(upgradeResonant,
+		addRecipe(ShapedRecipe(upgradeIncremental[3],
 				" I ",
 				"IGI",
 				"DID",
@@ -128,16 +152,65 @@ public class ItemUpgrade extends ItemMulti implements IInitializer {
 				'G', "gearLumium",
 				'I', "ingotEnderium"
 		));
+
+		addRecipe(ShapelessRecipe(upgradeFull[1],
+				upgradeIncremental[0],
+				upgradeIncremental[1]
+		));
+
+		addRecipe(ShapelessRecipe(upgradeFull[2],
+				upgradeFull[1],
+				upgradeIncremental[2]
+		));
+		addRecipe(ShapelessRecipe(upgradeFull[2],
+				upgradeIncremental[0],
+				upgradeIncremental[1],
+				upgradeIncremental[2]
+		));
+
+		addRecipe(ShapelessRecipe(upgradeFull[3],
+				upgradeFull[2],
+				upgradeIncremental[3]
+		));
+		addRecipe(ShapelessRecipe(upgradeFull[3],
+				upgradeFull[1],
+				upgradeIncremental[2],
+				upgradeIncremental[3]
+		));
+		addRecipe(ShapelessRecipe(upgradeFull[3],
+				upgradeIncremental[0],
+				upgradeIncremental[1],
+				upgradeIncremental[2],
+				upgradeIncremental[3]
+		));
 		// @formatter:on
 
 		return true;
 	}
 
+	/* UPGRADE ENTRY */
+	public class UpgradeEntry {
+
+		public final UpgradeType type;
+		public final int level;
+
+		UpgradeEntry(UpgradeType type, int level) {
+
+			this.type = type;
+			this.level = level;
+		}
+	}
+
+	private void addUpgradeEntry(int metadata, UpgradeType type, int level) {
+
+		upgradeMap.put(metadata, new UpgradeEntry(type, level));
+	}
+
+	private TIntObjectHashMap<UpgradeEntry> upgradeMap = new TIntObjectHashMap<UpgradeEntry>();
+
 	/* REFERENCES */
-	// public static ItemStack upgradeCreative;
-	public static ItemStack upgradeHardened;
-	public static ItemStack upgradeReinforced;
-	public static ItemStack upgradeSignalum;
-	public static ItemStack upgradeResonant;
+	public static ItemStack upgradeCreative;
+	public static ItemStack[] upgradeIncremental;
+	public static ItemStack[] upgradeFull;
 
 }

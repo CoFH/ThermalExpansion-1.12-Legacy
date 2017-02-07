@@ -13,11 +13,11 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiCharger extends GuiPoweredBase {
 
-	static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "charger.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "charger.png");
 
-	ElementBase slotInput;
-	ElementBase slotOutput;
-	ElementDualScaled progress;
+	private ElementBase slotInput;
+	private ElementBase slotOutput;
+	private ElementDualScaled progress;
 
 	public GuiCharger(InventoryPlayer inventory, TileEntity tile) {
 

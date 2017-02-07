@@ -3,7 +3,6 @@ package cofh.thermalexpansion.block.machine;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
@@ -80,53 +79,6 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	public void update() {
-
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return;
-		}
-		boolean curActive = isActive;
-
-		if (isActive) {
-			if (processRem > 0) {
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
-				tank.drain(energy / 10, true);
-			}
-			if (canFinish()) {
-				processFinish();
-				transferOutput();
-				transferInput();
-				energyStorage.modifyEnergyStored(-processRem);
-
-				if (!redstoneControlOrDisable() || !canStart()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-				} else {
-					processStart();
-				}
-			}
-		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
-				transferOutput();
-				transferInput();
-			}
-			if (timeCheckEighth() && canStart()) {
-				processStart();
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
-				tank.drain(energy / 10, true);
-				isActive = true;
-			}
-		}
-		updateIfChanged(curActive);
-		chargeEnergy();
-	}
-
-	@Override
 	public int getMaxInputSlot() {
 
 		return 1;
@@ -135,7 +87,7 @@ public class TileInsolator extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null && inventory[1] == null) {
+		if (inventory[0] == null || inventory[1] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipeInsolator recipe = InsolatorManager.getRecipe(inventory[0], inventory[1]);
@@ -246,6 +198,15 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[1].stackSize <= 0) {
 			inventory[1] = null;
 		}
+	}
+
+	@Override
+	protected void processTick() {
+
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(-energy);
+		processRem -= energy;
+		tank.drain(energy / 10, true);
 	}
 
 	@Override

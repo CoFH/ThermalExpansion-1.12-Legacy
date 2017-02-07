@@ -86,7 +86,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	protected boolean canStart() {
 
-		if (tank.getFluidAmount() < processWater[curSelection]) {
+		if (tank.getFluidAmount() < processWater[curSelection] || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0] == null) {

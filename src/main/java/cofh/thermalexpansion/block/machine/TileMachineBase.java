@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.energy.EnergyStorage;
+import cofh.api.tileentity.IAccelerable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.MathHelper;
@@ -14,7 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 
-public abstract class TileMachineBase extends TilePowered implements ITickable {
+public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
@@ -49,6 +50,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		energyConfig = defaultEnergyConfig[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 		setDefaultSides();
+		enableAutoOutput = true;
 	}
 
 	@Override
@@ -70,11 +72,11 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	}
 
 	@Override
-	public boolean changeLevel(byte level) {
+	protected boolean setLevel(int level) {
 
-		if (super.changeLevel(level)) {
+		if (super.setLevel(level)) {
 			int basePower = defaultEnergyConfig[getType()].maxPower;
-			energyConfig.setDefaultParams(basePower + this.level * basePower / 4);
+			energyConfig.setDefaultParams(basePower + this.level * basePower / 2);
 			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 			return true;
 		}
@@ -90,11 +92,8 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		boolean curActive = isActive;
 
 		if (isActive) {
-			if (processRem > 0) {
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
-			}
+			processTick();
+
 			if (canFinish()) {
 				processFinish();
 				transferOutput();
@@ -102,12 +101,12 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 				energyStorage.modifyEnergyStored(-processRem);
 
 				if (!redstoneControlOrDisable() || !canStart()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
+					processOff();
 				} else {
 					processStart();
 				}
+			} else if (energyStorage.getEnergyStored() <= 0) {
+				processOff();
 			}
 		} else if (redstoneControlOrDisable()) {
 			if (timeCheck()) {
@@ -116,9 +115,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 			}
 			if (timeCheckEighth() && canStart()) {
 				processStart();
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
+				processTick();
 				isActive = true;
 			}
 		}
@@ -163,6 +160,24 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 	protected void processFinish() {
 
+	}
+
+	protected void processOff() {
+
+		processRem = 0;
+		isActive = false;
+		wasActive = true;
+		tracker.markTime(worldObj);
+	}
+
+	protected void processTick() {
+
+		if (processRem <= 0) {
+			return;
+		}
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(-energy);
+		processRem -= energy;
 	}
 
 	protected void transferInput() {
@@ -251,99 +266,11 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		processRem = payload.getInt();
 	}
 
-	/* AUGMENT HELPERS */
+	/* IAccelerable */
 	@Override
-	protected boolean installAugment(int slot) {
+	public void updateAccelerable() {
 
-		//		IAugmentItem augmentItem = (IAugmentItem) augments[slot].getItem();
-		//		boolean installed = false;
-		//
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY) > 0) {
-		//			int augLevel = Math.min(TEAugments.NUM_MACHINE_SECONDARY, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SECONDARY));
-		//
-		//			if (augLevel > level) {
-		//				return false;
-		//			}
-		//			if (hasDuplicateAugment(TEAugments.MACHINE_SECONDARY, augLevel, slot)) {
-		//				return false;
-		//			}
-		//			if (hasAugmentChain(TEAugments.MACHINE_SECONDARY, augLevel)) {
-		//				secondaryChance -= TEAugments.MACHINE_SECONDARY_MOD[augLevel];
-		//				installed = true;
-		//			} else {
-		//				return false;
-		//			}
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED) > 0) {
-		//			int augLevel = Math.min(TEAugments.NUM_MACHINE_SPEED, augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_SPEED));
-		//
-		//			if (augLevel > level) {
-		//				return false;
-		//			}
-		//			if (hasDuplicateAugment(TEAugments.MACHINE_SPEED, augLevel, slot)) {
-		//				return false;
-		//			}
-		//			if (hasAugmentChain(TEAugments.MACHINE_SPEED, augLevel)) {
-		//				// secondaryChance += TEAugments.MACHINE_SPEED_SECONDARY_MOD[augLevel]; TODO: May bring this back; not sure.
-		//				processMod = Math.max(processMod, TEAugments.MACHINE_SPEED_PROCESS_MOD[augLevel]);
-		//				energyMod = Math.max(energyMod, TEAugments.MACHINE_SPEED_ENERGY_MOD[augLevel]);
-		//				installed = true;
-		//			} else {
-		//				return false;
-		//			}
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE) > 0) {
-		//			int augLevel = Math.min(TEAugments.NUM_ENERGY_STORAGE, augmentItem.getAugmentLevel(augments[slot], TEAugments.ENERGY_STORAGE));
-		//
-		//			if (augLevel > level) {
-		//				return false;
-		//			}
-		//			if (hasDuplicateAugment(TEAugments.ENERGY_STORAGE, augLevel, slot)) {
-		//				return false;
-		//			}
-		//			if (hasAugmentChain(TEAugments.ENERGY_STORAGE, augLevel)) {
-		//				energyStorage.setCapacity(Math.max(energyStorage.getMaxEnergyStored(), energyConfig.maxEnergy * TEAugments.ENERGY_STORAGE_MOD[augLevel]));
-		//				installed = true;
-		//			} else {
-		//				return false;
-		//			}
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.MACHINE_NULL) > 0) {
-		//			augmentSecondaryNull = true;
-		//			installed = true;
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_OUTPUT) > 0) {
-		//			hasAutoOutput = true;
-		//			installed = true;
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_AUTO_INPUT) > 0) {
-		//			hasAutoInput = true;
-		//			installed = true;
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_RECONFIG_SIDES) > 0) {
-		//			augmentReconfigSides = true;
-		//			installed = true;
-		//		}
-		//		if (augmentItem.getAugmentLevel(augments[slot], TEAugments.GENERAL_REDSTONE_CONTROL) > 0) {
-		//			hasRedstoneControl = true;
-		//			installed = true;
-		//		}
-		//		return installed;
-		return true;
-	}
-
-	@Override
-	protected void onAugmentInstalled() {
-
-	}
-
-	@Override
-	protected void resetAugments() {
-
-		super.resetAugments();
-
-		augmentSecondaryNull = false;
-		secondaryChance = 100;
+		processTick();
 	}
 
 	/* IInventory */
@@ -354,10 +281,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 			}
 		}
 		return stack;
@@ -369,10 +293,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
 			if (isActive && inventory[slot] != null) {
 				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
+					processOff();
 				}
 			}
 		}
@@ -383,10 +304,7 @@ public abstract class TileMachineBase extends TilePowered implements ITickable {
 	public void markDirty() {
 
 		if (isActive && !hasValidInput()) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 		}
 		super.markDirty();
 	}

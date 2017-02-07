@@ -10,13 +10,10 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
-import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -41,7 +38,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private int currentFuelRF = getEnergyValue(redstone);
+	private int currentFuelRF = DEFAULT_ENERGY;
 
 	public TileDynamoEnervation() {
 
@@ -110,7 +107,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = redstoneRF;
+			currentFuelRF = DEFAULT_ENERGY;
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -126,7 +123,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = redstoneRF;
+			currentFuelRF = DEFAULT_ENERGY;
 		}
 	}
 
@@ -180,34 +177,38 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static int redstoneRF = 64000;
-	private static int blockRedstoneRF = redstoneRF * 10;
+	private static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
 
-	private static ItemStack redstone = new ItemStack(Items.REDSTONE);
-	private static ItemStack blockRedstone = new ItemStack(Blocks.REDSTONE_BLOCK);
+	private static int DEFAULT_ENERGY = 64000;
 
-	static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
+	public static boolean addFuel(ItemStack stack, int energy) {
 
-	static {
-		String category = "Fuels.Enervation";
-		redstoneRF = FuelManager.configFuels.get(category, "redstone", redstoneRF);
-		blockRedstoneRF = redstoneRF * 10;
+		if (stack == null || energy < 640 || energy > 200000000) {
+			return false;
+		}
+		fuels.put(new ComparableItemStack(stack), energy);
+		return true;
 	}
 
-	public static int getEnergyValue(ItemStack fuel) {
+	public static boolean removeFuel(ItemStack stack) {
 
-		if (fuel == null) {
+		fuels.remove(new ComparableItemStack(stack));
+		return true;
+	}
+
+	public static int getEnergyValue(ItemStack stack) {
+
+		if (stack == null) {
 			return 0;
 		}
-		if (fuel.isItemEqual(redstone)) {
-			return redstoneRF;
+		int energy = fuels.get(new ComparableItemStack(stack));
+
+		if (energy > 0) {
+			return energy;
 		}
-		if (fuel.isItemEqual(blockRedstone)) {
-			return blockRedstoneRF;
-		}
-		if (EnergyHelper.isEnergyContainerItem(fuel)) {
-			IEnergyContainerItem container = (IEnergyContainerItem) fuel.getItem();
-			return container.extractEnergy(fuel, container.getEnergyStored(fuel), true);
+		if (EnergyHelper.isEnergyContainerItem(stack)) {
+			IEnergyContainerItem container = (IEnergyContainerItem) stack.getItem();
+			return container.extractEnergy(stack, container.getEnergyStored(stack), true);
 		}
 		return 0;
 	}

@@ -153,7 +153,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	@Override
-	public final void setControl(ControlMode control) {
+	public final boolean setControl(ControlMode control) {
 
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
@@ -161,6 +161,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 		}
+		return true;
 	}
 
 	@Override

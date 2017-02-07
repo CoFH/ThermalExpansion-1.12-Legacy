@@ -62,7 +62,7 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (baseTile.hasRedstoneControl()) {
 			redstoneTab = addTab(new TabRedstone(this, baseTile));
 		}
-		configTab = addTab(new TabConfiguration(this, baseTile));
+		configTab = addTab(new TabConfigurationTransfer(this, baseTile));
 
 		if (baseTile.getMaxEnergyStored(null) > 0) {
 			addTab(new TabEnergy(this, baseTile, false));

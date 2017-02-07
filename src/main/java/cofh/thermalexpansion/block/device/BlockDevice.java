@@ -115,6 +115,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileWaterGen();
 			case NULLIFIER:
 				return new TileNullifier();
+			case HEAT_SINK:
+				return new TileHeatSink();
 			case EXTENDER:
 				return new TileExtender();
 			case CONCENTRATOR:                      // TODO
@@ -126,8 +128,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			case ENERGY_BUFFER:                     // TODO
 				return null;
 			case LEXICON:                           // TODO
-				return null;
-			case FISHER:                            // TODO
 				return null;
 			case CHUNK_LOADER:                      // TODO
 				return null;
@@ -247,12 +247,16 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileWaterGen.initialize();
 		TileNullifier.initialize();
+		TileHeatSink.initialize();
+
 		TileExtender.initialize();
 		//TileConcentrator.initialize();
 		TileItemBuffer.initialize();
 
 		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
+		deviceHeatSink = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
+
 		deviceExtender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.EXTENDER.getMetadata()));
 
 		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
@@ -315,14 +319,16 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		// @formatter:off
 		WATER_GEN(0, "water_gen"),
 		NULLIFIER(1, "nullifier"),
-		EXTENDER(2, "extender"),
-		CONCENTRATOR(3, "concentrator"),
-		ITEM_BUFFER(4, "item_buffer"),
-		FLUID_BUFFER(5, "fluid_buffer"),
-		ENERGY_BUFFER(6, "energy_buffer"),
-		LEXICON(7, "lexicon"),
-		FISHER(8, "fisher"),
-		CHUNK_LOADER(9, "chunk_loader");
+		HEAT_SINK(2, "heat_sink"),
+
+		ITEM_BUFFER(3, "item_buffer"),
+		FLUID_BUFFER(4, "fluid_buffer"),
+		ENERGY_BUFFER(5, "energy_buffer"),
+		LEXICON(6, "lexicon"),
+		CHUNK_LOADER(7, "chunk_loader"),
+		FOUNTAIN(8, "fountain"),
+		EXTENDER(9, "extender"),
+		CONCENTRATOR(10, "concentrator");
 		// @formatter:on
 
 		private static final BlockDevice.Type[] METADATA_LOOKUP = new BlockDevice.Type[values().length];
@@ -378,14 +384,15 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	/* REFERENCES */
 	public static ItemStack deviceWaterGen;
 	public static ItemStack deviceNullifier;
-	public static ItemStack deviceExtender;
-	public static ItemStack deviceConcentrator;
-
+	public static ItemStack deviceHeatSink;
 	public static ItemStack deviceItemBuffer;
 	public static ItemStack deviceFluidBuffer;
 	public static ItemStack deviceEnergyBuffer;
 	public static ItemStack deviceLexicon;
-	public static ItemStack deviceFisher;
 	public static ItemStack deviceChunkLoader;
+
+	public static ItemStack deviceFountain;
+	public static ItemStack deviceExtender;
+	public static ItemStack deviceConcentrator;
 
 }

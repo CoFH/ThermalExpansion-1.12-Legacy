@@ -61,7 +61,7 @@ public class TilePulverizer extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);

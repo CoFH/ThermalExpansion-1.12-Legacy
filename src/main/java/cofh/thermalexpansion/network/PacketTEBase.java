@@ -4,6 +4,7 @@ import cofh.api.tileentity.IRedstoneControl;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.ISecurable.AccessMode;
+import cofh.api.tileentity.ITransferControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.lib.gui.container.IAugmentableContainer;
@@ -21,7 +22,7 @@ public class PacketTEBase extends PacketCoFHBase {
 	}
 
 	public enum PacketTypes {
-		RS_POWER_UPDATE, RS_CONFIG_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, TAB_SCHEMATIC, CONFIG_SYNC
+		RS_POWER_UPDATE, RS_CONFIG_UPDATE, TRANSFER_UPDATE, SECURITY_UPDATE, TAB_AUGMENT, TAB_SCHEMATIC, CONFIG_SYNC
 	}
 
 	@Override
@@ -41,6 +42,11 @@ public class PacketTEBase extends PacketCoFHBase {
 					rs = (IRedstoneControl) player.worldObj.getTileEntity(pos);
 					rs.setControl(ControlMode.values()[getByte()]);
 					return;
+				case TRANSFER_UPDATE:
+					pos = getCoords();
+					ITransferControl transfer = (ITransferControl) player.worldObj.getTileEntity(pos);
+					transfer.setTransferIn(getBool());
+					transfer.setTransferOut(getBool());
 				case SECURITY_UPDATE:
 					if (player.openContainer instanceof ISecurable) {
 						((ISecurable) player.openContainer).setAccess(AccessMode.values()[getByte()]);
@@ -68,26 +74,40 @@ public class PacketTEBase extends PacketCoFHBase {
 		}
 	}
 
+	/* RS POWER */
 	public static void sendRSPowerUpdatePacketToClients(IRedstoneControl rs, World world, BlockPos pos) {
 
 		sendRSPowerUpdatePacketToClients(rs, world, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static void sendRSPowerUpdatePacketToClients(IRedstoneControl rs, World world, int x, int y, int z) {
+	private static void sendRSPowerUpdatePacketToClients(IRedstoneControl rs, World world, int x, int y, int z) {
 
 		PacketHandler.sendToAllAround(getPacket(PacketTypes.RS_POWER_UPDATE).addCoords(x, y, z).addBool(rs.isPowered()), world, x, y, z);
 	}
 
+	/* RS CONFIG */
 	public static void sendRSConfigUpdatePacketToServer(IRedstoneControl rs, BlockPos pos) {
 
 		sendRSConfigUpdatePacketToServer(rs, pos.getX(), pos.getY(), pos.getZ());
 	}
 
-	public static void sendRSConfigUpdatePacketToServer(IRedstoneControl rs, int x, int y, int z) {
+	private static void sendRSConfigUpdatePacketToServer(IRedstoneControl rs, int x, int y, int z) {
 
 		PacketHandler.sendToServer(getPacket(PacketTypes.RS_CONFIG_UPDATE).addCoords(x, y, z).addByte(rs.getControl().ordinal()));
 	}
 
+	/* TRANSFER CONFIG */
+	public static void sendTransferUpdatePacketToServer(ITransferControl transfer, BlockPos pos) {
+
+		sendTransferUpdatePacketToServer(transfer, pos.getX(), pos.getY(), pos.getZ());
+	}
+
+	private static void sendTransferUpdatePacketToServer(ITransferControl transfer, int x, int y, int z) {
+
+		PacketHandler.sendToServer(getPacket(PacketTypes.TRANSFER_UPDATE).addCoords(x, y, z).addBool(transfer.getTransferIn()).addBool(transfer.getTransferOut()));
+	}
+
+	/* SECURITY */
 	public static void sendSecurityPacketToServer(ISecurable securable) {
 
 		PacketHandler.sendToServer(getPacket(PacketTypes.SECURITY_UPDATE).addByte(securable.getAccess().ordinal()));

@@ -1,25 +1,19 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.FuelManager;
 import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.TObjectIntHashMap;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -57,7 +51,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
-	private int currentFuelRF = getEnergyValue(coal);
+	private int currentFuelRF = DEFAULT_RF;
 	private int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
 
 	private FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
@@ -163,7 +157,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = coalRF;
+			currentFuelRF = DEFAULT_RF;
 		}
 		return fuelRF * scale / currentFuelRF;
 	}
@@ -188,7 +182,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		waterTank.readFromNBT(nbt.getCompoundTag("WaterTank"));
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = coalRF;
+			currentFuelRF = DEFAULT_RF;
 		}
 		steam.amount = steamAmount * energyMod;
 	}
@@ -324,27 +318,9 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static int coalRF = 48000;
-	private static int charcoalRF = 32000;
-	private static int woodRF = 4500;
-	private static int blockCoalRF = coalRF * 10;
-	private static int otherRF = woodRF / 3;
-
-	private static ItemStack coal = new ItemStack(Items.COAL, 1, 0);
-	private static ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
-	private static ItemStack blockCoal = new ItemStack(Blocks.COAL_BLOCK);
-
 	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
 
-	static {
-		String category = "Fuels.Steam";
-		FuelManager.configFuels.getCategory(category).setComment("You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
-		coalRF = FuelManager.configFuels.get(category, "coal", coalRF);
-		charcoalRF = FuelManager.configFuels.get(category, "charcoal", charcoalRF);
-		woodRF = FuelManager.configFuels.get(category, "wood", woodRF);
-		blockCoalRF = coalRF * 10;
-		otherRF = woodRF / 3;
-	}
+	private static int DEFAULT_RF = 48000;
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 
@@ -355,29 +331,20 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return true;
 	}
 
+	public static boolean removeFuel(ItemStack stack) {
+
+		fuels.remove(new ComparableItemStack(stack));
+		return true;
+	}
+
 	public static int getEnergyValue(ItemStack stack) {
 
 		if (stack == null) {
 			return 0;
 		}
-		if (stack.isItemEqual(coal)) {
-			return coalRF;
-		}
-		if (stack.isItemEqual(charcoal)) {
-			return charcoalRF;
-		}
-		if (stack.isItemEqual(blockCoal)) {
-			return blockCoalRF;
-		}
-		Item item = stack.getItem();
+		int energy = fuels.get(new ComparableItemStack(stack));
 
-		if (stack.getItem() instanceof ItemBlock && ((ItemBlock) item).block.blockMaterial == Material.WOOD) {
-			return woodRF;
-		}
-		if (item == Items.STICK || item instanceof ItemBlock && ((ItemBlock) item).block == Blocks.SAPLING) {
-			return otherRF;
-		}
-		return GameRegistry.getFuelValue(stack) * CoreProps.RF_PER_MJ * 3 / 2;
+		return energy > 0 ? energy : GameRegistry.getFuelValue(stack) * CoreProps.RF_PER_MJ * 3 / 2;
 	}
 
 }

@@ -5,12 +5,11 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
-import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -452,34 +451,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	/* AUGMENT HELPERS */
-	protected boolean hasAugment(String type, int augLevel) {
-
-		for (int i = 0; i < augments.length; i++) {
-			if (Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean hasDuplicateAugment(String type, int augLevel, int slot) {
-
-		for (int i = 0; i < augments.length; i++) {
-			if (i != slot && Utils.isAugmentItem(augments[i]) && ((IAugmentItem) augments[i].getItem()).getAugmentLevel(augments[i], type) == augLevel) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	protected boolean hasAugmentChain(String type, int augLevel) {
-
-		boolean preReq = true;
-		for (int i = 1; i < augLevel; i++) {
-			preReq = preReq && hasAugment(type, i);
-		}
-		return preReq;
-	}
 
 	protected boolean installAugment(int slot) {
 

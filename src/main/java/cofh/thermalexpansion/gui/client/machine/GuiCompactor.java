@@ -15,10 +15,10 @@ public class GuiCompactor extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "compactor.png");
 
-	ElementBase slotInput;
-	ElementBase slotOutput;
-	ElementDualScaled progress;
-	ElementDualScaled speed;
+	private ElementBase slotInput;
+	private ElementBase slotOutput;
+	private ElementDualScaled progress;
+	private ElementDualScaled speed;
 
 	public GuiCompactor(InventoryPlayer inventory, TileEntity tile) {
 

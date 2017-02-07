@@ -1,11 +1,11 @@
-package cofh.thermalexpansion.util;
+package cofh.thermalexpansion.util.fuels;
 
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.dynamo.TileDynamoCompression;
-import cofh.thermalexpansion.block.dynamo.TileDynamoMagmatic;
-import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
+import cofh.thermalexpansion.block.dynamo.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -27,6 +27,15 @@ public class FuelManager {
 	}
 
 	/* STEAM */
+	public static boolean addSteamFuel(ItemStack stack, int energy) {
+
+		return TileDynamoSteam.addFuel(stack, energy);
+	}
+
+	public static boolean removeSteamFuel(ItemStack stack) {
+
+		return TileDynamoSteam.removeFuel(stack);
+	}
 
 	/* MAGMATIC */
 	public static boolean addMagmaticFuel(String name, int energy) {
@@ -106,12 +115,25 @@ public class FuelManager {
 	}
 
 	/* ENERVATION */
+	public static boolean addEnervationFuel(ItemStack stack, int energy) {
+
+		return TileDynamoEnervation.addFuel(stack, energy);
+	}
+
+	public static boolean removeEnervationFuel(ItemStack stack) {
+
+		return TileDynamoEnervation.removeFuel(stack);
+	}
 
 	public static void addDefaultFuels() {
 
 		/* STEAM */
 		{
 			String category = "Fuels.Steam";
+
+			addSteamFuel(new ItemStack(Items.COAL, 1, 0), configFuels.get(category, "coal", 48000));
+			addSteamFuel(new ItemStack(Blocks.COAL_BLOCK), configFuels.get(category, "coal", 48000) * 10);
+			addSteamFuel(new ItemStack(Items.COAL, 1, 1), configFuels.get(category, "charcoal", 32000));
 		}
 
 		/* MAGMATIC */
@@ -159,6 +181,9 @@ public class FuelManager {
 		/* ENERVATION */
 		{
 			String category = "Fuels.Enervation";
+
+			addEnervationFuel(new ItemStack(Items.REDSTONE), configFuels.get(category, "redstone", 64000));
+			addEnervationFuel(new ItemStack(Blocks.REDSTONE_BLOCK), configFuels.get(category, "redstone", 64000) * 10);
 		}
 
 		/* COOLANTS */
@@ -171,6 +196,7 @@ public class FuelManager {
 
 			addCoolant("ice", configFuels.get(category, "ice", 2000000));
 		}
+		configFuels.save();
 	}
 
 	/* PARSER */
@@ -179,6 +205,7 @@ public class FuelManager {
 		/* STEAM */
 		{
 			String category = "Fuels.Steam";
+			configFuels.getCategory(category).setComment("You can adjust fuel values for the Steam Dynamo in this section. New fuels cannot be added at this time.");
 		}
 
 		/* MAGMATIC */
@@ -217,7 +244,7 @@ public class FuelManager {
 		/* COOLANTS */
 		{
 			String category = "Coolants";
-			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft. Currently only used by the Compression Dynamo.");
+			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft.");
 
 			Set<String> catKeys = configFuels.getCategoryKeys(category);
 			for (String s : catKeys) {
@@ -228,8 +255,8 @@ public class FuelManager {
 		/* ENERVATION */
 		{
 			String category = "Fuels.Enervation";
+			configFuels.getCategory(category).setComment("You can adjust fuel values for the Enervation Dynamo in this section. New fuels cannot be added at this time.");
 		}
-
 		configFuels.cleanUp(true, false);
 	}
 

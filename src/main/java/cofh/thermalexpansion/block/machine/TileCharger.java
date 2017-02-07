@@ -106,7 +106,7 @@ public class TileCharger extends TileMachineBase {
 		if (!isActive) {
 			return 0;
 		}
-		int power = 0;
+		int power;
 
 		if (energyStorage.getEnergyStored() > energyConfig.maxPowerLevel) {
 			power = energyConfig.maxPower;
@@ -128,7 +128,7 @@ public class TileCharger extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (EnergyHelper.isEnergyContainerItem(inventory[0])) {

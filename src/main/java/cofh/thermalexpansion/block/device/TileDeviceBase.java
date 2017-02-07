@@ -49,8 +49,8 @@ public abstract class TileDeviceBase extends TilePowered {
 	protected void setLevelFlags() {
 
 		level = 0;
-		hasAutoInput = true;
-		hasAutoOutput = true;
+		hasAutoInput = false;
+		hasAutoOutput = false;
 
 		hasRedstoneControl = true;
 		hasAdvRedstoneControl = false;

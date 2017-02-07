@@ -13,11 +13,11 @@ public class GuiCrucible extends GuiPoweredBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_MACHINE + "crucible.png");
 
-	ElementBase slotInput;
-	ElementBase slotOutput;
-	ElementFluid progressFluid;
-	ElementDualScaled progressOverlay;
-	ElementDualScaled speed;
+	private ElementBase slotInput;
+	private ElementBase slotOutput;
+	private ElementFluid progressFluid;
+	private ElementDualScaled progressOverlay;
+	private ElementDualScaled speed;
 
 	public GuiCrucible(InventoryPlayer inventory, TileEntity tile) {
 

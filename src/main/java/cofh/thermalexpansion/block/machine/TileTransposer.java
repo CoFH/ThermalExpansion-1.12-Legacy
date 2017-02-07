@@ -90,11 +90,9 @@ public class TileTransposer extends TileMachineBase {
 		boolean curActive = isActive;
 
 		if (isActive) {
-			if (processRem > 0) {
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
-			} else {
+			processTick();
+
+			if (processRem <= 0) {
 				if (processFinishHandler()) {
 					transferOutput();
 					transferInput();
@@ -102,9 +100,7 @@ public class TileTransposer extends TileMachineBase {
 				energyStorage.modifyEnergyStored(-processRem);
 
 				if (!redstoneControlOrDisable() || !canStartHandler()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
+					processOff();
 				} else {
 					processStartHandler();
 				}
@@ -116,9 +112,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			if (timeCheckEighth() && canStartHandler()) {
 				processStartHandler();
-				int energy = calcEnergy();
-				energyStorage.modifyEnergyStored(-energy);
-				processRem -= energy;
+				processTick();
 				isActive = true;
 			}
 		}
@@ -262,7 +256,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected boolean canStart() {
 
-		if (inventory[0] == null) {
+		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
