@@ -72,7 +72,7 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 			return;
 		}
 		if (isActive) {
-			if(tank.getFluidAmount() >= Fluid.BUCKET_VOLUME) {
+			if (tank.getFluidAmount() >= Fluid.BUCKET_VOLUME) {
 
 			}
 		} else if (redstoneControlOrDisable()) {

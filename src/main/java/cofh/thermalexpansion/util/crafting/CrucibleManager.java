@@ -36,7 +36,7 @@ public class CrucibleManager {
 
 	public static RecipeCrucible[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCrucible[0]);
+		return recipeMap.values().toArray(new RecipeCrucible[recipeMap.values().size()]);
 	}
 
 	public static void addDefaultRecipes() {
@@ -111,7 +111,7 @@ public class CrucibleManager {
 		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addOreDictionaryRecipe(int energy, String oreName, int stackSize, FluidStack output) {
 
 		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);

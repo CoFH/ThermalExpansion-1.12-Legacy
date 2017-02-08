@@ -50,7 +50,7 @@ public class FurnaceManager {
 
 	public static RecipeFurnace[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeFurnace[0]);
+		return recipeMap.values().toArray(new RecipeFurnace[recipeMap.values().size()]);
 	}
 
 	public static boolean isFood(ItemStack input) {
@@ -284,13 +284,13 @@ public class FurnaceManager {
 		return recipeMap.remove(new ComparableItemStackFurnace(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
 		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
 
-			if(oreName.startsWith("ore") && ItemHelper.isIngot(output)) {
+			if (oreName.startsWith("ore") && ItemHelper.isIngot(output)) {
 				oreSet.add(new ComparableItemStackFurnace(OreDictionary.getOres(oreName).get(0)));
 			}
 		}

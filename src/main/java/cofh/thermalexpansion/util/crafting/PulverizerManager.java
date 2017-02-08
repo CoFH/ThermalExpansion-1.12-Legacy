@@ -48,7 +48,7 @@ public class PulverizerManager {
 
 	public static RecipePulverizer[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipePulverizer[0]);
+		return recipeMap.values().toArray(new RecipePulverizer[recipeMap.values().size()]);
 	}
 
 	public static void addDefaultRecipes() {
@@ -293,7 +293,7 @@ public class PulverizerManager {
 		return recipeMap.remove(new ComparableItemStackPulverizer(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addDefaultOreDictionaryRecipe(String oreType) {
 
 		addDefaultOreDictionaryRecipe(oreType, "");

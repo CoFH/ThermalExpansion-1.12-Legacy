@@ -83,7 +83,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		if (isActive) {
 			// TODO - fluid drain logic / timing
 
-			for (int i = 0 ; i < 6; i++) {
+			for (int i = 0; i < 6; i++) {
 				if (accelerables[i] != null) {
 					accelerables[i].updateAccelerable();
 				}
@@ -98,7 +98,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	protected void updateAdjacentHandlers() {
 
-		for(int i = 0; i < 6; i++) {
+		for (int i = 0; i < 6; i++) {
 			accelerables[i] = null;
 
 			TileEntity tile = BlockHelper.getAdjacentTileEntity(this, i);

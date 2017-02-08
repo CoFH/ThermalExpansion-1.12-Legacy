@@ -5,7 +5,6 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
@@ -68,71 +67,67 @@ public class TileDynamoSteam extends TileDynamoBase {
 		return TYPE;
 	}
 
-	@Override
-	protected boolean canGenerate() {
+	protected boolean canStart() {
 
-		if (steamTank.getFluidAmount() > STEAM_MIN) {
-			return true;
-		}
-		if (waterTank.getFluidAmount() < config.maxPower) {
-			return false;
-		}
-		if (fuelRF > 0) {
-			return true;
-		}
-		return getEnergyValue(inventory[0]) > 0;
+		return steamTank.getFluidAmount() >= STEAM_MIN;
 	}
 
-	@Override
-	public void attenuate() {
+	protected void processStart() {
 
-		if (timeCheck()) {
-			fuelRF -= 10;
-
-			if (fuelRF < 0) {
-				fuelRF = 0;
-			}
-			steamTank.drain(config.minPower, true);
-		}
+		processRem += getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
 	}
 
-	@Override
-	public void generate() {
 
-		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount * energyMod) {
-			int energy = calcEnergy() * energyMod;
-			energyStorage.modifyEnergyStored(energy);
-			steamTank.drain(energy >> 1, true);
-		} else {
-			if (fuelRF <= 0 && inventory[0] != null) {
-				int energy = getEnergyValue(inventory[0]) * fuelMod / FUEL_MOD;
-				fuelRF += energy;
-				currentFuelRF = energy;
-				inventory[0] = ItemHelper.consumeItem(inventory[0]);
-			}
-			if (fuelRF > 0) {
-				int filled = steamTank.fill(steam, true);
-				fuelRF -= filled << 1;
-				if (timeCheck()) {
-					waterTank.drain(filled, true);
-				}
-			}
-			if (steamTank.getFluidAmount() > STEAM_MIN) {
-				int energy = Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy());
-				energy *= energyMod;
-				energyStorage.modifyEnergyStored(energy);
-				steamTank.drain(energy >> 1, true);
-			}
-			return;
-		}
-		if (fuelRF > 0) {
-			int filled = steamTank.fill(steam, true);
-			fuelRF -= filled << 1;
-			if (timeCheck()) {
-				waterTank.drain(filled, true);
-			}
-		}
-	}
+//	@Override
+//	protected boolean canGenerate() {
+//
+//		if (steamTank.getFluidAmount() > STEAM_MIN) {
+//			return true;
+//		}
+//		if (waterTank.getFluidAmount() < energyConfig.maxPower) {
+//			return false;
+//		}
+//		return processRem > 0 || getEnergyValue(inventory[0]) > 0;
+//	}
+//
+//	@Override
+//	public void generate() {
+//
+//		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount) {
+//			int energy = calcEnergy();
+//			energyStorage.modifyEnergyStored(energy);
+//			steamTank.drain(energy >> 1, true);
+//		} else {
+//			if (processRem <= 0 && inventory[0] != null) {
+//				int energy = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+//				processRem += energy;
+//				currentFuelRF = energy;
+//				inventory[0] = ItemHelper.consumeItem(inventory[0]);
+//			}
+//			if (processRem > 0) {
+//				int filled = steamTank.fill(steam, true);
+//				processRem -= filled << 1;
+//				if (timeCheck()) {
+//					waterTank.drain(filled, true);
+//				}
+//			}
+//			if (steamTank.getFluidAmount() > STEAM_MIN) {
+//				int energy = Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy());
+//				energyStorage.modifyEnergyStored(energy);
+//				steamTank.drain(energy >> 1, true);
+//			}
+//			return;
+//		}
+//		if (processRem > 0) {
+//			int filled = steamTank.fill(steam, true);
+//			processRem -= filled << 1;
+//			if (timeCheck()) {
+//				waterTank.drain(filled, true);
+//			}
+//		}
+//	}
+
+
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -159,7 +154,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (currentFuelRF <= 0) {
 			currentFuelRF = DEFAULT_RF;
 		}
-		return fuelRF * scale / currentFuelRF;
+		return processRem * scale / currentFuelRF;
 	}
 
 	@Override
@@ -184,7 +179,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (currentFuelRF <= 0) {
 			currentFuelRF = DEFAULT_RF;
 		}
-		steam.amount = steamAmount * energyMod;
+		steam.amount = steamAmount;
 	}
 
 	@Override
@@ -221,26 +216,13 @@ public class TileDynamoSteam extends TileDynamoBase {
 		waterTank.setFluid(payload.getFluidStack());
 	}
 
-	/* AUGMENT HELPERS */
-	@Override
-	protected void onAugmentInstalled() {
-
-		super.onAugmentInstalled();
-		steam.amount = steamAmount * energyMod;
-	}
-
-	@Override
-	protected void resetAugments() {
-
-		super.resetAugments();
-		steam.amount = steamAmount;
-	}
+	/* HELPERS */
 
 	/* IEnergyInfo */
 	@Override
 	public int getInfoEnergyPerTick() {
 
-		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() * energyMod : 0;
+		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() : 0;
 	}
 
 	/* IInventory */
@@ -254,7 +236,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoreProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 
 	/* CAPABILITIES */

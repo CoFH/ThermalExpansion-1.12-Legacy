@@ -65,7 +65,7 @@ public class InsolatorManager {
 
 	public static RecipeInsolator[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeInsolator[0]);
+		return recipeMap.values().toArray(new RecipeInsolator[recipeMap.values().size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -174,7 +174,7 @@ public class InsolatorManager {
 		return recipeMap.remove(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput))) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addFertilizer(ItemStack fertilizer) {
 
 		lockSet.add(new ComparableItemStackInsolator(fertilizer));

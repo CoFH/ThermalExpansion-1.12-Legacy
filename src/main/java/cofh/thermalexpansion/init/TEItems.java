@@ -24,22 +24,22 @@ public class TEItems {
 		ThermalExpansion.proxy.addIModelRegister(itemUpgrade);
 		ThermalExpansion.proxy.addIModelRegister(itemAugment);
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).preInit();
+		for (IInitializer init : initList) {
+			init.preInit();
 		}
 	}
 
 	public static void initialize() {
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).initialize();
+		for (IInitializer init : initList) {
+			init.initialize();
 		}
 	}
 
 	public static void postInit() {
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).postInit();
+		for (IInitializer init : initList) {
+			init.postInit();
 		}
 		initList.clear();
 	}

@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
 
 public class TilePulverizer extends TileMachineBase {
 
@@ -27,6 +31,9 @@ public class TilePulverizer extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.MACHINE_PULVERIZER_GEODE);
 
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:machine_pulverizer");
 
@@ -45,6 +52,9 @@ public class TilePulverizer extends TileMachineBase {
 	private int inputTracker;
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
+
+	/* AUGMENTS */
+	public boolean augmentGeode;
 
 	public TilePulverizer() {
 
@@ -262,6 +272,29 @@ public class TilePulverizer extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		return nbt;
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentGeode = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!hasAdvancedAugment && TEProps.MACHINE_PULVERIZER_GEODE.equals(id)) {
+			augmentGeode = true;
+			hasAdvancedAugment = true;
+			energyMod += 25;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */

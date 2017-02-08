@@ -44,13 +44,13 @@ public class CompactorManager {
 
 	public static RecipeCompactor[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCompactor[0]);
+		return recipeMap.values().toArray(new RecipeCompactor[recipeMap.values().size()]);
 	}
 
 	public static void addDefaultRecipes() {
 
-		addStorageRecipe(ItemHelper.cloneStack(Items.WHEAT,1), ItemHelper.cloneStack(Blocks.HAY_BLOCK, 1));
-		addStorageRecipe(ItemHelper.cloneStack(Items.REDSTONE,1), ItemHelper.cloneStack(Blocks.REDSTONE_BLOCK, 1));
+		addStorageRecipe(ItemHelper.cloneStack(Items.WHEAT, 1), ItemHelper.cloneStack(Blocks.HAY_BLOCK, 1));
+		addStorageRecipe(ItemHelper.cloneStack(Items.REDSTONE, 1), ItemHelper.cloneStack(Blocks.REDSTONE_BLOCK, 1));
 
 		addStorageRecipe(ItemMaterial.ingotIron, ItemHelper.cloneStack(Blocks.IRON_BLOCK, 1));
 		addStorageRecipe(ItemMaterial.ingotGold, ItemHelper.cloneStack(Blocks.GOLD_BLOCK, 1));
@@ -130,7 +130,7 @@ public class CompactorManager {
 		return recipeMap.remove(new ComparableItemStackCompactor(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
 		ItemStack input = OreDictionary.getOres(oreName).get(0);

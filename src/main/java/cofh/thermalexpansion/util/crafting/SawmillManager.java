@@ -48,7 +48,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSawmill[0]);
+		return recipeMap.values().toArray(new RecipeSawmill[recipeMap.values().size()]);
 	}
 
 	public static void addDefaultRecipes() {
@@ -167,7 +167,7 @@ public class SawmillManager {
 		return recipeMap.remove(new ComparableItemStackSawmill(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addAllLogs() {
 
 		Container tempContainer = new Container() {

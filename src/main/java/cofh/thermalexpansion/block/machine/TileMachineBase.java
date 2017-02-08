@@ -1,13 +1,16 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.energy.EnergyStorage;
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.tileentity.IAccelerable;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.TimeTracker;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
@@ -15,15 +18,29 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.ArrayList;
+
+import static cofh.api.item.IAugmentItem.AugmentType.ADVANCED;
+import static cofh.api.item.IAugmentItem.AugmentType.CREATIVE;
+
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
+	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockMachine.Type.values().length];
+
 	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 0, 14 };
+
 	private static boolean enableSecurity = true;
 
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
 	protected static final int ENERGY_BASE = 100;
 	protected static final int SECONDARY_BASE = 100;
+
+	static {
+		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_POWER);
+		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_SECONDARY);
+	}
 
 	public static void config() {
 
@@ -34,6 +51,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	int processMax;
 	int processRem;
 	boolean wasActive;
+	boolean hasAdvancedAugment;
 
 	EnergyConfig energyConfig;
 	TimeTracker tracker = new TimeTracker();
@@ -75,8 +93,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected boolean setLevel(int level) {
 
 		if (super.setLevel(level)) {
-			int basePower = defaultEnergyConfig[getType()].maxPower;
-			energyConfig.setDefaultParams(basePower + this.level * basePower / 2);
+			energyConfig.setDefaultParams(getBasePower(this.level));
 			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 			return true;
 		}
@@ -121,6 +138,12 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		}
 		updateIfChanged(curActive);
 		chargeEnergy();
+	}
+
+	/* COMMON METHODS */
+	protected int getBasePower(int level) {
+
+		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
 	}
 
 	protected int calcEnergy() {
@@ -264,6 +287,67 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		processMax = payload.getInt();
 		processRem = payload.getInt();
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		energyConfig.setDefaultParams(getBasePower(this.level));
+
+		energyMod = ENERGY_BASE;
+		secondaryChance = SECONDARY_BASE;
+
+		hasAdvancedAugment = false;
+
+		augmentSecondaryNull = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (type == CREATIVE && level != -1) {
+			return false;
+		}
+		if (type == ADVANCED && hasAdvancedAugment) {
+			return false;
+		}
+		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (TEProps.MACHINE_POWER.equals(id)) {
+			// Power Boost
+			int maxPower = energyConfig.maxPower;
+			energyConfig.setDefaultParams(maxPower + getBasePower(this.level));
+
+			// Efficiency Loss
+			energyMod += 20;
+			return true;
+		}
+		if (TEProps.MACHINE_SECONDARY.equals(id)) {
+			// SeoondaryChance
+			secondaryChance -= 10;
+
+			// Efficiency Loss
+			energyMod += 10;
+			return true;
+		}
+		if (TEProps.MACHINE_SECONDARY_NULL.equals(id)) {
+			augmentSecondaryNull = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IAccelerable */

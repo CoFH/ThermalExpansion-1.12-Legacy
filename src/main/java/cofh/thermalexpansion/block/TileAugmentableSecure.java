@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.util.ServerUtils;
+import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IAugmentable;
@@ -9,10 +10,7 @@ import cofh.api.tileentity.ITransferControl;
 import cofh.api.tileentity.IUpgradeable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.AugmentHelper;
-import cofh.lib.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.ServerHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.network.PacketTEBase;
@@ -203,7 +201,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		setLevel(level);
 
 		readAugmentsFromNBT(nbt);
-		installAugments();
+		updateAugmentStatus();
 	}
 
 	@Override
@@ -300,23 +298,50 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		}
 	}
 
-	public void installAugments() {
+	/* HELPERS */
+	protected void preAugmentInstall() {
 
 	}
 
-	protected void onAugmentInstalled() {
+	protected void postAugmentInstall() {
 
 	}
 
-	protected void resetAugments() {
+	protected boolean isValidAugment(AugmentType type, String id) {
 
+		return false;
+	}
+
+	protected boolean installAugmentToSlot(int slot) {
+
+		return false;
 	}
 
 	/* IAugmentable */
 	@Override
 	public boolean installAugment(ItemStack augment) {
 
+		if (!isValidAugment(augment)) {
+			return false;
+		}
+		for (int i = 0; i < augments.length; i++) {
+			if (augments[i] == null) {
+				augments[i] = ItemHelper.cloneStack(augment, 1);
+				updateAugmentStatus();
+				markChunkDirty();
+				return true;
+			}
+		}
 		return false;
+	}
+
+	@Override
+	public boolean isValidAugment(ItemStack augment) {
+
+		if (!AugmentHelper.isAugmentItem(augment)) {
+			return false;
+		}
+		return isValidAugment(AugmentHelper.getAugmentType(augment), AugmentHelper.getAugmentIdentifier(augment));
 	}
 
 	@Override
@@ -329,6 +354,19 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public boolean[] getAugmentStatus() {
 
 		return augmentStatus;
+	}
+
+	public void updateAugmentStatus() {
+
+		preAugmentInstall();
+
+		for (int i = 0; i < augments.length; i++) {
+			augmentStatus[i] = false;
+			if (AugmentHelper.isAugmentItem(augments[i])) {
+				augmentStatus[i] = installAugmentToSlot(i);
+			}
+		}
+		postAugmentInstall();
 	}
 
 	/* ISecurable */
@@ -488,6 +526,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				}
 				return false;
 		}
+		markChunkDirty();
 		return true;
 	}
 

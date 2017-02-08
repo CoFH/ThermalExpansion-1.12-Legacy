@@ -69,7 +69,7 @@ public class SmelterManager {
 
 	public static RecipeSmelter[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSmelter[0]);
+		return recipeMap.values().toArray(new RecipeSmelter[recipeMap.values().size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -307,7 +307,7 @@ public class SmelterManager {
 		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput))) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addFlux(ItemStack flux) {
 
 		lockSet.add(new ComparableItemStackSmelter(flux));

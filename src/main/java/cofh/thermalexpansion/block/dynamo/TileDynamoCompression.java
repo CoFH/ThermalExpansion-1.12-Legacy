@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -52,34 +52,34 @@ public class TileDynamoCompression extends TileDynamoBase {
 		return TYPE;
 	}
 
-	@Override
-	protected boolean canGenerate() {
-
-		if (fuelRF > 0) {
-			return coolantRF > 0 || coolantTank.getFluidAmount() >= 50;
-		}
-		if (coolantRF > 0) {
-			return fuelTank.getFluidAmount() >= 50;
-		}
-		return fuelTank.getFluidAmount() >= 50 && coolantTank.getFluidAmount() >= 50;
-	}
-
-	@Override
-	protected void generate() {
-
-		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(fuelTank.getFluid()) * fuelMod / FUEL_MOD;
-			fuelTank.drain(50, true);
-		}
-		if (coolantRF <= 0) {
-			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * fuelMod / FUEL_MOD;
-			coolantTank.drain(50, true);
-		}
-		int energy = calcEnergy() * energyMod;
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
-		coolantRF -= energy;
-	}
+//	@Override
+//	protected boolean canGenerate() {
+//
+//		if (processRem > 0) {
+//			return coolantRF > 0 || coolantTank.getFluidAmount() >= 50;
+//		}
+//		if (coolantRF > 0) {
+//			return fuelTank.getFluidAmount() >= 50;
+//		}
+//		return fuelTank.getFluidAmount() >= 50 && coolantTank.getFluidAmount() >= 50;
+//	}
+//
+//	@Override
+//	protected void generate() {
+//
+//		if (processRem <= 0) {
+//			processRem = getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+//			fuelTank.drain(50, true);
+//		}
+//		if (coolantRF <= 0) {
+//			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * energyMod / ENERGY_BASE;
+//			coolantTank.drain(50, true);
+//		}
+//		int energy = calcEnergy();
+//		energyStorage.modifyEnergyStored(energy);
+//		processRem -= energy;
+//		coolantRF -= energy;
+//	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {

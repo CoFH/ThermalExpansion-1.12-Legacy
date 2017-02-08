@@ -105,4 +105,19 @@ public class TEProps {
 		}
 	}
 
+	/* AUGMENT IDENTIFIERS */
+	public static final String MACHINE_POWER = "machinePower";
+	public static final String MACHINE_SECONDARY = "machineSecondary";
+
+	public static final String MACHINE_SECONDARY_NULL = "machineSecondaryNull";
+
+	public static final String MACHINE_FURNACE_FOOD = "machineFurnaceFood";
+	public static final String MACHINE_FURNACE_ORE = "machineFurnaceOre";
+
+	public static final String MACHINE_PULVERIZER_GEODE = "machinePulverizerGeode";
+
+	public static final String MACHINE_SAWMILL_TAPPER = "machineSawmillTapper";
+
+	public static final String MACHINE_SMELTER_PYROTHEUM = "machineSmelterPyrotheum";
+
 }

@@ -9,7 +9,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 
-public class TEAugments {
+public class TEAugments2 {
 
 	public static byte NUM_DYNAMO_EFFICIENCY = 3;
 	public static byte NUM_DYNAMO_OUTPUT = 3;
@@ -87,7 +87,7 @@ public class TEAugments {
 	public static String MACHINE_EXTRUDER_BOOST = "machineExtruderBoost";
 	public static String MACHINE_CHARGER_BOOST = "machineChargerBoost";
 
-	private TEAugments() {
+	private TEAugments2() {
 
 	}
 

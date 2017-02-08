@@ -46,12 +46,12 @@ public class TransposerManager {
 
 	public static RecipeTransposer[] getFillRecipeList() {
 
-		return recipeMapFill.values().toArray(new RecipeTransposer[0]);
+		return recipeMapFill.values().toArray(new RecipeTransposer[recipeMapFill.values().size()]);
 	}
 
 	public static RecipeTransposer[] getExtractionRecipeList() {
 
-		return recipeMapExtraction.values().toArray(new RecipeTransposer[0]);
+		return recipeMapExtraction.values().toArray(new RecipeTransposer[recipeMapExtraction.values().size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

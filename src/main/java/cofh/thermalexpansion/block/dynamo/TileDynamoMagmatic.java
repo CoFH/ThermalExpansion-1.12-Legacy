@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.network.PacketCoFHBase;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -56,22 +56,14 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		return isActive ? 14 : 0;
 	}
 
-	@Override
-	protected boolean canGenerate() {
+	protected boolean canStart() {
 
-		return fuelRF > 0 || tank.getFluidAmount() >= 50;
+		return tank.getFluidAmount() >= 50;
 	}
 
-	@Override
-	public void generate() {
+	protected void processStart() {
 
-		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy(tank.getFluid()) * fuelMod / FUEL_MOD;
-			tank.drain(50, true);
-		}
-		int energy = calcEnergy() * energyMod;
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
+		processRem += getFuelEnergy(tank.getFluid()) * energyMod / ENERGY_BASE;
 	}
 
 	@Override

@@ -1,10 +1,12 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
 import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -14,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
 
 public class TileSmelter extends TileMachineBase {
 
@@ -30,6 +34,9 @@ public class TileSmelter extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
@@ -392,6 +399,29 @@ public class TileSmelter extends TileMachineBase {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentPyrotheum = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!hasAdvancedAugment && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
+			augmentPyrotheum = true;
+			hasAdvancedAugment = true;
+			energyMod += 25;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */

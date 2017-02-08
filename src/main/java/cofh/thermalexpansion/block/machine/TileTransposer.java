@@ -30,6 +30,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileTransposer extends TileMachineBase {
 
@@ -46,6 +47,8 @@ public class TileTransposer extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 

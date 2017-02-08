@@ -38,8 +38,8 @@ public class TETextures {
 		MACHINE_FACE_INSOLATOR =			register(map, MACHINE_FACE_ + "insolator");
 		MACHINE_FACE_COMPACTOR =			map.getMissingSprite();
 		MACHINE_FACE_CRUCIBLE =				register(map, MACHINE_FACE_ + "crucible");
+		MACHINE_FACE_REFINERY =             map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "refinery");
 		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
-		MACHINE_FACE_TRANSCAPSULATOR =		map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "transcapsulator");
 		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
 		MACHINE_FACE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
 		MACHINE_FACE_CRAFTER =				register(map, MACHINE_FACE_ + "crafter");
@@ -55,8 +55,8 @@ public class TETextures {
 		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
 		MACHINE_ACTIVE_COMPACTOR =			map.getMissingSprite();
 		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
+		MACHINE_ACTIVE_REFINERY =           map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "refinery");
 		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
-		MACHINE_ACTIVE_TRANSCAPSULATOR =	map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "transcapsulator");
 		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
 		MACHINE_ACTIVE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");
 		MACHINE_ACTIVE_CRAFTER =			register(map, MACHINE_ACTIVE_ + "crafter");
@@ -122,8 +122,8 @@ public class TETextures {
 				MACHINE_FACE_INSOLATOR,
 				MACHINE_FACE_COMPACTOR,
 				MACHINE_FACE_CRUCIBLE,
+				MACHINE_FACE_REFINERY,
 				MACHINE_FACE_TRANSPOSER,
-				MACHINE_FACE_TRANSCAPSULATOR,
 				MACHINE_FACE_CHARGER,
 				MACHINE_FACE_CENTRIFUGE,
 				MACHINE_FACE_CRAFTER,
@@ -141,8 +141,8 @@ public class TETextures {
 				MACHINE_ACTIVE_INSOLATOR,
 				MACHINE_ACTIVE_COMPACTOR,
 				MACHINE_ACTIVE_CRUCIBLE,
+				MACHINE_ACTIVE_REFINERY,
 				MACHINE_ACTIVE_TRANSPOSER,
-				MACHINE_ACTIVE_TRANSCAPSULATOR,
 				MACHINE_ACTIVE_CHARGER,
 				MACHINE_ACTIVE_CENTRIFUGE,
 				MACHINE_ACTIVE_CRAFTER,
@@ -239,8 +239,8 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_FACE_INSOLATOR;
 	public static TextureAtlasSprite MACHINE_FACE_COMPACTOR;
 	public static TextureAtlasSprite MACHINE_FACE_CRUCIBLE;
+	public static TextureAtlasSprite MACHINE_FACE_REFINERY;
 	public static TextureAtlasSprite MACHINE_FACE_TRANSPOSER;
-	public static TextureAtlasSprite MACHINE_FACE_TRANSCAPSULATOR;
 	public static TextureAtlasSprite MACHINE_FACE_CHARGER;
 	public static TextureAtlasSprite MACHINE_FACE_CENTRIFUGE;
 	public static TextureAtlasSprite MACHINE_FACE_CRAFTER;
@@ -257,8 +257,8 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_INSOLATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_COMPACTOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_CRUCIBLE;
+	public static TextureAtlasSprite MACHINE_ACTIVE_REFINERY;
 	public static TextureAtlasSprite MACHINE_ACTIVE_TRANSPOSER;
-	public static TextureAtlasSprite MACHINE_ACTIVE_TRANSCAPSULATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_CHARGER;
 	public static TextureAtlasSprite MACHINE_ACTIVE_CENTRIFUGE;
 	public static TextureAtlasSprite MACHINE_ACTIVE_CRAFTER;

@@ -15,6 +15,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.ArrayList;
+
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
@@ -31,6 +33,8 @@ public class TileCharger extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:machine_charger");
 

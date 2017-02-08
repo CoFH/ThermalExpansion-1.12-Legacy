@@ -39,7 +39,7 @@ public class ChargerManager {
 
 	public static RecipeCharger[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCharger[0]);
+		return recipeMap.values().toArray(new RecipeCharger[recipeMap.values().size()]);
 	}
 
 	public static void addDefaultRecipes() {
@@ -85,7 +85,7 @@ public class ChargerManager {
 		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
 	}
 
-	/* HELPER FUNCTIONS */
+	/* HELPERS */
 	private static void addOreDictRecipe(String oreName, ItemStack output) {
 
 		addOreDictRecipe(DEFAULT_ENERGY, oreName, output);

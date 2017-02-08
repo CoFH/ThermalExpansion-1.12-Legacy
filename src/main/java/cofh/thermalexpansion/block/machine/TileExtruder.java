@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
@@ -47,6 +48,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
@@ -223,7 +226,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super.readFromNBT(nbt);
 
-		outputTracker = nbt.getInteger("Tracker");
+		outputTracker = nbt.getInteger("TrackOut");
 		prevSelection = nbt.getByte("Prev");
 		curSelection = nbt.getByte("Sel");
 
@@ -236,7 +239,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super.writeToNBT(nbt);
 
-		nbt.setInteger("Tracker", outputTracker);
+		nbt.setInteger("TrackOut", outputTracker);
 		nbt.setByte("Prev", prevSelection);
 		nbt.setByte("Sel", curSelection);
 
@@ -365,4 +368,5 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		}
 		return super.getCapability(capability, from);
 	}
+
 }

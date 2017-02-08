@@ -164,7 +164,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		if (coil.intersectsWith(entityBox)) {
 			collidingBoxes.add(coil);
 		}
-
 		if (base.intersectsWith(entityBox)) {
 			collidingBoxes.add(base);
 		}
@@ -173,11 +172,12 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
-		TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
-
 		if (stack.getTagCompound() != null) {
+			TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
+
+			// tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
-			tile.installAugments();
+			tile.updateAugmentStatus();
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);

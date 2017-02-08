@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.render.entity;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.core.render.IconRegistry;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraft.client.renderer.GlStateManager;

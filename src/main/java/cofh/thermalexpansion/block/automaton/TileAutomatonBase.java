@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
-import cofh.core.init.CoreProps;
 import cofh.core.entity.CoFHFakePlayer;
+import cofh.core.init.CoreProps;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;

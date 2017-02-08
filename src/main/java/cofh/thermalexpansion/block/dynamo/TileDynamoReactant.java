@@ -1,11 +1,10 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.core.fluid.FluidTankCore;
 import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
@@ -51,7 +50,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
 	private int reactantRF;
 	private int currentReactantRF;
-	private int reactantMod = FUEL_MOD;
+	private int reactantMod = ENERGY_BASE;
 
 	public TileDynamoReactant() {
 
@@ -65,39 +64,39 @@ public class TileDynamoReactant extends TileDynamoBase {
 		return TYPE;
 	}
 
-	@Override
-	protected boolean canGenerate() {
-
-		if (fuelRF > 0) {
-			return reactantRF > 0 || getReactantEnergy(inventory[0]) > 0;
-		}
-		if (reactantRF > 0) {
-			return tank.getFluidAmount() >= 50;
-		}
-		return tank.getFluidAmount() >= 50 && getReactantEnergy(inventory[0]) > 0;
-	}
-
-	@Override
-	protected void generate() {
-
-		int energy;
-
-		if (fuelRF <= 0) {
-			fuelRF = getFuelEnergy(tank.getFluid()) * reactantMod / FUEL_MOD * fuelMod / FUEL_MOD;
-			tank.drain(50, true);
-		}
-		if (reactantRF <= 0) {
-			energy = (getReactantEnergy(inventory[0]) / FUEL_MOD) * fuelMod;
-			reactantMod = getReactantMod(inventory[0]);
-			reactantRF += energy;
-			currentReactantRF = energy;
-			inventory[0] = ItemHelper.consumeItem(inventory[0]);
-		}
-		energy = calcEnergy() * energyMod;
-		energyStorage.modifyEnergyStored(energy);
-		fuelRF -= energy;
-		reactantRF -= energy;
-	}
+//	@Override
+//	protected boolean canGenerate() {
+//
+//		if (processRem > 0) {
+//			return reactantRF > 0 || getReactantEnergy(inventory[0]) > 0;
+//		}
+//		if (reactantRF > 0) {
+//			return tank.getFluidAmount() >= 50;
+//		}
+//		return tank.getFluidAmount() >= 50 && getReactantEnergy(inventory[0]) > 0;
+//	}
+//
+//	@Override
+//	protected void generate() {
+//
+//		int energy;
+//
+//		if (processRem <= 0) {
+//			processRem = getFuelEnergy(tank.getFluid()) * reactantMod / ENERGY_BASE * energyMod / ENERGY_BASE;
+//			tank.drain(50, true);
+//		}
+//		if (reactantRF <= 0) {
+//			energy = (getReactantEnergy(inventory[0]) / ENERGY_BASE) * energyMod;
+//			reactantMod = getReactantMod(inventory[0]);
+//			reactantRF += energy;
+//			currentReactantRF = energy;
+//			inventory[0] = ItemHelper.consumeItem(inventory[0]);
+//		}
+//		energy = calcEnergy();
+//		energyStorage.modifyEnergyStored(energy);
+//		processRem -= energy;
+//		reactantRF -= energy;
+//	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -277,7 +276,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-		return side.ordinal() != facing || augmentCoilDuct ? SLOTS : CoreProps.EMPTY_INVENTORY;
+		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */
@@ -350,7 +349,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	public static int getReactantMod(ItemStack stack) {
 
-		return stack == null ? 0 : FUEL_MOD;
+		return stack == null ? 0 : ENERGY_BASE;
 	}
 
 }

@@ -25,6 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileInsolator extends TileMachineBase {
 
@@ -41,6 +42,8 @@ public class TileInsolator extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
 
@@ -415,7 +418,7 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	public <T> T getCapability(Capability<T> capability, EnumFacing facing) {
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
@@ -447,7 +450,7 @@ public class TileInsolator extends TileMachineBase {
 				}
 			});
 		}
-		return super.getCapability(capability, facing);
+		return super.getCapability(capability, from);
 	}
 
 }

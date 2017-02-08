@@ -32,27 +32,27 @@ public class TEBlocks {
 		ThermalExpansion.proxy.addIModelRegister(blockDevice);
 		ThermalExpansion.proxy.addIModelRegister(blockDynamo);
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).preInit();
+		for (IInitializer init : initList) {
+			init.preInit();
 		}
 	}
 
 	public static void initialize() {
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).initialize();
+		for (IInitializer init : initList) {
+			init.initialize();
 		}
 	}
 
 	public static void postInit() {
 
-		for (int i = 0; i < initList.size(); i++) {
-			initList.get(i).postInit();
+		for (IInitializer init : initList) {
+			init.postInit();
 		}
 		initList.clear();
 	}
 
-	static ArrayList<IInitializer> initList = new ArrayList<IInitializer>();
+	private static ArrayList<IInitializer> initList = new ArrayList<IInitializer>();
 
 	/* REFERENCES */
 	public static BlockMachine blockMachine;

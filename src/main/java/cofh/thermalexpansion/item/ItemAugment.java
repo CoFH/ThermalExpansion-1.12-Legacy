@@ -7,6 +7,7 @@ import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -90,10 +91,18 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public boolean preInit() {
 
-		machinePower = addAugmentItem(128, "machinePower");
-		machineSecondary = addAugmentItem(129, "machineSecondary");
+		machinePower = addAugmentItem(128, TEProps.MACHINE_POWER);
+		machineSecondary = addAugmentItem(129, TEProps.MACHINE_SECONDARY);
+		machineSecondaryNull = addAugmentItem(130, TEProps.MACHINE_SECONDARY_NULL);
 
-		machineFurnaceFood = addAugmentItem(256, "machineFurnaceFood", AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+
+		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+
+		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+
+		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
 
 		return true;
 	}
@@ -184,12 +193,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machinePulverizerGeode;
 
+	public static ItemStack machineSawmillTapper;
+
 	public static ItemStack machineSmelterPyrotheum;
 
 	public static ItemStack machineInsolatorNether;
 	public static ItemStack machineInsolatorEnd;
 
 	public static ItemStack machineCompactorMint;
+
+	public static ItemStack machineChargerThroughput;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 

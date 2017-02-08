@@ -19,7 +19,32 @@
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
+			"machinesecondarynull": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"machinefurnacefood": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinefurnaceore": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinepulverizergeode": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinesawmilltapper": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinesmelterpyrotheum": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}

@@ -10,9 +10,9 @@ import cofh.thermalexpansion.init.TEItems;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
-import cofh.thermalexpansion.util.fuels.FuelManager;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.*;
+import cofh.thermalexpansion.util.fuels.FuelManager;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -149,11 +149,9 @@ public class ThermalExpansion {
 		InsolatorManager.addDefaultRecipes();
 		CompactorManager.addDefaultRecipes();
 		CrucibleManager.addDefaultRecipes();
+		RefineryManager.addDefaultRecipes();
 		TransposerManager.addDefaultRecipes();
 		ChargerManager.addDefaultRecipes();
-
-		PrecipitatorManager.addDefaultRecipes();
-		ExtruderManager.addDefaultRecipes();
 
 		FuelManager.addDefaultFuels();
 

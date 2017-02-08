@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.render.item;
 
 import codechicken.lib.model.BakedModelProperties;
-import codechicken.lib.model.bakedmodels.PerspectiveAwareOverrideModel;
 import codechicken.lib.model.bakedmodels.PerspectiveAwareBakedModel;
+import codechicken.lib.model.bakedmodels.PerspectiveAwareOverrideModel;
 import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.util.TransformUtils;
 import com.google.common.base.Function;
@@ -45,9 +45,9 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	public static final ModelResourceLocation MAGMATIC_MODEL_LOCATION = new ModelResourceLocation("thermalexpansion:florb_magmatic");
 
 	public static final ResourceLocation BASE = new ResourceLocation("thermalexpansion:items/florb/florb");
-    public static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
-    public static final ResourceLocation MASK = new ResourceLocation("thermalexpansion:items/florb/florb_mask");
-    public static final ResourceLocation OUTLINE = new ResourceLocation("thermalexpansion:items/florb/florb_outline");
+	public static final ResourceLocation MAGMATIC_BASE = new ResourceLocation("thermalexpansion:items/florb/florb_magmatic");
+	public static final ResourceLocation MASK = new ResourceLocation("thermalexpansion:items/florb/florb_mask");
+	public static final ResourceLocation OUTLINE = new ResourceLocation("thermalexpansion:items/florb/florb_outline");
 
 	private static final Map<String, IBakedModel> modelCache = new HashMap<String, IBakedModel>();
 
@@ -101,14 +101,14 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 		BakedModelProperties properties = new BakedModelProperties(true, false, fluidSprite);
 
 		if (fluidSprite != null) {
-		    //We have a valid florb, bake liquid.
+			//We have a valid florb, bake liquid.
 			TextureAtlasSprite liquid = bakedTextureGetter.apply(MASK);
 			builder.addAll(ItemTextureQuadConverter.convertTexture(format, transform, liquid, fluidSprite, NORTH_Z_FLUID, EnumFacing.NORTH, fluid.getColor()));
 			builder.addAll(ItemTextureQuadConverter.convertTexture(format, transform, liquid, fluidSprite, SOUTH_Z_FLUID, EnumFacing.SOUTH, fluid.getColor()));
 			return new PerspectiveAwareBakedModel(builder.build(), state, properties);
 		}
-        //Invalid or empty florb, No liquid bake but we need our override handler.
-        return new PerspectiveAwareOverrideModel(FlorbOverrideHandler.INSTANCE, state, properties, builder.build());
+		//Invalid or empty florb, No liquid bake but we need our override handler.
+		return new PerspectiveAwareOverrideModel(FlorbOverrideHandler.INSTANCE, state, properties, builder.build());
 	}
 
 	@Override
@@ -120,17 +120,18 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 	@Override
 	public ModelFlorb process(ImmutableMap<String, String> customData) {
 
-	    Fluid fluid = null;
-	    if (customData.containsKey("fluid")) {
-            String fluidName = customData.get("fluid");
-            fluid = FluidRegistry.getFluid(fluidName);
-        }
-        boolean magmatic = Boolean.parseBoolean(customData.get("magmatic"));
+		Fluid fluid = null;
+		if (customData.containsKey("fluid")) {
+			String fluidName = customData.get("fluid");
+			fluid = FluidRegistry.getFluid(fluidName);
+		}
+		boolean magmatic = Boolean.parseBoolean(customData.get("magmatic"));
 
 		return new ModelFlorb(fluid, magmatic);
 	}
 
 	public static class LoaderFlorb implements ICustomModelLoader {
+
 		public static final LoaderFlorb INSTANCE = new LoaderFlorb();
 
 		@Override
@@ -147,6 +148,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 
 		@Override
 		public void onResourceManagerReload(IResourceManager resourceManager) {
+
 			ModelFlorb.modelCache.clear();
 		}
 	}
@@ -169,7 +171,7 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 			String cacheAppend = "";
 
 			if (stack.getTagCompound() != null) {
-                fluidName = stack.getTagCompound().getString("Fluid");
+				fluidName = stack.getTagCompound().getString("Fluid");
 			}
 
 			if (!Strings.isNullOrEmpty(fluidName)) {
@@ -177,16 +179,16 @@ public final class ModelFlorb implements IModel, IModelCustomData {
 			}
 
 			if (!ModelFlorb.modelCache.containsKey(magmatic + cacheAppend)) {
-                ModelFlorb parent = magmatic ? ModelFlorb.MAGMATIC_MODEL : ModelFlorb.MODEL;
-                Map<String, String> customData = new HashMap<String, String>();
-                customData.put("magmatic", String.valueOf(magmatic));
+				ModelFlorb parent = magmatic ? ModelFlorb.MAGMATIC_MODEL : ModelFlorb.MODEL;
+				Map<String, String> customData = new HashMap<String, String>();
+				customData.put("magmatic", String.valueOf(magmatic));
 				if (!Strings.isNullOrEmpty(fluidName)) {
-                    customData.put("fluid", fluidName);
-                }
-                parent = parent.process(ImmutableMap.copyOf(customData));
+					customData.put("fluid", fluidName);
+				}
+				parent = parent.process(ImmutableMap.copyOf(customData));
 
 				IBakedModel bakedModel = parent.bake(TransformUtils.DEFAULT_ITEM, DefaultVertexFormats.ITEM, TextureUtils.bakedTextureGetter);
-                ModelFlorb.modelCache.put(magmatic + cacheAppend, bakedModel);
+				ModelFlorb.modelCache.put(magmatic + cacheAppend, bakedModel);
 				return bakedModel;
 			}
 

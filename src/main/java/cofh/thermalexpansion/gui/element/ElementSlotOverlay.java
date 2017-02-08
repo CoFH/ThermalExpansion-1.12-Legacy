@@ -96,6 +96,12 @@ public class ElementSlotOverlay extends ElementBase {
 				offsetX = slotColor * 32 + 8;
 				offsetY = 98;
 				break;
+			case 4:
+				sizeX = 16;
+				sizeY = 29;
+				offsetX = slotColor * 32 + 8;
+				offsetY = 162;
+				break;
 		}
 
 		switch (slotRender) {
@@ -141,6 +147,14 @@ public class ElementSlotOverlay extends ElementBase {
 				sizeY = 64;
 				offsetX = slotColor * 32;
 				offsetY = 96;
+				x -= 8;
+				y -= 2;
+				break;
+			case 4:
+				sizeX = 32;
+				sizeY = 64;
+				offsetX = slotColor * 32;
+				offsetY = 160;
 				x -= 8;
 				y -= 2;
 				break;

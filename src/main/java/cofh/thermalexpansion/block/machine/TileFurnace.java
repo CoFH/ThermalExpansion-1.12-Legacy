@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,6 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+
+import java.util.ArrayList;
 
 public class TileFurnace extends TileMachineBase {
 
@@ -27,6 +31,10 @@ public class TileFurnace extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.MACHINE_FURNACE_FOOD);
+		validAugments[TYPE].add(TEProps.MACHINE_FURNACE_ORE);
 
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:machine_furnace");
 
@@ -95,10 +103,6 @@ public class TileFurnace extends TileMachineBase {
 	protected void processStart() {
 
 		processMax = FurnaceManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
-
-		if (augmentOre) {
-			processMax *= 2;
-		}
 		processRem = processMax;
 	}
 
@@ -200,6 +204,36 @@ public class TileFurnace extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
 		return nbt;
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentFood = false;
+		augmentOre = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!hasAdvancedAugment && TEProps.MACHINE_FURNACE_FOOD.equals(id)) {
+			augmentFood = true;
+			hasAdvancedAugment = true;
+			energyMod += 50;
+			return true;
+		}
+		if (!hasAdvancedAugment && TEProps.MACHINE_FURNACE_ORE.equals(id)) {
+			augmentOre = true;
+			hasAdvancedAugment = true;
+			energyMod += 100;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */

@@ -2,11 +2,11 @@ package cofh.thermalexpansion.block;
 
 import cofh.api.tileentity.IPortableData;
 import cofh.core.block.TileCore;
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
-import cofh.core.fluid.FluidTankCore;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;

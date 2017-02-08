@@ -20,7 +20,7 @@ public class ContainerCompactor extends ContainerTEBase implements ISlotValidato
 		super(inventory, tile);
 
 		myTile = (TileCompactor) tile;
-		addSlotToContainer(new SlotValidated(this, myTile, 0, 56, 26));
+		addSlotToContainer(new SlotValidated(this, myTile, 0, 53, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 35));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}

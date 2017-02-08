@@ -132,10 +132,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 				return new TileCompactor();
 			case CRUCIBLE:
 				return new TileCrucible();
+			case REFINERY:
+				return new TileRefinery();
 			case TRANSPOSER:
 				return new TileTransposer();
-			case TRANSCAPSULATOR:               // TODO
-				return null;
 			case CHARGER:
 				return new TileCharger();
 			case CENTRIFUGE:                    // TODO
@@ -162,8 +162,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		if (stack.getTagCompound() != null) {
 			TileMachineBase tile = (TileMachineBase) world.getTileEntity(pos);
 
+			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
-			tile.installAugments();
+			tile.updateAugmentStatus();
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
@@ -294,8 +295,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileInsolator.initialize();
 		// TileCompactor.initialize();
 		TileCrucible.initialize();
+		TileRefinery.initialize();
 		TileTransposer.initialize();
-		// transcapsulator
 		TileCharger.initialize();
 		// centrifuge
 		// crafter
@@ -311,8 +312,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
 		// machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
 		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
+		machineRefinery = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.REFINERY.getMetadata()));
 		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
-		// transcapsulator
 		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		// centrifuge
 		// machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
@@ -492,8 +493,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		INSOLATOR(4, "insolator"),
 		COMPACTOR(5, "compactor"),
 		CRUCIBLE(6, "crucible"),
-		TRANSPOSER(7, "transposer"),
-		TRANSCAPSULATOR(8, "transcapsulator"),
+		REFINERY(7, "refinery"),
+		TRANSPOSER(8, "transposer"),
 		CHARGER(9, "charger"),
 		CENTRIFUGE(10, "centrifuge"),
 		CRAFTER(11, "crafter"),
@@ -561,8 +562,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public static ItemStack machineInsolator;
 	public static ItemStack machineCompactor;
 	public static ItemStack machineCrucible;
+	public static ItemStack machineRefinery;
 	public static ItemStack machineTransposer;
-	public static ItemStack machineTranscapsulator;
 	public static ItemStack machineCharger;
 	public static ItemStack machineCentrifuge;
 	public static ItemStack machineCrafter;

@@ -128,7 +128,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 			TileAutomatonBase tile = (TileAutomatonBase) world.getTileEntity(pos);
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
-			tile.installAugments();
+			tile.updateAugmentStatus();
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);

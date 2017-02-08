@@ -27,6 +27,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileCrafter extends TileMachineBase {
 
@@ -43,6 +44,8 @@ public class TileCrafter extends TileMachineBase {
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
 
