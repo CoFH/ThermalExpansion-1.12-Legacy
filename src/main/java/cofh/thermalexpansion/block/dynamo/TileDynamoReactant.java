@@ -5,6 +5,7 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
@@ -28,12 +29,15 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileDynamoReactant extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
 
 	public static void initialize() {
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
 
@@ -44,12 +48,16 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		String category = "Dynamo.Reactant";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setDefaultParams(40);
 	}
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+
 	private int reactantRF;
-	private int currentReactantRF;
+	private int currentReactantRF = sugarRF;
 	private int reactantMod = ENERGY_BASE;
 
 	public TileDynamoReactant() {
@@ -64,39 +72,41 @@ public class TileDynamoReactant extends TileDynamoBase {
 		return TYPE;
 	}
 
-//	@Override
-//	protected boolean canGenerate() {
-//
-//		if (processRem > 0) {
-//			return reactantRF > 0 || getReactantEnergy(inventory[0]) > 0;
-//		}
-//		if (reactantRF > 0) {
-//			return tank.getFluidAmount() >= 50;
-//		}
-//		return tank.getFluidAmount() >= 50 && getReactantEnergy(inventory[0]) > 0;
-//	}
-//
-//	@Override
-//	protected void generate() {
-//
-//		int energy;
-//
-//		if (processRem <= 0) {
-//			processRem = getFuelEnergy(tank.getFluid()) * reactantMod / ENERGY_BASE * energyMod / ENERGY_BASE;
-//			tank.drain(50, true);
-//		}
-//		if (reactantRF <= 0) {
-//			energy = (getReactantEnergy(inventory[0]) / ENERGY_BASE) * energyMod;
-//			reactantMod = getReactantMod(inventory[0]);
-//			reactantRF += energy;
-//			currentReactantRF = energy;
-//			inventory[0] = ItemHelper.consumeItem(inventory[0]);
-//		}
-//		energy = calcEnergy();
-//		energyStorage.modifyEnergyStored(energy);
-//		processRem -= energy;
-//		reactantRF -= energy;
-//	}
+	@Override
+	protected boolean canStart() {
+
+		return (fuelRF > 0 || tank.getFluidAmount() >= 50) && (reactantRF > 0 || getReactantEnergy(inventory[0]) > 0);
+	}
+
+	@Override
+	protected boolean canFinish() {
+
+		return fuelRF <= 0 || reactantRF <= 0;
+	}
+
+	@Override
+	protected void processStart() {
+
+		if (fuelRF <= 0) {
+			fuelRF += getFuelEnergy(tank.getFluid()) * energyMod / ENERGY_BASE;
+			tank.drain(50, true);
+		}
+		if (reactantRF <= 0) {
+			currentReactantRF = getReactantEnergy(inventory[0]) * reactantMod / ENERGY_BASE;
+			reactantRF += currentReactantRF;
+			inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		}
+	}
+
+	@Override
+	protected void processTick() {
+
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(energy);
+		fuelRF -= energy;
+		reactantRF -= energy;
+		transferEnergy();
+	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -209,6 +219,23 @@ public class TileDynamoReactant extends TileDynamoBase {
 		}
 	}
 
+	/* HELPERS */
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return getReactantEnergy(stack) > 0;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
@@ -263,20 +290,6 @@ public class TileDynamoReactant extends TileDynamoBase {
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* IInventory */
-	@Override
-	public boolean isItemValidForSlot(int slot, ItemStack stack) {
-
-		return getReactantEnergy(stack) > 0;
-	}
-
-	/* ISidedInventory */
-	@Override
-	public int[] getSlotsForFace(EnumFacing side) {
-
-		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 
 	/* FUEL MANAGER */

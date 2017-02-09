@@ -5,6 +5,8 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.helpers.AugmentHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
@@ -27,12 +29,15 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileDynamoSteam extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.STEAM.getMetadata();
 
 	public static void initialize() {
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
 
@@ -43,22 +48,30 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		String category = "Dynamo.Steam";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setDefaultParams(40);
 	}
 
-	private static final int STEAM_MIN = 2000;
+	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
+	private static final int STEAM_LOW = TEProps.MAX_FLUID_SMALL * 1 / 4;
 
 	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
+	private int waterRF;
 	private int currentFuelRF = DEFAULT_RF;
-	private int steamAmount = defaultEnergyConfig[TYPE].maxPower / 2;
+	private int steamAmount = defaultEnergyConfig[TYPE].maxPower * 2;
 
-	private FluidStack steam = new FluidStack(FluidRegistry.getFluid("steam"), steamAmount);
+	/* AUGMENTS */
+	public boolean augmentTurbine;
 
 	public TileDynamoSteam() {
 
 		super();
 		inventory = new ItemStack[1];
+		steamTank.setLock(TFFluids.fluidSteam);
+		waterTank.setLock(FluidRegistry.WATER);
 	}
 
 	@Override
@@ -69,65 +82,54 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return steamTank.getFluidAmount() >= STEAM_MIN;
+		return steamTank.getFluidAmount() > STEAM_HIGH || (!augmentTurbine && (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || getEnergyValue(inventory[0]) > 0));
 	}
 
+	@Override
+	protected boolean canFinish() {
+
+		return steamTank.getFluidAmount() <= STEAM_LOW;
+	}
+
+	@Override
 	protected void processStart() {
 
-		processRem += getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+		if (augmentTurbine) {
+			return;
+		}
+		if (fuelRF <= 0) {
+			currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+			fuelRF += currentFuelRF;
+			inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		}
+		if (waterRF <= 0) {
+			waterRF += 8000;
+			waterTank.modifyFluidStored(-50);
+		}
 	}
 
+	@Override
+	protected void processTick() {
 
-//	@Override
-//	protected boolean canGenerate() {
-//
-//		if (steamTank.getFluidAmount() > STEAM_MIN) {
-//			return true;
-//		}
-//		if (waterTank.getFluidAmount() < energyConfig.maxPower) {
-//			return false;
-//		}
-//		return processRem > 0 || getEnergyValue(inventory[0]) > 0;
-//	}
-//
-//	@Override
-//	public void generate() {
-//
-//		if (steamTank.getFluidAmount() >= STEAM_MIN + steamAmount) {
-//			int energy = calcEnergy();
-//			energyStorage.modifyEnergyStored(energy);
-//			steamTank.drain(energy >> 1, true);
-//		} else {
-//			if (processRem <= 0 && inventory[0] != null) {
-//				int energy = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
-//				processRem += energy;
-//				currentFuelRF = energy;
-//				inventory[0] = ItemHelper.consumeItem(inventory[0]);
-//			}
-//			if (processRem > 0) {
-//				int filled = steamTank.fill(steam, true);
-//				processRem -= filled << 1;
-//				if (timeCheck()) {
-//					waterTank.drain(filled, true);
-//				}
-//			}
-//			if (steamTank.getFluidAmount() > STEAM_MIN) {
-//				int energy = Math.min((steamTank.getFluidAmount() - STEAM_MIN) << 1, calcEnergy());
-//				energyStorage.modifyEnergyStored(energy);
-//				steamTank.drain(energy >> 1, true);
-//			}
-//			return;
-//		}
-//		if (processRem > 0) {
-//			int filled = steamTank.fill(steam, true);
-//			processRem -= filled << 1;
-//			if (timeCheck()) {
-//				waterTank.drain(filled, true);
-//			}
-//		}
-//	}
+		int energy = calcEnergy();
 
+		if (fuelRF > 0) {
+			fuelRF -= energy;
+			waterRF -= energy;
+			steamTank.modifyFluidStored(energy / 2);
+		}
+		if (steamTank.getFluidAmount() > STEAM_HIGH) {
+			energyStorage.modifyEnergyStored(energy);
+			steamTank.modifyFluidStored(-energy / 2);
+		}
+		transferEnergy();
+	}
 
+	@Override
+	protected void processIdle() {
+
+		steamTank.modifyFluidStored(-10);
+	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -154,7 +156,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (currentFuelRF <= 0) {
 			currentFuelRF = DEFAULT_RF;
 		}
-		return processRem * scale / currentFuelRF;
+		return fuelRF * scale / currentFuelRF;
 	}
 
 	@Override
@@ -179,7 +181,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (currentFuelRF <= 0) {
 			currentFuelRF = DEFAULT_RF;
 		}
-		steam.amount = steamAmount;
 	}
 
 	@Override
@@ -217,19 +218,33 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	/* HELPERS */
-
-	/* IEnergyInfo */
 	@Override
-	public int getInfoEnergyPerTick() {
+	protected void preAugmentInstall() {
 
-		return steamTank.getFluidAmount() >= STEAM_MIN ? calcEnergy() : 0;
+		super.preAugmentInstall();
+
+		augmentTurbine = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {
+			augmentTurbine = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getEnergyValue(stack) > 0;
+		return !augmentTurbine && getEnergyValue(stack) > 0;
 	}
 
 	/* ISidedInventory */
@@ -263,7 +278,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 						return 0;
 					}
-					if (resource.getFluid() == steam.getFluid()) {
+					if (augmentTurbine && resource.getFluid() == TFFluids.fluidSteam) {
 						return steamTank.fill(resource, doFill);
 					}
 					if (resource.getFluid() == FluidRegistry.WATER) {
@@ -306,7 +321,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 
-		if (stack == null || energy < 640 || energy > 200000000) {
+		if (stack == null || energy < 1600 || energy > 200000000) {
 			return false;
 		}
 		fuels.put(new ComparableItemStack(stack), energy);

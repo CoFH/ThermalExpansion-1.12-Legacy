@@ -3,10 +3,12 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,16 +21,22 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 
 public class TileDynamoCompression extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
 
 	public static void initialize() {
+
+		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
+		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 
@@ -39,12 +47,20 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		String category = "Dynamo.Compression";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setDefaultParams(40);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore coolantTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+
 	private int coolantRF;
+
+	/* AUGMENTS */
+	public boolean augmentCoolant;
+	public boolean augmentFuel;
 
 	@Override
 	public int getType() {
@@ -52,34 +68,40 @@ public class TileDynamoCompression extends TileDynamoBase {
 		return TYPE;
 	}
 
-//	@Override
-//	protected boolean canGenerate() {
-//
-//		if (processRem > 0) {
-//			return coolantRF > 0 || coolantTank.getFluidAmount() >= 50;
-//		}
-//		if (coolantRF > 0) {
-//			return fuelTank.getFluidAmount() >= 50;
-//		}
-//		return fuelTank.getFluidAmount() >= 50 && coolantTank.getFluidAmount() >= 50;
-//	}
-//
-//	@Override
-//	protected void generate() {
-//
-//		if (processRem <= 0) {
-//			processRem = getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
-//			fuelTank.drain(50, true);
-//		}
-//		if (coolantRF <= 0) {
-//			coolantRF = getCoolantEnergy(coolantTank.getFluid()) * energyMod / ENERGY_BASE;
-//			coolantTank.drain(50, true);
-//		}
-//		int energy = calcEnergy();
-//		energyStorage.modifyEnergyStored(energy);
-//		processRem -= energy;
-//		coolantRF -= energy;
-//	}
+	@Override
+	protected boolean canStart() {
+
+		return (fuelRF > 0 || fuelTank.getFluidAmount() >= 50) && (coolantRF > 0 || coolantTank.getFluidAmount() >= 50);
+	}
+
+	@Override
+	protected boolean canFinish() {
+
+		return fuelRF <= 0 || coolantRF <= 0;
+	}
+
+	@Override
+	protected void processStart() {
+
+		if (fuelRF <= 0) {
+			fuelRF += getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+			fuelTank.drain(50, true);
+		}
+		if (coolantRF <= 0) {
+			coolantRF += getCoolantEnergy(coolantTank.getFluid());
+			coolantTank.drain(50, true);
+		}
+	}
+
+	@Override
+	protected void processTick() {
+
+		int energy = calcEnergy();
+		energyStorage.modifyEnergyStored(energy);
+		fuelRF -= energy;
+		coolantRF -= augmentCoolant ? 0 : energy;
+		transferEnergy();
+	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -114,6 +136,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
+
 		coolantRF = nbt.getInteger("Coolant");
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
@@ -133,6 +156,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
+
 		nbt.setInteger("Coolant", coolantRF);
 		nbt.setTag("FuelTank", fuelTank.writeToNBT(new NBTTagCompound()));
 		nbt.setTag("CoolantTank", coolantTank.writeToNBT(new NBTTagCompound()));
@@ -182,6 +206,49 @@ public class TileDynamoCompression extends TileDynamoBase {
 		}
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentCoolant = false;
+		augmentFuel = false;
+
+		fuelTank.clearLock();
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (augmentFuel) {
+			fuelTank.setLock(TFFluids.fluidFuel);
+		}
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentCoolant && TEProps.DYNAMO_COMPRESSION_COOLANT.equals(id)) {
+			augmentCoolant = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentFuel && TEProps.DYNAMO_COMPRESSION_FUEL.equals(id)) {
+			augmentFuel = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			energyMod += 50;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
+	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
@@ -192,7 +259,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new net.minecraftforge.fluids.capability.IFluidHandler() {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
 				@Override
 				public IFluidTankProperties[] getTankProperties() {
 

@@ -151,13 +151,10 @@ public class FuelManager {
 			String category = "Fuels.Compression";
 			configFuels.getCategory(category).setComment("You can add fuels to the Compression Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addCompressionFuel("coal", configFuels.get(category, "coal", 1000000));
+			addCompressionFuel("coal", configFuels.get(category, "coal", 500000));
 
-			addCompressionFuel("biofuel", configFuels.get(category, "biofuel", 500000));
-			addCompressionFuel("bioethanol", configFuels.get(category, "bioethanol", 500000));
-
-			addCompressionFuel("fuel", configFuels.get(category, "fuel", 1500000));
-			addCompressionFuel("oil", configFuels.get(category, "oil", 150000));
+			addCompressionFuel("tree_oil", configFuels.get(category, "tree_oil", 1000000));
+			addCompressionFuel("fuel", configFuels.get(category, "fuel", 3000000));
 		}
 
 		/* REACTANT */

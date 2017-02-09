@@ -6,6 +6,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class TileDynamoEnervation extends TileDynamoBase {
@@ -25,6 +27,8 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	private static final int TYPE = BlockDynamo.Type.ENERVATION.getMetadata();
 
 	public static void initialize() {
+
+		validAugments[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.dynamo_enervation");
 
@@ -35,6 +39,9 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 		String category = "Dynamo.Enervation";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+
+		defaultEnergyConfig[TYPE] = new EnergyConfig();
+		defaultEnergyConfig[TYPE].setDefaultParams(40);
 	}
 
 	private int currentFuelRF = DEFAULT_ENERGY;
@@ -53,45 +60,21 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return getEnergyValue(inventory[0]) > 0;
+		return getEnergyValue(inventory[0]) > energyConfig.maxPower;
 	}
 
 	protected void processStart() {
 
-		processRem += getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+		if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
+			IEnergyContainerItem container = (IEnergyContainerItem) inventory[0].getItem();
+			currentFuelRF = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
+			fuelRF += currentFuelRF;
+		} else {
+			currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+			fuelRF += currentFuelRF;
+			inventory[0] = ItemHelper.consumeItem(inventory[0]);
+		}
 	}
-
-	//	@Override
-	//	protected boolean canGenerate() {
-	//
-	//		if (processRem > 0) {
-	//			return true;
-	//		}
-	//		return getEnergyValue(inventory[0]) > 0;
-	//	}
-	//
-	//	@Override
-	//	protected void generate() {
-	//
-	//		int energy;
-	//
-	//		if (processRem <= 0) {
-	//			if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
-	//				IEnergyContainerItem container = (IEnergyContainerItem) inventory[0].getItem();
-	//				energy = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
-	//				processRem += energy;
-	//				currentFuelRF = energy;
-	//			} else {
-	//				energy = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
-	//				processRem += energy;
-	//				currentFuelRF = energy;
-	//				inventory[0] = ItemHelper.consumeItem(inventory[0]);
-	//			}
-	//		}
-	//		energy = Math.min(processRem, calcEnergy());
-	//		energyStorage.modifyEnergyStored(energy);
-	//		processRem -= energy;
-	//	}
 
 	@Override
 	public TextureAtlasSprite getActiveIcon() {
@@ -120,7 +103,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
-		return processRem * scale / currentFuelRF;
+		return fuelRF * scale / currentFuelRF;
 	}
 
 	/* NBT METHODS */
@@ -164,6 +147,8 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		currentFuelRF = payload.getInt();
 	}
 
+	/* HELPERS */
+
 	/* IEnergyInfo */
 	@Override
 	public int getInfoEnergyPerTick() {
@@ -192,7 +177,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 
-		if (stack == null || energy < 640 || energy > 200000000) {
+		if (stack == null || energy < 1600 || energy > 200000000) {
 			return false;
 		}
 		fuels.put(new ComparableItemStack(stack), energy);

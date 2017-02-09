@@ -1,10 +1,9 @@
 package cofh.thermalexpansion.util.crafting;
 
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
-import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class RefineryManager {
@@ -30,7 +29,11 @@ public class RefineryManager {
 
 	public static void addDefaultRecipes() {
 
-		addRecipe(4000, new FluidStack(TFFluids.fluidGlowstone, 50), new FluidStack(FluidRegistry.WATER, 50), new ItemStack(Items.GLOWSTONE_DUST));
+		addRecipe(5000, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
+		addRecipe(5000, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
+		addRecipe(5000, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur);
+
+		addRecipe(3000, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.rosin);
 	}
 
 	public static void refreshRecipes() {

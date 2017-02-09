@@ -45,7 +45,7 @@ public class TileRefinery extends TileMachineBase {
 		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
 		validAugments[TYPE] = new ArrayList<String>();
 
@@ -140,7 +140,7 @@ public class TileRefinery extends TileMachineBase {
 		processRem = processMax;
 
 		String prevID = renderFluid.getFluid().getName();
-		renderFluid = RefineryManager.getRecipe(inputTank.getFluid()).getOutputFluid().copy();
+		renderFluid = inputTank.getFluid().copy();
 		renderFluid.amount = 0;
 
 		if (!prevID.equals(renderFluid.getFluid().getName())) {
@@ -297,12 +297,12 @@ public class TileRefinery extends TileMachineBase {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
-		payload.addFluidStack(inputTank.getFluid());
-		if (outputTank.getFluid() == null) {
+		if (inputTank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
-			payload.addFluidStack(outputTank.getFluid());
+			payload.addFluidStack(inputTank.getFluid());
 		}
+		payload.addFluidStack(outputTank.getFluid());
 		return payload;
 	}
 

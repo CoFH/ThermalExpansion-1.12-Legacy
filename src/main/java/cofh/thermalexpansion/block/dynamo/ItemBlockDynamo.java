@@ -42,24 +42,21 @@ public class ItemBlockDynamo extends ItemBlockCore {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
 
-		SecurityHelper.addOwnerInformation(stack, list);
+		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		SecurityHelper.addAccessInformation(stack, list);
+		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		list.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		list.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
 
-		if (ItemHelper.getItemDamage(stack) == BlockDynamo.Type.STEAM.getMetadata()) {
-			list.add(StringHelper.getNoticeText("info.thermalexpansion.dynamo.steam.0"));
-		}
-		RedstoneControlHelper.addRSControlInformation(stack, list);
+		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 }

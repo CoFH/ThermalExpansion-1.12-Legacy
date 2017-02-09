@@ -221,15 +221,15 @@ public class TileFurnace extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!hasAdvancedAugment && TEProps.MACHINE_FURNACE_FOOD.equals(id)) {
+		if (!augmentFood && TEProps.MACHINE_FURNACE_FOOD.equals(id)) {
 			augmentFood = true;
-			hasAdvancedAugment = true;
+			hasModeAugment = true;
 			energyMod += 50;
 			return true;
 		}
-		if (!hasAdvancedAugment && TEProps.MACHINE_FURNACE_ORE.equals(id)) {
+		if (!augmentOre && TEProps.MACHINE_FURNACE_ORE.equals(id)) {
 			augmentOre = true;
-			hasAdvancedAugment = true;
+			hasModeAugment = true;
 			energyMod += 100;
 			return true;
 		}

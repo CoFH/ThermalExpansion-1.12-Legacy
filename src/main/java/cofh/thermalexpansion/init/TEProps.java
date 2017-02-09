@@ -106,6 +106,8 @@ public class TEProps {
 	}
 
 	/* AUGMENT IDENTIFIERS */
+
+	/* MACHINES */
 	public static final String MACHINE_POWER = "machinePower";
 	public static final String MACHINE_SECONDARY = "machineSecondary";
 
@@ -119,5 +121,28 @@ public class TEProps {
 	public static final String MACHINE_SAWMILL_TAPPER = "machineSawmillTapper";
 
 	public static final String MACHINE_SMELTER_PYROTHEUM = "machineSmelterPyrotheum";
+
+	public static final String MACHINE_INSOLATOR_MYCELIUM = "machineInsolatorMycelium";
+	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
+	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
+
+	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
+
+	/* DYNAMOS */
+	public static final String DYNAMO_POWER = "dynamoPower";
+	public static final String DYNAMO_EFFICIENCY = "dynamoEfficiency";
+	public static final String DYNAMO_COIL_DUCT = "dynamoCoilDuct";
+	public static final String DYNAMO_THROTTLE = "dynamoThrottle";
+
+	public static final String DYNAMO_STEAM_TURBINE = "dynamoSteamTurbine";
+
+	public static final String DYNAMO_MAGMATIC_COOLANT = "dynamoMagmaticCoolant";
+
+	public static final String DYNAMO_COMPRESSION_COOLANT = "dynamoCompressionCoolant";
+	public static final String DYNAMO_COMPRESSION_FUEL = "dynamoCompressionFuel";
+
+	/* AUTOMATA */
+	public static final String AUTOMATON_DEPTH = "automatonDepth";
+	public static final String AUTOMATON_RADIUS = "automatonRadius";
 
 }

@@ -293,7 +293,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileSawmill.initialize();
 		TileSmelter.initialize();
 		TileInsolator.initialize();
-		// TileCompactor.initialize();
+		TileCompactor.initialize();
 		TileCrucible.initialize();
 		TileRefinery.initialize();
 		TileTransposer.initialize();
@@ -310,7 +310,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
 		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
 		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
-		// machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
+		machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
 		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
 		machineRefinery = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.REFINERY.getMetadata()));
 		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));

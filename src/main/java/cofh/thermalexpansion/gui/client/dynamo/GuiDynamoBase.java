@@ -20,9 +20,11 @@ public abstract class GuiDynamoBase extends GuiCore {
 	protected TileDynamoBase baseTile;
 	protected UUID playerName;
 
-	protected String myTutorial = StringHelper.tutorialTabAugment();
+	protected String myTutorial = "";
 
+	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
+	protected TabBase securityTab;
 
 	public GuiDynamoBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
@@ -34,6 +36,8 @@ public abstract class GuiDynamoBase extends GuiCore {
 
 		if (baseTile.isAugmentable()) {
 			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
+		} else {
+			myTutorial = "upgrade\n\n";
 		}
 		if (baseTile.enableSecurity() && baseTile.isSecured()) {
 			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
@@ -50,15 +54,17 @@ public abstract class GuiDynamoBase extends GuiCore {
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
+		// Right Side
 		if (baseTile.isAugmentable()) {
 			addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 		}
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			addTab(new TabSecurity(this, baseTile, playerName));
-		}
-		if (baseTile.hasRedstoneControl()) {
-			redstoneTab = addTab(new TabRedstone(this, baseTile));
-		}
+		redstoneTab = addTab(new TabRedstone(this, baseTile));
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
+
+		// Left Side
+		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
+
 		if (baseTile.getMaxEnergyStored(null) > 0) {
 			addTab(new TabEnergy(this, baseTile, true));
 		}
@@ -74,6 +80,9 @@ public abstract class GuiDynamoBase extends GuiCore {
 		if (!baseTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
+
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 
 }

@@ -10,6 +10,79 @@ gui.thermalexpansion.transposer.toggleEmpty=Mode: Fill
 gui.thermalexpansion.transposer.toggleFill=Mode: Empty
 gui.thermalexpansion.transposer.toggleWait=Processing
 
+info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
+info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
+
+info.thermalexpansion.augment.dynamoCompressionCoolant.0=Compression Dynamo: Specialization
+info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Coolant is no longer consumed for operation.
+info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Some coolant must be present.
+
+info.thermalexpansion.augment.dynamoCompressionFuel.0=Compression Dynamo: Specialization
+info.thermalexpansion.augment.dynamoCompressionFuel.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Only Fuel can be utilized.
+
+info.thermalexpansion.augment.dynamoEfficiency.0=Dynamos: Increased Efficiency
+info.thermalexpansion.augment.dynamoEfficiency.a.0=More energy (RF) is produced by fuels.
+
+info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Magmatic Dynamo: Specialization
+info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Coolant is required for operation.
+
+info.thermalexpansion.augment.dynamoPower.0=Dynamos: Increased Output
+info.thermalexpansion.augment.dynamoPower.a.0=Increases power generation (RF/t).
+info.thermalexpansion.augment.dynamoPower.b.0=Less energy (RF) is produced by fuels.
+
+info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
+info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from an external source.
+
+info.thermalexpansion.augment.dynamoThrottle.0=Dynamos: Advanced Throttle
+info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux coil saturation.
+
+info.thermalexpansion.augment.machineCompactorMint.0=Compactor: Specialization
+info.thermalexpansion.augment.machineCompactorMint.a.0=Allows for the creation of currency.
+info.thermalexpansion.augment.machineCompactorMint.a.1=Currency can be exchanged for goods and services.
+info.thermalexpansion.augment.machineCompactorMint.b.0=Not valuable to everyone.
+
+info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
+info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
+info.thermalexpansion.augment.machineFurnaceFood.b.0=Only food items can be processed.
+
+info.thermalexpansion.augment.machineFurnaceOre.0=Redstone Furnace: Specialization
+info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain an additional ingot when smelting ores.
+info.thermalexpansion.augment.machineFurnaceOre.b.0=Only ores can be processed.
+info.thermalexpansion.augment.machineFurnaceOre.b.1=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
+info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
+info.thermalexpansion.augment.machinePower.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machinePulverizerGeode.0=Pulverizer: Specialization
+info.thermalexpansion.augment.machinePulverizerGeode.a.0=Allows for Geodes to be extracted from certain ores.
+info.thermalexpansion.augment.machinePulverizerGeode.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineSawmillTapper.0=Sawmill: Specialization
+info.thermalexpansion.augment.machineSawmillTapper.a.0=Allows for fluids to be extracted from logs.
+info.thermalexpansion.augment.machineSawmillTapper.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineSecondary.0=Machines: Secondary Output
+info.thermalexpansion.augment.machineSecondary.a.0=Increases the chances of a secondary product.
+info.thermalexpansion.augment.machineSecondary.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineSecondaryNull.0=Machines: Secondary Nullifier
+info.thermalexpansion.augment.machineSecondaryNull.a.0=Destroys excess secondary outputs.
+info.thermalexpansion.augment.machineSecondaryNull.b.0=Really. They just disappear. Gone.
+
+info.thermalexpansion.augment.machineSmelterPyrotheum.0=Induction Smelter: Specialization
+info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Gain an additional ingot when smelting ores.
+info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=Pyrotheum must be used as the flux.
+info.thermalexpansion.augment.machineSmelterPyrotheum.b.1=Additional energy is required per operation.
+
+info.thermalexpansion.augment.noticeAdvanced=NYI
+info.thermalexpansion.augment.noticeCreative=Requires a Creative block.
+info.thermalexpansion.augment.noticeEnder=Requires a Resonant block.
+info.thermalexpansion.augment.noticeMode=Only one Specialization may be installed.
+
 info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
 info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.automaton.collector=Procures items from an area.
@@ -24,7 +97,6 @@ info.thermalexpansion.dynamo.compression=Requires fluid fuel and coolant.
 info.thermalexpansion.dynamo.enervation=Extracts flux from various objects.
 info.thermalexpansion.dynamo.magmatic=Requires hot fluids.
 info.thermalexpansion.dynamo.reactant=Requires fluid fuel and solid reactant.
-info.thermalexpansion.dynamo.steam.0=Steam may be pumped in instead.
 info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
 
 info.thermalexpansion.florb.a.0=Holds 1000 mB of most fluids.
@@ -51,9 +123,32 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
+info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
+info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
+info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
+info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
+info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
+info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
+
+item.thermalexpansion.augment.automatonDepth.name=
+item.thermalexpansion.augment.automatonRadius.name=
+
+item.thermalexpansion.augment.dynamoCoilDuct.name=Transmission Coil Ducting
+item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
+item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
+item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
+item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
+item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
+item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
+item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
+
+item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
-item.thermalexpansion.augment.machinePower.name=Auxiliary Flux Coil
+item.thermalexpansion.augment.machineInsolatorEnd.name=
+item.thermalexpansion.augment.machineInsolatorMycelium.name=
+item.thermalexpansion.augment.machineInsolatorNether.name=
+item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Extractor
 item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
@@ -88,11 +183,17 @@ tab.thermalexpansion.automaton.collector.2=Probably won't steal from your invent
 
 tab.thermalexpansion.device.extender.0=Point this at something with not enough sides.
 tab.thermalexpansion.device.extender.1=Ta-da! It now has more sides.
+tab.thermalexpansion.device.heat_sink.0=
+tab.thermalexpansion.device.heat_sink.1=
+tab.thermalexpansion.device.heat_sink.2=
 tab.thermalexpansion.device.item_buffer.0=Stores and transfers items. Can automatically extract.
 tab.thermalexpansion.device.item_buffer.1=Better than a Hopper, really!
 tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quantities.
 tab.thermalexpansion.device.nullifier.0=Sends all the things to /dev/null!
 tab.thermalexpansion.device.nullifier.1=It is a horrible place; even fluids cannot escape.
+tab.thermalexpansion.device.tapper.0=Extracts fluids from adjacent trees.
+tab.thermalexpansion.device.tapper.1=Not every tree will be productive.
+tab.thermalexpansion.device.tapper.2=Put down the axe.
 tab.thermalexpansion.device.water_gen.0=Extracts water from its surroundings.
 tab.thermalexpansion.device.water_gen.1=Place in a pool of water to speed this up.
 tab.thermalexpansion.device.water_gen.2=Don't drown.
@@ -162,8 +263,10 @@ tile.thermalexpansion.automaton.breaker.name=Terrain Smasher
 tile.thermalexpansion.automaton.collector.name=Acquisition Apparatus
 
 tile.thermalexpansion.device.extender.name=Surface Junction
+tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
 tile.thermalexpansion.device.item_buffer.name=Item Allocator
 tile.thermalexpansion.device.nullifier.name=Nullifier
+tile.thermalexpansion.device.tapper.name=Arboreal Extractor
 tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
 
 tile.thermalexpansion.dynamo.compression.name=Compression Dynamo

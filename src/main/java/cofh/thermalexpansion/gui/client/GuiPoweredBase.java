@@ -21,8 +21,10 @@ public abstract class GuiPoweredBase extends GuiCore {
 
 	public String myTutorial = "";
 
+	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
 	protected TabBase configTab;
+	protected TabBase securityTab;
 
 	public GuiPoweredBase(Container container, TileEntity tile, EntityPlayer player, ResourceLocation texture) {
 
@@ -34,6 +36,8 @@ public abstract class GuiPoweredBase extends GuiCore {
 
 		if (baseTile.isAugmentable()) {
 			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
+		} else {
+			myTutorial = "upgrade\n\n";
 		}
 		if (baseTile.enableSecurity() && baseTile.isSecured()) {
 			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
@@ -53,16 +57,18 @@ public abstract class GuiPoweredBase extends GuiCore {
 
 		super.initGui();
 
+		// Right Side
 		if (baseTile.isAugmentable()) {
-			addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
+			augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 		}
-		if (baseTile.enableSecurity() && baseTile.isSecured()) {
-			addTab(new TabSecurity(this, baseTile, playerName));
-		}
-		if (baseTile.hasRedstoneControl()) {
-			redstoneTab = addTab(new TabRedstone(this, baseTile));
-		}
+		redstoneTab = addTab(new TabRedstone(this, baseTile));
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
+
 		configTab = addTab(new TabConfigurationTransfer(this, baseTile));
+
+		// Left Side
+		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 
 		if (baseTile.getMaxEnergyStored(null) > 0) {
 			addTab(new TabEnergy(this, baseTile, false));
@@ -81,6 +87,9 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (!baseTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
+		redstoneTab.setVisible(baseTile.hasRedstoneControl());
+
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 
 }

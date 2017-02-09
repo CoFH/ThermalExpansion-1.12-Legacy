@@ -9,6 +9,8 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 
 public abstract class TilePowered extends TileReconfigurable implements IEnergyInfo, IEnergyReceiver {
 
@@ -173,6 +175,58 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	public boolean canConnectEnergy(EnumFacing from) {
 
 		return energyStorage.getMaxEnergyStored() > 0;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityEnergy.ENERGY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+				@Override
+				public int receiveEnergy(int maxReceive, boolean simulate) {
+
+					return TilePowered.this.receiveEnergy(from, maxReceive, simulate);
+				}
+
+				@Override
+				public int extractEnergy(int maxExtract, boolean simulate) {
+
+					return 0;
+				}
+
+				@Override
+				public int getEnergyStored() {
+
+					return TilePowered.this.getEnergyStored(from);
+				}
+
+				@Override
+				public int getMaxEnergyStored() {
+
+					return TilePowered.this.getMaxEnergyStored(from);
+				}
+
+				@Override
+				public boolean canExtract() {
+
+					return false;
+				}
+
+				@Override
+				public boolean canReceive() {
+
+					return true;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

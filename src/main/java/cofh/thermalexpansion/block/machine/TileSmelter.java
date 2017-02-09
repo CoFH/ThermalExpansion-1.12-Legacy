@@ -415,9 +415,9 @@ public class TileSmelter extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!hasAdvancedAugment && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
+		if (!augmentPyrotheum && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
 			augmentPyrotheum = true;
-			hasAdvancedAugment = true;
+			hasModeAugment = true;
 			energyMod += 25;
 			return true;
 		}

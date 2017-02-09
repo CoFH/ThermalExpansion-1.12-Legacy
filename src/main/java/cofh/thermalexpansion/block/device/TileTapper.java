@@ -2,9 +2,10 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.client.device.GuiFountain;
+import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -15,7 +16,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -26,9 +26,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 
-public class TileFountain extends TileDevice3Axis implements ITickable {
+public class TileTapper extends TileDeviceBase implements ITickable {
 
-	private static final int TYPE = BlockDevice.Type.FOUNTAIN.getMetadata();
+	private static final int TYPE = BlockDevice.Type.TAPPER.getMetadata();
 
 	public static void initialize() {
 
@@ -39,27 +39,36 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
 		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 7 };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_fountain");
+		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_tapper");
 
 		config();
 	}
 
 	public static void config() {
 
-		String category = "Device.Fountain";
+		String category = "Device.Tapper";
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
+	private boolean cached;
+	private int outputTrackerFluid;
+
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
-	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 
 	@Override
 	public int getType() {
 
 		return TYPE;
+	}
+
+	@Override
+	public void onNeighborBlockChange() {
+
+		super.onNeighborBlockChange();
+		// TODO
 	}
 
 	@Override
@@ -71,12 +80,44 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 		if (!timeCheck()) {
 			return;
 		}
-		if (isActive) {
-			if (tank.getFluidAmount() >= Fluid.BUCKET_VOLUME) {
+		transferOutputFluid();
 
+		if (isActive) {
+
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
 			}
 		} else if (redstoneControlOrDisable()) {
 			isActive = true;
+		}
+	}
+
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoOutput = true;
+	}
+
+	protected void transferOutputFluid() {
+
+		if (tank.getFluidAmount() <= 0) {
+			return;
+		}
+		int side;
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME));
+		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
+			side = i % 6;
+
+			if (sideCache[side] == 1) {
+				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
+
+				if (toDrain > 0) {
+					tank.drain(toDrain, true);
+					outputTrackerFluid = side;
+					break;
+				}
+			}
 		}
 	}
 
@@ -84,7 +125,7 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiFountain(inventory, this);
+		return new GuiWaterGen(inventory, this);
 	}
 
 	@Override
@@ -111,6 +152,7 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 
 		super.readFromNBT(nbt);
 
+		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 	}
 
@@ -119,36 +161,18 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 
 		super.writeToNBT(nbt);
 
+		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
-	//* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
-
-		PacketCoFHBase payload = super.getPacket();
-		payload.addFluidStack(renderFluid);
-		return payload;
-	}
-
+	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
-		if (tank.getFluid() == null) {
-			payload.addFluidStack(renderFluid);
-		} else {
-			payload.addFluidStack(tank.getFluid());
-		}
-		return payload;
-	}
 
-	@Override
-	public PacketCoFHBase getFluidPacket() {
-
-		PacketCoFHBase payload = super.getFluidPacket();
-		payload.addFluidStack(renderFluid);
+		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
 
@@ -157,27 +181,6 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 
 		super.handleGuiPacket(payload);
 		tank.setFluid(payload.getFluidStack());
-	}
-
-	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-		renderFluid = payload.getFluidStack();
-		callBlockUpdate();
-	}
-
-	/* ITilePacketHandler */
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
 	}
 
 	/* ISidedTexture */
@@ -214,10 +217,7 @@ public class TileFountain extends TileDevice3Axis implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
-						return 0;
-					}
-					return tank.fill(resource, doFill);
+					return 0;
 				}
 
 				@Nullable

@@ -5,15 +5,21 @@ import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
+import cofh.api.item.IAugmentItem.AugmentType;
+import cofh.api.tileentity.IAccelerable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.TimeTracker;
-import cofh.lib.util.helpers.*;
+import cofh.lib.util.helpers.AugmentHelper;
+import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
+import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,42 +30,39 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 
-public abstract class TileDynamoBase extends TileInventory implements ITickable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
 	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockDynamo.Type.values().length];
 	private static boolean enableSecurity = true;
 
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
 	protected static final int ENERGY_BASE = 100;
+
+	static {
+		VALID_AUGMENTS_BASE.add(TEProps.DYNAMO_POWER);
+		VALID_AUGMENTS_BASE.add(TEProps.DYNAMO_EFFICIENCY);
+		VALID_AUGMENTS_BASE.add(TEProps.DYNAMO_COIL_DUCT);
+		VALID_AUGMENTS_BASE.add(TEProps.DYNAMO_THROTTLE);
+	}
 
 	public static void config() {
 
 		String comment = "Enable this to allow for Dynamos to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
-
-		for (int i = 0; i < BlockDynamo.Type.values().length; i++) {
-			String name = StringHelper.titleCase(BlockDynamo.Type.values()[i].getName());
-
-			int maxPower = MathHelper.clamp(ThermalExpansion.CONFIG.get("Dynamo." + name, "BasePower", 40), 10, 160);
-			ThermalExpansion.CONFIG.set("Dynamo." + name, "BasePower", maxPower);
-
-			maxPower /= 10;
-			maxPower *= 10;
-
-			defaultEnergyConfig[i] = new EnergyConfig();
-			defaultEnergyConfig[i].setDefaultParams(maxPower);
-		}
 	}
 
-	int processRem;
+	int fuelRF;
 	byte facing = 1;
 	boolean wasActive;
-	boolean hasAdvancedAugment;
+	boolean hasModeAugment;
 
 	int compareTracker;
 	boolean cached = false;
@@ -103,6 +106,17 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	@Override
+	protected boolean setLevel(int level) {
+
+		if (super.setLevel(level)) {
+			energyConfig.setDefaultParams(getBasePower(this.level));
+			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 2);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -168,7 +182,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (isActive) {
 			processTick();
 
-			if (processRem <= 0) {
+			if (canFinish()) {
 				if (!redstoneControlOrDisable() || !canStart()) {
 					processOff();
 				} else {
@@ -197,7 +211,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* COMMON METHODS */
 	protected int getBasePower(int level) {
 
-		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
+		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 4;
 	}
 
 	protected int calcEnergy() {
@@ -216,14 +230,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
-	protected boolean canStart() {
+	protected abstract boolean canStart();
 
-		return false;
+	protected boolean canFinish() {
+
+		return fuelRF <= 0;
 	}
 
-	protected void processStart() {
-
-	}
+	protected abstract void processStart();
 
 	protected void processFinish() {
 
@@ -242,12 +256,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	protected void processTick() {
 
-		if (processRem <= 0) {
-			return;
-		}
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(energy);
-		processRem -= energy;
+		fuelRF -= energy;
 		transferEnergy();
 	}
 
@@ -316,7 +327,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		energyStorage.readFromNBT(nbt);
 
 		facing = (byte) (nbt.getByte("Facing") % 6);
-		processRem = nbt.getInteger("Fuel");
+		fuelRF = nbt.getInteger("Fuel");
 	}
 
 	@Override
@@ -327,7 +338,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		energyStorage.writeToNBT(nbt);
 
 		nbt.setByte("Facing", facing);
-		nbt.setInteger("Fuel", processRem);
+		nbt.setInteger("Fuel", fuelRF);
 		return nbt;
 	}
 
@@ -350,7 +361,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
-		payload.addInt(processRem);
+		payload.addInt(fuelRF);
 
 		return payload;
 	}
@@ -362,7 +373,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		energyStorage.setCapacity(payload.getInt());
 		energyStorage.setEnergyStored(payload.getInt());
-		processRem = payload.getInt();
+		fuelRF = payload.getInt();
 	}
 
 	/* ITilePacketHandler */
@@ -383,12 +394,70 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* HELPERS */
 	protected void preAugmentInstall() {
 
-		energyMod = ENERGY_BASE;
-		energyStorage.setMaxTransfer(energyConfig.maxPower * 2);
+		energyConfig.setDefaultParams(getBasePower(this.level));
 
-		hasRedstoneControl = false;
+		energyMod = ENERGY_BASE;
+		hasModeAugment = false;
+
 		augmentThrottle = false;
 		augmentCoilDuct = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		if (augmentThrottle) {
+			energyConfig.minPower = 0;
+		}
+		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 2);
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (type == AugmentType.CREATIVE && level != -1) {
+			return false;
+		}
+		if (type == AugmentType.MODE && hasModeAugment) {
+			return false;
+		}
+		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (TEProps.DYNAMO_POWER.equals(id)) {
+			// Power Boost
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
+			
+			// Efficiency Loss
+			energyMod -= 10;
+			return true;
+		}
+		if (TEProps.DYNAMO_EFFICIENCY.equals(id)) {
+			// Efficiency Gain
+			energyMod += 10;
+			return true;
+		}
+		if (!augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {
+			augmentCoilDuct = true;
+			return true;
+		}
+		if (!augmentThrottle && TEProps.DYNAMO_THROTTLE.equals(id)) {
+			augmentThrottle = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
+	/* IAccelerable */
+	@Override
+	public void updateAccelerable() {
+
+		processTick();
 	}
 
 	/* IEnergyProvider */
@@ -518,6 +587,58 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return augmentCoilDuct || side.ordinal() != facing;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || capability == CapabilityEnergy.ENERGY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+				@Override
+				public int receiveEnergy(int maxReceive, boolean simulate) {
+
+					return 0;
+				}
+
+				@Override
+				public int extractEnergy(int maxExtract, boolean simulate) {
+
+					return TileDynamoBase.this.extractEnergy(from, maxExtract, simulate);
+				}
+
+				@Override
+				public int getEnergyStored() {
+
+					return TileDynamoBase.this.getEnergyStored(from);
+				}
+
+				@Override
+				public int getMaxEnergyStored() {
+
+					return TileDynamoBase.this.getMaxEnergyStored(from);
+				}
+
+				@Override
+				public boolean canExtract() {
+
+					return true;
+				}
+
+				@Override
+				public boolean canReceive() {
+
+					return false;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

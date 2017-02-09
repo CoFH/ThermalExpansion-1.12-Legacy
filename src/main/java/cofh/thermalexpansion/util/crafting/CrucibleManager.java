@@ -69,7 +69,7 @@ public class CrucibleManager {
 
 		/* TF MATERIALS */
 		{
-			addRecipe(4000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
+			addRecipe(3000, ItemMaterial.dustCoal, new FluidStack(TFFluids.fluidCoal, 100));
 			addRecipe(8000, ItemMaterial.dustPyrotheum, new FluidStack(TFFluids.fluidPyrotheum, 250));
 			addRecipe(8000, ItemMaterial.dustCryotheum, new FluidStack(TFFluids.fluidCryotheum, 250));
 			addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));

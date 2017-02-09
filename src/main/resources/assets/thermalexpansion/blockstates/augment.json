@@ -11,22 +11,22 @@
 		"type": {
 			"machinepower": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_power"
 				}
 			},
 			"machinesecondary": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_secondary"
 				}
 			},
 			"machinesecondarynull": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_secondary_null"
 				}
 			},
 			"machinefurnacefood": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_furnace_food"
 				}
 			},
 			"machinefurnaceore": {
@@ -45,6 +45,76 @@
 				}
 			},
 			"machinesmelterpyrotheum": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineinsolatormycelium": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineinsolatornether": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineinsolatorend": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinecompactormint": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"dynamopower": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_power"
+				}
+			},
+			"dynamoefficiency": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_efficiency"
+				}
+			},
+			"dynamocoilduct": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_coil_duct"
+				}
+			},
+			"dynamothrottle": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_throttle"
+				}
+			},
+			"dynamosteamturbine": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"dynamomagmaticcoolant": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"dynamocompressioncoolant": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"dynamocompressionfuel": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"automatondepth": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"automatonradius": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}

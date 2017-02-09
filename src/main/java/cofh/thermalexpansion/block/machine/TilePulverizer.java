@@ -288,9 +288,9 @@ public class TilePulverizer extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!hasAdvancedAugment && TEProps.MACHINE_PULVERIZER_GEODE.equals(id)) {
+		if (!augmentGeode && TEProps.MACHINE_PULVERIZER_GEODE.equals(id)) {
 			augmentGeode = true;
-			hasAdvancedAugment = true;
+			hasModeAugment = true;
 			energyMod += 25;
 			return true;
 		}

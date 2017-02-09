@@ -6,6 +6,7 @@ import cofh.api.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
@@ -40,6 +41,29 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			tooltip.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		UpgradeType type = getUpgradeType(stack);
+
+		switch (type) {
+			case INCREMENTAL:
+				tooltip.add(StringHelper.getInfoText("info.thermalexpansion.upgrade.incremental.0"));
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.upgrade.incremental.1"));
+				break;
+			case FULL:
+				tooltip.add(StringHelper.getInfoText("info.thermalexpansion.upgrade.full.0"));
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.upgrade.full.1"));
+				break;
+			case CREATIVE:
+				tooltip.add(StringHelper.getInfoText("info.thermalexpansion.upgrade.creative.0"));
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.upgrade.creative.1"));
+				break;
+			default:
+		}
 	}
 
 	@Override

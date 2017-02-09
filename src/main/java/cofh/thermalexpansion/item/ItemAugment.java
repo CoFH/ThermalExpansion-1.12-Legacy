@@ -6,6 +6,7 @@ import cofh.api.tileentity.IAugmentable;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.init.TEProps;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -39,6 +40,51 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			tooltip.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		AugmentType type = getAugmentType(stack);
+		String id = getAugmentIdentifier(stack);
+
+		int i = 0;
+		String line = "info.thermalexpansion.augment." + id + "." + i;
+		while (StringHelper.canLocalize(line)) {
+			tooltip.add(StringHelper.localize(line));
+			i++;
+			line = "info.thermalexpansion.augment." + id + "." + i;
+		}
+		i = 0;
+		line = "info.thermalexpansion.augment." + id + ".a." + i;
+		while (StringHelper.canLocalize(line)) {
+			tooltip.add(StringHelper.BRIGHT_GREEN + StringHelper.localize(line));
+			i++;
+			line = "info.thermalexpansion.augment." + id + ".a." + i;
+		}
+		i = 0;
+		line = "info.thermalexpansion.augment." + id + ".b." + i;
+		while (StringHelper.canLocalize(line)) {
+			tooltip.add(StringHelper.RED + StringHelper.localize(line));
+			i++;
+			line = "info.thermalexpansion.augment." + id + ".b." + i;
+		}
+		switch (type) {
+			case ADVANCED:
+				// tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.augment.noticeAdvanced"));
+				break;
+			case MODE:
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.augment.noticeMode"));
+				break;
+			case ENDER:
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.augment.noticeEnder"));
+				break;
+			case CREATIVE:
+				tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.augment.noticeCreative"));
+				break;
+			default:
+		}
 	}
 
 	@Override
@@ -91,18 +137,42 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public boolean preInit() {
 
+		/* MACHINES */
 		machinePower = addAugmentItem(128, TEProps.MACHINE_POWER);
 		machineSecondary = addAugmentItem(129, TEProps.MACHINE_SECONDARY);
-		machineSecondaryNull = addAugmentItem(130, TEProps.MACHINE_SECONDARY_NULL);
+		machineSecondaryNull = addAugmentItem(130, TEProps.MACHINE_SECONDARY_NULL, AugmentType.ADVANCED);
 
-		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
-		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
+		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
 
-		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
 
-		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.MODE);
 
-		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.ADVANCED, EnumRarity.UNCOMMON);
+		machineSmelterPyrotheum = addAugmentItem(304, TEProps.MACHINE_SMELTER_PYROTHEUM, AugmentType.MODE);
+
+		machineInsolatorMycelium = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_MYCELIUM, AugmentType.MODE);
+		machineInsolatorNether = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_NETHER, AugmentType.MODE);
+		machineInsolatorEnd = addAugmentItem(322, TEProps.MACHINE_INSOLATOR_END, AugmentType.MODE);
+
+		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
+
+		/* DYNAMOS */
+		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
+		dynamoEfficiency = addAugmentItem(513, TEProps.DYNAMO_EFFICIENCY);
+		dynamoCoilDuct = addAugmentItem(514, TEProps.DYNAMO_COIL_DUCT, AugmentType.ADVANCED);
+		dynamoThrottle = addAugmentItem(515, TEProps.DYNAMO_THROTTLE, AugmentType.ADVANCED);
+
+		dynamoSteamTurbine = addAugmentItem(640, TEProps.DYNAMO_STEAM_TURBINE, AugmentType.MODE);
+
+		dynamoMagmaticCoolant = addAugmentItem(656, TEProps.DYNAMO_MAGMATIC_COOLANT, AugmentType.MODE);
+
+		dynamoCompressionCoolant = addAugmentItem(672, TEProps.DYNAMO_COMPRESSION_COOLANT, AugmentType.MODE);
+		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
+
+		/* AUTOMATA */
+		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
+		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
 
 		return true;
 	}
@@ -153,6 +223,27 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return addItem(metadata, name, rarity);
 	}
 
+	private ItemStack addAugmentItem(int metadata, String name, AugmentType type) {
+
+		EnumRarity rarity;
+
+		switch (type) {
+			case ADVANCED:
+				rarity = EnumRarity.UNCOMMON;
+				break;
+			case MODE:
+			case ENDER:
+				rarity = EnumRarity.RARE;
+				break;
+			case CREATIVE:
+				rarity = EnumRarity.EPIC;
+				break;
+			default:
+				rarity = EnumRarity.COMMON;
+		}
+		return addAugmentItem(metadata, name, type, rarity);
+	}
+
 	private ItemStack addAugmentItem(int metadata, String name, AugmentType type, EnumRarity rarity) {
 
 		addAugmentEntry(metadata, type, name);
@@ -166,20 +257,12 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	/* Fluid */
 	public static ItemStack fluidStorage;
 
+	/* Energy */
+	public static ItemStack energyStorage;
+
 	/* Ender */
 	public static ItemStack enderReception;
 	public static ItemStack enderTransmission;
-
-	/* Energy */
-	public static ItemStack energyStorage;
-	public static ItemStack energyTransfer;
-
-	/* Dynamo */
-	public static ItemStack dynamoEfficiency;
-	public static ItemStack dynamoOutput;
-
-	public static ItemStack dynamoCoilDuct;
-	public static ItemStack dynamoThrottle;
 
 	/* Machine */
 	public static ItemStack machinePower;
@@ -197,6 +280,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineSmelterPyrotheum;
 
+	public static ItemStack machineInsolatorMycelium;
 	public static ItemStack machineInsolatorNether;
 	public static ItemStack machineInsolatorEnd;
 
@@ -213,6 +297,19 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineExtruderAndesite;
 	public static ItemStack machineExtruderDiorite;
 	public static ItemStack machineExtruderGranite;
+
+	/* Dynamo */
+	public static ItemStack dynamoPower;
+	public static ItemStack dynamoEfficiency;
+	public static ItemStack dynamoCoilDuct;
+	public static ItemStack dynamoThrottle;
+
+	public static ItemStack dynamoSteamTurbine;
+
+	public static ItemStack dynamoMagmaticCoolant;
+
+	public static ItemStack dynamoCompressionCoolant;
+	public static ItemStack dynamoCompressionFuel;
 
 	/* Automaton */
 	public static ItemStack automatonDepth;

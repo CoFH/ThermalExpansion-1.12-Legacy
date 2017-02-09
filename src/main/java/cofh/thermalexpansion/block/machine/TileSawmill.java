@@ -348,9 +348,9 @@ public class TileSawmill extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!hasAdvancedAugment && TEProps.MACHINE_SAWMILL_TAPPER.equals(id)) {
+		if (!augmentTapper && !TEProps.MACHINE_SAWMILL_TAPPER.equals(id)) {
 			augmentTapper = true;
-			hasAdvancedAugment = true;
+			hasModeAugment = true;
 			energyMod += 25;
 			return true;
 		}

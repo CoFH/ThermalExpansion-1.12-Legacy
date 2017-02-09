@@ -20,9 +20,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
 
-import static cofh.api.item.IAugmentItem.AugmentType.ADVANCED;
-import static cofh.api.item.IAugmentItem.AugmentType.CREATIVE;
-
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
@@ -40,6 +37,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	static {
 		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_POWER);
 		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_SECONDARY);
+		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_SECONDARY_NULL);
 	}
 
 	public static void config() {
@@ -51,7 +49,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	int processMax;
 	int processRem;
 	boolean wasActive;
-	boolean hasAdvancedAugment;
+	boolean hasModeAugment;
 
 	EnergyConfig energyConfig;
 	TimeTracker tracker = new TimeTracker();
@@ -297,8 +295,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		energyMod = ENERGY_BASE;
 		secondaryChance = SECONDARY_BASE;
-
-		hasAdvancedAugment = false;
+		hasModeAugment = false;
 
 		augmentSecondaryNull = false;
 	}
@@ -312,12 +309,15 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	protected boolean isValidAugment(AugmentType type, String id) {
 
-		if (type == CREATIVE && level != -1) {
+		if (type == AugmentType.CREATIVE && level != -1) {
 			return false;
 		}
-		if (type == ADVANCED && hasAdvancedAugment) {
+		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
+//		if (type == AugmentType.ADVANCED && hasModeAugment) {
+//			return false;
+//		}
 		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 
@@ -328,8 +328,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		if (TEProps.MACHINE_POWER.equals(id)) {
 			// Power Boost
-			int maxPower = energyConfig.maxPower;
-			energyConfig.setDefaultParams(maxPower + getBasePower(this.level));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
 
 			// Efficiency Loss
 			energyMod += 20;
@@ -343,7 +342,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			energyMod += 10;
 			return true;
 		}
-		if (TEProps.MACHINE_SECONDARY_NULL.equals(id)) {
+		if (!augmentSecondaryNull && TEProps.MACHINE_SECONDARY_NULL.equals(id)) {
 			augmentSecondaryNull = true;
 			return true;
 		}

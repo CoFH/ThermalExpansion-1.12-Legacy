@@ -281,12 +281,15 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			owner = CoreProps.DEFAULT_OWNER;
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
-			level = payload.getByte();
+			byte tmpLevel = payload.getByte();
 			hasAutoInput = payload.getBool();
 			hasAutoOutput = payload.getBool();
 			enableAutoInput = payload.getBool();
 			enableAutoOutput = payload.getBool();
-			setLevel(level);
+
+			if (tmpLevel != level) {
+				setLevel(tmpLevel);
+			}
 		} else {
 			payload.getUUID();
 			payload.getString();
