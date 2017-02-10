@@ -85,7 +85,8 @@ public class ItemBlockMachine extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		String name = BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

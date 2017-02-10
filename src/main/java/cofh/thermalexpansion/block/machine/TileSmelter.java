@@ -60,7 +60,7 @@ public class TileSmelter extends TileMachineBase {
 	public boolean lockPrimary = false;
 
 	/* AUGMENTS */
-	public boolean augmentPyrotheum;
+	protected boolean augmentPyrotheum;
 
 	public TileSmelter() {
 

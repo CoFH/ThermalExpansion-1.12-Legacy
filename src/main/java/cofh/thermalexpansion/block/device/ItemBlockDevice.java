@@ -37,20 +37,21 @@ public class ItemBlockDevice extends ItemBlockCore {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List<String> list, boolean check) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
-		SecurityHelper.addOwnerInformation(stack, list);
+		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
-			list.add(StringHelper.shiftForDetails());
+			tooltip.add(StringHelper.shiftForDetails());
 		}
 		if (!StringHelper.isShiftKeyDown()) {
 			return;
 		}
-		SecurityHelper.addAccessInformation(stack, list);
+		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		list.add(StringHelper.getInfoText("info.thermalexpansion.device." + BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		String name = BlockDevice.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.device." + name));
 
-		RedstoneControlHelper.addRSControlInformation(stack, list);
+		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 }

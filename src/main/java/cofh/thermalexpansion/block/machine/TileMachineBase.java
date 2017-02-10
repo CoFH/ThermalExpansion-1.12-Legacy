@@ -43,7 +43,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static void config() {
 
 		String comment = "Enable this to allow for Machines to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Machine.All.Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Machine.Securable", true, comment);
 	}
 
 	int processMax;
@@ -51,14 +51,14 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	boolean wasActive;
 	boolean hasModeAugment;
 
-	EnergyConfig energyConfig;
-	TimeTracker tracker = new TimeTracker();
+	protected EnergyConfig energyConfig;
+	protected TimeTracker tracker = new TimeTracker();
 
 	int energyMod = ENERGY_BASE;
 	int secondaryChance = SECONDARY_BASE;
 
 	/* AUGMENTS */
-	public boolean augmentSecondaryNull;
+	protected boolean augmentSecondaryNull;
 
 	public TileMachineBase() {
 

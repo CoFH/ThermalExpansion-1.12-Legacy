@@ -58,10 +58,10 @@ public class GuiSawmill extends GuiPoweredBase {
 		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 53, 44).setSize(16, 16).setTexture(TEX_SAW, 32, 16));
 
-		tankBackground.setVisible(myTile.augmentTapper);
-		slotTankOutput[0].setVisible(myTile.augmentTapper);
-		slotTankOutput[1].setVisible(myTile.augmentTapper);
-		tank.setVisible(myTile.augmentTapper);
+		tankBackground.setVisible(myTile.augmentTapper());
+		slotTankOutput[0].setVisible(myTile.augmentTapper());
+		slotTankOutput[1].setVisible(myTile.augmentTapper());
+		tank.setVisible(myTile.augmentTapper());
 	}
 
 	@Override
@@ -76,9 +76,9 @@ public class GuiSawmill extends GuiPoweredBase {
 		slotSecondaryOutput[0].setVisible(baseTile.hasSide(4));
 		slotSecondaryOutput[1].setVisible(baseTile.hasSide(3));
 
-		tankBackground.setVisible(myTile.augmentTapper);
-		slotTankOutput[0].setVisible(myTile.augmentTapper && baseTile.hasSide(4));
-		slotTankOutput[1].setVisible(myTile.augmentTapper && baseTile.hasSide(3));
+		tankBackground.setVisible(myTile.augmentTapper());
+		slotTankOutput[0].setVisible(myTile.augmentTapper() && baseTile.hasSide(4));
+		slotTankOutput[1].setVisible(myTile.augmentTapper() && baseTile.hasSide(3));
 
 		if (!baseTile.hasSide(4)) {
 			slotPrimaryOutput[1].slotRender = 2;
@@ -89,7 +89,7 @@ public class GuiSawmill extends GuiPoweredBase {
 			slotSecondaryOutput[1].slotRender = 1;
 			slotTankOutput[1].slotRender = 1;
 		}
-		tank.setVisible(myTile.augmentTapper);
+		tank.setVisible(myTile.augmentTapper());
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));
 	}

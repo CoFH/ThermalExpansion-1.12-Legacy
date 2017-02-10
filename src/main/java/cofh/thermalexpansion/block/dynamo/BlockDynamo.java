@@ -175,7 +175,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		if (stack.getTagCompound() != null) {
 			TileDynamoBase tile = (TileDynamoBase) world.getTileEntity(pos);
 
-			// tile.setLevel(stack.getTagCompound().getByte("Level"));
+			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));

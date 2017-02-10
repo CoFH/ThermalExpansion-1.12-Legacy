@@ -42,7 +42,7 @@ public class ItemBlockDynamo extends ItemBlockCore {
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
@@ -54,7 +54,8 @@ public class ItemBlockDynamo extends ItemBlockCore {
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
 		tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		String name = BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

@@ -9,10 +9,13 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -26,6 +29,9 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem {
 
@@ -69,6 +75,12 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 			tooltip.add(StringHelper.RED + StringHelper.localize(line));
 			i++;
 			line = "info.thermalexpansion.augment." + id + ".b." + i;
+		}
+		line = "info.thermalexpansion.augment." + id + ".c." + i;
+		while (StringHelper.canLocalize(line)) {
+			tooltip.add(StringHelper.YELLOW + StringHelper.localize(line));
+			i++;
+			line = "info.thermalexpansion.augment." + id + ".c." + i;
 		}
 		switch (type) {
 			case ADVANCED:
@@ -187,6 +199,221 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public boolean postInit() {
 
 		// @formatter:off
+
+		/* MACHINE */
+		addRecipe(ShapedRecipe(machinePower,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', ItemMaterial.powerCoilGold,
+				'I', "ingotGold",
+				'Y', "dustRedstone"
+		));
+		addRecipe(ShapedRecipe(machineSecondary,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', ItemMaterial.redstoneServo,
+				'I', "ingotBronze",
+				'Y', "blockRockwool"
+		));
+		addRecipe(ShapedRecipe(machineSecondaryNull,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', Items.LAVA_BUCKET,
+				'I', "nuggetInvar",
+				'Y', "blockGlass"
+		));
+
+		addRecipe(ShapedRecipe(machineFurnaceFood,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearCopper",
+				'I', "plateSilver",
+				'X', Blocks.BRICK_BLOCK,
+				'Y', "dustRedstone"
+		));
+		addRecipe(ShapedRecipe(machineFurnaceOre,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearBronze",
+				'I', "plateInvar",
+				'X', Blocks.PISTON,
+				'Y', "dustPyrotheum"
+		));
+
+		addRecipe(ShapedRecipe(machinePulverizerGeode,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearLead",
+				'I', "plateBronze",
+				'X', "gemDiamond",
+				'Y', "dustPetrotheum"
+		));
+
+		addRecipe(ShapedRecipe(machineSawmillTapper,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearTin",
+				'I', "plateCopper",
+				'X', Items.BUCKET,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machineSmelterPyrotheum,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateNickel",
+				'X', Blocks.NETHER_BRICK,
+				'Y', "dustPyrotheum"
+		));
+
+		addRecipe(ShapedRecipe(machineInsolatorMycelium,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateLead",
+				'X', Blocks.MYCELIUM,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machineInsolatorNether,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSilver",
+				'I', "plateTin",
+				'X', Blocks.SOUL_SAND,
+				'Y', "dustGlowstone"
+		));
+
+		addRecipe(ShapedRecipe(machineInsolatorEnd,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearNickel",
+				'I', "plateSilver",
+				'X', Blocks.END_STONE,
+				'Y', "dustCryotheum"
+		));
+
+		addRecipe(ShapedRecipe(machineCompactorMint,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearInvar",
+				'I', "plateElectrum",
+				'X', "gemEmerald",
+				'Y', "dustGlowstone"
+		));
+
+		addRecipe(ShapedRecipe(machineChargerThroughput,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearElectrum",
+				'I', "plateSilver",
+				'X', "ingotLead",
+				'Y', "dustRedstone"
+		));
+
+		/* DYNAMO */
+		addRecipe(ShapedRecipe(dynamoPower,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', ItemMaterial.powerCoilSilver,
+				'I', "ingotSilver",
+				'Y', "dustRedstone"
+		));
+		addRecipe(ShapedRecipe(dynamoEfficiency,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'I', "ingotLead",
+				'Y', "dustGlowstone"
+		));
+		addRecipe(ShapedRecipe(dynamoCoilDuct,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', "ingotCopper",
+				'I', "nuggetLead",
+				'Y', "blockGlass"
+		));
+		addRecipe(ShapedRecipe(dynamoThrottle,
+				" I ",
+				"ICI",
+				"YIY",
+				'C', "ingotElectrum",
+				'I', "nuggetLead",
+				'Y', "blockGlass"
+		));
+
+		addRecipe(ShapedRecipe(dynamoSteamTurbine,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearIron",
+				'I', "plateCopper",
+				'X', "ingotIron",
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(dynamoMagmaticCoolant,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateInvar",
+				'X', "blockGlass",
+				'Y', "dustCryotheum"
+		));
+
+		addRecipe(ShapedRecipe(dynamoCompressionCoolant,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearInvar",
+				'I', "plateTin",
+				'X', "blockGlass",
+				'Y', "dustCryotheum"
+		));
+
+		addRecipe(ShapedRecipe(dynamoCompressionFuel,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateCopper",
+				'X', "blockGlass",
+				'Y', "dustPyrotheum"
+		));
+
+		/* AUTOMATON */
 
 		// @formatter:on
 

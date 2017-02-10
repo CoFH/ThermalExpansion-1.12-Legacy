@@ -2,8 +2,6 @@ package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.simple.BlockFrame;
-import cofh.thermalexpansion.init.TEAchievements;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -62,9 +60,9 @@ public class TECraftingHandler {
 			return;
 		}
 		// Crafting Steps
-		if (stack.isItemEqual(BlockFrame.frameMachineBasic)) {
-			player.addStat(TEAchievements.machineFrame, 1);
-		}
+//		if (stack.isItemEqual(BlockFrame.frameMachineBasic)) {
+		//			player.addStat(TEAchievements.machineFrame, 1);
+		//		}
 		// Machine Achievements
 		//		else if (stack.isItemEqual(BlockMachine.furnace)) {
 		//			player.addStat(TEAchievements.furnace, 1);

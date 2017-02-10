@@ -36,7 +36,7 @@
 			},
 			"machinepulverizergeode": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_pulverizer_geode"
 				}
 			},
 			"machinesawmilltapper": {
@@ -51,17 +51,17 @@
 			},
 			"machineinsolatormycelium": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_insolator_mycelium"
 				}
 			},
 			"machineinsolatornether": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_insolator_nether"
 				}
 			},
 			"machineinsolatorend": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_insolator_end"
 				}
 			},
 			"machinecompactormint": {

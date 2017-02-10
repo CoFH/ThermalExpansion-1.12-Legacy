@@ -59,8 +59,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 	private int coolantRF;
 
 	/* AUGMENTS */
-	public boolean augmentCoolant;
-	public boolean augmentFuel;
+	protected boolean augmentCoolant;
+	protected boolean augmentFuel;
 
 	@Override
 	public int getType() {

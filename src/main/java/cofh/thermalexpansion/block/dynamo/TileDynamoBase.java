@@ -56,11 +56,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	public static void config() {
 
 		String comment = "Enable this to allow for Dynamos to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.All.Securable", enableSecurity, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Dynamo.Securable", enableSecurity, comment);
 	}
 
-	int fuelRF;
 	byte facing = 1;
+	int fuelRF;
 	boolean wasActive;
 	boolean hasModeAugment;
 
@@ -73,8 +73,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	TimeTracker tracker = new TimeTracker();
 
 	/* AUGMENTS */
-	public boolean augmentCoilDuct;
-	public boolean augmentThrottle;
+	protected boolean augmentCoilDuct;
+	protected boolean augmentThrottle;
 
 	int energyMod = ENERGY_BASE;
 
@@ -174,9 +174,6 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (!cached) {
-			onNeighborBlockChange();
-		}
 		boolean curActive = isActive;
 
 		if (isActive) {
@@ -204,17 +201,20 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 				compareTracker = curScale;
 				callNeighborTileChange();
 			}
+			if (!cached) {
+				onNeighborBlockChange();
+			}
 		}
 		updateIfChanged(curActive);
 	}
 
 	/* COMMON METHODS */
-	protected int getBasePower(int level) {
+	int getBasePower(int level) {
 
-		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 4;
+		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
 	}
 
-	protected int calcEnergy() {
+	int calcEnergy() {
 
 		if (energyStorage.getEnergyStored() < energyConfig.minPowerLevel) {
 			return energyConfig.maxPower;
@@ -225,19 +225,19 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return (energyStorage.getMaxEnergyStored() - energyStorage.getEnergyStored()) / energyConfig.energyRamp;
 	}
 
-	protected int getScaledEnergyStored(int scale) {
+	int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
 
-	protected abstract boolean canStart();
+	abstract boolean canStart();
 
-	protected boolean canFinish() {
+	boolean canFinish() {
 
 		return fuelRF <= 0;
 	}
 
-	protected abstract void processStart();
+	abstract void processStart();
 
 	protected void processFinish() {
 
@@ -432,7 +432,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (TEProps.DYNAMO_POWER.equals(id)) {
 			// Power Boost
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level));
-			
+
 			// Efficiency Loss
 			energyMod -= 10;
 			return true;

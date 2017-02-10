@@ -64,7 +64,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private int steamAmount = defaultEnergyConfig[TYPE].maxPower * 2;
 
 	/* AUGMENTS */
-	public boolean augmentTurbine;
+	protected boolean augmentTurbine;
 
 	public TileDynamoSteam() {
 
@@ -200,6 +200,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentTurbine);
 		payload.addInt(currentFuelRF);
 		payload.addFluidStack(steamTank.getFluid());
 		payload.addFluidStack(waterTank.getFluid());
@@ -212,6 +213,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentTurbine = payload.getBool();
 		currentFuelRF = payload.getInt();
 		steamTank.setFluid(payload.getFluidStack());
 		waterTank.setFluid(payload.getFluidStack());

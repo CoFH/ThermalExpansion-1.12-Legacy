@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
@@ -9,6 +10,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.Substrate;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -44,6 +46,9 @@ public class TileInsolator extends TileMachineBase {
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.MACHINE_INSOLATOR_MYCELIUM);
+		validAugments[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
+		validAugments[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
 
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
 
@@ -67,6 +72,11 @@ public class TileInsolator extends TileMachineBase {
 	public boolean lockPrimary = false;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_LARGE);
+
+	/* AUGMENTS */
+	protected boolean augmentMycelium;
+	protected boolean augmentNether;
+	protected boolean augmentEnd;
 
 	public TileInsolator() {
 
@@ -97,6 +107,16 @@ public class TileInsolator extends TileMachineBase {
 
 		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
+		}
+		Substrate substrate = recipe.getSubstrate();
+		if (substrate != Substrate.STANDARD) {
+			if (substrate == Substrate.MYCELIUM && !augmentMycelium) {
+				return false;
+			} else if (substrate == Substrate.NETHER && !augmentNether) {
+				return false;
+			} else if (substrate == Substrate.END && !augmentEnd) {
+				return false;
+			}
 		}
 		if (InsolatorManager.isRecipeReversed(inventory[0], inventory[1])) {
 			if (recipe.getPrimaryInput().stackSize > inventory[1].stackSize || recipe.getSecondaryInput().stackSize > inventory[0].stackSize) {
@@ -393,6 +413,40 @@ public class TileInsolator extends TileMachineBase {
 		lockPrimary = mode;
 		sendModePacket();
 		lockPrimary = lastMode;
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentMycelium = false;
+		augmentNether = false;
+		augmentEnd = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentMycelium && TEProps.MACHINE_INSOLATOR_MYCELIUM.equals(id)) {
+			augmentMycelium = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentNether && TEProps.MACHINE_INSOLATOR_NETHER.equals(id)) {
+			augmentNether = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentEnd && TEProps.MACHINE_INSOLATOR_END.equals(id)) {
+			augmentEnd = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
 	}
 
 	/* IInventory */

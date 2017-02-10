@@ -54,7 +54,7 @@ public class TilePulverizer extends TileMachineBase {
 	private int outputTrackerSecondary;
 
 	/* AUGMENTS */
-	public boolean augmentGeode;
+	protected boolean augmentGeode;
 
 	public TilePulverizer() {
 

@@ -56,7 +56,7 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 	private boolean ignoreOwner = true;
 
 	/* AUGMENTS */
-	public boolean augmentEntityCollection;
+	protected boolean augmentEntityCollection;
 
 	public TileCollector() {
 

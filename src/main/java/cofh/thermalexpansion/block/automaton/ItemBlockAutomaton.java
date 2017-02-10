@@ -54,7 +54,8 @@ public class ItemBlockAutomaton extends ItemBlockCore {
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
 
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.automaton." + BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
+		String name = BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.automaton." + name));
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

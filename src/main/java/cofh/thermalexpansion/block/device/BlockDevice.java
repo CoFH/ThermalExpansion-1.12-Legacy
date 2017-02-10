@@ -119,6 +119,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileHeatSink();
 			case TAPPER:
 				return null;
+			case ITEM_BUFFER:
+				return new TileItemBuffer();
 			//			case EXTENDER:
 			//				return new TileExtender();
 			//			case CONCENTRATOR:                      // TODO
@@ -251,17 +253,13 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileNullifier.initialize();
 		TileHeatSink.initialize();
 
-		//TileExtender.initialize();
-		//TileConcentrator.initialize();
-		//TileItemBuffer.initialize();
+		TileItemBuffer.initialize();
 
 		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
 		deviceHeatSink = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
 
-		//		deviceExtender = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.EXTENDER.getMetadata()));
-		//
-		//		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
+		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		return true;
 	}
@@ -297,6 +295,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					'Y', "dustRedstone"
 			));
 		}
+
 		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
 			addRecipe(ShapedRecipe(deviceItemBuffer,
 					" X ",

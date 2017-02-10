@@ -47,7 +47,7 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 	}
 
 	/* AUGMENTS */
-	public boolean augmentFluid;
+	protected boolean augmentFluid;
 
 	public TileBreaker() {
 

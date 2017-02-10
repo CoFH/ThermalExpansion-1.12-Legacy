@@ -69,7 +69,8 @@ public class TileSawmill extends TileMachineBase {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	/* AUGMENTS */
-	public boolean augmentTapper;
+	protected boolean augmentTapper;
+	protected boolean flagTapper;
 
 	public TileSawmill() {
 
@@ -283,6 +284,11 @@ public class TileSawmill extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public boolean augmentTapper() {
+
+		return augmentTapper && flagTapper;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -313,6 +319,7 @@ public class TileSawmill extends TileMachineBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentTapper);
 		payload.addFluidStack(tank.getFluid());
 		return payload;
 	}
@@ -321,6 +328,9 @@ public class TileSawmill extends TileMachineBase {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
+		augmentTapper = payload.getBool();
+		flagTapper = augmentTapper;
 		tank.setFluid(payload.getFluidStack());
 	}
 
@@ -348,7 +358,7 @@ public class TileSawmill extends TileMachineBase {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (!augmentTapper && !TEProps.MACHINE_SAWMILL_TAPPER.equals(id)) {
+		if (!augmentTapper && TEProps.MACHINE_SAWMILL_TAPPER.equals(id)) {
 			augmentTapper = true;
 			hasModeAugment = true;
 			energyMod += 25;

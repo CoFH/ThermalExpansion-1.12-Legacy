@@ -126,6 +126,7 @@ public class TEProps {
 	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
 	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
 
+	public static final String MACHINE_COMPACTOR_PRESS = "machineCompactorPress";
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
 
 	/* DYNAMOS */

@@ -54,8 +54,8 @@ public class TileFurnace extends TileMachineBase {
 	private int outputTracker;
 
 	/* AUGMENTS */
-	public boolean augmentFood;
-	public boolean augmentOre;
+	protected boolean augmentFood;
+	protected boolean augmentOre;
 
 	public TileFurnace() {
 
@@ -184,6 +184,16 @@ public class TileFurnace extends TileMachineBase {
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerFurnace(inventory, this);
+	}
+
+	public boolean augmentFood() {
+
+		return augmentFood;
+	}
+
+	public boolean augmentOre() {
+
+		return augmentOre;
 	}
 
 	/* NBT METHODS */

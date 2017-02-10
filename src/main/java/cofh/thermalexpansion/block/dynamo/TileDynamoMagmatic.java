@@ -56,7 +56,8 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	private int coolantRF;
 
 	/* AUGMENTS */
-	public boolean augmentCoolant;
+	protected boolean augmentCoolant;
+	protected boolean flagCoolant;
 
 	@Override
 	public int getType() {
@@ -125,6 +126,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		return coolantTank;
 	}
 
+	public boolean augmentCoolant() {
+
+		return augmentCoolant && flagCoolant;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -173,6 +179,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentCoolant);
 		payload.addFluidStack(fuelTank.getFluid());
 		payload.addFluidStack(coolantTank.getFluid());
 
@@ -184,6 +191,8 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentCoolant = payload.getBool();
+		flagCoolant = augmentCoolant;
 		fuelTank.setFluid(payload.getFluidStack());
 		coolantTank.setFluid(payload.getFluidStack());
 	}

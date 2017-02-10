@@ -30,7 +30,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 	public static void config() {
 
 		String comment = "Enable this to allow for Automata to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Automaton.All.Securable", true, comment);
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Automaton.Securable", true, comment);
 	}
 
 	CoFHFakePlayer fakePlayer;

@@ -39,8 +39,8 @@ public class GuiDynamoMagmatic extends GuiDynamoBase {
 		tankBackground = (ElementSimple) addElement(new ElementSimple(this, 7, 8).setTextureOffsets(176, 0).setSize(18, 62).setTexture(TEX_PATH, 256, 256));
 		tank = (ElementFluidTank) addElement(new ElementFluidTank(this, 8, 9, baseTile.getTank(1)));
 
-		tankBackground.setVisible(myTile.augmentCoolant);
-		tank.setVisible(myTile.augmentCoolant);
+		tankBackground.setVisible(myTile.augmentCoolant());
+		tank.setVisible(myTile.augmentCoolant());
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class GuiDynamoMagmatic extends GuiDynamoBase {
 
 		super.updateElementInformation();
 
-		tankBackground.setVisible(myTile.augmentCoolant);
-		tank.setVisible(myTile.augmentCoolant);
+		tankBackground.setVisible(myTile.augmentCoolant());
+		tank.setVisible(myTile.augmentCoolant());
 	}
 }

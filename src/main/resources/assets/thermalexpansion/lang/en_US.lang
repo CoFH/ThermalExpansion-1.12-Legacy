@@ -42,7 +42,7 @@ info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux co
 info.thermalexpansion.augment.machineCompactorMint.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorMint.a.0=Allows for the creation of currency.
 info.thermalexpansion.augment.machineCompactorMint.a.1=Currency can be exchanged for goods and services.
-info.thermalexpansion.augment.machineCompactorMint.b.0=Not valuable to everyone.
+info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled into this mode.
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
@@ -52,6 +52,18 @@ info.thermalexpansion.augment.machineFurnaceOre.0=Redstone Furnace: Specializati
 info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain an additional ingot when smelting ores.
 info.thermalexpansion.augment.machineFurnaceOre.b.0=Only ores can be processed.
 info.thermalexpansion.augment.machineFurnaceOre.b.1=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machineInsolatorEnd.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorEnd.a.0=Allows for non-standard crops to be grown.
+info.thermalexpansion.augment.machineInsolatorEnd.a.1=Suitable for Ender crops.
+
+info.thermalexpansion.augment.machineInsolatorMycelium.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorMycelium.a.0=Allows for non-standard crops to be grown.
+info.thermalexpansion.augment.machineInsolatorMycelium.a.1=Suitable for Fungi.
+
+info.thermalexpansion.augment.machineInsolatorNether.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorNether.a.0=Allows for non-standard crops to be grown.
+info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether crops.
 
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
@@ -145,9 +157,9 @@ item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
-item.thermalexpansion.augment.machineInsolatorEnd.name=
-item.thermalexpansion.augment.machineInsolatorMycelium.name=
-item.thermalexpansion.augment.machineInsolatorNether.name=
+item.thermalexpansion.augment.machineInsolatorEnd.name=Ender Substrate
+item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
+item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Extractor

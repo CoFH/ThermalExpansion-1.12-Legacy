@@ -45,6 +45,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	/* LEVEL FEATURES */
 	protected byte level = 0;
+	protected boolean isCreative = false;
 	protected boolean hasAutoInput = false;
 	protected boolean hasAutoOutput = false;
 
@@ -54,10 +55,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected boolean hasRedstoneControl = false;
 	protected boolean hasAdvRedstoneControl = false;
 
-	protected static final int ENERGY_CAPACITY[] = new int[] { 2, 3, 4, 5, 5 };
-	protected static final int FLUID_CAPACITY[] = new int[] { 1, 2, 4, 8, 8 };
-	protected static final int FLUID_TRANSFER[] = new int[] { 100, 200, 400, 800, 800 };
-	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 32, 64, 64 };
+	protected static final int ENERGY_TRANSFER[] = new int[] { 1000, 4000, 9000, 16000, 25000 };
+	protected static final int FLUID_TRANSFER[] = new int[] { 100, 300, 600, 1000, 1500 };
+	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 28, 44, 64 };
 
 	public boolean isAugmentable() {
 
@@ -91,9 +91,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				level = 4;
 			}
 			this.level = (byte) level;
-		} else {
-			level = 4;
-			this.level = -1;
 		}
 		// Keep Old Augments
 		if (augments.length > 0) {
@@ -112,6 +109,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		}
 		setLevelFlags();
 		return true;
+	}
+
+	protected int getFluidTransfer(int level) {
+
+		return FLUID_TRANSFER[MathHelper.clamp(level, 0, 4)];
 	}
 
 	protected void setLevelFlags() {
@@ -196,6 +198,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			access = AccessMode.PUBLIC;
 		}
 		level = nbt.getByte("Level");
+		isCreative = nbt.getBoolean("Creative");
 		enableAutoInput = nbt.getBoolean("EnableIn");
 		enableAutoOutput = nbt.getBoolean("EnableOut");
 		setLevel(level);
@@ -214,6 +217,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		nbt.setString("Owner", owner.getName());
 
 		nbt.setByte("Level", level);
+		nbt.setBoolean("Creative", isCreative);
 		nbt.setBoolean("EnableIn", enableAutoInput);
 		nbt.setBoolean("EnableOut", enableAutoOutput);
 
@@ -262,6 +266,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		payload.addString(owner.getName());
 
 		payload.addByte(level);
+		payload.addBool(isCreative);
 		payload.addBool(hasAutoInput);
 		payload.addBool(hasAutoOutput);
 		payload.addBool(enableAutoInput);
@@ -282,6 +287,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
 			byte tmpLevel = payload.getByte();
+			isCreative = payload.getBool();
 			hasAutoInput = payload.getBool();
 			hasAutoOutput = payload.getBool();
 			enableAutoInput = payload.getBool();
@@ -294,6 +300,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			payload.getUUID();
 			payload.getString();
 			payload.getByte();
+			payload.getBool();
 			payload.getBool();
 			payload.getBool();
 			payload.getBool();
@@ -524,7 +531,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				return false;
 			case CREATIVE:
 				if (level >= 0) {
-					setLevel(-1);
+					setLevel(4);
+					isCreative = true;
 					break;
 				}
 				return false;

@@ -23,9 +23,9 @@ public class InsolatorManager {
 
 	static final int CROP_MULTIPLIER_RICH = 3;
 	static final int CROP_MULTIPLIER_FLUX = 5;
-	static final int DEFAULT_ENERGY = 4800;
-	static final int DEFAULT_ENERGY_RICH = 7200;
-	static final int DEFAULT_ENERGY_FLUX = 9600;
+	static final int DEFAULT_ENERGY = 5000;
+	static final int DEFAULT_ENERGY_RICH = 7500;
+	static final int DEFAULT_ENERGY_FLUX = 10000;
 
 	public static boolean isRecipeReversed(ItemStack primaryInput, ItemStack secondaryInput) {
 
@@ -101,6 +101,41 @@ public class InsolatorManager {
 			addDefaultRecipe(new ItemStack(Items.PUMPKIN_SEEDS), new ItemStack(Blocks.PUMPKIN), null, 0);
 			addDefaultRecipe(new ItemStack(Items.MELON_SEEDS), new ItemStack(Blocks.MELON_BLOCK), null, 0);
 		}
+
+		/* MYCELIUM */
+		{
+			ArrayList<ItemStack> crops = new ArrayList<ItemStack>();
+			crops.add(new ItemStack(Blocks.BROWN_MUSHROOM));
+			crops.add(new ItemStack(Blocks.RED_MUSHROOM));
+
+			for (ItemStack input : crops) {
+				addRecipe(DEFAULT_ENERGY, input, ItemFertilizer.fertilizerBasic, ItemHelper.cloneStack(input, 2), null, 0, false, Substrate.MYCELIUM);
+				addRecipe(DEFAULT_ENERGY_RICH, input, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(input, 2 * CROP_MULTIPLIER_RICH), null, 0, false, Substrate.MYCELIUM);
+				addRecipe(DEFAULT_ENERGY_FLUX, input, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(input, 2 * CROP_MULTIPLIER_FLUX), null, 0, false, Substrate.MYCELIUM);
+			}
+		}
+
+		/* NETHER */
+		{
+			ArrayList<ItemStack> crops = new ArrayList<ItemStack>();
+			crops.add(new ItemStack(Items.NETHER_WART));
+
+			for (ItemStack input : crops) {
+				addRecipe(DEFAULT_ENERGY, input, ItemFertilizer.fertilizerBasic, ItemHelper.cloneStack(input, 2), null, 0, false, Substrate.NETHER);
+				addRecipe(DEFAULT_ENERGY_RICH, input, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(input, 2 * CROP_MULTIPLIER_RICH), null, 0, false, Substrate.NETHER);
+				addRecipe(DEFAULT_ENERGY_FLUX, input, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(input, 2 * CROP_MULTIPLIER_FLUX), null, 0, false, Substrate.NETHER);
+			}
+		}
+
+		/* END */
+		{
+			ItemStack input = new ItemStack(Blocks.CHORUS_FLOWER);
+			ItemStack output = new ItemStack(Blocks.CHORUS_PLANT);
+
+			addRecipe(DEFAULT_ENERGY, input, ItemFertilizer.fertilizerBasic, ItemHelper.cloneStack(output, 2), ItemHelper.cloneStack(input), 100, false, Substrate.END);
+			addRecipe(DEFAULT_ENERGY_RICH, input, ItemFertilizer.fertilizerRich, ItemHelper.cloneStack(output, 2 * CROP_MULTIPLIER_RICH), ItemHelper.cloneStack(input), 100, false, Substrate.END);
+			addRecipe(DEFAULT_ENERGY_FLUX, input, ItemFertilizer.fertilizerFlux, ItemHelper.cloneStack(output, 2 * CROP_MULTIPLIER_FLUX), ItemHelper.cloneStack(input), 150, false, Substrate.END);
+		}
 	}
 
 	public static void loadRecipes() {
@@ -146,16 +181,21 @@ public class InsolatorManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, boolean copyNBT, Substrate substrate) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
 			return false;
 		}
-		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
+		RecipeInsolator recipe = new RecipeInsolator(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, copyNBT, substrate);
 		recipeMap.put(Arrays.asList(new ComparableItemStackInsolator(primaryInput), new ComparableItemStackInsolator(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackInsolator(primaryInput));
 		validationSet.add(new ComparableItemStackInsolator(secondaryInput));
 		return true;
+	}
+
+	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+
+		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, false, Substrate.STANDARD);
 	}
 
 	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
@@ -239,13 +279,14 @@ public class InsolatorManager {
 		final int secondaryChance;
 		final int energy;
 		final boolean copyNBT;
+		final Substrate substrate;
 
 		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy) {
 
-			this(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, false);
+			this(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy, false, Substrate.STANDARD);
 		}
 
-		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy, boolean copyNBT) {
+		RecipeInsolator(ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance, int energy, boolean copyNBT, Substrate substrate) {
 
 			this.primaryInput = primaryInput;
 			this.secondaryInput = secondaryInput;
@@ -254,6 +295,7 @@ public class InsolatorManager {
 			this.secondaryChance = secondaryChance;
 			this.energy = energy;
 			this.copyNBT = copyNBT;
+			this.substrate = substrate;
 
 			if (primaryInput.stackSize <= 0) {
 				primaryInput.stackSize = 1;
@@ -298,6 +340,16 @@ public class InsolatorManager {
 
 			return energy;
 		}
+
+		public Substrate getSubstrate() {
+
+			return substrate;
+		}
+	}
+
+	/* SUBSTRATE ENUM */
+	public enum Substrate {
+		STANDARD, MYCELIUM, NETHER, END
 	}
 
 	/* ITEMSTACK CLASS */
