@@ -1,10 +1,13 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.CompactorManager;
+import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
 import cofh.thermalexpansion.util.crafting.CompactorManager.RecipeCompactor;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,6 +20,7 @@ import java.util.ArrayList;
 public class TileCompactor extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.COMPACTOR.getMetadata();
+	private static final Mode[] VALUES = new Mode[3];
 
 	public static void initialize() {
 
@@ -31,6 +35,11 @@ public class TileCompactor extends TileMachineBase {
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
+
+		VALUES[0] = Mode.PRESS;
+		VALUES[1] = Mode.STORAGE;
+		VALUES[2] = Mode.MINT;
 
 		GameRegistry.registerTileEntity(TileCompactor.class, "thermalexpansion:machine_compactor");
 
@@ -48,6 +57,9 @@ public class TileCompactor extends TileMachineBase {
 
 	private int inputTracker;
 	private int outputTracker;
+
+	public byte modeFlag;
+	private byte mode;
 
 	public TileCompactor() {
 
@@ -67,7 +79,7 @@ public class TileCompactor extends TileMachineBase {
 		if (inventory[0] == null || energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0]);
+		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		if (recipe == null) {
 			return false;
@@ -80,7 +92,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0]);
+		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], Mode.values()[mode]);
 
 		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
@@ -88,20 +100,17 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected void processStart() {
 
-		processMax = CompactorManager.getRecipe(inventory[0]).getEnergy() * energyMod / ENERGY_BASE;
+		processMax = CompactorManager.getRecipe(inventory[0], VALUES[mode]).getEnergy() * energyMod / ENERGY_BASE;
 		processRem = processMax;
 	}
 
 	@Override
 	protected void processFinish() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0]);
+		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack output = recipe.getOutput();
@@ -169,6 +178,50 @@ public class TileCompactor extends TileMachineBase {
 		return new ContainerCompactor(inventory, this);
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addByte(mode);
+		payload.addByte(modeFlag);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(modeFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		mode = payload.getByte();
+		modeFlag = payload.getByte();
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		modeFlag = payload.getByte();
+		if (!isActive) {
+			mode = modeFlag;
+		}
+		markDirty();
+		callNeighborTileChange();
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -193,7 +246,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return slot != 0 || CompactorManager.recipeExists(stack);
+		return slot != 0 || CompactorManager.isItemValid(stack);
 	}
 
 }

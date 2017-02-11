@@ -22,7 +22,7 @@ public class TransposerManager {
 	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtraction = new THashMap<ComparableItemStackTransposer, RecipeTransposer>();
 	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<ComparableItemStackTransposer>();
 
-	public static final int DEFAULT_ENERGY = 1600;
+	public static final int DEFAULT_ENERGY = 800;
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
@@ -74,33 +74,35 @@ public class TransposerManager {
 
 	public static void loadRecipes() {
 
-		addFillRecipe(1600, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200), false);
+		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200), false);
 	}
 
 	public static void refreshRecipes() {
 
-		Map<List<Integer>, RecipeTransposer> tempFillMap = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
-		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtractMap = new THashMap<ComparableItemStackTransposer, RecipeTransposer>(recipeMapExtraction.size());
+		Map<List<Integer>, RecipeTransposer> tempFill = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
+		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtract = new THashMap<ComparableItemStackTransposer, RecipeTransposer>(recipeMapExtraction.size());
 		Set<ComparableItemStackTransposer> tempSet = new THashSet<ComparableItemStackTransposer>();
 		RecipeTransposer tempRecipe;
 
 		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(tempRecipe.input);
+			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
 			FluidStack fluid = tempRecipe.fluid.copy();
-			tempFillMap.put(Arrays.asList(inputStack.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
-			tempSet.add(inputStack);
+			tempFill.put(Arrays.asList(input.hashCode(), fluid.getFluid().hashCode()), tempRecipe);
+			tempSet.add(input);
 		}
 		for (Entry<ComparableItemStackTransposer, RecipeTransposer> entry : recipeMapExtraction.entrySet()) {
 			tempRecipe = entry.getValue();
-			ComparableItemStackTransposer inputStack = new ComparableItemStackTransposer(tempRecipe.input);
-			tempExtractMap.put(inputStack, tempRecipe);
-			tempSet.add(inputStack);
+			ComparableItemStackTransposer input = new ComparableItemStackTransposer(tempRecipe.input);
+			tempExtract.put(input, tempRecipe);
+			tempSet.add(input);
 		}
 		recipeMapFill.clear();
-		recipeMapFill = tempFillMap;
 		recipeMapExtraction.clear();
-		recipeMapExtraction = tempExtractMap;
+
+		recipeMapFill = tempFill;
+		recipeMapExtraction = tempExtract;
+
 		validationSet.clear();
 		validationSet = tempSet;
 	}

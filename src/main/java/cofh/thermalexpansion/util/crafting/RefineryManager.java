@@ -33,18 +33,11 @@ public class RefineryManager {
 		addRecipe(5000, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
 		addRecipe(5000, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur);
 
-		addRecipe(3000, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.rosin);
+		addRecipe(2500, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.rosin);
 	}
 
-	public static void refreshRecipes() {
+	public static void loadRecipes() {
 
-		TIntObjectHashMap<RecipeRefinery> tempMap = new TIntObjectHashMap<RecipeRefinery>(recipeMap.size());
-
-		for (RecipeRefinery recipe : (RecipeRefinery[]) recipeMap.values()) {
-			tempMap.put(recipe.input.hashCode(), recipe);
-		}
-		recipeMap.clear();
-		recipeMap = tempMap;
 	}
 
 	/* ADD RECIPES */
@@ -61,6 +54,9 @@ public class RefineryManager {
 	/* REMOVE RECIPES */
 	public static boolean removeRecipe(FluidStack input) {
 
+		if (input == null || input.getFluid() == null) {
+			return false;
+		}
 		return recipeMap.remove(input.getFluid().hashCode()) != null;
 	}
 

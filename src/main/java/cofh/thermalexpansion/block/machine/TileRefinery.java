@@ -154,10 +154,7 @@ public class TileRefinery extends TileMachineBase {
 		RecipeRefinery recipe = RefineryManager.getRecipe(inputTank.getFluid());
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		outputTank.fill(recipe.getOutputFluid(), true);

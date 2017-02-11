@@ -28,7 +28,7 @@ public class ContainerCompactor extends ContainerTEBase implements ISlotValidato
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return CompactorManager.recipeExists(stack);
+		return CompactorManager.isItemValid(stack);
 	}
 
 }

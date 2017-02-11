@@ -303,7 +303,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	protected void postAugmentInstall() {
 
-		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
+		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 2);
 	}
 
 	@Override

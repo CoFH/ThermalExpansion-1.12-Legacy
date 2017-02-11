@@ -12,6 +12,7 @@ import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.*;
+import cofh.thermalexpansion.util.fuels.CoolantManager;
 import cofh.thermalexpansion.util.fuels.FuelManager;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
@@ -98,7 +99,7 @@ public class ThermalExpansion {
 		TEItems.initialize();
 		TEFlorbs.postInit();
 
-		addDefaultRecipes();
+		managerDefault();
 
 		proxy.postInit(event);
 	}
@@ -107,6 +108,8 @@ public class ThermalExpansion {
 	public void loadComplete(FMLLoadCompleteEvent event) {
 
 		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
+
+		managerParse();
 
 		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
@@ -123,6 +126,7 @@ public class ThermalExpansion {
 	@EventHandler
 	public void serverStarting(FMLServerStartedEvent event) {
 
+		managerRefresh();
 	}
 
 	@EventHandler
@@ -140,7 +144,7 @@ public class ThermalExpansion {
 		PacketTEBase.initialize();
 	}
 
-	private void addDefaultRecipes() {
+	private void managerDefault() {
 
 		FurnaceManager.addDefaultRecipes();
 		PulverizerManager.addDefaultRecipes();
@@ -153,9 +157,45 @@ public class ThermalExpansion {
 		TransposerManager.addDefaultRecipes();
 		ChargerManager.addDefaultRecipes();
 
-		FuelManager.addDefaultFuels();
+		CoolantManager.addDefaultMappings();
+		TapperManager.addDefaultMappings();
 
-		// FuelManager.parseFuels();
+		FuelManager.addDefaultFuels();
+	}
+
+	private void managerParse() {
+
+		FurnaceManager.loadRecipes();
+		PulverizerManager.loadRecipes();
+		SawmillManager.loadRecipes();
+		SmelterManager.loadRecipes();
+		InsolatorManager.loadRecipes();
+		CompactorManager.loadRecipes();
+		CrucibleManager.loadRecipes();
+		RefineryManager.loadRecipes();
+		TransposerManager.loadRecipes();
+		ChargerManager.loadRecipes();
+
+		CoolantManager.loadMappings();
+		TapperManager.loadMappings();
+
+		FuelManager.parseFuels();
+	}
+
+	private synchronized void managerRefresh() {
+
+		FurnaceManager.refreshRecipes();
+		PulverizerManager.refreshRecipes();
+		SawmillManager.refreshRecipes();
+		SmelterManager.refreshRecipes();
+		InsolatorManager.refreshRecipes();
+		CompactorManager.refreshRecipes();
+		CrucibleManager.refreshRecipes();
+		// Refinery Unnecessary
+		TransposerManager.refreshRecipes();
+		ChargerManager.refreshRecipes();
+
+		TapperManager.refreshMappings();
 	}
 
 }

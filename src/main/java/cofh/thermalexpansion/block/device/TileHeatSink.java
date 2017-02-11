@@ -2,14 +2,17 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.api.tileentity.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.util.fuels.CoolantManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,7 +44,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
 		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
 		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 7 };
+		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		GameRegistry.registerTileEntity(TileHeatSink.class, "thermalexpansion:device_heat_sink");
@@ -60,6 +63,16 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
+
+	private int coolantRF;
+	private int coolantFactor;
+	private int offset;
+
+	public TileHeatSink() {
+
+		super();
+		offset = MathHelper.RANDOM.nextInt(CoreProps.TIME_CONSTANT);
+	}
 
 	@Override
 	public int getType() {
@@ -80,13 +93,34 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
+		if (!timeCheckOffset()) {
+			return;
+		}
 		if (isActive) {
-			// TODO - fluid drain logic / timing
+			if (coolantRF <= 0) {
+				coolantFactor = 0;
+				if (tank.getFluidAmount() >= 50) {
+					coolantRF += CoolantManager.getCoolantRF50mB(tank.getFluid());
+					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
+					tank.drain(50, true);
 
-			for (int i = 0; i < 6; i++) {
-				if (accelerables[i] != null) {
-					accelerables[i].updateAccelerable();
+					for (int i = 0; i < 6; i++) {
+						if (accelerables[i] != null) {
+							coolantRF -= 2000 >> coolantFactor;
+							accelerables[i].updateAccelerable();
+						}
+					}
 				}
+			} else {
+				for (int i = 0; i < 6; i++) {
+					if (accelerables[i] != null) {
+						coolantRF -= 2000 >> coolantFactor;
+						accelerables[i].updateAccelerable();
+					}
+				}
+			}
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
 			}
 		} else if (redstoneControlOrDisable()) {
 			isActive = true;
@@ -107,6 +141,11 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 			}
 		}
 		cached = true;
+	}
+
+	protected boolean timeCheckOffset() {
+
+		return (worldObj.getTotalWorldTime() + offset) % CoreProps.TIME_CONSTANT >> coolantFactor == 0;
 	}
 
 	/* GUI METHODS */
@@ -140,7 +179,13 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
+		coolantRF = nbt.getInteger("Coolant");
+		coolantFactor = nbt.getInteger("Factor");
 		tank.readFromNBT(nbt);
+
+		if (!CoolantManager.isValidCoolant(tank.getFluid())) {
+			tank.setFluid(null);
+		}
 	}
 
 	@Override
@@ -148,11 +193,13 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
+		nbt.setInteger("Coolant", coolantRF);
+		nbt.setInteger("Factor", coolantFactor);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
-	//* NETWORK METHODS */
+	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getPacket() {
 
@@ -243,7 +290,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1 || !CoolantManager.isValidCoolant(resource)) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);
@@ -253,7 +300,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -263,7 +310,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

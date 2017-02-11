@@ -3,12 +3,14 @@ package cofh.thermalexpansion.block.device;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
+import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -42,7 +44,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
-		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_tapper");
+		GameRegistry.registerTileEntity(TileTapper.class, "thermalexpansion:device_tapper");
 
 		config();
 	}
@@ -53,10 +55,23 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
+	private static final int TIME_CONSTANT = 500;
+
+	private FluidStack genFluid = new FluidStack(TFFluids.fluidResin, 25);
+
 	private boolean cached;
 	private int outputTrackerFluid;
+	private boolean validTree;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
+	private int offset;
+
+	public TileTapper() {
+
+		super();
+		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
+	}
 
 	@Override
 	public int getType() {
@@ -68,7 +83,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		// TODO
+		updateAdjacentHandlers();
 	}
 
 	@Override
@@ -77,18 +92,23 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (!timeCheck()) {
+		if (!timeCheckOffset()) {
 			return;
 		}
 		transferOutputFluid();
 
 		if (isActive) {
-
+			if (validTree) {
+				tank.fill(genFluid, true);
+			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
 		} else if (redstoneControlOrDisable()) {
 			isActive = true;
+		}
+		if (!cached) {
+			updateAdjacentHandlers();
 		}
 	}
 
@@ -121,11 +141,23 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 	}
 
+	protected void updateAdjacentHandlers() {
+
+		validTree = true;
+
+		cached = true;
+	}
+
+	protected boolean timeCheckOffset() {
+
+		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return new GuiWaterGen(inventory, this);
+		return new GuiTapper(inventory, this);
 	}
 
 	@Override
@@ -152,6 +184,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
+		validTree = nbt.getBoolean("Tree");
 		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 	}
@@ -161,6 +194,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
+		nbt.setBoolean("Tree", validTree);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 		return nbt;
@@ -224,7 +258,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -234,7 +268,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

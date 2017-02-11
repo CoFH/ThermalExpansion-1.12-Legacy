@@ -2,46 +2,34 @@ package cofh.thermalexpansion.util.fuels;
 
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 
 public class CoolantManager {
 
+	/**
+	 * Coolant is stored as RF effectiveness per bucket.
+	 */
 	private static TObjectIntHashMap<Fluid> coolantMap = new TObjectIntHashMap<Fluid>();
 
-	public static final int WATER_FACTOR = 1000;
+	private static final int WATER_RF = 500000;
+
+	public static boolean isValidCoolant(Fluid fluid) {
+
+		return fluid != null && coolantMap.containsKey(fluid);
+	}
+
+	public static boolean isValidCoolant(FluidStack stack) {
+
+		return stack != null && coolantMap.containsKey(stack.getFluid());
+	}
 
 	/**
-	 * This is derived from Lava, as 1 bucket of water fully cools one bucket of Lava.
+	 * This is for the full bucket.
 	 */
-	public static final int WATER_RF = 200000;
-	public static final int WATER_RF_50 = WATER_RF / 20;
-
-	/**
-	 * Coolant factor is an approximate measure, relative to Water at 1000.
-	 */
-	public static boolean addCoolant(Fluid fluid, int coolantFactor) {
-
-		if (fluid == null) {
-			return false;
-		}
-		coolantMap.put(fluid, coolantFactor);
-		return true;
-	}
-
-	public static boolean removeCoolant(Fluid fluid) {
-
-		coolantMap.remove(fluid);
-		return true;
-	}
-
-	public static int getCoolantFactor(Fluid fluid) {
-
-		return coolantMap.get(fluid);
-	}
-
 	public static int getCoolantRF(Fluid fluid) {
 
-		return WATER_RF * getCoolantFactor(fluid) / WATER_FACTOR;
+		return coolantMap.get(fluid);
 	}
 
 	public static int getCoolantRF(FluidStack stack) {
@@ -54,12 +42,69 @@ public class CoolantManager {
 	 */
 	public static int getCoolantRF50mB(Fluid fluid) {
 
-		return WATER_RF_50 * getCoolantFactor(fluid) / WATER_FACTOR;
+		return getCoolantRF(fluid) / 20;
 	}
 
 	public static int getCoolantRF50mB(FluidStack stack) {
 
 		return getCoolantRF50mB(stack.getFluid());
+	}
+
+	/**
+	 * This is a rough breakpoint factor - it's a measure of the "power" of a coolant relative to the Water baseline.
+	 */
+	public static int getCoolantFactor(Fluid fluid) {
+
+		return getCoolantRF(fluid) / WATER_RF / 4;
+	}
+
+	public static int getCoolantFactor(FluidStack stack) {
+
+		return getCoolantFactor(stack.getFluid());
+	}
+
+	public static void addDefaultMappings() {
+
+		addCoolant("water", 500000);
+		addCoolant("cryotheum", 4000000);
+
+		addCoolant("ice", 2000000);
+	}
+
+	public static void loadMappings() {
+
+	}
+
+	/* ADD */
+	public static boolean addCoolant(Fluid fluid, int coolantRF) {
+
+		if (fluid == null) {
+			return false;
+		}
+		coolantMap.put(fluid, coolantRF);
+		return true;
+	}
+
+	public static boolean addCoolant(String fluidName, int coolantRF) {
+
+		if (!FluidRegistry.isFluidRegistered(fluidName)) {
+			return false;
+		}
+		return coolantMap.put(FluidRegistry.getFluid(fluidName), coolantRF) != 0;
+	}
+
+	/* REMOVE */
+	public static boolean removeCoolant(Fluid fluid) {
+
+		return coolantMap.remove(fluid) != 0;
+	}
+
+	public static boolean removeCoolant(String fluidName) {
+
+		if (!FluidRegistry.isFluidRegistered(fluidName)) {
+			return false;
+		}
+		return coolantMap.remove(FluidRegistry.getFluid(fluidName)) != 0;
 	}
 
 }

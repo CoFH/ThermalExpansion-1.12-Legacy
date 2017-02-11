@@ -112,10 +112,7 @@ public class TileFurnace extends TileMachineBase {
 		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack output = recipe.getOutput();

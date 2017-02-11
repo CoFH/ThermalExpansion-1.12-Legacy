@@ -12,6 +12,7 @@ import cofh.core.util.CoreUtils;
 import cofh.lib.util.RayTracer;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -116,6 +117,9 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		}
 		if (tile instanceof IRedstoneControl) {
 			retTag = RedstoneControlHelper.setItemStackTagRS(retTag, (IRedstoneControl) tile);
+		}
+		if (tile instanceof TileReconfigurable) {
+			retTag = ReconfigurableHelper.setItemStackTagReconfig(retTag, (TileReconfigurable) tile);
 		}
 		if (tile instanceof IEnergyHandler) {
 			retTag.setInteger("Energy", ((IEnergyHandler) tile).getEnergyStored(null));
@@ -245,4 +249,5 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		}
 
 	}
+
 }

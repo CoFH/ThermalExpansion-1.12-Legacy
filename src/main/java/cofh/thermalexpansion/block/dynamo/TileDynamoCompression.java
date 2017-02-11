@@ -8,6 +8,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.fuels.CoolantManager;
 import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -88,7 +89,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 			fuelTank.drain(50, true);
 		}
 		if (coolantRF <= 0) {
-			coolantRF += getCoolantEnergy(coolantTank.getFluid());
+			coolantRF += CoolantManager.getCoolantRF50mB(coolantTank.getFluid());
 			coolantTank.drain(50, true);
 		}
 	}
@@ -144,7 +145,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (!isValidFuel(fuelTank.getFluid())) {
 			fuelTank.setFluid(null);
 		}
-		if (!isValidCoolant(coolantTank.getFluid())) {
+		if (!CoolantManager.isValidCoolant(coolantTank.getFluid())) {
 			coolantTank.setFluid(null);
 		}
 		if (fuelTank.getFluid() != null) {
@@ -275,7 +276,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 					if (isValidFuel(resource)) {
 						return fuelTank.fill(resource, doFill);
 					}
-					if (isValidCoolant(resource)) {
+					if (CoolantManager.isValidCoolant(resource)) {
 						return coolantTank.fill(resource, doFill);
 					}
 					return 0;
@@ -316,16 +317,10 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 	/* FUEL MANAGER */
 	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	private static TObjectIntHashMap<Fluid> coolants = new TObjectIntHashMap<Fluid>();
 
 	public static boolean isValidFuel(FluidStack stack) {
 
 		return stack != null && fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean isValidCoolant(FluidStack stack) {
-
-		return stack != null && coolants.containsKey(stack.getFluid());
 	}
 
 	public static boolean addFuel(Fluid fluid, int energy) {
@@ -337,35 +332,15 @@ public class TileDynamoCompression extends TileDynamoBase {
 		return true;
 	}
 
-	public static boolean addCoolant(Fluid fluid, int cooling) {
-
-		if (fluid == null || cooling < 10000 || cooling > 200000000) {
-			return false;
-		}
-		coolants.put(fluid, cooling / 20);
-		return true;
-	}
-
 	public static boolean removeFuel(Fluid fluid) {
 
 		fuels.remove(fluid);
 		return true;
 	}
 
-	public static boolean removeCoolant(Fluid fluid) {
-
-		coolants.remove(fluid);
-		return true;
-	}
-
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static int getCoolantEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : coolants.get(stack.getFluid());
 	}
 
 }

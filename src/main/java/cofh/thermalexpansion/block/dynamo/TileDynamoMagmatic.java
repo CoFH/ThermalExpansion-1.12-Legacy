@@ -8,6 +8,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.fuels.CoolantManager;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -89,7 +90,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 				fuelTank.drain(50, true);
 			}
 			if (coolantRF <= 0) {
-				coolantRF += getCoolantEnergy(coolantTank.getFluid());
+				coolantRF += CoolantManager.getCoolantRF50mB(coolantTank.getFluid());
 				coolantTank.drain(50, true);
 			}
 			return;
@@ -144,7 +145,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		if (!isValidFuel(fuelTank.getFluid())) {
 			fuelTank.setFluid(null);
 		}
-		if (!isValidCoolant(coolantTank.getFluid())) {
+		if (!CoolantManager.isValidCoolant(coolantTank.getFluid())) {
 			coolantTank.setFluid(null);
 		}
 		if (fuelTank.getFluid() != null) {
@@ -271,7 +272,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 					if (isValidFuel(resource)) {
 						return fuelTank.fill(resource, doFill);
 					}
-					if (augmentCoolant && isValidCoolant(resource)) {
+					if (augmentCoolant && CoolantManager.isValidCoolant(resource)) {
 						return coolantTank.fill(resource, doFill);
 					}
 					return 0;
@@ -315,11 +316,6 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		return stack != null && fuels.containsKey(stack.getFluid());
 	}
 
-	public static boolean isValidCoolant(FluidStack stack) {
-
-		return TileDynamoCompression.isValidCoolant(stack);
-	}
-
 	public static boolean addFuel(Fluid fluid, int energy) {
 
 		if (fluid == null || energy < 10000 || energy > 200000000) {
@@ -338,11 +334,6 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static int getCoolantEnergy(FluidStack stack) {
-
-		return TileDynamoCompression.getCoolantEnergy(stack);
 	}
 
 }

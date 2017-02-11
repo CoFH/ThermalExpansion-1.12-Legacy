@@ -96,12 +96,12 @@ public class GuiSmelter extends GuiPoweredBase {
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));
 
 		if (myTile.lockPrimary) {
-			mode.setToolTip("gui.thermalexpansion.machine.smelter.toggleUnlock");
+			mode.setToolTip("gui.thermalexpansion.machine.smelter.modeLocked");
 			mode.setSheetX(176);
 			mode.setHoverX(176);
 			modeOverlay.setVisible(true);
 		} else {
-			mode.setToolTip("gui.thermalexpansion.machine.smelter.toggleLock");
+			mode.setToolTip("gui.thermalexpansion.machine.smelter.modeUnlocked");
 			mode.setSheetX(192);
 			mode.setHoverX(192);
 			modeOverlay.setVisible(false);

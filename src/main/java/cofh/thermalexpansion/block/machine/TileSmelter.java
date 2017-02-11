@@ -160,10 +160,7 @@ public class TileSmelter extends TileMachineBase {
 		RecipeSmelter recipe = SmelterManager.getRecipe(inventory[0], inventory[1]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();

@@ -4,6 +4,7 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.FluidHelper;
+import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
@@ -72,9 +73,12 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
+	private int offset;
+
 	public TileWaterGen() {
 
 		super();
+		offset = MathHelper.RANDOM.nextInt(CoreProps.TIME_CONSTANT);
 		tank.setLock(FluidRegistry.WATER);
 	}
 
@@ -190,6 +194,11 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		return false;
 	}
 
+	protected boolean timeCheckOffset() {
+
+		return (worldObj.getTotalWorldTime() + offset) % CoreProps.TIME_CONSTANT == 0;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
@@ -296,7 +305,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -306,7 +315,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from == null || sideCache[from.ordinal()] < 1) {
+					if (from != null && sideCache[from.ordinal()] < 1) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

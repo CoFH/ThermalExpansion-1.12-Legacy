@@ -129,10 +129,7 @@ public class TilePulverizer extends TileMachineBase {
 		RecipePulverizer recipe = PulverizerManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();

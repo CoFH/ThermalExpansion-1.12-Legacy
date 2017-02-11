@@ -23,7 +23,7 @@ public class SawmillManager {
 	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
 
 	static final float LOG_MULTIPLIER = 1.5F;
-	static final int DEFAULT_ENERGY = 2000;
+	static final int DEFAULT_ENERGY = 1600;
 
 	public static RecipeSawmill getRecipe(ItemStack input) {
 
@@ -116,15 +116,15 @@ public class SawmillManager {
 		addAllLogs();
 
 		/* RUBBER WOOD */
-		if (ItemHelper.oreNameExists("woodRubber")) {
-			if (ItemHelper.oreNameExists("itemRawRubber")) {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRawRubber").get(0), 50);
-			} else if (ItemHelper.oreNameExists("itemRubber")) {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRubber").get(0), 50);
-			} else {
-				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3));
-			}
-		}
+//		if (ItemHelper.oreNameExists("woodRubber")) {
+		//			if (ItemHelper.oreNameExists("itemRawRubber")) {
+		//				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRawRubber").get(0), 50);
+		//			} else if (ItemHelper.oreNameExists("itemRubber")) {
+		//				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3), OreDictionary.getOres("itemRubber").get(0), 50);
+		//			} else {
+		//				addRecipe(1200, OreDictionary.getOres("woodRubber").get(0), new ItemStack(Blocks.PLANKS, 5, 3));
+		//			}
+		//		}
 	}
 
 	public static void refreshRecipes() {

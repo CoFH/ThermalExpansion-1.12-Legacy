@@ -12,19 +12,27 @@ import java.util.List;
 
 public class ItemBlockDynamo extends ItemBlockCore {
 
-	public static ItemStack setDefaultTag(ItemStack container) {
+	public static ItemStack setDefaultTag(ItemStack contaistacker) {
 
-		return setDefaultTag(container, (byte) 0);
+		return setDefaultTag(contaistacker, (byte) 0);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack container, byte level) {
+	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
 
-		ReconfigurableHelper.setFacing(container, 1);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
-		container.getTagCompound().setByte("Level", level);
+		ReconfigurableHelper.setFacing(stack, 1);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		stack.getTagCompound().setByte("Level", level);
 
-		return container;
+		return stack;
+	}
+
+	public static byte getLevel(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getByte("Level");
 	}
 
 	public ItemBlockDynamo(Block block) {

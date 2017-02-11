@@ -31,7 +31,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion:tank");
+		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion:storage_tank");
 	}
 
 	public static void config() {
@@ -49,7 +49,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.tank.name";
+		return "tile.thermalexpansion.storage.tank.name";
 	}
 
 	@Override
@@ -128,7 +128,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	/* COMMON METHODS */
-	protected int getCapacity(int level) {
+	protected static int getCapacity(int level) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)];
 	}

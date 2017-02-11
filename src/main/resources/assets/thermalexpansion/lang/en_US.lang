@@ -1,14 +1,19 @@
 #en_US
 
-gui.thermalexpansion.machine.insolator.toggleLock=Fertilizer Slot Unlocked
-gui.thermalexpansion.machine.insolator.toggleUnlock=Fertilizer Slot Locked
+gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
+gui.thermalexpansion.machine.compactor.modePress=Mode: Press
+gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage
+gui.thermalexpansion.machine.compactor.modeWait=Processing
 
-gui.thermalexpansion.machine.smelter.toggleLock=Flux Slot Unlocked
-gui.thermalexpansion.machine.smelter.toggleUnlock=Flux Slot Locked
+gui.thermalexpansion.machine.insolator.modeLocked=Fertilizer Slot Locked
+gui.thermalexpansion.machine.insolator.modeUnlocked=Fertilizer Slot Unlocked
 
-gui.thermalexpansion.transposer.toggleEmpty=Mode: Fill
-gui.thermalexpansion.transposer.toggleFill=Mode: Empty
-gui.thermalexpansion.transposer.toggleWait=Processing
+gui.thermalexpansion.machine.smelter.modeLocked=Flux Slot Locked
+gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
+
+gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
+gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
+gui.thermalexpansion.machine.transposer.modeWait=Processing
 
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
@@ -39,10 +44,18 @@ info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from
 info.thermalexpansion.augment.dynamoThrottle.0=Dynamos: Advanced Throttle
 info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux coil saturation.
 
+info.thermalexpansion.augment.machineChargerThroughput.0=Energetic Infuser: Specialization
+info.thermalexpansion.augment.machineChargerThroughput.a.0=Allows for rechargeable items to be charged very rapidly.
+info.thermalexpansion.augment.machineChargerThroughput.c.0=Will not exceed charge rate of the item itself.
+
 info.thermalexpansion.augment.machineCompactorMint.0=Compactor: Specialization
 info.thermalexpansion.augment.machineCompactorMint.a.0=Allows for the creation of currency.
 info.thermalexpansion.augment.machineCompactorMint.a.1=Currency can be exchanged for goods and services.
-info.thermalexpansion.augment.machineCompactorMint.c.0=Machine must be toggled into this mode.
+info.thermalexpansion.augment.machineCompactorMint.b.0=Machine can no longer be used as a press.
+
+info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specialization
+info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
+info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Magma Crucible: Specialization
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
@@ -91,8 +104,8 @@ info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=Pyrotheum must be used
 info.thermalexpansion.augment.machineSmelterPyrotheum.b.1=Additional energy is required per operation.
 
 info.thermalexpansion.augment.noticeAdvanced=NYI
-info.thermalexpansion.augment.noticeCreative=Requires a Creative block.
-info.thermalexpansion.augment.noticeEnder=Requires a Resonant block.
+info.thermalexpansion.augment.noticeCreative=Requires a Creative device.
+info.thermalexpansion.augment.noticeEnder=Requires a Resonant device.
 info.thermalexpansion.augment.noticeMode=Only one Specialization may be installed.
 
 info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
@@ -100,8 +113,10 @@ info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.automaton.collector=Procures items from an area.
 
 info.thermalexpansion.device.extender=Allows for more connections to a given block.
+info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
 info.thermalexpansion.device.item_buffer=Stores and transfers items.
 info.thermalexpansion.device.nullifier=Removes things from existence.
+info.thermalexpansion.device.tapper=Extracts fluid from a tree.
 info.thermalexpansion.device.water_gen=Pulls water from surroundings.
 
 info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
@@ -135,11 +150,11 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
-info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
-info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
-info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
+info.thermalexpansion.upgrade.creative.0=Converts a device to a Creative version.
+info.thermalexpansion.upgrade.creative.1=May be used on any tier of device.
+info.thermalexpansion.upgrade.full.0=Converts a device to a given tier.
 info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
-info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
+info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a device.
 info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
 
 item.thermalexpansion.augment.automatonDepth.name=
@@ -154,6 +169,7 @@ item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
 item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
 item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 
+item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
@@ -162,7 +178,7 @@ item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
 item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
-item.thermalexpansion.augment.machineSawmillTapper.name=Resin Extractor
+item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
 item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
 item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber
@@ -195,9 +211,9 @@ tab.thermalexpansion.automaton.collector.2=Probably won't steal from your invent
 
 tab.thermalexpansion.device.extender.0=Point this at something with not enough sides.
 tab.thermalexpansion.device.extender.1=Ta-da! It now has more sides.
-tab.thermalexpansion.device.heat_sink.0=
-tab.thermalexpansion.device.heat_sink.1=
-tab.thermalexpansion.device.heat_sink.2=
+tab.thermalexpansion.device.heat_sink.0=Cools down adjacent devices, improving their speed.
+tab.thermalexpansion.device.heat_sink.1=Just fill with coolant and watch it work!
+tab.thermalexpansion.device.heat_sink.2=Coolants have varying degrees of effectiveness.
 tab.thermalexpansion.device.item_buffer.0=Stores and transfers items. Can automatically extract.
 tab.thermalexpansion.device.item_buffer.1=Better than a Hopper, really!
 tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quantities.

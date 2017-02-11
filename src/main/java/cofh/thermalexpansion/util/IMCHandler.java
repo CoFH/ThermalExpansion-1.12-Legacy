@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.crafting.*;
+import cofh.thermalexpansion.util.fuels.CoolantManager;
 import cofh.thermalexpansion.util.fuels.FuelManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -134,7 +135,7 @@ public class IMCHandler {
 						String fluidName = theNBT.getString("fluidName").toLowerCase(Locale.ENGLISH);
 						int energy = theNBT.getInteger("energy");
 
-						if (FuelManager.addCoolant(fluidName, energy)) {
+						if (CoolantManager.addCoolant(fluidName, energy)) {
 							FuelManager.configFuels.get("Coolants", fluidName, energy);
 						}
 						continue;

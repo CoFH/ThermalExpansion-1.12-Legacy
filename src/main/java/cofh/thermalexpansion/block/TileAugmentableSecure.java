@@ -55,7 +55,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected boolean hasRedstoneControl = false;
 	protected boolean hasAdvRedstoneControl = false;
 
-	protected static final int ENERGY_TRANSFER[] = new int[] { 1000, 4000, 9000, 16000, 25000 };
 	protected static final int FLUID_TRANSFER[] = new int[] { 100, 300, 600, 1000, 1500 };
 	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 28, 44, 64 };
 
@@ -111,7 +110,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return true;
 	}
 
-	protected int getFluidTransfer(int level) {
+	protected static int getFluidTransfer(int level) {
 
 		return FLUID_TRANSFER[MathHelper.clamp(level, 0, 4)];
 	}

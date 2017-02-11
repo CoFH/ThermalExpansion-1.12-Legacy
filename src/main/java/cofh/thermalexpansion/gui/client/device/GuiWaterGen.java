@@ -13,7 +13,7 @@ public class GuiWaterGen extends GuiDeviceBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DEVICE + "water_gen.png");
 
-	ElementBase slotOutput;
+	ElementBase tankOverlay;
 
 	public GuiWaterGen(InventoryPlayer inventory, TileEntity tile) {
 
@@ -27,7 +27,7 @@ public class GuiWaterGen extends GuiDeviceBase {
 
 		super.initGui();
 
-		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2));
+		tankOverlay = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2));
 
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setAlwaysShow(true));
 	}
@@ -37,7 +37,7 @@ public class GuiWaterGen extends GuiDeviceBase {
 
 		super.updateElementInformation();
 
-		slotOutput.setVisible(baseTile.hasSide(1));
+		tankOverlay.setVisible(baseTile.hasSide(1));
 	}
 
 }

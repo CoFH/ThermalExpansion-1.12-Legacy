@@ -128,7 +128,6 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			inventory[0] = processItems[prevSelection].copy();
 		} else {
 			inventory[0].stackSize += processItems[prevSelection].stackSize;
-			;
 		}
 		hotTank.drain(processLava[prevSelection], true);
 		coldTank.drain(processWater[prevSelection], true);

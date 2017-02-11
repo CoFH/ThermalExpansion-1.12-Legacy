@@ -126,7 +126,7 @@ public class TileTransposer extends TileMachineBase {
 	private boolean canStartHandler() {
 
 		if (!FluidHelper.isFluidHandler(inventory[1])) {
-			hasFluidHandler = !hasFluidHandler;
+			hasFluidHandler = false;
 			return false;
 		}
 		if (energyStorage.getEnergyStored() < TransposerManager.DEFAULT_ENERGY) {
@@ -376,10 +376,7 @@ public class TileTransposer extends TileMachineBase {
 			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 
 			if (recipe == null) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				return;
 			}
 			ItemStack output = recipe.getOutput();
@@ -394,10 +391,7 @@ public class TileTransposer extends TileMachineBase {
 			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[1]);
 
 			if (recipe == null) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				return;
 			}
 			ItemStack output = recipe.getOutput();
@@ -436,28 +430,8 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void transferOutput() {
 
-		if (hasFluidHandler) {
-			if (inventory[2] == null) {
-				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
-				inventory[1] = null;
-				hasFluidHandler = !hasFluidHandler;
-			} else {
-				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
-					inventory[2].stackSize++;
-					inventory[1] = null;
-					hasFluidHandler = !hasFluidHandler;
-				}
-			}
-		}
-		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
-			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
-			inventory[0].stackSize--;
+		transferHandler();
 
-			if (inventory[0].stackSize <= 0) {
-				inventory[0] = null;
-			}
-			hasFluidHandler = true;
-		}
 		if (!enableAutoOutput) {
 			return;
 		}
@@ -496,6 +470,32 @@ public class TileTransposer extends TileMachineBase {
 					break;
 				}
 			}
+		}
+	}
+
+	private void transferHandler() {
+
+		if (hasFluidHandler) {
+			if (inventory[2] == null) {
+				inventory[2] = ItemHelper.cloneStack(inventory[1], 1);
+				inventory[1] = null;
+				hasFluidHandler = false;
+			} else {
+				if (ItemHelper.itemsIdentical(inventory[1], inventory[2]) && inventory[1].getMaxStackSize() > 1 && inventory[2].stackSize + 1 <= inventory[2].getMaxStackSize()) {
+					inventory[2].stackSize++;
+					inventory[1] = null;
+					hasFluidHandler = false;
+				}
+			}
+		}
+		if (!hasFluidHandler && FluidHelper.isFluidHandler(inventory[0])) {
+			inventory[1] = ItemHelper.cloneStack(inventory[0], 1);
+			inventory[0].stackSize--;
+
+			if (inventory[0].stackSize <= 0) {
+				inventory[0] = null;
+			}
+			hasFluidHandler = true;
 		}
 	}
 

@@ -117,6 +117,7 @@ public class TEProps {
 	public static final String MACHINE_FURNACE_ORE = "machineFurnaceOre";
 
 	public static final String MACHINE_PULVERIZER_GEODE = "machinePulverizerGeode";
+	public static final String MACHINE_PULVERIZER_PETROTHEUM = "machinePulverizerPetrotheum";
 
 	public static final String MACHINE_SAWMILL_TAPPER = "machineSawmillTapper";
 
@@ -126,8 +127,11 @@ public class TEProps {
 	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
 	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
 
-	public static final String MACHINE_COMPACTOR_PRESS = "machineCompactorPress";
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
+
+	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";
+
+	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
 	/* DYNAMOS */
 	public static final String DYNAMO_POWER = "dynamoPower";

@@ -81,13 +81,19 @@ public class TETextures {
 
 		DEVICE_FACE_WATERGEN =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "water_gen");
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
-		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
+		DEVICE_FACE_HEAT_SINK =             map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "heat_sink");
+		DEVICE_FACE_TAPPER =                map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "tapper");
+
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
+		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 
 		DEVICE_ACTIVE_WATERGEN =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
-		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
+		DEVICE_ACTIVE_HEAT_SINK =           map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "heat_sink");
+		DEVICE_ACTIVE_TAPPER =              map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "tapper");
+
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
+		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
 
 		/* DYNAMOS */
 		DYNAMO_COIL_REDSTONE =				register(map, DYNAMO_ + "coil_redstone");
@@ -165,20 +171,28 @@ public class TETextures {
 		DEVICE_FACE = new TextureAtlasSprite[] {
 				DEVICE_FACE_WATERGEN,
 				DEVICE_FACE_NULLIFIER,
-				DEVICE_FACE_EXTENDER,
-				DEVICE_FACE_CONCENTRATOR,
-				DEVICE_FACE_ITEM_BUFFER,
-				DEVICE_FACE_FLUID_BUFFER,
-				DEVICE_FACE_ENERGY_BUFFER
+				DEVICE_FACE_HEAT_SINK,
+				DEVICE_FACE_TAPPER
+
+
+//				DEVICE_FACE_EXTENDER,
+//				DEVICE_FACE_CONCENTRATOR,
+//				DEVICE_FACE_ITEM_BUFFER,
+//				DEVICE_FACE_FLUID_BUFFER,
+//				DEVICE_FACE_ENERGY_BUFFER
 		};
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
 				DEVICE_ACTIVE_WATERGEN,
 				DEVICE_ACTIVE_NULLIFIER,
-				DEVICE_ACTIVE_EXTENDER,
-				DEVICE_ACTIVE_CONCENTRATOR,
-				DEVICE_ACTIVE_ITEM_BUFFER,
-				DEVICE_ACTIVE_FLUID_BUFFER,
-				DEVICE_ACTIVE_ENERGY_BUFFER
+				DEVICE_ACTIVE_HEAT_SINK,
+				DEVICE_ACTIVE_TAPPER
+
+
+//				DEVICE_ACTIVE_EXTENDER,
+//				DEVICE_ACTIVE_CONCENTRATOR,
+//				DEVICE_ACTIVE_ITEM_BUFFER,
+//				DEVICE_ACTIVE_FLUID_BUFFER,
+//				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
 		DYNAMO = new TextureAtlasSprite[] {
 				DYNAMO_STEAM,
@@ -284,6 +298,9 @@ public class TETextures {
 	public static TextureAtlasSprite[] DEVICE_FACE;
 	public static TextureAtlasSprite DEVICE_FACE_WATERGEN;
 	public static TextureAtlasSprite DEVICE_FACE_NULLIFIER;
+	public static TextureAtlasSprite DEVICE_FACE_HEAT_SINK;
+	public static TextureAtlasSprite DEVICE_FACE_TAPPER;
+
 	public static TextureAtlasSprite DEVICE_FACE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_FACE_CONCENTRATOR;
 	public static TextureAtlasSprite DEVICE_FACE_ITEM_BUFFER;
@@ -293,6 +310,9 @@ public class TETextures {
 	public static TextureAtlasSprite[] DEVICE_ACTIVE;
 	public static TextureAtlasSprite DEVICE_ACTIVE_WATERGEN;
 	public static TextureAtlasSprite DEVICE_ACTIVE_NULLIFIER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_HEAT_SINK;
+	public static TextureAtlasSprite DEVICE_ACTIVE_TAPPER;
+
 	public static TextureAtlasSprite DEVICE_ACTIVE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_CONCENTRATOR;
 	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;

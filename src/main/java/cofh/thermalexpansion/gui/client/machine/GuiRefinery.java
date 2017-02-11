@@ -48,7 +48,7 @@ public class GuiRefinery extends GuiPoweredBase {
 		addElement(new ElementFluidTank(this, 44, 20, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(0).setAlwaysShow(true));
 
-		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 76, 34).setFluid(baseTile.getTankFluid()).setSize(24, 16));
+		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 76, 34).setFluid(myTile.getTankFluid(0)).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 76, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 52).setSize(16, 16).setTexture(TEX_FLAME, 32, 16));
 	}
@@ -72,7 +72,7 @@ public class GuiRefinery extends GuiPoweredBase {
 			slotOutput[1].slotRender = 1;
 			slotTankOutput[1].slotRender = 1;
 		}
-		progressFluid.setFluid(myTile.getTankFluid(1));
+		progressFluid.setFluid(myTile.getTankFluid(0));
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);
 		progressOverlay.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));

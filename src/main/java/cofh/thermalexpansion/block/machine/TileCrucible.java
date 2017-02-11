@@ -143,10 +143,7 @@ public class TileCrucible extends TileMachineBase {
 		RecipeCrucible recipe = CrucibleManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		tank.fill(recipe.getOutput(), true);

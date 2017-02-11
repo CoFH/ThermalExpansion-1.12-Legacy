@@ -8,6 +8,7 @@ import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -22,23 +23,29 @@ import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.EnumHand;
 import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.util.List;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
@@ -118,7 +125,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			case HEAT_SINK:
 				return new TileHeatSink();
 			case TAPPER:
-				return null;
+				return new TileTapper();
 			case ITEM_BUFFER:
 				return new TileItemBuffer();
 			//			case EXTENDER:
@@ -180,6 +187,20 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public boolean isSideSolid(IBlockState base_state, IBlockAccess world, BlockPos pos, EnumFacing side) {
 
 		return true;
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, BlockPos pos, IBlockState state, EntityPlayer player, EnumHand hand, @Nullable ItemStack heldItem, EnumFacing side, float hitX, float hitY, float hitZ) {
+
+		TileEntity tile = world.getTileEntity(pos);
+
+		if (tile instanceof TileHeatSink) {
+			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
+			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
+				return true;
+			}
+		}
+		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
 
 	/* RENDERING METHODS */
@@ -252,12 +273,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileWaterGen.initialize();
 		TileNullifier.initialize();
 		TileHeatSink.initialize();
+		TileTapper.initialize();
 
 		TileItemBuffer.initialize();
 
 		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
 		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
 		deviceHeatSink = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
+		deviceTapper = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
 
 		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
@@ -278,9 +301,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					"IPI",
 					'C', deviceFrame,
 					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
+					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
-					'Y', "dustRedstone"
+					'Y', "blockGlass"
 			));
 		}
 		if (enable[Type.NULLIFIER.getMetadata()]) {
@@ -290,12 +313,35 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					"IPI",
 					'C', deviceFrame,
 					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
+					'P', ItemMaterial.redstoneServo,
 					'X', Items.LAVA_BUCKET,
 					'Y', "dustRedstone"
 			));
 		}
-
+		if (enable[Type.HEAT_SINK.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceHeatSink,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', deviceFrame,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', "blockCopper",
+					'Y', "ingotInvar"
+			));
+		}
+		if (enable[Type.TAPPER.getMetadata()]) {
+			addRecipe(ShapedRecipe(deviceTapper,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', deviceFrame,
+					'I', tinPart,
+					'P', ItemMaterial.redstoneServo,
+					'X', Items.BUCKET,
+					'Y', "ingotCopper"
+			));
+		}
 		if (enable[Type.ITEM_BUFFER.getMetadata()]) {
 			addRecipe(ShapedRecipe(deviceItemBuffer,
 					" X ",
@@ -303,8 +349,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					"IPI",
 					'C', deviceFrame,
 					'I', tinPart,
-					'P', ItemMaterial.powerCoilGold, // TODO: Not this.
-					'X', Items.LAVA_BUCKET,
+					'P', ItemMaterial.redstoneServo,
+					'X', Blocks.HOPPER,
 					'Y', "dustRedstone"
 			));
 		}

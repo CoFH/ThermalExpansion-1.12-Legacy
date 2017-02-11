@@ -16,17 +16,25 @@ import java.util.List;
 
 public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem {
 
-	public static ItemStack setDefaultTag(ItemStack container) {
+	public static ItemStack setDefaultTag(ItemStack stack) {
 
-		return setDefaultTag(container, (byte) 0);
+		return setDefaultTag(stack, (byte) 0);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack container, byte level) {
+	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
 
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		container.getTagCompound().setByte("Level", level);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		stack.getTagCompound().setByte("Level", level);
 
-		return container;
+		return stack;
+	}
+
+	public static byte getLevel(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getByte("Level");
 	}
 
 	public ItemBlockTank(Block block) {
@@ -34,17 +42,18 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 		super(block);
 		setHasSubtypes(true);
 		setMaxDamage(0);
+		setMaxStackSize(1);
 		setNoRepair();
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.tank.name";
+		return "tile.thermalexpansion.storage.tank.name";
 	}
 
 	@Override
-	public void addInformation(ItemStack stack, EntityPlayer player, List tooltip, boolean advanced) {
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
 		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
@@ -103,7 +112,7 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 	@Override
 	public int getCapacity(ItemStack container) {
 
-		return 32000;
+		return TileTank.getCapacity(getLevel(container));
 	}
 
 	@Override

@@ -71,22 +71,6 @@ public class FuelManager {
 		return TileDynamoCompression.removeFuel(FluidRegistry.getFluid(name));
 	}
 
-	public static boolean addCoolant(String name, int cooling) {
-
-		if (!FluidRegistry.isFluidRegistered(name)) {
-			return false;
-		}
-		return TileDynamoCompression.addCoolant(FluidRegistry.getFluid(name), cooling);
-	}
-
-	public static boolean removeCoolant(String name) {
-
-		if (!FluidRegistry.isFluidRegistered(name)) {
-			return false;
-		}
-		return TileDynamoCompression.removeCoolant(FluidRegistry.getFluid(name));
-	}
-
 	/* REACTANT */
 	public static boolean addReactantFuel(String name, int energy) {
 
@@ -185,13 +169,13 @@ public class FuelManager {
 
 		/* COOLANTS */
 		{
-			String category = "Coolants";
-			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft. Currently only used by the Compression Dynamo.");
-
-			addCoolant("water", configFuels.get(category, "water", 400000));
-			addCoolant("cryotheum", configFuels.get(category, "cryotheum", 4000000));
-
-			addCoolant("ice", configFuels.get(category, "ice", 2000000));
+			//			String category = "Coolants";
+			//			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft. Currently only used by the Compression Dynamo.");
+			//
+			//			addCoolant("water", configFuels.get(category, "water", 500000));
+			//			addCoolant("cryotheum", configFuels.get(category, "cryotheum", 4000000));
+			//
+			//			addCoolant("ice", configFuels.get(category, "ice", 2000000));
 		}
 		configFuels.save();
 	}
@@ -240,13 +224,13 @@ public class FuelManager {
 
 		/* COOLANTS */
 		{
-			String category = "Coolants";
-			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft.");
-
-			Set<String> catKeys = configFuels.getCategoryKeys(category);
-			for (String s : catKeys) {
-				addCoolant(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, 400000));
-			}
+			//			String category = "Coolants";
+			//			configFuels.getCategory(category).setComment("You can add Coolants in this section. Fluid names only, as they are registered in Minecraft.");
+			//
+			//			Set<String> catKeys = configFuels.getCategoryKeys(category);
+			//			for (String s : catKeys) {
+			//				addCoolant(s.toLowerCase(Locale.ENGLISH), configFuels.get(category, s, 400000));
+			//			}
 		}
 
 		/* ENERVATION */

@@ -157,7 +157,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
 		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
 
-		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
+		//		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
+		//		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
 
 		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.MODE);
 
@@ -167,7 +168,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineInsolatorNether = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_NETHER, AugmentType.MODE);
 		machineInsolatorEnd = addAugmentItem(322, TEProps.MACHINE_INSOLATOR_END, AugmentType.MODE);
 
-		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
+		//		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
+
+		//		machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
+
+		machineChargerItems = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
 		/* DYNAMOS */
 		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
@@ -183,8 +188,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
 
 		/* AUTOMATA */
-		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
-		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
+		//		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
+		//		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
 
 		return true;
 	}
@@ -247,16 +252,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustPyrotheum"
 		));
 
-		addRecipe(ShapedRecipe(machinePulverizerGeode,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearLead",
-				'I', "plateBronze",
-				'X', "gemDiamond",
-				'Y', "dustPetrotheum"
-		));
+//		addRecipe(ShapedRecipe(machinePulverizerGeode,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.redstoneServo,
+//				'G', "gearLead",
+//				'I', "plateBronze",
+//				'X', "gemDiamond",
+//				'Y', "dustPetrotheum"
+//		));
 
 		addRecipe(ShapedRecipe(machineSawmillTapper,
 				" G ",
@@ -313,18 +318,29 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustCryotheum"
 		));
 
-		addRecipe(ShapedRecipe(machineCompactorMint,
+		addRecipe(ShapedRecipe(machineCrucibleAlloy,
 				" G ",
 				"ICI",
 				"YXY",
 				'C', ItemMaterial.redstoneServo,
-				'G', "gearInvar",
-				'I', "plateElectrum",
-				'X', "gemEmerald",
-				'Y', "dustGlowstone"
+				'G', "gearSignalum",
+				'I', "plateInvar",
+				'X', Blocks.BRICK_BLOCK,
+				'Y', "dustCryotheum"
 		));
 
-		addRecipe(ShapedRecipe(machineChargerThroughput,
+//		addRecipe(ShapedRecipe(machineCompactorMint,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.redstoneServo,
+//				'G', "gearInvar",
+//				'I', "plateElectrum",
+//				'X', "gemEmerald",
+//				'Y', "dustGlowstone"
+//		));
+
+		addRecipe(ShapedRecipe(machineChargerItems,
 				" G ",
 				"ICI",
 				"YXY",
@@ -502,6 +518,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineFurnaceOre;
 
 	public static ItemStack machinePulverizerGeode;
+	public static ItemStack machinePulverizerPetrotheum;
 
 	public static ItemStack machineSawmillTapper;
 
@@ -513,7 +530,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCompactorMint;
 
-	public static ItemStack machineChargerThroughput;
+	public static ItemStack machineCrucibleAlloy;
+
+	public static ItemStack machineChargerItems;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 

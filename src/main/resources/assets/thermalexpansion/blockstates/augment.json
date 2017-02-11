@@ -41,7 +41,7 @@
 			},
 			"machinesawmilltapper": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_sawmill_tapper"
 				}
 			},
 			"machinesmelterpyrotheum": {
@@ -65,6 +65,16 @@
 				}
 			},
 			"machinecompactormint": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinecruciblealloy": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machinechargerthroughput": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}

@@ -94,12 +94,12 @@ public class GuiInsolator extends GuiPoweredBase {
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));
 
 		if (myTile.lockPrimary) {
-			mode.setToolTip("gui.thermalexpansion.machine.insolator.toggleUnlock");
+			mode.setToolTip("gui.thermalexpansion.machine.insolator.modeLocked");
 			mode.setSheetX(176);
 			mode.setHoverX(176);
 			modeOverlay.setVisible(true);
 		} else {
-			mode.setToolTip("gui.thermalexpansion.machine.insolator.toggleLock");
+			mode.setToolTip("gui.thermalexpansion.machine.insolator.modeUnlocked");
 			mode.setSheetX(192);
 			mode.setHoverX(192);
 			modeOverlay.setVisible(false);

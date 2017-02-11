@@ -13,28 +13,28 @@ import java.util.List;
 
 public class ItemBlockMachine extends ItemBlockCore {
 
-	public static ItemStack setDefaultTag(ItemStack container) {
+	public static ItemStack setDefaultTag(ItemStack stack) {
 
-		return setDefaultTag(container, (byte) 0);
+		return setDefaultTag(stack, (byte) 0);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack container, byte level) {
+	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
 
-		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, TileMachineBase.defaultSideConfig[container.getItemDamage()].defaultSides);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
-		container.getTagCompound().setByte("Level", level);
+		ReconfigurableHelper.setFacing(stack, 3);
+		ReconfigurableHelper.setSideCache(stack, TileMachineBase.defaultSideConfig[stack.getItemDamage()].defaultSides);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		stack.getTagCompound().setByte("Level", level);
 
-		return container;
+		return stack;
 	}
 
-	public static byte getLevel(ItemStack container) {
+	public static byte getLevel(ItemStack stack) {
 
-		if (container.getTagCompound() == null) {
-			setDefaultTag(container);
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
 		}
-		return container.getTagCompound().getByte("Level");
+		return stack.getTagCompound().getByte("Level");
 	}
 
 	public ItemBlockMachine(Block block) {

@@ -12,6 +12,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.SawmillManager;
 import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
+import cofh.thermalexpansion.util.crafting.TapperManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -144,10 +145,7 @@ public class TileSawmill extends TileMachineBase {
 		RecipeSawmill recipe = SawmillManager.getRecipe(inventory[0]);
 
 		if (recipe == null) {
-			isActive = false;
-			wasActive = true;
-			tracker.markTime(worldObj);
-			processRem = 0;
+			processOff();
 			return;
 		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
@@ -176,6 +174,9 @@ public class TileSawmill extends TileMachineBase {
 					inventory[2].stackSize = inventory[2].getMaxStackSize();
 				}
 			}
+		}
+		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
+			tank.fill(TapperManager.getFluid(inventory[0]).copy(), true);
 		}
 		inventory[0].stackSize -= recipe.getInput().stackSize;
 

@@ -6,7 +6,6 @@ import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
-import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
@@ -25,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -37,10 +37,11 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public BlockTank() {
 
 		super(Material.GLASS);
-		setHardness(4.0F);
-		setResistance(120.0F);
-		setSoundType(SoundType.GLASS);
-		setUnlocalizedName("thermalexpansion.tank");
+
+		setUnlocalizedName("tank");
+
+		setHardness(15.0F);
+		setResistance(25.0F);
 	}
 
 	@Override
@@ -143,12 +144,12 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public boolean preInit() {
 
-		//		this.setRegistryName("tank");
-		//		GameRegistry.register(this);
-		//
-		//		ItemBlockTank itemBlock = new ItemBlockTank(this);
-		//		itemBlock.setRegistryName(this.getRegistryName());
-		//		GameRegistry.register(itemBlock);
+		this.setRegistryName("tank");
+		GameRegistry.register(this);
+
+		ItemBlockTank itemBlock = new ItemBlockTank(this);
+		itemBlock.setRegistryName(this.getRegistryName());
+		GameRegistry.register(itemBlock);
 
 		return true;
 	}
