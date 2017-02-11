@@ -4,6 +4,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TilePowered {
@@ -80,6 +81,13 @@ public abstract class TileDeviceBase extends TilePowered {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		return false;
 	}
 
 }

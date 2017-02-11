@@ -36,8 +36,6 @@ public abstract class GuiDynamoBase extends GuiCore {
 
 		if (baseTile.isAugmentable()) {
 			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
-		} else {
-			myTutorial = "upgrade\n\n";
 		}
 		if (baseTile.enableSecurity() && baseTile.isSecured()) {
 			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";

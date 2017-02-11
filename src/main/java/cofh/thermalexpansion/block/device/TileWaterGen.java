@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
-import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
@@ -62,9 +61,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String comment = "Set this to TRUE to enable passive generation (less than two adjacent sources) for the Aqueous Accumulator.";
 		passiveGen = ThermalExpansion.CONFIG.getConfiguration().get(category, "PassiveGeneration", false, comment).getBoolean();
 	}
-
-	private static int genRate = 50 * CoreProps.TIME_CONSTANT;
-	private static int genRatePassive = 1 * CoreProps.TIME_CONSTANT;
+	private static final int TIME_CONSTANT = 40;
+	private static int genRate = 20 * TIME_CONSTANT;
+	private static int genRatePassive = TIME_CONSTANT;
 	private static boolean passiveGen = false;
 
 	private int adjacentSources = -1;
@@ -78,7 +77,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public TileWaterGen() {
 
 		super();
-		offset = MathHelper.RANDOM.nextInt(CoreProps.TIME_CONSTANT);
+		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 		tank.setLock(FluidRegistry.WATER);
 	}
 
@@ -101,14 +100,14 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (!timeCheck()) {
+		if (!timeCheckOffset()) {
 			return;
 		}
 		transferOutputFluid();
 
 		if (isActive) {
 			if (adjacentSources >= 2) {
-				tank.fillLocked(genRate, true);
+				tank.fillLocked(genRate * adjacentSources, true);
 			} else {
 				if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
 					tank.fillLocked(genRate, true);
@@ -142,23 +141,18 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (isWater(worldObj.getBlockState(getPos().down()))) {
 			++adjacentSources;
 		}
-
 		if (isWater(worldObj.getBlockState(getPos().up()))) {
 			++adjacentSources;
 		}
-
 		if (isWater(worldObj.getBlockState(getPos().west()))) {
 			++adjacentSources;
 		}
-
 		if (isWater(worldObj.getBlockState(getPos().east()))) {
 			++adjacentSources;
 		}
-
 		if (isWater(worldObj.getBlockState(getPos().north()))) {
 			++adjacentSources;
 		}
-
 		if (isWater(worldObj.getBlockState(getPos().south()))) {
 			++adjacentSources;
 		}
@@ -196,7 +190,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % CoreProps.TIME_CONSTANT == 0;
+		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
 	/* GUI METHODS */

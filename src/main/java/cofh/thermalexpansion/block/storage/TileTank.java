@@ -25,13 +25,20 @@ import javax.annotation.Nullable;
 
 public class TileTank extends TileAugmentableSecure implements ITickable {
 
-	public static int[] CAPACITY = { 10000, 40000, 90000, 160000, 250000 };
+	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
 
+	static {
+		for (int i = 0; i < CAPACITY.length; i++) {
+			CAPACITY[i] *= 10000;
+		}
+	}
 	private static boolean enableSecurity = true;
 
 	public static void initialize() {
 
 		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion:storage_tank");
+
+		config();
 	}
 
 	public static void config() {
@@ -44,7 +51,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
-	private FluidTankCore tank;
+	private FluidTankCore tank = new FluidTankCore(getCapacity(0));
 
 	@Override
 	public String getTileName() {
@@ -56,6 +63,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	public int getType() {
 
 		return 0;
+	}
+
+	@Override
+	public int getComparatorInputOverride() {
+
+		return compareTracker;
 	}
 
 	@Override

@@ -124,6 +124,7 @@ public class TileCompactor extends TileMachineBase {
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;
 		}
+		mode = modeFlag;
 	}
 
 	@Override
@@ -230,6 +231,8 @@ public class TileCompactor extends TileMachineBase {
 
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
+		mode = nbt.getByte("Mode");
+		modeFlag = mode;
 	}
 
 	@Override
@@ -239,6 +242,8 @@ public class TileCompactor extends TileMachineBase {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
+		nbt.setByte("Mode", mode);
+
 		return nbt;
 	}
 

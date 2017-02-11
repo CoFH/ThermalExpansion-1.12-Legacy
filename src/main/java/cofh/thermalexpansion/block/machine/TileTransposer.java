@@ -72,6 +72,10 @@ public class TileTransposer extends TileMachineBase {
 	private FluidStack renderFluid = new FluidStack(FluidRegistry.WATER, 0);
 	private boolean hasFluidHandler = false;
 
+	// TODO : Use this instead of reverse?
+	public byte modeFlag;
+	private byte mode;
+
 	public boolean reverseFlag;
 	public boolean reverse;
 
