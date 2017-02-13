@@ -60,7 +60,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		if (metadata >= 1) {
 			return null;
 		}
-		return null;
+		return new TileTank();
 	}
 
 	/* BLOCK METHODS */
@@ -68,17 +68,11 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.getTagCompound() != null) {
-			//			TileTank tile = (TileTank) world.getTileEntity(pos);
-			//
-			//			tile.setLevel(stack.getTagCompound().getByte("Level"));
+			TileTank tile = (TileTank) world.getTileEntity(pos);
+
+			tile.setLevel(stack.getTagCompound().getByte("Level"));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
-	}
-
-	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
-
-		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
 	}
 
 	@Override
@@ -89,6 +83,18 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	@Override
 	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
 
 		return false;
 	}
@@ -118,6 +124,12 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	}
 
 	/* RENDERING METHODS */
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+	}
+
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {

@@ -24,7 +24,7 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		// ReconfigurableHelper.setSideCache(stack, TileCell.defaultSideConfig.defaultSides);
+		ReconfigurableHelper.setSideCache(stack, TileCell.DEFAULT_SIDES);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 		stack.getTagCompound().setByte("Level", level);

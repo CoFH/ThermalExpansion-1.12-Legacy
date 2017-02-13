@@ -21,10 +21,16 @@ public class TEProps {
 
 	public static void preInit() {
 
+		configCommon();
 		configClient();
 	}
 
 	public static void loadComplete() {
+
+	}
+
+	/* HELPERS */
+	private static void configCommon() {
 
 	}
 

@@ -4,10 +4,13 @@ import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.IBakeryBlock;
 import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.api.core.IModelRegister;
+import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -52,14 +55,33 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		if (metadata >= 1) {
 			return null;
 		}
-		return null;
+		return new TileCell();
 	}
 
 	/* BLOCK METHODS */
 	@Override
-	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
-		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+		if (stack.getTagCompound() != null) {
+			TileCell tile = (TileCell) world.getTileEntity(pos);
+
+			tile.setLevel(stack.getTagCompound().getByte("Level"));
+			tile.amountSend = stack.getTagCompound().getInteger("Send");
+			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
+			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
+
+			int facing = BlockHelper.determineXZPlaceFacing(living);
+			int storedFacing = ReconfigurableHelper.getFacing(stack);
+			byte[] sideCache = ReconfigurableHelper.getSideCache(stack, tile.getDefaultSides());
+
+			tile.sideCache[0] = sideCache[0];
+			tile.sideCache[1] = sideCache[1];
+			tile.sideCache[facing] = sideCache[storedFacing];
+			tile.sideCache[BlockHelper.getLeftSide(facing)] = sideCache[BlockHelper.getLeftSide(storedFacing)];
+			tile.sideCache[BlockHelper.getRightSide(facing)] = sideCache[BlockHelper.getRightSide(storedFacing)];
+			tile.sideCache[BlockHelper.getOppositeSide(facing)] = sideCache[BlockHelper.getOppositeSide(storedFacing)];
+		}
+		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
 	@Override
@@ -69,9 +91,15 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	}
 
 	@Override
-	public boolean isFullCube(IBlockState state) {
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
 
 		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+
+		return true;
 	}
 
 	@Override
@@ -81,6 +109,12 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	}
 
 	/* RENDERING METHODS */
+	@Override
+	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
+
+		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
+	}
+
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IBlockState getExtendedState(IBlockState state, IBlockAccess world, BlockPos pos) {

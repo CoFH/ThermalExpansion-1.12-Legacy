@@ -231,6 +231,7 @@ public class TETextures {
 	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
 
+	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
 	public static TextureAtlasSprite CONFIG_NONE;
 	public static TextureAtlasSprite CONFIG_BLUE;

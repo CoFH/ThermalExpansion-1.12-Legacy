@@ -2,12 +2,10 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
-import cofh.api.energy.IEnergyReceiver;
-import cofh.api.energy.IEnergyStorage;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.TileReconfigurable;
+import cofh.thermalexpansion.block.TilePowered;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,7 +16,7 @@ import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileCell extends TileReconfigurable implements ITickable, IEnergyProvider, IEnergyReceiver {
+public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
 	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
@@ -90,6 +88,16 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyPr
 	}
 
 	@Override
+	protected boolean setLevel(int level) {
+
+		if (super.setLevel(level)) {
+			energyStorage.setCapacity(getCapacity(level));
+			return true;
+		}
+		return false;
+	}
+
+	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		amountSend = tag.getInteger("Send");
@@ -145,11 +153,6 @@ public class TileCell extends TileReconfigurable implements ITickable, IEnergyPr
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerTEBase(inventory, this);
-	}
-
-	public IEnergyStorage getEnergyStorage() {
-
-		return energyStorage;
 	}
 
 	/* NBT METHODS */
