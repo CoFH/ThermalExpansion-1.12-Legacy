@@ -45,20 +45,20 @@ achievement.thermalexpansion.florbMagmatic.desc=フローブ。はい、溶岩�
 achievement.thermalexpansion.capacitorPotato=半分焼いたアイディア！
 achievement.thermalexpansion.capacitorPotato.desc=ポ・テ・ト
 
-achievement.thermalexpansion.fluidRedstone=Redstone Revolution！
-achievement.thermalexpansion.fluidRedstone.desc=Up is still up, down is still down. And this is still awesome.
-achievement.thermalexpansion.fluidGlowstone=It Flows Up?！
-achievement.thermalexpansion.fluidGlowstone.desc=So that's how those formations occur！ It all makes nonsense now！
+achievement.thermalexpansion.fluidRedstone=レッドストーン革命！
+achievement.thermalexpansion.fluidRedstone.desc=上は上、下は下。そしてこれはいまだに素晴らしい。
+achievement.thermalexpansion.fluidGlowstone=上に流れる?！
+achievement.thermalexpansion.fluidGlowstone.desc=そしてこういう形成になるのか！ やっと意味がわかんない！
 achievement.thermalexpansion.fluidEnder=Wibbly-Wobbly, Timey-Wimey.
 achievement.thermalexpansion.fluidEnder.desc=The End is actually just the beginning.
 achievement.thermalexpansion.fluidPyrotheum=OH GOD WHY?！
-achievement.thermalexpansion.fluidPyrotheum.desc=This is actually worse than lava. You monster.
-achievement.thermalexpansion.fluidCryotheum=Winter is Coming
-achievement.thermalexpansion.fluidCryotheum.desc=This is also worse than lava, except cold. You yeti.
-achievement.thermalexpansion.fluidMana=When Magic Meets Tech.
-achievement.thermalexpansion.fluidMana.desc=What is this I don't even?
-achievement.thermalexpansion.fluidCoal=Liquifaction is Salvation！
-achievement.thermalexpansion.fluidCoal.desc=This cannot *possibly* be good for the environment.
+achievement.thermalexpansion.fluidPyrotheum.desc=これは溶岩より危ない。あなたはモンスターだ。
+achievement.thermalexpansion.fluidCryotheum=冬がやってきた
+achievement.thermalexpansion.fluidCryotheum.desc=これも溶岩より危ないが、すごく冷たい。あなたはイエティだ。
+achievement.thermalexpansion.fluidMana=魔法が技術に出会うと。
+achievement.thermalexpansion.fluidMana.desc=え、これはなんだ?
+achievement.thermalexpansion.fluidCoal=液化は救いだ！
+achievement.thermalexpansion.fluidCoal.desc=これは絶対環境に良くないだろう。
 
 #system says
 chat.thermalexpansion.light.0=モード: スイッチ(デフォルトでオフ)
