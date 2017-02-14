@@ -1,23 +1,23 @@
 #ja_JP
 
 #achivements
-achievement.thermalexpansion.base=Welcome to Thermal Expansion！
-achievement.thermalexpansion.base.desc=And so it begins.
-achievement.thermalexpansion.machineFrame=Framed！
-achievement.thermalexpansion.machineFrame.desc=You'll probably make a lot of these.
+achievement.thermalexpansion.base=Thermal Expansion へようこそ！
+achievement.thermalexpansion.base.desc=そしてこう始まります。
+achievement.thermalexpansion.machineFrame=フレーム！
+achievement.thermalexpansion.machineFrame.desc=あなたはこれをもしかしたら大量に作るかもしれません。
 
-achievement.thermalexpansion.furnace=Coal is For Chumps
-achievement.thermalexpansion.furnace.desc=Smelt things in style！
-achievement.thermalexpansion.pulverizer=MACHINE SMASH！
-achievement.thermalexpansion.pulverizer.desc=Puny ore.
-achievement.thermalexpansion.sawmill=Hate Trees, Love Wood
-achievement.thermalexpansion.sawmill.desc=Like punching trees, but better.
-achievement.thermalexpansion.smelter=Two Ingots Enter, One Ingot Leaves
-achievement.thermalexpansion.smelter.desc=Absolutely not for food.
-achievement.thermalexpansion.crucible=Melt Everything
-achievement.thermalexpansion.crucible.desc=Yes, it can make lava. You monster.
-achievement.thermalexpansion.transposer=(Mostly) Free Refills
-achievement.thermalexpansion.transposer.desc=Filling buckets by hand is hard work.
+achievement.thermalexpansion.furnace=石炭は馬鹿が使うものだ。
+achievement.thermalexpansion.furnace.desc=スタイリッシュに物を溶かそう！
+achievement.thermalexpansion.pulverizer=マシーンスマッシュ！
+achievement.thermalexpansion.pulverizer.desc=小さい鉱石。
+achievement.thermalexpansion.sawmill=木は嫌いだが木材は好き
+achievement.thermalexpansion.sawmill.desc=木を叩くようだかそれよりもいい。
+achievement.thermalexpansion.smelter=二つのインゴットが入って一つが出てくる
+achievement.thermalexpansion.smelter.desc=絶対食料品ではない。
+achievement.thermalexpansion.crucible=すべてを溶かす
+achievement.thermalexpansion.crucible.desc=はい、溶岩も作れます。あなたはモンスターだ！
+achievement.thermalexpansion.transposer=(ほとんど) 詰め替え無料
+achievement.thermalexpansion.transposer.desc=バケツに手で液体を入れるのは重労働だ。
 achievement.thermalexpansion.precipitator=Snowball Fight！
 achievement.thermalexpansion.precipitator.desc=Will not make yellow snow.
 achievement.thermalexpansion.extruder=This Thing Rocks！
