@@ -4,11 +4,9 @@ import cofh.lib.gui.element.ElementBase;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
-import cofh.thermalexpansion.gui.container.ISchematicContainer;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlayCrafter;
-import cofh.thermalexpansion.gui.element.TabSchematic;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -35,8 +33,6 @@ public class GuiCrafter extends GuiPoweredBase {
 	public void initGui() {
 
 		super.initGui();
-
-		addTab(new TabSchematic(this, (ISchematicContainer) inventorySlots));
 
 		slotInput[0] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(0, 4));
 		slotInput[1] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(4, 0));
