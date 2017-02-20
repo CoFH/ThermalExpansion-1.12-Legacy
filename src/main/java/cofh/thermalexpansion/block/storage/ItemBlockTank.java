@@ -7,6 +7,7 @@ import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -47,9 +48,29 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 	}
 
 	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+
+		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + getLevel(stack)) + ")";
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.tank.name";
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+
+		switch (getLevel(stack)) {
+			case 4:
+				return EnumRarity.RARE;
+			case 3:
+			case 2:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
+		}
 	}
 
 	@Override

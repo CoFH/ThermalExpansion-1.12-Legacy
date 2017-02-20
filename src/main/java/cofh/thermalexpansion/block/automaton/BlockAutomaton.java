@@ -227,11 +227,11 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 	public boolean initialize() {
 
-		// TileActivator.initialize();
+		TileAutomatonBase.config();
+
 		TileBreaker.initialize();
 		TileCollector.initialize();
 
-		//automatonActivator = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.ACTIVATOR.getMetadata()));
 		automatonBreaker = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
 		automatonCollector = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
 
@@ -244,9 +244,6 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		String machineFrame = "thermalexpansion:machineFrame";
 		String tinPart = "thermalexpansion:machineTin";
 
-		if (enable[Type.ACTIVATOR.getMetadata()]) {
-			addRecipe(ShapedRecipe(automatonActivator, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.CHEST, 'Y', "ingotIron"));
-		}
 		if (enable[Type.BREAKER.getMetadata()]) {
 			addRecipe(ShapedRecipe(automatonBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron"));
 		}
@@ -260,9 +257,8 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	public enum Type implements IStringSerializable {
 
 		// @formatter:off
-		ACTIVATOR(0, "activator"),
-		BREAKER(1, "breaker"),
-		COLLECTOR(2, "collector");
+		BREAKER(0, "breaker"),
+		COLLECTOR(1, "collector");
 		// @formatter:on
 
 		private static final BlockAutomaton.Type[] METADATA_LOOKUP = new BlockAutomaton.Type[values().length];
@@ -316,7 +312,6 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	public static boolean[] enable = new boolean[Type.values().length];
 
 	/* REFERENCES */
-	public static ItemStack automatonActivator;
 	public static ItemStack automatonBreaker;
 	public static ItemStack automatonCollector;
 	// Forcefield

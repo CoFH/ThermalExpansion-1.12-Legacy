@@ -5,8 +5,10 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
 import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IUnlistedProperty;
@@ -56,7 +58,14 @@ public class TEProps {
 		if (itemTabCommon) {
 			ThermalExpansion.tabItems = ThermalExpansion.tabCommon;
 		} else {
-			ThermalExpansion.tabItems = new CreativeTabTE("Items");
+			ThermalExpansion.tabItems = new CreativeTabTE("Items") {
+
+				@Override
+				protected ItemStack getStack() {
+
+					return ItemMaterial.powerCoilElectrum;
+				}
+			};
 		}
 		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabTEFlorbs();
 

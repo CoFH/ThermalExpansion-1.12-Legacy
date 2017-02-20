@@ -68,11 +68,9 @@ public class TETextures {
 		/* AUTOMATA */
 		AUTOMATON_SIDE =					register(map, BLOCKS_ + "automaton/automaton_side");
 
-		AUTOMATON_FACE_ACTIVATOR =			register(map, AUTOMATON_FACE_ + "activator");
 		AUTOMATON_FACE_BREAKER =			register(map, AUTOMATON_FACE_ + "breaker");
 		AUTOMATON_FACE_COLLECTOR =			register(map, AUTOMATON_FACE_ + "collector");
 
-		AUTOMATON_ACTIVE_ACTIVATOR =		register(map, AUTOMATON_ACTIVE_ + "activator");
 		AUTOMATON_ACTIVE_BREAKER =			register(map, AUTOMATON_ACTIVE_ + "breaker");
 		AUTOMATON_ACTIVE_COLLECTOR =		register(map, AUTOMATON_ACTIVE_ + "collector");
 
@@ -159,12 +157,10 @@ public class TETextures {
 
 		};
 		AUTOMATON_FACE = new TextureAtlasSprite[] {
-				AUTOMATON_FACE_ACTIVATOR,
 				AUTOMATON_FACE_BREAKER,
 				AUTOMATON_FACE_COLLECTOR
 		};
 		AUTOMATON_ACTIVE = new TextureAtlasSprite[] {
-				AUTOMATON_ACTIVE_ACTIVATOR,
 				AUTOMATON_ACTIVE_BREAKER,
 				AUTOMATON_ACTIVE_COLLECTOR
 		};
@@ -285,12 +281,10 @@ public class TETextures {
 	public static TextureAtlasSprite AUTOMATON_SIDE;
 
 	public static TextureAtlasSprite[] AUTOMATON_FACE;
-	public static TextureAtlasSprite AUTOMATON_FACE_ACTIVATOR;
 	public static TextureAtlasSprite AUTOMATON_FACE_BREAKER;
 	public static TextureAtlasSprite AUTOMATON_FACE_COLLECTOR;
 
 	public static TextureAtlasSprite[] AUTOMATON_ACTIVE;
-	public static TextureAtlasSprite AUTOMATON_ACTIVE_ACTIVATOR;
 	public static TextureAtlasSprite AUTOMATON_ACTIVE_BREAKER;
 	public static TextureAtlasSprite AUTOMATON_ACTIVE_COLLECTOR;
 

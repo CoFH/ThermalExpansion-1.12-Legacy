@@ -133,6 +133,13 @@ info.thermalexpansion.florb.c.1=Yes, you can throw it.
 info.thermalexpansion.florb.d.0=This fluid is lighter than air.
 info.thermalexpansion.florb.d.1=The Florb will travel further.
 
+info.thermalexpansion.level.0=Basic
+info.thermalexpansion.level.1=Hardened
+info.thermalexpansion.level.2=Reinforced
+info.thermalexpansion.level.3=Signalum
+info.thermalexpansion.level.4=Resonant
+info.thermalexpansion.level.creative=Creative
+
 info.thermalexpansion.machine.brewer=
 info.thermalexpansion.machine.centrifuge=
 info.thermalexpansion.machine.charger=Charges items with RF.
@@ -292,7 +299,6 @@ tab.thermalexpansion.machine.transposer.0=Fills or empties things that hold flui
 tab.thermalexpansion.machine.transposer.1=Click the button to change between Fill and Extract modes.
 tab.thermalexpansion.machine.transposer.2=Typically reversible.
 
-tile.thermalexpansion.automaton.activator.name=Autonomous Activator
 tile.thermalexpansion.automaton.breaker.name=Terrain Smasher
 tile.thermalexpansion.automaton.collector.name=Acquisition Apparatus
 
@@ -325,3 +331,7 @@ tile.thermalexpansion.machine.refinery.name=Fractionating Still
 tile.thermalexpansion.machine.sawmill.name=Sawmill
 tile.thermalexpansion.machine.smelter.name=Induction Smelter
 tile.thermalexpansion.machine.transposer.name=Fluid Transposer
+
+tile.thermalexpansion.storage.cache.name=Cache
+tile.thermalexpansion.storage.cell.name=Energy Cell
+tile.thermalexpansion.storage.tank.name=Portable Tank

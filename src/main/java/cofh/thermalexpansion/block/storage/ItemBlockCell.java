@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
@@ -50,9 +51,29 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 	}
 
 	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+
+		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + getLevel(stack)) + ")";
+	}
+
+	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.cell.name";
+	}
+
+	@Override
+	public EnumRarity getRarity(ItemStack stack) {
+
+		switch (getLevel(stack)) {
+			case 4:
+				return EnumRarity.RARE;
+			case 3:
+			case 2:
+				return EnumRarity.UNCOMMON;
+			default:
+				return EnumRarity.COMMON;
+		}
 	}
 
 	@Override

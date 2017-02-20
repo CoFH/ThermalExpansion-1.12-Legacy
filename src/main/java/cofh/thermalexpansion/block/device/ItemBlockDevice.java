@@ -12,14 +12,14 @@ import java.util.List;
 
 public class ItemBlockDevice extends ItemBlockCore {
 
-	public static ItemStack setDefaultTag(ItemStack container) {
+	public static ItemStack setDefaultTag(ItemStack stack) {
 
-		ReconfigurableHelper.setFacing(container, 3);
-		ReconfigurableHelper.setSideCache(container, TileDeviceBase.defaultSideConfig[container.getItemDamage()].defaultSides);
-		RedstoneControlHelper.setControl(container, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(container, 0);
+		ReconfigurableHelper.setFacing(stack, 3);
+		ReconfigurableHelper.setSideCache(stack, TileDeviceBase.defaultSideConfig[ItemHelper.getItemDamage(stack)].defaultSides);
+		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		EnergyHelper.setDefaultEnergyTag(stack, 0);
 
-		return container;
+		return stack;
 	}
 
 	public ItemBlockDevice(Block block) {
