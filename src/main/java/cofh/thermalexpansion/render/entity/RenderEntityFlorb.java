@@ -46,7 +46,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.rotate(180.0F - this.renderManager.playerViewY, 0.0F, 1.0F, 0.0F);
 		GlStateManager.rotate(-this.renderManager.playerViewX, 1.0F, 0.0F, 0.0F);
 
-		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(ModelFlorb.MASK));
+		renderIcon(Tessellator.getInstance(), ModelFlorb.MASK);
 
 		GlStateManager.depthFunc(GL11.GL_EQUAL);
 		GlStateManager.depthMask(false);
@@ -56,7 +56,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.depthMask(true);
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
 
-		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(ModelFlorb.OUTLINE));
+		renderIcon(Tessellator.getInstance(), ModelFlorb.OUTLINE);
 
 		GlStateManager.disableBlend();
 		GlStateManager.enableCull();

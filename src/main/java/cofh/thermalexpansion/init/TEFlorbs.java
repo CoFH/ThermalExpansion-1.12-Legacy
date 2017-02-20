@@ -35,6 +35,7 @@ public class TEFlorbs {
 		enable = CONFIG_FLORBS.getConfiguration().getBoolean("EnableRecipe", category, enable, comment);
 
 		itemFlorb = (ItemFlorb) new ItemFlorb().setUnlocalizedName("florb");
+		ThermalExpansion.proxy.addIModelRegister(itemFlorb);
 	}
 
 	public static void initialize() {

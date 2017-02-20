@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.item;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.*;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
@@ -9,6 +11,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TEFlorbs;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.render.item.ModelFlorb;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -22,12 +27,15 @@ import net.minecraft.util.EnumHand;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-public class ItemFlorb extends ItemMulti {
+public class ItemFlorb extends ItemMulti implements IBakeryItem {
 
 	public static ItemStack setTag(ItemStack container, Fluid fluid) {
 
@@ -143,4 +151,34 @@ public class ItemFlorb extends ItemMulti {
 		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
 	}
 
+	/* IModelRegister */
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+		final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:florb", "type=florb");
+		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
+			@Override
+			public ModelResourceLocation getModelLocation(ItemStack stack) {
+				return location;
+			}
+		});
+		ModelRegistryHelper.register(location, new CCBakeryModel(""));
+		BlockBakery.registerItemKeyGenerator(this, new IItemStackKeyGenerator() {
+			@Override
+			public String generateKey(ItemStack stack) {
+				String fluid = "";
+				if (stack.getTagCompound() != null) {
+					fluid = "," + stack.getTagCompound().getString("Fluid");
+				}
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
+			}
+		});
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IItemBakery getBakery() {
+		return ModelFlorb.INSTANCE;
+	}
 }
