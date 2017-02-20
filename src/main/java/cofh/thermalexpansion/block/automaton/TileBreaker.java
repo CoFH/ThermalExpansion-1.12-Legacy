@@ -37,7 +37,7 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:automaton_breaker");
 
-		config();
+		// config();
 	}
 
 	public static void config() {

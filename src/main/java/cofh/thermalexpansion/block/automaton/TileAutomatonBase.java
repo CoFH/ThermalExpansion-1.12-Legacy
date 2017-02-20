@@ -1,13 +1,17 @@
 package cofh.thermalexpansion.block.automaton;
 
+import cofh.api.item.IAugmentItem.AugmentType;
+import cofh.api.tileentity.IAccelerable;
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.init.CoreProps;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.Utils;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -20,12 +24,20 @@ import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
-public abstract class TileAutomatonBase extends TilePowered implements IInventoryConnection, ITickable {
+public abstract class TileAutomatonBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
 
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockAutomaton.Type.values().length];
 	private static boolean enableSecurity = true;
+
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
+
+	static {
+		VALID_AUGMENTS_BASE.add(TEProps.AUTOMATON_DEPTH);
+		VALID_AUGMENTS_BASE.add(TEProps.AUTOMATON_RADIUS);
+	}
 
 	public static void config() {
 
@@ -33,11 +45,18 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Automaton.Securable", true, comment);
 	}
 
+	int processMax;
+	int processRem;
+	boolean wasActive;
+	boolean hasModeAugment;
+
 	CoFHFakePlayer fakePlayer;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
-	int radius = 0;
+	protected EnergyConfig energyConfig;
+
 	int depth = 0;
+	int radius = 0;
 
 	/* AUGMENTS */
 
@@ -165,6 +184,54 @@ public abstract class TileAutomatonBase extends TilePowered implements IInventor
 		}
 		nbt.setTag("StuffedInv", list);
 		return nbt;
+	}
+
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		radius = 0;
+		depth = 0;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		// calculate energy cost
+	}
+
+	@Override
+	protected boolean isValidAugment(AugmentType type, String id) {
+
+		if (type == AugmentType.CREATIVE && !isCreative) {
+			return false;
+		}
+		if (type == AugmentType.MODE && hasModeAugment) {
+			return false;
+		}
+		return VALID_AUGMENTS_BASE.contains(id) || /* validAugments[getType()].contains(id) ||*/ super.isValidAugment(type, id);
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (TEProps.AUTOMATON_DEPTH.equals(id)) {
+			depth++;
+			return true;
+		}
+		if (TEProps.AUTOMATON_RADIUS.equals(id)) {
+			radius++;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
+	/* IAccelerable */
+	@Override
+	public void updateAccelerable() {
+
 	}
 
 	/* IInventoryConnection */

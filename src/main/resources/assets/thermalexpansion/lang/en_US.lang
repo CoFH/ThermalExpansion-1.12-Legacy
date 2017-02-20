@@ -157,11 +157,11 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
-info.thermalexpansion.upgrade.creative.0=Converts a device to a Creative version.
-info.thermalexpansion.upgrade.creative.1=May be used on any tier of device.
-info.thermalexpansion.upgrade.full.0=Converts a device to a given tier.
+info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
+info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
+info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
 info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
-info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a device.
+info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
 info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
 
 item.thermalexpansion.augment.automatonDepth.name=

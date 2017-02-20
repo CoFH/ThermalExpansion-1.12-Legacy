@@ -309,15 +309,12 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	protected boolean isValidAugment(AugmentType type, String id) {
 
-		if (type == AugmentType.CREATIVE && level != -1) {
+		if (type == AugmentType.CREATIVE && !isCreative) {
 			return false;
 		}
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-//		if (type == AugmentType.ADVANCED && hasModeAugment) {
-//			return false;
-//		}
 		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 

@@ -12,6 +12,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -290,8 +291,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	@Override
 	public boolean postInit() {
 
-		String deviceFrame = "thermalexpansion:deviceFrame";
-		String tinPart = "thermalexpansion:machineTin";
+		String tinPart = "gearTin";
 
 		// @formatter:off
 		if (enable[Type.WATER_GEN.getMetadata()]) {
@@ -299,7 +299,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', deviceFrame,
+					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
@@ -311,11 +311,11 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', deviceFrame,
+					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.LAVA_BUCKET,
-					'Y', "dustRedstone"
+					'Y', Blocks.BRICK_BLOCK
 			));
 		}
 		if (enable[Type.HEAT_SINK.getMetadata()]) {
@@ -323,7 +323,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', deviceFrame,
+					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', "blockCopper",
@@ -335,7 +335,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', deviceFrame,
+					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Items.BUCKET,
@@ -347,7 +347,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 					" X ",
 					"YCY",
 					"IPI",
-					'C', deviceFrame,
+					'C', ItemFrame.frameDevice,
 					'I', tinPart,
 					'P', ItemMaterial.redstoneServo,
 					'X', Blocks.HOPPER,

@@ -2,6 +2,7 @@ package cofh.thermalexpansion.item;
 
 import cofh.api.core.IInitializer;
 import cofh.core.item.ItemMulti;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalfoundation.block.BlockGlass;
 import net.minecraft.entity.player.EntityPlayer;
@@ -24,7 +25,6 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 		setCreativeTab(ThermalExpansion.tabItems);
 	}
 
-
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
@@ -41,7 +41,7 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 	public boolean preInit() {
 
 		frameMachine = addItem(0, "frameMachine");
-		frameAutomaton = addItem(32, "frameAutomaton");
+		// frameAutomaton = addItem(32, "frameAutomaton");
 		frameDevice = addItem(64, "frameDevice");
 		frameCell = addItem(128, "frameCell");
 		frameLight = addItem(160, "frameLight");
@@ -58,6 +58,7 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 	@Override
 	public boolean postInit() {
 
+		// @formatter:off
 		addRecipe(ShapedRecipe(frameMachine,
 				"IGI",
 				"GCG",
@@ -66,14 +67,14 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 				'G', "blockGlass",
 				'I', "ingotIron"
 		));
-		addRecipe(ShapedRecipe(frameAutomaton,
-				"IGI",
-				"GCG",
-				"IGI",
-				'C', "gearBronze",
-				'G', "blockGlass",
-				'I', "ingotIron"
-		));
+//		addRecipe(ShapedRecipe(frameAutomaton,
+//				"IGI",
+//				"GCG",
+//				"IGI",
+//				'C', "gearBronze",
+//				'G', "blockGlass",
+//				'I', "ingotIron"
+//		));
 		addRecipe(ShapedRecipe(frameDevice,
 				"IGI",
 				"GCG",
@@ -90,7 +91,7 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 				'G', "blockGlass",
 				'I', "ingotIron"
 		));
-		addRecipe(ShapedRecipe(frameLight,
+		addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
 				" Q ",
 				"G G",
 				" I ",
@@ -98,6 +99,7 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 				'I', "ingotSignalum",
 				'Q', "gemQuartz"
 		));
+		// @formatter:on
 
 		return true;
 	}

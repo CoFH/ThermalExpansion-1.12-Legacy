@@ -12,6 +12,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -328,9 +329,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@Override
 	public boolean postInit() {
 
-		String machineFrame = "thermalexpansion:machineFrame";
-		String copperPart = "thermalexpansion:machineCopper";
-		String invarPart = "thermalexpansion:machineInvar";
+		String copperPart = "gearCopper";
+		String invarPart = "gearInvar";
 
 		// @formatter:off
 		if (enable[Type.FURNACE.getMetadata()]) {
@@ -338,7 +338,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', "dustRedstone",
@@ -350,7 +350,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.PISTON,
@@ -362,7 +362,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', "gearIron",
@@ -374,7 +374,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Items.BUCKET,
@@ -386,7 +386,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', "gearLumium",
@@ -398,8 +398,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
-					'I', invarPart,
+					'C', ItemFrame.frameMachine,
+					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.PISTON,
 					'Y', "ingotBronze"
@@ -410,11 +410,23 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', ItemMaterial.powerCoilElectrum,
 					'Y', Blocks.NETHER_BRICK
+			));
+		}
+		if (enable[Type.REFINERY.getMetadata()]) {
+			addRecipe(ShapedRecipe(machineRefinery,
+					" X ",
+					"YCY",
+					"IPI",
+					'C', ItemFrame.frameMachine,
+					'I', copperPart,
+					'P', ItemMaterial.powerCoilGold,
+					'X', "gearNickel",
+					'Y', "blockGlass"
 			));
 		}
 		if (enable[Type.TRANSPOSER.getMetadata()]) {
@@ -422,11 +434,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.CHEST,
-					'Y', "gearTin"
+					'X', Items.BUCKET,
+					'Y', "blockGlass"
 			));
 		}
 		if (enable[Type.CHARGER.getMetadata()]) {
@@ -434,31 +446,31 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', ItemMaterial.powerCoilElectrum,
 					'Y', ItemMaterial.powerCoilSilver
 			));
 		}
-		if (enable[Type.CRAFTER.getMetadata()]) {
-			addRecipe(ShapedRecipe(machineCrafter,
-					" X ",
-					"YCY",
-					"IPI",
-					'C', machineFrame,
-					'I', copperPart,
-					'P', ItemMaterial.powerCoilGold,
-					'X', Blocks.CHEST,
-					'Y', "gearTin"
-			));
-		}
+//		if (enable[Type.CRAFTER.getMetadata()]) {
+//			addRecipe(ShapedRecipe(machineCrafter,
+//					" X ",
+//					"YCY",
+//					"IPI",
+//					'C', ItemFrame.frameMachine,
+//					'I', copperPart,
+//					'P', ItemMaterial.powerCoilGold,
+//					'X', Blocks.CHEST,
+//					'Y', "gearTin"
+//			));
+//		}
 		if (enable[Type.PRECIPITATOR.getMetadata()]) {
 			addRecipe(ShapedRecipe(machinePrecipitator,
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', copperPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.PISTON,
@@ -470,7 +482,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 					" X ",
 					"YCY",
 					"IPI",
-					'C', machineFrame,
+					'C', ItemFrame.frameMachine,
 					'I', invarPart,
 					'P', ItemMaterial.powerCoilGold,
 					'X', Blocks.PISTON,

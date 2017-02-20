@@ -4,6 +4,7 @@ import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
+import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,6 +31,14 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
 
 		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
+
+		// config();
+	}
+
+	public static void config() {
+
+		String category = "Device.ItemBuffer";
+		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private int inputTracker;
