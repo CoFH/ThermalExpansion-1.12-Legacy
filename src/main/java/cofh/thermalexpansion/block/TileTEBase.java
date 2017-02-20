@@ -185,6 +185,12 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		}
 
 	}
+	
+	public void provideInfo(IProbeInfoWrapper wrapper, EnumFacing facing, EntityPlayer player) {
+        	wrapper.text("Progress:");
+        	wrapper.progress(getScaledProgress(100), 100);
+	}
+
 
 	/* ENERGY CONFIG */
 	public static class EnergyConfig {
