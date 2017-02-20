@@ -3,6 +3,7 @@ package cofh.thermalexpansion.init;
 import cofh.api.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemAugment;
+import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.item.ItemUpgrade;
 
 import java.util.ArrayList;
@@ -15,9 +16,11 @@ public class TEItems {
 
 	public static void preInit() {
 
+		itemFrame = new ItemFrame();
 		itemUpgrade = new ItemUpgrade();
 		itemAugment = new ItemAugment();
 
+		initList.add(itemFrame);
 		initList.add(itemUpgrade);
 		initList.add(itemAugment);
 
@@ -47,6 +50,7 @@ public class TEItems {
 	static ArrayList<IInitializer> initList = new ArrayList<IInitializer>();
 
 	/* REFERENCES */
+	public static ItemFrame itemFrame;
 	public static ItemUpgrade itemUpgrade;
 	public static ItemAugment itemAugment;
 

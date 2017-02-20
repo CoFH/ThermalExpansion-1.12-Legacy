@@ -186,6 +186,12 @@ item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
 
+item.thermalexpansion.frame.frameAutomaton.name=Automaton Frame
+item.thermalexpansion.frame.frameCell.name=Energy Cell Frame
+item.thermalexpansion.frame.frameDevice.name=Device Frame
+item.thermalexpansion.frame.frameLight.name=Illuminator Frame
+item.thermalexpansion.frame.frameMachine.name=Machine Frame
+
 item.thermalexpansion.upgrade.creative.name=Creative Conversion Kit
 item.thermalexpansion.upgrade.full1.name=Hardened Conversion Kit
 item.thermalexpansion.upgrade.full2.name=Reinforced Conversion Kit

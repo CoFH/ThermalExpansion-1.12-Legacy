@@ -76,8 +76,8 @@ public class TileTransposer extends TileMachineBase {
 	public byte modeFlag;
 	private byte mode;
 
-	public boolean reverseFlag;
-	public boolean reverse;
+	public boolean extractFlag;
+	public boolean extractMode;
 
 	public TileTransposer() {
 
@@ -138,7 +138,7 @@ public class TileTransposer extends TileMachineBase {
 		}
 		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
-		if (!reverse) {
+		if (!extractMode) {
 			if (tank.getFluid() == null || tank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 				return false;
 			}
@@ -160,7 +160,7 @@ public class TileTransposer extends TileMachineBase {
 		FluidStack handlerStack = tankProperties[0].getContents();
 		String prevID = renderFluid.getFluid().getName();
 
-		if (!reverse) {
+		if (!extractMode) {
 			renderFluid = tank.getFluid() == null ? null : tank.getFluid().copy();
 		} else {
 			renderFluid = tank.getFluid() == null ? handlerStack == null ? null : handlerStack.copy() : tank.getFluid().copy();
@@ -180,7 +180,7 @@ public class TileTransposer extends TileMachineBase {
 
 	private boolean processFinishHandler() {
 
-		if (!reverse) {
+		if (!extractMode) {
 			return fillHandler();
 		} else {
 			return emptyHandler();
@@ -197,7 +197,7 @@ public class TileTransposer extends TileMachineBase {
 		if (filled > 0) {
 			tank.drain(filled, true);
 			if (tankProperties[0].getContents().amount >= tankProperties[0].getCapacity()) {
-				reverse = reverseFlag;
+				extractMode = extractFlag;
 				return true;
 			}
 			return false;
@@ -216,7 +216,7 @@ public class TileTransposer extends TileMachineBase {
 		if (drained > 0) {
 			tank.fill(drainStack, true);
 			if (tankProperties[0].getContents() == null) {
-				reverse = reverseFlag;
+				extractMode = extractFlag;
 				return true;
 			}
 			return false;
@@ -237,7 +237,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			return;
 		}
-		if (reverse) {
+		if (extractMode) {
 			transferOutputFluid();
 		}
 		if (hasFluidHandler) {
@@ -276,7 +276,7 @@ public class TileTransposer extends TileMachineBase {
 			hasFluidHandler = true;
 			return false;
 		}
-		if (!reverse) {
+		if (!extractMode) {
 			if (tank.getFluidAmount() <= 0) {
 				return false;
 			}
@@ -299,7 +299,7 @@ public class TileTransposer extends TileMachineBase {
 			int result = inventory[2].stackSize + output.stackSize;
 			return result <= output.getMaxStackSize();
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[0]);
+			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[0]);
 
 			if (recipe == null || energyStorage.getEnergyStored() < recipe.getEnergy()) {
 				return false;
@@ -333,10 +333,10 @@ public class TileTransposer extends TileMachineBase {
 		}
 		RecipeTransposer recipe;
 
-		if (!reverse) {
+		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 		} else {
-			recipe = TransposerManager.getExtractionRecipe(inventory[1]);
+			recipe = TransposerManager.getExtractRecipe(inventory[1]);
 		}
 		if (recipe == null) {
 			return false;
@@ -350,12 +350,12 @@ public class TileTransposer extends TileMachineBase {
 		String prevID = renderFluid.getFluid().getName();
 		RecipeTransposer recipe;
 
-		if (!reverse) {
+		if (!extractMode) {
 			recipe = TransposerManager.getFillRecipe(inventory[0], tank.getFluid());
 			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 			renderFluid = tank.getFluid().copy();
 		} else {
-			recipe = TransposerManager.getExtractionRecipe(inventory[0]);
+			recipe = TransposerManager.getExtractRecipe(inventory[0]);
 			processMax = recipe.getEnergy() * energyMod / ENERGY_BASE;
 			renderFluid = recipe.getFluid().copy();
 		}
@@ -376,7 +376,7 @@ public class TileTransposer extends TileMachineBase {
 	@Override
 	protected void processFinish() {
 
-		if (!reverse) {
+		if (!extractMode) {
 			RecipeTransposer recipe = TransposerManager.getFillRecipe(inventory[1], tank.getFluid());
 
 			if (recipe == null) {
@@ -392,7 +392,7 @@ public class TileTransposer extends TileMachineBase {
 			inventory[1] = null;
 			tank.drain(recipe.getFluid().amount, true);
 		} else {
-			RecipeTransposer recipe = TransposerManager.getExtractionRecipe(inventory[1]);
+			RecipeTransposer recipe = TransposerManager.getExtractRecipe(inventory[1]);
 
 			if (recipe == null) {
 				processOff();
@@ -410,7 +410,7 @@ public class TileTransposer extends TileMachineBase {
 			inventory[1] = null;
 			tank.fill(recipe.getFluid(), true);
 		}
-		reverse = reverseFlag;
+		extractMode = extractFlag;
 	}
 
 	@Override
@@ -541,14 +541,14 @@ public class TileTransposer extends TileMachineBase {
 		if (inventory[1] != null && inventory[1].hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			hasFluidHandler = true;
 		}
-		reverse = nbt.getBoolean("Rev");
-		reverseFlag = reverse;
+		extractMode = nbt.getByte("Mode") == 1;
+		extractFlag = extractMode;
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
 			renderFluid = tank.getFluid();
-		} else if (TransposerManager.getExtractionRecipe(inventory[1]) != null) {
-			renderFluid = TransposerManager.getExtractionRecipe(inventory[1]).getFluid().copy();
+		} else if (TransposerManager.getExtractRecipe(inventory[1]) != null) {
+			renderFluid = TransposerManager.getExtractRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
 		}
 	}
@@ -561,7 +561,7 @@ public class TileTransposer extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTracker);
 		nbt.setInteger("TrackOut2", outputTrackerFluid);
-		nbt.setBoolean("Rev", reverse);
+		nbt.setByte("Mode", extractMode ? (byte) 1 : 0);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -581,8 +581,8 @@ public class TileTransposer extends TileMachineBase {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
-		payload.addBool(reverse);
-		payload.addBool(reverseFlag);
+		payload.addBool(extractMode);
+		payload.addBool(extractFlag);
 
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
@@ -607,7 +607,7 @@ public class TileTransposer extends TileMachineBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addBool(reverseFlag);
+		payload.addBool(extractFlag);
 
 		return payload;
 	}
@@ -617,8 +617,8 @@ public class TileTransposer extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
-		reverse = payload.getBool();
-		reverseFlag = payload.getBool();
+		extractMode = payload.getBool();
+		extractFlag = payload.getBool();
 		tank.setFluid(payload.getFluidStack());
 	}
 
@@ -636,9 +636,9 @@ public class TileTransposer extends TileMachineBase {
 
 		super.handleModePacket(payload);
 
-		reverseFlag = payload.getBool();
+		extractFlag = payload.getBool();
 		if (!isActive) {
-			reverse = reverseFlag;
+			extractMode = extractFlag;
 		}
 		markDirty();
 		callNeighborTileChange();
@@ -646,10 +646,10 @@ public class TileTransposer extends TileMachineBase {
 
 	public void setMode(boolean mode) {
 
-		boolean lastFlag = reverseFlag;
-		reverseFlag = mode;
+		boolean lastFlag = extractFlag;
+		extractFlag = mode;
 		sendModePacket();
-		reverseFlag = lastFlag;
+		extractFlag = lastFlag;
 	}
 
 	/* ITilePacketHandler */
@@ -677,7 +677,7 @@ public class TileTransposer extends TileMachineBase {
 				wasActive = true;
 				tracker.markTime(worldObj);
 				processRem = 0;
-				reverse = reverseFlag;
+				extractMode = extractFlag;
 			}
 		}
 		return stack;
@@ -696,7 +696,7 @@ public class TileTransposer extends TileMachineBase {
 				}
 			}
 			hasFluidHandler = false;
-			reverse = reverseFlag;
+			extractMode = extractFlag;
 		}
 		inventory[slot] = stack;
 
@@ -709,7 +709,7 @@ public class TileTransposer extends TileMachineBase {
 	public void markDirty() {
 
 		if (isActive && !hasValidInput()) {
-			reverse = reverseFlag;
+			extractMode = extractFlag;
 		}
 		super.markDirty();
 	}
@@ -753,13 +753,13 @@ public class TileTransposer extends TileMachineBase {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !reverse && sideCache[from.ordinal()] == 1, from != null && reverse && sideCache[from.ordinal()] == 3) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !extractMode && sideCache[from.ordinal()] == 1, from != null && extractMode && sideCache[from.ordinal()] == 3) };
 				}
 
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (reverse || from == null || sideCache[from.ordinal()] != 1) {
+					if (extractMode || from == null || sideCache[from.ordinal()] != 1) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);
@@ -769,7 +769,7 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -779,7 +779,7 @@ public class TileTransposer extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (!reverse || from == null || sideCache[from.ordinal()] != 3) {
+					if (!extractMode || from == null || sideCache[from.ordinal()] != 3) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

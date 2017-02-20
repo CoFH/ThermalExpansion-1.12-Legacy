@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
+import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -121,6 +122,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
+		if (redstoneControlOrDisable()) {
+			transferEnergy();
+		}
 		if (timeCheck()) {
 			int curScale = getScaledEnergyStored(15);
 			if (curScale != compareTracker) {
@@ -139,6 +143,22 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	protected int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
+	}
+
+	protected void transferEnergy() {
+
+		for (int i = outputTracker; i < 6 && energyStorage.getEnergyStored() > 0; i++) {
+			if (sideCache[i] == 1) {
+				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+			}
+		}
+		for (int i = 0; i < outputTracker && energyStorage.getEnergyStored() > 0; i++) {
+			if (sideCache[i] == 1) {
+				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+			}
+		}
+		outputTracker++;
+		outputTracker %= 6;
 	}
 
 	/* GUI METHODS */

@@ -59,7 +59,7 @@ public class TileCompactor extends TileMachineBase {
 	private int outputTracker;
 
 	public byte modeFlag;
-	private byte mode;
+	public byte mode;
 
 	public TileCompactor() {
 
@@ -221,6 +221,14 @@ public class TileCompactor extends TileMachineBase {
 		}
 		markDirty();
 		callNeighborTileChange();
+	}
+
+	public void setMode(byte mode) {
+
+		byte lastFlag = modeFlag;
+		modeFlag = mode;
+		sendModePacket();
+		modeFlag = lastFlag;
 	}
 
 	/* NBT METHODS */

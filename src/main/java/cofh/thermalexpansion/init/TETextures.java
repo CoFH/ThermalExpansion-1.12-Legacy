@@ -53,7 +53,7 @@ public class TETextures {
 		MACHINE_ACTIVE_SAWMILL =			register(map, MACHINE_ACTIVE_ + "sawmill");
 		MACHINE_ACTIVE_SMELTER =			register(map, MACHINE_ACTIVE_ + "smelter");
 		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
-		MACHINE_ACTIVE_COMPACTOR =			map.getMissingSprite();
+		MACHINE_ACTIVE_COMPACTOR =			register(map, MACHINE_ACTIVE_ + "compactor");
 		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
 		MACHINE_ACTIVE_REFINERY =           map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "refinery");
 		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");

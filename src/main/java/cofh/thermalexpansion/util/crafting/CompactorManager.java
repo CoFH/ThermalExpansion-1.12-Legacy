@@ -19,9 +19,9 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipePressMap = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeStorageMap = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMintMap = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapPress = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapStorage = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapMint = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
 	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<ComparableItemStackCompactor>();
 
 	static final int DEFAULT_ENERGY = 4000;
@@ -37,27 +37,27 @@ public class CompactorManager {
 
 		switch(mode) {
 			case PRESS:
-				recipe = recipePressMap.get(query);
+				recipe = recipeMapPress.get(query);
 
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
-					recipe = recipePressMap.get(query);
+					recipe = recipeMapPress.get(query);
 				}
 				break;
 			case STORAGE:
-				recipe = recipeStorageMap.get(query);
+				recipe = recipeMapStorage.get(query);
 
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
-					recipe = recipeStorageMap.get(query);
+					recipe = recipeMapStorage.get(query);
 				}
 				break;
 			case MINT:
-				recipe = recipeMintMap.get(query);
+				recipe = recipeMapMint.get(query);
 
 				if (recipe == null) {
 					query.metadata = OreDictionary.WILDCARD_VALUE;
-					recipe = recipeMintMap.get(query);
+					recipe = recipeMapMint.get(query);
 				}
 				break;
 		}
@@ -73,11 +73,11 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				return recipePressMap.values().toArray(new RecipeCompactor[recipePressMap.values().size()]);
+				return recipeMapPress.values().toArray(new RecipeCompactor[recipeMapPress.values().size()]);
 			case STORAGE:
-				return recipeStorageMap.values().toArray(new RecipeCompactor[recipeStorageMap.values().size()]);
+				return recipeMapStorage.values().toArray(new RecipeCompactor[recipeMapStorage.values().size()]);
 		}
-		return recipeMintMap.values().toArray(new RecipeCompactor[recipeMintMap.values().size()]);
+		return recipeMapMint.values().toArray(new RecipeCompactor[recipeMapMint.values().size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -162,37 +162,37 @@ public class CompactorManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempPress = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipePressMap.size());
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempStorage = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeStorageMap.size());
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempMint = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMintMap.size());
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempPress = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapPress.size());
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempStorage = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapStorage.size());
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempMint = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapMint.size());
 		Set<ComparableItemStackCompactor> tempSet = new THashSet<ComparableItemStackCompactor>();
 		RecipeCompactor tempRecipe;
 
-		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipePressMap.entrySet()) {
+		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeMapPress.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
 			tempPress.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeStorageMap.entrySet()) {
+		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeMapStorage.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
 			tempStorage.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeMintMap.entrySet()) {
+		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeMapMint.entrySet()) {
 			tempRecipe = entry.getValue();
 			ComparableItemStackCompactor input = new ComparableItemStackCompactor(tempRecipe.input);
 			tempMint.put(input, tempRecipe);
 			tempSet.add(input);
 		}
-		recipePressMap.clear();
-		recipeStorageMap.clear();
-		recipeMintMap.clear();
+		recipeMapPress.clear();
+		recipeMapStorage.clear();
+		recipeMapMint.clear();
 
-		recipePressMap = tempPress;
-		recipeStorageMap = tempStorage;
-		recipeMintMap = tempMint;
+		recipeMapPress = tempPress;
+		recipeMapStorage = tempStorage;
+		recipeMapMint = tempMint;
 
 		validationSet.clear();
 		validationSet = tempSet;
@@ -208,13 +208,13 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				recipePressMap.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapPress.put(new ComparableItemStackCompactor(input), recipe);
 				break;
 			case STORAGE:
-				recipeStorageMap.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapStorage.put(new ComparableItemStackCompactor(input), recipe);
 				break;
 			case MINT:
-				recipeMintMap.put(new ComparableItemStackCompactor(input), recipe);
+				recipeMapMint.put(new ComparableItemStackCompactor(input), recipe);
 				break;
 		}
 		validationSet.add(new ComparableItemStackCompactor(input));
@@ -226,11 +226,11 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				return recipePressMap.remove(new ComparableItemStackCompactor(input)) != null;
+				return recipeMapPress.remove(new ComparableItemStackCompactor(input)) != null;
 			case STORAGE:
-				return recipeStorageMap.remove(new ComparableItemStackCompactor(input)) != null;
+				return recipeMapStorage.remove(new ComparableItemStackCompactor(input)) != null;
 		}
-		return recipeMintMap.remove(new ComparableItemStackCompactor(input)) != null;
+		return recipeMapMint.remove(new ComparableItemStackCompactor(input)) != null;
 	}
 
 	/* HELPERS */

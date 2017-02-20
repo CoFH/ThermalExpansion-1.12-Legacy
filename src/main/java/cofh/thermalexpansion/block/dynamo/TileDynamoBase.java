@@ -187,12 +187,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 				}
 			}
 		} else if (redstoneControlOrDisable()) {
-			if (timeCheck() && canStart()) {
-				processStart();
-				processTick();
-				isActive = true;
-			} else {
-				processIdle();
+			if (timeCheck()) {
+				if (canStart()) {
+					processStart();
+					processTick();
+					isActive = true;
+				} else {
+					processIdle();
+				}
 			}
 		}
 		if (timeCheck()) {

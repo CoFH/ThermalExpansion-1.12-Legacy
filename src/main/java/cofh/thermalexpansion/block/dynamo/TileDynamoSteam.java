@@ -54,7 +54,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
-	private static final int STEAM_LOW = TEProps.MAX_FLUID_SMALL * 1 / 4;
+	// private static final int STEAM_LOW = TEProps.MAX_FLUID_SMALL * 1 / 4;
 
 	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -82,13 +82,16 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return steamTank.getFluidAmount() > STEAM_HIGH || (!augmentTurbine && (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || getEnergyValue(inventory[0]) > 0));
+		if (augmentTurbine) {
+			return steamTank.getFluidAmount() > STEAM_HIGH;
+		}
+		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || getEnergyValue(inventory[0]) > 0);
 	}
 
 	@Override
 	protected boolean canFinish() {
 
-		return steamTank.getFluidAmount() <= STEAM_LOW;
+		return steamTank.getFluidAmount() <= STEAM_HIGH;
 	}
 
 	@Override
@@ -113,14 +116,14 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 		int energy = calcEnergy();
 
-		if (fuelRF > 0) {
-			fuelRF -= energy;
-			waterRF -= energy;
-			steamTank.modifyFluidStored(energy / 2);
-		}
 		if (steamTank.getFluidAmount() > STEAM_HIGH) {
 			energyStorage.modifyEnergyStored(energy);
 			steamTank.modifyFluidStored(-energy / 2);
+		}
+		if (fuelRF > 0) {
+			fuelRF -= energy;
+			waterRF -= energy;
+			steamTank.modifyFluidStored(energy);
 		}
 		transferEnergy();
 	}
@@ -128,7 +131,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	protected void processIdle() {
 
-		steamTank.modifyFluidStored(-10);
+		steamTank.modifyFluidStored(-1);
 	}
 
 	@Override

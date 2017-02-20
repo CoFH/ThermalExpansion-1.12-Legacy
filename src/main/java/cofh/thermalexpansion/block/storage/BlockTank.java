@@ -51,6 +51,9 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		if (enable) {
 			list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0)));
 		}
+		for (int i = 0; i < 4; i++) {
+				list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
+		}
 	}
 
 	/* ITileEntityProvider */

@@ -18,13 +18,13 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 
 	public static ItemStack setDefaultTag(ItemStack stack) {
 
-		return setDefaultTag(stack, (byte) 0);
+		return setDefaultTag(stack, 0);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
+	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
-		stack.getTagCompound().setByte("Level", level);
+		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
 	}

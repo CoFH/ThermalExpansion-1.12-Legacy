@@ -75,11 +75,11 @@ public class GuiTransposer extends GuiPoweredBase {
 		slotInput.setVisible(myTile.hasSide(1));
 		slotOutput[0].setVisible(myTile.hasSide(4));
 		slotOutput[1].setVisible(myTile.hasSide(2));
-		slotTank.setVisible(!myTile.reverse && myTile.hasSide(1));
-		slotTankRev[0].setVisible(myTile.reverse && myTile.hasSide(4));
-		slotTankRev[1].setVisible(myTile.reverse && myTile.hasSide(3));
+		slotTank.setVisible(!myTile.extractMode && myTile.hasSide(1));
+		slotTankRev[0].setVisible(myTile.extractMode && myTile.hasSide(4));
+		slotTankRev[1].setVisible(myTile.extractMode && myTile.hasSide(3));
 
-		progressBackgroundRev.setVisible(myTile.reverse);
+		progressBackgroundRev.setVisible(myTile.extractMode);
 		progressFluid.setFluid(myTile.getTankFluid());
 		progressFluid.setSize(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0, 16);
 
@@ -90,19 +90,19 @@ public class GuiTransposer extends GuiPoweredBase {
 			slotOutput[1].slotRender = 1;
 			slotTankRev[1].slotRender = 1;
 		}
-		if (myTile.reverse) {
+		if (myTile.extractMode) {
 			progressFluid.setPosition(112, 19);
 		} else {
 			progressFluid.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 19);
 		}
-		progressOverlay.setVisible(!myTile.reverse);
+		progressOverlay.setVisible(!myTile.extractMode);
 		progressOverlay.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
-		progressOverlayRev.setVisible(myTile.reverse);
+		progressOverlayRev.setVisible(myTile.extractMode);
 		progressOverlayRev.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
 		speed.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledSpeed(SPEED) : 0);
 
-		if (myTile.reverse) {
-			if (!myTile.reverseFlag) {
+		if (myTile.extractMode) {
+			if (!myTile.extractFlag) {
 				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeWait");
 				mode.setDisabled();
 			} else {
@@ -112,7 +112,7 @@ public class GuiTransposer extends GuiPoweredBase {
 				mode.setActive();
 			}
 		} else {
-			if (myTile.reverseFlag) {
+			if (myTile.extractFlag) {
 				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeWait");
 				mode.setDisabled();
 			} else {
@@ -128,13 +128,13 @@ public class GuiTransposer extends GuiPoweredBase {
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		if (buttonName.equals("Mode")) {
-			if (myTile.reverse == myTile.reverseFlag) {
-				if (myTile.reverse) {
+			if (myTile.extractMode == myTile.extractFlag) {
+				if (myTile.extractMode) {
 					playClickSound(1.0F, 0.8F);
 				} else {
 					playClickSound(1.0F, 0.6F);
 				}
-				myTile.setMode(!myTile.reverse);
+				myTile.setMode(!myTile.extractMode);
 			}
 		}
 	}

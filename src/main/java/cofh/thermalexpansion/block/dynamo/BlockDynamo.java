@@ -331,7 +331,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearCopper",
-					'I', "ingotCopper",
+					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
 		}
@@ -342,7 +342,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearInvar",
-					'I', "ingotInvar",
+					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
 		}
@@ -352,8 +352,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"GIG",
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
-					'G', "gearIron",
-					'I', "gearIron",
+					'G', "gearTin",
+					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
 		}
@@ -364,7 +364,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearBronze",
-					'I', "ingotBronze",
+					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
 		}
@@ -375,7 +375,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearElectrum",
-					'I', "ingotElectrum",
+					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
 		}

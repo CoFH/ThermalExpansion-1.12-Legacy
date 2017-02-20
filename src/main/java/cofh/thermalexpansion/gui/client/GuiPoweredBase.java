@@ -59,7 +59,7 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (baseTile.isAugmentable()) {
 			augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
 		}
-		redstoneTab = addTab(new TabRedstone(this, baseTile));
+		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 
 		configTab = addTab(new TabConfigurationTransfer(this, baseTile));

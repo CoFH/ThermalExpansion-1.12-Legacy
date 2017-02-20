@@ -84,10 +84,10 @@ public class IMCHandler {
 						TransposerManager.removeFillRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")));
 						continue;
 					} else if (theMessage.key.equalsIgnoreCase("TransposerExtractRecipe")) {
-						TransposerManager.addExtractionRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getInteger("chance"), theNBT.getBoolean("reversible"));
+						TransposerManager.addExtractRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("fluid")), theNBT.getInteger("chance"), theNBT.getBoolean("reversible"));
 						continue;
 					} else if (theMessage.key.equalsIgnoreCase("RemoveTransposerExtractRecipe")) {
-						TransposerManager.removeExtractionRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
+						TransposerManager.removeExtractRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")));
 						continue;
 					} else if (theMessage.key.equalsIgnoreCase("ChargerRecipe")) {
 						ChargerManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("output")));

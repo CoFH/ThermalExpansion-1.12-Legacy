@@ -96,7 +96,7 @@ public class ThermalExpansion {
 	public void postInit(FMLPostInitializationEvent event) {
 
 		TEBlocks.postInit();
-		TEItems.initialize();
+		TEItems.postInit();
 		TEFlorbs.postInit();
 
 		managerDefault();

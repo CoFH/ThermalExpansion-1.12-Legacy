@@ -45,7 +45,7 @@ public class GuiDeviceBase extends GuiCore {
 		super.initGui();
 
 		// Right Side
-		redstoneTab = addTab(new TabRedstone(this, baseTile));
+		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
 		configTab = addTab(new TabConfiguration(this, baseTile));
 
 		// Left Side

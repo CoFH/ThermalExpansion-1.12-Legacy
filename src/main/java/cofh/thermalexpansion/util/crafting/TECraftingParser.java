@@ -521,7 +521,7 @@ public class TECraftingParser {
 			chance = 100;
 		}
 		if (extractRecipe) {
-			return TransposerManager.addExtractionRecipe(energy, input, output, fluid, chance, reversible);
+			return TransposerManager.addExtractRecipe(energy, input, output, fluid, chance, reversible);
 		}
 		return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible);
 	}
@@ -650,7 +650,7 @@ public class TECraftingParser {
 			extractRecipe = false;
 		}
 		if (extractRecipe) {
-			return TransposerManager.removeExtractionRecipe(input);
+			return TransposerManager.removeExtractRecipe(input);
 		}
 		return TransposerManager.removeFillRecipe(input, fluid);
 	}

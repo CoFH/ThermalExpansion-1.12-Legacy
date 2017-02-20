@@ -67,16 +67,16 @@ public class GuiCompactor extends GuiPoweredBase {
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		//		if (buttonName.equals("Mode")) {
-		//			if (myTile.mode == myTile.modeFlag) {
-		//				if (myTile.reverse) {
-		//					playClickSound(1.0F, 0.8F);
-		//				} else {
-		//					playClickSound(1.0F, 0.6F);
-		//				}
-		//				myTile.setMode(!myTile.mode);
-		//			}
-		//		}
+		if (buttonName.equals("Mode")) {
+			if (myTile.mode == myTile.modeFlag) {
+				if (myTile.mode % 2 == 0) {
+					playClickSound(1.0F, 0.8F);
+				} else {
+					playClickSound(1.0F, 0.6F);
+				}
+				// myTile.setMode(myTile.mode +);
+			}
+		}
 	}
 
 }

@@ -318,16 +318,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustCryotheum"
 		));
 
-		addRecipe(ShapedRecipe(machineCrucibleAlloy,
-				" G ",
-				"ICI",
-				"YXY",
-				'C', ItemMaterial.redstoneServo,
-				'G', "gearSignalum",
-				'I', "plateInvar",
-				'X', Blocks.BRICK_BLOCK,
-				'Y', "dustCryotheum"
-		));
+//		addRecipe(ShapedRecipe(machineCrucibleAlloy,
+//				" G ",
+//				"ICI",
+//				"YXY",
+//				'C', ItemMaterial.redstoneServo,
+//				'G', "gearSignalum",
+//				'I', "plateInvar",
+//				'X', Blocks.BRICK_BLOCK,
+//				'Y', "dustCryotheum"
+//		));
 
 //		addRecipe(ShapedRecipe(machineCompactorMint,
 //				" G ",

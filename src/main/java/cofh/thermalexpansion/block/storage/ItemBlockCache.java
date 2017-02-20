@@ -18,16 +18,16 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 
 	public static ItemStack setDefaultTag(ItemStack stack) {
 
-		return setDefaultTag(stack, (byte) 0);
+		return setDefaultTag(stack, 0);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack stack, byte level) {
+	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
 		// ReconfigurableHelper.setSideCache(stack, TileCache.defaultSideConfig.defaultSides);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
-		stack.getTagCompound().setByte("Level", level);
+		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
 	}
