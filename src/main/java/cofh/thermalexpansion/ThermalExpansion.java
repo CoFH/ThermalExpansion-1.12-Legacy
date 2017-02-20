@@ -85,6 +85,7 @@ public class ThermalExpansion {
 		TEBlocks.initialize();
 		TEItems.initialize();
 		TEFlorbs.initialize();
+		TopPlugin.initialize();
 
 		/* Register Handlers */
 		registerHandlers();
