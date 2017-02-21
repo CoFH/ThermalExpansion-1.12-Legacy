@@ -1,12 +1,16 @@
 package cofh.thermalexpansion.block.storage;
 
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import codechicken.lib.block.property.unlisted.UnlistedFluidStackProperty;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.*;
 import cofh.api.core.IModelRegister;
+import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.render.RenderTank;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -21,7 +25,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -42,6 +48,19 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+
+		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+
+		// UnListed
+		builder.add(FLUID_STACK);
+		builder.add(TEProps.ACTIVE);
+		builder.add(TEProps.LEVEL);
+
+		return builder.build();
 	}
 
 	@Override
@@ -145,13 +164,48 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public ICustomBlockBakery getCustomBakery() {
 
-		return null;
+		return RenderTank.instance;
 	}
 
 	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
+
+		StateMapper mapper = new StateMapper("thermalexpansion", "tank", "tank");
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
+		ModelLoader.setCustomStateMapper(this, mapper);
+		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
+			@Override
+			public String generateKey(IExtendedBlockState state) {
+				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+				builder.append(",output=").append(TEProps.ACTIVE);
+				FluidStack stack = state.getValue(FLUID_STACK);
+				if (stack != null) {
+					builder.append(",fluid=").append(stack.getFluid().getName());
+					builder.append(",amount=").append(stack.amount);
+				}
+
+				return builder.toString();
+			}
+		});
+		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
+			@Override
+			public String generateKey(ItemStack stack) {
+				String fluidAppend = "";
+				if (stack.getTagCompound() != null) {
+
+					FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+					if (fluid != null && fluid.amount > 0) {
+						fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
+					}
+				}
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack) + fluidAppend;
+			}
+		});
 
 	}
 
@@ -162,7 +216,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		this.setRegistryName("tank");
 		GameRegistry.register(this);
 
-		ItemBlockTank itemBlock = new ItemBlockTank(this);
+		itemBlock = new ItemBlockTank(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -191,5 +245,8 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	/* REFERENCES */
 	public static ItemStack tank;
+	public static ItemBlockTank itemBlock;
+
+	public static final UnlistedFluidStackProperty FLUID_STACK = new UnlistedFluidStackProperty("fluid_stack");
 
 }
