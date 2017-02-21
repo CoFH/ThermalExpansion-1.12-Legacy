@@ -164,6 +164,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 				return location;
 			}
 		});
+		ModelLoader.setCustomModelResourceLocation(this, 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel(""));
 		BlockBakery.registerItemKeyGenerator(this, new IItemStackKeyGenerator() {
 			@Override
