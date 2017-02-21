@@ -22,8 +22,7 @@ public class ContainerPulverizer extends ContainerTEBase implements ISlotValidat
 		myTile = (TilePulverizer) tile;
 		addSlotToContainer(new SlotValidated(this, myTile, 0, 53, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 1, 116, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 134, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 116, 53));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 116, 53));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
 

@@ -157,6 +157,10 @@ info.thermalexpansion.machine.sawmill=Provides additional lumber.
 info.thermalexpansion.machine.smelter=Smelts alloys and metals. Two inputs.
 info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers.
 
+info.thermalexpansion.storage.cache=Stores a large amount of an item.
+info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.
+info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
+
 info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
 info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
 info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
@@ -257,9 +261,9 @@ tab.thermalexpansion.machine.centrifuge.2=
 tab.thermalexpansion.machine.charger.0=Infuses energy into compatible items.
 tab.thermalexpansion.machine.charger.1=Charge rate may be limited by the item.
 tab.thermalexpansion.machine.charger.2=Feel the hum.
-tab.thermalexpansion.machine.compactor.0=
-tab.thermalexpansion.machine.compactor.1=
-tab.thermalexpansion.machine.compactor.2=
+tab.thermalexpansion.machine.compactor.0=Applies pressure to items, changing their form.
+tab.thermalexpansion.machine.compactor.1=Useful for crafting advanced components.
+tab.thermalexpansion.machine.compactor.2=Click the button to change modes.
 tab.thermalexpansion.machine.crafter.0=Crafts recipes saved in Schematics.
 tab.thermalexpansion.machine.crafter.1=Uses 20 Redstone Flux per item.
 tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
@@ -296,7 +300,7 @@ tab.thermalexpansion.machine.smelter.1=Useful for processing ores and building a
 tab.thermalexpansion.machine.smelter.2=Left slot can be locked to only contain certain items.
 tab.thermalexpansion.machine.smelter.3=Will absolutely not cook food.
 tab.thermalexpansion.machine.transposer.0=Fills or empties things that hold fluids.
-tab.thermalexpansion.machine.transposer.1=Click the button to change between Fill and Extract modes.
+tab.thermalexpansion.machine.transposer.1=Click the button to change modes.
 tab.thermalexpansion.machine.transposer.2=Typically reversible.
 
 tile.thermalexpansion.automaton.breaker.name=Terrain Smasher

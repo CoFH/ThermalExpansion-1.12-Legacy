@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -53,13 +55,15 @@ public class TilePulverizer extends TileMachineBase {
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
 
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
 	/* AUGMENTS */
 	protected boolean augmentGeode;
 
 	public TilePulverizer() {
 
 		super();
-		inventory = new ItemStack[1 + 2 + 1 + 1];
+		inventory = new ItemStack[1 + 1 + 1 + 1];
 	}
 
 	@Override
@@ -82,31 +86,24 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
 			return false;
 		}
+		if (recipe == null) {
+			return false;
+		}
+		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+			return false;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
-			if (!inventory[3].isItemEqual(secondaryItem)) {
+		if (!augmentSecondaryNull && secondaryItem != null && inventory[2] != null) {
+			if (!inventory[2].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (inventory[2].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		final int start = 1, end = start + 2;
-
-		int room = 0;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				return true;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			room += stack.getMaxStackSize() - stack.stackSize;
-		}
-		return room >= primaryItem.stackSize;
+		return inventory[1] == null || inventory[1].isItemEqual(primaryItem) && inventory[1].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -135,41 +132,27 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		final int start = 1, end = start + 2;
-
-		int outputAmt = primaryItem.stackSize;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				inventory[i] = ItemHelper.cloneStack(primaryItem);
-				break;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
-			outputAmt -= add;
-			stack.stackSize += add;
-			if (outputAmt == 0) {
-				break;
-			}
+		if (inventory[1] == null) {
+			inventory[1] = ItemHelper.cloneStack(primaryItem);
+		} else {
+			inventory[1].stackSize += primaryItem.stackSize;
 		}
 		if (secondaryItem != null) {
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
-				if (inventory[3] == null) {
-					inventory[3] = ItemHelper.cloneStack(secondaryItem);
+				if (inventory[2] == null) {
+					inventory[2] = ItemHelper.cloneStack(secondaryItem);
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
+						inventory[2].stackSize += secondaryItem.stackSize;
 					}
-				} else if (inventory[3].isItemEqual(secondaryItem)) {
-					inventory[3].stackSize += secondaryItem.stackSize;
+				} else if (inventory[2].isItemEqual(secondaryItem)) {
+					inventory[2].stackSize += secondaryItem.stackSize;
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
+						inventory[2].stackSize += secondaryItem.stackSize;
 					}
 				}
-				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
-					inventory[3].stackSize = inventory[3].getMaxStackSize();
+				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {
+					inventory[2].stackSize = inventory[2].getMaxStackSize();
 				}
 			}
 		}
@@ -205,30 +188,24 @@ public class TilePulverizer extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[1] != null || inventory[2] != null) {
+		if (inventory[1] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(1, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-						if (!transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-							transferItem(1, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
-						}
-						outputTrackerPrimary = side;
-						break;
-					} else if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
 				}
 			}
 		}
-		if (inventory[3] == null) {
+		if (inventory[2] == null) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -258,6 +235,7 @@ public class TilePulverizer extends TileMachineBase {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTrackerPrimary = nbt.getInteger("TrackOut1");
 		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -268,7 +246,29 @@ public class TilePulverizer extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		tank.writeToNBT(nbt);
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		//		payload.addBool(augmentTapper);
+		payload.addFluidStack(tank.getFluid());
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		//		augmentTapper = payload.getBool();
+		//		flagTapper = augmentTapper;
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */

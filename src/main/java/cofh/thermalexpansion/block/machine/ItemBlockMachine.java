@@ -40,9 +40,6 @@ public class ItemBlockMachine extends ItemBlockCore {
 	public ItemBlockMachine(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override
@@ -86,7 +83,9 @@ public class ItemBlockMachine extends ItemBlockCore {
 		String name = BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
-		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		if (getLevel(stack) >= 2) {
+			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		}
 	}
 
 }

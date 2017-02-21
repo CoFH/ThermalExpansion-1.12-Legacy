@@ -110,7 +110,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return true;
 	}
 
-	protected static int getFluidTransfer(int level) {
+	protected int getFluidTransfer(int level) {
 
 		return FLUID_TRANSFER[MathHelper.clamp(level, 0, 4)];
 	}
@@ -383,13 +383,21 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public boolean setAccess(AccessMode access) {
 
 		this.access = access;
-		sendUpdatePacket(Side.SERVER);
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			sendUpdatePacket(Side.SERVER);
+		} else {
+			sendUpdatePacket(Side.CLIENT);
+		}
 		return true;
 	}
 
 	@Override
 	public boolean setOwnerName(String name) {
 
+		if (owner != CoreProps.DEFAULT_OWNER) {
+			return false;
+		}
 		MinecraftServer server = ServerUtils.mc();
 		if (server == null) {
 			return false;
@@ -407,6 +415,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	@Override
 	public boolean setOwner(GameProfile profile) {
 
+		if (owner != CoreProps.DEFAULT_OWNER) {
+			return false;
+		}
 		if (SecurityHelper.isDefaultUUID(owner.getId())) {
 			owner = profile;
 			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
@@ -420,8 +431,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 						}
 					}.start();
 				}
-				markChunkDirty();
-
+				if (worldObj != null) {
+					markChunkDirty();
+				}
 				return true;
 			}
 		}

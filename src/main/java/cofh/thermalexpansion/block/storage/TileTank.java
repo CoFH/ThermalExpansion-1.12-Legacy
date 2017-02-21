@@ -80,11 +80,32 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	@Override
 	protected boolean setLevel(int level) {
 
-		if (super.setLevel(level)) {
-			tank.setCapacity(getCapacity(level));
-			return true;
+		if (level >= 0) {
+			if (level > 4) {
+				level = 4;
+			}
+			this.level = (byte) level;
 		}
-		return false;
+		tank.setCapacity(getCapacity(level));
+		return true;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		hasAutoInput = false;
+		hasAutoOutput = false;
+
+		hasRedstoneControl = false;
+		hasAdvRedstoneControl = false;
+
+		switch (level) {
+			default:            // Creative
+			case 2:             // Reinforced
+				hasRedstoneControl = true;
+			case 0:             // Basic;
+				hasAutoOutput = true;
+		}
 	}
 
 	@Override

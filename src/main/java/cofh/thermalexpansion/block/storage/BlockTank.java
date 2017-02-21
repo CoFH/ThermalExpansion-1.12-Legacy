@@ -52,7 +52,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0)));
 		}
 		for (int i = 0; i < 5; i++) {
-				list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
+			list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
 		}
 	}
 
@@ -171,6 +171,8 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	@Override
 	public boolean initialize() {
+
+		TileTank.initialize();
 
 		return true;
 	}

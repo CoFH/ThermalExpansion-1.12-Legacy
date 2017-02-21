@@ -23,8 +23,7 @@ public class ContainerSmelter extends ContainerTEBase {
 		addSlotToContainer(new SlotValidated(lockSlot, myTile, 0, 32, 26));
 		addSlotToContainer(new SlotValidated(otherSlot, myTile, 1, 56, 26));
 		addSlotToContainer(new SlotRemoveOnly(myTile, 2, 116, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 134, 26));
-		addSlotToContainer(new SlotRemoveOnly(myTile, 4, 116, 53));
+		addSlotToContainer(new SlotRemoveOnly(myTile, 3, 116, 53));
 		addSlotToContainer(new SlotEnergy(myTile, myTile.getChargeSlot(), 8, 53));
 	}
 

@@ -35,7 +35,7 @@ public class CompactorManager {
 		ComparableItemStackCompactor query = new ComparableItemStackCompactor(input);
 		RecipeCompactor recipe = null;
 
-		switch(mode) {
+		switch (mode) {
 			case PRESS:
 				recipe = recipeMapPress.get(query);
 
@@ -153,6 +153,11 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum);
 			addDefaultStorageRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium);
 			addDefaultStorageRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium);
+		}
+
+		/* MINT */
+		{
+
 		}
 	}
 

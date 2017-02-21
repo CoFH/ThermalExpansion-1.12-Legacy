@@ -83,6 +83,9 @@ public class TileFurnace extends TileMachineBase {
 		if (recipe == null) {
 			return false;
 		}
+		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+			return false;
+		}
 		ItemStack output = recipe.getOutput();
 
 		return inventory[1] == null || inventory[1].isItemEqual(output) && inventory[1].stackSize + output.stackSize <= output.getMaxStackSize();

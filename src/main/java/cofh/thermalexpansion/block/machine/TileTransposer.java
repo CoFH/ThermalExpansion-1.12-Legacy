@@ -673,10 +673,7 @@ public class TileTransposer extends TileMachineBase {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				extractMode = extractFlag;
 			}
 		}
@@ -689,10 +686,7 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && inventory[slot] != null) {
 				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
+					processOff();
 				}
 			}
 			hasFluidHandler = false;

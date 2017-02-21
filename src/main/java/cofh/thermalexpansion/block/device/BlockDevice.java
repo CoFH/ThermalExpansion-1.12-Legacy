@@ -431,6 +431,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static ItemStack deviceTapper;
 	public static ItemStack deviceItemBuffer;
 
+	public static ItemStack deviceTrader;
+
 	public static ItemStack deviceFluidBuffer;
 	public static ItemStack deviceEnergyBuffer;
 	public static ItemStack deviceLexicon;

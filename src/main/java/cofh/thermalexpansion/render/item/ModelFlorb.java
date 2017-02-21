@@ -65,4 +65,5 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 		MASK = textureMap.registerSprite(new ResourceLocation("thermalexpansion:items/florb/florb_mask"));
 		OUTLINE = textureMap.registerSprite(new ResourceLocation("thermalexpansion:items/florb/florb_outline"));
 	}
+
 }

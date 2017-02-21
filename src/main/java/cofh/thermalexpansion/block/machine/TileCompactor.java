@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
@@ -61,6 +63,10 @@ public class TileCompactor extends TileMachineBase {
 	public byte modeFlag;
 	public byte mode;
 
+	/* AUGMENTS */
+	protected boolean augmentMint;
+	protected boolean flagMint;
+
 	public TileCompactor() {
 
 		super();
@@ -82,6 +88,9 @@ public class TileCompactor extends TileMachineBase {
 		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		if (recipe == null) {
+			return false;
+		}
+		if (inventory[0].stackSize < recipe.getInput().stackSize) {
 			return false;
 		}
 		ItemStack output = recipe.getOutput();
@@ -179,12 +188,18 @@ public class TileCompactor extends TileMachineBase {
 		return new ContainerCompactor(inventory, this);
 	}
 
+	public boolean augmentMint() {
+
+		return augmentMint && flagMint;
+	}
+
 	/* NETWORK METHODS */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addBool(augmentMint);
 		payload.addByte(mode);
 		payload.addByte(modeFlag);
 
@@ -206,6 +221,9 @@ public class TileCompactor extends TileMachineBase {
 
 		super.handleGuiPacket(payload);
 
+		augmentMint = payload.getBool();
+		flagMint = augmentMint;
+
 		mode = payload.getByte();
 		modeFlag = payload.getByte();
 	}
@@ -223,10 +241,23 @@ public class TileCompactor extends TileMachineBase {
 		callNeighborTileChange();
 	}
 
-	public void setMode(byte mode) {
+	public void toggleMode() {
+
+		switch (VALUES[mode]) {
+			case PRESS:
+			case MINT:
+				setMode(1);
+				break;
+			case STORAGE:
+				setMode(augmentMint ? 2 : 0);
+				break;
+		}
+	}
+
+	private void setMode(int mode) {
 
 		byte lastFlag = modeFlag;
-		modeFlag = mode;
+		modeFlag = (byte) mode;
 		sendModePacket();
 		modeFlag = lastFlag;
 	}
@@ -255,7 +286,78 @@ public class TileCompactor extends TileMachineBase {
 		return nbt;
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentMint = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (augmentMint && VALUES[mode] == Mode.PRESS) {
+			mode = 2;
+			modeFlag = 2;
+			processOff();
+		} else if (!augmentMint && VALUES[mode] == Mode.MINT) {
+			mode = 0;
+			modeFlag = 0;
+			processOff();
+		}
+
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentMint && TEProps.MACHINE_COMPACTOR_MINT.equals(id)) {
+			augmentMint = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
 	/* IInventory */
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+
+		ItemStack stack = super.decrStackSize(slot, amount);
+
+		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
+			if (isActive && (inventory[slot] == null || !hasValidInput())) {
+				processOff();
+				mode = modeFlag;
+			}
+		}
+		return stack;
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+
+		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
+			mode = modeFlag;
+		}
+		super.setInventorySlotContents(slot, stack);
+	}
+
+	@Override
+	public void markDirty() {
+
+		if (isActive && !hasValidInput()) {
+			mode = modeFlag;
+		}
+		super.markDirty();
+	}
+
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 

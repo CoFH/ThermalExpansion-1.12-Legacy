@@ -22,9 +22,14 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
 
+	public static int[] SEND = { 1, 4, 9, 16, 25 };
+	public static int[] RECV = { 1, 4, 9, 16, 25 };
+
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= 2000000;
+			SEND[i] *= 1000;
+			RECV[i] *= 1000;
 		}
 	}
 
@@ -91,11 +96,32 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean setLevel(int level) {
 
-		if (super.setLevel(level)) {
-			energyStorage.setCapacity(getCapacity(level));
-			return true;
+		if (level >= 0) {
+			if (level > 4) {
+				level = 4;
+			}
+			this.level = (byte) level;
 		}
-		return false;
+		energyStorage.setCapacity(getCapacity(level));
+		return true;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		hasAutoInput = false;
+		hasAutoOutput = false;
+
+		hasRedstoneControl = false;
+		hasAdvRedstoneControl = false;
+
+		switch (level) {
+			default:            // Creative
+			case 2:             // Reinforced
+				hasRedstoneControl = true;
+			case 0:             // Basic;
+				hasAutoOutput = true;
+		}
 	}
 
 	@Override

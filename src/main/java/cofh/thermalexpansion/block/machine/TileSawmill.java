@@ -300,6 +300,7 @@ public class TileSawmill extends TileMachineBase {
 		outputTrackerPrimary = nbt.getInteger("TrackOut1");
 		outputTrackerSecondary = nbt.getInteger("TrackOut2");
 		outputTrackerFluid = nbt.getInteger("TrackOut3");
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -311,6 +312,7 @@ public class TileSawmill extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setInteger("Trackout3", outputTrackerFluid);
+		tank.writeToNBT(nbt);
 		return nbt;
 	}
 

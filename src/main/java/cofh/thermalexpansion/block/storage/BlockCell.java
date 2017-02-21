@@ -157,6 +157,8 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public boolean initialize() {
 
+		TileCell.initialize();
+
 		return true;
 	}
 
