@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -93,6 +94,12 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			TileTank tile = (TileTank) world.getTileEntity(pos);
 
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
+
+			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+
+			if (fluid != null) {
+				tile.getTank().setFluid(fluid);
+			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -134,7 +141,9 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		if (tile != null) {
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
-			return FluidHelper.interactWithHandler(heldItem, handler, player, hand) || FluidHelper.isFluidHandler(heldItem);
+			if (FluidHelper.isFluidHandler(heldItem) && FluidHelper.interactWithHandler(heldItem, handler, player, hand)) {
+				return true;
+			}
 		}
 		return super.onBlockActivated(world, pos, state, player, hand, heldItem, side, hitX, hitY, hitZ);
 	}
@@ -143,6 +152,22 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
 
 		return new AxisAlignedBB(0.125F, 0F, 0.125F, 0.875F, 1F, 0.875F);
+	}
+
+	/* HELPERS */
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+
+		NBTTagCompound retTag = super.getItemStackTag(world, pos);
+		TileTank tile = (TileTank) world.getTileEntity(pos);
+
+		if (tile != null) {
+			FluidStack fluid = tile.getTankFluid();
+			if (fluid != null) {
+				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
+			}
+		}
+		return retTag;
 	}
 
 	/* RENDERING METHODS */

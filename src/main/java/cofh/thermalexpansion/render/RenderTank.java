@@ -36,7 +36,6 @@ public class RenderTank implements ILayeredBlockBakery {
 	static CCModel modelFrame = CCModel.quadModel(48);
 
 	static {
-
 		generateFluidModels();
 
 		Cuboid6 box = new Cuboid6(0.125, 0, 0.125, 0.875, 1, 0.875);
@@ -66,6 +65,7 @@ public class RenderTank implements ILayeredBlockBakery {
 
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+
 		TileTank tank = ((TileTank) tileEntity);
 		state = state.withProperty(BlockTank.FLUID_STACK, tank.getTankFluid());
 		state = state.withProperty(TEProps.ACTIVE, tank.enableAutoOutput);
@@ -75,6 +75,7 @@ public class RenderTank implements ILayeredBlockBakery {
 
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
 		FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK);
 		int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;
 		int type = state.getValue(TEProps.LEVEL);
@@ -90,7 +91,6 @@ public class RenderTank implements ILayeredBlockBakery {
 			} else {
 				renderFluid(ccrs, type, fluidStack);
 			}
-
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
@@ -99,6 +99,7 @@ public class RenderTank implements ILayeredBlockBakery {
 
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
 		if (face == null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -153,4 +154,5 @@ public class RenderTank implements ILayeredBlockBakery {
 		}
 		modelFluid[fluidLevel].render(ccrs, new IconTransformation(fluidTex));
 	}
+
 }

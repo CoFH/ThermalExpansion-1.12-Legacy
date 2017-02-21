@@ -60,6 +60,7 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 
 	@Override
 	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+
 		return PerspectiveAwareModelProperties.DEFAULT_ITEM;
 	}
 

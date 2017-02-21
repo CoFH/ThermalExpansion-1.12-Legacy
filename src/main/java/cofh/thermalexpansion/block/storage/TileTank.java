@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -87,6 +89,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 			this.level = (byte) level;
 		}
 		tank.setCapacity(getCapacity(level));
+		return true;
+	}
+
+	@Override
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
+
+		enableAutoOutput = !enableAutoOutput;
+		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -222,6 +232,25 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt);
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getPacket() {
+
+		PacketCoFHBase payload = super.getPacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
