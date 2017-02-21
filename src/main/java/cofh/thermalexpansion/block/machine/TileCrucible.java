@@ -233,7 +233,7 @@ public class TileCrucible extends TileMachineBase {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
 			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		}

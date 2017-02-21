@@ -158,6 +158,10 @@ public class SmelterManager {
 			addAlloyRecipe(energy, "dustBronze", 1, "dustObsidian", 4, blockGlass);
 			addAlloyRecipe(energy, "ingotBronze", 1, "dustObsidian", 4, blockGlass);
 
+			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2);
+			addAlloyRecipe(energy, "dustConstantan", 1, "dustObsidian", 4, blockGlass);
+			addAlloyRecipe(energy, "ingotConstantan", 1, "dustObsidian", 4, blockGlass);
+
 			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2);
 			addAlloyRecipe(energy, "dustSignalum", 1, "dustObsidian", 4, blockGlass);
 			addAlloyRecipe(energy, "ingotSignalum", 1, "dustObsidian", 4, blockGlass);
@@ -192,6 +196,7 @@ public class SmelterManager {
 			addDefaultOreDictionaryRecipe(null, "dustElectrum", ItemMaterial.ingotElectrum);
 			addDefaultOreDictionaryRecipe(null, "dustInvar", ItemMaterial.ingotInvar);
 			addDefaultOreDictionaryRecipe(null, "dustBronze", ItemMaterial.ingotBronze);
+			addDefaultOreDictionaryRecipe(null, "dustConstantan", ItemMaterial.ingotConstantan);
 			addDefaultOreDictionaryRecipe(null, "dustSignalum", ItemMaterial.ingotSignalum);
 			addDefaultOreDictionaryRecipe(null, "dustLumium", ItemMaterial.ingotLumium);
 			addDefaultOreDictionaryRecipe(null, "dustEnderium", ItemMaterial.ingotEnderium);
@@ -200,22 +205,34 @@ public class SmelterManager {
 		/* ALLOYS */
 		{
 			ItemStack stackSteel = ItemHelper.cloneStack(ItemMaterial.ingotSteel, 1);
-			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
-			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
+			//			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
+			//			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
 			addAlloyRecipe(1600, "dustIron", 1, "dustCharoal", 4, stackSteel);
 			addAlloyRecipe(2400, "ingotIron", 1, "dustCharoal", 4, stackSteel);
 
 			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
 			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
+			addAlloyRecipe(2000, "dustSilver", 1, "ingotGold", 1, stackElectrum);
+			addAlloyRecipe(2000, "ingotSilver", 1, "dustGold", 1, stackElectrum);
 			addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
 
 			ItemStack stackInvar = ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3);
-			addAlloyRecipe(1600, "dustNickel", 1, "dustIron", 2, stackInvar);
-			addAlloyRecipe(2400, "ingotNickel", 1, "ingotIron", 2, stackInvar);
+			addAlloyRecipe(2400, "dustNickel", 1, "dustIron", 2, stackInvar);
+			addAlloyRecipe(3000, "dustNickel", 1, "ingotIron", 2, stackInvar);
+			addAlloyRecipe(3000, "ingotNickel", 1, "dustIron", 2, stackInvar);
+			addAlloyRecipe(3600, "ingotNickel", 1, "ingotIron", 2, stackInvar);
 
 			ItemStack stackBronze = ItemHelper.cloneStack(ItemMaterial.ingotBronze, 4);
-			addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
-			addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
+			addAlloyRecipe(3200, "dustTin", 1, "dustCopper", 3, stackBronze);
+			addAlloyRecipe(4000, "dustTin", 1, "ingotCopper", 3, stackBronze);
+			addAlloyRecipe(4000, "ingotTin", 1, "dustCopper", 3, stackBronze);
+			addAlloyRecipe(4800, "ingotTin", 1, "ingotCopper", 3, stackBronze);
+
+			ItemStack stackConstantan = ItemHelper.cloneStack(ItemMaterial.ingotConstantan, 2);
+			addAlloyRecipe(1600, "dustCopper", 1, "dustNickel", 1, stackConstantan);
+			addAlloyRecipe(2000, "dustCopper", 1, "ingotNickel", 1, stackConstantan);
+			addAlloyRecipe(2000, "ingotCopper", 1, "dustNickel", 1, stackConstantan);
+			addAlloyRecipe(2400, "ingotCopper", 1, "ingotNickel", 1, stackConstantan);
 		}
 	}
 

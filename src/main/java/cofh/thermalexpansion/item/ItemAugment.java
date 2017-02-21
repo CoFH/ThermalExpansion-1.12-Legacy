@@ -518,6 +518,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineFurnaceOre;
 
 	public static ItemStack machinePulverizerGeode;
+	public static ItemStack machinePulverizerAerotheum;
 	public static ItemStack machinePulverizerPetrotheum;
 
 	public static ItemStack machineSawmillTapper;

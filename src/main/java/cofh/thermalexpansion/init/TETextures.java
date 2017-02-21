@@ -36,9 +36,9 @@ public class TETextures {
 		MACHINE_FACE_SAWMILL =				register(map, MACHINE_FACE_ + "sawmill");
 		MACHINE_FACE_SMELTER =				register(map, MACHINE_FACE_ + "smelter");
 		MACHINE_FACE_INSOLATOR =			register(map, MACHINE_FACE_ + "insolator");
-		MACHINE_FACE_COMPACTOR =			map.getMissingSprite();
+		MACHINE_FACE_COMPACTOR =			register(map, MACHINE_FACE_ + "compactor");
 		MACHINE_FACE_CRUCIBLE =				register(map, MACHINE_FACE_ + "crucible");
-		MACHINE_FACE_REFINERY =             map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "refinery");
+		MACHINE_FACE_REFINERY =             register(map, MACHINE_FACE_ + "refinery");
 		MACHINE_FACE_TRANSPOSER =			register(map, MACHINE_FACE_ + "transposer");
 		MACHINE_FACE_CHARGER =				register(map, MACHINE_FACE_ + "charger");
 		MACHINE_FACE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_FACE_ + "centrifuge");
@@ -55,7 +55,7 @@ public class TETextures {
 		MACHINE_ACTIVE_INSOLATOR =			register(map, MACHINE_ACTIVE_ + "insolator");
 		MACHINE_ACTIVE_COMPACTOR =			register(map, MACHINE_ACTIVE_ + "compactor");
 		MACHINE_ACTIVE_CRUCIBLE =			register(map, MACHINE_ACTIVE_ + "crucible");
-		MACHINE_ACTIVE_REFINERY =           map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "refinery");
+		MACHINE_ACTIVE_REFINERY =           register(map, MACHINE_ACTIVE_ + "refinery");
 		MACHINE_ACTIVE_TRANSPOSER =			register(map, MACHINE_ACTIVE_ + "transposer");
 		MACHINE_ACTIVE_CHARGER =			register(map, MACHINE_ACTIVE_ + "charger");
 		MACHINE_ACTIVE_CENTRIFUGE =			map.getMissingSprite();//TODO register(map, MACHINE_ACTIVE_ + "centrifuge");

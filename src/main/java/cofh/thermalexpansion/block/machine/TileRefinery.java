@@ -266,6 +266,10 @@ public class TileRefinery extends TileMachineBase {
 
 		inputTank.readFromNBT(nbt.getCompoundTag("TankIn"));
 		outputTank.readFromNBT(nbt.getCompoundTag("TankOut"));
+
+		if (inputTank.getFluid() != null) {
+			renderFluid = inputTank.getFluid().copy();
+		}
 	}
 
 	@Override

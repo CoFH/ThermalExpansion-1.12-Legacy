@@ -546,7 +546,7 @@ public class TileTransposer extends TileMachineBase {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (TransposerManager.getExtractRecipe(inventory[1]) != null) {
 			renderFluid = TransposerManager.getExtractRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
