@@ -107,6 +107,36 @@ public class TETextures {
 		ICON_ACCEPT_INACTIVE =				map.getMissingSprite();//TODO
 		ICON_SCHEMATIC =					map.getMissingSprite();//TODO
 
+		/* CELLS */
+		CELL_CONFIG_BLUE =                  registerCB(map, CELL_CONFIG_ + "blue");
+		CELL_CONFIG_ORANGE =                registerCB(map, CELL_CONFIG_ + "orange");
+
+		CELL_INNER_0 =                      register(map, CELL_ + "inner_0");
+		CELL_INNER_1 =                      register(map, CELL_ + "inner_1");
+		CELL_INNER_2 =                      register(map, CELL_ + "inner_2");
+		CELL_INNER_3 =                      register(map, CELL_ + "inner_3");
+		CELL_INNER_4 =                      register(map, CELL_ + "inner_4");
+		CELL_INNER_C =                      register(map, CELL_ + "inner_c");
+
+		CELL_SIDE_0 =                       register(map, CELL_ + "side_0");
+		CELL_SIDE_1 =                       register(map, CELL_ + "side_1");
+		CELL_SIDE_2 =                       register(map, CELL_ + "side_2");
+		CELL_SIDE_3 =                       register(map, CELL_ + "side_3");
+		CELL_SIDE_4 =                       register(map, CELL_ + "side_4");
+		CELL_SIDE_C =                       register(map, CELL_ + "side_c");
+
+		CELL_METER_0 =                     register(map, CELL_ + "meter_0");
+		CELL_METER_1 =                     register(map, CELL_ + "meter_1");
+		CELL_METER_2 =                     register(map, CELL_ + "meter_2");
+		CELL_METER_3 =                     register(map, CELL_ + "meter_3");
+		CELL_METER_4 =                     register(map, CELL_ + "meter_4");
+		CELL_METER_5 =                     register(map, CELL_ + "meter_5");
+		CELL_METER_6 =                     register(map, CELL_ + "meter_6");
+		CELL_METER_7 =                     register(map, CELL_ + "meter_7");
+		CELL_METER_8 =                     register(map, CELL_ + "meter_8");
+		CELL_METER_C =                     register(map, CELL_ + "meter_c");
+
+
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
 				CONFIG_NONE,
@@ -197,6 +227,43 @@ public class TETextures {
 				DYNAMO_REACTANT,
 				DYNAMO_ENERVATION
 		};
+
+		CELL_CONFIG = new TextureAtlasSprite[] {
+				CONFIG_NONE,
+				CELL_CONFIG_BLUE,
+				CELL_CONFIG_ORANGE
+		};
+
+		CELL_INNER = new TextureAtlasSprite[] {
+				CELL_INNER_0,
+				CELL_INNER_1,
+				CELL_INNER_2,
+				CELL_INNER_3,
+				CELL_INNER_4,
+				CELL_INNER_C
+		};
+
+		CELL_SIDE = new TextureAtlasSprite[] {
+				CELL_SIDE_0,
+				CELL_SIDE_1,
+				CELL_SIDE_2,
+				CELL_SIDE_3,
+				CELL_SIDE_4,
+				CELL_SIDE_C
+		};
+
+		CELL_METER = new TextureAtlasSprite[] {
+				CELL_METER_0,
+				CELL_METER_1,
+				CELL_METER_2,
+				CELL_METER_3,
+				CELL_METER_4,
+				CELL_METER_5,
+				CELL_METER_6,
+				CELL_METER_7,
+				CELL_METER_8,
+				CELL_METER_C
+		};
 		// @formatter:on
 	}
 
@@ -226,6 +293,8 @@ public class TETextures {
 	private static final String DEVICE_FACE_ = BLOCKS_ + "device/device_face_";
 	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
+	private static final String CELL_ = BLOCKS_ + "storage/cell_";
+	private static final String CELL_CONFIG_ = BLOCKS_ + "storage/cell_config_";
 
 	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
@@ -326,5 +395,37 @@ public class TETextures {
 	public static TextureAtlasSprite ICON_ACCEPT;
 	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
 	public static TextureAtlasSprite ICON_SCHEMATIC;
+
+	public static TextureAtlasSprite[] CELL_CONFIG;
+	public static TextureAtlasSprite CELL_CONFIG_BLUE;
+	public static TextureAtlasSprite CELL_CONFIG_ORANGE;
+
+	public static TextureAtlasSprite[] CELL_INNER;
+	public static TextureAtlasSprite CELL_INNER_0;
+	public static TextureAtlasSprite CELL_INNER_1;
+	public static TextureAtlasSprite CELL_INNER_2;
+	public static TextureAtlasSprite CELL_INNER_3;
+	public static TextureAtlasSprite CELL_INNER_4;
+	public static TextureAtlasSprite CELL_INNER_C;
+
+	public static TextureAtlasSprite[] CELL_SIDE;
+	public static TextureAtlasSprite CELL_SIDE_0;
+	public static TextureAtlasSprite CELL_SIDE_1;
+	public static TextureAtlasSprite CELL_SIDE_2;
+	public static TextureAtlasSprite CELL_SIDE_3;
+	public static TextureAtlasSprite CELL_SIDE_4;
+	public static TextureAtlasSprite CELL_SIDE_C;
+
+	public static TextureAtlasSprite[] CELL_METER;
+	public static TextureAtlasSprite CELL_METER_0;
+	public static TextureAtlasSprite CELL_METER_1;
+	public static TextureAtlasSprite CELL_METER_2;
+	public static TextureAtlasSprite CELL_METER_3;
+	public static TextureAtlasSprite CELL_METER_4;
+	public static TextureAtlasSprite CELL_METER_5;
+	public static TextureAtlasSprite CELL_METER_6;
+	public static TextureAtlasSprite CELL_METER_7;
+	public static TextureAtlasSprite CELL_METER_8;
+	public static TextureAtlasSprite CELL_METER_C;
 
 }

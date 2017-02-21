@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.init;
 
+import codechicken.lib.block.property.unlisted.UnlistedByteArrayProperty;
+import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
@@ -14,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fml.client.config.GuiConfigEntries.IntegerEntry;
 
 public class TEProps {
 
@@ -112,6 +115,9 @@ public class TEProps {
 	/* COMMON BLOCK PROPERTIES */
 	public static final IUnlistedProperty<Boolean> ACTIVE = Properties.toUnlisted(PropertyBool.create("active"));
 	public static final IUnlistedProperty<EnumFacing> FACING = Properties.toUnlisted(PropertyEnum.<EnumFacing>create("facing", EnumFacing.class));
+	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
+	public static final IUnlistedProperty<Boolean> CREATIVE = Properties.toUnlisted(PropertyBool.create("creative"));
+	public static final UnlistedByteArrayProperty SIDE_CONFIG_RAW = new UnlistedByteArrayProperty("side_config");
 	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
 
 	static {
