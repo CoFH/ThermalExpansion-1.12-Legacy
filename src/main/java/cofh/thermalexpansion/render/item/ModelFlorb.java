@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.render.item;
 
+import codechicken.lib.model.PerspectiveAwareModelProperties;
 import codechicken.lib.model.bakery.ItemModelBakery;
 import codechicken.lib.model.blockbakery.IItemBakery;
 import codechicken.lib.texture.TextureUtils;
@@ -55,6 +56,11 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 
 		}
 		return quads;
+	}
+
+	@Override
+	public PerspectiveAwareModelProperties getModelProperties(ItemStack stack) {
+		return PerspectiveAwareModelProperties.DEFAULT_ITEM;
 	}
 
 	@Override
