@@ -79,6 +79,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		FluidStack fluidStack = state.getValue(BlockTank.FLUID_STACK);
 		int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;
 		int type = state.getValue(TEProps.LEVEL);
+
 		if (face == null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);

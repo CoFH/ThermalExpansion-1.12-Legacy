@@ -148,6 +148,12 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 			case FLUID:
 				handleFluidPacket(payload);
 				return;
+			case CONFIG:
+				handleConfigPacket(payload);
+				return;
+			case ACCESS:
+				handleAccessPacket(payload);
+				return;
 			case MODE:
 				handleModePacket(payload);
 				return;

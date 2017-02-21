@@ -205,6 +205,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {
+
 				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 				builder.append(",output=").append(TEProps.ACTIVE);
@@ -220,6 +221,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
 			@Override
 			public String generateKey(ItemStack stack) {
+
 				String fluidAppend = "";
 				if (stack.getTagCompound() != null) {
 

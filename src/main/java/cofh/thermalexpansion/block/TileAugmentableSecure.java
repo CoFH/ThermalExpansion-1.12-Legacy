@@ -274,6 +274,24 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return payload;
 	}
 
+	@Override
+	public PacketCoFHBase getAccessPacket() {
+
+		PacketCoFHBase payload = super.getAccessPacket();
+
+		payload.addByte((byte) access.ordinal());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleAccessPacket(PacketCoFHBase payload) {
+
+		super.handleAccessPacket(payload);
+
+		access = ISecurable.AccessMode.values()[payload.getByte()];
+	}
+
 	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
@@ -385,7 +403,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		this.access = access;
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			sendUpdatePacket(Side.SERVER);
+			sendAccessPacket();
 		} else {
 			sendUpdatePacket(Side.CLIENT);
 		}

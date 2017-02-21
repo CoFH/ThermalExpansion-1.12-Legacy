@@ -164,6 +164,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {
+
 				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 				builder.append(",side_config{");
@@ -179,6 +180,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
 			@Override
 			public String generateKey(ItemStack stack) {
+
 				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack);
 			}
 		});

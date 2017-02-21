@@ -34,6 +34,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 			CAPACITY[i] *= 10000;
 		}
 	}
+
 	private static boolean enableSecurity = true;
 
 	public static void initialize() {
@@ -96,6 +97,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		enableAutoOutput = !enableAutoOutput;
+		markDirty();
+
+		System.out.println("heyo");
+
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
@@ -245,12 +250,17 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		return payload;
 	}
 
+	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
 		tank.setFluid(payload.getFluidStack());
+
+		System.out.println("okay made it here");
+
+		callNeighborTileChange();
 	}
 
 	@Override

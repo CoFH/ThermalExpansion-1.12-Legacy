@@ -16,7 +16,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.property.IUnlistedProperty;
 import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fml.client.config.GuiConfigEntries.IntegerEntry;
 
 public class TEProps {
 
@@ -93,7 +92,7 @@ public class TEProps {
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
-	public static final String PATH_GUI_WORKBENCH = PATH_GUI + "workbench/";
+	public static final String PATH_GUI_STORAGE = PATH_GUI + "storage/";
 
 	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "slots.png");
 	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");

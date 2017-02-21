@@ -17,7 +17,7 @@ import java.util.UUID;
 
 public class GuiCell extends GuiCore {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI + "cell.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_STORAGE + "cell.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
 	protected TileCell baseTile;
