@@ -209,7 +209,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-				builder.append(",output=").append(TEProps.ACTIVE);
+				builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
 				FluidStack stack = state.getValue(TEProps.FLUID);
 				if (stack != null) {
 					builder.append(",fluid=").append(stack.getFluid().getName());
