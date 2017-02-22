@@ -39,7 +39,7 @@ public class GuiCompactor extends GuiPoweredBase {
 
 		super(new ContainerCompactor(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.compactor", 3);
+		generateInfo("tab.thermalexpansion.machine.compactor");
 
 		myTile = (TileCompactor) tile;
 	}

@@ -23,7 +23,7 @@ public class GuiCrucible extends GuiPoweredBase {
 
 		super(new ContainerCrucible(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.crucible", 3);
+		generateInfo("tab.thermalexpansion.machine.crucible");
 	}
 
 	@Override

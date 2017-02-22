@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -17,14 +18,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
-	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
-	public static byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
+	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
+	public static final byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
 
-	public static int[] SEND = { 1, 4, 9, 16, 25 };
-	public static int[] RECV = { 1, 4, 9, 16, 25 };
+	public static final int[] SEND = { 1, 4, 9, 16, 25 };
+	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
@@ -56,7 +58,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int amountRecv;
 	public int amountSend;
 
-	private EnergyStorage energyStorage = new EnergyStorage(getCapacity(0));
+	public TileCell() {
+
+		energyStorage = new EnergyStorage(getCapacity(0));
+		setDefaultSides();
+		enableAutoOutput = true;
+	}
 
 	@Override
 	public String getTileName() {
@@ -97,32 +104,11 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean setLevel(int level) {
 
-		if (level >= 0) {
-			if (level > 4) {
-				level = 4;
-			}
-			this.level = (byte) level;
+		if (super.setLevel(level)) {
+			energyStorage.setCapacity(getCapacity(level));
+			return true;
 		}
-		energyStorage.setCapacity(getCapacity(level));
-		return true;
-	}
-
-	@Override
-	protected void setLevelFlags() {
-
-		hasAutoInput = false;
-		hasAutoOutput = false;
-
-		hasRedstoneControl = false;
-		hasAdvRedstoneControl = false;
-
-		switch (level) {
-			default:            // Creative
-			case 2:             // Reinforced
-				hasRedstoneControl = true;
-			case 0:             // Basic;
-				hasAutoOutput = true;
-		}
+		return false;
 	}
 
 	@Override
@@ -153,21 +139,17 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			transferEnergy();
 		}
 		if (timeCheck()) {
-			int curScale = getScaledEnergyStored(15);
-			if (curScale != compareTracker) {
-				compareTracker = curScale;
-				callNeighborTileChange();
-			}
+			updateTrackers();
 		}
 	}
 
 	/* COMMON METHODS */
-	protected static int getCapacity(int level) {
+	public static int getCapacity(int level) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)];
 	}
 
-	protected int getScaledEnergyStored(int scale) {
+	public int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
@@ -186,6 +168,20 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		}
 		outputTracker++;
 		outputTracker %= 6;
+	}
+
+	protected void updateTrackers() {
+
+		int curScale = getScaledEnergyStored(15);
+		if (curScale != compareTracker) {
+			compareTracker = curScale;
+			callNeighborTileChange();
+		}
+		curScale = Math.min(8, getScaledEnergyStored(9));
+		if (meterTracker != curScale) {
+			meterTracker = curScale;
+			sendTilePacket(Side.CLIENT);
+		}
 	}
 
 	/* GUI METHODS */
@@ -208,8 +204,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getByte("Tracker");
-		amountSend = nbt.getInteger("Send");
 		amountRecv = nbt.getInteger("Recv");
+		amountSend = nbt.getInteger("Send");
 
 		energyStorage = new EnergyStorage(getCapacity(level));
 		energyStorage.readFromNBT(nbt);
@@ -222,9 +218,73 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setInteger("Send", amountSend);
 		nbt.setInteger("Recv", amountRecv);
+		nbt.setInteger("Send", amountSend);
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addInt(MathHelper.clamp(amountRecv, 0, RECV[level]));
+		payload.addInt(MathHelper.clamp(amountSend, 0, SEND[level]));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(amountRecv);
+		payload.addInt(amountSend);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addInt(amountRecv);
+		payload.addInt(amountSend);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
 	}
 
 	/* IEnergyReceiver */
@@ -302,14 +362,31 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	/* ISidedTexture */
 	@Override
+	public int getNumLayers() {
+
+		return 3;
+	}
+
+	@Override
+	public int getNumPasses(int layer) {
+
+		return 1;
+	}
+
+	@Override
 	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 
 		if (layer == 0) {
+			return TETextures.CELL_CENTER_1;
+		} else if (layer == 1) {
 			return TETextures.CELL_SIDE[level];
-		} else {
+		} else if (layer == 2) {
 			return TETextures.CELL_CONFIG[sideCache[side]];
 		}
-		// return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+		if (side != facing) {
+			return TETextures.CONFIG_NONE;
+		}
+		return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
 	}
 
 }

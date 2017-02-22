@@ -16,6 +16,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -74,9 +75,6 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= 1) {
-			return null;
-		}
 		return new TileCell();
 	}
 
@@ -88,8 +86,8 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 			TileCell tile = (TileCell) world.getTileEntity(pos);
 
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
-			tile.amountSend = stack.getTagCompound().getInteger("Send");
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
+			tile.amountSend = stack.getTagCompound().getInteger("Send");
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
@@ -130,8 +128,23 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		return true;
 	}
 
+	/* HELPERS */
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+
+		NBTTagCompound retTag = super.getItemStackTag(world, pos);
+		TileCell tile = (TileCell) world.getTileEntity(pos);
+
+		if (tile != null) {
+			retTag.setInteger("Recv", tile.amountRecv);
+			retTag.setInteger("Send", tile.amountSend);
+		}
+		return retTag;
+	}
+
 	/* RENDERING METHODS */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
 		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
@@ -149,7 +162,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public ICustomBlockBakery getCustomBakery() {
 
-		return RenderCell.instance;
+		return RenderCell.INSTANCE;
 	}
 
 	/* IModelRegister */

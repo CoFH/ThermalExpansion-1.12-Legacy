@@ -5,6 +5,7 @@ import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.*;
+import cofh.thermalfoundation.item.ItemCoin;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -111,6 +112,17 @@ public class FuelManager {
 		return TileDynamoEnervation.removeFuel(stack);
 	}
 
+	/* ENERVATION */
+	public static boolean addNumismaticFuel(ItemStack stack, int energy) {
+
+		return TileDynamoNumismatic.addFuel(stack, energy);
+	}
+
+	public static boolean removeNumismaticFuel(ItemStack stack) {
+
+		return TileDynamoNumismatic.removeFuel(stack);
+	}
+
 	public static void addDefaultFuels() {
 
 		/* STEAM */
@@ -168,6 +180,33 @@ public class FuelManager {
 
 			addEnervationFuel(new ItemStack(Items.REDSTONE), configFuels.get(category, "redstone", 64000));
 			addEnervationFuel(new ItemStack(Blocks.REDSTONE_BLOCK), configFuels.get(category, "redstone", 64000) * 10);
+		}
+
+		/* NUMISMATIC */
+		{
+			String category = "Fuels.Numismatic";
+
+			addNumismaticFuel(ItemCoin.coinIron, 16000);
+			addNumismaticFuel(ItemCoin.coinGold, 24000);
+
+			addNumismaticFuel(ItemCoin.coinCopper, 16000);
+			addNumismaticFuel(ItemCoin.coinTin, 16000);
+			addNumismaticFuel(ItemCoin.coinSilver, 24000);
+			addNumismaticFuel(ItemCoin.coinLead, 24000);
+			addNumismaticFuel(ItemCoin.coinAluminum, 32000);
+			addNumismaticFuel(ItemCoin.coinNickel, 32000);
+			addNumismaticFuel(ItemCoin.coinPlatinum, 48000);
+			addNumismaticFuel(ItemCoin.coinIridium, 64000);
+			addNumismaticFuel(ItemCoin.coinMithril, 64000);
+
+			addNumismaticFuel(ItemCoin.coinSteel, 32000);
+			addNumismaticFuel(ItemCoin.coinElectrum, 24000);
+			addNumismaticFuel(ItemCoin.coinInvar, 21000);
+			addNumismaticFuel(ItemCoin.coinBronze, 16000);
+			addNumismaticFuel(ItemCoin.coinConstantan, 24000);
+			addNumismaticFuel(ItemCoin.coinSignalum, 48000);
+			addNumismaticFuel(ItemCoin.coinLumium, 48000);
+			addNumismaticFuel(ItemCoin.coinEnderium, 64000);
 		}
 
 		/* COOLANTS */

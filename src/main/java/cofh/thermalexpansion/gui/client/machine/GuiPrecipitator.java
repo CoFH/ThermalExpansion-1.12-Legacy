@@ -28,7 +28,7 @@ public class GuiPrecipitator extends GuiPoweredBase {
 
 		super(new ContainerPrecipitator(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.precipitator", 3);
+		generateInfo("tab.thermalexpansion.machine.precipitator");
 
 		myTile = (TilePrecipitator) tile;
 	}

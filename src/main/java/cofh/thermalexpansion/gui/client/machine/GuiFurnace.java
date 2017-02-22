@@ -24,7 +24,7 @@ public class GuiFurnace extends GuiPoweredBase {
 
 		super(new ContainerFurnace(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.furnace", 3);
+		generateInfo("tab.thermalexpansion.machine.furnace");
 	}
 
 	@Override

@@ -37,17 +37,19 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		processItems[1] = new ItemStack(Blocks.SNOW);
 		processItems[2] = new ItemStack(Blocks.ICE);
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
 
@@ -59,8 +61,8 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		String category = "Machine.Precipitator";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private static int[] processWater = { 500, 500, 1000 };

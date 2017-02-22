@@ -33,7 +33,7 @@ public class GuiInsolator extends GuiPoweredBase {
 
 		super(new ContainerInsolator(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.insolator", 4);
+		generateInfo("tab.thermalexpansion.machine.insolator");
 
 		myTile = (TileInsolator) tile;
 	}

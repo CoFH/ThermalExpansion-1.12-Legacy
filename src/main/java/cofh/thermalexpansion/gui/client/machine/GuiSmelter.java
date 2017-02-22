@@ -36,7 +36,7 @@ public class GuiSmelter extends GuiPoweredBase {
 
 		super(new ContainerSmelter(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.smelter", 4);
+		generateInfo("tab.thermalexpansion.machine.smelter");
 
 		myTile = (TileSmelter) tile;
 	}

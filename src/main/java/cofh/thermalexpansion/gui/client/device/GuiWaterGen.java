@@ -19,7 +19,7 @@ public class GuiWaterGen extends GuiDeviceBase {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.water_gen", 3);
+		generateInfo("tab.thermalexpansion.device.water_gen");
 	}
 
 	@Override

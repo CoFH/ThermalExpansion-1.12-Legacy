@@ -24,7 +24,7 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		super(new ContainerCrafter(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.crafter", 3);
+		generateInfo("tab.thermalexpansion.machine.crafter");
 
 		ySize = 205;
 	}

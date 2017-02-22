@@ -14,7 +14,7 @@ public class GuiNullifier extends GuiDeviceBase {
 
 		super(new ContainerNullifier(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.nullifier", 2);
+		generateInfo("tab.thermalexpansion.device.nullifier");
 	}
 
 }

@@ -35,18 +35,20 @@ public class TileSawmill extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 6;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
-		validAugments[TYPE].add(TEProps.MACHINE_SAWMILL_TAPPER);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SAWMILL_TAPPER);
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");
 
@@ -58,8 +60,8 @@ public class TileSawmill extends TileMachineBase {
 		String category = "Machine.Sawmill";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;

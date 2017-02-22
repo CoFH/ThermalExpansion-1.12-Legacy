@@ -36,19 +36,21 @@ public class TileCrucible extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		lightValue[TYPE] = 14;
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+
+		LIGHT_VALUES[TYPE] = 14;
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
@@ -60,8 +62,8 @@ public class TileCrucible extends TileMachineBase {
 		String category = "Machine.Crucible";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(50);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(50);
 	}
 
 	private int inputTracker;

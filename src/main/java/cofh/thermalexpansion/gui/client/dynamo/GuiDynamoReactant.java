@@ -3,7 +3,6 @@ package cofh.thermalexpansion.gui.client.dynamo;
 import cofh.lib.gui.element.ElementDualScaled;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.ElementFluidTank;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,7 +19,7 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 		super(new ContainerDynamoReactant(inventory, tile), tile, inventory.player, TEXTURE);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.dynamo.reactant.0") + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.reactant.1");
+		generateInfo("tab.thermalexpansion.dynamo.reactant");
 	}
 
 	@Override

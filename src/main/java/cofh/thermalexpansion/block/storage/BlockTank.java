@@ -80,9 +80,6 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= 1) {
-			return null;
-		}
 		return new TileTank();
 	}
 
@@ -172,6 +169,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	/* RENDERING METHODS */
 	@Override
+	@SideOnly(Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
 		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;

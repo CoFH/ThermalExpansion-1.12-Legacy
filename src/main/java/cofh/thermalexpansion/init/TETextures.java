@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.init;
 
 import cofh.core.init.CoreProps;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
@@ -101,6 +102,7 @@ public class TETextures {
 		DYNAMO_COMPRESSION =				register(map, DYNAMO_ + "compression");
 		DYNAMO_REACTANT =					register(map, DYNAMO_ + "reactant");
 		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
+		DYNAMO_NUMISMATIC =					register(map, DYNAMO_ + "numismatic");
 
 		/* ICONS */
 		ICON_ACCEPT =						map.getMissingSprite();//TODO
@@ -142,6 +144,7 @@ public class TETextures {
 		TANK_TOP_0_3 =                      register(map, TANK_ + "top_0_3");
 		TANK_TOP_0_4 =                      register(map, TANK_ + "top_0_4");
 		TANK_TOP_0_C =                      register(map, TANK_ + "top_0_c");
+
 		TANK_TOP_1_0 =                      register(map, TANK_ + "top_1_0");
 		TANK_TOP_1_1 =                      register(map, TANK_ + "top_1_1");
 		TANK_TOP_1_2 =                      register(map, TANK_ + "top_1_2");
@@ -155,6 +158,7 @@ public class TETextures {
 		TANK_BOTTOM_0_3 =                   register(map, TANK_ + "bottom_0_3");
 		TANK_BOTTOM_0_4 =                   register(map, TANK_ + "bottom_0_4");
 		TANK_BOTTOM_0_C =                   register(map, TANK_ + "bottom_0_c");
+
 		TANK_BOTTOM_1_0 =                   register(map, TANK_ + "bottom_1_0");
 		TANK_BOTTOM_1_1 =                   register(map, TANK_ + "bottom_1_1");
 		TANK_BOTTOM_1_2 =                   register(map, TANK_ + "bottom_1_2");
@@ -168,12 +172,41 @@ public class TETextures {
 		TANK_SIDE_0_3 =                     register(map, TANK_ + "side_0_3");
 		TANK_SIDE_0_4 =                     register(map, TANK_ + "side_0_4");
 		TANK_SIDE_0_C =                     register(map, TANK_ + "side_0_c");
+
 		TANK_SIDE_1_0 =                     register(map, TANK_ + "side_1_0");
 		TANK_SIDE_1_1 =                     register(map, TANK_ + "side_1_1");
 		TANK_SIDE_1_2 =                     register(map, TANK_ + "side_1_2");
 		TANK_SIDE_1_3 =                     register(map, TANK_ + "side_1_3");
 		TANK_SIDE_1_4 =                     register(map, TANK_ + "side_1_4");
 		TANK_SIDE_1_C =                     register(map, TANK_ + "side_1_c");
+
+		CACHE_TOP_0 =                       register(map, CACHE_ + "top_0");
+		CACHE_TOP_1 =                       register(map, CACHE_ + "top_1");
+		CACHE_TOP_2 =                       register(map, CACHE_ + "top_2");
+		CACHE_TOP_3 =                       register(map, CACHE_ + "top_3");
+		CACHE_TOP_4 =                       register(map, CACHE_ + "top_4");
+		CACHE_TOP_C =                       register(map, CACHE_ + "top_5");
+
+		CACHE_BOTTOM_0 =                    register(map, CACHE_ + "bottom_0");
+		CACHE_BOTTOM_1 =                    register(map, CACHE_ + "bottom_1");
+		CACHE_BOTTOM_2 =                    register(map, CACHE_ + "bottom_2");
+		CACHE_BOTTOM_3 =                    register(map, CACHE_ + "bottom_3");
+		CACHE_BOTTOM_4 =                    register(map, CACHE_ + "bottom_4");
+		CACHE_BOTTOM_C =                    register(map, CACHE_ + "bottom_5");
+
+		CACHE_SIDE_0 =                      register(map, CACHE_ + "side_0");
+		CACHE_SIDE_1 =                      register(map, CACHE_ + "side_1");
+		CACHE_SIDE_2 =                      register(map, CACHE_ + "side_2");
+		CACHE_SIDE_3 =                      register(map, CACHE_ + "side_3");
+		CACHE_SIDE_4 =                      register(map, CACHE_ + "side_4");
+		CACHE_SIDE_C =                      register(map, CACHE_ + "side_c");
+
+		CACHE_FACE_0 =                      register(map, CACHE_ + "face_0");
+		CACHE_FACE_1 =                      register(map, CACHE_ + "face_1");
+		CACHE_FACE_2 =                      register(map, CACHE_ + "face_2");
+		CACHE_FACE_3 =                      register(map, CACHE_ + "face_3");
+		CACHE_FACE_4 =                      register(map, CACHE_ + "face_4");
+		CACHE_FACE_C =                      register(map, CACHE_ + "face_c");
 
 
 		/* ARRAYS */
@@ -264,7 +297,8 @@ public class TETextures {
 				DYNAMO_MAGMATIC,
 				DYNAMO_COMPRESSION,
 				DYNAMO_REACTANT,
-				DYNAMO_ENERVATION
+				DYNAMO_ENERVATION,
+				DYNAMO_NUMISMATIC
 		};
 
 		CELL_CONFIG = new TextureAtlasSprite[] {
@@ -311,7 +345,7 @@ public class TETextures {
 						TANK_TOP_0_2,
 						TANK_TOP_0_3,
 						TANK_TOP_0_4,
-						TANK_TOP_0_C,
+						TANK_TOP_0_C
 				},
 				new TextureAtlasSprite[] {
 						TANK_TOP_1_0,
@@ -319,7 +353,7 @@ public class TETextures {
 						TANK_TOP_1_2,
 						TANK_TOP_1_3,
 						TANK_TOP_1_4,
-						TANK_TOP_1_C,
+						TANK_TOP_1_C
 				}
 		};
 
@@ -330,7 +364,7 @@ public class TETextures {
 						TANK_BOTTOM_0_2,
 						TANK_BOTTOM_0_3,
 						TANK_BOTTOM_0_4,
-						TANK_BOTTOM_0_C,
+						TANK_BOTTOM_0_C
 				},
 				new TextureAtlasSprite[] {
 						TANK_BOTTOM_1_0,
@@ -338,7 +372,7 @@ public class TETextures {
 						TANK_BOTTOM_1_2,
 						TANK_BOTTOM_1_3,
 						TANK_BOTTOM_1_4,
-						TANK_BOTTOM_1_C,
+						TANK_BOTTOM_1_C
 				}
 		};
 
@@ -349,7 +383,7 @@ public class TETextures {
 						TANK_SIDE_0_2,
 						TANK_SIDE_0_3,
 						TANK_SIDE_0_4,
-						TANK_SIDE_0_C,
+						TANK_SIDE_0_C
 				},
 				new TextureAtlasSprite[] {
 						TANK_SIDE_1_0,
@@ -357,10 +391,61 @@ public class TETextures {
 						TANK_SIDE_1_2,
 						TANK_SIDE_1_3,
 						TANK_SIDE_1_4,
-						TANK_SIDE_1_C,
+						TANK_SIDE_1_C
 				}
 		};
 
+		CACHE_TOP = new TextureAtlasSprite[] {
+				CACHE_TOP_0,
+				CACHE_TOP_1,
+				CACHE_TOP_2,
+				CACHE_TOP_3,
+				CACHE_TOP_4,
+				CACHE_TOP_C
+		};
+
+		CACHE_BOTTOM = new TextureAtlasSprite[] {
+				CACHE_BOTTOM_0,
+				CACHE_BOTTOM_1,
+				CACHE_BOTTOM_2,
+				CACHE_BOTTOM_3,
+				CACHE_BOTTOM_4,
+				CACHE_BOTTOM_C
+		};
+
+		CACHE_SIDE = new TextureAtlasSprite[] {
+				CACHE_SIDE_0,
+				CACHE_SIDE_1,
+				CACHE_SIDE_2,
+				CACHE_SIDE_3,
+				CACHE_SIDE_4,
+				CACHE_SIDE_C
+		};
+
+		CACHE_FACE = new TextureAtlasSprite[] {
+				CACHE_FACE_0,
+				CACHE_FACE_1,
+				CACHE_FACE_2,
+				CACHE_FACE_3,
+				CACHE_FACE_4,
+				CACHE_FACE_C
+		};
+		// @formatter:on
+	}
+
+	public static void getIcons(TextureStitchEvent.Post event) {
+
+		TextureMap map = event.getMap();
+
+		// @formatter:off \o/ Formatter!
+		CELL_CENTER_0 = map.getAtlasSprite(TFFluids.fluidRedstone.getStill().toString());
+		CELL_CENTER_1 = map.getAtlasSprite(TFFluids.fluidRedstone.getStill().toString());
+
+		/* ARRAYS */
+		CELL_CENTER = new TextureAtlasSprite[] {
+				CELL_CENTER_0,
+				CELL_CENTER_1
+		};
 		// @formatter:on
 	}
 
@@ -393,6 +478,7 @@ public class TETextures {
 	private static final String CELL_ = BLOCKS_ + "storage/cell_";
 	private static final String CELL_CONFIG_ = BLOCKS_ + "storage/cell_config_";
 	private static final String TANK_ = BLOCKS_ + "storage/tank_";
+	private static final String CACHE_ = BLOCKS_ + "storage/cache_";
 
 	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
@@ -489,6 +575,7 @@ public class TETextures {
 	public static TextureAtlasSprite DYNAMO_COMPRESSION;
 	public static TextureAtlasSprite DYNAMO_REACTANT;
 	public static TextureAtlasSprite DYNAMO_ENERVATION;
+	public static TextureAtlasSprite DYNAMO_NUMISMATIC;
 
 	public static TextureAtlasSprite ICON_ACCEPT;
 	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
@@ -497,6 +584,10 @@ public class TETextures {
 	public static TextureAtlasSprite[] CELL_CONFIG;
 	public static TextureAtlasSprite CELL_CONFIG_BLUE;
 	public static TextureAtlasSprite CELL_CONFIG_ORANGE;
+
+	public static TextureAtlasSprite[] CELL_CENTER;
+	public static TextureAtlasSprite CELL_CENTER_0;
+	public static TextureAtlasSprite CELL_CENTER_1;
 
 	public static TextureAtlasSprite[] CELL_INNER;
 	public static TextureAtlasSprite CELL_INNER_0;
@@ -567,4 +658,37 @@ public class TETextures {
 	public static TextureAtlasSprite TANK_SIDE_1_3;
 	public static TextureAtlasSprite TANK_SIDE_1_4;
 	public static TextureAtlasSprite TANK_SIDE_1_C;
+
+	public static TextureAtlasSprite[] CACHE_TOP;
+	public static TextureAtlasSprite CACHE_TOP_0;
+	public static TextureAtlasSprite CACHE_TOP_1;
+	public static TextureAtlasSprite CACHE_TOP_2;
+	public static TextureAtlasSprite CACHE_TOP_3;
+	public static TextureAtlasSprite CACHE_TOP_4;
+	public static TextureAtlasSprite CACHE_TOP_C;
+
+	public static TextureAtlasSprite[] CACHE_BOTTOM;
+	public static TextureAtlasSprite CACHE_BOTTOM_0;
+	public static TextureAtlasSprite CACHE_BOTTOM_1;
+	public static TextureAtlasSprite CACHE_BOTTOM_2;
+	public static TextureAtlasSprite CACHE_BOTTOM_3;
+	public static TextureAtlasSprite CACHE_BOTTOM_4;
+	public static TextureAtlasSprite CACHE_BOTTOM_C;
+
+	public static TextureAtlasSprite[] CACHE_SIDE;
+	public static TextureAtlasSprite CACHE_SIDE_0;
+	public static TextureAtlasSprite CACHE_SIDE_1;
+	public static TextureAtlasSprite CACHE_SIDE_2;
+	public static TextureAtlasSprite CACHE_SIDE_3;
+	public static TextureAtlasSprite CACHE_SIDE_4;
+	public static TextureAtlasSprite CACHE_SIDE_C;
+
+	public static TextureAtlasSprite[] CACHE_FACE;
+	public static TextureAtlasSprite CACHE_FACE_0;
+	public static TextureAtlasSprite CACHE_FACE_1;
+	public static TextureAtlasSprite CACHE_FACE_2;
+	public static TextureAtlasSprite CACHE_FACE_3;
+	public static TextureAtlasSprite CACHE_FACE_4;
+	public static TextureAtlasSprite CACHE_FACE_C;
+
 }

@@ -21,7 +21,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		ReconfigurableHelper.setSideCache(stack, TileMachineBase.defaultSideConfig[ItemHelper.getItemDamage(stack)].defaultSides);
+		ReconfigurableHelper.setSideCache(stack, TileMachineBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 		stack.getTagCompound().setByte("Level", (byte) level);

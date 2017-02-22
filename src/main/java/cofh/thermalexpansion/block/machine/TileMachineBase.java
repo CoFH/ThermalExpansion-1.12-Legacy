@@ -22,10 +22,11 @@ import java.util.ArrayList;
 
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
-	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
-	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockMachine.Type.values().length];
-	protected static final int[] lightValue = new int[BlockMachine.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockMachine.Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockMachine.Type.values().length];
+	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockMachine.Type.values().length];
+	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockMachine.Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -50,8 +51,8 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	boolean wasActive;
 	boolean hasModeAugment;
 
-	protected EnergyConfig energyConfig;
-	protected TimeTracker tracker = new TimeTracker();
+	EnergyConfig energyConfig;
+	TimeTracker tracker = new TimeTracker();
 
 	int energyMod = ENERGY_BASE;
 	int secondaryChance = SECONDARY_BASE;
@@ -61,8 +62,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	public TileMachineBase() {
 
-		sideConfig = defaultSideConfig[this.getType()];
-		energyConfig = defaultEnergyConfig[this.getType()].copy();
+		sideConfig = SIDE_CONFIGS[this.getType()];
+		slotConfig = SLOT_CONFIGS[this.getType()];
+		energyConfig = ENERGY_CONFIGS[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 4);
 		setDefaultSides();
 		enableAutoOutput = true;
@@ -77,7 +79,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	@Override
 	public int getLightValue() {
 
-		return isActive ? lightValue[getType()] : 0;
+		return isActive ? LIGHT_VALUES[getType()] : 0;
 	}
 
 	@Override
@@ -140,7 +142,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	/* COMMON METHODS */
 	protected int getBasePower(int level) {
 
-		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
+		return ENERGY_CONFIGS[getType()].maxPower + level * ENERGY_CONFIGS[getType()].maxPower / 2;
 	}
 
 	protected int calcEnergy() {
@@ -211,13 +213,13 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected void updateIfChanged(boolean curActive) {
 
 		if (curActive != isActive && !wasActive) {
-			if (lightValue[getType()] != 0) {
+			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
 		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
-			if (lightValue[getType()] != 0) {
+			if (LIGHT_VALUES[getType()] != 0) {
 				updateLighting();
 			}
 			sendTilePacket(Side.CLIENT);
@@ -316,7 +318,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
+		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override
@@ -421,6 +423,18 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	}
 
 	/* ISidedTexture */
+	@Override
+	public int getNumLayers() {
+
+		return 2;
+	}
+
+	@Override
+	public int getNumPasses(int layer) {
+
+		return 1;
+	}
+
 	@Override
 	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
 

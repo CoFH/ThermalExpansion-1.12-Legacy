@@ -38,15 +38,17 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 2;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 2;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_water_gen");
 
@@ -80,6 +82,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super();
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 		tank.setLock(FluidRegistry.WATER);
+
+		hasAutoOutput = true;
 	}
 
 	@Override
@@ -125,13 +129,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (adjacentSources < 0) {
 			updateAdjacentSources();
 		}
-	}
-
-	protected void setLevelFlags() {
-
-		super.setLevelFlags();
-
-		hasAutoOutput = true;
 	}
 
 	protected void updateAdjacentSources() {

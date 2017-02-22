@@ -145,6 +145,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 				return new TileDynamoReactant();
 			case ENERVATION:
 				return new TileDynamoEnervation();
+			case NUMISMATIC:
+				return new TileDynamoNumismatic();
 			default:
 				return null;
 		}
@@ -310,12 +312,14 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		TileDynamoCompression.initialize();
 		TileDynamoReactant.initialize();
 		TileDynamoEnervation.initialize();
+		TileDynamoNumismatic.initialize();
 
 		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
 		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
 		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
 		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
+		dynamoNumismatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
 		return true;
 	}
@@ -363,7 +367,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"GIG",
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
-					'G', "gearBronze",
+					'G', "gearLead",
 					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
@@ -375,6 +379,17 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearElectrum",
+					'I', "ingotIron",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[Type.NUMISMATIC.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoNumismatic,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearConstantan",
 					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
@@ -392,7 +407,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		MAGMATIC(1, "magmatic"),
 		COMPRESSION(2, "compression"),
 		REACTANT(3, "reactant"),
-		ENERVATION(4, "enervation");
+		ENERVATION(4, "enervation"),
+		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
 		private static final BlockDynamo.Type[] METADATA_LOOKUP = new BlockDynamo.Type[values().length];
@@ -451,5 +467,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public static ItemStack dynamoCompression;
 	public static ItemStack dynamoReactant;
 	public static ItemStack dynamoEnervation;
+	public static ItemStack dynamoNumismatic;
 
 }

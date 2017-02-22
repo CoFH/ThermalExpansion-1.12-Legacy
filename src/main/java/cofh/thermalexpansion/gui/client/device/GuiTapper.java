@@ -19,7 +19,7 @@ public class GuiTapper extends GuiDeviceBase {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.tapper", 3);
+		generateInfo("tab.thermalexpansion.device.tapper");
 	}
 
 	@Override

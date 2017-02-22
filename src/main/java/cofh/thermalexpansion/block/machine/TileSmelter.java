@@ -26,20 +26,22 @@ public class TileSmelter extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 8;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 }, { 0, 1, 2, 3, 4 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 8;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 }, { 0, 1, 2, 3, 4 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
-		validAugments[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
 
-		lightValue[TYPE] = 15;
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
+
+		LIGHT_VALUES[TYPE] = 15;
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
@@ -51,8 +53,8 @@ public class TileSmelter extends TileMachineBase {
 		String category = "Machine.Smelter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTrackerPrimary;
@@ -299,7 +301,6 @@ public class TileSmelter extends TileMachineBase {
 
 		return new ContainerSmelter(inventory, this);
 	}
-
 
 	public void setMode(boolean mode) {
 

@@ -28,7 +28,7 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		super(new ContainerRefinery(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.refinery", 3);
+		generateInfo("tab.thermalexpansion.machine.refinery");
 
 		myTile = (TileRefinery) tile;
 	}

@@ -83,14 +83,11 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	@Override
 	protected boolean setLevel(int level) {
 
-		if (level >= 0) {
-			if (level > 4) {
-				level = 4;
-			}
-			this.level = (byte) level;
+		if (super.setLevel(level)) {
+			tank.setCapacity(getCapacity(level));
+			return true;
 		}
-		tank.setCapacity(getCapacity(level));
-		return true;
+		return false;
 	}
 
 	@Override
@@ -101,24 +98,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 
 		sendTilePacket(Side.CLIENT);
 		return true;
-	}
-
-	@Override
-	protected void setLevelFlags() {
-
-		hasAutoInput = false;
-		hasAutoOutput = false;
-
-		hasRedstoneControl = false;
-		hasAdvRedstoneControl = false;
-
-		switch (level) {
-			default:            // Creative
-			case 2:             // Reinforced
-				hasRedstoneControl = true;
-			case 0:             // Basic;
-				hasAutoOutput = true;
-		}
 	}
 
 	@Override
@@ -175,12 +154,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	/* COMMON METHODS */
-	protected static int getCapacity(int level) {
+	public static int getCapacity(int level) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)];
 	}
 
-	protected int getScaledFluidStored(int scale) {
+	public int getScaledFluidStored(int scale) {
 
 		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
 	}

@@ -4,7 +4,6 @@ import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
-import codechicken.lib.texture.TextureUtils;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
@@ -13,7 +12,6 @@ import cofh.thermalexpansion.block.storage.ItemBlockCell;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -31,7 +29,7 @@ import java.util.List;
 @SideOnly (Side.CLIENT)
 public class RenderCell implements ILayeredBlockBakery {
 
-	public static final RenderCell instance = new RenderCell();
+	public static final RenderCell INSTANCE = new RenderCell();
 
 	static CCModel modelCenter = CCModel.quadModel(24);
 	static CCModel modelFrame = CCModel.quadModel(48);
@@ -51,10 +49,39 @@ public class RenderCell implements ILayeredBlockBakery {
 		modelFrame.shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
-	public static void initialize() {
+	/* RENDER */
+	public void renderCenter(CCRenderState ccrs) {
 
+		//if (metadata == 1 || metadata == 2) {
+		//    modelCenter.render(ccrs, new IconTransformation(TETextures.CELL_CENTER_SOLID));
+		//} else {
+		modelCenter.render(ccrs, new IconTransformation(TETextures.CELL_CENTER_1));
+		//}
 	}
 
+	public void renderFrame(CCRenderState ccrs, int level, byte[] sideCache, int facing, TextureAtlasSprite faceTexture) {
+
+		for (int i = 0; i < 6; i++) {
+			modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(TETextures.CELL_SIDE[level]));//Side
+			modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(TETextures.CELL_INNER[level]));//Inner
+		}
+		if (sideCache != null) {
+			for (EnumFacing face : EnumFacing.VALUES) {
+				modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, new IconTransformation(TETextures.CELL_CONFIG[sideCache[face.ordinal()]]));
+			}
+			modelFrame.render(ccrs, facing * 4, facing * 4 + 4, new IconTransformation(faceTexture));
+		}
+	}
+
+	/* HELPERS */
+	private int getScaledEnergyStored(ItemStack container, int scale) {
+
+		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
+
+		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
+	}
+
+	/* ICustomBlockBakery */
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
 
@@ -70,6 +97,28 @@ public class RenderCell implements ILayeredBlockBakery {
 		return state;
 	}
 
+	@Override
+	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
+		if (face == null) {
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+
+			renderFrame(ccrs, ItemBlockCell.getLevel(stack), null, 0, null);
+			//TODO Center brightness.
+			//ccrs.brightness = 165 + charge * 5;
+			renderCenter(ccrs);
+
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
+
+	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
@@ -100,57 +149,6 @@ public class RenderCell implements ILayeredBlockBakery {
 			return buffer.bake();
 		}
 		return new ArrayList<BakedQuad>();
-	}
-
-	@Override
-	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-
-		if (face == null) {
-			BakingVertexBuffer buffer = BakingVertexBuffer.create();
-			buffer.begin(7, DefaultVertexFormats.ITEM);
-			CCRenderState ccrs = CCRenderState.instance();
-			ccrs.reset();
-			ccrs.bind(buffer);
-
-			renderFrame(ccrs, ItemBlockCell.getLevel(stack), null, 0, null);
-			//TODO Center brightness.
-			//ccrs.brightness = 165 + charge * 5;
-			renderCenter(ccrs);
-
-			buffer.finishDrawing();
-			return buffer.bake();
-		}
-		return new ArrayList<BakedQuad>();
-	}
-
-	public void renderCenter(CCRenderState ccrs) {
-
-		//if (metadata == 1 || metadata == 2) {
-		//    modelCenter.render(ccrs, new IconTransformation(TETextures.CELL_CENTER_SOLID));
-		//} else {
-		modelCenter.render(ccrs, new IconTransformation(TextureUtils.getTexture(TFFluids.fluidRedstone.getStill())));
-		//}
-	}
-
-	public void renderFrame(CCRenderState ccrs, int level, byte[] sideCache, int facing, TextureAtlasSprite faceTexture) {
-
-		for (int i = 0; i < 6; i++) {
-			modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(TETextures.CELL_SIDE[level]));//Side
-			modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(TETextures.CELL_INNER[level]));//Inner
-		}
-		if (sideCache != null) {
-			for (EnumFacing face : EnumFacing.VALUES) {
-				modelFrame.render(ccrs, face.ordinal() * 4, face.ordinal() * 4 + 4, new IconTransformation(TETextures.CELL_CONFIG[sideCache[face.ordinal()]]));
-			}
-			modelFrame.render(ccrs, facing * 4, facing * 4 + 4, new IconTransformation(faceTexture));
-		}
-	}
-
-	private int getScaledEnergyStored(ItemStack container, int scale) {
-
-		IEnergyContainerItem containerItem = (IEnergyContainerItem) container.getItem();
-
-		return (int) (containerItem.getEnergyStored(container) * (long) scale / containerItem.getMaxEnergyStored(container));
 	}
 
 }

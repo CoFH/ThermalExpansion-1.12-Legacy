@@ -117,6 +117,7 @@ public class TEProps {
 			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
 		}
 	}
+
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
 	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
 	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");

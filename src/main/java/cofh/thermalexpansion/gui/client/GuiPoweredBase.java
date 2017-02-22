@@ -74,7 +74,9 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-		addTab(new TabTutorial(this, myTutorial));
+		if (!myTutorial.isEmpty()) {
+			addTab(new TabTutorial(this, myTutorial));
+		}
 	}
 
 	@Override

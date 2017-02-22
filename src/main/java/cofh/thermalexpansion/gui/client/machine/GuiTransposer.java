@@ -36,7 +36,7 @@ public class GuiTransposer extends GuiPoweredBase {
 
 		super(new ContainerTransposer(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.transposer", 3);
+		generateInfo("tab.thermalexpansion.machine.transposer");
 
 		myTile = (TileTransposer) tile;
 	}

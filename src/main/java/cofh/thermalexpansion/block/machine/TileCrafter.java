@@ -35,17 +35,19 @@ public class TileCrafter extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 6;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
 
@@ -57,8 +59,8 @@ public class TileCrafter extends TileMachineBase {
 		String category = "Machine.Crafter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	public static final int PROCESS_ENERGY = 20;

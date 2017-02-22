@@ -32,7 +32,7 @@ public class GuiSawmill extends GuiPoweredBase {
 
 		super(new ContainerSawmill(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.sawmill", 3);
+		generateInfo("tab.thermalexpansion.machine.sawmill");
 
 		myTile = (TileSawmill) tile;
 	}

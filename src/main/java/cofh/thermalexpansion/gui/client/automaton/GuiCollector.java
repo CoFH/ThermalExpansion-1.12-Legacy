@@ -16,7 +16,7 @@ public class GuiCollector extends GuiPoweredBase {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.automaton.collector", 3);
+		generateInfo("tab.thermalexpansion.automaton.collector");
 	}
 
 }

@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public abstract class TileReconfigurable extends TileInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
 
 	protected SideConfig sideConfig;
+	protected SlotConfig slotConfig;
 
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
@@ -315,13 +316,13 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && sideConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
+		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && slotConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && sideConfig.allowExtractionSlot[slot];
+		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && slotConfig.allowExtractionSlot[slot];
 	}
 
 	/* ISidedTexture */

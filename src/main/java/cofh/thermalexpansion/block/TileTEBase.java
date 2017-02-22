@@ -248,17 +248,21 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		/* Whether or not the SIDE allows extraction */
 		public boolean[] allowExtractionSide;
 
-		/* Whether or not the SLOT allows input */
-		public boolean[] allowInsertionSlot;
-
-		/* Whether or not the SLOT allows extraction */
-		public boolean[] allowExtractionSlot;
-
 		/* Config Textures to use on Sides */
 		public int[] sideTex;
 
 		/* Default Side configuration for freshly placed block */
 		public byte[] defaultSides;
+	}
+
+	/* SLOT CONFIG */
+	public static class SlotConfig {
+
+		/* Whether or not the SLOT allows input */
+		public boolean[] allowInsertionSlot;
+
+		/* Whether or not the SLOT allows extraction */
+		public boolean[] allowExtractionSlot;
 	}
 
 }

@@ -26,18 +26,20 @@ public class TileCompactor extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
-		validAugments[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
 
 		VALUES[0] = Mode.PRESS;
 		VALUES[1] = Mode.STORAGE;
@@ -53,8 +55,8 @@ public class TileCompactor extends TileMachineBase {
 		String category = "Machine.Compactor";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;

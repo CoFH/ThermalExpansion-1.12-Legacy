@@ -25,15 +25,17 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 2;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 2;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 0, 0, 0, 0, 0 };
+
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
 		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:automaton_breaker");
 

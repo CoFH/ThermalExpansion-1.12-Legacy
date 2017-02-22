@@ -15,7 +15,7 @@ public class ItemBlockDevice extends ItemBlockCore {
 	public static ItemStack setDefaultTag(ItemStack stack) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		ReconfigurableHelper.setSideCache(stack, TileDeviceBase.defaultSideConfig[ItemHelper.getItemDamage(stack)].defaultSides);
+		ReconfigurableHelper.setSideCache(stack, TileDeviceBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 

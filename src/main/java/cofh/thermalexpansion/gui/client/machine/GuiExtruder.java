@@ -29,7 +29,7 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super(new ContainerExtruder(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.extruder", 3);
+		generateInfo("tab.thermalexpansion.machine.extruder");
 
 		myTile = (TileExtruder) tile;
 	}

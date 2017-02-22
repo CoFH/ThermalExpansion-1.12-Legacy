@@ -20,15 +20,17 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };
 
 		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
 

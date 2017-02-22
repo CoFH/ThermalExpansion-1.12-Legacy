@@ -461,7 +461,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 //					'C', ItemFrame.frameMachine,
 //					'I', copperPart,
 //					'P', ItemMaterial.powerCoilGold,
-//					'X', Blocks.CHEST,
+//					'X', "chestWood",
 //					'Y', "gearTin"
 //			));
 //		}

@@ -26,7 +26,7 @@ public class GuiPulverizer extends GuiPoweredBase {
 
 		super(new ContainerPulverizer(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.pulverizer", 3);
+		generateInfo("tab.thermalexpansion.machine.pulverizer");
 	}
 
 	@Override
