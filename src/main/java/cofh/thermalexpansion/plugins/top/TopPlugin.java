@@ -35,8 +35,7 @@ public class TopPlugin implements IProbeInfoProvider, Function<ITheOneProbe, Voi
         TileEntity te = world.getTileEntity(iProbeHitData.getPos());
         if (te instanceof TileTEBase) {
             TileTEBase tile = (TileTEBase) te;
-            IProbeInfoWrapper wrapper = new ProbeInfoWrapper(iProbeInfo);
-            tile.provideInfo(wrapper, iProbeHitData.getSideHit(), entityPlayer);
+            tile.provideInfo(iProbeInfo, iProbeHitData.getSideHit(), entityPlayer);
         }
     }
 }
