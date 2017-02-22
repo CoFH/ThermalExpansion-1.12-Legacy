@@ -16,6 +16,7 @@ import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
+import mcjty.theoneprobe.api.IProbeInfo;
 
 public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
@@ -186,9 +187,9 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 
 	}
 	
-	public void provideInfo(IProbeInfoWrapper wrapper, EnumFacing facing, EntityPlayer player) {
-        	wrapper.text("Progress:");
-        	wrapper.progress(getScaledProgress(100), 100);
+	public void provideInfo(IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+        	info.text("Progress:");
+        	info.progress(getScaledProgress(100), 100);
 	}
 
 
