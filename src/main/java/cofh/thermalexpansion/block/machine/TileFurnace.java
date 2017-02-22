@@ -36,6 +36,8 @@ public class TileFurnace extends TileMachineBase {
 		validAugments[TYPE].add(TEProps.MACHINE_FURNACE_FOOD);
 		validAugments[TYPE].add(TEProps.MACHINE_FURNACE_ORE);
 
+		lightValue[TYPE] = 14;
+
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:machine_furnace");
 
 		config();

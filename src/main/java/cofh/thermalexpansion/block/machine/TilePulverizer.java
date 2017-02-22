@@ -37,6 +37,8 @@ public class TilePulverizer extends TileMachineBase {
 		validAugments[TYPE] = new ArrayList<String>();
 		validAugments[TYPE].add(TEProps.MACHINE_PULVERIZER_GEODE);
 
+		lightValue[TYPE] = 4;
+
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:machine_pulverizer");
 
 		config();

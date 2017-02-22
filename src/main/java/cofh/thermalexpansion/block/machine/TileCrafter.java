@@ -312,11 +312,15 @@ public class TileCrafter extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		payload.addFluidStack(getTankFluid());
+
 		return payload;
 	}
 
@@ -324,6 +328,7 @@ public class TileCrafter extends TileMachineBase {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		tank.setFluid(payload.getFluidStack());
 	}
 

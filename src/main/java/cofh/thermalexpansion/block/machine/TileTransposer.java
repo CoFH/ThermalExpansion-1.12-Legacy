@@ -528,6 +528,14 @@ public class TileTransposer extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public void setMode(boolean mode) {
+
+		boolean lastFlag = extractFlag;
+		extractFlag = mode;
+		sendModePacket();
+		extractFlag = lastFlag;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -567,12 +575,38 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(extractFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		extractFlag = payload.getBool();
+		if (!isActive) {
+			extractMode = extractFlag;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -593,23 +627,22 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addFluidStack(renderFluid);
-
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
-		PacketCoFHBase payload = super.getModePacket();
+		super.handleFluidPacket(payload);
 
-		payload.addBool(extractFlag);
+		renderFluid = payload.getFluidStack();
 
-		return payload;
+		callBlockUpdate();
 	}
 
 	@Override
@@ -622,37 +655,6 @@ public class TileTransposer extends TileMachineBase {
 		tank.setFluid(payload.getFluidStack());
 	}
 
-	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-
-		renderFluid = payload.getFluidStack();
-		callBlockUpdate();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		extractFlag = payload.getBool();
-		if (!isActive) {
-			extractMode = extractFlag;
-		}
-		markDirty();
-		callNeighborTileChange();
-	}
-
-	public void setMode(boolean mode) {
-
-		boolean lastFlag = extractFlag;
-		extractFlag = mode;
-		sendModePacket();
-		extractFlag = lastFlag;
-	}
-
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 

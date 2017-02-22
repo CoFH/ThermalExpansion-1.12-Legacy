@@ -99,7 +99,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		enableAutoOutput = !enableAutoOutput;
 		markDirty();
 
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -206,7 +206,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
 
 		if (curAutoOutput != enableAutoOutput) {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		cached = true;
 	}
@@ -238,17 +238,18 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 

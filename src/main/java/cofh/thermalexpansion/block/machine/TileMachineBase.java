@@ -25,8 +25,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockMachine.Type.values().length];
 	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockMachine.Type.values().length];
 	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockMachine.Type.values().length];
-
-	protected static final int[] lightValue = { 14, 0, 0, 15, 15, 7, 15, 0, 0, 0, 0, 0, 12, 0, 0, 14 };
+	protected static final int[] lightValue = new int[BlockMachine.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -215,13 +214,13 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 			if (lightValue[getType()] != 0) {
 				updateLighting();
 			}
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
 			if (lightValue[getType()] != 0) {
 				updateLighting();
 			}
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -267,6 +266,8 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -415,7 +416,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		sideCache[side] = 0;
 		facing = (byte) side;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 

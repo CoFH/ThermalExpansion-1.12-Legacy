@@ -193,54 +193,6 @@ public class TileCompactor extends TileMachineBase {
 		return augmentMint && flagMint;
 	}
 
-	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getGuiPacket() {
-
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addBool(augmentMint);
-		payload.addByte(mode);
-		payload.addByte(modeFlag);
-
-		return payload;
-	}
-
-	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-
-		payload.addByte(modeFlag);
-
-		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-
-		augmentMint = payload.getBool();
-		flagMint = augmentMint;
-
-		mode = payload.getByte();
-		modeFlag = payload.getByte();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		modeFlag = payload.getByte();
-		if (!isActive) {
-			mode = modeFlag;
-		}
-		markDirty();
-		callNeighborTileChange();
-	}
-
 	public void toggleMode() {
 
 		switch (VALUES[mode]) {
@@ -260,6 +212,56 @@ public class TileCompactor extends TileMachineBase {
 		modeFlag = (byte) mode;
 		sendModePacket();
 		modeFlag = lastFlag;
+	}
+
+	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(modeFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		modeFlag = payload.getByte();
+		if (!isActive) {
+			mode = modeFlag;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(augmentMint);
+		payload.addByte(mode);
+		payload.addByte(modeFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		augmentMint = payload.getBool();
+		flagMint = augmentMint;
+
+		mode = payload.getByte();
+		modeFlag = payload.getByte();
 	}
 
 	/* NBT METHODS */

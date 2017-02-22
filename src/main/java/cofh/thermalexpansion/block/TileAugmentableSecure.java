@@ -255,25 +255,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte((byte) access.ordinal());
-		payload.addUUID(owner.getId());
-		payload.addString(owner.getName());
-
-		payload.addByte(level);
-		payload.addBool(isCreative);
-		payload.addBool(hasAutoInput);
-		payload.addBool(hasAutoOutput);
-		payload.addBool(enableAutoInput);
-		payload.addBool(enableAutoOutput);
-
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getAccessPacket() {
 
@@ -294,7 +277,26 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addByte((byte) access.ordinal());
+		payload.addUUID(owner.getId());
+		payload.addString(owner.getName());
+
+		payload.addByte(level);
+		payload.addBool(isCreative);
+		payload.addBool(hasAutoInput);
+		payload.addBool(hasAutoOutput);
+		payload.addBool(enableAutoInput);
+		payload.addBool(enableAutoOutput);
+
+		return payload;
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -504,7 +506,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		return true;
 	}
@@ -519,7 +521,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		return true;
 	}

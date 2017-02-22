@@ -102,17 +102,8 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByteArray(sideCache);
-		payload.addByte(facing);
-
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getConfigPacket() {
 
@@ -135,11 +126,23 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 				sideCache[i] = 0;
 			}
 		}
+
 		callBlockUpdate();
 		callNeighborTileChange();
 	}
 
-	/* ITilePacketHandler */
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addByteArray(sideCache);
+		payload.addByte(facing);
+
+		return payload;
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -212,7 +215,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			facing++;
 			facing %= 6;
 			markDirty();
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 			return true;
 		}
 		if (isActive) {
@@ -225,7 +228,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		sideCache = tempCache.clone();
 		facing = BlockHelper.SIDE_LEFT[facing];
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -240,7 +243,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		facing = (byte) side;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 

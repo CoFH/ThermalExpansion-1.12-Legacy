@@ -287,9 +287,9 @@ public class TileRefinery extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
@@ -331,7 +331,6 @@ public class TileRefinery extends TileMachineBase {
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 

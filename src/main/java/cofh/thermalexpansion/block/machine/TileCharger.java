@@ -39,6 +39,8 @@ public class TileCharger extends TileMachineBase {
 		validAugments[TYPE] = new ArrayList<String>();
 		validAugments[TYPE].add(TEProps.MACHINE_CHARGER_THROUGHPUT);
 
+		lightValue[TYPE] = 7;
+
 		GameRegistry.registerTileEntity(TileCharger.class, "thermalexpansion:machine_charger");
 
 		config();

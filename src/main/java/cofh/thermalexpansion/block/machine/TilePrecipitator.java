@@ -208,6 +208,14 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		return tank.getFluid();
 	}
 
+	public void setMode(int selection) {
+
+		byte lastSelection = curSelection;
+		curSelection = (byte) selection;
+		sendModePacket();
+		curSelection = lastSelection;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -235,6 +243,30 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(curSelection);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		curSelection = payload.getByte();
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -243,14 +275,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		payload.addByte(curSelection);
 		payload.addByte(prevSelection);
 		payload.addInt(tank.getFluidAmount());
-		return payload;
-	}
 
-	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-		payload.addByte(curSelection);
 		return payload;
 	}
 
@@ -258,27 +283,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
 		tank.getFluid().amount = payload.getInt();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-		curSelection = payload.getByte();
-		if (!isActive) {
-			prevSelection = curSelection;
-		}
-	}
-
-	public void setMode(int i) {
-
-		byte lastSelection = curSelection;
-		curSelection = (byte) i;
-		sendModePacket();
-		curSelection = lastSelection;
 	}
 
 	/* ICustomInventory */

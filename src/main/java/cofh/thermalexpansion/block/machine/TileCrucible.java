@@ -48,6 +48,8 @@ public class TileCrucible extends TileMachineBase {
 
 		validAugments[TYPE] = new ArrayList<String>();
 
+		lightValue[TYPE] = 14;
+
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
 		config();
@@ -251,11 +253,15 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -263,6 +269,7 @@ public class TileCrucible extends TileMachineBase {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -272,18 +279,13 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
@@ -292,10 +294,18 @@ public class TileCrucible extends TileMachineBase {
 		super.handleFluidPacket(payload);
 
 		renderFluid = payload.getFluidStack();
+
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
