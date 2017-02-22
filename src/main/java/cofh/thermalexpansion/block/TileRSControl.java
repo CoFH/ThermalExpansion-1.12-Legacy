@@ -121,17 +121,15 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isPowered = payload.getBool();
 		rsMode = ControlMode.values()[payload.getByte()];
 
-		if (!isServer) {
-			boolean prevActive = isActive;
-			isActive = payload.getBool();
+		boolean prevActive = isActive;
+		isActive = payload.getBool();
 
+		if (!isServer) {
 			if (isActive && !prevActive) {
 				if (getSoundName() != null && !getSoundName().isEmpty()) {
 					SoundHelper.playSound(getSound());
 				}
 			}
-		} else {
-			payload.getBool();
 		}
 	}
 
@@ -158,8 +156,6 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
-		} else {
-			sendUpdatePacket(Side.CLIENT);
 		}
 		return true;
 	}

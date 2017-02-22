@@ -290,6 +290,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		super.handleAccessPacket(payload);
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
+
+		callBlockUpdate();
 	}
 
 	/* ITilePacketHandler */
@@ -299,29 +301,18 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		super.handleTilePacket(payload, isServer);
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
-		if (!isServer) {
-			owner = CoreProps.DEFAULT_OWNER;
-			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
+		owner = CoreProps.DEFAULT_OWNER;
+		setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
-			byte tmpLevel = payload.getByte();
-			isCreative = payload.getBool();
-			hasAutoInput = payload.getBool();
-			hasAutoOutput = payload.getBool();
-			enableAutoInput = payload.getBool();
-			enableAutoOutput = payload.getBool();
+		byte tmpLevel = payload.getByte();
+		isCreative = payload.getBool();
+		hasAutoInput = payload.getBool();
+		hasAutoOutput = payload.getBool();
+		enableAutoInput = payload.getBool();
+		enableAutoOutput = payload.getBool();
 
-			if (tmpLevel != level) {
-				setLevel(tmpLevel);
-			}
-		} else {
-			payload.getUUID();
-			payload.getString();
-			payload.getByte();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
+		if (tmpLevel != level) {
+			setLevel(tmpLevel);
 		}
 	}
 
@@ -404,8 +395,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			sendAccessPacket();
-		} else {
-			sendUpdatePacket(Side.CLIENT);
 		}
 		return true;
 	}

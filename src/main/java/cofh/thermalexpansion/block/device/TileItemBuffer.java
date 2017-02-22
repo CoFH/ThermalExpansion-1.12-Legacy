@@ -216,13 +216,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			amountInput = payload.getInt();
-			amountOutput = payload.getInt();
-		} else {
-			payload.getInt();
-			payload.getInt();
-		}
+		amountInput = payload.getInt();
+		amountOutput = payload.getInt();
 	}
 
 }

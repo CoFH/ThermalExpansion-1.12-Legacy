@@ -9,7 +9,6 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.ItemBlockCell;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.init.TEProps;
@@ -60,12 +59,14 @@ public class RenderCell implements ILayeredBlockBakery {
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
 
 		TileCell cell = (TileCell) tileEntity;
+
+		// state = state.withProperty(TEProps.CREATIVE, false);// TODO
 		state = state.withProperty(TEProps.LEVEL, cell.getLevel());
-		//state = state.withProperty(TEProps.CREATIVE, false);// TODO
-		state = state.withProperty(TEProps.SIDE_CONFIG_RAW, cell.sideCache.clone());
-		//state = state.withProperty(BlockCell.CHARGE_PROPERTY, Math.min(15, cell.getScaledEnergyStored(16)));
+		// state = state.withProperty(TEProps.LIGHT, Math.min(15, cell.getScaledEnergyStored(16)));
+		state = state.withProperty(TEProps.SCALE, cell.getLightValue());
+
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[cell.getFacing()]);
-		state = state.withProperty(BlockCell.METER_LEVEL, cell.getLightValue());
+		state = state.withProperty(TEProps.SIDE_CONFIG_RAW, cell.sideCache.clone());
 		return state;
 	}
 
@@ -73,11 +74,13 @@ public class RenderCell implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null) {
+			// boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
-			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG_RAW);
-			//int charge = state.getValue(BlockCell.CHARGE_PROPERTY);
+			// int charge = state.getValue(TEProps.LIGHT);
+			TextureAtlasSprite meter = TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
+
 			int facing = state.getValue(TEProps.FACING).ordinal();
-			TextureAtlasSprite meter = TETextures.CELL_METER[state.getValue(BlockCell.METER_LEVEL)];
+			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG_RAW);
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);

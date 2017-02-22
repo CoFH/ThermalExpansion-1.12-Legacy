@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.storage;
 
-import codechicken.lib.block.property.unlisted.UnlistedIntegerProperty;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.*;
 import cofh.api.core.IModelRegister;
@@ -49,10 +48,12 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
+		// builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.SIDE_CONFIG_RAW);
+		// builder.add(TEProps.LIGHT);
+		builder.add(TEProps.SCALE);
 		builder.add(TEProps.FACING);
-		builder.add(METER_LEVEL);
+		builder.add(TEProps.SIDE_CONFIG_RAW);
 
 		return builder.build();
 	}
@@ -161,6 +162,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomStateMapper(this, mapper);
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
 		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {
@@ -173,10 +175,11 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 				}
 				builder.append("}");
 				builder.append(",facing=").append(state.getValue(TEProps.FACING));
-				builder.append(",meter_level").append(state.getValue(METER_LEVEL));
+				builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
 				return builder.toString();
 			}
 		});
+
 		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
 			@Override
 			public String generateKey(ItemStack stack) {
@@ -223,7 +226,5 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	/* REFERENCES */
 	public static ItemStack cell;
 	public static ItemBlockCell itemBlock;
-
-	public static final UnlistedIntegerProperty METER_LEVEL = new UnlistedIntegerProperty("meter_level");
 
 }

@@ -290,6 +290,7 @@ public class TileCrucible extends TileMachineBase {
 	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
+
 		renderFluid = payload.getFluidStack();
 		callBlockUpdate();
 	}
@@ -300,11 +301,7 @@ public class TileCrucible extends TileMachineBase {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* IInventory */

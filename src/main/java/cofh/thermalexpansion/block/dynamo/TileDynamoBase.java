@@ -384,13 +384,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			facing = payload.getByte();
-			hasRedstoneControl = payload.getBool();
-		} else {
-			payload.getByte();
-			payload.getBool();
-		}
+		facing = payload.getByte();
+		hasRedstoneControl = payload.getBool();
+
 	}
 
 	/* HELPERS */

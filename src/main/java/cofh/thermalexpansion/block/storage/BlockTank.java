@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.block.storage;
 
-import codechicken.lib.block.property.unlisted.UnlistedFluidStackProperty;
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.*;
 import cofh.api.core.IModelRegister;
@@ -57,9 +56,10 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 
 		// UnListed
-		builder.add(FLUID_STACK);
-		builder.add(TEProps.ACTIVE);
+		// builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
+		builder.add(TEProps.ACTIVE);
+		builder.add(TEProps.FLUID);
 
 		return builder.build();
 	}
@@ -189,7 +189,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public ICustomBlockBakery getCustomBakery() {
 
-		return RenderTank.instance;
+		return RenderTank.INSTANCE;
 	}
 
 	/* IModelRegister */
@@ -202,6 +202,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomStateMapper(this, mapper);
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
 		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {
@@ -209,15 +210,15 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 				builder.append(",output=").append(TEProps.ACTIVE);
-				FluidStack stack = state.getValue(FLUID_STACK);
+				FluidStack stack = state.getValue(TEProps.FLUID);
 				if (stack != null) {
 					builder.append(",fluid=").append(stack.getFluid().getName());
 					builder.append(",amount=").append(stack.amount);
 				}
-
 				return builder.toString();
 			}
 		});
+
 		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
 			@Override
 			public String generateKey(ItemStack stack) {
@@ -273,7 +274,5 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	/* REFERENCES */
 	public static ItemStack tank;
 	public static ItemBlockTank itemBlock;
-
-	public static final UnlistedFluidStackProperty FLUID_STACK = new UnlistedFluidStackProperty("fluid_stack");
 
 }

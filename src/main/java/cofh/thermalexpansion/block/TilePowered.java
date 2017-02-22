@@ -120,11 +120,7 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 		super.handleTilePacket(payload, isServer);
 
-		int energy = payload.getInt();
-
-		if (!isServer) {
-			energyStorage.setEnergyStored(energy);
-		}
+		energyStorage.setEnergyStored(payload.getInt());
 	}
 
 	/* IEnergyInfo */

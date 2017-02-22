@@ -17,7 +17,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
 
 public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
@@ -271,7 +270,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -280,7 +279,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -291,7 +290,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			return false;
 		}
 		sideCache[side] = (byte) config;
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 

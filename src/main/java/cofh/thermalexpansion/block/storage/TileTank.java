@@ -99,8 +99,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		enableAutoOutput = !enableAutoOutput;
 		markDirty();
 
-		System.out.println("heyo");
-
 		sendUpdatePacket(Side.CLIENT);
 		return true;
 	}
@@ -258,9 +256,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 
 		tank.setFluid(payload.getFluidStack());
 
-		System.out.println("okay made it here");
-
-		callNeighborTileChange();
+		callBlockUpdate();
 	}
 
 	@Override

@@ -113,6 +113,32 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		return payload;
 	}
 
+	@Override
+	public PacketCoFHBase getConfigPacket() {
+
+		PacketCoFHBase payload = super.getConfigPacket();
+
+		payload.addByteArray(sideCache);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleConfigPacket(PacketCoFHBase payload) {
+
+		super.handleConfigPacket(payload);
+
+		payload.getByteArray(sideCache);
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+		callBlockUpdate();
+		callNeighborTileChange();
+	}
+
 	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
@@ -126,11 +152,8 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 				sideCache[i] = 0;
 			}
 		}
-		if (!isServer) {
-			facing = payload.getByte();
-		} else {
-			payload.getByte();
-		}
+		facing = payload.getByte();
+
 		callNeighborTileChange();
 	}
 
@@ -230,7 +253,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -242,7 +265,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -253,7 +276,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			return false;
 		}
 		sideCache[side] = (byte) config;
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -268,7 +291,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			}
 		}
 		if (update) {
-			sendUpdatePacket(Side.SERVER);
+			sendConfigPacket();
 		}
 		return update;
 	}

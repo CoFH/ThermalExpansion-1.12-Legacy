@@ -337,11 +337,7 @@ public class TileRefinery extends TileMachineBase {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* ISidedTexture */

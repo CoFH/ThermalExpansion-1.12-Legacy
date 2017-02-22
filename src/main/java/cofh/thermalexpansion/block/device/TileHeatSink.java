@@ -249,11 +249,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* ISidedTexture */
