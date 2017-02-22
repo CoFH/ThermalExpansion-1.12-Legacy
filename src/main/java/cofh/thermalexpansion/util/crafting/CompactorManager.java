@@ -35,7 +35,7 @@ public class CompactorManager {
 		ComparableItemStackCompactor query = new ComparableItemStackCompactor(input);
 		RecipeCompactor recipe = null;
 
-		switch(mode) {
+		switch (mode) {
 			case PRESS:
 				recipe = recipeMapPress.get(query);
 
@@ -102,6 +102,7 @@ public class CompactorManager {
 			addDefaultPressRecipe(ItemMaterial.ingotSteel, ItemMaterial.plateSteel);
 			addDefaultPressRecipe(ItemMaterial.ingotElectrum, ItemMaterial.plateElectrum);
 			addDefaultPressRecipe(ItemMaterial.ingotBronze, ItemMaterial.plateBronze);
+			addDefaultPressRecipe(ItemMaterial.ingotConstantan, ItemMaterial.plateConstantan);
 			addDefaultPressRecipe(ItemMaterial.ingotSignalum, ItemMaterial.plateSignalum);
 			addDefaultPressRecipe(ItemMaterial.ingotLumium, ItemMaterial.plateLumium);
 			addDefaultPressRecipe(ItemMaterial.ingotEnderium, ItemMaterial.plateEnderium);
@@ -129,6 +130,7 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.ingotSteel, BlockStorageAlloy.blockSteel);
 			addDefaultStorageRecipe(ItemMaterial.ingotElectrum, BlockStorageAlloy.blockElectrum);
 			addDefaultStorageRecipe(ItemMaterial.ingotBronze, BlockStorageAlloy.blockBronze);
+			addDefaultStorageRecipe(ItemMaterial.ingotConstantan, BlockStorageAlloy.blockConstantan);
 			addDefaultStorageRecipe(ItemMaterial.ingotSignalum, BlockStorageAlloy.blockSignalum);
 			addDefaultStorageRecipe(ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium);
 			addDefaultStorageRecipe(ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium);
@@ -150,9 +152,15 @@ public class CompactorManager {
 			addDefaultStorageRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel);
 			addDefaultStorageRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum);
 			addDefaultStorageRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze);
+			addDefaultStorageRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan);
 			addDefaultStorageRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum);
 			addDefaultStorageRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium);
 			addDefaultStorageRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium);
+		}
+
+		/* MINT */
+		{
+
 		}
 	}
 

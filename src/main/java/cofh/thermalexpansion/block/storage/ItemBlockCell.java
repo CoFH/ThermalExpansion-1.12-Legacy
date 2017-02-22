@@ -30,6 +30,9 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 		stack.getTagCompound().setByte("Level", (byte) level);
 
+		stack.getTagCompound().setInteger("Send", TileCell.SEND[level]);
+		stack.getTagCompound().setInteger("Recv", TileCell.RECV[level]);
+
 		return stack;
 	}
 
@@ -41,13 +44,18 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 		return stack.getTagCompound().getByte("Level");
 	}
 
+	public static boolean isCreative(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getBoolean("Creative");
+	}
+
 	public ItemBlockCell(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
 		setMaxStackSize(1);
-		setNoRepair();
 	}
 
 	@Override
@@ -87,16 +95,25 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.cell"));
+
+		if (isCreative(stack)) {
+			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(TileCell.CAPACITY[getLevel(stack)]) + " RF");
+		}
+		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.getTagCompound().getInteger("Send") + "/" + stack.getTagCompound().getInteger("Recv") + " RF/t");
+
+		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
-			return 1;
+			setDefaultTag(stack);
 		}
-		return 0;
-		// return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) TileCell.CAPACITY[ItemHelper.getItemDamage(stack)]);
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) TileCell.CAPACITY[getLevel(stack)]);
 	}
 
 	@Override
@@ -109,52 +126,44 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
 
-		//		if (container.getTagCompound() == null) {
-		//			setDefaultTag(container, (byte) 0);
-		//		}
-		//		int metadata = ItemHelper.getItemDamage(container);
-		//
-		//		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
-		//			return 0;
-		//		}
-		//		int stored = container.getTagCompound().getInteger("Energy");
-		//		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[metadata] - stored, TileCell.MAX_RECEIVE[metadata]));
-		//
-		//		if (!simulate) {
-		//			stored += receive;
-		//			container.getTagCompound().setInteger("Energy", stored);
-		//		}
-		//		return receive;
-		return 0;
+		if (isCreative(container)) {
+			return 0;
+		}
+		int level = getLevel(container);
+
+		int stored = container.getTagCompound().getInteger("Energy");
+		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[level] - stored, TileCell.RECV[level]));
+
+		if (!simulate) {
+			stored += receive;
+			container.getTagCompound().setInteger("Energy", stored);
+		}
+		return receive;
 	}
 
 	@Override
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
-		//		if (container.getTagCompound() == null) {
-		//			setDefaultTag(container, 0);
-		//		}
-		//		int metadata = ItemHelper.getItemDamage(container);
-		//
-		//		if (metadata == BlockCell.Types.CREATIVE.ordinal()) {
-		//			return maxExtract;
-		//		}
-		//		int stored = container.getTagCompound().getInteger("Energy");
-		//		int extract = Math.min(maxExtract, Math.min(stored, TileCell.MAX_SEND[metadata]));
-		//
-		//		if (!simulate) {
-		//			stored -= extract;
-		//			container.getTagCompound().setInteger("Energy", stored);
-		//		}
-		//		return extract;
-		return 0;
+		if (isCreative(container)) {
+			return maxExtract;
+		}
+		int level = getLevel(container);
+
+		int stored = container.getTagCompound().getInteger("Energy");
+		int extract = Math.min(maxExtract, Math.min(stored, TileCell.SEND[level]));
+
+		if (!simulate) {
+			stored -= extract;
+			container.getTagCompound().setInteger("Energy", stored);
+		}
+		return extract;
 	}
 
 	@Override
 	public int getEnergyStored(ItemStack container) {
 
 		if (container.getTagCompound() == null) {
-			setDefaultTag(container, (byte) 0);
+			setDefaultTag(container);
 		}
 		return container.getTagCompound().getInteger("Energy");
 	}
@@ -162,8 +171,7 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		// return TileCell.CAPACITY[ItemHelper.getItemDamage(container)];
-		return 32000;
+		return TileCell.getCapacity(getLevel(container));
 	}
 
 }

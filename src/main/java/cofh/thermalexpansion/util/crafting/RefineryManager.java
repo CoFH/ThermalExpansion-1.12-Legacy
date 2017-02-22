@@ -10,7 +10,7 @@ public class RefineryManager {
 
 	private static TIntObjectHashMap<RecipeRefinery> recipeMap = new TIntObjectHashMap<RecipeRefinery>();
 
-	static final int DEFAULT_ENERGY = 2000;
+	static final int DEFAULT_ENERGY = 5000;
 
 	public static RecipeRefinery getRecipe(FluidStack input) {
 
@@ -24,16 +24,18 @@ public class RefineryManager {
 
 	public static RecipeRefinery[] getRecipeList() {
 
-		return (RecipeRefinery[]) recipeMap.values();
+		return recipeMap.values(new RecipeRefinery[recipeMap.size()]);
 	}
 
 	public static void addDefaultRecipes() {
 
-		addRecipe(5000, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
-		addRecipe(5000, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
-		addRecipe(5000, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur);
+		int energy = DEFAULT_ENERGY;
+		addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 200), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.dustSulfur);
+		addRecipe(energy, new FluidStack(TFFluids.fluidCrudeOil, 100), new FluidStack(TFFluids.fluidRefinedOil, 100), ItemMaterial.globTar);
+		addRecipe(energy, new FluidStack(TFFluids.fluidRefinedOil, 100), new FluidStack(TFFluids.fluidFuel, 100), ItemMaterial.dustSulfur);
 
-		addRecipe(2500, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.rosin);
+		energy = DEFAULT_ENERGY / 2;
+		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin);
 	}
 
 	public static void loadRecipes() {

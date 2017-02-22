@@ -51,6 +51,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		validAugments[TYPE] = new ArrayList<String>();
 
+		lightValue[TYPE] = 14;
+
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
 		config();
@@ -219,6 +221,14 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return coldTank.getFluid();
 	}
 
+	public void setMode(int selection) {
+
+		byte lastSelection = curSelection;
+		curSelection = (byte) selection;
+		sendModePacket();
+		curSelection = lastSelection;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -248,6 +258,32 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(curSelection);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		curSelection = payload.getByte();
+
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -262,39 +298,14 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-		payload.addByte(curSelection);
-		return payload;
-	}
-
-	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
 		hotTank.getFluid().amount = payload.getInt();
 		coldTank.getFluid().amount = payload.getInt();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-		curSelection = payload.getByte();
-		if (!isActive) {
-			prevSelection = curSelection;
-		}
-	}
-
-	public void setMode(int i) {
-
-		byte lastSelection = curSelection;
-		curSelection = (byte) i;
-		sendModePacket();
-		curSelection = lastSelection;
 	}
 
 	/* ICustomInventory */

@@ -60,7 +60,7 @@ public class TECraftingHandler {
 			return;
 		}
 		// Crafting Steps
-//		if (stack.isItemEqual(BlockFrame.frameMachineBasic)) {
+		//		if (stack.isItemEqual(BlockFrame.frameMachineBasic)) {
 		//			player.addStat(TEAchievements.machineFrame, 1);
 		//		}
 		// Machine Achievements

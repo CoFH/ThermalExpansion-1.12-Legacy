@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -38,6 +39,8 @@ public class TileSmelter extends TileMachineBase {
 		validAugments[TYPE] = new ArrayList<String>();
 		validAugments[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
 
+		lightValue[TYPE] = 15;
+
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
 		config();
@@ -59,13 +62,15 @@ public class TileSmelter extends TileMachineBase {
 
 	public boolean lockPrimary = false;
 
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
 	/* AUGMENTS */
 	protected boolean augmentPyrotheum;
 
 	public TileSmelter() {
 
 		super();
-		inventory = new ItemStack[2 + 2 + 1 + 1];
+		inventory = new ItemStack[2 + 1 + 1 + 1];
 	}
 
 	@Override
@@ -104,27 +109,14 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
 		if (!augmentSecondaryNull && secondaryItem != null && inventory[4] != null) {
-			if (!inventory[4].isItemEqual(secondaryItem)) {
+			if (!inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[4].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		final int start = 2, end = start + 2;
-
-		int room = 0;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				return true;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			room += stack.getMaxStackSize() - stack.stackSize;
-		}
-		return room >= primaryItem.stackSize;
+		return inventory[2] == null || inventory[2].isItemEqual(primaryItem) && inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -175,40 +167,29 @@ public class TileSmelter extends TileMachineBase {
 				++outputAmt;
 			}
 		}
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				inventory[i] = ItemHelper.cloneStack(primaryItem);
-				break;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
-			outputAmt -= add;
-			stack.stackSize += add;
-			if (outputAmt == 0) {
-				break;
-			}
+		if (inventory[2] == null) {
+			inventory[2] = ItemHelper.cloneStack(primaryItem);
+		} else {
+			inventory[2].stackSize += primaryItem.stackSize;
 		}
 		if (secondaryItem != null) {
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
-				if (inventory[4] == null) {
-					inventory[4] = ItemHelper.cloneStack(secondaryItem);
+				if (inventory[3] == null) {
+					inventory[3] = ItemHelper.cloneStack(secondaryItem);
 
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[4].stackSize += secondaryItem.stackSize;
+						inventory[3].stackSize += secondaryItem.stackSize;
 					}
-				} else if (inventory[4].isItemEqual(secondaryItem)) {
-					inventory[4].stackSize += secondaryItem.stackSize;
+				} else if (inventory[3].isItemEqual(secondaryItem)) {
+					inventory[3].stackSize += secondaryItem.stackSize;
 
 					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[4].stackSize += secondaryItem.stackSize;
+						inventory[3].stackSize += secondaryItem.stackSize;
 					}
 				}
-				if (inventory[4].stackSize > inventory[4].getMaxStackSize()) {
-					inventory[4].stackSize = inventory[4].getMaxStackSize();
+				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
+					inventory[3].stackSize = inventory[3].getMaxStackSize();
 				}
 			}
 		}
@@ -261,30 +242,24 @@ public class TileSmelter extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[2] != null || inventory[3] != null) {
+		if (inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-						if (!transferItem(3, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-							transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
-						}
-						outputTrackerPrimary = side;
-						break;
-					} else if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
 				}
 			}
 		}
-		if (inventory[4] == null) {
+		if (inventory[3] == null) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(4, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -325,6 +300,15 @@ public class TileSmelter extends TileMachineBase {
 		return new ContainerSmelter(inventory, this);
 	}
 
+
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -336,6 +320,7 @@ public class TileSmelter extends TileMachineBase {
 		outputTrackerPrimary = nbt.getInteger("TrackOut1");
 		outputTrackerSecondary = nbt.getInteger("TrackOut2");
 		lockPrimary = nbt.getBoolean("SlotLock");
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -348,20 +333,13 @@ public class TileSmelter extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
+		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addBool(lockPrimary);
-
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getModePacket() {
 
@@ -373,29 +351,34 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-
-		lockPrimary = payload.getBool();
-	}
-
-	@Override
 	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
 
 		lockPrimary = payload.getBool();
-		markDirty();
+
 		callNeighborTileChange();
 	}
 
-	public void setMode(boolean mode) {
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
 
-		boolean lastMode = lockPrimary;
-		lockPrimary = mode;
-		sendModePacket();
-		lockPrimary = lastMode;
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(lockPrimary);
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		lockPrimary = payload.getBool();
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */

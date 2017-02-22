@@ -262,7 +262,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 

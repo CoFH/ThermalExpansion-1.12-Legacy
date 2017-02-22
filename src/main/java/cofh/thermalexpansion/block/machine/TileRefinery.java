@@ -266,6 +266,10 @@ public class TileRefinery extends TileMachineBase {
 
 		inputTank.readFromNBT(nbt.getCompoundTag("TankIn"));
 		outputTank.readFromNBT(nbt.getCompoundTag("TankOut"));
+
+		if (inputTank.getFluid() != null) {
+			renderFluid = inputTank.getFluid().copy();
+		}
 	}
 
 	@Override
@@ -283,9 +287,9 @@ public class TileRefinery extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
@@ -327,17 +331,12 @@ public class TileRefinery extends TileMachineBase {
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* ISidedTexture */

@@ -25,9 +25,6 @@ public class ItemBlockDevice extends ItemBlockCore {
 	public ItemBlockDevice(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override

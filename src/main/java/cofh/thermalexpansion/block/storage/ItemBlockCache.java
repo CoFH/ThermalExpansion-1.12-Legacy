@@ -44,10 +44,7 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 	public ItemBlockCache(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
 		setMaxStackSize(1);
-		setNoRepair();
 	}
 
 	@Override

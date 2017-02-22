@@ -528,6 +528,14 @@ public class TileTransposer extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public void setMode(boolean mode) {
+
+		boolean lastFlag = extractFlag;
+		extractFlag = mode;
+		sendModePacket();
+		extractFlag = lastFlag;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -546,7 +554,7 @@ public class TileTransposer extends TileMachineBase {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (TransposerManager.getExtractRecipe(inventory[1]) != null) {
 			renderFluid = TransposerManager.getExtractRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
@@ -567,12 +575,38 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(extractFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		extractFlag = payload.getBool();
+		if (!isActive) {
+			extractMode = extractFlag;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -593,23 +627,22 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addFluidStack(renderFluid);
-
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
-		PacketCoFHBase payload = super.getModePacket();
+		super.handleFluidPacket(payload);
 
-		payload.addBool(extractFlag);
+		renderFluid = payload.getFluidStack();
 
-		return payload;
+		callBlockUpdate();
 	}
 
 	@Override
@@ -623,46 +656,12 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-
-		renderFluid = payload.getFluidStack();
-		callBlockUpdate();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		extractFlag = payload.getBool();
-		if (!isActive) {
-			extractMode = extractFlag;
-		}
-		markDirty();
-		callNeighborTileChange();
-	}
-
-	public void setMode(boolean mode) {
-
-		boolean lastFlag = extractFlag;
-		extractFlag = mode;
-		sendModePacket();
-		extractFlag = lastFlag;
-	}
-
-	/* ITilePacketHandler */
-	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
+
 	}
 
 	/* IInventory */
@@ -673,10 +672,7 @@ public class TileTransposer extends TileMachineBase {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				extractMode = extractFlag;
 			}
 		}
@@ -689,10 +685,7 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && inventory[slot] != null) {
 				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
+					processOff();
 				}
 			}
 			hasFluidHandler = false;

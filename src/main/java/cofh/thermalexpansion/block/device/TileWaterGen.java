@@ -61,6 +61,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String comment = "Set this to TRUE to enable passive generation (less than two adjacent sources) for the Aqueous Accumulator.";
 		passiveGen = ThermalExpansion.CONFIG.getConfiguration().get(category, "PassiveGeneration", false, comment).getBoolean();
 	}
+
 	private static final int TIME_CONSTANT = 40;
 	private static int genRate = 20 * TIME_CONSTANT;
 	private static int genRatePassive = TIME_CONSTANT;

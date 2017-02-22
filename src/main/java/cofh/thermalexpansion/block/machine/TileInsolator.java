@@ -50,6 +50,8 @@ public class TileInsolator extends TileMachineBase {
 		validAugments[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
 		validAugments[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
 
+		lightValue[TYPE] = 14;
+
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
 
 		config();
@@ -335,6 +337,14 @@ public class TileInsolator extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -364,6 +374,29 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(lockPrimary);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		lockPrimary = payload.getBool();
+
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -376,40 +409,12 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-
-		payload.addBool(lockPrimary);
-
-		return payload;
-	}
-
-	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
 		lockPrimary = payload.getBool();
 		tank.getFluid().amount = payload.getInt();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		lockPrimary = payload.getBool();
-		markDirty();
-		callNeighborTileChange();
-	}
-
-	public void setMode(boolean mode) {
-
-		boolean lastMode = lockPrimary;
-		lockPrimary = mode;
-		sendModePacket();
-		lockPrimary = lastMode;
 	}
 
 	/* HELPERS */

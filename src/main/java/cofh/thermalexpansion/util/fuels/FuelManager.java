@@ -2,8 +2,10 @@ package cofh.thermalexpansion.util.fuels;
 
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.dynamo.*;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
@@ -118,6 +120,7 @@ public class FuelManager {
 			addSteamFuel(new ItemStack(Items.COAL, 1, 0), configFuels.get(category, "coal", 48000));
 			addSteamFuel(new ItemStack(Blocks.COAL_BLOCK), configFuels.get(category, "coal", 48000) * 10);
 			addSteamFuel(new ItemStack(Items.COAL, 1, 1), configFuels.get(category, "charcoal", 32000));
+			addSteamFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), configFuels.get(category, "coke", 64000));
 		}
 
 		/* MAGMATIC */

@@ -1,13 +1,16 @@
 package cofh.thermalexpansion.block.storage;
 
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.*;
 import cofh.api.core.IModelRegister;
+import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -19,6 +22,7 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +41,21 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+	}
+
+	@Override
+	protected BlockStateContainer createBlockState() {
+
+		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+		// UnListed
+		// builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.LEVEL);
+		// builder.add(TEProps.LIGHT);
+		builder.add(TEProps.SCALE);
+		builder.add(TEProps.FACING);
+		builder.add(TEProps.SIDE_CONFIG_RAW);
+
+		return builder.build();
 	}
 
 	@Override
@@ -130,7 +149,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public ICustomBlockBakery getCustomBakery() {
 
-		return null;
+		return RenderCell.instance;
 	}
 
 	/* IModelRegister */
@@ -138,6 +157,36 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
+		StateMapper mapper = new StateMapper("thermalexpansion", "cell", "cell");
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
+		ModelLoader.setCustomStateMapper(this, mapper);
+		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+
+		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
+			@Override
+			public String generateKey(IExtendedBlockState state) {
+
+				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+				builder.append(",side_config{");
+				for (int i : state.getValue(TEProps.SIDE_CONFIG_RAW)) {
+					builder.append(",").append(i);
+				}
+				builder.append("}");
+				builder.append(",facing=").append(state.getValue(TEProps.FACING));
+				builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
+				return builder.toString();
+			}
+		});
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
+			@Override
+			public String generateKey(ItemStack stack) {
+
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack);
+			}
+		});
 	}
 
 	/* IInitializer */
@@ -147,7 +196,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		this.setRegistryName("cell");
 		GameRegistry.register(this);
 
-		ItemBlockCell itemBlock = new ItemBlockCell(this);
+		itemBlock = new ItemBlockCell(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -156,6 +205,8 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	@Override
 	public boolean initialize() {
+
+		TileCell.initialize();
 
 		return true;
 	}
@@ -174,5 +225,6 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	/* REFERENCES */
 	public static ItemStack cell;
+	public static ItemBlockCell itemBlock;
 
 }

@@ -10,7 +10,6 @@ import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -94,7 +93,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		// UnListed
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
-		builder.add(CommonProperties.ACTIVE_SPRITE_PROPERTY);
+		builder.add(TEProps.ACTIVE_SPRITE_PROPERTY);
 		return builder.build();
 	}
 
@@ -270,6 +269,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
+
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {

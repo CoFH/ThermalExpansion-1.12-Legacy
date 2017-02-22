@@ -200,11 +200,15 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -212,6 +216,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -221,39 +226,39 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
 	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
+
 		renderFluid = payload.getFluidStack();
+
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* ISidedTexture */

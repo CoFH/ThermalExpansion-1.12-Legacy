@@ -159,17 +159,29 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getModePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addInt(amountInput);
-		payload.addInt(amountOutput);
+		payload.addInt(MathHelper.clamp(amountInput, 0, 64));
+		payload.addInt(MathHelper.clamp(amountOutput, 0, 64));
 
 		return payload;
 	}
 
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		amountInput = payload.getInt();
+		amountOutput = payload.getInt();
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -182,12 +194,12 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getModePacket();
+		PacketCoFHBase payload = super.getTilePacket();
 
-		payload.addInt(MathHelper.clamp(amountInput, 0, 64));
-		payload.addInt(MathHelper.clamp(amountOutput, 0, 64));
+		payload.addInt(amountInput);
+		payload.addInt(amountOutput);
 
 		return payload;
 	}
@@ -202,27 +214,12 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		amountInput = payload.getInt();
-		amountOutput = payload.getInt();
-	}
-
-	/* ITilePacketHandler */
-	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			amountInput = payload.getInt();
-			amountOutput = payload.getInt();
-		} else {
-			payload.getInt();
-			payload.getInt();
-		}
+		amountInput = payload.getInt();
+		amountOutput = payload.getInt();
 	}
 
 }
