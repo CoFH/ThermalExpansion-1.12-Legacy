@@ -185,14 +185,14 @@ public class TETextures {
 		CACHE_TOP_2 =                       register(map, CACHE_ + "top_2");
 		CACHE_TOP_3 =                       register(map, CACHE_ + "top_3");
 		CACHE_TOP_4 =                       register(map, CACHE_ + "top_4");
-		CACHE_TOP_C =                       register(map, CACHE_ + "top_5");
+		CACHE_TOP_C =                       register(map, CACHE_ + "top_c");
 
 		CACHE_BOTTOM_0 =                    register(map, CACHE_ + "bottom_0");
 		CACHE_BOTTOM_1 =                    register(map, CACHE_ + "bottom_1");
 		CACHE_BOTTOM_2 =                    register(map, CACHE_ + "bottom_2");
 		CACHE_BOTTOM_3 =                    register(map, CACHE_ + "bottom_3");
 		CACHE_BOTTOM_4 =                    register(map, CACHE_ + "bottom_4");
-		CACHE_BOTTOM_C =                    register(map, CACHE_ + "bottom_5");
+		CACHE_BOTTOM_C =                    register(map, CACHE_ + "bottom_c");
 
 		CACHE_SIDE_0 =                      register(map, CACHE_ + "side_0");
 		CACHE_SIDE_1 =                      register(map, CACHE_ + "side_1");

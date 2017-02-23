@@ -48,6 +48,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 
 		String comment = "Enable this to allow for Tanks to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Tank.Securable", true, comment);
+
+		String category = "Storage.Tank";
+		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	int compareTracker;

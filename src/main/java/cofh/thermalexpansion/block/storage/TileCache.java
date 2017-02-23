@@ -32,7 +32,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileTank.class, "thermalexpansion:storage_cache");
+		GameRegistry.registerTileEntity(TileCache.class, "thermalexpansion:storage_cache");
 
 		config();
 	}
@@ -41,6 +41,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		String comment = "Enable this to allow for Caches to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Cache.Securable", true, comment);
+
+		String category = "Storage.Cache";
+		BlockCache.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private int compareTracker;

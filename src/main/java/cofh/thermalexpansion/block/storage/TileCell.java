@@ -49,6 +49,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		String comment = "Enable this to allow for Energy Cells to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Cell.Securable", enableSecurity, comment);
+
+		String category = "Storage.Cell";
+		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private int compareTracker;

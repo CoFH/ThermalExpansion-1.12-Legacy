@@ -129,8 +129,9 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 			addUpgradeEntry(32 + i, UpgradeType.FULL, level);
 		}
 
-		upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
-		addUpgradeEntry(256, UpgradeType.CREATIVE, -1);
+		// TODO: Add Creative.
+		// upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
+		// addUpgradeEntry(256, UpgradeType.CREATIVE, -1);
 
 		return true;
 	}
@@ -234,8 +235,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	private TIntObjectHashMap<UpgradeEntry> upgradeMap = new TIntObjectHashMap<UpgradeEntry>();
 
 	/* REFERENCES */
-	public static ItemStack upgradeCreative;
 	public static ItemStack[] upgradeIncremental;
 	public static ItemStack[] upgradeFull;
+	public static ItemStack upgradeCreative;
 
 }

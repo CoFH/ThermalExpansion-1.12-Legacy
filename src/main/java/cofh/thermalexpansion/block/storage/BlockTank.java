@@ -38,6 +38,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
+
 public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
 	public BlockTank() {
@@ -69,10 +72,9 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable) {
-			list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0)));
-		}
-		for (int i = 0; i < 5; i++) {
-			list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
+			for (int i = 0; i < 5; i++) {
+				list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
+			}
 		}
 	}
 
@@ -254,6 +256,11 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		TileTank.initialize();
 
+		tank = new ItemStack[5];
+
+		for (int i = 0; i < 5; i++) {
+			tank[i] = ItemBlockTank.setDefaultTag(new ItemStack(this), i);
+		}
 		return true;
 	}
 
@@ -261,7 +268,15 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public boolean postInit() {
 
 		// @formatter:off
-
+		if (enable) {
+			addRecipe(ShapedRecipe(tank[0],
+					" I ",
+					"ICI",
+					" I ",
+					'C', "ingotCopper",
+					'I', "blockGlass"
+			));
+		}
 		// @formatter:on
 
 		return true;
@@ -270,7 +285,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public static boolean enable;
 
 	/* REFERENCES */
-	public static ItemStack tank;
+	public static ItemStack tank[];
 	public static ItemBlockTank itemBlock;
 
 }

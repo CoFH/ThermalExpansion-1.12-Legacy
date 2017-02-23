@@ -7,8 +7,10 @@ import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemFrame;
 import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -31,6 +33,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
@@ -64,10 +69,9 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable) {
-			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0)));
-		}
-		for (int i = 0; i < 5; i++) {
-			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), i));
+			for (int i = 0; i < 5; i++) {
+				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), i));
+			}
 		}
 	}
 
@@ -221,6 +225,11 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		TileCell.initialize();
 
+		cell = new ItemStack[5];
+
+		for (int i = 0; i < 5; i++) {
+			cell[i] = ItemBlockCell.setDefaultTag(new ItemStack(this), i);
+		}
 		return true;
 	}
 
@@ -228,7 +237,16 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public boolean postInit() {
 
 		// @formatter:off
-
+		if (enable) {
+			addRecipe(ShapedRecipe(cell[0],
+					" I ",
+					"ICI",
+					" P ",
+					'C', ItemFrame.frameCell,
+					'I', "ingotLead",
+					'P', ItemMaterial.powerCoilElectrum
+			));
+		}
 		// @formatter:on
 
 		return true;
@@ -237,7 +255,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public static boolean enable;
 
 	/* REFERENCES */
-	public static ItemStack cell;
+	public static ItemStack cell[];
 	public static ItemBlockCell itemBlock;
 
 }
