@@ -134,11 +134,11 @@ public class TileInsolator extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
-			if (!inventory[3].isItemEqual(secondaryItem)) {
+		if (secondaryItem != null && inventory[3] != null) {
+			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
@@ -189,20 +189,17 @@ public class TileInsolator extends TileMachineBase {
 			inventory[2].stackSize += primaryItem.stackSize;
 		}
 		if (secondaryItem != null) {
+			int modifiedChance = secondaryChance;
+
 			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
+			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
-
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
-					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
-
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
-					}
+				}
+				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[3].stackSize += secondaryItem.stackSize;
 				}
 				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
 					inventory[3].stackSize = inventory[3].getMaxStackSize();

@@ -87,7 +87,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
 
-		@Override
+	@Override
 	public boolean hasComparatorInputOverride(IBlockState state) {
 
 		return true;

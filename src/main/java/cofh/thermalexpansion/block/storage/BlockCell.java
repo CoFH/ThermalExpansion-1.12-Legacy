@@ -144,7 +144,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 	/* RENDERING METHODS */
 	@Override
-	@SideOnly(Side.CLIENT)
+	@SideOnly (Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
 		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;

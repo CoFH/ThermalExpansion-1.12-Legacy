@@ -66,11 +66,6 @@ public class IMCHandler {
 					} else if (theMessage.key.equalsIgnoreCase("RemoveSmelterRecipe")) {
 						SmelterManager.removeRecipe(ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("primaryInput")), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("secondaryInput")));
 						continue;
-					} else if (theMessage.key.equalsIgnoreCase("SmelterBlastOreType")) {
-						if (theNBT.hasKey("oreType")) {
-							SmelterManager.addBlastOreName(theNBT.getString("oreType"));
-						}
-						continue;
 					} else if (theMessage.key.equalsIgnoreCase("CrucibleRecipe")) {
 						CrucibleManager.addRecipe(theNBT.getInteger("energy"), ItemStack.loadItemStackFromNBT(theNBT.getCompoundTag("input")), FluidStack.loadFluidStackFromNBT(theNBT.getCompoundTag("output")));
 						continue;

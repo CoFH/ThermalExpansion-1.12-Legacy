@@ -244,7 +244,7 @@ public class TileFurnace extends TileMachineBase {
 		if (!augmentOre && TEProps.MACHINE_FURNACE_ORE.equals(id)) {
 			augmentOre = true;
 			hasModeAugment = true;
-			energyMod += 100;
+			energyMod += 50;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);

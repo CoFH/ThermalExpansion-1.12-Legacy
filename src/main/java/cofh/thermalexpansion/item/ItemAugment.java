@@ -76,6 +76,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 			i++;
 			line = "info.thermalexpansion.augment." + id + ".b." + i;
 		}
+		i = 0;
 		line = "info.thermalexpansion.augment." + id + ".c." + i;
 		while (StringHelper.canLocalize(line)) {
 			tooltip.add(StringHelper.YELLOW + StringHelper.localize(line));
@@ -157,8 +158,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
 		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
 
-		//		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
-		//		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
+		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
+		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
 
 		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.MODE);
 
@@ -518,7 +519,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineFurnaceOre;
 
 	public static ItemStack machinePulverizerGeode;
-	public static ItemStack machinePulverizerAerotheum;
 	public static ItemStack machinePulverizerPetrotheum;
 
 	public static ItemStack machineSawmillTapper;

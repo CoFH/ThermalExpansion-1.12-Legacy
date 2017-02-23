@@ -205,7 +205,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof TileInsolator || tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
+		if (!(tile instanceof TileTransposer) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
 				return true;

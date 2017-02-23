@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
@@ -125,7 +126,7 @@ public class TileCharger extends TileMachineBase {
 
 	private boolean canFinishContainerItem() {
 
-		return containerItem.getEnergyStored(inventory[0]) >= containerItem.getMaxEnergyStored(inventory[0]);
+		return containerItem.getEnergyStored(inventory[1]) >= containerItem.getMaxEnergyStored(inventory[1]);
 	}
 
 	private void processTickContainerItem() {
@@ -456,6 +457,29 @@ public class TileCharger extends TileMachineBase {
 		return nbt;
 	}
 
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(augmentThroughput);
+		payload.addBool(hasContainerItem);
+		payload.addBool(hasEnergyHandler);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		augmentThroughput = payload.getBool();
+		hasContainerItem = payload.getBool();
+		hasEnergyHandler = payload.getBool();
+	}
+
 	/* HELPERS */
 	@Override
 	protected void preAugmentInstall() {
@@ -486,6 +510,22 @@ public class TileCharger extends TileMachineBase {
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
+	}
+
+	/* IEnergyInfo */
+	@Override
+	public int getInfoEnergyPerTick() {
+
+		if (!isActive) {
+			return 0;
+		}
+		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : calcEnergy();
+	}
+
+	@Override
+	public int getInfoMaxEnergyPerTick() {
+
+		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : energyConfig.maxPower;
 	}
 
 	/* IAccelerable */

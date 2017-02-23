@@ -32,7 +32,7 @@ public class TapperManager {
 
 	public static FluidStack getFluid(ItemStack stack) {
 
-		return itemMap.get(new ItemWrapper(stack.getItem(), ItemHelper.getItemDamage(stack)));
+		return stack == null ? null : itemMap.get(new ItemWrapper(stack.getItem(), ItemHelper.getItemDamage(stack)));
 	}
 
 	public static boolean mappingExists(ItemStack stack) {

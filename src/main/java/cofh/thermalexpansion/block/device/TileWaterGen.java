@@ -112,12 +112,12 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		if (isActive) {
 			if (adjacentSources >= 2) {
-				tank.fillLocked(genRate * adjacentSources, true);
+				tank.modifyFluidStored(genRate * adjacentSources);
 			} else {
 				if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
-					tank.fillLocked(genRate, true);
+					tank.modifyFluidStored(genRate);
 				} else if (passiveGen) {
-					tank.fillLocked(genRatePassive, true);
+					tank.modifyFluidStored(genRatePassive);
 				}
 			}
 			if (!redstoneControlOrDisable()) {
