@@ -40,6 +40,11 @@ public class TapperManager {
 		return getFluid(stack) != null;
 	}
 
+	public static BlockWrapper getLeaf(IBlockState state) {
+
+		return leafMap.get(new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state)));
+	}
+
 	public static void addDefaultMappings() {
 
 		FluidStack resin = new FluidStack(TFFluids.fluidResin, 25);
@@ -51,12 +56,12 @@ public class TapperManager {
 		addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 25));    // rubber
 		addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(resin, 25));
 
-		addLeafMapping(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.LEAVES, 1, 8));
-		addLeafMapping(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.LEAVES, 1, 9));
-		addLeafMapping(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.LEAVES, 1, 10));
-		addLeafMapping(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.LEAVES, 1, 11));
-		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.LEAVES2, 1, 8));
-		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.LEAVES2, 1, 9));
+		addLeafMapping(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.LEAVES, 1, 0));
+		addLeafMapping(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.LEAVES, 1, 1));
+		addLeafMapping(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.LEAVES, 1, 2));
+		addLeafMapping(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.LEAVES, 1, 3));
+		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.LEAVES2, 1, 0));
+		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.LEAVES2, 1, 1));
 	}
 
 	public static void loadMappings() {
@@ -81,7 +86,7 @@ public class TapperManager {
 		if (log == null || leaf == null) {
 			return false;
 		}
-		leafMap.put(new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)), new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)));
+		leafMap.put(new BlockWrapper(((ItemBlock) log.getItem()).getBlock(), ItemHelper.getItemDamage(log)), new BlockWrapper(((ItemBlock) leaf.getItem()).getBlock(), ItemHelper.getItemDamage(leaf)));
 		return true;
 	}
 

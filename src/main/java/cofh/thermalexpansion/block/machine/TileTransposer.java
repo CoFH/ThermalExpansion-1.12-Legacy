@@ -717,9 +717,9 @@ public class TileTransposer extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (layer == 0) {
+		if (pass == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

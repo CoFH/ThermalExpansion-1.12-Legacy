@@ -11,9 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.fuels.CoolantManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -43,7 +41,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
 		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
@@ -261,18 +259,6 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		super.handleTilePacket(payload, isServer);
 
 		renderFluid = payload.getFluidStack();
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
-		}
-		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */

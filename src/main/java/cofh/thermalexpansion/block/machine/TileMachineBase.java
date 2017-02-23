@@ -424,21 +424,15 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	/* ISidedTexture */
 	@Override
-	public int getNumLayers() {
+	public int getNumPasses() {
 
 		return 2;
 	}
 
 	@Override
-	public int getNumPasses(int layer) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		return 1;
-	}
-
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
+		if (pass == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

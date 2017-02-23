@@ -273,21 +273,15 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 
 	/* ISidedTexture */
 	@Override
-	public int getNumLayers() {
+	public int getNumPasses() {
 
 		return 2;
 	}
 
 	@Override
-	public int getNumPasses(int layer) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		return 1;
-	}
-
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
+		if (pass == 0) {
 			return side != facing ? TETextures.AUTOMATON_SIDE : redstoneControlOrDisable() ? TETextures.AUTOMATON_ACTIVE[getType()] : TETextures.AUTOMATON_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];

@@ -362,25 +362,19 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	/* ISidedTexture */
 	@Override
-	public int getNumLayers() {
+	public int getNumPasses() {
 
 		return 3;
 	}
 
 	@Override
-	public int getNumPasses(int layer) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		return 1;
-	}
-
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
+		if (pass == 0) {
 			return TETextures.CELL_CENTER_1;
-		} else if (layer == 1) {
+		} else if (pass == 1) {
 			return TETextures.CELL_SIDE[level];
-		} else if (layer == 2) {
+		} else if (pass == 2) {
 			return TETextures.CELL_CONFIG[sideCache[side]];
 		}
 		if (side != facing) {

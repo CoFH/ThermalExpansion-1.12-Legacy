@@ -26,7 +26,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
 		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 2, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, true, true, true, true, true, true, true };

@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.BlockWrapper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -9,13 +10,15 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.util.crafting.TapperManager;
 import cofh.thermalfoundation.init.TFFluids;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,7 +43,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
 		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
@@ -67,6 +70,9 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
+	private BlockPos trunkPos;
+	private BlockPos[] leafPos = new BlockPos[3];
+
 	private int offset;
 
 	public TileTapper() {
@@ -75,6 +81,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 
 		hasAutoOutput = true;
+
+		trunkPos = new BlockPos(pos);
+		for (int i = 0; i < 3; i++) {
+			leafPos[i] = new BlockPos(pos);
+		}
 	}
 
 	@Override
@@ -104,6 +115,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		if (isActive) {
 			if (validTree) {
 				tank.fill(genFluid, true);
+				updateAdjacentHandlers();
 			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
@@ -140,14 +152,76 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 	protected void updateAdjacentHandlers() {
 
-		validTree = true;
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		if (validTree) {
+			if (isTrunk(trunkPos)) {
+				BlockWrapper leaf = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+				int leafCount = 0;
 
+				for (int i = 0; i < 3; i++) {
+					IBlockState state = worldObj.getBlockState(leafPos[i]);
+					BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
+
+					if (leaf.isEqual(target)) {
+						leafCount++;
+					}
+				}
+				if (leafCount >= 3) {
+					cached = true;
+					return;
+				}
+			}
+			validTree = false;
+		}
+		if (isTrunk(pos.west())) {
+			trunkPos = pos.west();
+		} else if (isTrunk(pos.east())) {
+			trunkPos = pos.east();
+		} else if (isTrunk(pos.north())) {
+			trunkPos = pos.north();
+		} else if (isTrunk(pos.south())) {
+			trunkPos = pos.south();
+		}
+		if (!isTrunk(trunkPos)) {
+			validTree = false;
+			cached = true;
+			return;
+		}
+		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-1, 0, -1), pos.add(1, Math.min(256 - pos.getY(), 40), 1));
+
+		BlockWrapper leaf = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+		int leafCount = 0;
+
+		for (BlockPos scan : area) {
+			IBlockState state = worldObj.getBlockState(scan);
+			BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
+
+			if (leaf.isEqual(target)) {
+				leafPos[leafCount] = new BlockPos(scan);
+				leafCount++;
+				if (leafCount >= 3) {
+					break;
+				}
+			}
+		}
+		if (leafCount >= 3) {
+			validTree = true;
+		}
 		cached = true;
 	}
 
 	protected boolean timeCheckOffset() {
 
 		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
+	}
+
+	private boolean isTrunk(BlockPos checkPos) {
+
+		IBlockState state = worldObj.getBlockState(checkPos.down());
+
+		return state.getBlock().getMaterial(state) == Material.GROUND && TapperManager.mappingExists(worldObj.getBlockState(checkPos));
 	}
 
 	/* GUI METHODS */
@@ -184,6 +258,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		validTree = nbt.getBoolean("Tree");
 		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
+
+		for (int i = 0; i < 3; i++) {
+			leafPos[i] = new BlockPos(nbt.getInteger("LeafX" + i), nbt.getInteger("LeafY" + i), nbt.getInteger("LeafZ" + i));
+		}
+		trunkPos = new BlockPos(nbt.getInteger("TrunkX"), nbt.getInteger("TrunkY"), nbt.getInteger("TrunkZ"));
 	}
 
 	@Override
@@ -194,6 +273,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		nbt.setBoolean("Tree", validTree);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
+
+		for (int i = 0; i < 3; i++) {
+			nbt.setInteger("LeafX" + i, leafPos[i].getX());
+			nbt.setInteger("LeafY" + i, leafPos[i].getY());
+			nbt.setInteger("LeafZ" + i, leafPos[i].getZ());
+		}
+		nbt.setInteger("TrunkX", trunkPos.getX());
+		nbt.setInteger("TrunkY", trunkPos.getY());
+		nbt.setInteger("TrunkZ", trunkPos.getZ());
+
 		return nbt;
 	}
 
@@ -212,18 +301,6 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 		tank.setFluid(payload.getFluidStack());
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
-		}
-		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */

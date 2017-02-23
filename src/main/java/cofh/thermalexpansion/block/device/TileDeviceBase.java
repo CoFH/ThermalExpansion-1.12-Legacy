@@ -83,22 +83,16 @@ public abstract class TileDeviceBase extends TilePowered {
 
 	/* ISidedTexture */
 	@Override
-	public int getNumLayers() {
+	public int getNumPasses() {
 
 		return 2;
 	}
 
 	@Override
-	public int getNumPasses(int layer) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		return 1;
-	}
-
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
+		if (pass == 0) {
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}

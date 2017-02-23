@@ -190,7 +190,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileAutomatonBase) {
 			TileAutomatonBase tile = ((TileAutomatonBase) tileEntity);
-			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
 	}

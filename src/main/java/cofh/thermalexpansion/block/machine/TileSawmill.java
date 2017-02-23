@@ -301,6 +301,11 @@ public class TileSawmill extends TileMachineBase {
 		return augmentTapper && TapperManager.mappingExists(inventory[0]);
 	}
 
+	public FluidStack getRenderFluid() {
+
+		return renderFluid;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -347,13 +352,32 @@ public class TileSawmill extends TileMachineBase {
 	}
 
 	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addFluidStack(renderFluid);
+
+		return payload;
+	}
+
+	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
 		augmentTapper = payload.getBool();
 		flagTapper = augmentTapper;
-		tank.setFluid(payload.getFluidStack());
+		renderFluid = payload.getFluidStack();
+		tank.setFluid(renderFluid);
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* HELPERS */

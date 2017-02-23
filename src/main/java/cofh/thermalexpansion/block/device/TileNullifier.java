@@ -35,7 +35,7 @@ public class TileNullifier extends TileDeviceBase {
 		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false, false };
 		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, false };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
@@ -165,9 +165,9 @@ public class TileNullifier extends TileDeviceBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (layer == 0) {
+		if (pass == 0) {
 			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(RENDER_FLUID) : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];

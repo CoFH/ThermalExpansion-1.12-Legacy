@@ -452,19 +452,13 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 	/* ISidedTexture */
 	@Override
-	public int getNumLayers() {
+	public int getNumPasses() {
 
 		return 2;
 	}
 
 	@Override
-	public int getNumPasses(int layer) {
-
-		return 1;
-	}
-
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (side == 0) {
 			return TETextures.CACHE_BOTTOM[level];

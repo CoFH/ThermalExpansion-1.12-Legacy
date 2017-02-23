@@ -173,7 +173,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		//		machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
-		machineChargerItems = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
+		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
 		/* DYNAMOS */
 		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
@@ -231,7 +231,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "nuggetInvar",
 				'Y', "blockGlass"
 		));
-
 		addRecipe(ShapedRecipe(machineFurnaceFood,
 				" G ",
 				"ICI",
@@ -252,7 +251,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.PISTON,
 				'Y', "dustPyrotheum"
 		));
-
 //		addRecipe(ShapedRecipe(machinePulverizerGeode,
 //				" G ",
 //				"ICI",
@@ -263,7 +261,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'X', "gemDiamond",
 //				'Y', "dustPetrotheum"
 //		));
-
+		addRecipe(ShapedRecipe(machinePulverizerPetrotheum,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSignalum",
+				'I', "plateBronze",
+				'X', "blockGlassHardened",
+				'Y', "dustPetrotheum"
+		));
 		addRecipe(ShapedRecipe(machineSawmillTapper,
 				" G ",
 				"ICI",
@@ -274,7 +281,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Items.BUCKET,
 				'Y', "dustRedstone"
 		));
-
 		addRecipe(ShapedRecipe(machineSmelterPyrotheum,
 				" G ",
 				"ICI",
@@ -282,10 +288,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateNickel",
-				'X', Blocks.NETHER_BRICK,
+				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
 		));
-
 		addRecipe(ShapedRecipe(machineInsolatorMycelium,
 				" G ",
 				"ICI",
@@ -296,7 +301,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.MYCELIUM,
 				'Y', "dustRedstone"
 		));
-
 		addRecipe(ShapedRecipe(machineInsolatorNether,
 				" G ",
 				"ICI",
@@ -307,7 +311,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.SOUL_SAND,
 				'Y', "dustGlowstone"
 		));
-
 		addRecipe(ShapedRecipe(machineInsolatorEnd,
 				" G ",
 				"ICI",
@@ -318,7 +321,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.END_STONE,
 				'Y', "dustCryotheum"
 		));
-
 //		addRecipe(ShapedRecipe(machineCrucibleAlloy,
 //				" G ",
 //				"ICI",
@@ -329,19 +331,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'X', Blocks.BRICK_BLOCK,
 //				'Y', "dustCryotheum"
 //		));
-
-//		addRecipe(ShapedRecipe(machineCompactorMint,
-//				" G ",
-//				"ICI",
-//				"YXY",
-//				'C', ItemMaterial.redstoneServo,
-//				'G', "gearInvar",
-//				'I', "plateElectrum",
-//				'X', "gemEmerald",
-//				'Y', "dustGlowstone"
-//		));
-
-		addRecipe(ShapedRecipe(machineChargerItems,
+		addRecipe(ShapedRecipe(machineCompactorMint,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearInvar",
+				'I', "plateElectrum",
+				'X', "gemEmerald",
+				'Y', "dustGlowstone"
+		));
+		addRecipe(ShapedRecipe(machineChargerThroughput,
 				" G ",
 				"ICI",
 				"YXY",
@@ -385,7 +385,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "nuggetLead",
 				'Y', "blockGlass"
 		));
-
 		addRecipe(ShapedRecipe(dynamoSteamTurbine,
 				" G ",
 				"ICI",
@@ -396,7 +395,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "ingotIron",
 				'Y', "dustRedstone"
 		));
-
 		addRecipe(ShapedRecipe(dynamoMagmaticCoolant,
 				" G ",
 				"ICI",
@@ -404,10 +402,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateInvar",
-				'X', "blockGlass",
+				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
 		));
-
 		addRecipe(ShapedRecipe(dynamoCompressionCoolant,
 				" G ",
 				"ICI",
@@ -415,10 +412,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearInvar",
 				'I', "plateTin",
-				'X', "blockGlass",
+				'X', "blockGlassHardened",
 				'Y', "dustCryotheum"
 		));
-
 		addRecipe(ShapedRecipe(dynamoCompressionFuel,
 				" G ",
 				"ICI",
@@ -426,7 +422,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'C', ItemMaterial.powerCoilElectrum,
 				'G', "gearSignalum",
 				'I', "plateCopper",
-				'X', "blockGlass",
+				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
 		));
 
@@ -533,7 +529,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCrucibleAlloy;
 
-	public static ItemStack machineChargerItems;
+	public static ItemStack machineChargerThroughput;
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 

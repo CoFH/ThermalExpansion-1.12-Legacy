@@ -131,12 +131,12 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		if (side == EnumFacing.DOWN) {
-			return TETextures.CACHE_BOTTOM[0];
+			return TETextures.CACHE_BOTTOM[ItemBlockCache.getLevel(stack)];
 		}
 		if (side == EnumFacing.UP) {
-			return TETextures.CACHE_TOP[0];
+			return TETextures.CACHE_TOP[ItemBlockCache.getLevel(stack)];
 		}
-		return side != EnumFacing.NORTH ? TETextures.CACHE_SIDE[0] : TETextures.CACHE_FACE[0];
+		return side != EnumFacing.NORTH ? TETextures.CACHE_SIDE[ItemBlockCache.getLevel(stack)] : TETextures.CACHE_FACE[ItemBlockCache.getLevel(stack)];
 	}
 
 	@Override // World
@@ -146,7 +146,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
 			TileCache tile = ((TileCache) tileEntity);
-			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
 	}
