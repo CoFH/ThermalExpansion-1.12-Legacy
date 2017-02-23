@@ -128,7 +128,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 	@Override // Inventory
 	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		if (side == EnumFacing.DOWN) {
 			return TETextures.CACHE_BOTTOM[0];

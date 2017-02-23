@@ -220,9 +220,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	}
 
 	@Override
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override

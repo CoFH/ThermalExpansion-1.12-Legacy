@@ -179,9 +179,9 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	}
 
 	@Override
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override

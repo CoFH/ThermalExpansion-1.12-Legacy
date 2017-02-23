@@ -231,7 +231,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 	@Override // Inventory
 	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		if (side == EnumFacing.DOWN) {
 			return TETextures.MACHINE_BOTTOM;
@@ -239,7 +239,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		if (side == EnumFacing.UP) {
 			return TETextures.MACHINE_TOP;
 		}
-		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override // World
