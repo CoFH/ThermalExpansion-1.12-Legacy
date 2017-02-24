@@ -57,6 +57,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.BREAKER));
 	}
 
 	@Override

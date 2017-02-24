@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -60,6 +61,12 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			((TileTEBase) tile).setName(ItemHelper.getNameFromItemStack(stack));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
+	}
+
+	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles )
+	{
+		return true;
 	}
 
 	@Override

@@ -1,5 +1,9 @@
 package cofh.thermalexpansion.init;
 
+import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalfoundation.block.BlockGlass;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.item.ItemStack;
 import net.minecraft.stats.Achievement;
 import net.minecraftforge.common.AchievementPage;
@@ -8,83 +12,77 @@ import java.util.ArrayList;
 
 public class TEAchievements {
 
-	public static AchievementPage page;
+	private TEAchievements() {
 
-	static ArrayList<Achievement> achievementList = new ArrayList<Achievement>();
+	}
 
-	/* Machines */
-	public static Achievement base;
+	public static void preInit() {
 
-	public static Achievement machineFrame;
-
-	public static Achievement furnace;
-	public static Achievement pulverizer;
-	public static Achievement sawmill;
-	public static Achievement smelter;
-	public static Achievement crucible;
-	public static Achievement transposer;
-	public static Achievement precipitator;
-	public static Achievement extruder;
-	public static Achievement accumulator;
-	public static Achievement assembler;
-	public static Achievement charger;
-	public static Achievement insolator;
-
-	public static Achievement glass;
-
-	public static Achievement resonantCell;
-	public static Achievement resonantTank;
-	public static Achievement resonantCache;
-	public static Achievement resonantStrongbox;
-
-	public static Achievement fluidRedstone;
-	public static Achievement fluidGlowstone;
-	public static Achievement fluidEnder;
-	public static Achievement fluidCoal;
-	public static Achievement fluidPyrotheum;
-	public static Achievement fluidCryotheum;
-
-	/* Items */
-	public static Achievement wrench;
-	public static Achievement multimeter;
-	public static Achievement florb;
+	}
 
 	public static void initialize() {
 
-		// Welcome Achievement
-		//		base = new Achievement("cofh.te.base", "thermalexpansion.base", 0, 0, BlockMachine.furnace, null);
-		//
-		//		// Crafting Step Achievements
-		//		machineFrame = addAchievement("cofh.te.machineFrame", "thermalexpansion.machineFrame", 0, 2, BlockFrame.frameMachineBasic, base);
-		//
-		//		// Machine Achievements
-		//		furnace = addAchievement("cofh.te.furnace", "thermalexpansion.furnace", -2, 2, BlockMachine.furnace, machineFrame);
-		//		pulverizer = addAchievement("cofh.te.pulverizer", "thermalexpansion.pulverizer", -2, 3, BlockMachine.pulverizer, machineFrame);
-		//		sawmill = addAchievement("cofh.te.sawmill", "thermalexpansion.sawmill", -2, 4, BlockMachine.sawmill, machineFrame);
-		//		smelter = addAchievement("cofh.te.smelter", "thermalexpansion.smelter", -2, 5, BlockMachine.smelter, machineFrame);
-		//		crucible = addAchievement("cofh.te.crucible", "thermalexpansion.crucible", -2, 7, BlockMachine.crucible, machineFrame);
-		//		transposer = addAchievement("cofh.te.transposer", "thermalexpansion.transposer", -2, 6, BlockMachine.transposer, machineFrame);
-		//		precipitator = addAchievement("cofh.te.precipitator", "thermalexpansion.precipitator", 2, 2, BlockMachine.precipitator, machineFrame);
-		//		extruder = addAchievement("cofh.te.extruder", "thermalexpansion.extruder", 2, 3, BlockMachine.extruder, machineFrame);
-		//		accumulator = addAchievement("cofh.te.accumulator", "thermalexpansion.accumulator", 2, 4, BlockMachine.accumulator, machineFrame);
-		//		assembler = addAchievement("cofh.te.assembler", "thermalexpansion.assembler", 2, 5, BlockMachine.assembler, machineFrame);
-		//		charger = addAchievement("cofh.te.charger", "thermalexpansion.charger", 2, 6, BlockMachine.charger, machineFrame);
-		//		insolator = addAchievement("cofh.te.insolator", "thermalexpansion.insolator", 2, 7, BlockMachine.insolator, machineFrame);
+		welcome = addAchievement("thermalexpansion:achievement_welcome", "thermalexpansion.welcome", 0, 0, BlockMachine.machineFurnace, null);
 
-		// Resonant Achievements
-		//		resonantCell = addAchievement("cofh.te.resonantCell", "thermalexpansion.resonantCell", 0, 3, BlockCell.cellResonant, null);
-		//		resonantTank = addAchievement("cofh.te.resonantTank", "thermalexpansion.resonantTank", 0, 4, BlockTank.tankResonant, null);
-		//		resonantCache = addAchievement("cofh.te.resonantCache", "thermalexpansion.resonantCache", 0, 5, BlockCache.cacheResonant, null);
-		//		resonantStrongbox = addAchievement("cofh.te.resonantStrongbox", "thermalexpansion.resonantStrongbox", 0, 6, BlockStrongbox.strongboxResonant, null);
+		ingotInvar = addAchievement("thermalexpansion:achievement_ingotInvar", "thermalexpansion.ingotInvar", 0, -1, ItemMaterial.ingotInvar, null);
+		blockGlassHardened = addAchievement("thermalexpansion:achievement_blockGlassHardened", "thermalexpansion.blockGlassHardened", 0, -2, BlockGlass.glassLead, null);
+		ingotSignalum = addAchievement("thermalexpansion:achievement_ingotSignalum", "thermalexpansion.ingotSignalum", 0, -3, ItemMaterial.ingotSignalum, null);
+		ingotEnderium = addAchievement("thermalexpansion:achievement_ingotEnderium", "thermalexpansion.ingotEnderium", 0, -4, ItemMaterial.ingotEnderium, null);
 
-		// Page
-		page = new AchievementPage("Thermal Expansion", (Achievement[]) achievementList.toArray());
-		AchievementPage.registerAchievementPage(page);
+		machineInsolator = addAchievement("thermalexpansion:achievement_insolator", "thermalexpansion.machineInsolator", -10, 0, BlockMachine.machineInsolator, null);
+		machineTransposer = addAchievement("thermalexpansion:achievement_transposer", "thermalexpansion.machineTransposer", -9, 0, BlockMachine.machineTransposer, null);
+
+		florb = addAchievement("thermalexpansion:achievement_florb", "thermalexpansion.florb", -1, 0, TEFlorbs.florb, null);
+		florbMagmatic = addAchievement("thermalexpansion:achievement_florbMagmatic", "thermalexpansion.florbMagmatic", -1, -1, TEFlorbs.florbMagmatic, null);
 	}
 
+	public static void postInit() {
+
+		if (!enable) {
+			return;
+		}
+		achievementList.add(welcome);
+
+		achievementList.add(ingotInvar);
+		achievementList.add(blockGlassHardened);
+		achievementList.add(ingotSignalum);
+		achievementList.add(ingotEnderium);
+
+		achievementList.add(machineInsolator);
+		achievementList.add(machineTransposer);
+
+		achievementList.add(florb);
+		achievementList.add(florbMagmatic);
+
+		achievementPage = new AchievementPage(ThermalExpansion.MOD_NAME, achievementList.toArray(new Achievement[achievementList.size()]));
+		AchievementPage.registerAchievementPage(achievementPage);
+	}
+
+	/* HELPER */
 	static Achievement addAchievement(String id, String localization, int xPos, int yPos, ItemStack stack, Achievement requirement) {
 
 		return new Achievement(id, localization, xPos, yPos, stack, requirement).registerStat();
 	}
+
+	public static boolean enable = true;
+	public static final ArrayList<Achievement> achievementList = new ArrayList<Achievement>();
+
+	/* REFERENCES */
+	public static AchievementPage achievementPage;
+
+	public static Achievement welcome;
+
+	public static Achievement ingotInvar;
+	public static Achievement blockGlassHardened;
+	public static Achievement ingotSignalum;
+	public static Achievement ingotEnderium;
+
+	public static Achievement machineInsolator;
+	public static Achievement machineTransposer;
+
+	public static Achievement wrench;
+	public static Achievement multimeter;
+	public static Achievement florb;
+	public static Achievement florbMagmatic;
 
 }

@@ -64,6 +64,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.FURNACE));
 	}
 
 	@Override

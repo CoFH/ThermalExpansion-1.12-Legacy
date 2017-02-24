@@ -231,7 +231,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 						fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 					}
 				}
-				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack) + fluidAppend;
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
 			}
 		});
 

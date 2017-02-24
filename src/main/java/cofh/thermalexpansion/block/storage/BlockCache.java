@@ -4,6 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IItemStackKeyGenerator;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
@@ -305,6 +306,14 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
+			@Override
+			public String generateKey(ItemStack stack) {
+
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCache.getLevel(stack);
+			}
+		});
 	}
 
 	/* IInitializer */

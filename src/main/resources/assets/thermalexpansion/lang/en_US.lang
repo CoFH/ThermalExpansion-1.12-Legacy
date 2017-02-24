@@ -1,5 +1,28 @@
 #en_US
 
+achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
+achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
+
+achievement.thermalexpansion.florb.desc=Contains a fluid. You can throw it.
+achievement.thermalexpansion.florb=I can throw this?!
+achievement.thermalexpansion.florbMagmatic.desc=Definitely not water. You monster.
+achievement.thermalexpansion.florbMagmatic=The Florb is Lava!
+
+achievement.thermalexpansion.ingotEnderium.desc=Create an Enderium Ingot.
+achievement.thermalexpansion.ingotEnderium=Smelting Spacetime
+achievement.thermalexpansion.ingotInvar.desc=Create an Invar Ingot.
+achievement.thermalexpansion.ingotInvar=Lowest Coefficient
+achievement.thermalexpansion.ingotSignalum.desc=Create a Signalum Ingot.
+achievement.thermalexpansion.ingotSignalum=Refined Redstone
+
+achievement.thermalexpansion.machineInsolator.desc=Definitely not organic.
+achievement.thermalexpansion.machineInsolator=Sun in a Box!
+achievement.thermalexpansion.machineTransposer.desc=Filling buckets by hand is hard work.
+achievement.thermalexpansion.machineTransposer=(Mostly) Free Refills
+
+achievement.thermalexpansion.welcome.desc=Welcome to Thermal Expansion!
+achievement.thermalexpansion.welcome=An Expanded World
+
 gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
 gui.thermalexpansion.machine.compactor.modePress=Mode: Press
 gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage

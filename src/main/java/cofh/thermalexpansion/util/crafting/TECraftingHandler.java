@@ -2,7 +2,7 @@ package cofh.thermalexpansion.util.crafting;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TEAchievements;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -56,7 +56,7 @@ public class TECraftingHandler {
 
 	private void checkAchievements(EntityPlayer player, ItemStack stack, IInventory craftMatrix) {
 
-		if (!TEProps.enableAchievements) {
+		if (!TEAchievements.enable) {
 			return;
 		}
 		// Crafting Steps

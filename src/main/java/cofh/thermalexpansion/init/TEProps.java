@@ -76,8 +76,6 @@ public class TEProps {
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
-	public static boolean enableAchievements = false;
-
 	/* TEXTURES */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";

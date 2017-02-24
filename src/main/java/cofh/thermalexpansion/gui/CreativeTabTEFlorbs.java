@@ -23,6 +23,7 @@ public class CreativeTabTEFlorbs extends CreativeTabs {
 	}
 
 	@Override
+	@SideOnly (Side.CLIENT)
 	public ItemStack getIconItemStack() {
 
 		updateIcon();

@@ -82,6 +82,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.STEAM));
 	}
 
 	@Override
