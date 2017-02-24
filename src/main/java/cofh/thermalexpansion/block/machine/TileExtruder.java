@@ -39,17 +39,21 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		processItems[1] = new ItemStack(Blocks.STONE);
 		processItems[2] = new ItemStack(Blocks.OBSIDIAN);
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+
+		LIGHT_VALUES[TYPE] = 14;
 
 		GameRegistry.registerTileEntity(TileExtruder.class, "thermalexpansion:machine_extruder");
 
@@ -61,8 +65,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		String category = "Machine.Extruder";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 
 	}
 
@@ -219,6 +223,14 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return coldTank.getFluid();
 	}
 
+	public void setMode(int selection) {
+
+		byte lastSelection = curSelection;
+		curSelection = (byte) selection;
+		sendModePacket();
+		curSelection = lastSelection;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -248,6 +260,32 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addByte(curSelection);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		curSelection = payload.getByte();
+
+		if (!isActive) {
+			prevSelection = curSelection;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -262,39 +300,14 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
-
-		PacketCoFHBase payload = super.getModePacket();
-		payload.addByte(curSelection);
-		return payload;
-	}
-
-	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		curSelection = payload.getByte();
 		prevSelection = payload.getByte();
 		hotTank.getFluid().amount = payload.getInt();
 		coldTank.getFluid().amount = payload.getInt();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-		curSelection = payload.getByte();
-		if (!isActive) {
-			prevSelection = curSelection;
-		}
-	}
-
-	public void setMode(int i) {
-
-		byte lastSelection = curSelection;
-		curSelection = (byte) i;
-		sendModePacket();
-		curSelection = lastSelection;
 	}
 
 	/* ICustomInventory */

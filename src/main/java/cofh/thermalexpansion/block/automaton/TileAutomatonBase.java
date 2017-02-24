@@ -29,7 +29,12 @@ import java.util.LinkedList;
 
 public abstract class TileAutomatonBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockAutomaton.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockAutomaton.Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockAutomaton.Type.values().length];
+	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockAutomaton.Type.values().length];
+	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockAutomaton.Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[BlockAutomaton.Type.values().length];
+
 	private static boolean enableSecurity = true;
 
 	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
@@ -53,7 +58,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 	CoFHFakePlayer fakePlayer;
 	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
 
-	protected EnergyConfig energyConfig;
+	EnergyConfig energyConfig;
 
 	int depth = 0;
 	int radius = 0;
@@ -70,7 +75,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 
 	public TileAutomatonBase() {
 
-		sideConfig = defaultSideConfig[this.getType()];
+		sideConfig = SIDE_CONFIGS[this.getType()];
 		enableAutoOutput = true;
 		setDefaultSides();
 	}
@@ -209,7 +214,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || /* validAugments[getType()].contains(id) ||*/ super.isValidAugment(type, id);
+		return VALID_AUGMENTS_BASE.contains(id) || /* VALID_AUGMENTS[getType()].contains(id) ||*/ super.isValidAugment(type, id);
 	}
 
 	@Override
@@ -262,15 +267,21 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public int getNumPasses() {
 
-		if (layer == 0) {
+		return 2;
+	}
+
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
 			return side != facing ? TETextures.AUTOMATON_SIDE : redstoneControlOrDisable() ? TETextures.AUTOMATON_ACTIVE[getType()] : TETextures.AUTOMATON_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];

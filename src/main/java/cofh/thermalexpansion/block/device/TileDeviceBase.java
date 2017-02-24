@@ -9,7 +9,10 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TilePowered {
 
-	protected static final SideConfig[] defaultSideConfig = new SideConfig[BlockDevice.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockDevice.Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockDevice.Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[BlockDevice.Type.values().length];
+
 	private static boolean enableSecurity = true;
 
 	public static void config() {
@@ -20,7 +23,7 @@ public abstract class TileDeviceBase extends TilePowered {
 
 	public TileDeviceBase() {
 
-		sideConfig = defaultSideConfig[this.getType()];
+		sideConfig = SIDE_CONFIGS[this.getType()];
 		setDefaultSides();
 	}
 
@@ -47,6 +50,13 @@ public abstract class TileDeviceBase extends TilePowered {
 		return true;
 	}
 
+	@Override
+	protected boolean setLevel(int level) {
+
+		return false;
+	}
+
+	@Override
 	protected void setLevelFlags() {
 
 		level = 0;
@@ -67,16 +77,22 @@ public abstract class TileDeviceBase extends TilePowered {
 		facing = (byte) side;
 		sideCache[facing] = 0;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public int getNumPasses() {
 
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
+		return 2;
+	}
+
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}

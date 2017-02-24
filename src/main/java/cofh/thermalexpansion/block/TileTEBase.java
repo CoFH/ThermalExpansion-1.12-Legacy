@@ -7,7 +7,6 @@ import cofh.core.network.ITileInfoPacketHandler;
 import cofh.core.network.ITilePacketHandler;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
-import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import net.minecraft.entity.player.EntityPlayer;
@@ -118,24 +117,23 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addString(tileName);
+
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			tileName = payload.getString();
-			worldObj.checkLight(pos);
-		} else {
-			payload.getString();
-		}
+		tileName = payload.getString();
+		worldObj.checkLight(pos);
 	}
 
 	/* ITileInfoPacketHandler */
@@ -143,13 +141,19 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 	public void handleTileInfoPacket(PacketCoFHBase payload, boolean isServer, EntityPlayer thePlayer) {
 
 		switch (TilePacketID.values()[payload.getByte()]) {
-			case GUI:
+			case S_GUI:
 				handleGuiPacket(payload);
 				return;
-			case FLUID:
+			case S_FLUID:
 				handleFluidPacket(payload);
 				return;
-			case MODE:
+			case C_ACCESS:
+				handleAccessPacket(payload);
+				return;
+			case C_CONFIG:
+				handleConfigPacket(payload);
+				return;
+			case C_MODE:
 				handleModePacket(payload);
 				return;
 			default:
@@ -171,7 +175,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		}
 		if (readPortableTagInternal(player, tag)) {
 			markDirty();
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -251,17 +255,21 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		/* Whether or not the SIDE allows extraction */
 		public boolean[] allowExtractionSide;
 
-		/* Whether or not the SLOT allows input */
-		public boolean[] allowInsertionSlot;
-
-		/* Whether or not the SLOT allows extraction */
-		public boolean[] allowExtractionSlot;
-
 		/* Config Textures to use on Sides */
 		public int[] sideTex;
 
 		/* Default Side configuration for freshly placed block */
 		public byte[] defaultSides;
+	}
+
+	/* SLOT CONFIG */
+	public static class SlotConfig {
+
+		/* Whether or not the SLOT allows input */
+		public boolean[] allowInsertionSlot;
+
+		/* Whether or not the SLOT allows extraction */
+		public boolean[] allowExtractionSlot;
 	}
 
 }

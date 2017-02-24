@@ -11,9 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.fuels.CoolantManager;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -37,15 +35,17 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 2;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 2;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
+
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
 		GameRegistry.registerTileEntity(TileHeatSink.class, "thermalexpansion:device_heat_sink");
 
@@ -200,11 +200,15 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -212,6 +216,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -221,51 +226,39 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
 	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
+
 		renderFluid = payload.getFluidStack();
+
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
-		}
-		return TETextures.DEVICE_SIDE;
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* CAPABILITIES */

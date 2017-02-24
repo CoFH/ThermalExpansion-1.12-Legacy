@@ -110,7 +110,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return true;
 	}
 
-	protected static int getFluidTransfer(int level) {
+	protected int getFluidTransfer(int level) {
 
 		return FLUID_TRANSFER[MathHelper.clamp(level, 0, 4)];
 	}
@@ -255,10 +255,33 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getAccessPacket() {
+
+		PacketCoFHBase payload = super.getAccessPacket();
+
+		payload.addByte((byte) access.ordinal());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleAccessPacket(PacketCoFHBase payload) {
+
+		super.handleAccessPacket(payload);
+
+		access = ISecurable.AccessMode.values()[payload.getByte()];
+
+		callBlockUpdate();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addByte((byte) access.ordinal());
 		payload.addUUID(owner.getId());
@@ -274,36 +297,24 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
 		access = ISecurable.AccessMode.values()[payload.getByte()];
-		if (!isServer) {
-			owner = CoreProps.DEFAULT_OWNER;
-			setOwner(new GameProfile(payload.getUUID(), payload.getString()));
+		owner = CoreProps.DEFAULT_OWNER;
+		setOwner(new GameProfile(payload.getUUID(), payload.getString()));
 
-			byte tmpLevel = payload.getByte();
-			isCreative = payload.getBool();
-			hasAutoInput = payload.getBool();
-			hasAutoOutput = payload.getBool();
-			enableAutoInput = payload.getBool();
-			enableAutoOutput = payload.getBool();
+		byte tmpLevel = payload.getByte();
+		isCreative = payload.getBool();
+		hasAutoInput = payload.getBool();
+		hasAutoOutput = payload.getBool();
+		enableAutoInput = payload.getBool();
+		enableAutoOutput = payload.getBool();
 
-			if (tmpLevel != level) {
-				setLevel(tmpLevel);
-			}
-		} else {
-			payload.getUUID();
-			payload.getString();
-			payload.getByte();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
-			payload.getBool();
+		if (tmpLevel != level) {
+			setLevel(tmpLevel);
 		}
 	}
 
@@ -383,13 +394,19 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public boolean setAccess(AccessMode access) {
 
 		this.access = access;
-		sendUpdatePacket(Side.SERVER);
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			sendAccessPacket();
+		}
 		return true;
 	}
 
 	@Override
 	public boolean setOwnerName(String name) {
 
+		if (owner != CoreProps.DEFAULT_OWNER) {
+			return false;
+		}
 		MinecraftServer server = ServerUtils.mc();
 		if (server == null) {
 			return false;
@@ -407,6 +424,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	@Override
 	public boolean setOwner(GameProfile profile) {
 
+		if (owner != CoreProps.DEFAULT_OWNER) {
+			return false;
+		}
 		if (SecurityHelper.isDefaultUUID(owner.getId())) {
 			owner = profile;
 			if (!SecurityHelper.isDefaultUUID(owner.getId())) {
@@ -420,8 +440,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 						}
 					}.start();
 				}
-				markChunkDirty();
-
+				if (worldObj != null) {
+					markChunkDirty();
+				}
 				return true;
 			}
 		}
@@ -485,7 +506,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		return true;
 	}
@@ -500,7 +521,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendTransferUpdatePacketToServer(this, pos);
 		} else {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		return true;
 	}

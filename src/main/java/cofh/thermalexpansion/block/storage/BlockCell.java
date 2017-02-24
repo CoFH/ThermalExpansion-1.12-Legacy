@@ -1,24 +1,31 @@
 package cofh.thermalexpansion.block.storage;
 
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.IBakeryBlock;
-import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.*;
 import cofh.api.core.IModelRegister;
+import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.render.RenderCell;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.common.property.IExtendedBlockState;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -26,6 +33,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
@@ -40,14 +50,28 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	}
 
 	@Override
+	protected BlockStateContainer createBlockState() {
+
+		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
+		// UnListed
+		// builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.LEVEL);
+		// builder.add(TEProps.LIGHT);
+		builder.add(TEProps.SCALE);
+		builder.add(TEProps.FACING);
+		builder.add(TEProps.SIDE_CONFIG_RAW);
+
+		return builder.build();
+	}
+
+	@Override
 	@SideOnly (Side.CLIENT)
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable) {
-			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0)));
-		}
-		for (int i = 0; i < 5; i++) {
-			list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), i));
+			for (int i = 0; i < 5; i++) {
+				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), i));
+			}
 		}
 	}
 
@@ -55,9 +79,6 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		if (metadata >= 1) {
-			return null;
-		}
 		return new TileCell();
 	}
 
@@ -69,8 +90,8 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 			TileCell tile = (TileCell) world.getTileEntity(pos);
 
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
-			tile.amountSend = stack.getTagCompound().getInteger("Send");
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
+			tile.amountSend = stack.getTagCompound().getInteger("Send");
 			tile.setEnergyStored(stack.getTagCompound().getInteger("Energy"));
 
 			int facing = BlockHelper.determineXZPlaceFacing(living);
@@ -111,8 +132,23 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		return true;
 	}
 
+	/* HELPERS */
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+
+		NBTTagCompound retTag = super.getItemStackTag(world, pos);
+		TileCell tile = (TileCell) world.getTileEntity(pos);
+
+		if (tile != null) {
+			retTag.setInteger("Recv", tile.amountRecv);
+			retTag.setInteger("Send", tile.amountSend);
+		}
+		return retTag;
+	}
+
 	/* RENDERING METHODS */
 	@Override
+	@SideOnly (Side.CLIENT)
 	public boolean canRenderInLayer(IBlockState state, BlockRenderLayer layer) {
 
 		return layer == BlockRenderLayer.CUTOUT || layer == BlockRenderLayer.TRANSLUCENT;
@@ -130,7 +166,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public ICustomBlockBakery getCustomBakery() {
 
-		return null;
+		return RenderCell.INSTANCE;
 	}
 
 	/* IModelRegister */
@@ -138,6 +174,36 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
+		StateMapper mapper = new StateMapper("thermalexpansion", "cell", "cell");
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
+		ModelLoader.setCustomStateMapper(this, mapper);
+		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+
+		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
+			@Override
+			public String generateKey(IExtendedBlockState state) {
+
+				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+				builder.append(",side_config{");
+				for (int i : state.getValue(TEProps.SIDE_CONFIG_RAW)) {
+					builder.append(",").append(i);
+				}
+				builder.append("}");
+				builder.append(",facing=").append(state.getValue(TEProps.FACING));
+				builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
+				return builder.toString();
+			}
+		});
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
+			@Override
+			public String generateKey(ItemStack stack) {
+
+				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack);
+			}
+		});
 	}
 
 	/* IInitializer */
@@ -147,7 +213,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		this.setRegistryName("cell");
 		GameRegistry.register(this);
 
-		ItemBlockCell itemBlock = new ItemBlockCell(this);
+		itemBlock = new ItemBlockCell(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -157,6 +223,13 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public boolean initialize() {
 
+		TileCell.initialize();
+
+		cell = new ItemStack[5];
+
+		for (int i = 0; i < 5; i++) {
+			cell[i] = ItemBlockCell.setDefaultTag(new ItemStack(this), i);
+		}
 		return true;
 	}
 
@@ -164,7 +237,16 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public boolean postInit() {
 
 		// @formatter:off
-
+		if (enable) {
+			addRecipe(ShapedRecipe(cell[0],
+					" I ",
+					"ICI",
+					" P ",
+					'C', ItemFrame.frameCell,
+					'I', "ingotLead",
+					'P', ItemMaterial.powerCoilElectrum
+			));
+		}
 		// @formatter:on
 
 		return true;
@@ -173,6 +255,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public static boolean enable;
 
 	/* REFERENCES */
-	public static ItemStack cell;
+	public static ItemStack cell[];
+	public static ItemBlockCell itemBlock;
 
 }

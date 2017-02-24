@@ -136,7 +136,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 				if (facing != oldFacing) {
 					updateAdjacentHandlers();
 					markDirty();
-					sendUpdatePacket(Side.CLIENT);
+					sendTilePacket(Side.CLIENT);
 				}
 			}
 		}
@@ -291,11 +291,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		if (curActive != isActive && !wasActive) {
 			updateLighting();
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		} else if (wasActive && tracker.hasDelayPassed(worldObj, 100)) {
 			wasActive = false;
 			updateLighting();
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -345,17 +345,8 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addByte(facing);
-		payload.addBool(hasRedstoneControl);
-
-		return payload;
-	}
-
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -364,6 +355,17 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		payload.addInt(energyStorage.getMaxEnergyStored());
 		payload.addInt(energyStorage.getEnergyStored());
 		payload.addInt(fuelRF);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addByte(facing);
+		payload.addBool(hasRedstoneControl);
 
 		return payload;
 	}
@@ -378,19 +380,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		fuelRF = payload.getInt();
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			facing = payload.getByte();
-			hasRedstoneControl = payload.getBool();
-		} else {
-			payload.getByte();
-			payload.getBool();
-		}
+		facing = payload.getByte();
+		hasRedstoneControl = payload.getBool();
+
 	}
 
 	/* HELPERS */
@@ -552,7 +549,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 					if (facing != oldFacing) {
 						updateAdjacentHandlers();
 						markDirty();
-						sendUpdatePacket(Side.CLIENT);
+						sendTilePacket(Side.CLIENT);
 					}
 					return true;
 				}
@@ -562,7 +559,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		facing = (byte) ((facing + 1) % 6);
 		updateAdjacentHandlers();
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 

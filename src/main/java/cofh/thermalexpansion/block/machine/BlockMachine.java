@@ -64,6 +64,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.FURNACE));
 	}
 
 	@Override
@@ -205,7 +206,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof TileInsolator || tile instanceof TileExtruder || tile instanceof TilePrecipitator) {
+		if (!(tile instanceof TileTransposer) && tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null)) {
 			IFluidHandler handler = tile.getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 			if (FluidHelper.drainItemToHandler(heldItem, handler, player, hand)) {
 				return true;
@@ -231,7 +232,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 	@Override // Inventory
 	@SideOnly (Side.CLIENT)
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		if (side == EnumFacing.DOWN) {
 			return TETextures.MACHINE_BOTTOM;
@@ -239,7 +240,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		if (side == EnumFacing.UP) {
 			return TETextures.MACHINE_TOP;
 		}
-		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override // World
@@ -249,7 +250,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileMachineBase) {
 			TileMachineBase tile = ((TileMachineBase) tileEntity);
-			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -461,7 +462,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 //					'C', ItemFrame.frameMachine,
 //					'I', copperPart,
 //					'P', ItemMaterial.powerCoilGold,
-//					'X', Blocks.CHEST,
+//					'X', "chestWood",
 //					'Y', "gearTin"
 //			));
 //		}

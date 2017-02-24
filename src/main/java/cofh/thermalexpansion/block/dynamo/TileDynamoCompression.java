@@ -165,16 +165,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addFluidStack(fuelTank.getFluid());
-
-		return payload;
-	}
-
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -182,6 +174,16 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		payload.addFluidStack(fuelTank.getFluid());
 		payload.addFluidStack(coolantTank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addFluidStack(fuelTank.getFluid());
 
 		return payload;
 	}
@@ -195,7 +197,6 @@ public class TileDynamoCompression extends TileDynamoBase {
 		coolantTank.setFluid(payload.getFluidStack());
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 

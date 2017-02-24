@@ -28,7 +28,7 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		super(new ContainerRefinery(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.refinery", 3);
+		generateInfo("tab.thermalexpansion.machine.refinery");
 
 		myTile = (TileRefinery) tile;
 	}
@@ -46,7 +46,7 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 44, 20, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(0).setAlwaysShow(true));
+		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(1).setAlwaysShow(true));
 
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 76, 34).setFluid(myTile.getTankFluid(0)).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 76, 34).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));

@@ -2,9 +2,12 @@ package cofh.thermalexpansion.proxy;
 
 import cofh.api.core.IModelRegister;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
+import cofh.thermalexpansion.init.TEAchievements;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 
 public class Proxy {
 
@@ -26,6 +29,16 @@ public class Proxy {
 	public void registerEntities() {
 
 		EntityFlorb.initialize(0);
+	}
+
+	/* EVENT HANDLERS */
+	@SubscribeEvent
+	public void onPlayerLogin(PlayerLoggedInEvent event) {
+
+		if (TEAchievements.enable) {
+			event.player.addStat(TEAchievements.welcome, 1);
+		}
+		// PacketTEBase.sendConfigSyncPacketToClient(event.player);
 	}
 
 	/* HELPERS */

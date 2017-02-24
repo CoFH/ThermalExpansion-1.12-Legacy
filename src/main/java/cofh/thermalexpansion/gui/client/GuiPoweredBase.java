@@ -43,10 +43,10 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (baseTile.hasRedstoneControl()) {
 			myTutorial += StringHelper.tutorialTabRedstone() + "\n\n";
 		}
-		myTutorial += StringHelper.tutorialTabConfiguration() + "\n\n";
+		myTutorial += StringHelper.tutorialTabConfiguration();
 
 		if (baseTile.getMaxEnergyStored(null) > 0) {
-			myTutorial += StringHelper.tutorialTabFluxRequired();
+			myTutorial += "\n\n" + StringHelper.tutorialTabFluxRequired();
 		}
 	}
 
@@ -74,7 +74,9 @@ public abstract class GuiPoweredBase extends GuiCore {
 		if (!myInfo.isEmpty()) {
 			addTab(new TabInfo(this, myInfo));
 		}
-		addTab(new TabTutorial(this, myTutorial));
+		if (!myTutorial.isEmpty()) {
+			addTab(new TabTutorial(this, myTutorial));
+		}
 	}
 
 	@Override

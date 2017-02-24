@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
@@ -9,14 +10,22 @@ import cofh.thermalexpansion.gui.container.machine.ContainerSmelter;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import cofh.thermalexpansion.util.crafting.SmelterManager.RecipeSmelter;
-import cofh.thermalfoundation.item.ItemMaterial;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TileSmelter extends TileMachineBase {
@@ -25,18 +34,22 @@ public class TileSmelter extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 8;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 }, { 0, 1, 2, 3, 4 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 8;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 }, { 0, 1, 2, 3, 4 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
-		validAugments[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
+
+		LIGHT_VALUES[TYPE] = 15;
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
 
@@ -48,8 +61,8 @@ public class TileSmelter extends TileMachineBase {
 		String category = "Machine.Smelter";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTrackerPrimary;
@@ -59,13 +72,17 @@ public class TileSmelter extends TileMachineBase {
 
 	public boolean lockPrimary = false;
 
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
 	/* AUGMENTS */
 	protected boolean augmentPyrotheum;
+	protected boolean flagPyrotheum;
 
 	public TileSmelter() {
 
 		super();
-		inventory = new ItemStack[2 + 2 + 1 + 1];
+		inventory = new ItemStack[2 + 1 + 1 + 1];
+		tank.setLock(TFFluids.fluidPyrotheum);
 	}
 
 	@Override
@@ -103,28 +120,15 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (!augmentSecondaryNull && secondaryItem != null && inventory[4] != null) {
-			if (!inventory[4].isItemEqual(secondaryItem)) {
+		if (secondaryItem != null && inventory[3] != null) {
+			if (!augmentSecondaryNull && !inventory[3].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[4].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		final int start = 2, end = start + 2;
-
-		int room = 0;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				return true;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			room += stack.getMaxStackSize() - stack.stackSize;
-		}
-		return room >= primaryItem.stackSize;
+		return inventory[2] == null || inventory[2].isItemEqual(primaryItem) && inventory[2].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -166,49 +170,34 @@ public class TileSmelter extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		final int start = 2, end = start + 2;
-
-		int outputAmt = primaryItem.stackSize;
-
-		if (augmentPyrotheum && (inventory[0] == ItemMaterial.dustPyrotheum || inventory[1] == ItemMaterial.dustPyrotheum)) {
-			if (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) {
-				++outputAmt;
-			}
+		if (inventory[2] == null) {
+			inventory[2] = ItemHelper.cloneStack(primaryItem);
+		} else {
+			inventory[2].stackSize += primaryItem.stackSize;
 		}
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				inventory[i] = ItemHelper.cloneStack(primaryItem);
-				break;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
-			outputAmt -= add;
-			stack.stackSize += add;
-			if (outputAmt == 0) {
-				break;
+		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= 50;
+
+		if (augmentPyrotheumCheck) {
+			tank.modifyFluidStored(-50);
+			if (inventory[2].stackSize < inventory[2].getMaxStackSize()) {
+				inventory[2].stackSize++;
 			}
 		}
 		if (secondaryItem != null) {
+			int modifiedChance = augmentPyrotheumCheck ? secondaryChance - 15 : secondaryChance;
+
 			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
-				if (inventory[4] == null) {
-					inventory[4] = ItemHelper.cloneStack(secondaryItem);
-
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[4].stackSize += secondaryItem.stackSize;
-					}
-				} else if (inventory[4].isItemEqual(secondaryItem)) {
-					inventory[4].stackSize += secondaryItem.stackSize;
-
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[4].stackSize += secondaryItem.stackSize;
-					}
+			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[3] == null) {
+					inventory[3] = ItemHelper.cloneStack(secondaryItem);
+				} else if (inventory[3].isItemEqual(secondaryItem)) {
+					inventory[3].stackSize += secondaryItem.stackSize;
 				}
-				if (inventory[4].stackSize > inventory[4].getMaxStackSize()) {
-					inventory[4].stackSize = inventory[4].getMaxStackSize();
+				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[3].stackSize += secondaryItem.stackSize;
+				}
+				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
+					inventory[3].stackSize = inventory[3].getMaxStackSize();
 				}
 			}
 		}
@@ -261,30 +250,24 @@ public class TileSmelter extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[2] != null || inventory[3] != null) {
+		if (inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-						if (!transferItem(3, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-							transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
-						}
-						outputTrackerPrimary = side;
-						break;
-					} else if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
 				}
 			}
 		}
-		if (inventory[4] == null) {
+		if (inventory[3] == null) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(4, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -325,6 +308,36 @@ public class TileSmelter extends TileMachineBase {
 		return new ContainerSmelter(inventory, this);
 	}
 
+	@Override
+	public FluidTankCore getTank() {
+
+		return tank;
+	}
+
+	@Override
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	public boolean augmentPyrotheum() {
+
+		return augmentPyrotheum && flagPyrotheum;
+	}
+
+	public boolean fluidArrow() {
+
+		return augmentPyrotheum && tank.getFluidAmount() >= 50 && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
+	}
+
+	public void setMode(boolean mode) {
+
+		boolean lastMode = lockPrimary;
+		lockPrimary = mode;
+		sendModePacket();
+		lockPrimary = lastMode;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -336,6 +349,7 @@ public class TileSmelter extends TileMachineBase {
 		outputTrackerPrimary = nbt.getInteger("TrackOut1");
 		outputTrackerSecondary = nbt.getInteger("TrackOut2");
 		lockPrimary = nbt.getBoolean("SlotLock");
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -348,20 +362,13 @@ public class TileSmelter extends TileMachineBase {
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
 		nbt.setBoolean("SlotLock", lockPrimary);
+		tank.writeToNBT(nbt);
 		return nbt;
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getGuiPacket() {
 
-		PacketCoFHBase payload = super.getGuiPacket();
-
-		payload.addBool(lockPrimary);
-
-		return payload;
-	}
-
+	/* CLIENT -> SERVER */
 	@Override
 	public PacketCoFHBase getModePacket() {
 
@@ -373,29 +380,37 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-
-		lockPrimary = payload.getBool();
-	}
-
-	@Override
 	protected void handleModePacket(PacketCoFHBase payload) {
 
 		super.handleModePacket(payload);
 
 		lockPrimary = payload.getBool();
-		markDirty();
+
 		callNeighborTileChange();
 	}
 
-	public void setMode(boolean mode) {
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
 
-		boolean lastMode = lockPrimary;
-		lockPrimary = mode;
-		sendModePacket();
-		lockPrimary = lastMode;
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(lockPrimary);
+		payload.addBool(augmentPyrotheum);
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		lockPrimary = payload.getBool();
+		augmentPyrotheum = payload.getBool();
+		flagPyrotheum = augmentPyrotheum;
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */
@@ -408,6 +423,16 @@ public class TileSmelter extends TileMachineBase {
 	}
 
 	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentPyrotheum) {
+			tank.modifyFluidStored(-tank.getCapacity());
+		}
+	}
+
+	@Override
 	protected boolean installAugmentToSlot(int slot) {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
@@ -415,7 +440,7 @@ public class TileSmelter extends TileMachineBase {
 		if (!augmentPyrotheum && TEProps.MACHINE_SMELTER_PYROTHEUM.equals(id)) {
 			augmentPyrotheum = true;
 			hasModeAugment = true;
-			energyMod += 25;
+			energyMod += 50;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
@@ -434,6 +459,49 @@ public class TileSmelter extends TileMachineBase {
 			}
 		}
 		return slot > 1 || SmelterManager.isItemValid(stack);
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || augmentPyrotheum && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (augmentPyrotheum && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

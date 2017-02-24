@@ -38,13 +38,18 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 		return stack.getTagCompound().getByte("Level");
 	}
 
+	public static boolean isCreative(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getBoolean("Creative");
+	}
+
 	public ItemBlockTank(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
 		setMaxStackSize(1);
-		setNoRepair();
 	}
 
 	@Override
@@ -84,40 +89,37 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
-
-		// tooltip.add(StringHelper.localize("info.thermalexpansion.dynamo.0"));
-		// tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName()));
-
-		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.tank"));
 
 		FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 
-		//		if (fluid != null) {
-		//			String color = StringHelper.LIGHT_GRAY;
-		//
-		//			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
-		//				color = StringHelper.YELLOW;
-		//			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
-		//				color = StringHelper.BRIGHT_BLUE;
-		//			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
-		//				color = StringHelper.PINK;
-		//			}
-		//			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
-		//
-		//			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
-		//				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
-		//			} else {
-		//				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[ItemHelper.getItemDamage(stack)] + " mB");
-		//			}
-		//		} else {
-		//			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
-		//
-		//			if (ItemHelper.getItemDamage(stack) == BlockTank.Types.CREATIVE.ordinal()) {
-		//				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
-		//			} else {
-		//				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[ItemHelper.getItemDamage(stack)] + " mB");
-		//			}
-		//		}
+		if (fluid != null) {
+			String color = StringHelper.LIGHT_GRAY;
+
+			if (fluid.getFluid().getRarity() == EnumRarity.UNCOMMON) {
+				color = StringHelper.YELLOW;
+			} else if (fluid.getFluid().getRarity() == EnumRarity.RARE) {
+				color = StringHelper.BRIGHT_BLUE;
+			} else if (fluid.getFluid().getRarity() == EnumRarity.EPIC) {
+				color = StringHelper.PINK;
+			}
+			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
+
+			if (isCreative(stack)) {
+				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
+			} else {
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+			}
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
+
+			if (isCreative(stack)) {
+				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
+			} else {
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+			}
+		}
+		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 	/* IFluidContainerItem */

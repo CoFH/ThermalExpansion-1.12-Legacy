@@ -1,12 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -32,6 +34,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 			CAPACITY[i] *= 10000;
 		}
 	}
+
 	private static boolean enableSecurity = true;
 
 	public static void initialize() {
@@ -45,6 +48,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 
 		String comment = "Enable this to allow for Tanks to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Tank.Securable", true, comment);
+
+		String category = "Storage.Tank";
+		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	int compareTracker;
@@ -85,6 +91,16 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public boolean onWrench(EntityPlayer player, EnumFacing side) {
+
+		enableAutoOutput = !enableAutoOutput;
+		markDirty();
+
+		sendTilePacket(Side.CLIENT);
+		return true;
 	}
 
 	@Override
@@ -141,12 +157,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	/* COMMON METHODS */
-	protected static int getCapacity(int level) {
+	public static int getCapacity(int level) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)];
 	}
 
-	protected int getScaledFluidStored(int scale) {
+	public int getScaledFluidStored(int scale) {
 
 		return tank.getFluid() == null ? 0 : tank.getFluid().amount * scale / tank.getCapacity();
 	}
@@ -172,7 +188,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
 
 		if (curAutoOutput != enableAutoOutput) {
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 		}
 		cached = true;
 	}
@@ -201,6 +217,29 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt);
+	}
+
+	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		tank.setFluid(payload.getFluidStack());
+
+		callBlockUpdate();
 	}
 
 	@Override

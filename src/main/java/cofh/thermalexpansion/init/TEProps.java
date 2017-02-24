@@ -1,12 +1,12 @@
 package cofh.thermalexpansion.init;
 
+import codechicken.lib.block.property.unlisted.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
 import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.block.properties.PropertyBool;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
@@ -76,8 +76,6 @@ public class TEProps {
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 
-	public static boolean enableAchievements = false;
-
 	/* TEXTURES */
 	public static final String PATH_GFX = "thermalexpansion:textures/";
 	public static final String PATH_ARMOR = PATH_GFX + "armor/";
@@ -90,7 +88,7 @@ public class TEProps {
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
-	public static final String PATH_GUI_WORKBENCH = PATH_GUI + "workbench/";
+	public static final String PATH_GUI_STORAGE = PATH_GUI + "storage/";
 
 	public static final ResourceLocation PATH_COMMON = new ResourceLocation(PATH_ELEMENTS + "slots.png");
 	public static final ResourceLocation PATH_COMMON_CB = new ResourceLocation(PATH_ELEMENTS + "slots_cb.png");
@@ -109,16 +107,27 @@ public class TEProps {
 	public static String textureSelection = TEXTURE_DEFAULT;
 	public static boolean useAlternateStarfieldShader = false;
 
-	/* COMMON BLOCK PROPERTIES */
-	public static final IUnlistedProperty<Boolean> ACTIVE = Properties.toUnlisted(PropertyBool.create("active"));
-	public static final IUnlistedProperty<EnumFacing> FACING = Properties.toUnlisted(PropertyEnum.<EnumFacing>create("facing", EnumFacing.class));
+	/* BLOCKSTATE PROPERTIES */
 	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
 
 	static {
 		for (int i = 0; i < 6; i++) {
-			TEProps.SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
+			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
 		}
 	}
+
+	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
+	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
+	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
+
+	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
+	public static final UnlistedIntegerProperty LIGHT = new UnlistedIntegerProperty("light");
+	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale_display");
+
+	public static final UnlistedByteArrayProperty SIDE_CONFIG_RAW = new UnlistedByteArrayProperty("side_config");
+
+	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
+	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");
 
 	/* AUGMENT IDENTIFIERS */
 

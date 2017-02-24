@@ -30,6 +30,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.eventhandler.Event.Result;
@@ -50,6 +51,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		setCreativeTab(ThermalExpansion.tabCommon);
 	}
 
+	/* BLOCK METHODS */
 	@Override
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
@@ -59,6 +61,12 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			((TileTEBase) tile).setName(ItemHelper.getNameFromItemStack(stack));
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
+	}
+
+	@Override
+	public boolean addLandingEffects(IBlockState state, WorldServer worldObj, BlockPos blockPosition, IBlockState iblockstate, EntityLivingBase entity, int numberOfParticles )
+	{
+		return true;
 	}
 
 	@Override
@@ -210,23 +218,28 @@ public abstract class BlockTEBase extends BlockCoreTile {
 	public enum EnumSideConfig implements IStringSerializable {
 
 		// @formatter:off
-		NONE(0, "none"),
-		BLUE(1, "blue"),
-		RED(2, "red"),
-		YELLOW(3, "yellow"),
-		ORANGE(4, "orange"),
-		GREEN(5, "green"),
-		PURPLE(6, "purple"),
-		OPEN(7, "open");
+		NONE(0, "none", false, false),
+		BLUE(1, "blue", true, true),
+		RED(2, "red", false, true),
+		YELLOW(3, "yellow", false, true),
+		ORANGE(4, "orange", false, true),
+		GREEN(5, "green", true, true),
+		PURPLE(6, "purple", true, true),
+		OPEN(7, "open", true, true);
 		// @formatter:on
 
 		private final int index;
 		private final String name;
 
-		EnumSideConfig(int index, String name) {
+		private final boolean allowInsertion;
+		private final boolean allowExtraction;
+
+		EnumSideConfig(int index, String name, boolean insert, boolean extract) {
 
 			this.index = index;
 			this.name = name;
+			this.allowInsertion = insert;
+			this.allowExtraction = extract;
 		}
 
 		public int getIndex() {
@@ -238,6 +251,16 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		public String getName() {
 
 			return this.name;
+		}
+
+		public boolean getAllowInsertion() {
+
+			return this.allowInsertion;
+		}
+
+		public boolean getAllowExtraction() {
+
+			return this.allowExtraction;
 		}
 
 		public static final BlockTEBase.EnumSideConfig[] VALUES = new BlockTEBase.EnumSideConfig[values().length];

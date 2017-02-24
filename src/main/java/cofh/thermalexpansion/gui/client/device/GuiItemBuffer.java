@@ -28,7 +28,7 @@ public class GuiItemBuffer extends GuiDeviceBase {
 
 		super(new ContainerItemBuffer(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.item_buffer", 3);
+		generateInfo("tab.thermalexpansion.device.item_buffer");
 
 		myTile = (TileItemBuffer) tile;
 	}

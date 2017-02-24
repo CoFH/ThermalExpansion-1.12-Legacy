@@ -23,7 +23,7 @@ public class GuiCharger extends GuiPoweredBase {
 
 		super(new ContainerCharger(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.charger", 3);
+		generateInfo("tab.thermalexpansion.machine.charger");
 	}
 
 	@Override

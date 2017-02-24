@@ -39,6 +39,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_pulverizer_geode"
 				}
 			},
+			"machinepulverizerpetrotheum": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"machinesawmilltapper": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_sawmill_tapper"

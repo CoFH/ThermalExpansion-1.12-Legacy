@@ -21,7 +21,7 @@ public class ItemBlockMachine extends ItemBlockCore {
 	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		ReconfigurableHelper.setSideCache(stack, TileMachineBase.defaultSideConfig[ItemHelper.getItemDamage(stack)].defaultSides);
+		ReconfigurableHelper.setSideCache(stack, TileMachineBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 		stack.getTagCompound().setByte("Level", (byte) level);
@@ -40,9 +40,6 @@ public class ItemBlockMachine extends ItemBlockCore {
 	public ItemBlockMachine(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override
@@ -86,7 +83,9 @@ public class ItemBlockMachine extends ItemBlockCore {
 		String name = BlockMachine.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.machine." + name));
 
-		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		if (getLevel(stack) >= 2) {
+			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		}
 	}
 
 }

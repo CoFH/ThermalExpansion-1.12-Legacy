@@ -17,6 +17,7 @@ import net.minecraftforge.fml.relauncher.Side;
 public abstract class TileReconfigurable extends TileInventory implements IReconfigurableFacing, IReconfigurableSides, ISidedInventory, ISidedTexture {
 
 	protected SideConfig sideConfig;
+	protected SlotConfig slotConfig;
 
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
@@ -102,10 +103,40 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getConfigPacket() {
+
+		PacketCoFHBase payload = super.getConfigPacket();
+
+		payload.addByteArray(sideCache);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleConfigPacket(PacketCoFHBase payload) {
+
+		super.handleConfigPacket(payload);
+
+		payload.getByteArray(sideCache);
+
+		for (int i = 0; i < 6; i++) {
+			if (sideCache[i] >= getNumConfig(i)) {
+				sideCache[i] = 0;
+			}
+		}
+
+		callBlockUpdate();
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addByteArray(sideCache);
 		payload.addByte(facing);
@@ -113,7 +144,6 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -126,11 +156,8 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 				sideCache[i] = 0;
 			}
 		}
-		if (!isServer) {
-			facing = payload.getByte();
-		} else {
-			payload.getByte();
-		}
+		facing = payload.getByte();
+
 		callNeighborTileChange();
 	}
 
@@ -189,7 +216,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			facing++;
 			facing %= 6;
 			markDirty();
-			sendUpdatePacket(Side.CLIENT);
+			sendTilePacket(Side.CLIENT);
 			return true;
 		}
 		if (isActive) {
@@ -202,7 +229,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		sideCache = tempCache.clone();
 		facing = BlockHelper.SIDE_LEFT[facing];
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -217,7 +244,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		facing = (byte) side;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 
@@ -230,7 +257,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -242,7 +269,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -253,7 +280,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			return false;
 		}
 		sideCache[side] = (byte) config;
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -268,7 +295,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			}
 		}
 		if (update) {
-			sendUpdatePacket(Side.SERVER);
+			sendConfigPacket();
 		}
 		return update;
 	}
@@ -289,17 +316,17 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && sideConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
+		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && slotConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
-		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && sideConfig.allowExtractionSlot[slot];
+		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && slotConfig.allowExtractionSlot[slot];
 	}
 
 	/* ISidedTexture */
 	@Override
-	public abstract TextureAtlasSprite getTexture(int side, int layer, int pass);
+	public abstract TextureAtlasSprite getTexture(int side, int pass);
 
 }

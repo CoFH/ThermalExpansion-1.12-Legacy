@@ -10,7 +10,6 @@ import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderDynamo;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -83,6 +82,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.STEAM));
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		// UnListed
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
-		builder.add(CommonProperties.ACTIVE_SPRITE_PROPERTY);
+		builder.add(TEProps.ACTIVE_SPRITE_PROPERTY);
 		return builder.build();
 	}
 
@@ -146,6 +146,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 				return new TileDynamoReactant();
 			case ENERVATION:
 				return new TileDynamoEnervation();
+			case NUMISMATIC:
+				return new TileDynamoNumismatic();
 			default:
 				return null;
 		}
@@ -270,6 +272,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
+
 		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
 			@Override
 			public String generateKey(IExtendedBlockState state) {
@@ -310,12 +313,14 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		TileDynamoCompression.initialize();
 		TileDynamoReactant.initialize();
 		TileDynamoEnervation.initialize();
+		TileDynamoNumismatic.initialize();
 
 		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
 		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
 		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
 		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
 		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
+		dynamoNumismatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
 		return true;
 	}
@@ -363,7 +368,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"GIG",
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
-					'G', "gearBronze",
+					'G', "gearLead",
 					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
@@ -375,6 +380,17 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 					"IRI",
 					'C', ItemMaterial.powerCoilSilver,
 					'G', "gearElectrum",
+					'I', "ingotIron",
+					'R', "dustRedstone"
+			));
+		}
+		if (enable[Type.NUMISMATIC.getMetadata()]) {
+			addRecipe(ShapedRecipe(dynamoNumismatic,
+					" C ",
+					"GIG",
+					"IRI",
+					'C', ItemMaterial.powerCoilSilver,
+					'G', "gearConstantan",
 					'I', "ingotIron",
 					'R', "dustRedstone"
 			));
@@ -392,7 +408,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		MAGMATIC(1, "magmatic"),
 		COMPRESSION(2, "compression"),
 		REACTANT(3, "reactant"),
-		ENERVATION(4, "enervation");
+		ENERVATION(4, "enervation"),
+		NUMISMATIC(5, "numismatic");
 		// @formatter:on
 
 		private static final BlockDynamo.Type[] METADATA_LOOKUP = new BlockDynamo.Type[values().length];
@@ -451,5 +468,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public static ItemStack dynamoCompression;
 	public static ItemStack dynamoReactant;
 	public static ItemStack dynamoEnervation;
+	public static ItemStack dynamoNumismatic;
 
 }

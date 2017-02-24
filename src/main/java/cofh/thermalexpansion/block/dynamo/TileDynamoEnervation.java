@@ -129,6 +129,8 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 

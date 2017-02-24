@@ -1,10 +1,8 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.block.ItemBlockCore;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.RedstoneControlHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
@@ -25,9 +23,7 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		// ReconfigurableHelper.setSideCache(stack, TileCache.defaultSideConfig.defaultSides);
-		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		// RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
@@ -41,13 +37,18 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 		return stack.getTagCompound().getByte("Level");
 	}
 
+	public static boolean isCreative(ItemStack stack) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack);
+		}
+		return stack.getTagCompound().getBoolean("Creative");
+	}
+
 	public ItemBlockCache(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
 		setMaxStackSize(1);
-		setNoRepair();
 	}
 
 	@Override
@@ -87,13 +88,33 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.cache"));
+
+		tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + getSizeInventory(stack));
+		if (!stack.getTagCompound().hasKey("Item")) {
+			tooltip.add(StringHelper.localize("info.cofh.empty"));
+			return;
+		}
+		boolean lock = stack.getTagCompound().getBoolean("Lock");
+
+		if (lock) {
+			tooltip.add(StringHelper.localize("info.cofh.locked"));
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.unlocked"));
+		}
+		tooltip.add(StringHelper.localize("info.cofh.contents") + ":");
+
+		if (stack.getTagCompound().hasKey("Item")) {
+			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
+			tooltip.add("    " + StringHelper.ORANGE + stored.stackSize + " " + StringHelper.getItemName(stored));
+		}
+		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}
 
 	/* IInventoryContainerItem */
 	public int getSizeInventory(ItemStack container) {
 
-		// return TileCache.getCapacity(getLevel(container));
-		return 32000;
+		return TileCache.getCapacity(getLevel(container));
 	}
 
 }

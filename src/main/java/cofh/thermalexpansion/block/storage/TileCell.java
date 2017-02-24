@@ -2,12 +2,15 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.gui.client.storage.GuiCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,12 +22,17 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
-	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
-	public static byte[] DEFAULT_SIDES = { 1, 2, 2, 2, 2, 2 };
+	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
+	public static final byte[] DEFAULT_SIDES = { 2, 1, 1, 1, 1, 1 };
+
+	public static final int[] SEND = { 1, 4, 9, 16, 25 };
+	public static final int[] RECV = { 1, 4, 9, 16, 25 };
 
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
 			CAPACITY[i] *= 2000000;
+			SEND[i] *= 1000;
+			RECV[i] *= 1000;
 		}
 	}
 
@@ -41,6 +49,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		String comment = "Enable this to allow for Energy Cells to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Cell.Securable", enableSecurity, comment);
+
+		String category = "Storage.Cell";
+		BlockCell.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private int compareTracker;
@@ -50,7 +61,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int amountRecv;
 	public int amountSend;
 
-	private EnergyStorage energyStorage = new EnergyStorage(getCapacity(0));
+	public TileCell() {
+
+		energyStorage = new EnergyStorage(getCapacity(0));
+		setDefaultSides();
+		enableAutoOutput = true;
+	}
 
 	@Override
 	public String getTileName() {
@@ -126,21 +142,17 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			transferEnergy();
 		}
 		if (timeCheck()) {
-			int curScale = getScaledEnergyStored(15);
-			if (curScale != compareTracker) {
-				compareTracker = curScale;
-				callNeighborTileChange();
-			}
+			updateTrackers();
 		}
 	}
 
 	/* COMMON METHODS */
-	protected static int getCapacity(int level) {
+	public static int getCapacity(int level) {
 
 		return CAPACITY[MathHelper.clamp(level, 0, 4)];
 	}
 
-	protected int getScaledEnergyStored(int scale) {
+	public int getScaledEnergyStored(int scale) {
 
 		return energyStorage.getEnergyStored() * scale / energyStorage.getMaxEnergyStored();
 	}
@@ -148,12 +160,12 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	protected void transferEnergy() {
 
 		for (int i = outputTracker; i < 6 && energyStorage.getEnergyStored() > 0; i++) {
-			if (sideCache[i] == 1) {
+			if (sideCache[i] == 2) {
 				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
 			}
 		}
 		for (int i = 0; i < outputTracker && energyStorage.getEnergyStored() > 0; i++) {
-			if (sideCache[i] == 1) {
+			if (sideCache[i] == 2) {
 				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
 			}
 		}
@@ -161,12 +173,25 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		outputTracker %= 6;
 	}
 
+	protected void updateTrackers() {
+
+		int curScale = getScaledEnergyStored(15);
+		if (curScale != compareTracker) {
+			compareTracker = curScale;
+			callNeighborTileChange();
+		}
+		curScale = Math.min(8, getScaledEnergyStored(9));
+		if (meterTracker != curScale) {
+			meterTracker = curScale;
+			sendTilePacket(Side.CLIENT);
+		}
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		// return new GuiCell(inventory, this);
-		return null;
+		return new GuiCell(inventory, this);
 	}
 
 	@Override
@@ -182,8 +207,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getByte("Tracker");
-		amountSend = nbt.getInteger("Send");
 		amountRecv = nbt.getInteger("Recv");
+		amountSend = nbt.getInteger("Send");
 
 		energyStorage = new EnergyStorage(getCapacity(level));
 		energyStorage.readFromNBT(nbt);
@@ -196,16 +221,80 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		super.writeToNBT(nbt);
 
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setInteger("Send", amountSend);
 		nbt.setInteger("Recv", amountRecv);
+		nbt.setInteger("Send", amountSend);
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addInt(MathHelper.clamp(amountRecv, 0, RECV[level]));
+		payload.addInt(MathHelper.clamp(amountSend, 0, SEND[level]));
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addInt(amountRecv);
+		payload.addInt(amountSend);
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addInt(amountRecv);
+		payload.addInt(amountSend);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		amountRecv = payload.getInt();
+		amountSend = payload.getInt();
 	}
 
 	/* IEnergyReceiver */
 	@Override
 	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
-		if (from == null || sideCache[from.ordinal()] == 1) {
+		if (from == null || sideCache[from.ordinal()] == 2) {
 			return energyStorage.extractEnergy(Math.min(maxExtract, amountSend), simulate);
 		}
 		return 0;
@@ -214,7 +303,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
-		if (from == null || sideCache[from.ordinal()] == 2) {
+		if (from == null || sideCache[from.ordinal()] == 1) {
 			return energyStorage.receiveEnergy(Math.min(maxReceive, amountRecv), simulate);
 		}
 		return 0;
@@ -244,7 +333,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		sideCache[side] += getNumConfig(side) - 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -253,7 +342,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		sideCache[side] += 1;
 		sideCache[side] %= getNumConfig(side);
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -264,7 +353,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			return false;
 		}
 		sideCache[side] = (byte) config;
-		sendUpdatePacket(Side.SERVER);
+		sendConfigPacket();
 		return true;
 	}
 
@@ -276,21 +365,25 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public int getNumPasses() {
 
-		//		if (pass == 0) {
-		//			return type < 2 ? TETextures.CELL_CENTER_SOLID : TextureUtils.getTexture(TFFluids.fluidRedstone.getStill());
-		//		} else if (pass == 1) {
-		//			return TETextures.CELL[type * 2];
-		//		} else if (pass == 2) {
-		//			return TETextures.CELL_CONFIG[sideCache[side]];
-		//		}
-		//		if (side != facing) {
-		//			return TETextures.CELL_CONFIG_NONE;
-		//		}
-		//		return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+		return 3;
+	}
 
-		return null;
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			return TETextures.CELL_CENTER_1;
+		} else if (pass == 1) {
+			return TETextures.CELL_SIDE[level];
+		} else if (pass == 2) {
+			return TETextures.CELL_CONFIG[sideCache[side]];
+		}
+		if (side != facing) {
+			return TETextures.CONFIG_NONE;
+		}
+		return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
 	}
 
 }

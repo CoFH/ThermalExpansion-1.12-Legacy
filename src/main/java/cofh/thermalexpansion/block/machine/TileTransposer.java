@@ -38,17 +38,19 @@ public class TileTransposer extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 6;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
@@ -60,8 +62,8 @@ public class TileTransposer extends TileMachineBase {
 		String category = "Machine.Transposer";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
@@ -528,6 +530,14 @@ public class TileTransposer extends TileMachineBase {
 		return tank.getFluid();
 	}
 
+	public void setMode(boolean mode) {
+
+		boolean lastFlag = extractFlag;
+		extractFlag = mode;
+		sendModePacket();
+		extractFlag = lastFlag;
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -546,7 +556,7 @@ public class TileTransposer extends TileMachineBase {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (TransposerManager.getExtractRecipe(inventory[1]) != null) {
 			renderFluid = TransposerManager.getExtractRecipe(inventory[1]).getFluid().copy();
 			renderFluid.amount = 0;
@@ -567,12 +577,38 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* CLIENT -> SERVER */
+	@Override
+	public PacketCoFHBase getModePacket() {
+
+		PacketCoFHBase payload = super.getModePacket();
+
+		payload.addBool(extractFlag);
+
+		return payload;
+	}
+
+	@Override
+	protected void handleModePacket(PacketCoFHBase payload) {
+
+		super.handleModePacket(payload);
+
+		extractFlag = payload.getBool();
+		if (!isActive) {
+			extractMode = extractFlag;
+		}
+		callNeighborTileChange();
+	}
+
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
 
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -593,23 +629,22 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addFluidStack(renderFluid);
-
 		return payload;
 	}
 
 	@Override
-	public PacketCoFHBase getModePacket() {
+	protected void handleFluidPacket(PacketCoFHBase payload) {
 
-		PacketCoFHBase payload = super.getModePacket();
+		super.handleFluidPacket(payload);
 
-		payload.addBool(extractFlag);
+		renderFluid = payload.getFluidStack();
 
-		return payload;
+		callBlockUpdate();
 	}
 
 	@Override
@@ -623,46 +658,12 @@ public class TileTransposer extends TileMachineBase {
 	}
 
 	@Override
-	protected void handleFluidPacket(PacketCoFHBase payload) {
-
-		super.handleFluidPacket(payload);
-
-		renderFluid = payload.getFluidStack();
-		callBlockUpdate();
-	}
-
-	@Override
-	protected void handleModePacket(PacketCoFHBase payload) {
-
-		super.handleModePacket(payload);
-
-		extractFlag = payload.getBool();
-		if (!isActive) {
-			extractMode = extractFlag;
-		}
-		markDirty();
-		callNeighborTileChange();
-	}
-
-	public void setMode(boolean mode) {
-
-		boolean lastFlag = extractFlag;
-		extractFlag = mode;
-		sendModePacket();
-		extractFlag = lastFlag;
-	}
-
-	/* ITilePacketHandler */
-	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
+
 	}
 
 	/* IInventory */
@@ -673,10 +674,7 @@ public class TileTransposer extends TileMachineBase {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				extractMode = extractFlag;
 			}
 		}
@@ -689,10 +687,7 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && inventory[slot] != null) {
 				if (stack == null || !stack.isItemEqual(inventory[slot]) || !hasValidInput()) {
-					isActive = false;
-					wasActive = true;
-					tracker.markTime(worldObj);
-					processRem = 0;
+					processOff();
 				}
 			}
 			hasFluidHandler = false;
@@ -722,9 +717,9 @@ public class TileTransposer extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (layer == 0) {
+		if (pass == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

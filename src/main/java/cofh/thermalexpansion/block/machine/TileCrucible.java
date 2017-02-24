@@ -36,17 +36,21 @@ public class TileCrucible extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 4;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 4;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+
+		LIGHT_VALUES[TYPE] = 14;
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
@@ -58,8 +62,8 @@ public class TileCrucible extends TileMachineBase {
 		String category = "Machine.Crucible";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(50);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(50);
 	}
 
 	private int inputTracker;
@@ -233,7 +237,7 @@ public class TileCrucible extends TileMachineBase {
 		tank.readFromNBT(nbt);
 
 		if (tank.getFluid() != null) {
-			renderFluid = tank.getFluid();
+			renderFluid = tank.getFluid().copy();
 		} else if (CrucibleManager.getRecipe(inventory[0]) != null) {
 			renderFluid = CrucibleManager.getRecipe(inventory[0]).getOutput().copy();
 		}
@@ -251,11 +255,15 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getFluidPacket() {
+
+		PacketCoFHBase payload = super.getFluidPacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
 	}
 
@@ -263,6 +271,7 @@ public class TileCrucible extends TileMachineBase {
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
+
 		if (tank.getFluid() == null) {
 			payload.addFluidStack(renderFluid);
 		} else {
@@ -272,39 +281,39 @@ public class TileCrucible extends TileMachineBase {
 	}
 
 	@Override
-	public PacketCoFHBase getFluidPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getFluidPacket();
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addFluidStack(renderFluid);
+
 		return payload;
-	}
-
-	@Override
-	protected void handleGuiPacket(PacketCoFHBase payload) {
-
-		super.handleGuiPacket(payload);
-		tank.setFluid(payload.getFluidStack());
 	}
 
 	@Override
 	protected void handleFluidPacket(PacketCoFHBase payload) {
 
 		super.handleFluidPacket(payload);
+
 		renderFluid = payload.getFluidStack();
+
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		tank.setFluid(payload.getFluidStack());
+	}
+
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* IInventory */
@@ -316,9 +325,9 @@ public class TileCrucible extends TileMachineBase {
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (layer == 0) {
+		if (pass == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

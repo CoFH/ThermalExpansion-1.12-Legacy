@@ -4,10 +4,7 @@ import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
 import cofh.thermalexpansion.gui.GuiHandler;
-import cofh.thermalexpansion.init.TEBlocks;
-import cofh.thermalexpansion.init.TEFlorbs;
-import cofh.thermalexpansion.init.TEItems;
-import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.*;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
@@ -75,6 +72,7 @@ public class ThermalExpansion {
 		TEBlocks.preInit();
 		TEItems.preInit();
 		TEFlorbs.preInit();
+		TEAchievements.preInit();
 
 		proxy.preInit(event);
 	}
@@ -85,7 +83,8 @@ public class ThermalExpansion {
 		TEBlocks.initialize();
 		TEItems.initialize();
 		TEFlorbs.initialize();
-		TopPlugin.initialize();
+		TEAchievements.initialize();
+
 
 		/* Register Handlers */
 		registerHandlers();
@@ -99,6 +98,7 @@ public class ThermalExpansion {
 		TEBlocks.postInit();
 		TEItems.postInit();
 		TEFlorbs.postInit();
+		TEAchievements.postInit();
 
 		managerDefault();
 

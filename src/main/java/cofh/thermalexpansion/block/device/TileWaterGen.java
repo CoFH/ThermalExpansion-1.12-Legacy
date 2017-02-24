@@ -9,10 +9,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -38,15 +36,17 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 2;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {} };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, false };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] {};
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 4 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 2;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
+
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_water_gen");
 
@@ -61,6 +61,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		String comment = "Set this to TRUE to enable passive generation (less than two adjacent sources) for the Aqueous Accumulator.";
 		passiveGen = ThermalExpansion.CONFIG.getConfiguration().get(category, "PassiveGeneration", false, comment).getBoolean();
 	}
+
 	private static final int TIME_CONSTANT = 40;
 	private static int genRate = 20 * TIME_CONSTANT;
 	private static int genRatePassive = TIME_CONSTANT;
@@ -79,6 +80,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		super();
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 		tank.setLock(FluidRegistry.WATER);
+
+		hasAutoOutput = true;
 	}
 
 	@Override
@@ -107,12 +110,12 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		if (isActive) {
 			if (adjacentSources >= 2) {
-				tank.fillLocked(genRate * adjacentSources, true);
+				tank.modifyFluidStored(genRate * adjacentSources);
 			} else {
 				if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
-					tank.fillLocked(genRate, true);
+					tank.modifyFluidStored(genRate);
 				} else if (passiveGen) {
-					tank.fillLocked(genRatePassive, true);
+					tank.modifyFluidStored(genRatePassive);
 				}
 			}
 			if (!redstoneControlOrDisable()) {
@@ -124,13 +127,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (adjacentSources < 0) {
 			updateAdjacentSources();
 		}
-	}
-
-	protected void setLevelFlags() {
-
-		super.setLevelFlags();
-
-		hasAutoOutput = true;
 	}
 
 	protected void updateAdjacentSources() {
@@ -256,18 +252,6 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 		tank.getFluid().amount = payload.getInt();
-	}
-
-	/* ISidedTexture */
-	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
-
-		if (layer == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
-		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
-		}
-		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */

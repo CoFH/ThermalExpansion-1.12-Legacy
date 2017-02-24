@@ -16,7 +16,7 @@ public class GuiBreaker extends GuiPoweredBase {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.automaton.breaker", 2);
+		generateInfo("tab.thermalexpansion.automaton.breaker");
 	}
 
 }

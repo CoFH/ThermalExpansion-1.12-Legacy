@@ -100,10 +100,12 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+	/* SERVER -> CLIENT */
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addBool(isPowered);
 		payload.addByte(rsMode.ordinal());
@@ -112,7 +114,6 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		return payload;
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
@@ -121,17 +122,13 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isPowered = payload.getBool();
 		rsMode = ControlMode.values()[payload.getByte()];
 
-		if (!isServer) {
-			boolean prevActive = isActive;
-			isActive = payload.getBool();
+		boolean prevActive = isActive;
+		isActive = payload.getBool();
 
-			if (isActive && !prevActive) {
-				if (getSoundName() != null && !getSoundName().isEmpty()) {
-					SoundHelper.playSound(getSound());
-				}
+		if (isActive && !prevActive) {
+			if (getSoundName() != null && !getSoundName().isEmpty()) {
+				SoundHelper.playSound(getSound());
 			}
-		} else {
-			payload.getBool();
 		}
 	}
 
@@ -158,8 +155,6 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		rsMode = control;
 		if (ServerHelper.isClientWorld(worldObj)) {
 			PacketTEBase.sendRSConfigUpdatePacketToServer(this, pos);
-		} else {
-			sendUpdatePacket(Side.CLIENT);
 		}
 		return true;
 	}

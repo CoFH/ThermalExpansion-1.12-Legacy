@@ -152,21 +152,24 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	}
 
 	/* IModelRegister */
-
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
+
 		final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:florb", "type=florb");
 		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
 			@Override
 			public ModelResourceLocation getModelLocation(ItemStack stack) {
+
 				return location;
 			}
 		});
+		ModelLoader.setCustomModelResourceLocation(this, 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel(""));
 		BlockBakery.registerItemKeyGenerator(this, new IItemStackKeyGenerator() {
 			@Override
 			public String generateKey(ItemStack stack) {
+
 				String fluid = "";
 				if (stack.getTagCompound() != null) {
 					fluid = "," + stack.getTagCompound().getString("Fluid");
@@ -179,6 +182,8 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	@Override
 	@SideOnly (Side.CLIENT)
 	public IItemBakery getBakery() {
+
 		return ModelFlorb.INSTANCE;
 	}
+
 }

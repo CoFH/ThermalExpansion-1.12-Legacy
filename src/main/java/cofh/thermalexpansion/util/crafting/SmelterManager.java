@@ -22,7 +22,6 @@ public class SmelterManager {
 	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
 	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
 	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<ComparableItemStackSmelter>();
-	private static ArrayList<String> blastList = new ArrayList<String>();
 
 	static final ItemStack BLOCK_SAND = new ItemStack(Blocks.SAND);
 	static final ItemStack BLOCK_SOUL_SAND = new ItemStack(Blocks.SOUL_SAND);
@@ -90,7 +89,6 @@ public class SmelterManager {
 			addFlux(BLOCK_SOUL_SAND);
 			addFlux(ItemMaterial.crystalSlagRich);
 			addFlux(ItemMaterial.crystalCinnabar);
-			addFlux(ItemMaterial.dustPyrotheum);
 		}
 		/* SPECIAL */
 		{
@@ -158,6 +156,10 @@ public class SmelterManager {
 			addAlloyRecipe(energy, "dustBronze", 1, "dustObsidian", 4, blockGlass);
 			addAlloyRecipe(energy, "ingotBronze", 1, "dustObsidian", 4, blockGlass);
 
+			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassConstantan, 2);
+			addAlloyRecipe(energy, "dustConstantan", 1, "dustObsidian", 4, blockGlass);
+			addAlloyRecipe(energy, "ingotConstantan", 1, "dustObsidian", 4, blockGlass);
+
 			blockGlass = ItemHelper.cloneStack(BlockGlassAlloy.glassSignalum, 2);
 			addAlloyRecipe(energy, "dustSignalum", 1, "dustObsidian", 4, blockGlass);
 			addAlloyRecipe(energy, "ingotSignalum", 1, "dustObsidian", 4, blockGlass);
@@ -192,6 +194,7 @@ public class SmelterManager {
 			addDefaultOreDictionaryRecipe(null, "dustElectrum", ItemMaterial.ingotElectrum);
 			addDefaultOreDictionaryRecipe(null, "dustInvar", ItemMaterial.ingotInvar);
 			addDefaultOreDictionaryRecipe(null, "dustBronze", ItemMaterial.ingotBronze);
+			addDefaultOreDictionaryRecipe(null, "dustConstantan", ItemMaterial.ingotConstantan);
 			addDefaultOreDictionaryRecipe(null, "dustSignalum", ItemMaterial.ingotSignalum);
 			addDefaultOreDictionaryRecipe(null, "dustLumium", ItemMaterial.ingotLumium);
 			addDefaultOreDictionaryRecipe(null, "dustEnderium", ItemMaterial.ingotEnderium);
@@ -200,22 +203,34 @@ public class SmelterManager {
 		/* ALLOYS */
 		{
 			ItemStack stackSteel = ItemHelper.cloneStack(ItemMaterial.ingotSteel, 1);
-			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
-			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
+			//			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
+			//			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
 			addAlloyRecipe(1600, "dustIron", 1, "dustCharoal", 4, stackSteel);
 			addAlloyRecipe(2400, "ingotIron", 1, "dustCharoal", 4, stackSteel);
 
 			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
 			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
+			addAlloyRecipe(2000, "dustSilver", 1, "ingotGold", 1, stackElectrum);
+			addAlloyRecipe(2000, "ingotSilver", 1, "dustGold", 1, stackElectrum);
 			addAlloyRecipe(2400, "ingotSilver", 1, "ingotGold", 1, stackElectrum);
 
 			ItemStack stackInvar = ItemHelper.cloneStack(ItemMaterial.ingotInvar, 3);
-			addAlloyRecipe(1600, "dustNickel", 1, "dustIron", 2, stackInvar);
-			addAlloyRecipe(2400, "ingotNickel", 1, "ingotIron", 2, stackInvar);
+			addAlloyRecipe(2400, "dustNickel", 1, "dustIron", 2, stackInvar);
+			addAlloyRecipe(3000, "dustNickel", 1, "ingotIron", 2, stackInvar);
+			addAlloyRecipe(3000, "ingotNickel", 1, "dustIron", 2, stackInvar);
+			addAlloyRecipe(3600, "ingotNickel", 1, "ingotIron", 2, stackInvar);
 
 			ItemStack stackBronze = ItemHelper.cloneStack(ItemMaterial.ingotBronze, 4);
-			addAlloyRecipe(1600, "dustTin", 1, "dustCopper", 3, stackBronze);
-			addAlloyRecipe(2400, "ingotTin", 1, "ingotCopper", 3, stackBronze);
+			addAlloyRecipe(3200, "dustTin", 1, "dustCopper", 3, stackBronze);
+			addAlloyRecipe(4000, "dustTin", 1, "ingotCopper", 3, stackBronze);
+			addAlloyRecipe(4000, "ingotTin", 1, "dustCopper", 3, stackBronze);
+			addAlloyRecipe(4800, "ingotTin", 1, "ingotCopper", 3, stackBronze);
+
+			ItemStack stackConstantan = ItemHelper.cloneStack(ItemMaterial.ingotConstantan, 2);
+			addAlloyRecipe(1600, "dustCopper", 1, "dustNickel", 1, stackConstantan);
+			addAlloyRecipe(2000, "dustCopper", 1, "ingotNickel", 1, stackConstantan);
+			addAlloyRecipe(2000, "ingotCopper", 1, "dustNickel", 1, stackConstantan);
+			addAlloyRecipe(2400, "ingotCopper", 1, "ingotNickel", 1, stackConstantan);
 		}
 	}
 
@@ -238,9 +253,6 @@ public class SmelterManager {
 					addDefaultOreDictionaryRecipe(oreName);
 				}
 			}
-		}
-		for (int i = 0; i < blastList.size(); i++) {
-			addBlastOreRecipe(blastList.get(i));
 		}
 	}
 
@@ -294,11 +306,6 @@ public class SmelterManager {
 	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
-	}
-
-	public static void addBlastOreName(String oreName) {
-
-		blastList.add(oreName.toLowerCase(Locale.US));
 	}
 
 	/* REMOVE RECIPES */
@@ -397,7 +404,6 @@ public class SmelterManager {
 			ItemStack ore = registeredOres.get(0);
 			addRecipe(energy, ore, BLOCK_SAND, ingot2, ItemMaterial.crystalSlagRich, richSlagChance);
 			addRecipe(energy, ore, ItemMaterial.crystalSlagRich, ingot3, ItemMaterial.crystalSlag, slagOreChance);
-			addRecipe(energy, ore, ItemMaterial.dustPyrotheum, ingot2, ItemMaterial.crystalSlagRich, Math.min(60, richSlagChance * 3));
 
 			if (ingotSecondary != null) {
 				addRecipe(energy, ore, ItemMaterial.crystalCinnabar, ingot3, ingotSecondary, 100);
@@ -429,34 +435,6 @@ public class SmelterManager {
 	private static void addAlloyRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
-	}
-
-	private static void addBlastOreRecipe(String oreType) {
-
-		String oreName = "ore" + StringHelper.titleCase(oreType);
-		String dustName = "dust" + StringHelper.titleCase(oreType);
-		String ingotName = "ingot" + StringHelper.titleCase(oreType);
-
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-
-		if (registeredIngot.isEmpty()) {
-			return;
-		}
-		ItemStack ingot = ItemStackRegistry.findItemStack("thermalfoundation", ingotName, 1);
-		if (ingot == null) {
-			ingot = registeredIngot.get(0);
-			if (ingot != null && !OreDictionaryArbiter.getAllOreNames(ingot).contains(ingotName)) {
-				ingot = null;
-			}
-		}
-		if (!registeredOre.isEmpty()) {
-			addRecipe(DEFAULT_ENERGY * 3, ItemHelper.cloneStack(registeredOre.get(0), 1), ItemMaterial.dustPyrotheum, ItemHelper.cloneStack(ingot, 2));
-		}
-		if (!registeredDust.isEmpty()) {
-			addRecipe(DEFAULT_ENERGY * 2, ItemHelper.cloneStack(registeredDust.get(0), 2), ItemMaterial.dustPyrotheum, ItemHelper.cloneStack(ingot, 2));
-		}
 	}
 
 	private static boolean addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {

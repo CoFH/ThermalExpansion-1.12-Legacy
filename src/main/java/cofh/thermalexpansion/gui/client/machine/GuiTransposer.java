@@ -30,13 +30,13 @@ public class GuiTransposer extends GuiPoweredBase {
 	private ElementDualScaled progressOverlayRev;
 
 	private ElementDualScaled speed;
-	private ElementButton mode;
+	private ElementButton modeSel;
 
 	public GuiTransposer(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTransposer(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.machine.transposer", 3);
+		generateInfo("tab.thermalexpansion.machine.transposer");
 
 		myTile = (TileTransposer) tile;
 	}
@@ -64,7 +64,7 @@ public class GuiTransposer extends GuiPoweredBase {
 		progressOverlayRev = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 19).setMode(1).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_RIGHT, 64, 16));
 
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 49).setSize(16, 16).setTexture(TEX_BUBBLE, 32, 16));
-		mode = (ElementButton) addElement(new ElementButton(this, 116, 49, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
+		modeSel = (ElementButton) addElement(new ElementButton(this, 116, 49, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
 	}
 
 	@Override
@@ -101,26 +101,20 @@ public class GuiTransposer extends GuiPoweredBase {
 		progressOverlayRev.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
 		speed.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledSpeed(SPEED) : 0);
 
-		if (myTile.extractMode) {
-			if (!myTile.extractFlag) {
-				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeWait");
-				mode.setDisabled();
-			} else {
-				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeEmpty");
-				mode.setSheetX(192);
-				mode.setHoverX(192);
-				mode.setActive();
-			}
+		if (myTile.extractMode != myTile.extractFlag) {
+			modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeWait");
+			modeSel.setDisabled();
 		} else {
-			if (myTile.extractFlag) {
-				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeWait");
-				mode.setDisabled();
+			if (myTile.extractMode) {
+				modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeEmpty");
+				modeSel.setSheetX(192);
+				modeSel.setHoverX(192);
 			} else {
-				mode.setToolTip("gui.thermalexpansion.machine.transposer.modeFill");
-				mode.setSheetX(176);
-				mode.setHoverX(176);
-				mode.setActive();
+				modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeFill");
+				modeSel.setSheetX(176);
+				modeSel.setHoverX(176);
 			}
+			modeSel.setActive();
 		}
 	}
 

@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
+import cofh.core.fluid.FluidTankCore;
+import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -8,12 +10,21 @@ import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
+import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
+import net.minecraftforge.fluids.capability.FluidTankProperties;
+import net.minecraftforge.fluids.capability.IFluidHandler;
+import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TilePulverizer extends TileMachineBase {
@@ -22,18 +33,23 @@ public class TilePulverizer extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 6;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1, 2 }, { 3 }, { 1, 2, 3 }, { 0, 1, 2, 3 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
-		validAugments[TYPE] = new ArrayList<String>();
-		validAugments[TYPE].add(TEProps.MACHINE_PULVERIZER_GEODE);
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PULVERIZER_GEODE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PULVERIZER_PETROTHEUM);
+
+		LIGHT_VALUES[TYPE] = 4;
 
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:machine_pulverizer");
 
@@ -45,21 +61,26 @@ public class TilePulverizer extends TileMachineBase {
 		String category = "Machine.Pulverizer";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int inputTracker;
 	private int outputTrackerPrimary;
 	private int outputTrackerSecondary;
 
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
 	/* AUGMENTS */
 	protected boolean augmentGeode;
+	protected boolean augmentPetrotheum;
+	protected boolean flagPetrotheum;
 
 	public TilePulverizer() {
 
 		super();
-		inventory = new ItemStack[1 + 2 + 1 + 1];
+		inventory = new ItemStack[1 + 1 + 1 + 1];
+		tank.setLock(TFFluids.fluidPetrotheum);
 	}
 
 	@Override
@@ -82,31 +103,24 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[0].stackSize < recipe.getInput().stackSize) {
 			return false;
 		}
+		if (recipe == null) {
+			return false;
+		}
+		if (inventory[0].stackSize < recipe.getInput().stackSize) {
+			return false;
+		}
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		if (!augmentSecondaryNull && secondaryItem != null && inventory[3] != null) {
-			if (!inventory[3].isItemEqual(secondaryItem)) {
+		if (secondaryItem != null && inventory[2] != null) {
+			if (!augmentSecondaryNull && !inventory[2].isItemEqual(secondaryItem)) {
 				return false;
 			}
-			if (inventory[3].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[2].stackSize + secondaryItem.stackSize > secondaryItem.getMaxStackSize()) {
 				return false;
 			}
 		}
-		final int start = 1, end = start + 2;
-
-		int room = 0;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				return true;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			room += stack.getMaxStackSize() - stack.stackSize;
-		}
-		return room >= primaryItem.stackSize;
+		return inventory[1] == null || inventory[1].isItemEqual(primaryItem) && inventory[1].stackSize + primaryItem.stackSize <= primaryItem.getMaxStackSize();
 	}
 
 	@Override
@@ -135,41 +149,35 @@ public class TilePulverizer extends TileMachineBase {
 		ItemStack primaryItem = recipe.getPrimaryOutput();
 		ItemStack secondaryItem = recipe.getSecondaryOutput();
 
-		final int start = 1, end = start + 2;
+		if (inventory[1] == null) {
+			inventory[1] = ItemHelper.cloneStack(primaryItem);
+		} else {
+			inventory[1].stackSize += primaryItem.stackSize;
+		}
+		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= 50;
 
-		int outputAmt = primaryItem.stackSize;
-		for (int i = start; i < end; ++i) {
-			ItemStack stack = inventory[i];
-			if (stack == null) {
-				inventory[i] = ItemHelper.cloneStack(primaryItem);
-				break;
-			}
-			if (!stack.isItemEqual(primaryItem)) {
-				continue;
-			}
-			int add = Math.min(stack.stackSize + outputAmt, stack.getMaxStackSize()) - stack.stackSize;
-			outputAmt -= add;
-			stack.stackSize += add;
-			if (outputAmt == 0) {
-				break;
+		if (augmentPetrotheumCheck) {
+			tank.modifyFluidStored(-50);
+
+			if (inventory[1].stackSize < inventory[1].getMaxStackSize()) {
+				inventory[1].stackSize++;
 			}
 		}
 		if (secondaryItem != null) {
+			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - 15 : secondaryChance;
+
 			int recipeChance = recipe.getSecondaryOutputChance();
-			if (recipeChance >= 100 || worldObj.rand.nextInt(secondaryChance) < recipeChance) {
-				if (inventory[3] == null) {
-					inventory[3] = ItemHelper.cloneStack(secondaryItem);
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
-					}
-				} else if (inventory[3].isItemEqual(secondaryItem)) {
-					inventory[3].stackSize += secondaryItem.stackSize;
-					if (secondaryChance < recipeChance && worldObj.rand.nextInt(secondaryChance) < recipeChance - secondaryChance) {
-						inventory[3].stackSize += secondaryItem.stackSize;
-					}
+			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
+				if (inventory[2] == null) {
+					inventory[2] = ItemHelper.cloneStack(secondaryItem);
+				} else if (inventory[2].isItemEqual(secondaryItem)) {
+					inventory[2].stackSize += secondaryItem.stackSize;
 				}
-				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
-					inventory[3].stackSize = inventory[3].getMaxStackSize();
+				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+					inventory[2].stackSize += secondaryItem.stackSize;
+				}
+				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {
+					inventory[2].stackSize = inventory[2].getMaxStackSize();
 				}
 			}
 		}
@@ -205,30 +213,24 @@ public class TilePulverizer extends TileMachineBase {
 			return;
 		}
 		int side;
-		if (inventory[1] != null || inventory[2] != null) {
+		if (inventory[1] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
 				if (sideCache[side] == 2 || sideCache[side] == 4) {
-					if (transferItem(1, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-						if (!transferItem(2, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side])) {
-							transferItem(1, ITEM_TRANSFER[level] >> 1, EnumFacing.VALUES[side]);
-						}
-						outputTrackerPrimary = side;
-						break;
-					} else if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
 					}
 				}
 			}
 		}
-		if (inventory[3] == null) {
+		if (inventory[2] == null) {
 			return;
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
 			if (sideCache[side] == 3 || sideCache[side] == 4) {
-				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
 				}
@@ -249,6 +251,28 @@ public class TilePulverizer extends TileMachineBase {
 		return new ContainerPulverizer(inventory, this);
 	}
 
+	@Override
+	public FluidTankCore getTank() {
+
+		return tank;
+	}
+
+	@Override
+	public FluidStack getTankFluid() {
+
+		return tank.getFluid();
+	}
+
+	public boolean augmentPetrotheum() {
+
+		return augmentPetrotheum && flagPetrotheum;
+	}
+
+	public boolean fluidArrow() {
+
+		return augmentPetrotheum && tank.getFluidAmount() >= 50 && (ItemHelper.isOre(inventory[0]));
+	}
+
 	/* NBT METHODS */
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -258,6 +282,7 @@ public class TilePulverizer extends TileMachineBase {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTrackerPrimary = nbt.getInteger("TrackOut1");
 		outputTrackerSecondary = nbt.getInteger("TrackOut2");
+		tank.readFromNBT(nbt);
 	}
 
 	@Override
@@ -268,7 +293,29 @@ public class TilePulverizer extends TileMachineBase {
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut1", outputTrackerPrimary);
 		nbt.setInteger("TrackOut2", outputTrackerSecondary);
+		tank.writeToNBT(nbt);
 		return nbt;
+	}
+
+	/* NETWORK METHODS */
+	@Override
+	public PacketCoFHBase getGuiPacket() {
+
+		PacketCoFHBase payload = super.getGuiPacket();
+
+		payload.addBool(augmentPetrotheum);
+		payload.addFluidStack(tank.getFluid());
+		return payload;
+	}
+
+	@Override
+	protected void handleGuiPacket(PacketCoFHBase payload) {
+
+		super.handleGuiPacket(payload);
+
+		augmentPetrotheum = payload.getBool();
+		flagPetrotheum = augmentPetrotheum;
+		tank.setFluid(payload.getFluidStack());
 	}
 
 	/* HELPERS */
@@ -278,6 +325,17 @@ public class TilePulverizer extends TileMachineBase {
 		super.preAugmentInstall();
 
 		augmentGeode = false;
+		augmentPetrotheum = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentPetrotheum) {
+			tank.modifyFluidStored(-tank.getCapacity());
+		}
 	}
 
 	@Override
@@ -291,6 +349,12 @@ public class TilePulverizer extends TileMachineBase {
 			energyMod += 25;
 			return true;
 		}
+		if (!augmentPetrotheum && TEProps.MACHINE_PULVERIZER_PETROTHEUM.equals(id)) {
+			augmentPetrotheum = true;
+			hasModeAugment = true;
+			energyMod += 50;
+			return true;
+		}
 		return super.installAugmentToSlot(slot);
 	}
 
@@ -299,6 +363,49 @@ public class TilePulverizer extends TileMachineBase {
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
 		return slot != 0 || PulverizerManager.recipeExists(stack);
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return super.hasCapability(capability, from) || augmentPetrotheum && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
+	}
+
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (augmentPetrotheum && capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+				@Override
+				public IFluidTankProperties[] getTankProperties() {
+
+					FluidTankInfo info = tank.getInfo();
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, false) };
+				}
+
+				@Override
+				public int fill(FluidStack resource, boolean doFill) {
+
+					return tank.fill(resource, doFill);
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(FluidStack resource, boolean doDrain) {
+
+					return null;
+				}
+
+				@Nullable
+				@Override
+				public FluidStack drain(int maxDrain, boolean doDrain) {
+
+					return null;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

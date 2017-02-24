@@ -9,7 +9,6 @@ import codechicken.lib.vec.Translation;
 import codechicken.lib.vec.Vector3;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.CommonProperties;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.block.dynamo.TileDynamoBase;
 import cofh.thermalexpansion.init.TEProps;
@@ -68,6 +67,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 	}
 
+	/* RENDER */
 	protected void renderCoil(CCRenderState ccrs, int facing, boolean active) {
 
 		if (active) {
@@ -100,10 +100,28 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		TileDynamoBase dynamo = (TileDynamoBase) tile;
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[dynamo.getFacing()]);
 		state = state.withProperty(TEProps.ACTIVE, dynamo.isActive);
-		state = state.withProperty(CommonProperties.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
+		state = state.withProperty(TEProps.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
 		return state;
 	}
 
+	@Override
+	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
+		if (face == null) {
+			BakingVertexBuffer buffer = BakingVertexBuffer.create();
+			buffer.begin(7, DefaultVertexFormats.ITEM);
+			CCRenderState ccrs = CCRenderState.instance();
+			ccrs.reset();
+			ccrs.bind(buffer);
+			renderCoil(ccrs, 1, false);
+			renderBase(ccrs, 1, false, stack.getMetadata());
+			buffer.finishDrawing();
+			return buffer.bake();
+		}
+		return new ArrayList<BakedQuad>();
+	}
+
+	/* ILayeredBlockBakery */
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
@@ -111,7 +129,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			int facing = state.getValue(TEProps.FACING).ordinal();
 			boolean active = state.getValue(TEProps.ACTIVE);
 			int type = state.getValue(BlockDynamo.VARIANT).getMetadata();
-			TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(CommonProperties.ACTIVE_SPRITE_PROPERTY));
+			TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -124,24 +142,6 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			} else {
 				renderBase(ccrs, facing, active, type);
 			}
-			buffer.finishDrawing();
-			return buffer.bake();
-		}
-		return new ArrayList<BakedQuad>();
-	}
-
-	/* ILayeredBlockBakery */
-	@Override
-	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
-
-		if (face == null) {
-			BakingVertexBuffer buffer = BakingVertexBuffer.create();
-			buffer.begin(7, DefaultVertexFormats.ITEM);
-			CCRenderState ccrs = CCRenderState.instance();
-			ccrs.reset();
-			ccrs.bind(buffer);
-			renderCoil(ccrs, 1, false);
-			renderBase(ccrs, 1, false, stack.getMetadata());
 			buffer.finishDrawing();
 			return buffer.bake();
 		}

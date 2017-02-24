@@ -21,7 +21,7 @@ public abstract class TileDevice3Axis extends TileDeviceBase {
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
 		markDirty();
-		sendUpdatePacket(Side.CLIENT);
+		sendTilePacket(Side.CLIENT);
 		return true;
 	}
 

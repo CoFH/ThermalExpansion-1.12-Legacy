@@ -64,6 +64,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.WATER_GEN));
 	}
 
 	@Override
@@ -220,9 +221,9 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	}
 
 	@Override
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override
@@ -231,7 +232,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileDeviceBase) {
 			TileDeviceBase tile = ((TileDeviceBase) tileEntity);
-			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
 	}
@@ -430,6 +431,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static ItemStack deviceHeatSink;
 	public static ItemStack deviceTapper;
 	public static ItemStack deviceItemBuffer;
+
+	public static ItemStack deviceTrader;
 
 	public static ItemStack deviceFluidBuffer;
 	public static ItemStack deviceEnergyBuffer;

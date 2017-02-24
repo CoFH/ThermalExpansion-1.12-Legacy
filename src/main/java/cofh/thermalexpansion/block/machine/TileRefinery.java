@@ -37,17 +37,19 @@ public class TileRefinery extends TileMachineBase {
 
 	public static void initialize() {
 
-		defaultSideConfig[TYPE] = new SideConfig();
-		defaultSideConfig[TYPE].numConfig = 6;
-		defaultSideConfig[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 } };
-		defaultSideConfig[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
-		defaultSideConfig[TYPE].allowInsertionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].allowExtractionSlot = new boolean[] { true, false };
-		defaultSideConfig[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
-		defaultSideConfig[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
+		SIDE_CONFIGS[TYPE] = new SideConfig();
+		SIDE_CONFIGS[TYPE].numConfig = 6;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
-		validAugments[TYPE] = new ArrayList<String>();
+		SLOT_CONFIGS[TYPE] = new SlotConfig();
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
+
+		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
 
 		GameRegistry.registerTileEntity(TileRefinery.class, "thermalexpansion:machine_refinery");
 
@@ -59,8 +61,8 @@ public class TileRefinery extends TileMachineBase {
 		String category = "Machine.Refinery";
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
+		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
 	}
 
 	private int outputTracker;
@@ -116,11 +118,11 @@ public class TileRefinery extends TileMachineBase {
 		FluidStack outputFluid = recipe.getOutputFluid();
 		ItemStack outputItem = recipe.getOutputItem();
 
-		if (!augmentSecondaryNull && outputItem != null && inventory[0] != null) {
-			if (!inventory[0].isItemEqual(outputItem)) {
+		if (outputItem != null && inventory[0] != null) {
+			if (!augmentSecondaryNull && !inventory[0].isItemEqual(outputItem)) {
 				return false;
 			}
-			if (inventory[0].stackSize + outputItem.stackSize > outputItem.getMaxStackSize()) {
+			if (!augmentSecondaryNull && inventory[0].stackSize + outputItem.stackSize > outputItem.getMaxStackSize()) {
 				return false;
 			}
 		}
@@ -266,6 +268,10 @@ public class TileRefinery extends TileMachineBase {
 
 		inputTank.readFromNBT(nbt.getCompoundTag("TankIn"));
 		outputTank.readFromNBT(nbt.getCompoundTag("TankOut"));
+
+		if (inputTank.getFluid() != null) {
+			renderFluid = inputTank.getFluid().copy();
+		}
 	}
 
 	@Override
@@ -283,9 +289,9 @@ public class TileRefinery extends TileMachineBase {
 
 	/* NETWORK METHODS */
 	@Override
-	public PacketCoFHBase getPacket() {
+	public PacketCoFHBase getTilePacket() {
 
-		PacketCoFHBase payload = super.getPacket();
+		PacketCoFHBase payload = super.getTilePacket();
 		payload.addFluidStack(renderFluid);
 		return payload;
 	}
@@ -327,24 +333,19 @@ public class TileRefinery extends TileMachineBase {
 		callBlockUpdate();
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		if (!isServer) {
-			renderFluid = payload.getFluidStack();
-		} else {
-			payload.getFluidStack();
-		}
+		renderFluid = payload.getFluidStack();
 	}
 
 	/* ISidedTexture */
 	@Override
-	public TextureAtlasSprite getTexture(int side, int layer, int pass) {
+	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (layer == 0) {
+		if (pass == 0) {
 			if (side == 0) {
 				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {

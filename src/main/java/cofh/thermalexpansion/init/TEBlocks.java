@@ -25,27 +25,27 @@ public class TEBlocks {
 		blockDevice = new BlockDevice();
 		blockDynamo = new BlockDynamo();
 
-		blockCache = new BlockCache();
-		blockTank = new BlockTank();
 		blockCell = new BlockCell();
+		blockTank = new BlockTank();
+		blockCache = new BlockCache();
 
 		initList.add(blockMachine);
 		initList.add(blockAutomaton);
 		initList.add(blockDevice);
 		initList.add(blockDynamo);
 
-		initList.add(blockCache);
-		initList.add(blockTank);
 		initList.add(blockCell);
+		initList.add(blockTank);
+		initList.add(blockCache);
 
 		ThermalExpansion.proxy.addIModelRegister(blockMachine);
 		ThermalExpansion.proxy.addIModelRegister(blockAutomaton);
 		ThermalExpansion.proxy.addIModelRegister(blockDevice);
 		ThermalExpansion.proxy.addIModelRegister(blockDynamo);
 
-		ThermalExpansion.proxy.addIModelRegister(blockCache);
-		ThermalExpansion.proxy.addIModelRegister(blockTank);
 		ThermalExpansion.proxy.addIModelRegister(blockCell);
+		ThermalExpansion.proxy.addIModelRegister(blockTank);
+		ThermalExpansion.proxy.addIModelRegister(blockCache);
 
 		for (IInitializer init : initList) {
 			init.preInit();
@@ -75,8 +75,8 @@ public class TEBlocks {
 	public static BlockDevice blockDevice;
 	public static BlockDynamo blockDynamo;
 
-	public static BlockCache blockCache;
-	public static BlockTank blockTank;
 	public static BlockCell blockCell;
+	public static BlockTank blockTank;
+	public static BlockCache blockCache;
 
 }

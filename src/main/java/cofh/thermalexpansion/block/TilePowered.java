@@ -82,16 +82,8 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	}
 
 	/* NETWORK METHODS */
-	@Override
-	public PacketCoFHBase getPacket() {
 
-		PacketCoFHBase payload = super.getPacket();
-
-		payload.addInt(energyStorage.getEnergyStored());
-
-		return payload;
-	}
-
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
@@ -99,6 +91,16 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 
 		payload.addBool(isActive);
 		payload.addInt(energyStorage.getMaxEnergyStored());
+		payload.addInt(energyStorage.getEnergyStored());
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
 		payload.addInt(energyStorage.getEnergyStored());
 
 		return payload;
@@ -114,17 +116,12 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 		energyStorage.setEnergyStored(payload.getInt());
 	}
 
-	/* ITilePacketHandler */
 	@Override
 	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
 
 		super.handleTilePacket(payload, isServer);
 
-		int energy = payload.getInt();
-
-		if (!isServer) {
-			energyStorage.setEnergyStored(energy);
-		}
+		energyStorage.setEnergyStored(payload.getInt());
 	}
 
 	/* IEnergyInfo */

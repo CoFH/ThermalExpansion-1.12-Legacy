@@ -198,6 +198,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 

@@ -21,7 +21,7 @@ public class ItemBlockAutomaton extends ItemBlockCore {
 	public static ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		ReconfigurableHelper.setSideCache(stack, TileAutomatonBase.defaultSideConfig[ItemHelper.getItemDamage(stack)].defaultSides);
+		ReconfigurableHelper.setSideCache(stack, TileAutomatonBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
 		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 		stack.getTagCompound().setByte("Level", (byte) level);
@@ -40,9 +40,6 @@ public class ItemBlockAutomaton extends ItemBlockCore {
 	public ItemBlockAutomaton(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override

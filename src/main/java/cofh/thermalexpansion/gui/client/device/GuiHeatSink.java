@@ -19,7 +19,7 @@ public class GuiHeatSink extends GuiDeviceBase {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.device.heat_sink", 3);
+		generateInfo("tab.thermalexpansion.device.heat_sink");
 	}
 
 	@Override

@@ -57,6 +57,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+		setDefaultState(getBlockState().getBaseState().withProperty(VARIANT, Type.BREAKER));
 	}
 
 	@Override
@@ -179,9 +180,9 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	}
 
 	@Override
-	public TextureAtlasSprite getTexture(EnumFacing side, int metadata) {
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[metadata % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override
@@ -190,7 +191,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		TileEntity tileEntity = world.getTileEntity(pos);
 		if (tileEntity instanceof TileAutomatonBase) {
 			TileAutomatonBase tile = ((TileAutomatonBase) tileEntity);
-			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1, 0);
+			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
 	}

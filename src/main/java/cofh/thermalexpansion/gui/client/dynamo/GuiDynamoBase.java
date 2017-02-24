@@ -67,7 +67,10 @@ public abstract class GuiDynamoBase extends GuiCore {
 			addTab(new TabEnergy(this, baseTile, true));
 		}
 		addTab(new TabInfo(this, myInfo + "\n\n" + StringHelper.localize("tab.thermalexpansion.dynamo.0")));
-		addTab(new TabTutorial(this, myTutorial));
+
+		if (!myTutorial.isEmpty()) {
+			addTab(new TabTutorial(this, myTutorial));
+		}
 	}
 
 	@Override

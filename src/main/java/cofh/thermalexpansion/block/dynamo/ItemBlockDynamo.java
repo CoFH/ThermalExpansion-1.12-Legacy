@@ -39,9 +39,6 @@ public class ItemBlockDynamo extends ItemBlockCore {
 	public ItemBlockDynamo(Block block) {
 
 		super(block);
-		setHasSubtypes(true);
-		setMaxDamage(0);
-		setNoRepair();
 	}
 
 	@Override
@@ -86,7 +83,9 @@ public class ItemBlockDynamo extends ItemBlockCore {
 		String name = BlockDynamo.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.dynamo." + name));
 
-		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		if (getLevel(stack) >= 2) {
+			RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		}
 	}
 
 }
