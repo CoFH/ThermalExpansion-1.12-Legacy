@@ -85,6 +85,7 @@ public class ThermalExpansion {
 		TEFlorbs.initialize();
 		TEAchievements.initialize();
 
+
 		/* Register Handlers */
 		registerHandlers();
 
