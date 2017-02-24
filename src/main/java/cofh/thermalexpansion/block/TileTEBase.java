@@ -9,13 +9,14 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import mcjty.theoneprobe.api.IProbeInfo;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IContainerListener;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.relauncher.Side;
-import mcjty.theoneprobe.api.IProbeInfo;
 
 public abstract class TileTEBase extends TileCore implements ITileInfoPacketHandler, ITilePacketHandler, IPortableData {
 
@@ -190,12 +191,13 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		}
 
 	}
-	
-	public void provideInfo(IProbeInfo info, EnumFacing facing, EntityPlayer player) {
-        	info.text("Progress:");
-        	info.progress(getScaledProgress(100), 100);
-	}
 
+	/* PLUGIN METHODS */
+	public void provideInfo(IProbeInfo info, EnumFacing facing, EntityPlayer player) {
+
+		info.text("Progress: ");
+		info.progress(getScaledProgress(100), 100);
+	}
 
 	/* ENERGY CONFIG */
 	public static class EnergyConfig {
