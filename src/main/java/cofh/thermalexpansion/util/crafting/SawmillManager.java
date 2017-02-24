@@ -272,18 +272,18 @@ public class SawmillManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackSawmill extends ComparableItemStack {
 
-		static final String ORE = "ore";
-		static final String INGOT = "ingot";
-		static final String NUGGET = "nugget";
+		public static final String ORE = "ore";
+		public static final String INGOT = "ingot";
+		public static final String NUGGET = "nugget";
 
-		static final String RUBBER = "woodRubber";
+		public static final String RUBBER = "woodRubber";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(RUBBER);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -298,7 +298,7 @@ public class SawmillManager {
 			return -1;
 		}
 
-		ComparableItemStackSawmill(ItemStack stack) {
+		public ComparableItemStackSawmill(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

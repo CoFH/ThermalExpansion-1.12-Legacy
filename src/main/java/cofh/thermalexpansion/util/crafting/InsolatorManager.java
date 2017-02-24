@@ -355,15 +355,15 @@ public class InsolatorManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackInsolator extends ComparableItemStack {
 
-		static final String SEED = "seed";
-		static final String CROP = "crop";
+		public static final String SEED = "seed";
+		public static final String CROP = "crop";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(SEED) || oreName.startsWith(CROP);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -378,7 +378,7 @@ public class InsolatorManager {
 			return -1;
 		}
 
-		ComparableItemStackInsolator(ItemStack stack) {
+		public ComparableItemStackInsolator(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

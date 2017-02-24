@@ -514,19 +514,19 @@ public class SmelterManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackSmelter extends ComparableItemStack {
 
-		static final String BLOCK = "block";
-		static final String ORE = "ore";
-		static final String DUST = "dust";
-		static final String INGOT = "ingot";
-		static final String NUGGET = "nugget";
-		static final String SAND = "sand";
+		public static final String BLOCK = "block";
+		public static final String ORE = "ore";
+		public static final String DUST = "dust";
+		public static final String INGOT = "ingot";
+		public static final String NUGGET = "nugget";
+		public static final String SAND = "sand";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(SAND);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -541,7 +541,7 @@ public class SmelterManager {
 			return -1;
 		}
 
-		ComparableItemStackSmelter(ItemStack stack) {
+		public ComparableItemStackSmelter(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

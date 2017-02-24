@@ -336,15 +336,15 @@ public class FurnaceManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackFurnace extends ComparableItemStack {
 
-		static final String ORE = "ore";
-		static final String DUST = "dust";
+		public static final String ORE = "ore";
+		public static final String DUST = "dust";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(DUST);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -359,7 +359,7 @@ public class FurnaceManager {
 			return -1;
 		}
 
-		ComparableItemStackFurnace(ItemStack stack) {
+		public ComparableItemStackFurnace(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

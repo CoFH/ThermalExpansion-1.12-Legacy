@@ -492,18 +492,18 @@ public class PulverizerManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackPulverizer extends ComparableItemStack {
 
-		static final String ORE = "ore";
-		static final String INGOT = "ingot";
-		static final String NUGGET = "nugget";
-		static final String LOG = "LOG";
-		static final String SAND = "sand";
+		public static final String ORE = "ore";
+		public static final String INGOT = "ingot";
+		public static final String NUGGET = "nugget";
+		public static final String LOG = "LOG";
+		public static final String SAND = "sand";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG) || oreName.equals(SAND);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -518,7 +518,7 @@ public class PulverizerManager {
 			return -1;
 		}
 
-		ComparableItemStackPulverizer(ItemStack stack) {
+		public ComparableItemStackPulverizer(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

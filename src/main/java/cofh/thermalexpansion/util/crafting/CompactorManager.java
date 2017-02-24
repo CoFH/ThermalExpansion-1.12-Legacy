@@ -314,7 +314,7 @@ public class CompactorManager {
 
 	private static void addDefaultMintRecipe(ItemStack input, ItemStack output) {
 
-		addRecipe(DEFAULT_ENERGY, input, output, Mode.MINT);
+		addRecipe(DEFAULT_ENERGY / 2, input, output, Mode.MINT);
 	}
 
 	/* RECIPE CLASS */
@@ -362,16 +362,16 @@ public class CompactorManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackCompactor extends ComparableItemStack {
 
-		static final String NUGGET = "nugget";
-		static final String INGOT = "ingot";
-		static final String BLOCK = "block";
+		public static final String NUGGET = "nugget";
+		public static final String INGOT = "ingot";
+		public static final String BLOCK = "block";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(NUGGET) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -386,7 +386,7 @@ public class CompactorManager {
 			return -1;
 		}
 
-		ComparableItemStackCompactor(ItemStack stack) {
+		public ComparableItemStackCompactor(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);
