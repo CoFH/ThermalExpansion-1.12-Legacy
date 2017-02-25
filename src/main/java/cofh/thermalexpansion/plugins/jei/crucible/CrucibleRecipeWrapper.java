@@ -1,10 +1,8 @@
-package cofh.thermalexpansion.plugins.jei.pulverizer;
+package cofh.thermalexpansion.plugins.jei.crucible;
 
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.plugins.jei.Drawables;
-import cofh.thermalexpansion.util.crafting.PulverizerManager.ComparableItemStackPulverizer;
-import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
+import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -13,55 +11,44 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PulverizerRecipeWrapper extends BlankRecipeWrapper {
+public class CrucibleRecipeWrapper extends BlankRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
-	final List<ItemStack> outputs;
+	final List<FluidStack> outputFluids;
 
 	final int energy;
-	final int chance;
 
 	/* Animation */
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 	final IDrawableAnimated energyMeter;
 
-	public PulverizerRecipeWrapper(IGuiHelper guiHelper, RecipePulverizer recipe) {
+	public CrucibleRecipeWrapper(IGuiHelper guiHelper, RecipeCrucible recipe) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
+		recipeInputs.add(recipe.getInput());
 
-		if (ComparableItemStackPulverizer.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()))) {
-				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
-			}
-		} else {
-			recipeInputs.add(recipe.getInput());
-		}
-		List<ItemStack> recipeOutputs = new ArrayList<>();
-		recipeOutputs.add(recipe.getPrimaryOutput());
+		List<FluidStack> recipeOutputFluids = new ArrayList<>();
+		recipeOutputFluids.add(recipe.getOutput());
 
-		if (recipe.getSecondaryOutput() != null) {
-			recipeOutputs.add(recipe.getSecondaryOutput());
-		}
 		inputs = Collections.singletonList(recipeInputs);
-		outputs = recipeOutputs;
+		outputFluids = recipeOutputFluids;
 
 		energy = recipe.getEnergy();
-		chance = recipe.getSecondaryOutputChance();
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(1);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(2);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 20, StartDirection.LEFT, false);
+		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 50, StartDirection.LEFT, false);
 		this.speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
@@ -70,7 +57,7 @@ public class PulverizerRecipeWrapper extends BlankRecipeWrapper {
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
-		ingredients.setOutputs(ItemStack.class, outputs);
+		ingredients.setOutputs(FluidStack.class, outputFluids);
 	}
 
 	@Override

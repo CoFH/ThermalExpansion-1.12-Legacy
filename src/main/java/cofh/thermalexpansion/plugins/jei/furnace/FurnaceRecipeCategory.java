@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.furnace;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
+import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.FurnaceManager;
 import mezz.jei.api.IGuiHelper;
@@ -30,27 +31,29 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 
 		registry.addRecipeCategories(new FurnaceRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new FurnaceRecipeHandler());
-		registry.addRecipes(getRecipes());
+		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE);
 	}
 
-	public static List<FurnaceRecipeWrapper> getRecipes() {
+	public static List<FurnaceRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<FurnaceRecipeWrapper> recipes = new ArrayList<>();
 
 		for (FurnaceManager.RecipeFurnace recipe : FurnaceManager.getRecipeList()) {
-			recipes.add(new FurnaceRecipeWrapper(recipe));
+			recipes.add(new FurnaceRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;
 	}
 
 	IDrawableStatic background;
+	IDrawableStatic energyMeter;
 	String localizedName;
 
 	public FurnaceRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiFurnace.TEXTURE, 26, 11, 124, 60);
+		background = guiHelper.createDrawable(GuiFurnace.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.furnace.name");
 	}
 
@@ -78,6 +81,7 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		energyMeter.draw(minecraft, 2, 8);
 	}
 
 	@Override
@@ -88,8 +92,8 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-		guiItemStacks.init(0, true, 26, 14);
-		guiItemStacks.init(1, false, 89, 23);
+		guiItemStacks.init(0, true, 42, 14);
+		guiItemStacks.init(1, false, 105, 23);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, outputs.get(0));

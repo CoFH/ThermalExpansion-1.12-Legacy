@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.smelter;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiSmelter;
+import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.SmelterManager;
 import mezz.jei.api.IGuiHelper;
@@ -30,27 +31,29 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 
 		registry.addRecipeCategories(new SmelterRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new SmelterRecipeHandler());
-		registry.addRecipes(getRecipes());
+		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
 	}
 
-	public static List<SmelterRecipeWrapper> getRecipes() {
+	public static List<SmelterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<SmelterRecipeWrapper> recipes = new ArrayList<>();
 
 		for (SmelterManager.RecipeSmelter recipe : SmelterManager.getRecipeList()) {
-			recipes.add(new SmelterRecipeWrapper(recipe));
+			recipes.add(new SmelterRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;
 	}
 
 	IDrawableStatic background;
+	IDrawableStatic energyMeter;
 	String localizedName;
 
 	public SmelterRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiSmelter.TEXTURE, 26, 11, 124, 60);
+		background = guiHelper.createDrawable(GuiSmelter.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.smelter.name");
 	}
 
@@ -78,6 +81,7 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		energyMeter.draw(minecraft, 2, 8);
 	}
 
 	@Override
@@ -88,28 +92,24 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-		guiItemStacks.init(0, true, 5, 14);
-		guiItemStacks.init(1, true, 29, 14);
-		guiItemStacks.init(2, false, 89, 14);
+		guiItemStacks.init(0, true, 21, 14);
+		guiItemStacks.init(1, true, 45, 14);
+		guiItemStacks.init(2, false, 105, 14);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, inputs.get(1));
 		guiItemStacks.set(2, outputs.get(0));
 
 		if (outputs.size() > 1) {
-			guiItemStacks.init(3, false, 89, 41);
+			guiItemStacks.init(3, false, 105, 41);
 			guiItemStacks.set(3, outputs.get(1));
 
-			//			guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
-			//
-			//				@Override
-			//				public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-			//
-			//					if (slotIndex == 2) {
-			//						tooltip.add("chance: " + secondChance + "%");
-			//					}
-			//				}
-			//			});
+			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+				if (slotIndex == 3) {
+					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+				}
+			});
 		}
 	}
 

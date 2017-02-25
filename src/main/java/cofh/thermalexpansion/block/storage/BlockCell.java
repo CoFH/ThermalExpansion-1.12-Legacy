@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.api.core.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.BlockHelper;
@@ -180,30 +183,21 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
 		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
 
-		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
-			@Override
-			public String generateKey(IExtendedBlockState state) {
+		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
-				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
-				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-				builder.append(",side_config{");
-				for (int i : state.getValue(TEProps.SIDE_CONFIG_RAW)) {
-					builder.append(",").append(i);
-				}
-				builder.append("}");
-				builder.append(",facing=").append(state.getValue(TEProps.FACING));
-				builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
-				return builder.toString();
+			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",side_config{");
+			for (int i : state.getValue(TEProps.SIDE_CONFIG_RAW)) {
+				builder.append(",").append(i);
 			}
+			builder.append("}");
+			builder.append(",facing=").append(state.getValue(TEProps.FACING));
+			builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
+			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
-			@Override
-			public String generateKey(ItemStack stack) {
-
-				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack);
-			}
-		});
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack));
 	}
 
 	/* IInitializer */

@@ -23,7 +23,8 @@ public class GuiInsolator extends GuiPoweredBase {
 	private ElementSlotOverlay[] slotPrimaryOutput = new ElementSlotOverlay[2];
 	private ElementSlotOverlay[] slotSecondaryOutput = new ElementSlotOverlay[2];
 
-	private ElementDualScaled progress;
+	private ElementFluid progressFluid;
+	private ElementDualScaled progressOverlay;
 	private ElementDualScaled speed;
 
 	private ElementButton mode;
@@ -54,7 +55,8 @@ public class GuiInsolator extends GuiPoweredBase {
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
-		progress = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_RIGHT, 64, 16));
+		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 79, 34).setFluid(myTile.getTankFluid()).setSize(24, 16));
+		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setBackground(false).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_FLUID_RIGHT, 64, 16));
 		speed = (ElementDualScaled) addElement(new ElementDualScaled(this, 44, 44).setSize(16, 16).setTexture(TEX_SUN, 32, 16));
 
 		mode = (ElementButton) addElement(new ElementButton(this, 80, 53, "Mode", 176, 0, 176, 16, 176, 32, 16, 16, TEX_PATH));
@@ -90,7 +92,8 @@ public class GuiInsolator extends GuiPoweredBase {
 			slotPrimaryOutput[1].slotRender = 1;
 			slotSecondaryOutput[1].slotRender = 1;
 		}
-		progress.setQuantity(myTile.getScaledProgress(PROGRESS));
+		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);
+		progressOverlay.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(myTile.getScaledSpeed(SPEED));
 
 		if (myTile.lockPrimary) {

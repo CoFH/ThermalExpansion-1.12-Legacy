@@ -164,59 +164,26 @@ public class CompactorManager {
 
 		/* MINT */
 		{
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetIron, 3), ItemCoin.coinIron);
-			addDefaultMintRecipe(ItemMaterial.ingotIron, ItemHelper.cloneStack(ItemCoin.coinIron, 3));
+			addDefaultMintRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron, ItemCoin.coinIron);
+			addDefaultMintRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold, ItemCoin.coinGold);
+			addDefaultMintRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper, ItemCoin.coinCopper);
+			addDefaultMintRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin, ItemCoin.coinTin);
+			addDefaultMintRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver, ItemCoin.coinSilver);
+			addDefaultMintRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead, ItemCoin.coinLead);
+			addDefaultMintRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum, ItemCoin.coinAluminum);
+			addDefaultMintRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel, ItemCoin.coinNickel);
+			addDefaultMintRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum, ItemCoin.coinPlatinum);
+			addDefaultMintRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium, ItemCoin.coinIridium);
+			addDefaultMintRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril, ItemCoin.coinMithril);
 
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetGold, 3), ItemCoin.coinGold);
-			addDefaultMintRecipe(ItemMaterial.ingotGold, ItemHelper.cloneStack(ItemCoin.coinGold, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetCopper, 3), ItemCoin.coinCopper);
-			addDefaultMintRecipe(ItemMaterial.ingotCopper, ItemHelper.cloneStack(ItemCoin.coinCopper, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetTin, 3), ItemCoin.coinTin);
-			addDefaultMintRecipe(ItemMaterial.ingotTin, ItemHelper.cloneStack(ItemCoin.coinTin, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetSilver, 3), ItemCoin.coinSilver);
-			addDefaultMintRecipe(ItemMaterial.ingotSilver, ItemHelper.cloneStack(ItemCoin.coinSilver, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetLead, 3), ItemCoin.coinLead);
-			addDefaultMintRecipe(ItemMaterial.ingotLead, ItemHelper.cloneStack(ItemCoin.coinLead, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetAluminum, 3), ItemCoin.coinAluminum);
-			addDefaultMintRecipe(ItemMaterial.ingotAluminum, ItemHelper.cloneStack(ItemCoin.coinAluminum, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetNickel, 3), ItemCoin.coinNickel);
-			addDefaultMintRecipe(ItemMaterial.ingotNickel, ItemHelper.cloneStack(ItemCoin.coinNickel, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetPlatinum, 3), ItemCoin.coinPlatinum);
-			addDefaultMintRecipe(ItemMaterial.ingotPlatinum, ItemHelper.cloneStack(ItemCoin.coinPlatinum, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetIridium, 3), ItemCoin.coinIridium);
-			addDefaultMintRecipe(ItemMaterial.ingotIridium, ItemHelper.cloneStack(ItemCoin.coinIridium, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetMithril, 3), ItemCoin.coinMithril);
-			addDefaultMintRecipe(ItemMaterial.ingotMithril, ItemHelper.cloneStack(ItemCoin.coinMithril, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetSteel, 3), ItemCoin.coinSteel);
-			addDefaultMintRecipe(ItemMaterial.ingotSteel, ItemHelper.cloneStack(ItemCoin.coinSteel, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetElectrum, 3), ItemCoin.coinElectrum);
-			addDefaultMintRecipe(ItemMaterial.ingotElectrum, ItemHelper.cloneStack(ItemCoin.coinElectrum, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetBronze, 3), ItemCoin.coinBronze);
-			addDefaultMintRecipe(ItemMaterial.ingotBronze, ItemHelper.cloneStack(ItemCoin.coinBronze, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetConstantan, 3), ItemCoin.coinConstantan);
-			addDefaultMintRecipe(ItemMaterial.ingotConstantan, ItemHelper.cloneStack(ItemCoin.coinConstantan, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetSignalum, 3), ItemCoin.coinSignalum);
-			addDefaultMintRecipe(ItemMaterial.ingotSignalum, ItemHelper.cloneStack(ItemCoin.coinSignalum, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetLumium, 3), ItemCoin.coinLumium);
-			addDefaultMintRecipe(ItemMaterial.ingotLumium, ItemHelper.cloneStack(ItemCoin.coinLumium, 3));
-
-			addDefaultMintRecipe(ItemHelper.cloneStack(ItemMaterial.nuggetEnderium, 3), ItemCoin.coinEnderium);
-			addDefaultMintRecipe(ItemMaterial.ingotEnderium, ItemHelper.cloneStack(ItemCoin.coinEnderium, 3));
+			addDefaultMintRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel, ItemCoin.coinSteel);
+			addDefaultMintRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum, ItemCoin.coinElectrum);
+			addDefaultMintRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar, ItemCoin.coinInvar);
+			addDefaultMintRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze, ItemCoin.coinBronze);
+			addDefaultMintRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan, ItemCoin.coinConstantan);
+			addDefaultMintRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum, ItemCoin.coinSignalum);
+			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, ItemCoin.coinLumium);
+			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, ItemCoin.coinEnderium);
 		}
 	}
 
@@ -312,9 +279,10 @@ public class CompactorManager {
 		}
 	}
 
-	private static void addDefaultMintRecipe(ItemStack input, ItemStack output) {
+	private static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack output) {
 
-		addRecipe(DEFAULT_ENERGY / 2, input, output, Mode.MINT);
+		addRecipe(DEFAULT_ENERGY / 4, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
+		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ingot, 1), ItemHelper.cloneStack(output, 3), Mode.MINT);
 	}
 
 	/* RECIPE CLASS */

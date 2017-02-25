@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.compactor;
 
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
+import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.CompactorManager;
 import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
@@ -21,16 +22,16 @@ public class CompactorRecipeCategoryStorage extends CompactorRecipeCategory {
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new CompactorRecipeCategoryStorage(guiHelper));
-		registry.addRecipes(getRecipes());
+		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_STORAGE);
 	}
 
-	public static List<CompactorRecipeWrapper> getRecipes() {
+	public static List<CompactorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (CompactorManager.RecipeCompactor recipe : CompactorManager.getRecipeList(Mode.STORAGE)) {
-			recipes.add(new CompactorRecipeWrapper(recipe, Mode.STORAGE));
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, Mode.STORAGE));
 		}
 		return recipes;
 	}
@@ -40,6 +41,8 @@ public class CompactorRecipeCategoryStorage extends CompactorRecipeCategory {
 		super(guiHelper);
 
 		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.machine.compactor.modeStorage");
+
+		icon = guiHelper.createDrawable(GuiCompactor.TEXTURE, 192, 48, 16, 16);
 	}
 
 	@Nonnull

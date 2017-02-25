@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.item;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryItem;
+import codechicken.lib.model.blockbakery.IItemBakery;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.CoreUtils;
 import cofh.lib.util.helpers.ItemHelper;
@@ -12,7 +15,6 @@ import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TEFlorbs;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
-import net.minecraft.client.renderer.ItemMeshDefinition;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -157,25 +159,16 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	public void registerModels() {
 
 		final ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:florb", "type=florb");
-		ModelLoader.setCustomMeshDefinition(this, new ItemMeshDefinition() {
-			@Override
-			public ModelResourceLocation getModelLocation(ItemStack stack) {
-
-				return location;
-			}
-		});
+		ModelLoader.setCustomMeshDefinition(this, stack -> location);
 		ModelLoader.setCustomModelResourceLocation(this, 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel(""));
-		BlockBakery.registerItemKeyGenerator(this, new IItemStackKeyGenerator() {
-			@Override
-			public String generateKey(ItemStack stack) {
+		BlockBakery.registerItemKeyGenerator(this, stack -> {
 
-				String fluid = "";
-				if (stack.getTagCompound() != null) {
-					fluid = "," + stack.getTagCompound().getString("Fluid");
-				}
-				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
+			String fluid = "";
+			if (stack.getTagCompound() != null) {
+				fluid = "," + stack.getTagCompound().getString("Fluid");
 			}
+			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + fluid;
 		});
 	}
 

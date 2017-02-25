@@ -20,7 +20,6 @@ import net.minecraftforge.oredict.OreDictionary;
 
 import java.io.File;
 import java.io.FileReader;
-import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -49,16 +48,12 @@ public class TECraftingParser {
 
 	private static void addFiles(ArrayList<File> list, File folder) {
 
-		File[] fList = folder.listFiles(new FilenameFilter() {
+		File[] fList = folder.listFiles((file, name) -> {
 
-			@Override
-			public boolean accept(File file, String name) {
-
-				if (name == null) {
-					return false;
-				}
-				return name.toLowerCase(Locale.US).endsWith(".json") || new File(file, name).isDirectory();
+			if (name == null) {
+				return false;
 			}
+			return name.toLowerCase(Locale.US).endsWith(".json") || new File(file, name).isDirectory();
 		});
 
 		if (fList == null || fList.length <= 0) {

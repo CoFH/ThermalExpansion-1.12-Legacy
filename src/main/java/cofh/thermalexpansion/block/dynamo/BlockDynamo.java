@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import codechicken.lib.raytracer.RayTracer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.Rotation;
@@ -273,19 +276,16 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
 
-		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
-			@Override
-			public String generateKey(IExtendedBlockState state) {
-				//TODO CCL internal classes for helping with this / phase in hashing instead of string gen.
-				StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
-				builder.append(",");
-				builder.append(state.getValue(TEProps.FACING));
-				builder.append(",");
-				builder.append(state.getValue(TEProps.ACTIVE));
-				builder.append(",");
-				builder.append(state.getValue(VARIANT));
-				return builder.toString();
-			}
+		BlockBakery.registerBlockKeyGenerator(this, state -> {
+			//TODO CCL internal classes for helping with this / phase in hashing instead of string gen.
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
+			builder.append(",");
+			builder.append(state.getValue(TEProps.FACING));
+			builder.append(",");
+			builder.append(state.getValue(TEProps.ACTIVE));
+			builder.append(",");
+			builder.append(state.getValue(VARIANT));
+			return builder.toString();
 		});
 	}
 

@@ -6,10 +6,7 @@ import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.fml.client.registry.IRenderFactory;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -48,13 +45,7 @@ public class ProxyClient extends Proxy {
 	public void registerRenderInformation() {
 
 		TextureUtils.addIconRegister(ModelFlorb.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, new IRenderFactory<EntityFlorb>() {
-			@Override
-			public Render<? super EntityFlorb> createRenderFor(RenderManager manager) {
-
-				return new RenderEntityFlorb(manager);
-			}
-		});
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, manager -> new RenderEntityFlorb(manager));
 
 	}
 

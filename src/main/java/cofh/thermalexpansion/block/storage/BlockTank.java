@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import cofh.api.core.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -203,36 +206,30 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
 		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
 
-		BlockBakery.registerBlockKeyGenerator(this, new IBlockStateKeyGenerator() {
-			@Override
-			public String generateKey(IExtendedBlockState state) {
+		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
-				StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
-				builder.append(",level=").append(state.getValue(TEProps.LEVEL));
-				builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
-				FluidStack stack = state.getValue(TEProps.FLUID);
-				if (stack != null) {
-					builder.append(",fluid=").append(stack.getFluid().getName());
-					builder.append(",amount=").append(stack.amount);
-				}
-				return builder.toString();
+			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
+			FluidStack stack = state.getValue(TEProps.FLUID);
+			if (stack != null) {
+				builder.append(",fluid=").append(stack.getFluid().getName());
+				builder.append(",amount=").append(stack.amount);
 			}
+			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, new IItemStackKeyGenerator() {
-			@Override
-			public String generateKey(ItemStack stack) {
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> {
 
-				String fluidAppend = "";
-				if (stack.getTagCompound() != null) {
+			String fluidAppend = "";
+			if (stack.getTagCompound() != null) {
 
-					FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
-					if (fluid != null && fluid.amount > 0) {
-						fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
-					}
+				FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+				if (fluid != null && fluid.amount > 0) {
+					fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 				}
-				return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
 			}
+			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
 		});
 
 	}

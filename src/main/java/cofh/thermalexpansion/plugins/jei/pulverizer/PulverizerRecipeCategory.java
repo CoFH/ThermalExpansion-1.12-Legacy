@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.pulverizer;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
+import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.PulverizerManager;
 import mezz.jei.api.IGuiHelper;
@@ -30,27 +31,29 @@ public class PulverizerRecipeCategory extends BlankRecipeCategory<PulverizerReci
 
 		registry.addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new PulverizerRecipeHandler());
-		registry.addRecipes(getRecipes());
+		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
 	}
 
-	public static List<PulverizerRecipeWrapper> getRecipes() {
+	public static List<PulverizerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<PulverizerRecipeWrapper> recipes = new ArrayList<>();
 
 		for (PulverizerManager.RecipePulverizer recipe : PulverizerManager.getRecipeList()) {
-			recipes.add(new PulverizerRecipeWrapper(recipe));
+			recipes.add(new PulverizerRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;
 	}
 
 	IDrawableStatic background;
+	IDrawableStatic energyMeter;
 	String localizedName;
 
 	public PulverizerRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiPulverizer.TEXTURE, 26, 11, 124, 60);
+		background = guiHelper.createDrawable(GuiPulverizer.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.pulverizer.name");
 	}
 
@@ -78,6 +81,7 @@ public class PulverizerRecipeCategory extends BlankRecipeCategory<PulverizerReci
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		energyMeter.draw(minecraft, 2, 8);
 	}
 
 	@Override
@@ -88,26 +92,22 @@ public class PulverizerRecipeCategory extends BlankRecipeCategory<PulverizerReci
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-		guiItemStacks.init(0, true, 26, 14);
-		guiItemStacks.init(1, false, 89, 14);
+		guiItemStacks.init(0, true, 42, 14);
+		guiItemStacks.init(1, false, 105, 14);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, outputs.get(0));
 
 		if (outputs.size() > 1) {
-			guiItemStacks.init(2, false, 89, 41);
+			guiItemStacks.init(2, false, 105, 41);
 			guiItemStacks.set(2, outputs.get(1));
 
-			//			guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
-			//
-			//				@Override
-			//				public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-			//
-			//					if (slotIndex == 2) {
-			//						tooltip.add("chance: " + secondChance + "%");
-			//					}
-			//				}
-			//			});
+			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+				if (slotIndex == 2) {
+					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+				}
+			});
 		}
 	}
 

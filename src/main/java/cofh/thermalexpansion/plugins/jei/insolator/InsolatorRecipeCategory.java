@@ -3,6 +3,7 @@ package cofh.thermalexpansion.plugins.jei.insolator;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
+import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import mezz.jei.api.IGuiHelper;
@@ -30,27 +31,29 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 
 		registry.addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new InsolatorRecipeHandler());
-		registry.addRecipes(getRecipes());
+		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
 	}
 
-	public static List<InsolatorRecipeWrapper> getRecipes() {
+	public static List<InsolatorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
 		List<InsolatorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (InsolatorManager.RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
-			recipes.add(new InsolatorRecipeWrapper(recipe));
+			recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe));
 		}
 		return recipes;
 	}
 
 	IDrawableStatic background;
+	IDrawableStatic energyMeter;
 	String localizedName;
 
 	public InsolatorRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 60);
+		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.insolator.name");
 	}
 
@@ -78,6 +81,7 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		energyMeter.draw(minecraft, 2, 8);
 	}
 
 	@Override
@@ -88,28 +92,24 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
-		guiItemStacks.init(0, true, 5, 14);
-		guiItemStacks.init(1, true, 29, 14);
-		guiItemStacks.init(2, false, 89, 14);
+		guiItemStacks.init(0, true, 21, 14);
+		guiItemStacks.init(1, true, 45, 14);
+		guiItemStacks.init(2, false, 105, 14);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, inputs.get(1));
 		guiItemStacks.set(2, outputs.get(0));
 
 		if (outputs.size() > 1) {
-			guiItemStacks.init(3, false, 89, 41);
+			guiItemStacks.init(3, false, 105, 41);
 			guiItemStacks.set(3, outputs.get(1));
 
-			//			guiItemStacks.addTooltipCallback(new ITooltipCallback<ItemStack>() {
-			//
-			//				@Override
-			//				public void onTooltip(int slotIndex, boolean input, ItemStack ingredient, List<String> tooltip) {
-			//
-			//					if (slotIndex == 2) {
-			//						tooltip.add("chance: " + secondChance + "%");
-			//					}
-			//				}
-			//			});
+			guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+				if (slotIndex == 3) {
+					tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+				}
+			});
 		}
 	}
 
