@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.pulverizer;
 
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -19,14 +18,14 @@ public class PulverizerRecipeHandler implements IRecipeHandler<PulverizerRecipeW
 	@Override
 	public String getRecipeCategoryUid() {
 
-		return RecipeUidsTE.PULVERIZER;
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull PulverizerRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

@@ -49,21 +49,19 @@ public class RefineryRecipeCategory extends BlankRecipeCategory<RefineryRecipeWr
 	IDrawableStatic drop;
 	IDrawableStatic slot;
 	IDrawableStatic tank;
-
 	IDrawableStatic tankOverlayInput;
 	IDrawableStatic tankOverlayOutput;
 	String localizedName;
 
 	public RefineryRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiRefinery.TEXTURE, 38, 11, 24, 62, 0, 0, 16, 100);
-
+		background = guiHelper.createDrawable(GuiRefinery.TEXTURE, 38, 11, 24, 62, 0, 0, 16, 124);
+		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		drop = Drawables.getDrawables(guiHelper).getProgress(2);
 		slot = Drawables.getDrawables(guiHelper).getSlot(1);
 		tank = Drawables.getDrawables(guiHelper).getTank(0);
 		tankOverlayInput = Drawables.getDrawables(guiHelper).getTankSmallOverlay(2);
 		tankOverlayOutput = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
-		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.refinery.name");
 	}
 

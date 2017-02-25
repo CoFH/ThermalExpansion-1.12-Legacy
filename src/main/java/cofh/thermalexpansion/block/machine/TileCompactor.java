@@ -23,6 +23,7 @@ public class TileCompactor extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.COMPACTOR.getMetadata();
 	private static final Mode[] VALUES = new Mode[3];
+	public static int basePower = 20;
 
 	public static void initialize() {
 
@@ -56,7 +57,7 @@ public class TileCompactor extends TileMachineBase {
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}
 
 	private int inputTracker;

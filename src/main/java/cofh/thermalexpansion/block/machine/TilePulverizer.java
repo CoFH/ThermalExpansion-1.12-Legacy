@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class TilePulverizer extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.PULVERIZER.getMetadata();
+	public static int basePower = 20;
 
 	public static void initialize() {
 
@@ -62,7 +63,7 @@ public class TilePulverizer extends TileMachineBase {
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}
 
 	private int inputTracker;

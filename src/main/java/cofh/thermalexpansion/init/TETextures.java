@@ -208,6 +208,16 @@ public class TETextures {
 		CACHE_FACE_4 =                      register(map, CACHE_ + "face_4");
 		CACHE_FACE_C =                      register(map, CACHE_ + "face_c");
 
+		CACHE_METER_0 =                      register(map, CACHE_ + "meter_0");
+		CACHE_METER_1 =                      register(map, CACHE_ + "meter_1");
+		CACHE_METER_2 =                      register(map, CACHE_ + "meter_2");
+		CACHE_METER_3 =                      register(map, CACHE_ + "meter_3");
+		CACHE_METER_4 =                      register(map, CACHE_ + "meter_4");
+		CACHE_METER_5 =                      register(map, CACHE_ + "meter_5");
+		CACHE_METER_6 =                      register(map, CACHE_ + "meter_6");
+		CACHE_METER_7 =                      register(map, CACHE_ + "meter_7");
+		CACHE_METER_8 =                      register(map, CACHE_ + "meter_8");
+		CACHE_METER_C =                      register(map, CACHE_ + "meter_c");
 
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
@@ -429,6 +439,19 @@ public class TETextures {
 				CACHE_FACE_3,
 				CACHE_FACE_4,
 				CACHE_FACE_C
+		};
+
+		CACHE_METER = new TextureAtlasSprite[] {
+				CACHE_METER_0,
+				CACHE_METER_1,
+				CACHE_METER_2,
+				CACHE_METER_3,
+				CACHE_METER_4,
+				CACHE_METER_5,
+				CACHE_METER_6,
+				CACHE_METER_7,
+				CACHE_METER_8,
+				CACHE_METER_C
 		};
 		// @formatter:on
 	}
@@ -690,5 +713,17 @@ public class TETextures {
 	public static TextureAtlasSprite CACHE_FACE_3;
 	public static TextureAtlasSprite CACHE_FACE_4;
 	public static TextureAtlasSprite CACHE_FACE_C;
+
+	public static TextureAtlasSprite[] CACHE_METER;
+	public static TextureAtlasSprite CACHE_METER_0;
+	public static TextureAtlasSprite CACHE_METER_1;
+	public static TextureAtlasSprite CACHE_METER_2;
+	public static TextureAtlasSprite CACHE_METER_3;
+	public static TextureAtlasSprite CACHE_METER_4;
+	public static TextureAtlasSprite CACHE_METER_5;
+	public static TextureAtlasSprite CACHE_METER_6;
+	public static TextureAtlasSprite CACHE_METER_7;
+	public static TextureAtlasSprite CACHE_METER_8;
+	public static TextureAtlasSprite CACHE_METER_C;
 
 }

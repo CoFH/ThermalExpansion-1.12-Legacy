@@ -2,10 +2,9 @@ package cofh.thermalexpansion.plugins.jei.compactor;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.plugins.jei.Drawables;
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.CompactorManager.ComparableItemStackCompactor;
-import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
 import cofh.thermalexpansion.util.crafting.CompactorManager.RecipeCompactor;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -29,13 +28,16 @@ public class CompactorRecipeWrapper extends BlankRecipeWrapper {
 	final List<ItemStack> outputs;
 
 	final int energy;
-	final Mode mode;
+	final String uId;
 
 	/* Animation */
 	final IDrawableAnimated progress;
+	final IDrawableAnimated speed;
 	final IDrawableAnimated energyMeter;
 
-	public CompactorRecipeWrapper(IGuiHelper guiHelper, RecipeCompactor recipe, Mode mode) {
+	public CompactorRecipeWrapper(IGuiHelper guiHelper, RecipeCompactor recipe, String uIdIn) {
+
+		uId = uIdIn;
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
 
@@ -54,12 +56,18 @@ public class CompactorRecipeWrapper extends BlankRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		this.mode = mode;
-
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(4);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 20, StartDirection.LEFT, false);
-		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCompactor.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
+		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+	}
+
+	public String getUid() {
+
+		return uId;
 	}
 
 	@Override
@@ -69,22 +77,11 @@ public class CompactorRecipeWrapper extends BlankRecipeWrapper {
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 
-	public String getUid() {
-
-		switch (mode) {
-			case STORAGE:
-				return RecipeUidsTE.COMPACTOR_STORAGE;
-			case MINT:
-				return RecipeUidsTE.COMPACTOR_MINT;
-			default:
-				return RecipeUidsTE.COMPACTOR_PRESS;
-		}
-	}
-
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
 		progress.draw(minecraft, 69, 23);
+		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 

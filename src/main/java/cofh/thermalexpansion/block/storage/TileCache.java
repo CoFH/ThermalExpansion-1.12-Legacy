@@ -463,11 +463,16 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
-		if (side == 0) {
-			return TETextures.CACHE_BOTTOM[level];
-		} else if (side == 1) {
-			return TETextures.CACHE_TOP[level];
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.CACHE_BOTTOM[level];
+			} else if (side == 1) {
+				return TETextures.CACHE_TOP[level];
+			}
+			return side != facing ? TETextures.CACHE_SIDE[level] : TETextures.CACHE_FACE[level];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG_NONE : TETextures.CACHE_METER[meterTracker];
 		}
-		return side != facing ? TETextures.CACHE_SIDE[level] : TETextures.CACHE_FACE[level];
+		return TETextures.CACHE_SIDE[level];
 	}
 }

@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.charger;
 
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.machine.TileCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
 import mezz.jei.api.IGuiHelper;
@@ -45,8 +46,8 @@ public class ChargerRecipeWrapper extends BlankRecipeWrapper {
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(5);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 20, StartDirection.BOTTOM, false);
-		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCharger.basePower, StartDirection.BOTTOM, false);
+		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
 	@Override

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.smelter;
 
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -19,14 +18,14 @@ public class SmelterRecipeHandler implements IRecipeHandler<SmelterRecipeWrapper
 	@Override
 	public String getRecipeCategoryUid() {
 
-		return RecipeUidsTE.SMELTER;
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull SmelterRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

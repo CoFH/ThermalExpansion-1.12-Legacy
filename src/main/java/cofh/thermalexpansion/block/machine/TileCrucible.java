@@ -33,6 +33,7 @@ import java.util.ArrayList;
 public class TileCrucible extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.CRUCIBLE.getMetadata();
+	public static int basePower = 50;
 
 	public static void initialize() {
 
@@ -63,7 +64,7 @@ public class TileCrucible extends TileMachineBase {
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(50);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}
 
 	private int inputTracker;

@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.sawmill;
 
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -19,14 +18,14 @@ public class SawmillRecipeHandler implements IRecipeHandler<SawmillRecipeWrapper
 	@Override
 	public String getRecipeCategoryUid() {
 
-		return RecipeUidsTE.SAWMILL;
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull SawmillRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

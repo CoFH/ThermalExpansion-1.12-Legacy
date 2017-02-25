@@ -52,7 +52,7 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 
 	public FurnaceRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiFurnace.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiFurnace.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.furnace.name");
 	}

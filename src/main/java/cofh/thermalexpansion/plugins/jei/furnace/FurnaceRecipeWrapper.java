@@ -2,6 +2,7 @@ package cofh.thermalexpansion.plugins.jei.furnace;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.ComparableItemStackFurnace;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
@@ -56,9 +57,9 @@ public class FurnaceRecipeWrapper extends BlankRecipeWrapper {
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 20, StartDirection.LEFT, false);
-		this.speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
-		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileFurnace.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
+		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
 	@Override

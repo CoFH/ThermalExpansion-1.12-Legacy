@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.plugins.jei.crucible;
 
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.machine.TileCrucible;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -27,6 +29,7 @@ public class CrucibleRecipeWrapper extends BlankRecipeWrapper {
 	final int energy;
 
 	/* Animation */
+	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 	final IDrawableAnimated energyMeter;
@@ -44,13 +47,15 @@ public class CrucibleRecipeWrapper extends BlankRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(2);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(2);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 50, StartDirection.LEFT, false);
-		this.speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
-		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
+		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
 	@Override
@@ -63,6 +68,9 @@ public class CrucibleRecipeWrapper extends BlankRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
+		JEIPluginTE.drawFluid(69, 23, outputFluids.get(0), 24, 16);
+
+		fluid.draw(minecraft, 69, 23);
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);

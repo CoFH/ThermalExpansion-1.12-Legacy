@@ -32,8 +32,10 @@ public class PulverizerRecipeCategory extends BlankRecipeCategory<PulverizerReci
 		registry.addRecipeCategories(new PulverizerRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new PulverizerRecipeHandler());
 		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER);
+		registry.addRecipeClickArea(GuiPulverizer.class, 79, 34, 24, 16, RecipeUidsTE.PULVERIZER, RecipeUidsTE.PULVERIZER_PETROTHEUM);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machinePulverizer, RecipeUidsTE.PULVERIZER);
+
+		PulverizerRecipeCategoryPetrotheum.initialize(registry);
 	}
 
 	public static List<PulverizerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -52,7 +54,7 @@ public class PulverizerRecipeCategory extends BlankRecipeCategory<PulverizerReci
 
 	public PulverizerRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiPulverizer.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiPulverizer.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.pulverizer.name");
 	}

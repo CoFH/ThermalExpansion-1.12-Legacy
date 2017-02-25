@@ -31,7 +31,7 @@ public class CompactorRecipeCategoryPress extends CompactorRecipeCategory {
 		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (CompactorManager.RecipeCompactor recipe : CompactorManager.getRecipeList(Mode.PRESS)) {
-			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, Mode.PRESS));
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR_PRESS));
 		}
 		return recipes;
 	}
@@ -40,7 +40,7 @@ public class CompactorRecipeCategoryPress extends CompactorRecipeCategory {
 
 		super(guiHelper);
 
-		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.machine.compactor.modePress");
+		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modePress");
 
 		icon = guiHelper.createDrawable(GuiCompactor.TEXTURE, 176, 48, 16, 16);
 	}

@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class TilePrecipitator extends TileMachineBase implements ICustomInventory {
 
 	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
+	public static int basePower = 20;
 
 	public static void initialize() {
 
@@ -62,7 +63,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(20);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 	}
 
 	private static int[] processWater = { 500, 500, 1000 };

@@ -23,9 +23,11 @@ achievement.thermalexpansion.machineTransposer=(Mostly) Free Refills
 achievement.thermalexpansion.welcome.desc=Welcome to Thermal Expansion!
 achievement.thermalexpansion.welcome=An Expanded World
 
-gui.thermalexpansion.jei.furnace=Redstone Furnace
-gui.thermalexpansion.jei.pulverizer=Pulverizer
-gui.thermalexpansion.jei.sawmill=Sawmill
+gui.thermalexpansion.jei.compactor.modeMint=Mint
+gui.thermalexpansion.jei.compactor.modePress=Press
+gui.thermalexpansion.jei.compactor.modeStorage=Storage
+gui.thermalexpansion.jei.transposer.modeEmpty=Empty
+gui.thermalexpansion.jei.transposer.modeFill=Fill
 
 gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
 gui.thermalexpansion.machine.compactor.modePress=Mode: Press

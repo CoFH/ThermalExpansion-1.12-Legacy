@@ -36,7 +36,7 @@ public abstract class CompactorRecipeCategory extends BlankRecipeCategory<Compac
 
 	public CompactorRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiCompactor.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiCompactor.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.compactor.name");
 	}

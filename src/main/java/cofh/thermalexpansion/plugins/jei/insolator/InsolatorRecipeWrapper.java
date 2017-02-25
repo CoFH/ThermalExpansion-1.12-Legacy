@@ -2,7 +2,9 @@ package cofh.thermalexpansion.plugins.jei.insolator;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.ComparableItemStackInsolator;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
 import mezz.jei.api.IGuiHelper;
@@ -13,22 +15,27 @@ import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.oredict.OreDictionary;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 
 	/* Recipe */
 	final List<List<ItemStack>> inputs;
+	final List<List<FluidStack>> inputFluids;
 	final List<ItemStack> outputs;
 
 	final int energy;
 	final int chance;
 
 	/* Animation */
+	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
 	final IDrawableAnimated energyMeter;
@@ -36,6 +43,7 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe) {
 
 		List<List<ItemStack>> recipeInputs = new ArrayList<>();
+		List<FluidStack> recipeInputFluids = new ArrayList<>();
 		List<ItemStack> recipeInputsPrimary = new ArrayList<>();
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
@@ -55,6 +63,7 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 		}
 		recipeInputs.add(recipeInputsPrimary);
 		recipeInputs.add(recipeInputsSecondary);
+		recipeInputFluids.add(new FluidStack(FluidRegistry.WATER, recipe.getEnergy() / 10));
 
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		recipeOutputs.add(recipe.getPrimaryOutput());
@@ -63,30 +72,37 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 			recipeOutputs.add(recipe.getSecondaryOutput());
 		}
 		inputs = recipeInputs;
+		inputFluids = Collections.singletonList(recipeInputFluids);
 		outputs = recipeOutputs;
 
 		energy = recipe.getEnergy();
 		chance = recipe.getSecondaryOutputChance();
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(1);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(6);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		this.progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / 20, StartDirection.LEFT, false);
-		this.speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
-		this.energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, true);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, false);
+		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
+		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}
 
 	@Override
 	public void getIngredients(IIngredients ingredients) {
 
 		ingredients.setInputLists(ItemStack.class, inputs);
+		ingredients.setInputLists(FluidStack.class, inputFluids);
 		ingredients.setOutputs(ItemStack.class, outputs);
 	}
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
+		JEIPluginTE.drawFluid(69, 23, inputFluids.get(0).get(0), 24, 16);
+
+		fluid.draw(minecraft, 69, 23);
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 34);
 		energyMeter.draw(minecraft, 2, 8);

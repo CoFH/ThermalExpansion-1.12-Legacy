@@ -32,8 +32,10 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 		registry.addRecipeCategories(new SawmillRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new SawmillRecipeHandler());
 		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL);
+		registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL, RecipeUidsTE.SAWMILL_TAPPER);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
+
+		SawmillCategoryTapper.initialize(registry);
 	}
 
 	public static List<SawmillRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -52,7 +54,7 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 
 	public SawmillRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiSawmill.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiSawmill.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.sawmill.name");
 	}

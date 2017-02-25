@@ -31,7 +31,7 @@ public class CompactorRecipeCategoryStorage extends CompactorRecipeCategory {
 		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (CompactorManager.RecipeCompactor recipe : CompactorManager.getRecipeList(Mode.STORAGE)) {
-			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, Mode.STORAGE));
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR_STORAGE));
 		}
 		return recipes;
 	}
@@ -40,7 +40,7 @@ public class CompactorRecipeCategoryStorage extends CompactorRecipeCategory {
 
 		super(guiHelper);
 
-		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.machine.compactor.modeStorage");
+		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modeStorage");
 
 		icon = guiHelper.createDrawable(GuiCompactor.TEXTURE, 192, 48, 16, 16);
 	}

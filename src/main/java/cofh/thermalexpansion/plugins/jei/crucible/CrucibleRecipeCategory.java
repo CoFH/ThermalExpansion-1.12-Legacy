@@ -53,7 +53,7 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 
 	public CrucibleRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiCrucible.TEXTURE, 26, 11, 72, 62, 0, 0, 16, 52);
+		background = guiHelper.createDrawable(GuiCrucible.TEXTURE, 26, 11, 72, 62, 0, 0, 16, 76);
 
 		drop = Drawables.getDrawables(guiHelper).getProgress(2);
 		tank = Drawables.getDrawables(guiHelper).getTank(0);
@@ -101,7 +101,7 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 42, 14);
-		guiFluidStacks.init(0, false, 106, 1, 16, 60, 2000, false, tankOverlay);
+		guiFluidStacks.init(0, false, 106, 1, 16, 60, 1000, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
 		guiFluidStacks.set(0, outputs.get(0));

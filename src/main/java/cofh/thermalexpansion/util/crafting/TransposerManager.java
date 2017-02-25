@@ -211,19 +211,19 @@ public class TransposerManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackTransposer extends ComparableItemStack {
 
-		static final String ORE = "ore";
-		static final String CROP = "crop";
-		static final String DUST = "dust";
-		static final String INGOT = "ingot";
-		static final String NUGGET = "nugget";
-		static final String GEM = "gem";
+		public static final String ORE = "ore";
+		public static final String CROP = "crop";
+		public static final String DUST = "dust";
+		public static final String INGOT = "ingot";
+		public static final String NUGGET = "nugget";
+		public static final String GEM = "gem";
 
-		static boolean safeOreType(String oreName) {
+		public static boolean safeOreType(String oreName) {
 
 			return oreName.startsWith(ORE) || oreName.startsWith(CROP) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(GEM);
 		}
 
-		static int getOreID(ItemStack stack) {
+		public static int getOreID(ItemStack stack) {
 
 			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
 
@@ -238,7 +238,7 @@ public class TransposerManager {
 			return -1;
 		}
 
-		ComparableItemStackTransposer(ItemStack stack) {
+		public ComparableItemStackTransposer(ItemStack stack) {
 
 			super(stack);
 			oreID = getOreID(stack);

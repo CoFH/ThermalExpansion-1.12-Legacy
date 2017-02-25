@@ -9,14 +9,12 @@ import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IDrawableStatic;
-import mezz.jei.api.gui.IGuiItemStackGroup;
-import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.gui.*;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
@@ -47,12 +45,16 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	}
 
 	IDrawableStatic background;
+	IDrawableStatic tank;
+	IDrawableStatic tankOverlay;
 	IDrawableStatic energyMeter;
 	String localizedName;
 
 	public InsolatorRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
+		tank = Drawables.getDrawables(guiHelper).getTank(0);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.insolator.name");
 	}
@@ -81,6 +83,7 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	@Override
 	public void drawExtras(@Nonnull Minecraft minecraft) {
 
+		tank.draw(minecraft, 140, 0);
 		energyMeter.draw(minecraft, 2, 8);
 	}
 
@@ -88,17 +91,23 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	public void setRecipe(IRecipeLayout recipeLayout, InsolatorRecipeWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+		List<List<FluidStack>> inputFluids = ingredients.getInputs(FluidStack.class);
 		List<ItemStack> outputs = ingredients.getOutputs(ItemStack.class);
 
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
+		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
 		guiItemStacks.init(0, true, 21, 14);
 		guiItemStacks.init(1, true, 45, 14);
 		guiItemStacks.init(2, false, 105, 14);
 
+		guiFluidStacks.init(0, true, 141, 1, 16, 60, 2000, false, tankOverlay);
+
 		guiItemStacks.set(0, inputs.get(0));
 		guiItemStacks.set(1, inputs.get(1));
 		guiItemStacks.set(2, outputs.get(0));
+
+		guiFluidStacks.set(0, inputFluids.get(0));
 
 		if (outputs.size() > 1) {
 			guiItemStacks.init(3, false, 105, 41);

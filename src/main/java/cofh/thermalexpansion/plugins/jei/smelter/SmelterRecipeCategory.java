@@ -32,8 +32,10 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 		registry.addRecipeCategories(new SmelterRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new SmelterRecipeHandler());
 		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER);
+		registry.addRecipeClickArea(GuiSmelter.class, 79, 34, 24, 16, RecipeUidsTE.SMELTER, RecipeUidsTE.SMELTER_PYROTHEUM);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSmelter, RecipeUidsTE.SMELTER);
+
+		SmelterRecipeCategoryPyrotheum.initialize(registry);
 	}
 
 	public static List<SmelterRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -52,7 +54,7 @@ public class SmelterRecipeCategory extends BlankRecipeCategory<SmelterRecipeWrap
 
 	public SmelterRecipeCategory(IGuiHelper guiHelper) {
 
-		background = guiHelper.createDrawable(GuiSmelter.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 0);
+		background = guiHelper.createDrawable(GuiSmelter.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.smelter.name");
 	}

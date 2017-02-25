@@ -22,8 +22,8 @@ import java.util.ArrayList;
 public class TileCharger extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.CHARGER.getMetadata();
-
 	private static final int ENERGY_TRANSFER[] = new int[] { 1000, 4000, 9000, 16000, 25000 };
+	public static int basePower = 50;
 
 	public static void initialize() {
 
@@ -55,7 +55,7 @@ public class TileCharger extends TileMachineBase {
 		BlockMachine.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		ENERGY_CONFIGS[TYPE] = new EnergyConfig();
-		ENERGY_CONFIGS[TYPE].setDefaultParams(50);
+		ENERGY_CONFIGS[TYPE].setDefaultParams(basePower);
 
 	}
 

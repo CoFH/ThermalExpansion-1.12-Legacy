@@ -31,7 +31,7 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 		List<CompactorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (CompactorManager.RecipeCompactor recipe : CompactorManager.getRecipeList(Mode.MINT)) {
-			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, Mode.MINT));
+			recipes.add(new CompactorRecipeWrapper(guiHelper, recipe, RecipeUidsTE.COMPACTOR_MINT));
 		}
 		return recipes;
 	}
@@ -40,7 +40,7 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 
 		super(guiHelper);
 
-		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.machine.compactor.modeMint");
+		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modeMint");
 
 		icon = guiHelper.createDrawable(GuiCompactor.TEXTURE, 208, 48, 16, 16);
 	}
