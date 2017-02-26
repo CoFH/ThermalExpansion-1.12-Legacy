@@ -31,6 +31,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.PULVERIZER.getMetadata();
 	public static int basePower = 20;
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
@@ -155,10 +156,10 @@ public class TilePulverizer extends TileMachineBase {
 		} else {
 			inventory[1].stackSize += primaryItem.stackSize;
 		}
-		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= 50;
+		boolean augmentPetrotheumCheck = augmentPetrotheum && ItemHelper.isOre(inventory[0]) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPetrotheumCheck) {
-			tank.modifyFluidStored(-50);
+			tank.modifyFluidStored(-fluidAmount);
 
 			if (inventory[1].stackSize < inventory[1].getMaxStackSize()) {
 				inventory[1].stackSize++;
@@ -271,7 +272,7 @@ public class TilePulverizer extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPetrotheum && tank.getFluidAmount() >= 50 && (ItemHelper.isOre(inventory[0]));
+		return augmentPetrotheum && tank.getFluidAmount() >= fluidAmount && (ItemHelper.isOre(inventory[0]));
 	}
 
 	/* NBT METHODS */

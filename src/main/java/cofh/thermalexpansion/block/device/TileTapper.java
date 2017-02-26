@@ -68,7 +68,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	private int outputTrackerFluid;
 	private boolean validTree;
 
-	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private BlockPos trunkPos;
 	private BlockPos[] leafPos = new BlockPos[3];

@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.gui.client.machine;
 
 import cofh.lib.gui.element.*;
-import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -10,6 +9,7 @@ import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.FluidRegistry;
 
 import java.io.IOException;
 
@@ -46,8 +46,8 @@ public class GuiExtruder extends GuiPoweredBase {
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin());
 		addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
 
-		progressLava = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidHelper.LAVA).setSize(24, 8));
-		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 57).setFluid(FluidHelper.WATER).setSize(24, 8));
+		progressLava = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidRegistry.LAVA).setSize(24, 8));
+		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 57).setFluid(FluidRegistry.WATER).setSize(24, 8));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 112, 49).setMode(2).setBackground(false).setSize(24, 16).setTexture(TEX_DROP_LEFT, 64, 16));
 	}
 

@@ -73,6 +73,7 @@ public class TEProps {
 
 	/* GENERAL */
 	public static final int MAX_FLUID_SMALL = Fluid.BUCKET_VOLUME * 4;
+	public static final int MAX_FLUID_MEDIUM = Fluid.BUCKET_VOLUME * 8;
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
 

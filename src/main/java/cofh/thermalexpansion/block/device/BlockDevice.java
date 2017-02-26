@@ -10,6 +10,7 @@ import cofh.api.core.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
@@ -220,10 +221,17 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
 	}
 
-	@Override
+	@Override // Inventory
+	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % Type.values().length];
+		if (side == EnumFacing.DOWN) {
+			return TETextures.DEVICE_BOTTOM;
+		}
+		if (side == EnumFacing.UP) {
+			return TETextures.DEVICE_TOP;
+		}
+		return side != EnumFacing.NORTH ? TETextures.DEVICE_SIDE : TETextures.DEVICE_FACE[stack.getMetadata() % BlockMachine.Type.values().length];
 	}
 
 	@Override

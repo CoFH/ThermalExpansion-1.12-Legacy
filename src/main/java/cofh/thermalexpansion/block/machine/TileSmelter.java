@@ -32,6 +32,7 @@ public class TileSmelter extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.SMELTER.getMetadata();
 	public static int basePower = 20;
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
@@ -176,10 +177,10 @@ public class TileSmelter extends TileMachineBase {
 		} else {
 			inventory[2].stackSize += primaryItem.stackSize;
 		}
-		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= 50;
+		boolean augmentPyrotheumCheck = augmentPyrotheum && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1])) && tank.getFluidAmount() >= fluidAmount;
 
 		if (augmentPyrotheumCheck) {
-			tank.modifyFluidStored(-50);
+			tank.modifyFluidStored(-fluidAmount);
 			if (inventory[2].stackSize < inventory[2].getMaxStackSize()) {
 				inventory[2].stackSize++;
 			}
@@ -328,7 +329,7 @@ public class TileSmelter extends TileMachineBase {
 
 	public boolean fluidArrow() {
 
-		return augmentPyrotheum && tank.getFluidAmount() >= 50 && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
+		return augmentPyrotheum && tank.getFluidAmount() >= fluidAmount && (ItemHelper.isOre(inventory[0]) || ItemHelper.isOre(inventory[1]));
 	}
 
 	public void setMode(boolean mode) {

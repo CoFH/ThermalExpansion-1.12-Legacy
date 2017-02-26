@@ -273,7 +273,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from == EnumFacing.DOWN && !adjacentTanks[0]) {
+					if (from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
 						return 0;
 					}
 					if (adjacentTanks[1]) {

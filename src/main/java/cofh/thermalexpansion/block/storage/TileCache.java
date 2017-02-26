@@ -251,6 +251,8 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public PacketCoFHBase getTilePacket() {
 
 		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addByte(facing);
 		payload.addBool(locked);
 		payload.addItemStack(storedStack);
 
@@ -265,6 +267,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		super.handleTilePacket(payload, isServer);
 
+		facing = payload.getByte();
 		locked = payload.getBool();
 		storedStack = payload.getItemStack();
 

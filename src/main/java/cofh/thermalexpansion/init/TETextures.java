@@ -81,9 +81,11 @@ public class TETextures {
 		AUTOMATON_ACTIVE_COLLECTOR =		register(map, AUTOMATON_ACTIVE_ + "collector");
 
 		/* DEVICES */
+		DEVICE_TOP =                        register(map, BLOCKS_ + "device/device_top");
+		DEVICE_BOTTOM =                     register(map, BLOCKS_ + "device/device_bottom");
 		DEVICE_SIDE =						register(map, BLOCKS_ + "device/device_side");
 
-		DEVICE_FACE_WATERGEN =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "water_gen");
+		DEVICE_FACE_WATERGEN =				register(map, DEVICE_FACE_ + "water_gen");
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
 		DEVICE_FACE_HEAT_SINK =             map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "heat_sink");
 		DEVICE_FACE_TAPPER =                map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "tapper");
@@ -91,7 +93,7 @@ public class TETextures {
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 
-		DEVICE_ACTIVE_WATERGEN =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "water_gen");
+		DEVICE_ACTIVE_WATERGEN =			register(map, DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
 		DEVICE_ACTIVE_HEAT_SINK =           map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "heat_sink");
 		DEVICE_ACTIVE_TAPPER =              map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "tapper");
@@ -583,6 +585,8 @@ public class TETextures {
 	public static TextureAtlasSprite AUTOMATON_ACTIVE_BREAKER;
 	public static TextureAtlasSprite AUTOMATON_ACTIVE_COLLECTOR;
 
+	public static TextureAtlasSprite DEVICE_TOP;
+	public static TextureAtlasSprite DEVICE_BOTTOM;
 	public static TextureAtlasSprite DEVICE_SIDE;
 
 	public static TextureAtlasSprite[] DEVICE_FACE;

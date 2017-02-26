@@ -84,6 +84,26 @@
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
+			"machineextruderandesite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineextruderbatchsize": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineextruderdiorite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
+			"machineextrudergranite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"dynamopower": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/dynamo_power"

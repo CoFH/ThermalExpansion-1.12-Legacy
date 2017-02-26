@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -9,8 +10,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
@@ -71,7 +74,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	private int outputTrackerFluid;
 	private boolean inHell;
 
-	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private int offset;
 
@@ -108,9 +111,11 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		}
 		transferOutputFluid();
 
+		boolean curActive = isActive;
+
 		if (isActive) {
 			if (adjacentSources >= 2) {
-				tank.modifyFluidStored(genRate * adjacentSources);
+				tank.modifyFluidStored(genRate * (adjacentSources - 1));
 			} else {
 				if (worldObj.isRaining() && worldObj.canSeeSky(getPos())) {
 					tank.modifyFluidStored(genRate);
@@ -127,6 +132,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		if (adjacentSources < 0) {
 			updateAdjacentSources();
 		}
+		updateIfChanged(curActive);
 	}
 
 	protected void updateAdjacentSources() {
@@ -252,6 +258,23 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 		tank.getFluid().amount = payload.getInt();
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[getType()];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
+		}
+		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */

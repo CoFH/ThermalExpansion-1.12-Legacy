@@ -25,6 +25,8 @@ public abstract class TileDeviceBase extends TilePowered {
 
 		sideConfig = SIDE_CONFIGS[this.getType()];
 		setDefaultSides();
+
+		hasRedstoneControl = true;
 	}
 
 	@Override
@@ -67,6 +69,16 @@ public abstract class TileDeviceBase extends TilePowered {
 		hasAdvRedstoneControl = false;
 	}
 
+	protected void updateIfChanged(boolean curActive) {
+
+		if (curActive != isActive) {
+			if (LIGHT_VALUES[getType()] != 0) {
+				updateLighting();
+			}
+			sendTilePacket(Side.CLIENT);
+		}
+	}
+
 	/* IReconfigurableFacing */
 	@Override
 	public boolean setFacing(int side) {
@@ -92,6 +104,11 @@ public abstract class TileDeviceBase extends TilePowered {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
 			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];

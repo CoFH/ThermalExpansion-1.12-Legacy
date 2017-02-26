@@ -13,7 +13,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
@@ -53,7 +52,6 @@ public class TileNullifier extends TileDeviceBase {
 	}
 
 	private static final int[] SLOTS = { 0 };
-	private static final Fluid RENDER_FLUID = FluidRegistry.LAVA;
 
 	public TileNullifier() {
 
@@ -77,7 +75,7 @@ public class TileNullifier extends TileDeviceBase {
 	@Override
 	public int getLightValue() {
 
-		return FluidHelper.getFluidLuminosity(RENDER_FLUID);
+		return isActive ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
 	}
 
 	@Override
@@ -168,9 +166,14 @@ public class TileNullifier extends TileDeviceBase {
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(RENDER_FLUID) : TETextures.DEVICE_FACE[getType()];
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}
