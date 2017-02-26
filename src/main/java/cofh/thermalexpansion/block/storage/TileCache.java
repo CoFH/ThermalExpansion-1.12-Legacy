@@ -50,9 +50,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	private int meterTracker;
 
 	byte facing = 3;
-	boolean locked;
+	public boolean locked;
 	int maxCacheStackSize;
-	ItemStack storedStack;
+	public ItemStack storedStack;
 
 	public TileCache() {
 

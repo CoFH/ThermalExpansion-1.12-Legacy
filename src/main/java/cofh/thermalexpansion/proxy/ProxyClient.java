@@ -2,11 +2,14 @@ package cofh.thermalexpansion.proxy;
 
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
+import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TETextures;
+import cofh.thermalexpansion.render.RenderCache;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraftforge.client.event.TextureStitchEvent;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
@@ -33,6 +36,7 @@ public class ProxyClient extends Proxy {
 	public void initialize(FMLInitializationEvent event) {
 
 		super.initialize(event);
+		RenderCache.initialize();
 	}
 
 	@Override
@@ -45,8 +49,8 @@ public class ProxyClient extends Proxy {
 	public void registerRenderInformation() {
 
 		TextureUtils.addIconRegister(ModelFlorb.INSTANCE);
-		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, manager -> new RenderEntityFlorb(manager));
-
+		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, RenderEntityFlorb::new);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, new RenderCache());
 	}
 
 	/* EVENT HANDLERS */
@@ -68,6 +72,6 @@ public class ProxyClient extends Proxy {
 		return modelList.add(modelRegister);
 	}
 
-	private static ArrayList<IModelRegister> modelList = new ArrayList<IModelRegister>();
+	private static ArrayList<IModelRegister> modelList = new ArrayList<>();
 
 }
