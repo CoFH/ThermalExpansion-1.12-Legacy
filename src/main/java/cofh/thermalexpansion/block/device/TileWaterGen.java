@@ -270,9 +270,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			} else if (side == 1) {
 				return TETextures.DEVICE_TOP;
 			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[getType()];
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}

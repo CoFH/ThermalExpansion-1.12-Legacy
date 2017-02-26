@@ -87,24 +87,24 @@ public class TETextures {
 
 		DEVICE_FACE_WATERGEN =				register(map, DEVICE_FACE_ + "water_gen");
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
-		DEVICE_FACE_HEAT_SINK =             map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "heat_sink");
-		DEVICE_FACE_TAPPER =                map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "tapper");
+		DEVICE_FACE_HEAT_SINK =             register(map, DEVICE_FACE_ + "heat_sink");
+		DEVICE_FACE_TAPPER =                register(map, DEVICE_FACE_ + "tapper");
 
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
 
 		DEVICE_ACTIVE_WATERGEN =			register(map, DEVICE_ACTIVE_ + "water_gen");
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
-		DEVICE_ACTIVE_HEAT_SINK =           map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "heat_sink");
-		DEVICE_ACTIVE_TAPPER =              map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "tapper");
+		DEVICE_ACTIVE_HEAT_SINK =           register(map, DEVICE_ACTIVE_ + "heat_sink");
+		DEVICE_ACTIVE_TAPPER =              register(map, DEVICE_ACTIVE_ + "tapper");
 
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
 		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
 
-        DEVICE_FRAME_TOP =                  register(map, MACHINE_ + "frame_top");//TODO
-		DEVICE_FRAME_SIDE =                 register(map, MACHINE_ + "frame_side");//TODO
-		DEVICE_FRAME_BOTTOM =               register(map, MACHINE_ + "frame_bottom");//TODO
-		DEVICE_FRAME_INNER =                register(map, MACHINE_ + "frame_inner");//TODO
+        DEVICE_FRAME_TOP =                  register(map, DEVICE_ + "frame_top");
+		DEVICE_FRAME_SIDE =                 register(map, DEVICE_ + "frame_side");
+		DEVICE_FRAME_BOTTOM =               register(map, DEVICE_ + "frame_bottom");
+		DEVICE_FRAME_INNER =                register(map, DEVICE_ + "frame_inner");
 
 		/* DYNAMOS */
 		DYNAMO_COIL_REDSTONE =				register(map, DYNAMO_ + "coil_redstone");

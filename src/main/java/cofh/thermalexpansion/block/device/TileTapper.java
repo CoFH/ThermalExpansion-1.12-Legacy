@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.render.RenderHelper;
 import cofh.lib.util.BlockWrapper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.MathHelper;
@@ -10,10 +11,12 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.crafting.TapperManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
@@ -170,6 +173,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				}
 				if (leafCount >= 3) {
 					cached = true;
+					genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
 					return;
 				}
 			}
@@ -208,6 +212,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 		if (leafCount >= 3) {
 			validTree = true;
+			genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
 		}
 		cached = true;
 	}
@@ -287,12 +292,26 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	}
 
 	/* NETWORK METHODS */
+
+	/* SERVER -> CLIENT */
 	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
 		payload.addFluidStack(tank.getFluid());
+
+		return payload;
+	}
+
+	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addBool(validTree);
+		payload.addFluidStack(genFluid);
+
 		return payload;
 	}
 
@@ -300,7 +319,34 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
+
 		tank.setFluid(payload.getFluidStack());
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		validTree = payload.getBool();
+		genFluid = payload.getFluidStack();
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive && validTree ? RenderHelper.getFluidTexture(genFluid) : TETextures.DEVICE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+		}
+		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */

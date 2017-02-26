@@ -43,15 +43,16 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 		return true;
 	}
 
-    /* IBakeryItem */
-    @Override
-    @SideOnly (Side.CLIENT)
-    public IItemBakery getBakery() {
-        return RenderFrame.INSTANCE;
-    }
+	/* IBakeryItem */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public IItemBakery getBakery() {
+
+		return RenderFrame.INSTANCE;
+	}
 
 	/* IInitializer */
-    @Override
+	@Override
 	public boolean preInit() {
 
 		frameMachine = addItem(0, "frameMachine");
@@ -63,17 +64,18 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 		return true;
 	}
 
-    @Override
-    @SideOnly (Side.CLIENT)
-    public void registerModels() {
-        ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
-        ModelLoader.setCustomModelResourceLocation(this, 0, location);
-        ModelLoader.setCustomMeshDefinition(this, (stack -> location) );
-        ModelRegistryHelper.register(location, new CCBakeryModel(""));
-    }
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
 
-    @Override
-    public boolean initialize() {
+		ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
+		ModelLoader.setCustomModelResourceLocation(this, 0, location);
+		ModelLoader.setCustomMeshDefinition(this, (stack -> location));
+		ModelRegistryHelper.register(location, new CCBakeryModel(""));
+	}
+
+	@Override
+	public boolean initialize() {
 
 		return true;
 	}

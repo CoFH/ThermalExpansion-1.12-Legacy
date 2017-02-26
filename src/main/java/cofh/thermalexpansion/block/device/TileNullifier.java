@@ -171,9 +171,9 @@ public class TileNullifier extends TileDeviceBase {
 			} else if (side == 1) {
 				return TETextures.DEVICE_TOP;
 			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}

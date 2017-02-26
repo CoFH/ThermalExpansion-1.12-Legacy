@@ -4,6 +4,7 @@ import cofh.api.tileentity.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.render.RenderHelper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -11,7 +12,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.fuels.CoolantManager;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -32,6 +35,7 @@ import javax.annotation.Nullable;
 public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	private static final int TYPE = BlockDevice.Type.HEAT_SINK.getMetadata();
+	public static int fluidAmount = 50;
 
 	public static void initialize() {
 
@@ -96,13 +100,15 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
+		boolean curActive = isActive;
+
 		if (isActive) {
 			if (coolantRF <= 0) {
 				coolantFactor = 0;
-				if (tank.getFluidAmount() >= 50) {
+				if (tank.getFluidAmount() >= fluidAmount) {
 					coolantRF += CoolantManager.getCoolantRF50mB(tank.getFluid());
 					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
-					tank.drain(50, true);
+					tank.drain(fluidAmount, true);
 
 					for (int i = 0; i < 6; i++) {
 						if (accelerables[i] != null) {
@@ -128,6 +134,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		if (!cached) {
 			updateAdjacentHandlers();
 		}
+		updateIfChanged(curActive);
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -259,6 +266,23 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		super.handleTilePacket(payload, isServer);
 
 		renderFluid = payload.getFluidStack();
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.DEVICE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.DEVICE_TOP;
+			}
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.DEVICE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+		}
+		return TETextures.DEVICE_SIDE;
 	}
 
 	/* CAPABILITIES */
