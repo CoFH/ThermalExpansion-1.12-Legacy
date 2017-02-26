@@ -1,12 +1,19 @@
 package cofh.thermalexpansion.item;
 
+import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryItem;
+import codechicken.lib.model.blockbakery.IItemBakery;
 import cofh.api.core.IInitializer;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.render.RenderFrame;
 import cofh.thermalfoundation.block.BlockGlass;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -15,7 +22,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class ItemFrame extends ItemMulti implements IInitializer {
+public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 
 	public ItemFrame() {
 
@@ -36,8 +43,15 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 		return true;
 	}
 
+    /* IBakeryItem */
+    @Override
+    @SideOnly (Side.CLIENT)
+    public IItemBakery getBakery() {
+        return RenderFrame.INSTANCE;
+    }
+
 	/* IInitializer */
-	@Override
+    @Override
 	public boolean preInit() {
 
 		frameMachine = addItem(0, "frameMachine");
@@ -49,8 +63,17 @@ public class ItemFrame extends ItemMulti implements IInitializer {
 		return true;
 	}
 
-	@Override
-	public boolean initialize() {
+    @Override
+    @SideOnly (Side.CLIENT)
+    public void registerModels() {
+        ModelResourceLocation location = new ModelResourceLocation("thermalexpansion:frame", "frame");
+        ModelLoader.setCustomModelResourceLocation(this, 0, location);
+        ModelLoader.setCustomMeshDefinition(this, (stack -> location) );
+        ModelRegistryHelper.register(location, new CCBakeryModel(""));
+    }
+
+    @Override
+    public boolean initialize() {
 
 		return true;
 	}

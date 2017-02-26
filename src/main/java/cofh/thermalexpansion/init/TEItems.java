@@ -24,6 +24,7 @@ public class TEItems {
 		initList.add(itemUpgrade);
 		initList.add(itemAugment);
 
+		ThermalExpansion.proxy.addIModelRegister(itemFrame);
 		ThermalExpansion.proxy.addIModelRegister(itemUpgrade);
 		ThermalExpansion.proxy.addIModelRegister(itemAugment);
 

@@ -66,6 +66,11 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(map, MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
 
+		MACHINE_FRAME_TOP =                 register(map, MACHINE_ + "frame_top");
+		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
+		MACHINE_FRAME_BOTTOM =              register(map, MACHINE_ + "frame_bottom");
+		MACHINE_FRAME_INNER =               register(map, MACHINE_ + "frame_inner");
+
 		/* AUTOMATA */
 		AUTOMATON_SIDE =					register(map, BLOCKS_ + "automaton/automaton_side");
 
@@ -93,6 +98,11 @@ public class TETextures {
 
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
 		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
+
+        DEVICE_FRAME_TOP =                  register(map, MACHINE_ + "frame_top");//TODO
+		DEVICE_FRAME_SIDE =                 register(map, MACHINE_ + "frame_side");//TODO
+		DEVICE_FRAME_BOTTOM =               register(map, MACHINE_ + "frame_bottom");//TODO
+		DEVICE_FRAME_INNER =                register(map, MACHINE_ + "frame_inner");//TODO
 
 		/* DYNAMOS */
 		DYNAMO_COIL_REDSTONE =				register(map, DYNAMO_ + "coil_redstone");
@@ -208,16 +218,18 @@ public class TETextures {
 		CACHE_FACE_4 =                      register(map, CACHE_ + "face_4");
 		CACHE_FACE_C =                      register(map, CACHE_ + "face_c");
 
-		CACHE_METER_0 =                      register(map, CACHE_ + "meter_0");
-		CACHE_METER_1 =                      register(map, CACHE_ + "meter_1");
-		CACHE_METER_2 =                      register(map, CACHE_ + "meter_2");
-		CACHE_METER_3 =                      register(map, CACHE_ + "meter_3");
-		CACHE_METER_4 =                      register(map, CACHE_ + "meter_4");
-		CACHE_METER_5 =                      register(map, CACHE_ + "meter_5");
-		CACHE_METER_6 =                      register(map, CACHE_ + "meter_6");
-		CACHE_METER_7 =                      register(map, CACHE_ + "meter_7");
-		CACHE_METER_8 =                      register(map, CACHE_ + "meter_8");
-		CACHE_METER_C =                      register(map, CACHE_ + "meter_c");
+		CACHE_METER_0 =                     register(map, CACHE_ + "meter_0");
+		CACHE_METER_1 =                     register(map, CACHE_ + "meter_1");
+		CACHE_METER_2 =                     register(map, CACHE_ + "meter_2");
+		CACHE_METER_3 =                     register(map, CACHE_ + "meter_3");
+		CACHE_METER_4 =                     register(map, CACHE_ + "meter_4");
+		CACHE_METER_5 =                     register(map, CACHE_ + "meter_5");
+		CACHE_METER_6 =                     register(map, CACHE_ + "meter_6");
+		CACHE_METER_7 =                     register(map, CACHE_ + "meter_7");
+		CACHE_METER_8 =                     register(map, CACHE_ + "meter_8");
+		CACHE_METER_C =                     register(map, CACHE_ + "meter_c");
+
+		ILLUMINATOR_FRAME =                 register(map, BLOCKS_ + "light/illuminator_frame");
 
 		/* ARRAYS */
 		CONFIG = new TextureAtlasSprite[] {
@@ -491,12 +503,14 @@ public class TETextures {
 
 	private static final String BLOCKS_ = "thermalexpansion:blocks/";
 	private static final String CONFIG_ = BLOCKS_ + "config/config_";
-	private static final String MACHINE_FACE_ = BLOCKS_ + "machine/machine_face_";
-	private static final String MACHINE_ACTIVE_ = BLOCKS_ + "machine/machine_active_";
+	private static final String MACHINE_ = BLOCKS_ + "machine/machine_";
+	private static final String MACHINE_FACE_ = MACHINE_ + "face_";
+	private static final String MACHINE_ACTIVE_ = MACHINE_ + "active_";
 	private static final String AUTOMATON_FACE_ = BLOCKS_ + "automaton/automaton_face_";
 	private static final String AUTOMATON_ACTIVE_ = BLOCKS_ + "automaton/automaton_active_";
-	private static final String DEVICE_FACE_ = BLOCKS_ + "device/device_face_";
-	private static final String DEVICE_ACTIVE_ = BLOCKS_ + "device/device_active_";
+	private static final String DEVICE_ = BLOCKS_ + "device/device_";
+	private static final String DEVICE_FACE_ = DEVICE_ + "face_";
+	private static final String DEVICE_ACTIVE_ = DEVICE_ + "active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
 	private static final String CELL_ = BLOCKS_ + "storage/cell_";
 	private static final String CELL_CONFIG_ = BLOCKS_ + "storage/cell_config_";
@@ -554,6 +568,11 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
+	public static TextureAtlasSprite MACHINE_FRAME_TOP;
+	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
+	public static TextureAtlasSprite MACHINE_FRAME_BOTTOM;
+	public static TextureAtlasSprite MACHINE_FRAME_INNER;
+
 	public static TextureAtlasSprite AUTOMATON_SIDE;
 
 	public static TextureAtlasSprite[] AUTOMATON_FACE;
@@ -589,6 +608,11 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_ITEM_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_FLUID_BUFFER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_ENERGY_BUFFER;
+
+	public static TextureAtlasSprite DEVICE_FRAME_TOP;
+	public static TextureAtlasSprite DEVICE_FRAME_SIDE;
+	public static TextureAtlasSprite DEVICE_FRAME_BOTTOM;
+	public static TextureAtlasSprite DEVICE_FRAME_INNER;
 
 	public static TextureAtlasSprite DYNAMO_COIL_REDSTONE;
 
@@ -725,5 +749,7 @@ public class TETextures {
 	public static TextureAtlasSprite CACHE_METER_7;
 	public static TextureAtlasSprite CACHE_METER_8;
 	public static TextureAtlasSprite CACHE_METER_C;
+
+	public static TextureAtlasSprite ILLUMINATOR_FRAME;
 
 }
