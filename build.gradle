@@ -17,6 +17,9 @@ apply plugin: 'maven'
 group = "cofh"
 archivesBaseName = "ThermalExpansion"
 
+targetCompatibility = "1.8"
+sourceCompatibility = "1.8"
+
 // Define properties file
 ext.configFile = file "build.properties"
 
@@ -34,7 +37,7 @@ repositories {
 	}
 	maven {
 		name = "Covers Maven"
-		url = "http://maven.podgeweb.com"
+		url = "http://maven.covers1624.net"
 	}
 	maven {
 		name = "JEI Maven"
