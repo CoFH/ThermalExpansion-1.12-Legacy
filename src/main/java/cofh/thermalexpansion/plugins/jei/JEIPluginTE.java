@@ -10,6 +10,7 @@ import cofh.thermalexpansion.plugins.jei.pulverizer.PulverizerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.refinery.RefineryRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.sawmill.SawmillRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.smelter.SmelterRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.transposer.Descriptions;
 import cofh.thermalexpansion.plugins.jei.transposer.TransposerRecipeCategory;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -44,6 +45,8 @@ public class JEIPluginTE extends BlankModPlugin {
 		RefineryRecipeCategory.initialize(registry);
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
+
+		Descriptions.register(registry);
 	}
 
 	/* HELPERS */

@@ -4,6 +4,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.plugins.jei.Drawables;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.ComparableItemStackFurnace;
 import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
 import mezz.jei.api.IGuiHelper;
@@ -28,6 +29,7 @@ public class FurnaceRecipeWrapper extends BlankRecipeWrapper {
 	final List<ItemStack> outputs;
 
 	final int energy;
+	final String uId;
 
 	/* Animation */
 	final IDrawableAnimated progress;
@@ -36,7 +38,15 @@ public class FurnaceRecipeWrapper extends BlankRecipeWrapper {
 
 	public FurnaceRecipeWrapper(IGuiHelper guiHelper, RecipeFurnace recipe) {
 
+		this(guiHelper, recipe, RecipeUidsTE.FURNACE);
+	}
+
+	public FurnaceRecipeWrapper(IGuiHelper guiHelper, RecipeFurnace recipe, String uIdIn) {
+
+		uId = uIdIn;
+
 		List<ItemStack> recipeInputs = new ArrayList<>();
+		List<ItemStack> recipeOutputs = new ArrayList<>();
 
 		if (ComparableItemStackFurnace.getOreID(recipe.getInput()) != -1) {
 			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()))) {
@@ -45,13 +55,19 @@ public class FurnaceRecipeWrapper extends BlankRecipeWrapper {
 		} else {
 			recipeInputs.add(recipe.getInput());
 		}
-		List<ItemStack> recipeOutputs = new ArrayList<>();
-		recipeOutputs.add(recipe.getOutput());
-
+		switch (uId) {
+			case RecipeUidsTE.FURNACE_FOOD:
+			case RecipeUidsTE.FURNACE_ORE:
+				recipeOutputs.add(ItemHelper.cloneStack(recipe.getOutput(), recipe.getOutput().stackSize + 1));
+				energy = recipe.getEnergy() * 3 / 2;
+				break;
+			default:
+				recipeOutputs.add(recipe.getOutput());
+				energy = recipe.getEnergy();
+				break;
+		}
 		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
-
-		energy = recipe.getEnergy();
 
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
 		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
@@ -60,6 +76,11 @@ public class FurnaceRecipeWrapper extends BlankRecipeWrapper {
 		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileFurnace.basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+	}
+
+	public String getUid() {
+
+		return uId;
 	}
 
 	@Override

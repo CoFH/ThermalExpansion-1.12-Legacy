@@ -8,7 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 public class RefineryManager {
 
-	private static TIntObjectHashMap<RecipeRefinery> recipeMap = new TIntObjectHashMap<RecipeRefinery>();
+	private static TIntObjectHashMap<RecipeRefinery> recipeMap = new TIntObjectHashMap<>();
 
 	static final int DEFAULT_ENERGY = 5000;
 

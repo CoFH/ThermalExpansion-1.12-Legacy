@@ -29,7 +29,7 @@ public class RenderTank implements ILayeredBlockBakery {
 
 	public static final RenderTank INSTANCE = new RenderTank();
 
-	public static final int RENDER_LEVELS = 128;
+	public static final int RENDER_LEVELS = 100;
 
 	private static CCModel[] modelFluid = new CCModel[RENDER_LEVELS];
 	private static CCModel modelFrame = CCModel.quadModel(48);
@@ -137,7 +137,7 @@ public class RenderTank implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 	/* ILayeredBlockBakery */
@@ -164,7 +164,7 @@ public class RenderTank implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 }

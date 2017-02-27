@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>();
+	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<>();
 
 	static final float LOG_MULTIPLIER = 1.5F;
 	static final int DEFAULT_ENERGY = 1600;
@@ -129,7 +129,7 @@ public class SawmillManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<ComparableItemStackSawmill, RecipeSawmill>(recipeMap.size());
+		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<>(recipeMap.size());
 		RecipeSawmill tempRecipe;
 
 		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {

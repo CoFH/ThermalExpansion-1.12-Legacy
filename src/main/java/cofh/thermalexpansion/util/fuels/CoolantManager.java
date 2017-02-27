@@ -10,7 +10,7 @@ public class CoolantManager {
 	/**
 	 * Coolant is stored as RF effectiveness per bucket.
 	 */
-	private static TObjectIntHashMap<Fluid> coolantMap = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> coolantMap = new TObjectIntHashMap<>();
 
 	private static final int WATER_RF = 500000;
 

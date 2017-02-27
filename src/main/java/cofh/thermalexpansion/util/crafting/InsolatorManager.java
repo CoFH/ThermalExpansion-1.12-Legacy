@@ -17,9 +17,9 @@ import java.util.Map.Entry;
 
 public class InsolatorManager {
 
-	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>();
-	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<ComparableItemStackInsolator>();
-	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<ComparableItemStackInsolator>();
+	private static Map<List<ComparableItemStackInsolator>, RecipeInsolator> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackInsolator> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackInsolator> lockSet = new THashSet<>();
 
 	static final int CROP_MULTIPLIER_RICH = 3;
 	static final int CROP_MULTIPLIER_FLUX = 5;
@@ -104,7 +104,7 @@ public class InsolatorManager {
 
 		/* MYCELIUM */
 		{
-			ArrayList<ItemStack> crops = new ArrayList<ItemStack>();
+			ArrayList<ItemStack> crops = new ArrayList<>();
 			crops.add(new ItemStack(Blocks.BROWN_MUSHROOM));
 			crops.add(new ItemStack(Blocks.RED_MUSHROOM));
 
@@ -117,7 +117,7 @@ public class InsolatorManager {
 
 		/* NETHER */
 		{
-			ArrayList<ItemStack> crops = new ArrayList<ItemStack>();
+			ArrayList<ItemStack> crops = new ArrayList<>();
 			crops.add(new ItemStack(Items.NETHER_WART));
 
 			for (ItemStack input : crops) {
@@ -153,8 +153,8 @@ public class InsolatorManager {
 
 	public static void refreshRecipes() {
 
-		Map<List<ComparableItemStackInsolator>, RecipeInsolator> tempMap = new THashMap<List<ComparableItemStackInsolator>, RecipeInsolator>(recipeMap.size());
-		Set<ComparableItemStackInsolator> tempSet = new THashSet<ComparableItemStackInsolator>();
+		Map<List<ComparableItemStackInsolator>, RecipeInsolator> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackInsolator> tempSet = new THashSet<>();
 		RecipeInsolator tempRecipe;
 
 		for (Entry<List<ComparableItemStackInsolator>, RecipeInsolator> entry : recipeMap.entrySet()) {
@@ -171,7 +171,7 @@ public class InsolatorManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackInsolator> tempSet2 = new THashSet<ComparableItemStackInsolator>();
+		Set<ComparableItemStackInsolator> tempSet2 = new THashSet<>();
 		for (ComparableItemStackInsolator entry : lockSet) {
 			ComparableItemStackInsolator lock = new ComparableItemStackInsolator(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);

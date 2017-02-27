@@ -37,7 +37,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
 
@@ -300,8 +300,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 	private static int ghastTearRF = 1600000;
 	private static int netherStarRF = 6400000;
 
-	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
-	private static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<ComparableItemStack>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<ComparableItemStack> reactants = new TObjectIntHashMap<>();
 
 	static {
 		addReactant(new ItemStack(Items.SUGAR, 1, 0), sugarRF);

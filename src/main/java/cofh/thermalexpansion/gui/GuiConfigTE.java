@@ -22,7 +22,7 @@ public class GuiConfigTE extends GuiConfig {
 
 	private static List<IConfigElement> getConfigElements(GuiScreen parent) {
 
-		List<IConfigElement> list = new ArrayList<IConfigElement>();
+		List<IConfigElement> list = new ArrayList<>();
 
 		list.add(new DummyCategoryElement("Client", "config.Client", getClientConfigElements()));
 		list.add(new DummyCategoryElement("Common", "config.Common", getCommonConfigElements()));
@@ -32,7 +32,7 @@ public class GuiConfigTE extends GuiConfig {
 
 	private static List<IConfigElement> getClientConfigElements() {
 
-		List<IConfigElement> list = new ArrayList<IConfigElement>();
+		List<IConfigElement> list = new ArrayList<>();
 
 		for (int i = 0; i < CATEGORIES_CLIENT.length; i++) {
 			list.add(new ConfigElement(ThermalExpansion.CONFIG_CLIENT.getCategory(CATEGORIES_CLIENT[i])));
@@ -42,7 +42,7 @@ public class GuiConfigTE extends GuiConfig {
 
 	private static List<IConfigElement> getCommonConfigElements() {
 
-		List<IConfigElement> list = new ArrayList<IConfigElement>();
+		List<IConfigElement> list = new ArrayList<>();
 
 		for (int i = 0; i < CATEGORIES_COMMON.length; i++) {
 			list.add(new ConfigElement(ThermalExpansion.CONFIG.getCategory(CATEGORIES_COMMON[i])));

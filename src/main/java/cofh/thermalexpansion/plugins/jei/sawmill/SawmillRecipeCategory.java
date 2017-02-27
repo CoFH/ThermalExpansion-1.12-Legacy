@@ -40,7 +40,7 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 
 	public static List<SawmillRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
 
-		List<SawmillRecipeWrapper> recipes = new ArrayList<SawmillRecipeWrapper>();
+		List<SawmillRecipeWrapper> recipes = new ArrayList<>();
 
 		for (SawmillManager.RecipeSawmill recipe : SawmillManager.getRecipeList()) {
 			recipes.add(new SawmillRecipeWrapper(guiHelper, recipe));

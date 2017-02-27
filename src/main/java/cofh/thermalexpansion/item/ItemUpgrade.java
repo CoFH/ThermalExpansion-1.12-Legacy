@@ -8,7 +8,6 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalfoundation.block.BlockGlass;
 import gnu.trove.map.hash.TIntObjectHashMap;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -160,7 +159,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 				"DID",
 				'D', "dustGlowstone",
 				'G', "gearSilver",
-				'I', BlockGlass.glassLead
+				'I', "ingotElectrum"
 		));
 		addRecipe(ShapedRecipe(upgradeIncremental[2],
 				" I ",
@@ -232,7 +231,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		upgradeMap.put(metadata, new UpgradeEntry(type, level));
 	}
 
-	private TIntObjectHashMap<UpgradeEntry> upgradeMap = new TIntObjectHashMap<UpgradeEntry>();
+	private TIntObjectHashMap<UpgradeEntry> upgradeMap = new TIntObjectHashMap<>();
 
 	/* REFERENCES */
 	public static ItemStack[] upgradeIncremental;

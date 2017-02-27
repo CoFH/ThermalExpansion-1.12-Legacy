@@ -43,7 +43,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockDynamo.Type.values().length];
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
 	protected static final int ENERGY_BASE = 100;
 
 	static {

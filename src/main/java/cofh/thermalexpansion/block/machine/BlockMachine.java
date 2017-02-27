@@ -75,9 +75,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		builder.add(VARIANT);
 		// UnListed
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG[0]).add(TEProps.SIDE_CONFIG[1]).add(TEProps.SIDE_CONFIG[2]).add(TEProps.SIDE_CONFIG[3]).add(TEProps.SIDE_CONFIG[4]).add(TEProps.SIDE_CONFIG[5]);
+		builder.add(TEProps.SIDE_CONFIG);
 
 		return builder.build();
 	}
@@ -88,6 +89,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
+//				for (int j = 0; j < 5; j++) {
+//					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), j));
+//				}
 				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
@@ -235,12 +239,12 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
 		if (side == EnumFacing.DOWN) {
-			return TETextures.MACHINE_BOTTOM;
+			return TETextures.MACHINE_BOTTOM[ItemBlockMachine.getLevel(stack)];
 		}
 		if (side == EnumFacing.UP) {
-			return TETextures.MACHINE_TOP;
+			return TETextures.MACHINE_TOP[ItemBlockMachine.getLevel(stack)];
 		}
-		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE[ItemBlockMachine.getLevel(stack)] : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override // World
@@ -268,7 +272,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top"));
+		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockMachine.getLevel(stack));
 	}
 
 	/* IInitializer */
@@ -278,7 +284,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		this.setRegistryName("machine");
 		GameRegistry.register(this);
 
-		ItemBlockMachine itemBlock = new ItemBlockMachine(this);
+		itemBlock = new ItemBlockMachine(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -585,4 +591,5 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public static ItemStack machinePrecipitator;
 	public static ItemStack machineExtruder;
 
+	public static ItemBlockMachine itemBlock;
 }

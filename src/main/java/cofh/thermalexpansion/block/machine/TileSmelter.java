@@ -48,7 +48,7 @@ public class TileSmelter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
 
 		LIGHT_VALUES[TYPE] = 15;
@@ -485,6 +485,9 @@ public class TileSmelter extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
+					if (from != null && sideCache[from.ordinal()] == 0) {
+						return 0;
+					}
 					return tank.fill(resource, doFill);
 				}
 

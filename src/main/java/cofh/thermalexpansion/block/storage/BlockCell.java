@@ -58,12 +58,12 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
-		// builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
 		// builder.add(TEProps.LIGHT);
 		builder.add(TEProps.SCALE);
 		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG_RAW);
+		builder.add(TEProps.SIDE_CONFIG);
 
 		return builder.build();
 	}
@@ -182,14 +182,14 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
 		ModelLoader.setCustomStateMapper(this, mapper);
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
-		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel("thermalexpansion:blocks/storage/cell_side_0"));
 
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",side_config{");
-			for (int i : state.getValue(TEProps.SIDE_CONFIG_RAW)) {
+			for (int i : state.getValue(TEProps.SIDE_CONFIG)) {
 				builder.append(",").append(i);
 			}
 			builder.append("}");

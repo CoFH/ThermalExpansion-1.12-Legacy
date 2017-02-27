@@ -16,9 +16,9 @@ import java.util.Map.Entry;
 
 public class TapperManager {
 
-	private static Map<BlockWrapper, FluidStack> blockMap = new THashMap<BlockWrapper, FluidStack>();
-	private static Map<ItemWrapper, FluidStack> itemMap = new THashMap<ItemWrapper, FluidStack>();
-	private static Map<BlockWrapper, BlockWrapper> leafMap = new THashMap<BlockWrapper, BlockWrapper>();
+	private static Map<BlockWrapper, FluidStack> blockMap = new THashMap<>();
+	private static Map<ItemWrapper, FluidStack> itemMap = new THashMap<>();
+	private static Map<BlockWrapper, BlockWrapper> leafMap = new THashMap<>();
 
 	public static FluidStack getFluid(IBlockState state) {
 
@@ -92,9 +92,9 @@ public class TapperManager {
 
 	public static void refreshMappings() {
 
-		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<BlockWrapper, FluidStack>(blockMap.size());
-		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<ItemWrapper, FluidStack>(itemMap.size());
-		Map<BlockWrapper, BlockWrapper> tempLeafMap = new THashMap<BlockWrapper, BlockWrapper>(leafMap.size());
+		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<>(blockMap.size());
+		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<>(itemMap.size());
+		Map<BlockWrapper, BlockWrapper> tempLeafMap = new THashMap<>(leafMap.size());
 
 		for (Entry<BlockWrapper, FluidStack> entry : blockMap.entrySet()) {
 			BlockWrapper tempBlock = new BlockWrapper(entry.getKey().block, entry.getKey().metadata);

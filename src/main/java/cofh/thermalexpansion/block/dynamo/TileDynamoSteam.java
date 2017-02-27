@@ -37,7 +37,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
+		validAugments[TYPE].add(TEProps.DYNAMO_STEAM_TURBINE);
 
 		GameRegistry.registerTileEntity(TileDynamoSteam.class, "thermalexpansion.dynamo_steam");
 
@@ -54,14 +55,12 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
-	// private static final int STEAM_LOW = TEProps.MAX_FLUID_SMALL * 1 / 4;
 
 	private FluidTankCore steamTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	private int waterRF;
 	private int currentFuelRF = DEFAULT_RF;
-	private int steamAmount = defaultEnergyConfig[TYPE].maxPower * 2;
 
 	/* AUGMENTS */
 	protected boolean augmentTurbine;
@@ -131,7 +130,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	protected void processIdle() {
 
-		steamTank.modifyFluidStored(-1);
+		steamTank.modifyFluidStored(-50);
 	}
 
 	@Override
@@ -242,6 +241,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 			augmentTurbine = true;
 			hasModeAugment = true;
 			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			fuelRF = 0;
+			waterRF = 0;
 			return true;
 		}
 		return super.installAugmentToSlot(slot);
@@ -322,7 +323,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<ComparableItemStack>();
+	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
 
 	private static int DEFAULT_RF = 48000;
 

@@ -35,7 +35,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
 		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
 		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
 
@@ -317,7 +317,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
 
 	public static boolean isValidFuel(FluidStack stack) {
 

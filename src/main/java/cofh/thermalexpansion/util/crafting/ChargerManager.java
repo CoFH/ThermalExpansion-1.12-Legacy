@@ -12,7 +12,7 @@ import java.util.Map.Entry;
 
 public class ChargerManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCharger>();
+	private static Map<ComparableItemStackSafe, RecipeCharger> recipeMap = new THashMap<>();
 
 	static final int DEFAULT_ENERGY = 3200;
 
@@ -57,7 +57,7 @@ public class ChargerManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeCharger> tempMap = new THashMap<ComparableItemStackSafe, RecipeCharger>(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeCharger> tempMap = new THashMap<>(recipeMap.size());
 		RecipeCharger tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeCharger> entry : recipeMap.entrySet()) {

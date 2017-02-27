@@ -8,6 +8,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
+import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -158,7 +159,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
 		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
 
-		machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
+		// machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
 		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
 
 		machineSawmillTapper = addAugmentItem(288, TEProps.MACHINE_SAWMILL_TAPPER, AugmentType.MODE);
@@ -174,6 +175,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		//		machineCrucibleAlloy = addAugmentItem(352, TEProps.MACHINE_CRUCIBLE_ALLOY, AugmentType.MODE);
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
+
+		machineExtruderGranite = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_GRANITE, AugmentType.MODE);
+		machineExtruderDiorite = addAugmentItem(498, TEProps.MACHINE_EXTRUDER_DIORITE, AugmentType.MODE);
+		machineExtruderAndesite = addAugmentItem(499, TEProps.MACHINE_EXTRUDER_ANDESITE, AugmentType.MODE);
 
 		/* DYNAMOS */
 		dynamoPower = addAugmentItem(512, TEProps.DYNAMO_POWER);
@@ -231,6 +236,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "nuggetInvar",
 				'Y', "blockGlass"
 		));
+
 		addRecipe(ShapedRecipe(machineFurnaceFood,
 				" G ",
 				"ICI",
@@ -251,6 +257,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.PISTON,
 				'Y', "dustPyrotheum"
 		));
+
 //		addRecipe(ShapedRecipe(machinePulverizerGeode,
 //				" G ",
 //				"ICI",
@@ -271,6 +278,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustPetrotheum"
 		));
+
 		addRecipe(ShapedRecipe(machineSawmillTapper,
 				" G ",
 				"ICI",
@@ -281,6 +289,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Items.BUCKET,
 				'Y', "dustRedstone"
 		));
+
 		addRecipe(ShapedRecipe(machineSmelterPyrotheum,
 				" G ",
 				"ICI",
@@ -291,6 +300,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
 		));
+
 		addRecipe(ShapedRecipe(machineInsolatorMycelium,
 				" G ",
 				"ICI",
@@ -321,6 +331,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.END_STONE,
 				'Y', "dustCryotheum"
 		));
+
 //		addRecipe(ShapedRecipe(machineCrucibleAlloy,
 //				" G ",
 //				"ICI",
@@ -331,6 +342,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 //				'X', Blocks.BRICK_BLOCK,
 //				'Y', "dustCryotheum"
 //		));
+
 		addRecipe(ShapedRecipe(machineCompactorMint,
 				" G ",
 				"ICI",
@@ -341,6 +353,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "gemEmerald",
 				'Y', "dustGlowstone"
 		));
+
 		addRecipe(ShapedRecipe(machineChargerThroughput,
 				" G ",
 				"ICI",
@@ -349,6 +362,37 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearElectrum",
 				'I', "plateSilver",
 				'X', "ingotLead",
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machineExtruderGranite,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TileExtruder.GRANITE,
+				'Y', "dustRedstone"
+		));
+		addRecipe(ShapedRecipe(machineExtruderDiorite,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TileExtruder.DIORITE,
+				'Y', "dustRedstone"
+		));
+		addRecipe(ShapedRecipe(machineExtruderAndesite,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TileExtruder.ANDESITE,
 				'Y', "dustRedstone"
 		));
 
@@ -490,7 +534,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return addItem(metadata, name, rarity);
 	}
 
-	private TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<AugmentEntry>();
+	private TIntObjectHashMap<AugmentEntry> augmentMap = new TIntObjectHashMap<>();
 
 	/* REFERENCES */
 
@@ -537,9 +581,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machinePrecipitatorPackedIce;
 
 	public static ItemStack machineExtruderBatchSize;
-	public static ItemStack machineExtruderAndesite;
-	public static ItemStack machineExtruderDiorite;
 	public static ItemStack machineExtruderGranite;
+	public static ItemStack machineExtruderDiorite;
+	public static ItemStack machineExtruderAndesite;
 
 	/* Dynamo */
 	public static ItemStack dynamoPower;

@@ -81,7 +81,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		boolean success = doItemUse(stack, world, player, hand);
-		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
+		return new ActionResult<>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
 	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
@@ -109,7 +109,7 @@ public class ItemMiner extends ItemEnergyContainerBase {
 			int z = 0;
 			BlockPos offsetPos;
 			IBlockState offsetState;
-			List<ItemStack> drops = new ArrayList<ItemStack>();
+			List<ItemStack> drops = new ArrayList<>();
 
 			switch (traceResult.sideHit) {
 				case DOWN:

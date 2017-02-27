@@ -19,9 +19,9 @@ import java.util.Map.Entry;
 
 public class SmelterManager {
 
-	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>();
-	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<ComparableItemStackSmelter>();
-	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<ComparableItemStackSmelter>();
+	private static Map<List<ComparableItemStackSmelter>, RecipeSmelter> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackSmelter> validationSet = new THashSet<>();
+	private static Set<ComparableItemStackSmelter> lockSet = new THashSet<>();
 
 	static final ItemStack BLOCK_SAND = new ItemStack(Blocks.SAND);
 	static final ItemStack BLOCK_SOUL_SAND = new ItemStack(Blocks.SOUL_SAND);
@@ -258,8 +258,8 @@ public class SmelterManager {
 
 	public static void refreshRecipes() {
 
-		Map<List<ComparableItemStackSmelter>, RecipeSmelter> tempMap = new THashMap<List<ComparableItemStackSmelter>, RecipeSmelter>(recipeMap.size());
-		Set<ComparableItemStackSmelter> tempSet = new THashSet<ComparableItemStackSmelter>();
+		Map<List<ComparableItemStackSmelter>, RecipeSmelter> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackSmelter> tempSet = new THashSet<>();
 		RecipeSmelter tempRecipe;
 
 		for (Entry<List<ComparableItemStackSmelter>, RecipeSmelter> entry : recipeMap.entrySet()) {
@@ -276,7 +276,7 @@ public class SmelterManager {
 		validationSet.clear();
 		validationSet = tempSet;
 
-		Set<ComparableItemStackSmelter> tempSet2 = new THashSet<ComparableItemStackSmelter>();
+		Set<ComparableItemStackSmelter> tempSet2 = new THashSet<>();
 		for (ComparableItemStackSmelter entry : lockSet) {
 			ComparableItemStackSmelter lock = new ComparableItemStackSmelter(new ItemStack(entry.item, entry.stackSize, entry.metadata));
 			tempSet2.add(lock);
@@ -351,7 +351,7 @@ public class SmelterManager {
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
 		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-		List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		if (!relatedType.isEmpty()) {
 			relatedName = "ingot" + StringHelper.titleCase(relatedType);

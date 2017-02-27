@@ -18,9 +18,9 @@ import java.util.Map.Entry;
 
 public class TransposerManager {
 
-	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<List<Integer>, RecipeTransposer>();
-	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtract = new THashMap<ComparableItemStackTransposer, RecipeTransposer>();
-	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<ComparableItemStackTransposer>();
+	private static Map<List<Integer>, RecipeTransposer> recipeMapFill = new THashMap<>();
+	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtract = new THashMap<>();
+	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
 
 	public static final int DEFAULT_ENERGY = 800;
 
@@ -64,12 +64,12 @@ public class TransposerManager {
 		addFillRecipe(8000, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.MOSSY_COBBLESTONE), new FluidStack(FluidRegistry.WATER, 250), false);
 		addFillRecipe(8000, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 1), new FluidStack(FluidRegistry.WATER, 250), false);
 		addFillRecipe(8000, new ItemStack(Blocks.SANDSTONE), new ItemStack(Blocks.END_STONE), new FluidStack(TFFluids.fluidEnder, 250), false);
-		addFillRecipe(8000, new ItemStack(Blocks.ICE), new ItemStack(Blocks.PACKED_ICE), new FluidStack(TFFluids.fluidCryotheum, 250), false);
 		addFillRecipe(4000, new ItemStack(Items.BRICK), new ItemStack(Items.NETHERBRICK), new FluidStack(FluidRegistry.LAVA, 250), false);
 		addFillRecipe(4000, new ItemStack(Items.GLOWSTONE_DUST), new ItemStack(Items.BLAZE_POWDER), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addFillRecipe(4000, new ItemStack(Items.SNOWBALL), ItemHelper.cloneStack(ItemMaterial.dustBlizz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addFillRecipe(4000, new ItemStack(Blocks.SAND), ItemHelper.cloneStack(ItemMaterial.dustBlitz), new FluidStack(TFFluids.fluidRedstone, 200), false);
 		addFillRecipe(4000, ItemHelper.cloneStack(ItemMaterial.dustObsidian, 1), ItemHelper.cloneStack(ItemMaterial.dustBasalz, 1), new FluidStack(TFFluids.fluidRedstone, 200), false);
+
 		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, 1000), true);
 	}
 
@@ -80,9 +80,9 @@ public class TransposerManager {
 
 	public static void refreshRecipes() {
 
-		Map<List<Integer>, RecipeTransposer> tempFill = new THashMap<List<Integer>, RecipeTransposer>(recipeMapFill.size());
-		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtract = new THashMap<ComparableItemStackTransposer, RecipeTransposer>(recipeMapExtract.size());
-		Set<ComparableItemStackTransposer> tempSet = new THashSet<ComparableItemStackTransposer>();
+		Map<List<Integer>, RecipeTransposer> tempFill = new THashMap<>(recipeMapFill.size());
+		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtract = new THashMap<>(recipeMapExtract.size());
+		Set<ComparableItemStackTransposer> tempSet = new THashSet<>();
 		RecipeTransposer tempRecipe;
 
 		for (Entry<List<Integer>, RecipeTransposer> entry : recipeMapFill.entrySet()) {

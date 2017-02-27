@@ -38,10 +38,10 @@ public class RenderFrame implements IItemBakery {
 					RenderCell.modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(inner));
 				}
 			}
-			TextureAtlasSprite center = getCenterTexture(stack);
-			if (center != null) {
-				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
-			}
+			//			TextureAtlasSprite center = getCenterTexture(stack);
+			//			if (center != null) {
+			//				RenderCell.modelCenter.render(ccrs, new IconTransformation(center));
+			//			}
 			buffer.finishDrawing();
 			return PlanarFaceBakery.shadeQuadFaces(buffer.bake());
 		}
@@ -104,7 +104,7 @@ public class RenderFrame implements IItemBakery {
 				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_tin");
 			case 64:
 				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_copper");
-			case 128:
+			case 128: // Cell
 				return TextureUtils.getBlockTexture("thermalfoundation:storage/block_lead");
 			case 160: // Illuminator
 			default:

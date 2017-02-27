@@ -2,17 +2,11 @@ package cofh.thermalexpansion.init;
 
 import codechicken.lib.block.property.unlisted.*;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.block.BlockTEBase;
-import cofh.thermalexpansion.block.BlockTEBase.EnumSideConfig;
 import cofh.thermalexpansion.gui.CreativeTabTE;
 import cofh.thermalexpansion.gui.CreativeTabTEFlorbs;
 import cofh.thermalfoundation.item.ItemMaterial;
-import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.property.IUnlistedProperty;
-import net.minecraftforge.common.property.Properties;
 import net.minecraftforge.fluids.Fluid;
 
 public class TEProps {
@@ -109,13 +103,13 @@ public class TEProps {
 	public static boolean useAlternateStarfieldShader = false;
 
 	/* BLOCKSTATE PROPERTIES */
-	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
-
-	static {
-		for (int i = 0; i < 6; i++) {
-			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
-		}
-	}
+//	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
+//
+//	static {
+//		for (int i = 0; i < 6; i++) {
+//			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
+//		}
+//	}
 
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
 	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
@@ -125,7 +119,7 @@ public class TEProps {
 	public static final UnlistedIntegerProperty LIGHT = new UnlistedIntegerProperty("light");
 	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale_display");
 
-	public static final UnlistedByteArrayProperty SIDE_CONFIG_RAW = new UnlistedByteArrayProperty("side_config");
+	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
 
 	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
 	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");
@@ -157,6 +151,11 @@ public class TEProps {
 	public static final String MACHINE_CRUCIBLE_ALLOY = "machineCrucibleAlloy";
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
+
+	public static final String MACHINE_EXTRUDER_BATCH_SIZE = "machineExtruderBatchSize";
+	public static final String MACHINE_EXTRUDER_GRANITE = "machineExtruderGranite";
+	public static final String MACHINE_EXTRUDER_DIORITE = "machineExtruderDiorite";
+	public static final String MACHINE_EXTRUDER_ANDESITE = "machineExtruderAndesite";
 
 	/* DYNAMOS */
 	public static final String DYNAMO_POWER = "dynamoPower";

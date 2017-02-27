@@ -49,7 +49,7 @@ public class TileSawmill extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SAWMILL_TAPPER);
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");

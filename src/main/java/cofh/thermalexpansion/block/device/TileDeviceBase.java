@@ -53,6 +53,13 @@ public abstract class TileDeviceBase extends TilePowered {
 	}
 
 	@Override
+	public void setDefaultSides() {
+
+		sideCache = getDefaultSides();
+		sideCache[facing] = 0;
+	}
+
+	@Override
 	protected boolean setLevel(int level) {
 
 		return false;

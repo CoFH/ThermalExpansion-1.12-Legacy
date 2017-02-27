@@ -31,7 +31,7 @@
 			},
 			"machinefurnaceore": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_furnace_ore"
 				}
 			},
 			"machinepulverizergeode": {
@@ -41,7 +41,7 @@
 			},
 			"machinepulverizerpetrotheum": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_pulverizer_petrotheum"
 				}
 			},
 			"machinesawmilltapper": {
@@ -51,7 +51,7 @@
 			},
 			"machinesmelterpyrotheum": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_smelter_pyrotheum"
 				}
 			},
 			"machineinsolatormycelium": {
@@ -71,7 +71,7 @@
 			},
 			"machinecompactormint": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_compactor_mint"
 				}
 			},
 			"machinecruciblealloy": {
@@ -81,27 +81,32 @@
 			},
 			"machinechargerthroughput": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
 				}
 			},
-			"machineextruderandesite": {
+			"machineprecipitatorbatchsize": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_precipitator_batch_size"
 				}
 			},
 			"machineextruderbatchsize": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
-				}
-			},
-			"machineextruderdiorite": {
-				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_extruder_batch_size"
 				}
 			},
 			"machineextrudergranite": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_extruder_granite"
+				}
+			},
+			"machineextruderdiorite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_diorite"
+				}
+			},
+			"machineextruderandesite": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_andesite"
 				}
 			},
 			"dynamopower": {
@@ -126,22 +131,22 @@
 			},
 			"dynamosteamturbine": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/dynamo_steam_turbine"
 				}
 			},
 			"dynamomagmaticcoolant": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/dynamo_magmatic_coolant"
 				}
 			},
 			"dynamocompressioncoolant": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/dynamo_compression_coolant"
 				}
 			},
 			"dynamocompressionfuel": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/dynamo_compression_fuel"
 				}
 			},
 			"automatondepth": {

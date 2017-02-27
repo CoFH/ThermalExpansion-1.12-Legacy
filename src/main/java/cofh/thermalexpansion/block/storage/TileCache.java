@@ -2,22 +2,29 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
+import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture {
+import java.util.List;
+
+public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo {
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SLOTS = { 0, 1 };
@@ -478,4 +485,21 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		return TETextures.CACHE_SIDE[level];
 	}
+
+	/* ITileInfo */
+	@Override
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
+
+		if (debug) {
+			return;
+		}
+		if (storedStack != null) {
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level)));
+		} else {
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
+		}
+		info.add(new TextComponentString(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+	}
+
 }

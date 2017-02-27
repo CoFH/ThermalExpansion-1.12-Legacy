@@ -3,6 +3,8 @@ package cofh.thermalexpansion.plugins.jei;
 public class RecipeUidsTE {
 
 	public static final String FURNACE = "thermalexpansion.furnace";
+	public static final String FURNACE_FOOD = "thermalexpansion.furnace_food";
+	public static final String FURNACE_ORE = "thermalexpansion.furnace_ores";
 
 	public static final String PULVERIZER = "thermalexpansion.pulverizer";
 	public static final String PULVERIZER_PETROTHEUM = "thermalexpansion.pulverizer_petrotheum";

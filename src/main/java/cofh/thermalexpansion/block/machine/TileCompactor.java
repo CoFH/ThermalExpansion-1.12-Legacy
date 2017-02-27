@@ -39,7 +39,7 @@ public class TileCompactor extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
 
 		VALUES[0] = Mode.PRESS;

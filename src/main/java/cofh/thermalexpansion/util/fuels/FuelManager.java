@@ -153,7 +153,8 @@ public class FuelManager {
 			addCompressionFuel("coal", configFuels.get(category, "coal", 500000));
 
 			addCompressionFuel("tree_oil", configFuels.get(category, "tree_oil", 1000000));
-			addCompressionFuel("fuel", configFuels.get(category, "fuel", 3000000));
+			addCompressionFuel("refined_oil", configFuels.get(category, "refined_oil", 1250000));
+			addCompressionFuel("fuel", configFuels.get(category, "fuel", 2000000));
 		}
 
 		/* REACTANT */
@@ -161,17 +162,18 @@ public class FuelManager {
 			String category = "Fuels.Reactant";
 			configFuels.getCategory(category).setComment("You can add fuels to the Reactant Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addReactantFuel("redstone", configFuels.get(category, "redstone", 600000));
-			addReactantFuel("glowstone", configFuels.get(category, "glowstone", 750000));
+			addReactantFuel("creosote", configFuels.get(category, "creosote", 250000));
+			addReactantFuel("redstone", configFuels.get(category, "redstone", 500000));
+			addReactantFuel("glowstone", configFuels.get(category, "glowstone", 600000));
+			addReactantFuel("aerotheum", configFuels.get(category, "aerotheum", 1250000));
 
 			addReactantFuel("mobessence", configFuels.get(category, "mobessence", 500000));
-			addReactantFuel("sewage", configFuels.get(category, "sewage", 12000));
-			addReactantFuel("sludge", configFuels.get(category, "sludge", 12000));
+			addReactantFuel("sewage", configFuels.get(category, "sewage", 24000));
+			addReactantFuel("sludge", configFuels.get(category, "sludge", 24000));
 
 			addReactantFuel("seedoil", configFuels.get(category, "seedoil", 250000));
 			addReactantFuel("biomass", configFuels.get(category, "biomass", 450000));
 
-			addReactantFuel("creosote", configFuels.get(category, "creosote", 200000));
 		}
 
 		/* ENERVATION */

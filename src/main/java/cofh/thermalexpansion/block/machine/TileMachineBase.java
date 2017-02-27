@@ -16,6 +16,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.ArrayList;
@@ -28,9 +29,11 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockMachine.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
 
+	public static final ResourceLocation[] SOUNDS = new ResourceLocation[BlockMachine.Type.values().length];
+
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
 	protected static final int ENERGY_BASE = 100;
 	protected static final int SECONDARY_BASE = 100;
 
@@ -434,15 +437,22 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM;
+				return TETextures.MACHINE_BOTTOM[level];
 			} else if (side == 1) {
-				return TETextures.MACHINE_TOP;
+				return TETextures.MACHINE_TOP[level];
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
+			return side != facing ? TETextures.MACHINE_SIDE[level] : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}
-		return TETextures.MACHINE_SIDE;
+		return TETextures.MACHINE_SIDE[level];
+	}
+
+	/* ISoundSource */
+	@Override
+	public ResourceLocation getSoundLocation() {
+
+		return SOUNDS[getType()];
 	}
 
 }

@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class PulverizerManager {
 
-	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>();
+	private static Map<ComparableItemStackPulverizer, RecipePulverizer> recipeMap = new THashMap<>();
 
 	static final int ORE_MULTIPLIER = 2;
 	static final int DEFAULT_ENERGY = 4000;
@@ -258,7 +258,7 @@ public class PulverizerManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap<ComparableItemStackPulverizer, RecipePulverizer>(recipeMap.size());
+		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap<>(recipeMap.size());
 		RecipePulverizer tempRecipe;
 
 		for (Entry<ComparableItemStackPulverizer, RecipePulverizer> entry : recipeMap.entrySet()) {
@@ -315,7 +315,7 @@ public class PulverizerManager {
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
 		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
-		List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
 		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
@@ -371,7 +371,7 @@ public class PulverizerManager {
 		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
 		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
 		List<ItemStack> registeredGem = OreDictionary.getOres(gemName);
-		List<ItemStack> registeredRelated = new ArrayList<ItemStack>();
+		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
 		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);

@@ -51,7 +51,7 @@ public class TileTransposer extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
@@ -77,7 +77,7 @@ public class TileTransposer extends TileMachineBase {
 
 	// TODO : Use this instead of reverse?
 	public byte modeFlag;
-	private byte mode;
+	public byte mode;
 
 	public boolean extractFlag;
 	public boolean extractMode;
@@ -111,6 +111,7 @@ public class TileTransposer extends TileMachineBase {
 
 				if (!redstoneControlOrDisable() || !canStartHandler()) {
 					processOff();
+					extractMode = extractFlag;
 				} else {
 					processStartHandler();
 				}
@@ -205,6 +206,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			return false;
 		}
+		extractMode = extractFlag;
 		return true;
 	}
 
@@ -224,6 +226,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			return false;
 		}
+		extractMode = extractFlag;
 		return true;
 	}
 
@@ -722,15 +725,15 @@ public class TileTransposer extends TileMachineBase {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM;
+				return TETextures.MACHINE_BOTTOM[level];
 			} else if (side == 1) {
-				return TETextures.MACHINE_TOP;
+				return TETextures.MACHINE_TOP[level];
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.MACHINE_SIDE[level] : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
-		return TETextures.MACHINE_SIDE;
+		return TETextures.MACHINE_SIDE[level];
 	}
 
 	/* CAPABILITIES */

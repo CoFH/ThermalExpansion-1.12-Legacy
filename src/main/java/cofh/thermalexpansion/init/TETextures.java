@@ -28,9 +28,26 @@ public class TETextures {
 		CONFIG_OPEN =						register(map, CONFIG_ + "open");
 
 		/* MACHINES */
-		MACHINE_BOTTOM =					register(map, BLOCKS_ + "machine/machine_bottom");
-		MACHINE_TOP =						register(map, BLOCKS_ + "machine/machine_top");
-		MACHINE_SIDE =						register(map, BLOCKS_ + "machine/machine_side");
+		MACHINE_BOTTOM_0 =                    register(map, MACHINE_ + "bottom_0");
+		MACHINE_BOTTOM_1 =                    register(map, MACHINE_ + "bottom_1");
+		MACHINE_BOTTOM_2 =                    register(map, MACHINE_ + "bottom_2");
+		MACHINE_BOTTOM_3 =                    register(map, MACHINE_ + "bottom_3");
+		MACHINE_BOTTOM_4 =                    register(map, MACHINE_ + "bottom_4");
+		MACHINE_BOTTOM_C =                    register(map, MACHINE_ + "bottom_c");
+
+		MACHINE_TOP_0 =                       register(map, MACHINE_ + "top_0");
+		MACHINE_TOP_1 =                       register(map, MACHINE_ + "top_1");
+		MACHINE_TOP_2 =                       register(map, MACHINE_ + "top_2");
+		MACHINE_TOP_3 =                       register(map, MACHINE_ + "top_3");
+		MACHINE_TOP_4 =                       register(map, MACHINE_ + "top_4");
+		MACHINE_TOP_C =                       register(map, MACHINE_ + "top_c");
+
+		MACHINE_SIDE_0 =                      register(map, MACHINE_ + "side_0");
+		MACHINE_SIDE_1 =                      register(map, MACHINE_ + "side_1");
+		MACHINE_SIDE_2 =                      register(map, MACHINE_ + "side_2");
+		MACHINE_SIDE_3 =                      register(map, MACHINE_ + "side_3");
+		MACHINE_SIDE_4 =                      register(map, MACHINE_ + "side_4");
+		MACHINE_SIDE_C =                      register(map, MACHINE_ + "side_c");
 
 		MACHINE_FACE_FURNACE =				register(map, MACHINE_FACE_ + "furnace");
 		MACHINE_FACE_PULVERIZER =			register(map, MACHINE_FACE_ + "pulverizer");
@@ -150,20 +167,6 @@ public class TETextures {
 		CELL_METER_8 =                      register(map, CELL_ + "meter_8");
 		CELL_METER_C =                      register(map, CELL_ + "meter_c");
 
-		TANK_TOP_0_0 =                      register(map, TANK_ + "top_0_0");
-		TANK_TOP_0_1 =                      register(map, TANK_ + "top_0_1");
-		TANK_TOP_0_2 =                      register(map, TANK_ + "top_0_2");
-		TANK_TOP_0_3 =                      register(map, TANK_ + "top_0_3");
-		TANK_TOP_0_4 =                      register(map, TANK_ + "top_0_4");
-		TANK_TOP_0_C =                      register(map, TANK_ + "top_0_c");
-
-		TANK_TOP_1_0 =                      register(map, TANK_ + "top_1_0");
-		TANK_TOP_1_1 =                      register(map, TANK_ + "top_1_1");
-		TANK_TOP_1_2 =                      register(map, TANK_ + "top_1_2");
-		TANK_TOP_1_3 =                      register(map, TANK_ + "top_1_3");
-		TANK_TOP_1_4 =                      register(map, TANK_ + "top_1_4");
-		TANK_TOP_1_C =                      register(map, TANK_ + "top_1_c");
-
 		TANK_BOTTOM_0_0 =                   register(map, TANK_ + "bottom_0_0");
 		TANK_BOTTOM_0_1 =                   register(map, TANK_ + "bottom_0_1");
 		TANK_BOTTOM_0_2 =                   register(map, TANK_ + "bottom_0_2");
@@ -177,6 +180,20 @@ public class TETextures {
 		TANK_BOTTOM_1_3 =                   register(map, TANK_ + "bottom_1_3");
 		TANK_BOTTOM_1_4 =                   register(map, TANK_ + "bottom_1_4");
 		TANK_BOTTOM_1_C =                   register(map, TANK_ + "bottom_1_c");
+
+		TANK_TOP_0_0 =                      register(map, TANK_ + "top_0_0");
+		TANK_TOP_0_1 =                      register(map, TANK_ + "top_0_1");
+		TANK_TOP_0_2 =                      register(map, TANK_ + "top_0_2");
+		TANK_TOP_0_3 =                      register(map, TANK_ + "top_0_3");
+		TANK_TOP_0_4 =                      register(map, TANK_ + "top_0_4");
+		TANK_TOP_0_C =                      register(map, TANK_ + "top_0_c");
+
+		TANK_TOP_1_0 =                      register(map, TANK_ + "top_1_0");
+		TANK_TOP_1_1 =                      register(map, TANK_ + "top_1_1");
+		TANK_TOP_1_2 =                      register(map, TANK_ + "top_1_2");
+		TANK_TOP_1_3 =                      register(map, TANK_ + "top_1_3");
+		TANK_TOP_1_4 =                      register(map, TANK_ + "top_1_4");
+		TANK_TOP_1_C =                      register(map, TANK_ + "top_1_c");
 
 		TANK_SIDE_0_0 =                     register(map, TANK_ + "side_0_0");
 		TANK_SIDE_0_1 =                     register(map, TANK_ + "side_0_1");
@@ -192,19 +209,19 @@ public class TETextures {
 		TANK_SIDE_1_4 =                     register(map, TANK_ + "side_1_4");
 		TANK_SIDE_1_C =                     register(map, TANK_ + "side_1_c");
 
-		CACHE_TOP_0 =                       register(map, CACHE_ + "top_0");
-		CACHE_TOP_1 =                       register(map, CACHE_ + "top_1");
-		CACHE_TOP_2 =                       register(map, CACHE_ + "top_2");
-		CACHE_TOP_3 =                       register(map, CACHE_ + "top_3");
-		CACHE_TOP_4 =                       register(map, CACHE_ + "top_4");
-		CACHE_TOP_C =                       register(map, CACHE_ + "top_c");
-
 		CACHE_BOTTOM_0 =                    register(map, CACHE_ + "bottom_0");
 		CACHE_BOTTOM_1 =                    register(map, CACHE_ + "bottom_1");
 		CACHE_BOTTOM_2 =                    register(map, CACHE_ + "bottom_2");
 		CACHE_BOTTOM_3 =                    register(map, CACHE_ + "bottom_3");
 		CACHE_BOTTOM_4 =                    register(map, CACHE_ + "bottom_4");
 		CACHE_BOTTOM_C =                    register(map, CACHE_ + "bottom_c");
+
+		CACHE_TOP_0 =                       register(map, CACHE_ + "top_0");
+		CACHE_TOP_1 =                       register(map, CACHE_ + "top_1");
+		CACHE_TOP_2 =                       register(map, CACHE_ + "top_2");
+		CACHE_TOP_3 =                       register(map, CACHE_ + "top_3");
+		CACHE_TOP_4 =                       register(map, CACHE_ + "top_4");
+		CACHE_TOP_C =                       register(map, CACHE_ + "top_c");
 
 		CACHE_SIDE_0 =                      register(map, CACHE_ + "side_0");
 		CACHE_SIDE_1 =                      register(map, CACHE_ + "side_1");
@@ -244,6 +261,34 @@ public class TETextures {
 				CONFIG_PURPLE,
 				CONFIG_OPEN
 		};
+
+		MACHINE_BOTTOM = new TextureAtlasSprite[] {
+				MACHINE_BOTTOM_0,
+				MACHINE_BOTTOM_1,
+				MACHINE_BOTTOM_2,
+				MACHINE_BOTTOM_3,
+				MACHINE_BOTTOM_4,
+				MACHINE_BOTTOM_C
+		};
+
+		MACHINE_TOP = new TextureAtlasSprite[] {
+				MACHINE_TOP_0,
+				MACHINE_TOP_1,
+				MACHINE_TOP_2,
+				MACHINE_TOP_3,
+				MACHINE_TOP_4,
+				MACHINE_TOP_C
+		};
+
+		MACHINE_SIDE = new TextureAtlasSprite[] {
+				MACHINE_SIDE_0,
+				MACHINE_SIDE_1,
+				MACHINE_SIDE_2,
+				MACHINE_SIDE_3,
+				MACHINE_SIDE_4,
+				MACHINE_SIDE_C
+		};
+
 		MACHINE_FACE = new TextureAtlasSprite[] {
 				MACHINE_FACE_FURNACE,
 				MACHINE_FACE_PULVERIZER,
@@ -362,25 +407,6 @@ public class TETextures {
 				CELL_METER_C
 		};
 
-		TANK_TOP = new TextureAtlasSprite[][] {
-				new TextureAtlasSprite[] {
-						TANK_TOP_0_0,
-						TANK_TOP_0_1,
-						TANK_TOP_0_2,
-						TANK_TOP_0_3,
-						TANK_TOP_0_4,
-						TANK_TOP_0_C
-				},
-				new TextureAtlasSprite[] {
-						TANK_TOP_1_0,
-						TANK_TOP_1_1,
-						TANK_TOP_1_2,
-						TANK_TOP_1_3,
-						TANK_TOP_1_4,
-						TANK_TOP_1_C
-				}
-		};
-
 		TANK_BOTTOM = new TextureAtlasSprite[][] {
 				new TextureAtlasSprite[] {
 						TANK_BOTTOM_0_0,
@@ -397,6 +423,25 @@ public class TETextures {
 						TANK_BOTTOM_1_3,
 						TANK_BOTTOM_1_4,
 						TANK_BOTTOM_1_C
+				}
+		};
+
+		TANK_TOP = new TextureAtlasSprite[][] {
+				new TextureAtlasSprite[] {
+						TANK_TOP_0_0,
+						TANK_TOP_0_1,
+						TANK_TOP_0_2,
+						TANK_TOP_0_3,
+						TANK_TOP_0_4,
+						TANK_TOP_0_C
+				},
+				new TextureAtlasSprite[] {
+						TANK_TOP_1_0,
+						TANK_TOP_1_1,
+						TANK_TOP_1_2,
+						TANK_TOP_1_3,
+						TANK_TOP_1_4,
+						TANK_TOP_1_C
 				}
 		};
 
@@ -419,15 +464,6 @@ public class TETextures {
 				}
 		};
 
-		CACHE_TOP = new TextureAtlasSprite[] {
-				CACHE_TOP_0,
-				CACHE_TOP_1,
-				CACHE_TOP_2,
-				CACHE_TOP_3,
-				CACHE_TOP_4,
-				CACHE_TOP_C
-		};
-
 		CACHE_BOTTOM = new TextureAtlasSprite[] {
 				CACHE_BOTTOM_0,
 				CACHE_BOTTOM_1,
@@ -435,6 +471,15 @@ public class TETextures {
 				CACHE_BOTTOM_3,
 				CACHE_BOTTOM_4,
 				CACHE_BOTTOM_C
+		};
+
+		CACHE_TOP = new TextureAtlasSprite[] {
+				CACHE_TOP_0,
+				CACHE_TOP_1,
+				CACHE_TOP_2,
+				CACHE_TOP_3,
+				CACHE_TOP_4,
+				CACHE_TOP_C
 		};
 
 		CACHE_SIDE = new TextureAtlasSprite[] {
@@ -530,9 +575,29 @@ public class TETextures {
 	public static TextureAtlasSprite CONFIG_PURPLE;
 	public static TextureAtlasSprite CONFIG_OPEN;
 
-	public static TextureAtlasSprite MACHINE_BOTTOM;
-	public static TextureAtlasSprite MACHINE_TOP;
-	public static TextureAtlasSprite MACHINE_SIDE;
+	public static TextureAtlasSprite[] MACHINE_BOTTOM;
+	public static TextureAtlasSprite MACHINE_BOTTOM_0;
+	public static TextureAtlasSprite MACHINE_BOTTOM_1;
+	public static TextureAtlasSprite MACHINE_BOTTOM_2;
+	public static TextureAtlasSprite MACHINE_BOTTOM_3;
+	public static TextureAtlasSprite MACHINE_BOTTOM_4;
+	public static TextureAtlasSprite MACHINE_BOTTOM_C;
+
+	public static TextureAtlasSprite[] MACHINE_TOP;
+	public static TextureAtlasSprite MACHINE_TOP_0;
+	public static TextureAtlasSprite MACHINE_TOP_1;
+	public static TextureAtlasSprite MACHINE_TOP_2;
+	public static TextureAtlasSprite MACHINE_TOP_3;
+	public static TextureAtlasSprite MACHINE_TOP_4;
+	public static TextureAtlasSprite MACHINE_TOP_C;
+
+	public static TextureAtlasSprite[] MACHINE_SIDE;
+	public static TextureAtlasSprite MACHINE_SIDE_0;
+	public static TextureAtlasSprite MACHINE_SIDE_1;
+	public static TextureAtlasSprite MACHINE_SIDE_2;
+	public static TextureAtlasSprite MACHINE_SIDE_3;
+	public static TextureAtlasSprite MACHINE_SIDE_4;
+	public static TextureAtlasSprite MACHINE_SIDE_C;
 
 	public static TextureAtlasSprite[] MACHINE_FACE;
 	public static TextureAtlasSprite MACHINE_FACE_FURNACE;

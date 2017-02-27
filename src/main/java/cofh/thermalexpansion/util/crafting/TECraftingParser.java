@@ -68,7 +68,7 @@ public class TECraftingParser {
 
 		JsonParser parser = new JsonParser();
 
-		ArrayList<File> craftingFileList = new ArrayList<File>();
+		ArrayList<File> craftingFileList = new ArrayList<>();
 		addFiles(craftingFileList, craftingFolder);
 
 		for (int i = 0; i < craftingFileList.size(); ++i) {

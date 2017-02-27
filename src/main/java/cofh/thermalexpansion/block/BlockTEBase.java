@@ -146,7 +146,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		if (nbt != null) {
 			dropBlock.setTagCompound(nbt);
 		}
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 		ret.add(dropBlock);
 		return ret;
 	}
@@ -187,7 +187,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 				}
 			}
 		}
-		ArrayList<ItemStack> ret = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> ret = new ArrayList<>();
 		ret.add(dropBlock);
 		return ret;
 	}

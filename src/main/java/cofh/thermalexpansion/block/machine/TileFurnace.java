@@ -35,7 +35,7 @@ public class TileFurnace extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_FURNACE_FOOD);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_FURNACE_ORE);
 

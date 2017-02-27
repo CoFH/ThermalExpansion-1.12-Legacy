@@ -28,7 +28,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileDynamoEnervation.class, "thermalexpansion.dynamo_enervation");
 
@@ -173,7 +173,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
+	private static Map<ComparableItemStack, Integer> fuels = new THashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
 

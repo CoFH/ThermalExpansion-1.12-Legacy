@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.RenderTank;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -62,7 +63,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 
 		// UnListed
-		// builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FLUID);
@@ -204,7 +205,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
 		ModelLoader.setCustomStateMapper(this, mapper);
 		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
-		ModelRegistryHelper.register(mapper.location, new CCBakeryModel(""));//TODO override particles.
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel("thermalexpansion:blocks/storage/tank_top_0_0"));
 
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
@@ -269,9 +270,10 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			addRecipe(ShapedRecipe(tank[0],
 					" I ",
 					"ICI",
-					" I ",
+					" P ",
 					'C', "ingotCopper",
-					'I', "blockGlass"
+					'I', "blockGlass",
+					'P', ItemMaterial.redstoneServo
 			));
 		}
 		// @formatter:on

@@ -51,6 +51,8 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
+		LIGHT_VALUES[TYPE] = 3;
+
 		GameRegistry.registerTileEntity(TileHeatSink.class, "thermalexpansion:device_heat_sink");
 
 		config();

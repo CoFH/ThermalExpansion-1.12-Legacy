@@ -66,16 +66,9 @@ public class TileNullifier extends TileDeviceBase {
 	}
 
 	@Override
-	public void setDefaultSides() {
-
-		sideCache = getDefaultSides();
-		sideCache[facing] = 0;
-	}
-
-	@Override
 	public int getLightValue() {
 
-		return isActive ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
+		return redstoneControlOrDisable() ? FluidHelper.getFluidLuminosity(FluidRegistry.LAVA) : 0;
 	}
 
 	@Override

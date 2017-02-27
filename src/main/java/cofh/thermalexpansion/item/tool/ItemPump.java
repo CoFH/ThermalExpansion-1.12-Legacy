@@ -57,7 +57,7 @@ public class ItemPump extends ItemEnergyContainerBase {
 			e.printStackTrace();
 			player.addChatMessage(new TextComponentString("Error with ItemPump, see console for more info."));
 		}
-		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
+		return new ActionResult<>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
 	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {

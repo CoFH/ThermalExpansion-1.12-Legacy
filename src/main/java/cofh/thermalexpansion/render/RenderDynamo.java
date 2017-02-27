@@ -118,7 +118,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 	/* ILayeredBlockBakery */
@@ -145,7 +145,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 }

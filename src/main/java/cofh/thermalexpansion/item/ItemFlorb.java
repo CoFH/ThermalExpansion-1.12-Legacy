@@ -136,7 +136,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		if (stack.getTagCompound() == null) {
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 		if (!player.capabilities.isCreativeMode) {
 			--stack.stackSize;
@@ -150,7 +150,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 				world.spawnEntityInWorld(new EntityFlorb(world, player, fluid));
 			}
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 
 	/* IModelRegister */

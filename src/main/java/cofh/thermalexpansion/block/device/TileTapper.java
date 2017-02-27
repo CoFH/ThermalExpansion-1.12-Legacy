@@ -31,6 +31,7 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
 
@@ -51,6 +52,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+
+		LIGHT_VALUES[TYPE] = 3;
 
 		GameRegistry.registerTileEntity(TileTapper.class, "thermalexpansion:device_tapper");
 
@@ -98,6 +101,15 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
+	public void blockPlaced() {
+
+		if (validTree && redstoneControlOrDisable()) {
+			isActive = true;
+			sendTilePacket(Side.CLIENT);
+		}
+	}
+
+	@Override
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
@@ -115,6 +127,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 		transferOutputFluid();
 
+		boolean curActive = isActive;
+
 		if (isActive) {
 			if (validTree) {
 				tank.fill(genFluid, true);
@@ -123,12 +137,13 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
-		} else if (redstoneControlOrDisable()) {
+		} else if (validTree && redstoneControlOrDisable()) {
 			isActive = true;
 		}
 		if (!cached) {
 			updateAdjacentHandlers();
 		}
+		updateIfChanged(curActive);
 	}
 
 	protected void transferOutputFluid() {
@@ -342,7 +357,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			} else if (side == 1) {
 				return TETextures.DEVICE_TOP;
 			}
-			return side != facing ? TETextures.DEVICE_SIDE : isActive && validTree ? RenderHelper.getFluidTexture(genFluid) : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(genFluid) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}

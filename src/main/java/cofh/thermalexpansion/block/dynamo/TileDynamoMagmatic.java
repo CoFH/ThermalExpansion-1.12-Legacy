@@ -33,7 +33,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
 		validAugments[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.dynamo_magmatic");
@@ -310,7 +310,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<Fluid>();
+	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
 
 	public static boolean isValidFuel(FluidStack stack) {
 

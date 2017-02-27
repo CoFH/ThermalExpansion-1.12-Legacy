@@ -37,7 +37,7 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-		List<BakedQuad> quads = new ArrayList<BakedQuad>();
+		List<BakedQuad> quads = new ArrayList<>();
 		if (face == null) {
 			boolean magmatic = stack.getMetadata() != 0;
 			Fluid fluid = null;

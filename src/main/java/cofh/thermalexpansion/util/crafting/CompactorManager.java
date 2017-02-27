@@ -20,10 +20,10 @@ import java.util.Set;
 
 public class CompactorManager {
 
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapPress = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapStorage = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
-	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapMint = new THashMap<ComparableItemStackCompactor, RecipeCompactor>();
-	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<ComparableItemStackCompactor>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapPress = new THashMap<>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapStorage = new THashMap<>();
+	private static Map<ComparableItemStackCompactor, RecipeCompactor> recipeMapMint = new THashMap<>();
+	private static Set<ComparableItemStackCompactor> validationSet = new THashSet<>();
 
 	static final int DEFAULT_ENERGY = 4000;
 	static final int DEFAULT_ENERGY_STORAGE = 400;
@@ -90,6 +90,8 @@ public class CompactorManager {
 
 		/* PRESS */
 		{
+			addDefaultPressRecipe(new ItemStack(Blocks.ICE), new ItemStack(Blocks.PACKED_ICE));
+
 			addDefaultPressRecipe(ItemMaterial.ingotIron, ItemMaterial.plateIron);
 			addDefaultPressRecipe(ItemMaterial.ingotGold, ItemMaterial.plateGold);
 
@@ -193,10 +195,10 @@ public class CompactorManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempPress = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapPress.size());
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempStorage = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapStorage.size());
-		Map<ComparableItemStackCompactor, RecipeCompactor> tempMint = new THashMap<ComparableItemStackCompactor, RecipeCompactor>(recipeMapMint.size());
-		Set<ComparableItemStackCompactor> tempSet = new THashSet<ComparableItemStackCompactor>();
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempPress = new THashMap<>(recipeMapPress.size());
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempStorage = new THashMap<>(recipeMapStorage.size());
+		Map<ComparableItemStackCompactor, RecipeCompactor> tempMint = new THashMap<>(recipeMapMint.size());
+		Set<ComparableItemStackCompactor> tempSet = new THashSet<>();
 		RecipeCompactor tempRecipe;
 
 		for (Map.Entry<ComparableItemStackCompactor, RecipeCompactor> entry : recipeMapPress.entrySet()) {

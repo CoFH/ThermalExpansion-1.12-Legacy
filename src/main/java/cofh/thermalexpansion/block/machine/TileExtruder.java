@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.machine;
 import cofh.api.core.ICustomInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.lib.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -32,6 +33,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private static final int TYPE = BlockMachine.Type.EXTRUDER.getMetadata();
 	public static int basePower = 20;
 
+	public static ItemStack ANDESITE;
+	public static ItemStack DIORITE;
+	public static ItemStack GRANITE;
+
 	public static void initialize() {
 
 		processItems = new ItemStack[3];
@@ -39,6 +44,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		processItems[0] = new ItemStack(Blocks.COBBLESTONE);
 		processItems[1] = new ItemStack(Blocks.STONE);
 		processItems[2] = new ItemStack(Blocks.OBSIDIAN);
+
+		GRANITE = new ItemStack(Blocks.STONE, 1, 1);
+		DIORITE = new ItemStack(Blocks.STONE, 1, 3);
+		ANDESITE = new ItemStack(Blocks.STONE, 1, 5);
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 4;
@@ -52,7 +61,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_ANDESITE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_DIORITE);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_GRANITE);
 
 		LIGHT_VALUES[TYPE] = 14;
 
@@ -80,13 +92,23 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private byte curSelection;
 	private byte prevSelection;
 
+	private ItemStack[] outputItems = new ItemStack[3];
 	private FluidTankCore hotTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 	private FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+
+	/* AUGMENTS */
+	protected boolean augmentAndesite;
+	protected boolean augmentDiorite;
+	protected boolean augmentGranite;
 
 	public TileExtruder() {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+
+		for (int i = 0; i < 3; i++) {
+			outputItems[i] = processItems[i].copy();
+		}
 		hotTank.setLock(FluidRegistry.LAVA);
 		coldTank.setLock(FluidRegistry.WATER);
 	}
@@ -106,10 +128,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(processItems[curSelection])) {
+		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
+		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -130,9 +152,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	protected void processFinish() {
 
 		if (inventory[0] == null) {
-			inventory[0] = processItems[prevSelection].copy();
+			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
 		hotTank.drain(processLava[prevSelection], true);
 		coldTank.drain(processWater[prevSelection], true);
@@ -311,11 +333,50 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		coldTank.getFluid().amount = payload.getInt();
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		outputItems[1] = processItems[1].copy();
+
+		augmentGranite = false;
+		augmentDiorite = false;
+		augmentAndesite = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentGranite && TEProps.MACHINE_EXTRUDER_GRANITE.equals(id)) {
+			outputItems[1] = GRANITE.copy();
+			augmentGranite = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentDiorite && TEProps.MACHINE_EXTRUDER_DIORITE.equals(id)) {
+			outputItems[1] = DIORITE.copy();
+			augmentDiorite = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentAndesite && TEProps.MACHINE_EXTRUDER_ANDESITE.equals(id)) {
+			outputItems[1] = ANDESITE.copy();
+			augmentAndesite = true;
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
 	/* ICustomInventory */
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return processItems;
+		return outputItems;
 	}
 
 	@Override

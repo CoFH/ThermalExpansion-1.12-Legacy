@@ -82,7 +82,7 @@ public class PulverizerRecipeCategoryPetrotheum extends PulverizerRecipeCategory
 		List<List<FluidStack>> inputFluids = ingredients.getInputs(FluidStack.class);
 		IGuiFluidStackGroup guiFluidStacks = recipeLayout.getFluidStacks();
 
-		guiFluidStacks.init(0, true, 141, 1, 16, 60, 100, false, tankOverlay);
+		guiFluidStacks.init(0, true, 141, 1, 16, 60, 1000, false, tankOverlay);
 		guiFluidStacks.set(0, inputFluids.get(0));
 	}
 

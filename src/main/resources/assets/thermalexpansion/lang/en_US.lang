@@ -93,6 +93,18 @@ info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specializat
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Magma Crucible: Specialization
 
+info.thermalexpansion.augment.machineExtruderAndesite.0=Igneous Extruder: Specialization
+info.thermalexpansion.augment.machineExtruderAndesite.a.0=Allows for the creation of Andesite.
+info.thermalexpansion.augment.machineExtruderAndesite.c.0=Replaces the Stone option.
+
+info.thermalexpansion.augment.machineExtruderDiorite.0=Igneous Extruder: Specialization
+info.thermalexpansion.augment.machineExtruderDiorite.a.0=Allows for the creation of Diorite.
+info.thermalexpansion.augment.machineExtruderDiorite.c.0=Replaces the Stone option.
+
+info.thermalexpansion.augment.machineExtruderGranite.0=Igneous Extruder: Specialization
+info.thermalexpansion.augment.machineExtruderGranite.a.0=Allows for the creation of Granite.
+info.thermalexpansion.augment.machineExtruderGranite.c.0=Replaces the Stone option.
+
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
 info.thermalexpansion.augment.machineFurnaceFood.b.0=Only food items can be processed.

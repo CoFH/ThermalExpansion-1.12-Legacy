@@ -78,7 +78,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
-		builder.add(TEProps.SIDE_CONFIG[0]).add(TEProps.SIDE_CONFIG[1]).add(TEProps.SIDE_CONFIG[2]).add(TEProps.SIDE_CONFIG[3]).add(TEProps.SIDE_CONFIG[4]).add(TEProps.SIDE_CONFIG[5]);
+		builder.add(TEProps.SIDE_CONFIG);
 
 		return builder.build();
 	}

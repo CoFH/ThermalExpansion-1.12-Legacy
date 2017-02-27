@@ -6,10 +6,8 @@ import codechicken.lib.model.blockbakery.IBakeryItem;
 import codechicken.lib.model.blockbakery.IItemBakery;
 import cofh.api.core.IInitializer;
 import cofh.core.item.ItemMulti;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.render.RenderFrame;
-import cofh.thermalfoundation.block.BlockGlass;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -59,7 +57,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 		// frameAutomaton = addItem(32, "frameAutomaton");
 		frameDevice = addItem(64, "frameDevice");
 		frameCell = addItem(128, "frameCell");
-		frameLight = addItem(160, "frameLight");
+		// frameLight = addItem(160, "frameLight");
 
 		return true;
 	}
@@ -116,14 +114,14 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 				'G', "blockGlass",
 				'I', "ingotIron"
 		));
-		addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
-				" Q ",
-				"G G",
-				" I ",
-				'G', BlockGlass.glassLead,
-				'I', "ingotSignalum",
-				'Q', "gemQuartz"
-		));
+//		addRecipe(ShapedRecipe(ItemHelper.cloneStack(frameLight, 2),
+//				" Q ",
+//				"G G",
+//				" I ",
+//				'G', BlockGlass.glassLead,
+//				'I', "ingotSignalum",
+//				'Q', "gemQuartz"
+//		));
 		// @formatter:on
 
 		return true;

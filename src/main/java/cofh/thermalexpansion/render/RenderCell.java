@@ -93,7 +93,7 @@ public class RenderCell implements ILayeredBlockBakery {
 		state = state.withProperty(TEProps.SCALE, cell.getLightValue());
 
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[cell.getFacing()]);
-		state = state.withProperty(TEProps.SIDE_CONFIG_RAW, cell.sideCache.clone());
+		state = state.withProperty(TEProps.SIDE_CONFIG, cell.sideCache.clone());
 		return state;
 	}
 
@@ -115,7 +115,7 @@ public class RenderCell implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 	/* ILayeredBlockBakery */
@@ -129,7 +129,7 @@ public class RenderCell implements ILayeredBlockBakery {
 			TextureAtlasSprite meter = TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
 
 			int facing = state.getValue(TEProps.FACING).ordinal();
-			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG_RAW);
+			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG);
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -148,7 +148,7 @@ public class RenderCell implements ILayeredBlockBakery {
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
-		return new ArrayList<BakedQuad>();
+		return new ArrayList<>();
 	}
 
 }

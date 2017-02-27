@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.furnace;
 
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -19,14 +18,14 @@ public class FurnaceRecipeHandler implements IRecipeHandler<FurnaceRecipeWrapper
 	@Override
 	public String getRecipeCategoryUid() {
 
-		return RecipeUidsTE.FURNACE;
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull FurnaceRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

@@ -47,7 +47,7 @@ public class TileCrafter extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileCrafter.class, "thermalexpansion:machine_crafter");
 

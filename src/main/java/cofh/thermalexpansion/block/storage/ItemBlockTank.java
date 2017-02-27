@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.block.ItemBlockCore;
+import cofh.lib.util.capabilities.FluidContainerItemWrapper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -10,6 +11,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidContainerItem;
 
@@ -214,6 +216,13 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 		}
 		stack.amount = drained;
 		return stack;
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new FluidContainerItemWrapper(stack, this);
 	}
 
 }

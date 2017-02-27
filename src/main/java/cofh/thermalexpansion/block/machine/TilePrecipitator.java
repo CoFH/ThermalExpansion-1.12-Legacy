@@ -50,7 +50,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
 

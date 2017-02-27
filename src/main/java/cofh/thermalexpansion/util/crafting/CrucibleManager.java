@@ -20,7 +20,7 @@ import java.util.Map.Entry;
 
 public class CrucibleManager {
 
-	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>();
+	private static Map<ComparableItemStackSafe, RecipeCrucible> recipeMap = new THashMap<>();
 
 	static final int DEFAULT_ENERGY = 8000;
 
@@ -83,7 +83,7 @@ public class CrucibleManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap<ComparableItemStackSafe, RecipeCrucible>(recipeMap.size());
+		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap<>(recipeMap.size());
 		RecipeCrucible tempRecipe;
 
 		for (Entry<ComparableItemStackSafe, RecipeCrucible> entry : recipeMap.entrySet()) {

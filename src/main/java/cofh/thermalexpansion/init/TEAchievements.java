@@ -65,7 +65,7 @@ public class TEAchievements {
 	}
 
 	public static boolean enable = true;
-	public static final ArrayList<Achievement> achievementList = new ArrayList<Achievement>();
+	public static final ArrayList<Achievement> achievementList = new ArrayList<>();
 
 	/* REFERENCES */
 	public static AchievementPage achievementPage;

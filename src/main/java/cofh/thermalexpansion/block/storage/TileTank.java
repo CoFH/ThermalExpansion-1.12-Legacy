@@ -1,11 +1,9 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.tileentity.ITileInfo;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.FluidHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileAugmentableSecure;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,6 +11,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -24,10 +24,13 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
-public class TileTank extends TileAugmentableSecure implements ITickable {
+public class TileTank extends TileAugmentableSecure implements ITickable, ITileInfo {
 
 	public static int[] CAPACITY = { 1, 4, 9, 16, 25 };
+
+	public static final int RENDER_LEVELS = 100;
 
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
@@ -54,6 +57,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	int compareTracker;
+	int lastDisplayLevel;
+	boolean renderFlag;
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
@@ -104,6 +109,25 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	}
 
 	@Override
+	public int getLightValue() {
+
+		if (tank.getFluid() == null || tank.getFluid().getFluid() == null) {
+			return 0;
+		}
+		int fluidLightLevel = tank.getFluid().getFluid().getLuminosity();
+		// if under 1/4 full, half light level
+		if (tank.getFluidAmount() <= getCapacity(level) / 4) {
+			return fluidLightLevel >> 1;
+		}
+		// if over 3/4 full, full light level
+		if (tank.getFluidAmount() >= getCapacity(level) * 3 / 4) {
+			return fluidLightLevel;
+		}
+		// otherwise scale between half and full
+		return (fluidLightLevel >> 1) + (fluidLightLevel - (fluidLightLevel >> 1)) * (tank.getFluidAmount() - (getCapacity(level) >> 2)) / (getCapacity(level) >> 1);
+	}
+
+	@Override
 	public void invalidate() {
 
 		cached = false;
@@ -142,6 +166,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 				updateAdjacentHandlers();
 			}
 		}
+		if (renderFlag && timeCheckEighth()) {
+			updateRender();
+		}
 	}
 
 	@Override
@@ -172,7 +199,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
-		tank.drain(FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true), true);
+		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
+
+		if (toDrain > 0) {
+			renderFlag = true;
+			tank.drain(toDrain, true);
+		}
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -201,6 +233,35 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 	public int getTankFluidAmount() {
 
 		return tank.getFluidAmount();
+	}
+
+	public void updateRender() {
+
+		renderFlag = false;
+
+		int curDisplayLevel = 0;
+		int oldLight = getLightValue();
+
+		if (tank.getFluidAmount() > 0) {
+			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level) * (RENDER_LEVELS - 1));
+			if (curDisplayLevel == 0) {
+				curDisplayLevel = 1;
+			}
+			if (lastDisplayLevel == 0) {
+				lastDisplayLevel = curDisplayLevel;
+				sendTilePacket(Side.CLIENT);
+			}
+		} else if (lastDisplayLevel != 0) {
+			lastDisplayLevel = 0;
+			sendTilePacket(Side.CLIENT);
+		}
+		if (curDisplayLevel != lastDisplayLevel) {
+			lastDisplayLevel = curDisplayLevel;
+			sendTilePacket(Side.CLIENT);
+		}
+		if (oldLight != getLightValue()) {
+			updateLighting();
+		}
 	}
 
 	/* GUI METHODS */
@@ -251,6 +312,21 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 		return nbt;
 	}
 
+	/* ITileInfo */
+	@Override
+	public void getTileInfo(List<ITextComponent> info, EnumFacing side, EntityPlayer player, boolean debug) {
+
+		if (debug) {
+			return;
+		}
+		if (tank.getFluid() != null) {
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.getFluidName(tank.getFluid())));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + tank.getFluidAmount() + "/" + tank.getCapacity() + " mB"));
+		} else {
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty")));
+		}
+	}
+
 	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
@@ -273,32 +349,27 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
 						return 0;
 					}
-					if (adjacentTanks[1]) {
-						if (from == EnumFacing.UP) {
-							return tank.fill(resource, doFill);
-						}
-						if (resource == null) {
-							return 0;
-						}
-						int amount = tank.fill(resource, doFill);
+					renderFlag = true;
+					int amount = tank.fill(resource, doFill);
 
+					if (adjacentTanks[1] && from != EnumFacing.UP) {
 						if (amount != resource.amount) {
 							FluidStack remaining = resource.copy();
 							remaining.amount -= amount;
 							return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(worldObj, pos, EnumFacing.UP, remaining, true);
 						}
-
 					}
-					return tank.fill(resource, doFill);
+					return amount;
 				}
 
 				@Nullable
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					renderFlag = true;
 					return tank.drain(resource, doDrain);
 				}
 
@@ -306,6 +377,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					renderFlag = true;
 					return tank.drain(maxDrain, doDrain);
 				}
 			});

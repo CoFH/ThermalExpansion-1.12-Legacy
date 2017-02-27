@@ -38,7 +38,7 @@ public class ItemChiller extends ItemEnergyContainerBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		if (!player.capabilities.isCreativeMode && extractEnergy(stack, energyPerUse, true) != energyPerUse) {
-			return new ActionResult<ItemStack>(EnumActionResult.PASS, stack);
+			return new ActionResult<>(EnumActionResult.PASS, stack);
 		}
 		RayTraceResult traceResult = player.isSneaking() ? RayTracer.retrace(player, true) : RayTracer.retrace(player, range, true);
 
@@ -81,6 +81,6 @@ public class ItemChiller extends ItemEnergyContainerBase {
 			}
 			player.swingArm(hand);
 		}
-		return new ActionResult<ItemStack>(EnumActionResult.SUCCESS, stack);
+		return new ActionResult<>(EnumActionResult.SUCCESS, stack);
 	}
 }

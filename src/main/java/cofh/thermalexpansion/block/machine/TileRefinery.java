@@ -50,7 +50,7 @@ public class TileRefinery extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<String>();
+		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileRefinery.class, "thermalexpansion:machine_refinery");
 
@@ -348,15 +348,15 @@ public class TileRefinery extends TileMachineBase {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM;
+				return TETextures.MACHINE_BOTTOM[level];
 			} else if (side == 1) {
-				return TETextures.MACHINE_TOP;
+				return TETextures.MACHINE_TOP[level];
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.MACHINE_SIDE[level] : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
-		return TETextures.MACHINE_SIDE;
+		return TETextures.MACHINE_SIDE[level];
 	}
 
 	/* CAPABILITIES */

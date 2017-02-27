@@ -128,7 +128,7 @@ public class ItemTransfuser extends ItemToolBase {
 	public ActionResult<ItemStack> onItemRightClick(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {
 
 		boolean success = doItemUse(stack, world, player, hand);
-		return new ActionResult<ItemStack>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
+		return new ActionResult<>(success ? EnumActionResult.SUCCESS : EnumActionResult.PASS, stack);
 	}
 
 	public boolean doItemUse(ItemStack stack, World world, EntityPlayer player, EnumHand hand) {

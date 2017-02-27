@@ -3,6 +3,7 @@ package cofh.thermalexpansion.block.storage;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.block.ItemBlockCore;
+import cofh.lib.util.capabilities.EnergyContainerItemWrapper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
@@ -12,6 +13,8 @@ import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
@@ -172,6 +175,13 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 	public int getMaxEnergyStored(ItemStack container) {
 
 		return TileCell.getCapacity(getLevel(container));
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
+
+		return new EnergyContainerItemWrapper(stack, this);
 	}
 
 }

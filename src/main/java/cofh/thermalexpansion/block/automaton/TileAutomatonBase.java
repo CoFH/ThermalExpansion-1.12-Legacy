@@ -37,7 +37,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<String>();
+	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
 
 	static {
 		VALID_AUGMENTS_BASE.add(TEProps.AUTOMATON_DEPTH);
@@ -56,7 +56,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 	boolean hasModeAugment;
 
 	CoFHFakePlayer fakePlayer;
-	LinkedList<ItemStack> stuffedItems = new LinkedList<ItemStack>();
+	LinkedList<ItemStack> stuffedItems = new LinkedList<>();
 
 	EnergyConfig energyConfig;
 
@@ -141,7 +141,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 					TileEntity curTile = BlockHelper.getAdjacentTileEntity(this, side);
 					/* Add to Adjacent Inventory */
 					if (Utils.isAccessibleOutput(curTile, side)) {
-						LinkedList<ItemStack> newStuffed = new LinkedList<ItemStack>();
+						LinkedList<ItemStack> newStuffed = new LinkedList<>();
 						for (ItemStack curItem : stuffedItems) {
 							if (curItem == null || curItem.getItem() == null) {
 								curItem = null;

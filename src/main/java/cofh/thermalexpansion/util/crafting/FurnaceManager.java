@@ -21,9 +21,9 @@ import java.util.Set;
 
 public class FurnaceManager {
 
-	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>();
-	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<ComparableItemStackFurnace>();
-	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<ComparableItemStackFurnace>();
+	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<>();
+	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
+	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
 
 	static final int DEFAULT_ENERGY = 2000;
 
@@ -94,21 +94,21 @@ public class FurnaceManager {
 		{
 			int energy = DEFAULT_ENERGY / 2;
 
-			addRecipe(energy, new ItemStack(Items.PORKCHOP), new ItemStack(Items.COOKED_PORKCHOP));
-			addRecipe(energy, new ItemStack(Items.BEEF), new ItemStack(Items.COOKED_BEEF));
-			addRecipe(energy, new ItemStack(Items.CHICKEN), new ItemStack(Items.COOKED_CHICKEN));
-			addRecipe(energy, new ItemStack(Items.MUTTON), new ItemStack(Items.COOKED_MUTTON));
-			addRecipe(energy, new ItemStack(Items.RABBIT), new ItemStack(Items.COOKED_RABBIT));
-			addRecipe(energy, new ItemStack(Items.POTATO), new ItemStack(Items.BAKED_POTATO));
+			addRecipe(energy, new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_PORKCHOP));
+			addRecipe(energy, new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_BEEF));
+			addRecipe(energy, new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_CHICKEN));
+			addRecipe(energy, new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_MUTTON));
+			addRecipe(energy, new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.COOKED_RABBIT));
+			addRecipe(energy, new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Items.BAKED_POTATO));
 			addRecipe(energy, new ItemStack(Items.FISH, 1, 0), new ItemStack(Items.COOKED_FISH, 1, 0));
 			addRecipe(energy, new ItemStack(Items.FISH, 1, 1), new ItemStack(Items.COOKED_FISH, 1, 1));
 
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.PORKCHOP)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.BEEF)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.CHICKEN)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.MUTTON)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.RABBIT)));
-			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.POTATO)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.PORKCHOP, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.BEEF, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.CHICKEN, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.MUTTON, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.RABBIT, 1, OreDictionary.WILDCARD_VALUE)));
+			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.POTATO, 1, OreDictionary.WILDCARD_VALUE)));
 			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 0)));
 			foodSet.add(new ComparableItemStackFurnace(new ItemStack(Items.FISH, 1, 1)));
 		}
@@ -192,7 +192,7 @@ public class FurnaceManager {
 	public static void loadRecipes() {
 
 		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.instance().getSmeltingList();
-		Set<Block> handledBlocks = new THashSet<Block>();
+		Set<Block> handledBlocks = new THashSet<>();
 		ItemStack output;
 
 		handledBlocks.add(Blocks.CACTUS);
@@ -242,9 +242,9 @@ public class FurnaceManager {
 
 	public static void refreshRecipes() {
 
-		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<ComparableItemStackFurnace, RecipeFurnace>(recipeMap.size());
-		Set<ComparableItemStackFurnace> tempFood = new THashSet<ComparableItemStackFurnace>();
-		Set<ComparableItemStackFurnace> tempOre = new THashSet<ComparableItemStackFurnace>();
+		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<>(recipeMap.size());
+		Set<ComparableItemStackFurnace> tempFood = new THashSet<>();
+		Set<ComparableItemStackFurnace> tempOre = new THashSet<>();
 		RecipeFurnace tempRecipe;
 
 		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {

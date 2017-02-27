@@ -14,6 +14,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.Utils;
+import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
@@ -67,7 +68,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		BlockStateContainer.Builder builder = new BlockStateContainer.Builder(this);
 		// UnListed
-		// builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.CREATIVE);
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.SCALE);
@@ -344,9 +345,10 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			addRecipe(ShapedRecipe(cache[0],
 					" I ",
 					"ICI",
-					" I ",
-					'C', "blockWood",
-					'I', "ingotTin"
+					" P ",
+					'C', "chestWood",
+					'I', "ingotTin",
+					'P', ItemMaterial.redstoneServo
 			));
 		}
 		// @formatter:on

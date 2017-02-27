@@ -27,7 +27,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<String>();
+		validAugments[TYPE] = new ArrayList<>();
 
 		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion.dynamo_numismatic");
 
@@ -166,7 +166,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static Map<ComparableItemStack, Integer> fuels = new THashMap<ComparableItemStack, Integer>();
+	private static Map<ComparableItemStack, Integer> fuels = new THashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
 
