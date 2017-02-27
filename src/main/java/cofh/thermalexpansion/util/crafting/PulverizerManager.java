@@ -172,7 +172,7 @@ public class PulverizerManager {
 			addIngotToDustRecipe(energy, "ingotElectrum", ItemMaterial.dustElectrum);
 			addIngotToDustRecipe(energy, "ingotInvar", ItemMaterial.dustInvar);
 			addIngotToDustRecipe(energy, "ingotBronze", ItemMaterial.dustBronze);
-			addIngotToDustRecipe(energy, "ingotSignalum", ItemMaterial.ingotSignalum);
+			addIngotToDustRecipe(energy, "ingotSignalum", ItemMaterial.dustSignalum);
 			addIngotToDustRecipe(energy, "ingotLumium", ItemMaterial.dustLumium);
 			addIngotToDustRecipe(energy, "ingotEnderium", ItemMaterial.dustEnderium);
 		}
