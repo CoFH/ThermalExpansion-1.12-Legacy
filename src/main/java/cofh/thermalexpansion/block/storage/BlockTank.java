@@ -96,6 +96,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		if (stack.getTagCompound() != null) {
 			TileTank tile = (TileTank) world.getTileEntity(pos);
 
+			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
@@ -210,6 +211,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
 			FluidStack stack = state.getValue(TEProps.FLUID);
@@ -230,9 +232,8 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 					fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 				}
 			}
-			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
+			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + ItemBlockTank.isCreative(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
 		});
-
 	}
 
 	/* IInitializer */

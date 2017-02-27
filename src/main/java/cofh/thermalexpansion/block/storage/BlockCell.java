@@ -60,10 +60,10 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		// UnListed
 		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
-		// builder.add(TEProps.LIGHT);
-		builder.add(TEProps.SCALE);
 		builder.add(TEProps.FACING);
 		builder.add(TEProps.SIDE_CONFIG);
+		builder.add(TEProps.LIGHT);
+		builder.add(TEProps.SCALE);
 
 		return builder.build();
 	}
@@ -93,6 +93,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		if (stack.getTagCompound() != null) {
 			TileCell tile = (TileCell) world.getTileEntity(pos);
 
+			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.amountRecv = stack.getTagCompound().getInteger("Recv");
 			tile.amountSend = stack.getTagCompound().getInteger("Send");
@@ -187,6 +188,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
 			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",side_config{");
 			for (int i : state.getValue(TEProps.SIDE_CONFIG)) {
@@ -194,11 +196,12 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 			}
 			builder.append("}");
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
+			builder.append(",light_level=").append(state.getValue(TEProps.LIGHT));
 			builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
 			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCell.getLevel(stack));
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + ItemBlockCell.isCreative(stack) + ",level=" + ItemBlockCell.getLevel(stack));
 	}
 
 	/* IInitializer */

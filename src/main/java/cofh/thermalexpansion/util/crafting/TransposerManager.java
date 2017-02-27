@@ -26,7 +26,7 @@ public class TransposerManager {
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return input == null || fluid == null || fluid.getFluid() == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
+		return input == null || fluid == null ? null : recipeMapFill.get(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
 	public static RecipeTransposer getExtractRecipe(ItemStack input) {
@@ -111,7 +111,7 @@ public class TransposerManager {
 	/* ADD RECIPES */
 	public static boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
-		if (input == null || output == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
+		if (input == null || output == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return false;
 		}
 		if (fillRecipeExists(input, fluid)) {
@@ -129,7 +129,7 @@ public class TransposerManager {
 
 	public static boolean addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
-		if (input == null || fluid == null || fluid.getFluid() == null || fluid.amount <= 0 || energy <= 0) {
+		if (input == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
 			return false;
 		}
 		if (extractRecipeExists(input, fluid)) {

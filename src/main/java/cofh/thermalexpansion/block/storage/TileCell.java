@@ -17,6 +17,8 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -107,8 +109,16 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean setLevel(int level) {
 
+		int curLevel = this.level;
+
 		if (super.setLevel(level)) {
 			energyStorage.setCapacity(getCapacity(level));
+			amountRecv = amountRecv * RECV[level] / RECV[curLevel];
+			amountSend = amountSend * SEND[level] / SEND[curLevel];
+
+			if (isCreative) {
+				energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
+			}
 			return true;
 		}
 		return false;
@@ -295,6 +305,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int extractEnergy(EnumFacing from, int maxExtract, boolean simulate) {
 
 		if (from == null || sideCache[from.ordinal()] == 2) {
+			if (isCreative) {
+				return maxExtract;
+			}
 			return energyStorage.extractEnergy(Math.min(maxExtract, amountSend), simulate);
 		}
 		return 0;
@@ -304,6 +317,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
 
 		if (from == null || sideCache[from.ordinal()] == 1) {
+			if (isCreative) {
+				return maxReceive;
+			}
 			return energyStorage.receiveEnergy(Math.min(maxReceive, amountRecv), simulate);
 		}
 		return 0;
@@ -312,7 +328,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int getEnergyStored(EnumFacing from) {
 
-		return energyStorage.getEnergyStored();
+		return isCreative ? energyStorage.getMaxEnergyStored() : energyStorage.getEnergyStored();
 	}
 
 	@Override
@@ -324,7 +340,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
 
-		return energyStorage.getMaxEnergyStored() > 0;
+		return true;
 	}
 
 	/* IReconfigurableSides */
@@ -367,7 +383,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int getNumPasses() {
 
-		return 3;
+		return 4;
 	}
 
 	@Override
@@ -376,14 +392,60 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (pass == 0) {
 			return TETextures.CELL_CENTER_1;
 		} else if (pass == 1) {
-			return TETextures.CELL_SIDE[level];
+			return isCreative ? TETextures.CELL_SIDE_C : TETextures.CELL_SIDE[level];
 		} else if (pass == 2) {
 			return TETextures.CELL_CONFIG[sideCache[side]];
 		}
 		if (side != facing) {
 			return TETextures.CONFIG_NONE;
 		}
-		return TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+		return isCreative ? TETextures.CELL_METER_C :TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+
+		if (capability == CapabilityEnergy.ENERGY) {
+			return CapabilityEnergy.ENERGY.cast(new net.minecraftforge.energy.IEnergyStorage() {
+				@Override
+				public int receiveEnergy(int maxReceive, boolean simulate) {
+
+					return TileCell.this.receiveEnergy(from, maxReceive, simulate);
+				}
+
+				@Override
+				public int extractEnergy(int maxExtract, boolean simulate) {
+
+					return TileCell.this.extractEnergy(from, maxExtract, simulate);
+				}
+
+				@Override
+				public int getEnergyStored() {
+
+					return TileCell.this.getEnergyStored(from);
+				}
+
+				@Override
+				public int getMaxEnergyStored() {
+
+					return TileCell.this.getMaxEnergyStored(from);
+				}
+
+				@Override
+				public boolean canExtract() {
+
+					return true;
+				}
+
+				@Override
+				public boolean canReceive() {
+
+					return true;
+				}
+			});
+		}
+		return super.getCapability(capability, from);
 	}
 
 }

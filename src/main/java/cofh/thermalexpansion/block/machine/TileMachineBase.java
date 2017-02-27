@@ -192,7 +192,10 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		processRem = 0;
 		isActive = false;
 		wasActive = true;
-		tracker.markTime(worldObj);
+
+		if (worldObj != null) {
+			tracker.markTime(worldObj);
+		}
 	}
 
 	protected void processTick() {

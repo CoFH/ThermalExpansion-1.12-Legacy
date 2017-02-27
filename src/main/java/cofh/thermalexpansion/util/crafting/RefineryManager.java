@@ -14,7 +14,7 @@ public class RefineryManager {
 
 	public static RecipeRefinery getRecipe(FluidStack input) {
 
-		return input == null || input.getFluid() == null ? null : recipeMap.get(input.getFluid().hashCode());
+		return input == null ? null : recipeMap.get(input.getFluid().hashCode());
 	}
 
 	public static boolean recipeExists(FluidStack input) {
@@ -45,7 +45,7 @@ public class RefineryManager {
 	/* ADD RECIPES */
 	public static boolean addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
 
-		if (input == null || input.getFluid() == null || outputFluid == null || outputFluid.getFluid() == null || energy <= 0 || recipeExists(input)) {
+		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
 			return false;
 		}
 		RecipeRefinery recipe = new RecipeRefinery(input, outputFluid, outputItem, energy);
@@ -56,7 +56,7 @@ public class RefineryManager {
 	/* REMOVE RECIPES */
 	public static boolean removeRecipe(FluidStack input) {
 
-		if (input == null || input.getFluid() == null) {
+		if (input == null) {
 			return false;
 		}
 		return recipeMap.remove(input.getFluid().hashCode()) != null;

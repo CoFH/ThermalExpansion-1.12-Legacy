@@ -93,6 +93,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		if (super.setLevel(level)) {
 			tank.setCapacity(getCapacity(level));
+
+			if (isCreative && getTankFluidAmount() > 0) {
+				tank.getFluid().amount = tank.getCapacity();
+			}
 			return true;
 		}
 		return false;
@@ -111,7 +115,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public int getLightValue() {
 
-		if (tank.getFluid() == null || tank.getFluid().getFluid() == null) {
+		if (tank.getFluid() == null) {
 			return 0;
 		}
 		int fluidLightLevel = tank.getFluid().getFluid().getLuminosity();
@@ -202,8 +206,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.DOWN, new FluidStack(tank.getFluid(), Math.min(getFluidTransfer(level), tank.getFluidAmount())), true);
 
 		if (toDrain > 0) {
-			renderFlag = true;
-			tank.drain(toDrain, true);
+			renderFlag = !isCreative;
+			tank.drain(toDrain, !isCreative);
 		}
 	}
 
@@ -338,6 +342,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
 
 		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+
 			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
 				@Override
 				public IFluidTankProperties[] getTankProperties() {
@@ -349,6 +354,18 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
+					if (isCreative) {
+						if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
+							return 0;
+						}
+						if (resource.isFluidEqual(tank.getFluid())) {
+							return 0;
+						}
+						tank.setFluid(new FluidStack(resource.getFluid(), getCapacity(level)));
+						sendTilePacket(Side.CLIENT);
+						updateRender();
+						return 0;
+					}
 					if (resource == null || from == EnumFacing.DOWN && !adjacentTanks[0] && enableAutoOutput) {
 						return 0;
 					}
@@ -369,6 +386,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
+					if (isCreative) {
+						if (!FluidHelper.isFluidEqual(resource, tank.getFluid())) {
+							return null;
+						}
+						return resource.copy();
+					}
 					renderFlag = true;
 					return tank.drain(resource, doDrain);
 				}
@@ -377,6 +400,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
+					if (isCreative) {
+						if (tank.getFluid() == null) {
+							return null;
+						}
+						return new FluidStack(tank.getFluid(), maxDrain);
+					}
 					renderFlag = true;
 					return tank.drain(maxDrain, doDrain);
 				}

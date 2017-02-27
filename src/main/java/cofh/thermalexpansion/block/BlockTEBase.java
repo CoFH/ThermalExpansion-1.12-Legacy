@@ -115,6 +115,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			retTag = ItemHelper.setItemStackTagName(retTag, ((TileTEBase) tile).tileName);
 		}
 		if (tile instanceof TileAugmentableSecure) {
+			retTag.setBoolean("Creative", ((TileAugmentableSecure) tile).isCreative);
 			retTag.setByte("Level", (byte) ((TileAugmentableSecure) tile).getLevel());
 			if (((TileAugmentableSecure) tile).isSecured()) {
 				retTag = SecurityHelper.setItemStackTagSecure(retTag, (ISecurable) tile);

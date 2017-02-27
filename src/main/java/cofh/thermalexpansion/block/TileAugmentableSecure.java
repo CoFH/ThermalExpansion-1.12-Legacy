@@ -45,10 +45,10 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 	/* LEVEL FEATURES */
 	protected byte level = 0;
-	protected boolean isCreative = false;
 	protected boolean hasAutoInput = false;
 	protected boolean hasAutoOutput = false;
 
+	public boolean isCreative = false;
 	public boolean enableAutoInput = false;
 	public boolean enableAutoOutput = false;
 
@@ -551,8 +551,8 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				return false;
 			case CREATIVE:
 				if (level >= 0) {
-					setLevel(4);
 					isCreative = true;
+					setLevel(4);
 					break;
 				}
 				return false;

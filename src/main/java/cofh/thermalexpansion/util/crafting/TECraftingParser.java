@@ -740,9 +740,6 @@ public class TECraftingParser {
 				}
 			}
 		}
-		if (stack.getFluid() == null) {
-			return null;
-		}
 		return stack;
 	}
 

@@ -59,8 +59,11 @@ public class RenderCell implements ILayeredBlockBakery {
 		//}
 	}
 
-	public void renderFrame(CCRenderState ccrs, int level, byte[] sideCache, int facing, TextureAtlasSprite faceTexture) {
+	public void renderFrame(CCRenderState ccrs, boolean creative, int level, byte[] sideCache, int facing, TextureAtlasSprite faceTexture) {
 
+		if (creative) {
+			level = 5;
+		}
 		for (int i = 0; i < 6; i++) {
 			modelFrame.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(TETextures.CELL_SIDE[level]));//Side
 			modelFrame.render(ccrs, i * 4 + 24, i * 4 + 28, new IconTransformation(TETextures.CELL_INNER[level]));//Inner
@@ -87,9 +90,9 @@ public class RenderCell implements ILayeredBlockBakery {
 
 		TileCell cell = (TileCell) tileEntity;
 
-		// state = state.withProperty(TEProps.CREATIVE, false);// TODO
+		state = state.withProperty(TEProps.CREATIVE, cell.isCreative);
 		state = state.withProperty(TEProps.LEVEL, cell.getLevel());
-		// state = state.withProperty(TEProps.LIGHT, Math.min(15, cell.getScaledEnergyStored(16)));
+		state = state.withProperty(TEProps.LIGHT, Math.min(15, cell.getScaledEnergyStored(16)));
 		state = state.withProperty(TEProps.SCALE, cell.getLightValue());
 
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[cell.getFacing()]);
@@ -107,9 +110,12 @@ public class RenderCell implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			renderFrame(ccrs, ItemBlockCell.getLevel(stack), null, 0, null);
-			//TODO Center brightness.
-			//ccrs.brightness = 165 + charge * 5;
+			boolean creative = ItemBlockCell.isCreative(stack);
+			int level = ItemBlockCell.getLevel(stack);
+			int light = Math.min(15, getScaledEnergyStored(stack, 16));
+
+			renderFrame(ccrs, creative, level, null, 0, null);
+			ccrs.brightness = 165 + light * 5;
 			renderCenter(ccrs);
 
 			buffer.finishDrawing();
@@ -123,10 +129,10 @@ public class RenderCell implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null) {
-			// boolean creative = state.getValue(TEProps.CREATIVE);
+			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
-			// int charge = state.getValue(TEProps.LIGHT);
-			TextureAtlasSprite meter = TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
+			int light = state.getValue(TEProps.LIGHT);
+			TextureAtlasSprite meter = creative? TETextures.CELL_METER_C : TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
 
 			int facing = state.getValue(TEProps.FACING).ordinal();
 			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG);
@@ -138,10 +144,9 @@ public class RenderCell implements ILayeredBlockBakery {
 			ccrs.bind(buffer);
 
 			if (layer == BlockRenderLayer.CUTOUT) {
-				renderFrame(ccrs, level, sideCache, facing, meter);
+				renderFrame(ccrs, creative, level, sideCache, facing, meter);
 			} else if (layer == BlockRenderLayer.TRANSLUCENT) {
-				//TODO Center brightness.
-				//ccrs.brightness = 165 + charge * 5;
+				ccrs.brightness = 165 + light * 5;
 				renderCenter(ccrs);
 			}
 

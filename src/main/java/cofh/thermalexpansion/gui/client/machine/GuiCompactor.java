@@ -70,30 +70,22 @@ public class GuiCompactor extends GuiPoweredBase {
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));
 
-		if (myTile.modeFlag != myTile.mode) {
-			modeSel.setToolTip("gui.thermalexpansion.machine.compactor.modeWait");
-			modeSel.setDisabled();
-		} else {
-			modeSel.setToolTip(TOOLTIPS[myTile.mode]);
-			modeSel.setSheetX(176 + myTile.mode * 16);
-			modeSel.setHoverX(176 + myTile.mode * 16);
-			modeSel.setActive();
-		}
+		modeSel.setToolTip(TOOLTIPS[myTile.modeFlag]);
+		modeSel.setSheetX(176 + myTile.modeFlag * 16);
+		modeSel.setHoverX(176 + myTile.modeFlag * 16);
 	}
 
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		if (buttonName.equals("Mode")) {
-			if (myTile.mode == myTile.modeFlag) {
-				if (myTile.mode == 1) {
+				if (myTile.modeFlag == 1) {
 					playClickSound(1.0F, 0.8F);
 				} else {
 					playClickSound(1.0F, 0.6F);
 				}
 				myTile.toggleMode();
 			}
-		}
 	}
 
 }

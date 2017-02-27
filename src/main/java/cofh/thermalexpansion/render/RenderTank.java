@@ -68,8 +68,11 @@ public class RenderTank implements ILayeredBlockBakery {
 	}
 
 	/* RENDER */
-	protected void renderFrame(CCRenderState ccrs, int level, int mode) {
+	protected void renderFrame(CCRenderState ccrs, boolean creative, int level, int mode) {
 
+		if (creative) {
+			level = 5;
+		}
 		modelFrame.render(ccrs, 0, 4, new IconTransformation(TETextures.TANK_BOTTOM[mode][level])); // Bottom
 		modelFrame.render(ccrs, 24, 28, new IconTransformation(TETextures.TANK_TOP[mode][level])); // Bottom inside
 		modelFrame.render(ccrs, 4, 8, new IconTransformation(TETextures.TANK_TOP[mode][level])); // Top
@@ -83,7 +86,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderFluid(CCRenderState ccrs, int metadata, FluidStack stack) {
+	protected void renderFluid(CCRenderState ccrs, boolean creative, int level, FluidStack stack) {
 
 		if (stack == null || stack.amount <= 0) {
 			return;
@@ -95,9 +98,9 @@ public class RenderTank implements ILayeredBlockBakery {
 		int fluidLevel = RENDER_LEVELS - 1;
 
 		if (fluid.isGaseous(stack)) {
-			ccrs.alphaOverride = 32 + 192 * stack.amount / TileTank.CAPACITY[metadata];
-		} else {
-			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.CAPACITY[metadata]);
+			ccrs.alphaOverride = creative ? 224 : 32 + 192 * stack.amount / TileTank.CAPACITY[level];
+		} else if (!creative) {
+			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.CAPACITY[level]);
 		}
 		modelFluid[fluidLevel].render(ccrs, new IconTransformation(fluidTex));
 	}
@@ -108,7 +111,7 @@ public class RenderTank implements ILayeredBlockBakery {
 
 		TileTank tank = ((TileTank) tileEntity);
 
-		// state = state.withProperty(TEProps.CREATIVE, false);// TODO
+		state = state.withProperty(TEProps.CREATIVE, tank.isCreative);
 		state = state.withProperty(TEProps.LEVEL, tank.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, tank.enableAutoOutput);
 		state = state.withProperty(TEProps.FLUID, tank.getTankFluid());
@@ -126,13 +129,14 @@ public class RenderTank implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
+			boolean creative = ItemBlockTank.isCreative(stack);
 			int level = ItemBlockTank.getLevel(stack);
 			FluidStack fluid = null;
 			if (stack.getTagCompound() != null) {
 				fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 			}
-			renderFrame(ccrs, level, 0);
-			renderFluid(ccrs, level, fluid);
+			renderFrame(ccrs, creative, level, 0);
+			renderFluid(ccrs, creative, level, fluid);
 
 			buffer.finishDrawing();
 			return buffer.bake();
@@ -145,7 +149,7 @@ public class RenderTank implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null) {
-			// boolean creative = state.getValue(TEProps.CREATIVE);
+			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
 			int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;
 			FluidStack fluidStack = state.getValue(TEProps.FLUID);
@@ -157,9 +161,9 @@ public class RenderTank implements ILayeredBlockBakery {
 			ccrs.bind(buffer);
 
 			if (layer == BlockRenderLayer.CUTOUT) {
-				renderFrame(ccrs, level, mode);
+				renderFrame(ccrs, creative, level, mode);
 			} else {
-				renderFluid(ccrs, level, fluidStack);
+				renderFluid(ccrs, creative, level, fluidStack);
 			}
 			buffer.finishDrawing();
 			return buffer.bake();

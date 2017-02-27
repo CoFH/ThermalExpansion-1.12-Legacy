@@ -57,7 +57,7 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + getLevel(stack)) + ")";
+		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + (isCreative(stack) ? "creative" : getLevel(stack))) + ")";
 	}
 
 	@Override
@@ -69,6 +69,9 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
+		if (isCreative(stack)) {
+			return EnumRarity.EPIC;
+		}
 		switch (getLevel(stack)) {
 			case 4:
 				return EnumRarity.RARE;
@@ -143,7 +146,7 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 	@Override
 	public int fill(ItemStack container, FluidStack resource, boolean doFill) {
 
-		if (resource == null || container.stackSize > 1) {
+		if (resource == null || container.stackSize > 1 || isCreative(container)) {
 			return 0;
 		}
 		int capacity = getCapacity(container);
@@ -205,7 +208,7 @@ public class ItemBlockTank extends ItemBlockCore implements IFluidContainerItem 
 		}
 		int drained = Math.min(stack.amount, maxDrain);
 
-		if (doDrain) {
+		if (doDrain && !isCreative(container)) {
 			if (maxDrain >= stack.amount) {
 				container.getTagCompound().removeTag("Fluid");
 				return stack;

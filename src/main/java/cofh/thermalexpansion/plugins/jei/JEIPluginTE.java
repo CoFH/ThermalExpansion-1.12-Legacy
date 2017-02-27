@@ -52,7 +52,7 @@ public class JEIPluginTE extends BlankModPlugin {
 	/* HELPERS */
 	public static void drawFluid(int x, int y, FluidStack fluid, int width, int height) {
 
-		if (fluid == null || fluid.getFluid() == null) {
+		if (fluid == null) {
 			return;
 		}
 		RenderHelper.setBlockTextureSheet();

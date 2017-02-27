@@ -54,7 +54,7 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 
-		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + getLevel(stack)) + ")";
+		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + (isCreative(stack) ? "creative" : getLevel(stack))) + ")";
 	}
 
 	@Override
@@ -66,6 +66,9 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 	@Override
 	public EnumRarity getRarity(ItemStack stack) {
 
+		if (isCreative(stack)) {
+			return EnumRarity.EPIC;
+		}
 		switch (getLevel(stack)) {
 			case 4:
 				return EnumRarity.RARE;

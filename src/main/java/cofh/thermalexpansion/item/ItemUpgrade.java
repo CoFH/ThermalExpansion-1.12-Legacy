@@ -24,6 +24,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -136,8 +137,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		}
 
 		// TODO: Add Creative.
-		// upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
-		// addUpgradeEntry(256, UpgradeType.CREATIVE, -1);
+		 upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
+		 addUpgradeEntry(256, UpgradeType.CREATIVE, Byte.MAX_VALUE);
 
 		return true;
 	}

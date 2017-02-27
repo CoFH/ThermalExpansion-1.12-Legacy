@@ -76,11 +76,11 @@ public class TileTransposer extends TileMachineBase {
 	private boolean hasFluidHandler = false;
 
 	// TODO : Use this instead of reverse?
-	public byte modeFlag;
 	public byte mode;
+	public byte modeFlag;
 
-	public boolean extractFlag;
 	public boolean extractMode;
+	public boolean extractFlag;
 
 	public TileTransposer() {
 
@@ -111,13 +111,12 @@ public class TileTransposer extends TileMachineBase {
 
 				if (!redstoneControlOrDisable() || !canStartHandler()) {
 					processOff();
-					extractMode = extractFlag;
 				} else {
 					processStartHandler();
 				}
 			}
 		} else if (redstoneControlOrDisable()) {
-			if (timeCheck()) {
+			if (timeCheck() && !canStartHandler()) {
 				transferOutput();
 				transferInput();
 			}
@@ -201,12 +200,10 @@ public class TileTransposer extends TileMachineBase {
 		if (filled > 0) {
 			tank.drain(filled, true);
 			if (tankProperties[0].getContents().amount >= tankProperties[0].getCapacity()) {
-				extractMode = extractFlag;
 				return true;
 			}
 			return false;
 		}
-		extractMode = extractFlag;
 		return true;
 	}
 
@@ -221,12 +218,10 @@ public class TileTransposer extends TileMachineBase {
 		if (drained > 0) {
 			tank.fill(drainStack, true);
 			if (tankProperties[0].getContents() == null) {
-				extractMode = extractFlag;
 				return true;
 			}
 			return false;
 		}
-		extractMode = extractFlag;
 		return true;
 	}
 
@@ -416,7 +411,6 @@ public class TileTransposer extends TileMachineBase {
 			inventory[1] = null;
 			tank.fill(recipe.getFluid(), true);
 		}
-		extractMode = extractFlag;
 	}
 
 	@Override
@@ -536,10 +530,8 @@ public class TileTransposer extends TileMachineBase {
 
 	public void setMode(boolean mode) {
 
-		boolean lastFlag = extractFlag;
-		extractFlag = mode;
+		extractMode = mode;
 		sendModePacket();
-		extractFlag = lastFlag;
 	}
 
 	/* NBT METHODS */
@@ -588,7 +580,7 @@ public class TileTransposer extends TileMachineBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addBool(extractFlag);
+		payload.addBool(extractMode);
 
 		return payload;
 	}
@@ -598,9 +590,11 @@ public class TileTransposer extends TileMachineBase {
 
 		super.handleModePacket(payload);
 
-		extractFlag = payload.getBool();
-		if (!isActive) {
-			extractMode = extractFlag;
+		extractMode = payload.getBool();
+		extractFlag = extractMode;
+
+		if (isActive) {
+			processOff();
 		}
 		callNeighborTileChange();
 	}
@@ -679,7 +673,6 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
 				processOff();
-				extractMode = extractFlag;
 			}
 		}
 		return stack;
@@ -695,22 +688,12 @@ public class TileTransposer extends TileMachineBase {
 				}
 			}
 			hasFluidHandler = false;
-			extractMode = extractFlag;
 		}
 		inventory[slot] = stack;
 
 		if (stack != null && stack.stackSize > getInventoryStackLimit()) {
 			stack.stackSize = getInventoryStackLimit();
 		}
-	}
-
-	@Override
-	public void markDirty() {
-
-		if (isActive && !hasValidInput()) {
-			extractMode = extractFlag;
-		}
-		super.markDirty();
 	}
 
 	@Override

@@ -63,8 +63,8 @@ public class TileCompactor extends TileMachineBase {
 	private int inputTracker;
 	private int outputTracker;
 
-	public byte modeFlag;
 	public byte mode;
+	public byte modeFlag;
 
 	/* AUGMENTS */
 	protected boolean augmentMint;
@@ -136,7 +136,6 @@ public class TileCompactor extends TileMachineBase {
 		if (inventory[0].stackSize <= 0) {
 			inventory[0] = null;
 		}
-		mode = modeFlag;
 	}
 
 	@Override
@@ -211,10 +210,8 @@ public class TileCompactor extends TileMachineBase {
 
 	private void setMode(int mode) {
 
-		byte lastFlag = modeFlag;
-		modeFlag = (byte) mode;
+		this.mode = (byte) mode;
 		sendModePacket();
-		modeFlag = lastFlag;
 	}
 
 	/* NETWORK METHODS */
@@ -225,7 +222,7 @@ public class TileCompactor extends TileMachineBase {
 
 		PacketCoFHBase payload = super.getModePacket();
 
-		payload.addByte(modeFlag);
+		payload.addByte(mode);
 
 		return payload;
 	}
@@ -235,9 +232,11 @@ public class TileCompactor extends TileMachineBase {
 
 		super.handleModePacket(payload);
 
-		modeFlag = payload.getByte();
-		if (!isActive) {
-			mode = modeFlag;
+		mode = payload.getByte();
+		modeFlag = mode;
+
+		if (isActive) {
+			processOff();
 		}
 		callNeighborTileChange();
 	}
@@ -339,28 +338,9 @@ public class TileCompactor extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
 				processOff();
-				mode = modeFlag;
 			}
 		}
 		return stack;
-	}
-
-	@Override
-	public void setInventorySlotContents(int slot, ItemStack stack) {
-
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			mode = modeFlag;
-		}
-		super.setInventorySlotContents(slot, stack);
-	}
-
-	@Override
-	public void markDirty() {
-
-		if (isActive && !hasValidInput()) {
-			mode = modeFlag;
-		}
-		super.markDirty();
 	}
 
 	@Override
