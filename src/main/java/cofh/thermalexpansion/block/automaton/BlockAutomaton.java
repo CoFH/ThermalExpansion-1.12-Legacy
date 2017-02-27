@@ -68,6 +68,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		builder.add(VARIANT);
 		// UnListed
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
+		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
 		builder.add(TEProps.SIDE_CONFIG);
@@ -81,7 +82,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(ItemBlockAutomaton.setDefaultTag(new ItemStack(item, 1, i)));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
 	}
@@ -219,7 +220,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		this.setRegistryName("automaton");
 		GameRegistry.register(this);
 
-		ItemBlockAutomaton itemBlock = new ItemBlockAutomaton(this);
+		itemBlock = new ItemBlockAutomaton(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -233,8 +234,8 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		TileBreaker.initialize();
 		TileCollector.initialize();
 
-		automatonBreaker = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
-		automatonCollector = ItemBlockAutomaton.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
+		automatonBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
+		automatonCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
 
 		return true;
 	}
@@ -321,5 +322,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	// Fertilizer
 	// Harvester
 	// Planter
+
+	public static ItemBlockAutomaton itemBlock;
 
 }

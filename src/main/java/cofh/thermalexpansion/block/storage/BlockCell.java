@@ -74,7 +74,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		if (enable) {
 			for (int i = 0; i < 5; i++) {
-				list.add(ItemBlockCell.setDefaultTag(new ItemStack(item, 1, 0), i));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), i));
 			}
 		}
 	}
@@ -201,7 +201,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 			return builder.toString();
 		});
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + ItemBlockCell.isCreative(stack) + ",level=" + ItemBlockCell.getLevel(stack));
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */
@@ -226,7 +226,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 		cell = new ItemStack[5];
 
 		for (int i = 0; i < 5; i++) {
-			cell[i] = ItemBlockCell.setDefaultTag(new ItemStack(this), i);
+			cell[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		return true;
 	}

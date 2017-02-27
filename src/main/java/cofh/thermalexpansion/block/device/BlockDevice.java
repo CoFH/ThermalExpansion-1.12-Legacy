@@ -89,7 +89,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(ItemBlockDevice.setDefaultTag(new ItemStack(item, 1, i)));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i)));
 			}
 		}
 	}
@@ -268,7 +268,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		this.setRegistryName("device");
 		GameRegistry.register(this);
 
-		ItemBlockDevice itemBlock = new ItemBlockDevice(this);
+		itemBlock = new ItemBlockDevice(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -287,12 +287,12 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		TileItemBuffer.initialize();
 
-		deviceWaterGen = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
-		deviceNullifier = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
-		deviceHeatSink = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
-		deviceTapper = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
+		deviceWaterGen = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.WATER_GEN.getMetadata()));
+		deviceNullifier = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NULLIFIER.getMetadata()));
+		deviceHeatSink = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.HEAT_SINK.getMetadata()));
+		deviceTapper = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TAPPER.getMetadata()));
 
-		deviceItemBuffer = ItemBlockDevice.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
+		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
 		return true;
 	}
@@ -450,5 +450,7 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 	public static ItemStack deviceFountain;
 	public static ItemStack deviceExtender;
 	public static ItemStack deviceConcentrator;
+
+	public static ItemBlockDevice itemBlock;
 
 }

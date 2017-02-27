@@ -7,7 +7,7 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.storage.ItemBlockTank;
+import cofh.thermalexpansion.block.storage.BlockTank;
 import cofh.thermalexpansion.block.storage.TileTank;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -129,8 +129,8 @@ public class RenderTank implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			boolean creative = ItemBlockTank.isCreative(stack);
-			int level = ItemBlockTank.getLevel(stack);
+			boolean creative = BlockTank.itemBlock.isCreative(stack);
+			int level = BlockTank.itemBlock.getLevel(stack);
 			FluidStack fluid = null;
 			if (stack.getTagCompound() != null) {
 				fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));

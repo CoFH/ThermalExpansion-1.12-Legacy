@@ -475,15 +475,15 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.CACHE_BOTTOM[level];
+				return isCreative ? TETextures.CACHE_BOTTOM_C : TETextures.CACHE_BOTTOM[level];
 			} else if (side == 1) {
-				return TETextures.CACHE_TOP[level];
+				return isCreative ? TETextures.CACHE_TOP_C : TETextures.CACHE_TOP[level];
 			}
-			return side != facing ? TETextures.CACHE_SIDE[level] : TETextures.CACHE_FACE[level];
+			return side != facing ? isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level] : isCreative ? TETextures.CACHE_FACE_C : TETextures.CACHE_FACE[level];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG_NONE : TETextures.CACHE_METER[meterTracker];
+			return side != facing ? TETextures.CONFIG_NONE : isCreative ? TETextures.CACHE_METER_C : TETextures.CACHE_METER[meterTracker];
 		}
-		return TETextures.CACHE_SIDE[level];
+		return isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level];
 	}
 
 	/* ITileInfo */

@@ -12,7 +12,12 @@ import java.util.List;
 
 public class ItemBlockDevice extends ItemBlockCore {
 
-	public static ItemStack setDefaultTag(ItemStack stack) {
+	public ItemBlockDevice(Block block) {
+
+		super(block);
+	}
+
+	public ItemStack setDefaultTag(ItemStack stack) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
 		ReconfigurableHelper.setSideCache(stack, TileDeviceBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
@@ -20,11 +25,6 @@ public class ItemBlockDevice extends ItemBlockCore {
 		EnergyHelper.setDefaultEnergyTag(stack, 0);
 
 		return stack;
-	}
-
-	public ItemBlockDevice(Block block) {
-
-		super(block);
 	}
 
 	@Override

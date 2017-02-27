@@ -77,7 +77,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		if (enable) {
 			for (int i = 0; i < 5; i++) {
-				list.add(ItemBlockTank.setDefaultTag(new ItemStack(item, 1, 0), i));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), i));
 			}
 		}
 	}
@@ -232,7 +232,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 					fluidAppend = ",fluid=" + fluid.getFluid().getName() + ",amount=" + fluid.amount;
 				}
 			}
-			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + ItemBlockTank.isCreative(stack) + ",level=" + ItemBlockTank.getLevel(stack) + fluidAppend;
+			return BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack) + fluidAppend;
 		});
 	}
 
@@ -258,7 +258,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		tank = new ItemStack[5];
 
 		for (int i = 0; i < 5; i++) {
-			tank[i] = ItemBlockTank.setDefaultTag(new ItemStack(this), i);
+			tank[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		return true;
 	}

@@ -1,49 +1,18 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
-import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCache extends ItemBlockCore implements IInventoryContainerItem {
-
-	public static ItemStack setDefaultTag(ItemStack stack) {
-
-		return setDefaultTag(stack, 0);
-	}
-
-	public static ItemStack setDefaultTag(ItemStack stack, int level) {
-
-		ReconfigurableHelper.setFacing(stack, 3);
-		// RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
-		stack.getTagCompound().setByte("Level", (byte) level);
-
-		return stack;
-	}
-
-	public static byte getLevel(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack);
-		}
-		return stack.getTagCompound().getByte("Level");
-	}
-
-	public static boolean isCreative(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack);
-		}
-		return stack.getTagCompound().getBoolean("Creative");
-	}
+public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem {
 
 	public ItemBlockCache(Block block) {
 
@@ -52,32 +21,19 @@ public class ItemBlockCache extends ItemBlockCore implements IInventoryContainer
 	}
 
 	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
+	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
-		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + (isCreative(stack) ? "creative" : getLevel(stack))) + ")";
+		ReconfigurableHelper.setFacing(stack, 3);
+		// RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
+		stack.getTagCompound().setByte("Level", (byte) level);
+
+		return stack;
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.cache.name";
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-
-		if (isCreative(stack)) {
-			return EnumRarity.EPIC;
-		}
-		switch (getLevel(stack)) {
-			case 4:
-				return EnumRarity.RARE;
-			case 3:
-			case 2:
-				return EnumRarity.UNCOMMON;
-			default:
-				return EnumRarity.COMMON;
-		}
 	}
 
 	@Override

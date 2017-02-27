@@ -89,10 +89,10 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-//				for (int j = 0; j < 5; j++) {
-//					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), j));
-//				}
-				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), 4));
+				//				for (int j = 0; j < 5; j++) {
+				//					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), j));
+				//				}
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), 4));
 			}
 		}
 	}
@@ -238,13 +238,16 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
+		// boolean isCreative = ItemBlockMachine.isCreative(stack);
+		int level = itemBlock.getLevel(stack);
+
 		if (side == EnumFacing.DOWN) {
-			return TETextures.MACHINE_BOTTOM[ItemBlockMachine.getLevel(stack)];
+			return TETextures.MACHINE_BOTTOM[level];
 		}
 		if (side == EnumFacing.UP) {
-			return TETextures.MACHINE_TOP[ItemBlockMachine.getLevel(stack)];
+			return TETextures.MACHINE_TOP[level];
 		}
-		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE[ItemBlockMachine.getLevel(stack)] : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE[level] : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override // World
@@ -274,7 +277,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockMachine.getLevel(stack));
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */
@@ -313,22 +316,22 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		TilePrecipitator.initialize();
 		TileExtruder.initialize();
 
-		machineFurnace = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
-		machinePulverizer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
-		machineSawmill = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
-		machineSmelter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
-		machineInsolator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
-		machineCompactor = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
-		machineCrucible = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
-		machineRefinery = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.REFINERY.getMetadata()));
-		machineTransposer = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
-		machineCharger = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
+		machineFurnace = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.FURNACE.getMetadata()));
+		machinePulverizer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PULVERIZER.getMetadata()));
+		machineSawmill = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.SAWMILL.getMetadata()));
+		machineSmelter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.SMELTER.getMetadata()));
+		machineInsolator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.INSOLATOR.getMetadata()));
+		machineCompactor = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COMPACTOR.getMetadata()));
+		machineCrucible = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRUCIBLE.getMetadata()));
+		machineRefinery = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.REFINERY.getMetadata()));
+		machineTransposer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.TRANSPOSER.getMetadata()));
+		machineCharger = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CHARGER.getMetadata()));
 		// centrifuge
-		// machineCrafter = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
+		// machineCrafter = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.CRAFTER.getMetadata()));
 		// brewer
 		// enchanter
-		machinePrecipitator = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
-		machineExtruder = ItemBlockMachine.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
+		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
+		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
 		return true;
 	}
@@ -592,4 +595,5 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 	public static ItemStack machineExtruder;
 
 	public static ItemBlockMachine itemBlock;
+
 }

@@ -8,7 +8,7 @@ import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.lib.render.RenderHelper;
-import cofh.thermalexpansion.block.storage.ItemBlockCell;
+import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
@@ -110,8 +110,8 @@ public class RenderCell implements ILayeredBlockBakery {
 			ccrs.reset();
 			ccrs.bind(buffer);
 
-			boolean creative = ItemBlockCell.isCreative(stack);
-			int level = ItemBlockCell.getLevel(stack);
+			boolean creative = BlockCell.itemBlock.isCreative(stack);
+			int level = BlockCell.itemBlock.getLevel(stack);
 			int light = Math.min(15, getScaledEnergyStored(stack, 16));
 
 			renderFrame(ccrs, creative, level, null, 0, null);
@@ -132,7 +132,7 @@ public class RenderCell implements ILayeredBlockBakery {
 			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
 			int light = state.getValue(TEProps.LIGHT);
-			TextureAtlasSprite meter = creative? TETextures.CELL_METER_C : TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
+			TextureAtlasSprite meter = creative ? TETextures.CELL_METER_C : TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
 
 			int facing = state.getValue(TEProps.FACING).ordinal();
 			byte[] sideCache = state.getValue(TEProps.SIDE_CONFIG);

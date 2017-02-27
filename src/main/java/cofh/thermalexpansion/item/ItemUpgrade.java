@@ -24,7 +24,6 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.List;
 
@@ -85,12 +84,13 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+
 		if (!block.hasTileEntity(state)) {
 			return EnumActionResult.PASS;
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof IUpgradeable) {
+		if (tile instanceof IUpgradeable && ((IUpgradeable) tile).canUpgrade(stack)) {
 			if (ServerHelper.isClientWorld(world)) {
 				return EnumActionResult.PASS;
 			}
@@ -136,9 +136,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 			addUpgradeEntry(32 + i, UpgradeType.FULL, level);
 		}
 
-		// TODO: Add Creative.
-		 upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
-		 addUpgradeEntry(256, UpgradeType.CREATIVE, Byte.MAX_VALUE);
+		upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
+		addUpgradeEntry(256, UpgradeType.CREATIVE, Byte.MAX_VALUE);
 
 		return true;
 	}

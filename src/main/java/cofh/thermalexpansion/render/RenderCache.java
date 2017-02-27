@@ -3,7 +3,7 @@ package cofh.thermalexpansion.render;
 import cofh.core.render.RenderUtils;
 import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.block.storage.TileCache;
-import cofh.thermalfoundation.init.TFItems;
+import cofh.thermalfoundation.item.ItemSecurity;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Items;
@@ -15,7 +15,7 @@ import org.lwjgl.opengl.GL11;
 public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 
 	public static final RenderCache instance = new RenderCache();
-	private static ItemStack lock = new ItemStack(Items.APPLE);
+	private static ItemStack lock = new ItemStack(Items.DIAMOND);
 
 	static {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, instance);
@@ -23,7 +23,7 @@ public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 
 	public static void initialize() {
 
-		lock = new ItemStack(TFItems.itemSecurity);
+		lock = ItemSecurity.lock.copy();
 	}
 
 	@Override

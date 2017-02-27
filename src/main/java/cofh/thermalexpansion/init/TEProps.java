@@ -103,13 +103,13 @@ public class TEProps {
 	public static boolean useAlternateStarfieldShader = false;
 
 	/* BLOCKSTATE PROPERTIES */
-//	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
-//
-//	static {
-//		for (int i = 0; i < 6; i++) {
-//			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
-//		}
-//	}
+	//	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
+	//
+	//	static {
+	//		for (int i = 0; i < 6; i++) {
+	//			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
+	//		}
+	//	}
 
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
 	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");

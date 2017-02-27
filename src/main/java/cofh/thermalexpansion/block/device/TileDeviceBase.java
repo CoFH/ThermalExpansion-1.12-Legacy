@@ -125,6 +125,12 @@ public abstract class TileDeviceBase extends TilePowered {
 
 	/* IUpgradeable */
 	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		return false;
+	}
+
+	@Override
 	public boolean installUpgrade(ItemStack upgrade) {
 
 		return false;

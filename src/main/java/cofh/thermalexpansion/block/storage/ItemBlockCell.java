@@ -2,30 +2,31 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.core.block.ItemBlockCore;
 import cofh.lib.util.capabilities.EnergyContainerItemWrapper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.RedstoneControlHelper;
 import cofh.lib.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem {
+public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem {
 
-	public static ItemStack setDefaultTag(ItemStack stack) {
+	public ItemBlockCell(Block block) {
 
-		return setDefaultTag(stack, 0);
+		super(block);
+		setMaxStackSize(1);
 	}
 
-	public static ItemStack setDefaultTag(ItemStack stack, int level) {
+	@Override
+	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
 		ReconfigurableHelper.setSideCache(stack, TileCell.DEFAULT_SIDES);
@@ -39,55 +40,10 @@ public class ItemBlockCell extends ItemBlockCore implements IEnergyContainerItem
 		return stack;
 	}
 
-	public static byte getLevel(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack);
-		}
-		return stack.getTagCompound().getByte("Level");
-	}
-
-	public static boolean isCreative(ItemStack stack) {
-
-		if (stack.getTagCompound() == null) {
-			setDefaultTag(stack);
-		}
-		return stack.getTagCompound().getBoolean("Creative");
-	}
-
-	public ItemBlockCell(Block block) {
-
-		super(block);
-		setMaxStackSize(1);
-	}
-
-	@Override
-	public String getItemStackDisplayName(ItemStack stack) {
-
-		return StringHelper.localize(getUnlocalizedName(stack)) + " (" + StringHelper.localize("info.thermalexpansion.level." + (isCreative(stack) ? "creative" : getLevel(stack))) + ")";
-	}
-
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.cell.name";
-	}
-
-	@Override
-	public EnumRarity getRarity(ItemStack stack) {
-
-		if (isCreative(stack)) {
-			return EnumRarity.EPIC;
-		}
-		switch (getLevel(stack)) {
-			case 4:
-				return EnumRarity.RARE;
-			case 3:
-			case 2:
-				return EnumRarity.UNCOMMON;
-			default:
-				return EnumRarity.COMMON;
-		}
 	}
 
 	@Override

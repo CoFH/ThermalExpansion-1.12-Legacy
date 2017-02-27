@@ -27,6 +27,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumFacing;
@@ -83,7 +84,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		if (enable) {
 			for (int i = 0; i < 5; i++) {
-				list.add(ItemBlockCache.setDefaultTag(new ItemStack(item, 1, 0), i));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), i));
 			}
 		}
 	}
@@ -136,6 +137,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		if (stack.getTagCompound() != null) {
 			TileCache tile = (TileCache) world.getTileEntity(pos);
 
+			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.locked = stack.getTagCompound().getBoolean("Lock");
 
@@ -255,6 +257,20 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		return super.getPlayerRelativeBlockHardness(state, player, world, pos);
 	}
 
+	/* HELPERS */
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+
+		NBTTagCompound retTag = super.getItemStackTag(world, pos);
+		TileCache tile = (TileCache) world.getTileEntity(pos);
+
+		if (tile != null && tile.storedStack != null) {
+			retTag.setBoolean("Lock", tile.locked);
+			retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+		}
+		return retTag;
+	}
+
 	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
@@ -274,13 +290,16 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
+		boolean isCreative = itemBlock.isCreative(stack);
+		int level = itemBlock.getLevel(stack);
+
 		if (side == EnumFacing.DOWN) {
-			return TETextures.CACHE_BOTTOM[ItemBlockCache.getLevel(stack)];
+			return isCreative ? TETextures.CACHE_BOTTOM_C :TETextures.CACHE_BOTTOM[level];
 		}
 		if (side == EnumFacing.UP) {
-			return TETextures.CACHE_TOP[ItemBlockCache.getLevel(stack)];
+			return isCreative ? TETextures.CACHE_TOP_C :TETextures.CACHE_TOP[level];
 		}
-		return side != EnumFacing.NORTH ? TETextures.CACHE_SIDE[ItemBlockCache.getLevel(stack)] : TETextures.CACHE_FACE[ItemBlockCache.getLevel(stack)];
+		return side != EnumFacing.NORTH ? isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level] : isCreative ? TETextures.CACHE_FACE_C : TETextures.CACHE_FACE[level];
 	}
 
 	@Override // World
@@ -307,7 +326,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, location);
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + ItemBlockCache.getLevel(stack));
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */
@@ -332,7 +351,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		cache = new ItemStack[5];
 
 		for (int i = 0; i < 5; i++) {
-			cache[i] = ItemBlockCache.setDefaultTag(new ItemStack(this), i);
+			cache[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
 		return true;
 	}

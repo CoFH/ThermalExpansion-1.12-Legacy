@@ -107,7 +107,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i), 4));
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), 4));
 			}
 		}
 	}
@@ -296,7 +296,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		this.setRegistryName("dynamo");
 		GameRegistry.register(this);
 
-		ItemBlockDynamo itemBlock = new ItemBlockDynamo(this);
+		itemBlock = new ItemBlockDynamo(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -315,12 +315,12 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		TileDynamoEnervation.initialize();
 		TileDynamoNumismatic.initialize();
 
-		dynamoSteam = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
-		dynamoMagmatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
-		dynamoCompression = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
-		dynamoReactant = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
-		dynamoEnervation = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
-		dynamoNumismatic = ItemBlockDynamo.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
+		dynamoSteam = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.STEAM.getMetadata()));
+		dynamoMagmatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.MAGMATIC.getMetadata()));
+		dynamoCompression = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COMPRESSION.getMetadata()));
+		dynamoReactant = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.REACTANT.getMetadata()));
+		dynamoEnervation = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
+		dynamoNumismatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
 		return true;
 	}
@@ -469,5 +469,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	public static ItemStack dynamoReactant;
 	public static ItemStack dynamoEnervation;
 	public static ItemStack dynamoNumismatic;
+
+	public static ItemBlockDynamo itemBlock;
 
 }

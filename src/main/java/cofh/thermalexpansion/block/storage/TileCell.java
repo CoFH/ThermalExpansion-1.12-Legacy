@@ -119,6 +119,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			if (isCreative) {
 				energyStorage.setEnergyStored(energyStorage.getMaxEnergyStored());
 			}
+			if (worldObj != null) {
+				updateTrackers();
+			}
 			return true;
 		}
 		return false;
@@ -193,6 +196,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		curScale = Math.min(8, getScaledEnergyStored(9));
 		if (meterTracker != curScale) {
 			meterTracker = curScale;
+			updateLighting();
 			sendTilePacket(Side.CLIENT);
 		}
 	}
@@ -222,7 +226,6 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		energyStorage = new EnergyStorage(getCapacity(level));
 		energyStorage.readFromNBT(nbt);
-		meterTracker = Math.min(8, getScaledEnergyStored(9));
 	}
 
 	@Override
@@ -399,7 +402,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (side != facing) {
 			return TETextures.CONFIG_NONE;
 		}
-		return isCreative ? TETextures.CELL_METER_C :TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
 	}
 
 	/* CAPABILITIES */

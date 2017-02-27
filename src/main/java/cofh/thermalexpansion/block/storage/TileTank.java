@@ -56,9 +56,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		BlockTank.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	int compareTracker;
-	int lastDisplayLevel;
-	boolean renderFlag;
+	private int compareTracker;
+	private int lastDisplayLevel;
+
+	boolean renderFlag = true;
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
@@ -74,6 +75,12 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public int getType() {
 
 		return 0;
+	}
+
+	@Override
+	public void blockPlaced() {
+
+		sendTilePacket(Side.CLIENT);
 	}
 
 	@Override
@@ -115,20 +122,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public int getLightValue() {
 
-		if (tank.getFluid() == null) {
-			return 0;
-		}
-		int fluidLightLevel = tank.getFluid().getFluid().getLuminosity();
-		// if under 1/4 full, half light level
-		if (tank.getFluidAmount() <= getCapacity(level) / 4) {
-			return fluidLightLevel >> 1;
-		}
-		// if over 3/4 full, full light level
-		if (tank.getFluidAmount() >= getCapacity(level) * 3 / 4) {
-			return fluidLightLevel;
-		}
-		// otherwise scale between half and full
-		return (fluidLightLevel >> 1) + (fluidLightLevel - (fluidLightLevel >> 1)) * (tank.getFluidAmount() - (getCapacity(level) >> 2)) / (getCapacity(level) >> 1);
+		return tank.getFluid() == null ? 0 : tank.getFluid().getFluid().getLuminosity();
 	}
 
 	@Override
@@ -142,14 +136,14 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		updateAdjacentHandlers();
+		updateAdjacentHandlers(true);
 	}
 
 	@Override
 	public void onNeighborTileChange(BlockPos pos) {
 
 		super.onNeighborTileChange(pos);
-		updateAdjacentHandlers();
+		updateAdjacentHandlers(true);
 	}
 
 	@Override
@@ -167,7 +161,9 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 				callNeighborTileChange();
 			}
 			if (!cached) {
-				updateAdjacentHandlers();
+				updateLighting();
+				updateAdjacentHandlers(false);
+				sendTilePacket(Side.CLIENT);
 			}
 		}
 		if (renderFlag && timeCheckEighth()) {
@@ -211,7 +207,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		}
 	}
 
-	protected void updateAdjacentHandlers() {
+	protected void updateAdjacentHandlers(boolean packet) {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -223,7 +219,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		adjacentTanks[1] = BlockHelper.getAdjacentTileEntity(this, EnumFacing.UP) instanceof TileTank;
 
-		if (curAutoOutput != enableAutoOutput) {
+		if (packet && curAutoOutput != enableAutoOutput) {
 			sendTilePacket(Side.CLIENT);
 		}
 		cached = true;
@@ -242,9 +238,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public void updateRender() {
 
 		renderFlag = false;
+		boolean sendUpdate = false;
 
 		int curDisplayLevel = 0;
-		int oldLight = getLightValue();
+		int curLight = getLightValue();
 
 		if (tank.getFluidAmount() > 0) {
 			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level) * (RENDER_LEVELS - 1));
@@ -253,18 +250,22 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 			}
 			if (lastDisplayLevel == 0) {
 				lastDisplayLevel = curDisplayLevel;
-				sendTilePacket(Side.CLIENT);
+				sendUpdate = true;
 			}
 		} else if (lastDisplayLevel != 0) {
 			lastDisplayLevel = 0;
-			sendTilePacket(Side.CLIENT);
+			sendUpdate = true;
 		}
 		if (curDisplayLevel != lastDisplayLevel) {
 			lastDisplayLevel = curDisplayLevel;
-			sendTilePacket(Side.CLIENT);
+			sendUpdate = true;
 		}
-		if (oldLight != getLightValue()) {
+		if (curLight != getLightValue()) {
 			updateLighting();
+			sendUpdate = true;
+		}
+		if (sendUpdate) {
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -282,6 +283,15 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt);
+	}
+
+	@Override
+	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
+
+		super.writeToNBT(nbt);
+
+		tank.writeToNBT(nbt);
+		return nbt;
 	}
 
 	/* NETWORK METHODS */
@@ -305,15 +315,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		tank.setFluid(payload.getFluidStack());
 
 		callBlockUpdate();
-	}
-
-	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
-
-		super.writeToNBT(nbt);
-
-		tank.writeToNBT(nbt);
-		return nbt;
 	}
 
 	/* ITileInfo */

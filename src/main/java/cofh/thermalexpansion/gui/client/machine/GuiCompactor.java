@@ -79,13 +79,13 @@ public class GuiCompactor extends GuiPoweredBase {
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
 		if (buttonName.equals("Mode")) {
-				if (myTile.modeFlag == 1) {
-					playClickSound(1.0F, 0.8F);
-				} else {
-					playClickSound(1.0F, 0.6F);
-				}
-				myTile.toggleMode();
+			if (myTile.modeFlag == 1) {
+				playClickSound(1.0F, 0.8F);
+			} else {
+				playClickSound(1.0F, 0.6F);
 			}
+			myTile.toggleMode();
+		}
 	}
 
 }
