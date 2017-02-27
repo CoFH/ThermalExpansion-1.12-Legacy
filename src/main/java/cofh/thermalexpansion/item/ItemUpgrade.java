@@ -19,6 +19,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -89,12 +90,18 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof IUpgradeable) {
+			if (ServerHelper.isClientWorld(world)) {
+				return EnumActionResult.PASS;
+			}
 			if (((IUpgradeable) tile).installUpgrade(stack)) {
+				player.addChatComponentMessage(new TextComponentTranslation("info.thermalexpansion.upgrade.install.success"));
 				if (!player.capabilities.isCreativeMode) {
 					stack.stackSize--;
 				}
+			} else {
+				player.addChatComponentMessage(new TextComponentTranslation("info.thermalexpansion.upgrade.install.failure"));
 			}
-			return ServerHelper.isServerWorld(world) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
+			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
 	}

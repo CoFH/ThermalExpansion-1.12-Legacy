@@ -221,6 +221,8 @@ info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
 info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
 info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
 info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
+info.thermalexpansion.upgrade.install.success=Upgrade successfully installed
+info.thermalexpansion.upgrade.install.failure=Unable to install upgrade
 
 item.thermalexpansion.augment.automatonDepth.name=
 item.thermalexpansion.augment.automatonRadius.name=
