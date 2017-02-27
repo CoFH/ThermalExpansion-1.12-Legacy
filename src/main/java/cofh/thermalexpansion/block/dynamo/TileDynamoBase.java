@@ -456,7 +456,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public void updateAccelerable() {
 
-		processTick();
+		if (isActive && !canFinish()) {
+			processTick();
+		}
 	}
 
 	/* IEnergyProvider */
