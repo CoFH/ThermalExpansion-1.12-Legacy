@@ -127,7 +127,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 	@Override
 	public boolean isOpaqueCube(IBlockState state) {
 
-		return true;
+		return false;
 	}
 
 	@Override
