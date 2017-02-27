@@ -107,7 +107,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i)));
+				list.add(ItemBlockDynamo.setDefaultTag(new ItemStack(item, 1, i), 4));
 			}
 		}
 	}

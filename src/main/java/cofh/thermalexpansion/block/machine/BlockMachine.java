@@ -92,7 +92,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 //				for (int j = 0; j < 5; j++) {
 //					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), j));
 //				}
-				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i)));
+				list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), 4));
 			}
 		}
 	}
