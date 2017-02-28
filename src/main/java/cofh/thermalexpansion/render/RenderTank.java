@@ -74,9 +74,9 @@ public class RenderTank implements ILayeredBlockBakery {
 			level = 5;
 		}
 		modelFrame.render(ccrs, 0, 4, new IconTransformation(TETextures.TANK_BOTTOM[mode][level])); // Bottom
-		modelFrame.render(ccrs, 24, 28, new IconTransformation(TETextures.TANK_TOP[mode][level])); // Bottom inside
-		modelFrame.render(ccrs, 4, 8, new IconTransformation(TETextures.TANK_TOP[mode][level])); // Top
-		modelFrame.render(ccrs, 28, 32, new IconTransformation(TETextures.TANK_BOTTOM[mode][level])); // Top Inside
+		modelFrame.render(ccrs, 24, 28, new IconTransformation(TETextures.TANK_BOTTOM[mode][level])); // Bottom inside
+		modelFrame.render(ccrs, 4, 8, new IconTransformation(TETextures.TANK_TOP[level])); // Top
+		modelFrame.render(ccrs, 28, 32, new IconTransformation(TETextures.TANK_TOP[level])); // Top Inside
 
 		for (int i = 8; i < 24; i += 4) {
 			modelFrame.render(ccrs, i, i + 4, new IconTransformation(TETextures.TANK_SIDE[mode][level])); // Sides

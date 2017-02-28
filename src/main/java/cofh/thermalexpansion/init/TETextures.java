@@ -181,19 +181,12 @@ public class TETextures {
 		TANK_BOTTOM_1_4 =                   register(map, TANK_ + "bottom_1_4");
 		TANK_BOTTOM_1_C =                   register(map, TANK_ + "bottom_1_c");
 
-		TANK_TOP_0_0 =                      register(map, TANK_ + "top_0_0");
-		TANK_TOP_0_1 =                      register(map, TANK_ + "top_0_1");
-		TANK_TOP_0_2 =                      register(map, TANK_ + "top_0_2");
-		TANK_TOP_0_3 =                      register(map, TANK_ + "top_0_3");
-		TANK_TOP_0_4 =                      register(map, TANK_ + "top_0_4");
-		TANK_TOP_0_C =                      register(map, TANK_ + "top_0_c");
-
-		TANK_TOP_1_0 =                      register(map, TANK_ + "top_1_0");
-		TANK_TOP_1_1 =                      register(map, TANK_ + "top_1_1");
-		TANK_TOP_1_2 =                      register(map, TANK_ + "top_1_2");
-		TANK_TOP_1_3 =                      register(map, TANK_ + "top_1_3");
-		TANK_TOP_1_4 =                      register(map, TANK_ + "top_1_4");
-		TANK_TOP_1_C =                      register(map, TANK_ + "top_1_c");
+		TANK_TOP_0 =                      register(map, TANK_ + "top_0");
+		TANK_TOP_1 =                      register(map, TANK_ + "top_1");
+		TANK_TOP_2 =                      register(map, TANK_ + "top_2");
+		TANK_TOP_3 =                      register(map, TANK_ + "top_3");
+		TANK_TOP_4 =                      register(map, TANK_ + "top_4");
+		TANK_TOP_C =                      register(map, TANK_ + "top_c");
 
 		TANK_SIDE_0_0 =                     register(map, TANK_ + "side_0_0");
 		TANK_SIDE_0_1 =                     register(map, TANK_ + "side_0_1");
@@ -426,23 +419,13 @@ public class TETextures {
 				}
 		};
 
-		TANK_TOP = new TextureAtlasSprite[][] {
-				new TextureAtlasSprite[] {
-						TANK_TOP_0_0,
-						TANK_TOP_0_1,
-						TANK_TOP_0_2,
-						TANK_TOP_0_3,
-						TANK_TOP_0_4,
-						TANK_TOP_0_C
-				},
-				new TextureAtlasSprite[] {
-						TANK_TOP_1_0,
-						TANK_TOP_1_1,
-						TANK_TOP_1_2,
-						TANK_TOP_1_3,
-						TANK_TOP_1_4,
-						TANK_TOP_1_C
-				}
+		TANK_TOP = new TextureAtlasSprite[] {
+				TANK_TOP_0,
+				TANK_TOP_1,
+				TANK_TOP_2,
+				TANK_TOP_3,
+				TANK_TOP_4,
+				TANK_TOP_C
 		};
 
 		TANK_SIDE = new TextureAtlasSprite[][] {
@@ -733,19 +716,13 @@ public class TETextures {
 	public static TextureAtlasSprite CELL_METER_8;
 	public static TextureAtlasSprite CELL_METER_C;
 
-	public static TextureAtlasSprite[][] TANK_TOP;
-	public static TextureAtlasSprite TANK_TOP_0_0;
-	public static TextureAtlasSprite TANK_TOP_0_1;
-	public static TextureAtlasSprite TANK_TOP_0_2;
-	public static TextureAtlasSprite TANK_TOP_0_3;
-	public static TextureAtlasSprite TANK_TOP_0_4;
-	public static TextureAtlasSprite TANK_TOP_0_C;
-	public static TextureAtlasSprite TANK_TOP_1_0;
-	public static TextureAtlasSprite TANK_TOP_1_1;
-	public static TextureAtlasSprite TANK_TOP_1_2;
-	public static TextureAtlasSprite TANK_TOP_1_3;
-	public static TextureAtlasSprite TANK_TOP_1_4;
-	public static TextureAtlasSprite TANK_TOP_1_C;
+	public static TextureAtlasSprite[] TANK_TOP;
+	public static TextureAtlasSprite TANK_TOP_0;
+	public static TextureAtlasSprite TANK_TOP_1;
+	public static TextureAtlasSprite TANK_TOP_2;
+	public static TextureAtlasSprite TANK_TOP_3;
+	public static TextureAtlasSprite TANK_TOP_4;
+	public static TextureAtlasSprite TANK_TOP_C;
 
 	public static TextureAtlasSprite[][] TANK_BOTTOM;
 	public static TextureAtlasSprite TANK_BOTTOM_0_0;

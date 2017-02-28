@@ -164,7 +164,7 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 				" I ",
 				"IGI",
 				"DID",
-				'D', "dustGlowstone",
+				'D', "blockGlassHardened",
 				'G', "gearSilver",
 				'I', "ingotElectrum"
 		));
