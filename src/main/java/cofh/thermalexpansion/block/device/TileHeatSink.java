@@ -154,7 +154,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	protected boolean timeCheckOffset() {
 
-		return (worldObj.getTotalWorldTime() + offset) % CoreProps.TIME_CONSTANT >> coolantFactor == 0;
+		return (worldObj.getTotalWorldTime() + offset) % (CoreProps.TIME_CONSTANT >> coolantFactor) == 0;
 	}
 
 	/* GUI METHODS */
