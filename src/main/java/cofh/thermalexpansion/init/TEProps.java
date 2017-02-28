@@ -103,14 +103,6 @@ public class TEProps {
 	public static boolean useAlternateStarfieldShader = false;
 
 	/* BLOCKSTATE PROPERTIES */
-	//	public static final IUnlistedProperty<BlockTEBase.EnumSideConfig>[] SIDE_CONFIG = new IUnlistedProperty[6];
-	//
-	//	static {
-	//		for (int i = 0; i < 6; i++) {
-	//			SIDE_CONFIG[i] = Properties.toUnlisted(PropertyEnum.<EnumSideConfig>create("config_" + EnumFacing.VALUES[i].name(), EnumSideConfig.class));
-	//		}
-	//	}
-
 	public static final UnlistedBooleanProperty ACTIVE = new UnlistedBooleanProperty("active");
 	public static final UnlistedBooleanProperty CREATIVE = new UnlistedBooleanProperty("creative");
 	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
@@ -120,9 +112,11 @@ public class TEProps {
 	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale_display");
 
 	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
+	public static final UnlistedIntArrayProperty SIDE_TEX = new UnlistedIntArrayProperty("side_tex");
 
 	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
 	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");
+	public static final UnlistedTileEntityProperty TILE = new UnlistedTileEntityProperty("tile");
 
 	/* AUGMENT IDENTIFIERS */
 
