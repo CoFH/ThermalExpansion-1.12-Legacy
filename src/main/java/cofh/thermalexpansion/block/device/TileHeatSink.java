@@ -106,8 +106,16 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		if (isActive) {
 			if (coolantRF <= 0) {
+				boolean hasAdjacentTile = false;
+				for (int i = 0; i < 6; i++) {
+					if(accelerables[i] != null){
+						hasAdjacentTile = true;
+						break;
+					}
+				}
+
 				coolantFactor = 0;
-				if (tank.getFluidAmount() >= fluidAmount) {
+				if (hasAdjacentTile && tank.getFluidAmount() >= fluidAmount) {
 					coolantRF += CoolantManager.getCoolantRF50mB(tank.getFluid());
 					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
 					tank.drain(fluidAmount, true);
