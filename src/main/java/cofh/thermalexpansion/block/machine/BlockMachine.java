@@ -1,9 +1,7 @@
 package cofh.thermalexpansion.block.machine;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.BlockBakery;
-import codechicken.lib.model.blockbakery.BlockBakeryProperties;
-import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.*;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
@@ -13,6 +11,7 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.render.RenderMachine;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
@@ -52,7 +51,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
+public class BlockMachine extends BlockTEBase implements IModelRegister, IBakeryBlock, IWorldBlockTextureProvider {
 
 	public static final PropertyEnum<BlockMachine.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
@@ -74,11 +73,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
-		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
 		builder.add(TEProps.SIDE_CONFIG);
+		builder.add(TEProps.TILE);
 
 		return builder.build();
 	}
@@ -234,6 +233,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		return BlockBakery.handleExtendedState((IExtendedBlockState) super.getExtendedState(state, world, pos), world.getTileEntity(pos));
 	}
 
+	@Override
+	public ICustomBlockBakery getCustomBakery() {
+		return RenderMachine.INSTANCE;
+	}
+
 	@Override // Inventory
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
@@ -278,6 +282,18 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IWorldB
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
 
 		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + itemBlock.getLevel(stack));
+		BlockBakery.registerBlockKeyGenerator(this, state -> {
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
+			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",facing=").append(state.getValue(TEProps.FACING));
+			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
+			builder.append(",side_config={");
+			for (int i : state.getValue(TEProps.SIDE_CONFIG)) {
+				builder.append(",").append(i);
+			}
+			builder.append("}");
+			return builder.toString();
+		});
 	}
 
 	/* IInitializer */
