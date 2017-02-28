@@ -1,6 +1,5 @@
 buildscript {
 	repositories {
-        jcenter()
         maven {
             name = "covers1624"
             url = "http://maven.covers1624.net/"
