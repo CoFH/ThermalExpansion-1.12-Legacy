@@ -17,6 +17,7 @@ import net.minecraftforge.client.model.ItemTextureQuadConverter;
 import net.minecraftforge.common.model.TRSRTransformation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +50,7 @@ public final class ModelFlorb implements IItemBakery, IIconRegister {
 			quads.addAll(ItemModelBakery.bakeItem(ImmutableList.of(magmatic ? MAGMATIC_BASE : BASE)));
 
 			if (fluid != null) {
-				TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluid.getStill());
+				TextureAtlasSprite fluidSprite = TextureUtils.getTexture(fluid.getStill(new FluidStack(fluid, 1)));
 				quads.addAll(ItemTextureQuadConverter.convertTexture(DefaultVertexFormats.ITEM, TRSRTransformation.identity(), MASK, fluidSprite, NORTH_Z_FLUID, EnumFacing.NORTH, fluid.getColor()));
 				quads.addAll(ItemTextureQuadConverter.convertTexture(DefaultVertexFormats.ITEM, TRSRTransformation.identity(), MASK, fluidSprite, SOUTH_Z_FLUID, EnumFacing.SOUTH, fluid.getColor()));
 			}

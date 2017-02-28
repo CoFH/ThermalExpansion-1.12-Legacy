@@ -12,7 +12,9 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import org.lwjgl.opengl.GL11;
 
 public class RenderEntityFlorb extends Render<EntityFlorb> {
@@ -34,6 +36,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		if (florb.getFluid() == null) {
 			return;
 		}
+		Fluid fluid = florb.getFluid();
 		GlStateManager.pushMatrix();
 		GlStateManager.translate(d0, d1, d2);
 		GlStateManager.enableRescaleNormal();
@@ -51,7 +54,7 @@ public class RenderEntityFlorb extends Render<EntityFlorb> {
 		GlStateManager.depthFunc(GL11.GL_EQUAL);
 		GlStateManager.depthMask(false);
 
-		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(florb.getFluid().getStill()));
+		renderIcon(Tessellator.getInstance(), TextureUtils.getTexture(fluid.getStill(new FluidStack(fluid, 1))));
 
 		GlStateManager.depthMask(true);
 		GlStateManager.depthFunc(GL11.GL_LEQUAL);
