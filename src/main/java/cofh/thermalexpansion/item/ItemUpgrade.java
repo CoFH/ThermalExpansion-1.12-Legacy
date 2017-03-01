@@ -2,6 +2,7 @@ package cofh.thermalexpansion.item;
 
 import cofh.api.core.IInitializer;
 import cofh.api.item.IUpgradeItem;
+import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
@@ -90,6 +91,9 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
+		if (tile instanceof ISecurable && !((ISecurable) tile).canPlayerAccess(player)) {
+			return EnumActionResult.PASS;
+		}
 		if (tile instanceof IUpgradeable) {
 			if (!((IUpgradeable) tile).canUpgrade(stack)) {
 				return EnumActionResult.PASS;

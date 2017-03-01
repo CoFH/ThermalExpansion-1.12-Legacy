@@ -189,10 +189,16 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		String uuid = nbt.getString("OwnerUUID");
 		String name = nbt.getString("Owner");
-		if (!Strings.isNullOrEmpty(uuid)) {
-			setOwner(new GameProfile(UUID.fromString(uuid), name));
-		} else {
-			setOwnerName(name);
+		GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
+
+		if (!CoreProps.DEFAULT_OWNER.equals(profile)) {
+			System.out.println("HEY!");
+
+			if (!Strings.isNullOrEmpty(uuid)) {
+				setOwner(profile);
+			} else if (!Strings.isNullOrEmpty(name)) {
+				setOwnerName(name);
+			}
 		}
 		if (!enableSecurity()) {
 			access = AccessMode.PUBLIC;
@@ -437,6 +443,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				}
 				if (worldObj != null) {
 					markChunkDirty();
+					sendTilePacket(Side.CLIENT);
 				}
 				return true;
 			}

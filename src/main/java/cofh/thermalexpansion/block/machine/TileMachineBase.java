@@ -344,7 +344,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		}
 		if (TEProps.MACHINE_SECONDARY.equals(id)) {
 			// SeoondaryChance
-			secondaryChance -= 10;
+			secondaryChance -= 15;
 
 			// Efficiency Loss
 			energyMod += 10;

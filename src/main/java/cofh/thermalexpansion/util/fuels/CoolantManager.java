@@ -55,7 +55,7 @@ public class CoolantManager {
 	 */
 	public static int getCoolantFactor(Fluid fluid) {
 
-		return getCoolantRF(fluid) / WATER_RF / 4;
+		return getCoolantRF(fluid) / WATER_RF;
 	}
 
 	public static int getCoolantFactor(FluidStack stack) {
@@ -87,7 +87,7 @@ public class CoolantManager {
 
 	public static boolean addCoolant(String fluidName, int coolantRF) {
 
-		if (!FluidRegistry.isFluidRegistered(fluidName)) {
+		if (!FluidRegistry.isFluidRegistered(fluidName) || coolantRF < WATER_RF) {
 			return false;
 		}
 		return coolantMap.put(FluidRegistry.getFluid(fluidName), coolantRF) != 0;

@@ -72,7 +72,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 	private int coolantRF;
 	private int coolantFactor;
-	private int useFactor = 5;
+	private int useFactor = 10;
 	private int offset;
 
 	public TileHeatSink() {
@@ -109,9 +109,14 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 			if (coolantRF <= 0) {
 				coolantFactor = 0;
 				if (tank.getFluidAmount() >= fluidAmount) {
+					String prevID = renderFluid.getFluid().getName();
 					coolantRF += CoolantManager.getCoolantRF100mB(tank.getFluid());
 					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
 					setUseFactor();
+
+					if (!prevID.equals(renderFluid.getFluid().getName())) {
+						sendFluidPacket();
+					}
 					tank.drain(fluidAmount, true);
 
 					for (int i = 0; i < 6; i++) {
@@ -119,6 +124,8 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 							coolantRF -= useFactor * accelerables[i].updateAccelerable();
 						}
 					}
+				} else {
+					isActive = false;
 				}
 			} else {
 				for (int i = 0; i < 6; i++) {
@@ -130,14 +137,18 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
 			}
-			System.out.println(coolantRF);
-		} else if (redstoneControlOrDisable()) {
+		} else if (redstoneControlOrDisable() && canStart()) {
 			isActive = true;
 		}
 		if (!cached) {
 			updateAdjacentHandlers();
 		}
 		updateIfChanged(curActive);
+	}
+
+	protected void setUseFactor() {
+
+		useFactor = 10 - (coolantFactor >> 1);
 	}
 
 	protected void updateAdjacentHandlers() {
@@ -153,14 +164,14 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		cached = true;
 	}
 
-	protected boolean timeCheckOffset() {
+	protected boolean canStart() {
 
-		return (worldObj.getTotalWorldTime() + offset) % (CoreProps.TIME_CONSTANT >> coolantFactor) == 0;
+		return coolantRF > 0 || tank.getFluidAmount() >= fluidAmount;
 	}
 
-	protected void setUseFactor() {
+	protected boolean timeCheckOffset() {
 
-		useFactor = 5 - coolantFactor;
+		return (worldObj.getTotalWorldTime() + offset) % (CoreProps.TIME_CONSTANT / coolantFactor) == 0;
 	}
 
 	/* GUI METHODS */
@@ -246,8 +257,11 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getTilePacket();
 
-		payload.addFluidStack(renderFluid);
-
+		if (tank.getFluid() == null) {
+			payload.addFluidStack(renderFluid);
+		} else {
+			payload.addFluidStack(tank.getFluid());
+		}
 		return payload;
 	}
 

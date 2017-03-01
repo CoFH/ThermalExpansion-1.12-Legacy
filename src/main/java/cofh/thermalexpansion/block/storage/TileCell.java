@@ -174,12 +174,20 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		for (int i = outputTracker; i < 6 && energyStorage.getEnergyStored() > 0; i++) {
 			if (sideCache[i] == 2) {
-				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+				if (isCreative) {
+					EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], amountSend, false);
+				} else {
+					energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+				}
 			}
 		}
 		for (int i = 0; i < outputTracker && energyStorage.getEnergyStored() > 0; i++) {
 			if (sideCache[i] == 2) {
-				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+				if (isCreative) {
+					EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], amountSend, false);
+				} else {
+					energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[i], Math.min(amountSend, energyStorage.getEnergyStored()), false));
+				}
 			}
 		}
 		outputTracker++;

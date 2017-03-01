@@ -3,6 +3,7 @@ package cofh.thermalexpansion.item;
 import cofh.api.core.IInitializer;
 import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
+import cofh.api.tileentity.ISecurable;
 import cofh.core.item.ItemMulti;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -125,6 +126,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
+		if (tile instanceof ISecurable && !((ISecurable) tile).canPlayerAccess(player)) {
+			return EnumActionResult.PASS;
+		}
 		if (tile instanceof IAugmentable) {
 			if (((IAugmentable) tile).getAugmentSlots().length <= 0) {
 				return EnumActionResult.PASS;

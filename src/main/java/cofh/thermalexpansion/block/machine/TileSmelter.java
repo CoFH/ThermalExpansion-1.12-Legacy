@@ -186,7 +186,7 @@ public class TileSmelter extends TileMachineBase {
 			}
 		}
 		if (secondaryItem != null) {
-			int modifiedChance = augmentPyrotheumCheck ? secondaryChance - 15 : secondaryChance;
+			int modifiedChance = augmentPyrotheumCheck ? secondaryChance - 25 : secondaryChance;
 
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
@@ -195,7 +195,7 @@ public class TileSmelter extends TileMachineBase {
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}
-				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+				if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 					inventory[3].stackSize += secondaryItem.stackSize;
 				}
 				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {

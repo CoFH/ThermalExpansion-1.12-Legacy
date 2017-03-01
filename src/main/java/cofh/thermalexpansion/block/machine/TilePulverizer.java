@@ -166,7 +166,7 @@ public class TilePulverizer extends TileMachineBase {
 			}
 		}
 		if (secondaryItem != null) {
-			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - 15 : secondaryChance;
+			int modifiedChance = augmentPetrotheumCheck ? secondaryChance - 25 : secondaryChance;
 
 			int recipeChance = recipe.getSecondaryOutputChance();
 			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
@@ -175,7 +175,7 @@ public class TilePulverizer extends TileMachineBase {
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
 					inventory[2].stackSize += secondaryItem.stackSize;
 				}
-				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+				if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 					inventory[2].stackSize += secondaryItem.stackSize;
 				}
 				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {

@@ -174,7 +174,7 @@ public class TileSawmill extends TileMachineBase {
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
 					inventory[2].stackSize += secondaryItem.stackSize;
 				}
-				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+				if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
 					inventory[2].stackSize += secondaryItem.stackSize;
 				}
 				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {
