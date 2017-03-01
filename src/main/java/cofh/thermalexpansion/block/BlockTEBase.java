@@ -17,6 +17,7 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.particle.ParticleManager;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,9 +26,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.IStringSerializable;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
@@ -102,6 +103,51 @@ public abstract class BlockTEBase extends BlockCoreTile {
 			return tile.openGui(player);
 		}
 		return basicGui;
+	}
+
+	@Override
+	public float getBlockHardness(IBlockState state, World world, BlockPos pos) {
+
+		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
+
+		if (tile instanceof TileAugmentableSecure) {
+			return ((TileAugmentableSecure) tile).isCreative ? HARDNESS_CREATIVE : HARDNESS[(((TileAugmentableSecure) tile).getLevel()) % HARDNESS.length];
+		}
+		return blockHardness;
+	}
+
+	@Override
+	public float getExplosionResistance(World world, BlockPos pos, Entity exploder, Explosion explosion) {
+
+		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
+
+		if (tile instanceof TileAugmentableSecure) {
+			return ((TileAugmentableSecure) tile).isCreative ? RESISTANCE_CREATIVE : RESISTANCE[(((TileAugmentableSecure) tile).getLevel()) % RESISTANCE.length];
+		}
+		return blockResistance / 5.0F;
+	}
+
+	/* RENDERING METHODS */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+
+		if (this instanceof IWorldBlockTextureProvider) {
+			CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT) // Because vanilla removed state and side based particle textures in 1.8..
+	public boolean addHitEffects(IBlockState state, World world, RayTraceResult trace, ParticleManager manager) {
+
+		if (this instanceof IWorldBlockTextureProvider) {
+			CustomParticleHandler.addHitEffects(state, world, trace, manager, ((IWorldBlockTextureProvider) this));
+			return true;
+		}
+		return false;
 	}
 
 	/* HELPERS */
@@ -193,85 +239,22 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		return ret;
 	}
 
+	/* IDismantleable */
 	@Override
-	@SideOnly (Side.CLIENT)
-	public boolean addDestroyEffects(World world, BlockPos pos, ParticleManager manager) {
+	public boolean canDismantle(World world, BlockPos pos, IBlockState state, EntityPlayer player) {
 
-		if (this instanceof IWorldBlockTextureProvider) {
-			CustomParticleHandler.addDestroyEffects(world, pos, manager, (IWorldBlockTextureProvider) this);
-			return true;
+		TileTEBase tile = (TileTEBase) world.getTileEntity(pos);
+
+		if (tile instanceof TileAugmentableSecure && ((TileAugmentableSecure) tile).isCreative && !CoreUtils.isOp(player)) {
+			return false;
 		}
-		return false;
+		return super.canDismantle(world, pos, state, player);
 	}
 
-	@Override
-	@SideOnly (Side.CLIENT)//Because vanilla removed state and side based particle textures in 1.8..
-	public boolean addHitEffects(IBlockState state, World world, RayTraceResult trace, ParticleManager manager) {
+	public static final float[] HARDNESS = { 5.0F, 10, 0.F, 10.0F, 15.0F, 20.0F };
+	public static final int[] RESISTANCE = { 15, 30, 30, 45, 120 };
 
-		if (this instanceof IWorldBlockTextureProvider) {
-			CustomParticleHandler.addHitEffects(state, world, trace, manager, ((IWorldBlockTextureProvider) this));
-			return true;
-		}
-		return false;
-	}
-
-	/* SIDE CONFIG */
-	public enum EnumSideConfig implements IStringSerializable {
-
-		// @formatter:off
-		NONE(0, "none", false, false),
-		BLUE(1, "blue", true, true),
-		RED(2, "red", false, true),
-		YELLOW(3, "yellow", false, true),
-		ORANGE(4, "orange", false, true),
-		GREEN(5, "green", true, true),
-		PURPLE(6, "purple", true, true),
-		OPEN(7, "open", true, true);
-		// @formatter:on
-
-		private final int index;
-		private final String name;
-
-		private final boolean allowInsertion;
-		private final boolean allowExtraction;
-
-		EnumSideConfig(int index, String name, boolean insert, boolean extract) {
-
-			this.index = index;
-			this.name = name;
-			this.allowInsertion = insert;
-			this.allowExtraction = extract;
-		}
-
-		public int getIndex() {
-
-			return this.index;
-		}
-
-		@Override
-		public String getName() {
-
-			return this.name;
-		}
-
-		public boolean getAllowInsertion() {
-
-			return this.allowInsertion;
-		}
-
-		public boolean getAllowExtraction() {
-
-			return this.allowExtraction;
-		}
-
-		public static final BlockTEBase.EnumSideConfig[] VALUES = new BlockTEBase.EnumSideConfig[values().length];
-
-		static {
-			for (EnumSideConfig config : values()) {
-				VALUES[config.getIndex()] = config;
-			}
-		}
-
-	}
+	public static final float HARDNESS_CREATIVE = -1.0F;
+	public static final float RESISTANCE_CREATIVE = 1200;
 
 }

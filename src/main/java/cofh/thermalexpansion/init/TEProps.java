@@ -45,6 +45,16 @@ public class TEProps {
 		comment = "If TRUE, Thermal Expansion Florbs appear under the general \"Thermal Expansion\" Creative Tab. Not really recommended.";
 		florbTabCommon = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("FlorbsInCommonTab", category, florbTabCommon, comment);
 
+		category = "Interface.CreativeTabs";
+
+		comment = "Set the default level for the Blocks shown in the Creative Tab, if all levels are not shown.";
+		creativeTabLevel = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getInt("DefaultLevel", category, creativeTabLevel, LEVEL_MIN, LEVEL_MAX, comment);
+
+		comment = "If TRUE, all regular levels for a given Block will show in the Creative Tab.";
+		creativeTabShowAllLevels = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowAllBlockLevels", category, creativeTabShowAllLevels, comment);
+
+		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
+		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
 
 		/* CREATIVE TABS */
 		ThermalExpansion.tabCommon = new CreativeTabTE();
@@ -62,7 +72,6 @@ public class TEProps {
 			};
 		}
 		ThermalExpansion.tabFlorbs = florbTabCommon ? ThermalExpansion.tabCommon : new CreativeTabTEFlorbs();
-
 	}
 
 	/* GENERAL */
@@ -70,6 +79,13 @@ public class TEProps {
 	public static final int MAX_FLUID_MEDIUM = Fluid.BUCKET_VOLUME * 8;
 	public static final int MAX_FLUID_LARGE = Fluid.BUCKET_VOLUME * 10;
 	public static final int MAGMATIC_TEMPERATURE = 1000;
+
+	public static final int LEVEL_MIN = 0;
+	public static final int LEVEL_MAX = 4;
+
+	public static boolean creativeTabShowAllLevels = false;
+	public static boolean creativeTabShowCreative = false;
+	public static int creativeTabLevel = 0;
 
 	/* TEXTURES */
 	public static final String PATH_GFX = "thermalexpansion:textures/";

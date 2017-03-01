@@ -308,7 +308,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	@Override
 	public void onSlotUpdate() {
 
-		markDirty();
+		markChunkDirty();
 	}
 
 	/* CAPABILITIES */

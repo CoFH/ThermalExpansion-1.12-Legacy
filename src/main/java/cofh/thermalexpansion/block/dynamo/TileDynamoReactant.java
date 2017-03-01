@@ -34,6 +34,7 @@ import java.util.ArrayList;
 public class TileDynamoReactant extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
@@ -75,7 +76,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	@Override
 	protected boolean canStart() {
 
-		return (fuelRF > 0 || tank.getFluidAmount() >= 50) && (reactantRF > 0 || getReactantEnergy(inventory[0]) > 0);
+		return (fuelRF > 0 || tank.getFluidAmount() >= fluidAmount) && (reactantRF > 0 || getReactantEnergy(inventory[0]) > 0);
 	}
 
 	@Override
@@ -88,8 +89,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 	protected void processStart() {
 
 		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy(tank.getFluid()) * energyMod / ENERGY_BASE;
-			tank.drain(50, true);
+			fuelRF += getFuelEnergy100mB(tank.getFluid()) * energyMod / ENERGY_BASE;
+			tank.drain(fluidAmount, true);
 		}
 		if (reactantRF <= 0) {
 			currentReactantRF = getReactantEnergy(inventory[0]) * reactantMod / ENERGY_BASE;
@@ -99,13 +100,15 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	@Override
-	protected void processTick() {
+	protected int processTick() {
 
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 		reactantRF -= energy;
 		transferEnergy();
+
+		return energy;
 	}
 
 	@Override
@@ -326,7 +329,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
-		fuels.put(fluid, energy / 20);
+		fuels.put(fluid, energy);
 		return true;
 	}
 
@@ -354,6 +357,11 @@ public class TileDynamoReactant extends TileDynamoBase {
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid());
+	}
+
+	public static int getFuelEnergy100mB(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
 	}
 
 	public static int getReactantEnergy(ItemStack stack) {

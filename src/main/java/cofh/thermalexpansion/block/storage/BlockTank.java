@@ -76,8 +76,15 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable) {
-			for (int i = 0; i < 5; i++) {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), i));
+			if (TEProps.creativeTabShowAllLevels) {
+				for (int j = 0; j < 5; j++) {
+					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), j));
+				}
+			} else {
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), TEProps.creativeTabLevel));
+			}
+			if (TEProps.creativeTabShowCreative) {
+				list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, 0), 4));
 			}
 		}
 	}

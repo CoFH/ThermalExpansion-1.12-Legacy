@@ -2,7 +2,7 @@ package cofh.thermalexpansion.plugins.jei.compactor;
 
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
-import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
+import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.CompactorManager;
 import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
@@ -23,6 +23,7 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 
 		registry.addRecipeCategories(new CompactorRecipeCategoryMint(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper));
+		registry.addRecipeCategoryCraftingItem(ItemAugment.machineCompactorMint, RecipeUidsTE.COMPACTOR_MINT);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineCompactor, RecipeUidsTE.COMPACTOR_MINT);
 	}
 
@@ -41,8 +42,6 @@ public class CompactorRecipeCategoryMint extends CompactorRecipeCategory {
 		super(guiHelper);
 
 		localizedName += " - " + StringHelper.localize("gui.thermalexpansion.jei.compactor.modeMint");
-
-		icon = guiHelper.createDrawable(GuiCompactor.TEXTURE, 208, 48, 16, 16);
 	}
 
 	@Nonnull

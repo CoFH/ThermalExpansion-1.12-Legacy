@@ -111,7 +111,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	}
 
 	@Override
-	protected void processTick() {
+	protected int processTick() {
 
 		int energy = calcEnergy();
 
@@ -125,6 +125,8 @@ public class TileDynamoSteam extends TileDynamoBase {
 			steamTank.modifyFluidStored(energy);
 		}
 		transferEnergy();
+
+		return energy;
 	}
 
 	@Override

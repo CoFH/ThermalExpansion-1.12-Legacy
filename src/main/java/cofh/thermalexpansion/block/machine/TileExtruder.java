@@ -388,7 +388,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	public void onSlotUpdate() {
 
-		markDirty();
+		markChunkDirty();
 	}
 
 	/* CAPABILITIES */

@@ -47,6 +47,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		ReconfigurableHelper.setItemStackTagReconfig(tag, this);
+
 		return super.writePortableTagInternal(player, tag);
 	}
 
@@ -215,7 +216,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			sideCache = tempCache.clone();
 			facing++;
 			facing %= 6;
-			markDirty();
+			markChunkDirty();
 			sendTilePacket(Side.CLIENT);
 			return true;
 		}
@@ -228,7 +229,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 		}
 		sideCache = tempCache.clone();
 		facing = BlockHelper.SIDE_LEFT[facing];
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}
@@ -243,7 +244,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 			return false;
 		}
 		facing = (byte) side;
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}

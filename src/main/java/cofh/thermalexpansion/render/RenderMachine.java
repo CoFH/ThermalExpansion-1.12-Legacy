@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.render;
 
-import codechicken.lib.model.bakery.PlanarFaceBakery;
 import codechicken.lib.model.blockbakery.ILayeredBlockBakery;
 import codechicken.lib.render.CCModel;
 import codechicken.lib.render.CCRenderState;
@@ -41,6 +40,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tileEntity) {
+
 		TileMachineBase machineBase = ((TileMachineBase) tileEntity);
 		state = state.withProperty(TEProps.LEVEL, machineBase.getLevel());
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[machineBase.getFacing()]);
@@ -52,6 +52,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
+
 		List<BakedQuad> quads = new ArrayList<>();
 		if (face != null) {
 
@@ -80,6 +81,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
+
 		List<BakedQuad> quads = new ArrayList<>();
 
 		if (face != null) {
@@ -98,12 +100,11 @@ public class RenderMachine implements ILayeredBlockBakery {
 			quads.addAll(buffer.bake());
 		}
 
-
 		return quads;
 	}
 
-
 	public void renderFace(CCRenderState ccrs, EnumFacing face, TextureAtlasSprite sprite) {
+
 		if (sprite != null) {
 			int i = face.ordinal();
 			model.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(sprite));
@@ -119,6 +120,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 	 * @return The texture, Null if there is no texture for the face.
 	 */
 	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
+
 		return null;
 	}
 }

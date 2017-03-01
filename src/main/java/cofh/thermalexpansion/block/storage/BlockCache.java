@@ -83,8 +83,15 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	public void getSubBlocks(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		if (enable) {
-			for (int i = 0; i < 5; i++) {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), i));
+			if (TEProps.creativeTabShowAllLevels) {
+				for (int j = 0; j < 5; j++) {
+					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), j));
+				}
+			} else {
+				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, 0), TEProps.creativeTabLevel));
+			}
+			if (TEProps.creativeTabShowCreative) {
+				list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, 0), 4));
 			}
 		}
 	}
@@ -111,7 +118,6 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		if (extract == null) {
 			return;
 		}
-
 		if (!player.capabilities.isCreativeMode) {
 			if (!player.inventory.addItemStackToInventory(extract)) {
 				// apparently this returns false if it succeeds but doesn't have room for all.
@@ -294,10 +300,10 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		int level = itemBlock.getLevel(stack);
 
 		if (side == EnumFacing.DOWN) {
-			return isCreative ? TETextures.CACHE_BOTTOM_C :TETextures.CACHE_BOTTOM[level];
+			return isCreative ? TETextures.CACHE_BOTTOM_C : TETextures.CACHE_BOTTOM[level];
 		}
 		if (side == EnumFacing.UP) {
-			return isCreative ? TETextures.CACHE_TOP_C :TETextures.CACHE_TOP[level];
+			return isCreative ? TETextures.CACHE_TOP_C : TETextures.CACHE_TOP[level];
 		}
 		return side != EnumFacing.NORTH ? isCreative ? TETextures.CACHE_SIDE_C : TETextures.CACHE_SIDE[level] : isCreative ? TETextures.CACHE_FACE_C : TETextures.CACHE_FACE[level];
 	}

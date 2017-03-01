@@ -13,6 +13,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import com.google.common.base.Strings;
 import com.mojang.authlib.GameProfile;
@@ -370,12 +371,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		return augments;
 	}
 
-	@Override
-	public boolean[] getAugmentStatus() {
-
-		return augmentStatus;
-	}
-
 	public void updateAugmentStatus() {
 
 		preAugmentInstall();
@@ -556,9 +551,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				}
 				return false;
 			case CREATIVE:
-				if (level >= 0) {
+				if (level >= TEProps.LEVEL_MIN) {
 					isCreative = true;
-					setLevel(4);
+					setLevel(TEProps.LEVEL_MAX);
 					break;
 				}
 				return false;

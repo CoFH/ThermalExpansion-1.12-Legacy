@@ -23,6 +23,11 @@ achievement.thermalexpansion.machineTransposer=(Mostly) Free Refills
 achievement.thermalexpansion.welcome.desc=Welcome to Thermal Expansion!
 achievement.thermalexpansion.welcome=An Expanded World
 
+chat.thermalexpansion.augment.install.failure=Unable to install augment.
+chat.thermalexpansion.augment.install.success=Augment successfully installed!
+chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
+chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
+
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -221,8 +226,6 @@ info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
 info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
 info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
 info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
-info.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
-info.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
 item.thermalexpansion.augment.automatonDepth.name=
 item.thermalexpansion.augment.automatonRadius.name=

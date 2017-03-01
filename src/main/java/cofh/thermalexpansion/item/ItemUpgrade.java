@@ -90,19 +90,29 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
-		if (tile instanceof IUpgradeable && ((IUpgradeable) tile).canUpgrade(stack)) {
-			if (ServerHelper.isClientWorld(world)) {
+		if (tile instanceof IUpgradeable) {
+			if (!((IUpgradeable) tile).canUpgrade(stack)) {
 				return EnumActionResult.PASS;
 			}
-			if (((IUpgradeable) tile).installUpgrade(stack)) {
-				player.addChatComponentMessage(new TextComponentTranslation("info.thermalexpansion.upgrade.install.success"));
-				if (!player.capabilities.isCreativeMode) {
-					stack.stackSize--;
+			if (ServerHelper.isServerWorld(world)) { // Server
+				if (((IUpgradeable) tile).installUpgrade(stack)) {
+					if (!player.capabilities.isCreativeMode) {
+						stack.stackSize--;
+					}
+					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.upgrade.install.success"));
+				} else {
+					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.upgrade.install.failure"));
 				}
-			} else {
-				player.addChatComponentMessage(new TextComponentTranslation("info.thermalexpansion.upgrade.install.failure"));
+				return EnumActionResult.SUCCESS;
+			} else { // Client
+				if (((IUpgradeable) tile).installUpgrade(stack)) {
+					if (!player.capabilities.isCreativeMode) {
+						stack.stackSize--;
+					}
+					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
+					return EnumActionResult.SUCCESS;
+				}
 			}
-			return EnumActionResult.SUCCESS;
 		}
 		return EnumActionResult.PASS;
 	}

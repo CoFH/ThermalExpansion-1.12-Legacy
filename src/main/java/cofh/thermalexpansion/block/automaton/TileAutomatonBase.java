@@ -235,8 +235,9 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 
 	/* IAccelerable */
 	@Override
-	public void updateAccelerable() {
+	public int updateAccelerable() {
 
+		return 0;
 	}
 
 	/* IInventoryConnection */
@@ -266,7 +267,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		facing = (byte) side;
 		sideCache[facing] = 0;
 		sideCache[facing ^ 1] = 1;
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}

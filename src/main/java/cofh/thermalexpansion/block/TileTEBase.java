@@ -175,7 +175,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 			return;
 		}
 		if (readPortableTagInternal(player, tag)) {
-			markDirty();
+			markChunkDirty();
 			sendTilePacket(Side.CLIENT);
 		}
 	}
@@ -186,10 +186,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		if (!canPlayerAccess(player)) {
 			return;
 		}
-		if (writePortableTagInternal(player, tag)) {
-
-		}
-
+		writePortableTagInternal(player, tag);
 	}
 
 	/* PLUGIN METHODS */

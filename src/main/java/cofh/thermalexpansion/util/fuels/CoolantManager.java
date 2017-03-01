@@ -40,14 +40,14 @@ public class CoolantManager {
 	/**
 	 * This is for a 50 mB amount.
 	 */
-	public static int getCoolantRF50mB(Fluid fluid) {
+	public static int getCoolantRF100mB(Fluid fluid) {
 
-		return getCoolantRF(fluid) / 20;
+		return getCoolantRF(fluid) / 10;
 	}
 
-	public static int getCoolantRF50mB(FluidStack stack) {
+	public static int getCoolantRF100mB(FluidStack stack) {
 
-		return getCoolantRF50mB(stack.getFluid());
+		return getCoolantRF100mB(stack.getFluid());
 	}
 
 	/**

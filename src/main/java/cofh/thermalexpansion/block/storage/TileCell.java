@@ -130,8 +130,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		amountSend = tag.getInteger("Send");
-		amountRecv = tag.getInteger("Recv");
+		amountRecv = tag.getInteger("Recv") * RECV[level] / 1000;
+		amountSend = tag.getInteger("Send") * SEND[level] / 1000;
 
 		return super.readPortableTagInternal(player, tag);
 	}
@@ -139,8 +139,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
-		tag.setInteger("Send", amountSend);
-		tag.setInteger("Recv", amountRecv);
+		tag.setInteger("Recv", amountRecv * 1000 / RECV[level]);
+		tag.setInteger("Send", amountSend * 1000 / SEND[level]);
 
 		return super.writePortableTagInternal(player, tag);
 	}

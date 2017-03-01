@@ -32,6 +32,7 @@ import java.util.ArrayList;
 public class TileDynamoCompression extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
@@ -72,7 +73,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	@Override
 	protected boolean canStart() {
 
-		return (fuelRF > 0 || fuelTank.getFluidAmount() >= 50) && (coolantRF > 0 || coolantTank.getFluidAmount() >= 50);
+		return (fuelRF > 0 || fuelTank.getFluidAmount() >= fluidAmount) && (coolantRF > 0 || coolantTank.getFluidAmount() >= fluidAmount);
 	}
 
 	@Override
@@ -85,23 +86,25 @@ public class TileDynamoCompression extends TileDynamoBase {
 	protected void processStart() {
 
 		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
-			fuelTank.drain(50, true);
+			fuelRF += getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+			fuelTank.drain(fluidAmount, true);
 		}
 		if (coolantRF <= 0) {
-			coolantRF += CoolantManager.getCoolantRF50mB(coolantTank.getFluid());
-			coolantTank.drain(50, true);
+			coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
+			coolantTank.drain(fluidAmount, true);
 		}
 	}
 
 	@Override
-	protected void processTick() {
+	protected int processTick() {
 
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 		coolantRF -= augmentCoolant ? 0 : energy;
 		transferEnergy();
+
+		return energy;
 	}
 
 	@Override
@@ -329,7 +332,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
-		fuels.put(fluid, energy / 20);
+		fuels.put(fluid, energy);
 		return true;
 	}
 
@@ -342,6 +345,11 @@ public class TileDynamoCompression extends TileDynamoBase {
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid());
+	}
+
+	public static int getFuelEnergy100mB(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
 	}
 
 }

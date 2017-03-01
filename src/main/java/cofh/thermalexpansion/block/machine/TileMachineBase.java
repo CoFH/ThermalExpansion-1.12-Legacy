@@ -198,14 +198,16 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		}
 	}
 
-	protected void processTick() {
+	protected int processTick() {
 
 		if (processRem <= 0) {
-			return;
+			return 0;
 		}
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(-energy);
 		processRem -= energy;
+
+		return energy;
 	}
 
 	protected void transferInput() {
@@ -357,9 +359,9 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	/* IAccelerable */
 	@Override
-	public void updateAccelerable() {
+	public int updateAccelerable() {
 
-		processTick();
+		return processTick();
 	}
 
 	/* IInventory */
@@ -423,7 +425,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 		}
 		sideCache[side] = 0;
 		facing = (byte) side;
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}

@@ -223,12 +223,14 @@ public class TileInsolator extends TileMachineBase {
 	}
 
 	@Override
-	protected void processTick() {
+	protected int processTick() {
 
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(-energy);
 		processRem -= energy;
 		tank.drain(energy / 10, true);
+
+		return energy;
 	}
 
 	@Override

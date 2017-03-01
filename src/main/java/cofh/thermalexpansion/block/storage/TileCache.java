@@ -1,13 +1,12 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.BlockHelper;
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.MathHelper;
-import cofh.lib.util.helpers.StringHelper;
+import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.init.TETextures;
@@ -137,6 +136,12 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		if (stack == null) {
 			return null;
 		}
+		if (isCreative) {
+			if (!simulate && !locked) {
+				setStoredItemType(stack, getCapacity(level));
+			}
+			return stack;
+		}
 		if (storedStack == null) {
 			if (!simulate) {
 				setStoredItemType(stack, stack.stackSize);
@@ -169,7 +174,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		ItemStack ret = ItemHelper.cloneStack(storedStack, Math.min(getStoredCount(), Math.min(maxExtract, storedStack.getMaxStackSize())));
 
-		if (!simulate) {
+		if (!simulate && !isCreative) {
 			setStoredItemCount(getStoredCount() - ret.stackSize);
 		}
 		return ret;
@@ -310,7 +315,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			clearInventory();
 		}
 		updateTrackers();
-		markDirty();
+		markChunkDirty();
 	}
 
 	//@Override
@@ -325,7 +330,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		updateTrackers();
 		sendTilePacket(Side.CLIENT);
-		markDirty();
+		markChunkDirty();
 	}
 
 	//@Override
@@ -351,7 +356,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	public boolean rotateBlock() {
 
 		facing = BlockHelper.SIDE_LEFT[facing];
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}
@@ -363,7 +368,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			return false;
 		}
 		facing = (byte) side;
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}
@@ -372,6 +377,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public ItemStack decrStackSize(int slot, int amount) {
 
+		if (isCreative) {
+			return ItemHelper.cloneStack(inventory[slot], amount);
+		}
 		if (inventory[slot] == null) {
 			return null;
 		}
@@ -391,13 +399,16 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			clearInventory();
 		}
 		updateTrackers();
-		markDirty();
+		markChunkDirty();
 		return stack;
 	}
 
 	@Override
 	public void setInventorySlotContents(int slot, ItemStack stack) {
 
+		if (isCreative) {
+			return;
+		}
 		inventory[slot] = stack;
 
 		boolean stackCheck = storedStack == null;
@@ -432,10 +443,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			}
 		}
 		updateTrackers();
+		markChunkDirty();
 		if (stackCheck != (storedStack == null)) {
 			sendTilePacket(Side.CLIENT);
 		}
-		markChunkDirty();
 	}
 
 	@Override
@@ -500,6 +511,33 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}
 		info.add(new TextComponentString(locked ? StringHelper.localize("info.cofh.locked") : StringHelper.localize("info.cofh.unlocked")));
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return true;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return true;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative;
+		}
+		return false;
 	}
 
 }

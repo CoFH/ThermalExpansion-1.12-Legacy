@@ -107,7 +107,16 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), 4));
+				if (TEProps.creativeTabShowAllLevels) {
+					for (int j = 0; j < 5; j++) {
+						list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), j));
+					}
+				} else {
+					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), TEProps.creativeTabLevel));
+				}
+				if (TEProps.creativeTabShowCreative) {
+					list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, i), 4));
+				}
 			}
 		}
 	}

@@ -36,6 +36,15 @@ public abstract class ItemBlockTEBase extends ItemBlockCore {
 
 	public abstract ItemStack setDefaultTag(ItemStack stack, int level);
 
+	public ItemStack setCreativeTag(ItemStack stack, int level) {
+
+		if (stack.getTagCompound() == null) {
+			setDefaultTag(stack, level);
+		}
+		stack.getTagCompound().setBoolean("Creative", true);
+		return stack;
+	}
+
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 

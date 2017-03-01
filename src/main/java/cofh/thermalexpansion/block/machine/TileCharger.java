@@ -129,9 +129,11 @@ public class TileCharger extends TileMachineBase {
 		return containerItem.getEnergyStored(inventory[1]) >= containerItem.getMaxEnergyStored(inventory[1]);
 	}
 
-	private void processTickContainerItem() {
+	private int processTickContainerItem() {
 
-		energyStorage.modifyEnergyStored(-containerItem.receiveEnergy(inventory[1], calcEnergyItem(), false));
+		int energy = containerItem.receiveEnergy(inventory[1], calcEnergyItem(), false);
+		energyStorage.modifyEnergyStored(-energy);
+		return energy;
 	}
 
 	/* HANDLER */
@@ -180,9 +182,11 @@ public class TileCharger extends TileMachineBase {
 		return handler.canReceive() && handler.getEnergyStored() >= handler.getMaxEnergyStored();
 	}
 
-	private void processTickHandler() {
+	private int processTickHandler() {
 
-		energyStorage.modifyEnergyStored(-handler.receiveEnergy(calcEnergy(), false));
+		int energy = handler.receiveEnergy(calcEnergy(), false);
+		energyStorage.modifyEnergyStored(-energy);
+		return energy;
 	}
 
 	private int calcEnergyItem() {
@@ -530,14 +534,14 @@ public class TileCharger extends TileMachineBase {
 
 	/* IAccelerable */
 	@Override
-	public void updateAccelerable() {
+	public int updateAccelerable() {
 
 		if (hasContainerItem) {
-			processTickContainerItem();
+			return processTickContainerItem();
 		} else if (hasEnergyHandler) {
-			processTickHandler();
+			return processTickHandler();
 		} else {
-			processTick();
+			return processTick();
 		}
 	}
 

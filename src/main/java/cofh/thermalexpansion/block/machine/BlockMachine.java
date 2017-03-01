@@ -1,7 +1,10 @@
 package cofh.thermalexpansion.block.machine;
 
 import codechicken.lib.model.ModelRegistryHelper;
-import codechicken.lib.model.blockbakery.*;
+import codechicken.lib.model.blockbakery.BlockBakery;
+import codechicken.lib.model.blockbakery.CCBakeryModel;
+import codechicken.lib.model.blockbakery.IBakeryBlock;
+import codechicken.lib.model.blockbakery.ICustomBlockBakery;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.api.core.IModelRegister;
@@ -88,10 +91,16 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		for (int i = 0; i < Type.METADATA_LOOKUP.length; i++) {
 			if (enable[i]) {
-				//				for (int j = 0; j < 5; j++) {
-				//					list.add(ItemBlockMachine.setDefaultTag(new ItemStack(item, 1, i), j));
-				//				}
-				list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), 4));
+				if (TEProps.creativeTabShowAllLevels) {
+					for (int j = 0; j < 5; j++) {
+						list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), j));
+					}
+				} else {
+					list.add(itemBlock.setDefaultTag(new ItemStack(item, 1, i), TEProps.creativeTabLevel));
+				}
+				if (TEProps.creativeTabShowCreative) {
+					list.add(itemBlock.setCreativeTag(new ItemStack(item, 1, i), 4));
+				}
 			}
 		}
 	}
@@ -235,6 +244,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 	@Override
 	public ICustomBlockBakery getCustomBakery() {
+
 		return RenderMachine.INSTANCE;
 	}
 

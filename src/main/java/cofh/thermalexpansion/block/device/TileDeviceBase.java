@@ -95,7 +95,7 @@ public abstract class TileDeviceBase extends TilePowered {
 		}
 		facing = (byte) side;
 		sideCache[facing] = 0;
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}

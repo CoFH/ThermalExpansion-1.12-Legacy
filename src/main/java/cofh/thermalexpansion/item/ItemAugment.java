@@ -24,6 +24,7 @@ import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fml.relauncher.Side;
@@ -118,18 +119,35 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		IBlockState state = world.getBlockState(pos);
 		Block block = state.getBlock();
+
 		if (!block.hasTileEntity(state)) {
 			return EnumActionResult.PASS;
 		}
 		TileEntity tile = world.getTileEntity(pos);
 
 		if (tile instanceof IAugmentable) {
-			if (((IAugmentable) tile).installAugment(stack)) {
-				if (!player.capabilities.isCreativeMode) {
-					stack.stackSize--;
+			if (((IAugmentable) tile).getAugmentSlots().length <= 0) {
+				return EnumActionResult.PASS;
+			}
+			if (ServerHelper.isServerWorld(world)) { // Server
+				if (((IAugmentable) tile).installAugment(stack)) {
+					if (!player.capabilities.isCreativeMode) {
+						stack.stackSize--;
+					}
+					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.augment.install.success"));
+				} else {
+					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
+				}
+				return EnumActionResult.SUCCESS;
+			} else { // Client
+				if (((IAugmentable) tile).installAugment(stack)) {
+					if (!player.capabilities.isCreativeMode) {
+						stack.stackSize--;
+					}
+					ServerHelper.sendItemUsePacket(world, pos, side, hand, hitX, hitY, hitZ);
+					return EnumActionResult.SUCCESS;
 				}
 			}
-			return ServerHelper.isServerWorld(world) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 		}
 		return EnumActionResult.PASS;
 	}

@@ -49,7 +49,11 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		SecurityHelper.addAccessInformation(stack, tooltip);
 		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.cache"));
 
-		tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + getSizeInventory(stack));
+		if (isCreative(stack)) {
+			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.localize("info.cofh.infinite"));
+		} else {
+			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + getSizeInventory(stack));
+		}
 		if (!stack.getTagCompound().hasKey("Item")) {
 			tooltip.add(StringHelper.localize("info.cofh.empty"));
 			return;
@@ -57,15 +61,19 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		boolean lock = stack.getTagCompound().getBoolean("Lock");
 
 		if (lock) {
-			tooltip.add(StringHelper.localize("info.cofh.locked"));
+			tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.locked"));
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.unlocked"));
+			tooltip.add(StringHelper.YELLOW + StringHelper.localize("info.cofh.unlocked"));
 		}
 		tooltip.add(StringHelper.localize("info.cofh.contents") + ":");
 
 		if (stack.getTagCompound().hasKey("Item")) {
 			ItemStack stored = ItemHelper.readItemStackFromNBT(stack.getTagCompound().getCompoundTag("Item"));
-			tooltip.add("    " + StringHelper.ORANGE + stored.stackSize + " " + StringHelper.getItemName(stored));
+			if (isCreative(stack)) {
+				tooltip.add("    " + StringHelper.ORANGE + StringHelper.getItemName(stored));
+			} else {
+				tooltip.add("    " + StringHelper.ORANGE + stored.stackSize + " " + StringHelper.getItemName(stored));
+			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

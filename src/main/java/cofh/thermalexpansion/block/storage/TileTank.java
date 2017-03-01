@@ -113,7 +113,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
 		enableAutoOutput = !enableAutoOutput;
-		markDirty();
+		markChunkDirty();
 
 		sendTilePacket(Side.CLIENT);
 		return true;

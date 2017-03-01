@@ -30,6 +30,7 @@ import java.util.ArrayList;
 public class TileDynamoMagmatic extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.MAGMATIC.getMetadata();
+	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
@@ -76,9 +77,9 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	protected boolean canStart() {
 
 		if (augmentCoolant) {
-			return (fuelRF > 0 || fuelTank.getFluidAmount() >= 50) && (coolantRF > 0 || coolantTank.getFluidAmount() >= 50);
+			return (fuelRF > 0 || fuelTank.getFluidAmount() >= fluidAmount) && (coolantRF > 0 || coolantTank.getFluidAmount() >= fluidAmount);
 		}
-		return fuelTank.getFluidAmount() >= 50;
+		return fuelTank.getFluidAmount() >= fluidAmount;
 	}
 
 	@Override
@@ -86,17 +87,17 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		if (augmentCoolant) {
 			if (fuelRF <= 0) {
-				fuelRF += getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
-				fuelTank.drain(50, true);
+				fuelRF += getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+				fuelTank.drain(fluidAmount, true);
 			}
 			if (coolantRF <= 0) {
-				coolantRF += CoolantManager.getCoolantRF50mB(coolantTank.getFluid());
-				coolantTank.drain(50, true);
+				coolantRF += CoolantManager.getCoolantRF100mB(coolantTank.getFluid());
+				coolantTank.drain(fluidAmount, true);
 			}
 			return;
 		}
-		fuelRF += getFuelEnergy(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
-		fuelTank.drain(50, true);
+		fuelRF += getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+		fuelTank.drain(fluidAmount, true);
 	}
 
 	@Override
@@ -322,7 +323,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		if (fluid == null || energy < 10000 || energy > 200000000) {
 			return false;
 		}
-		fuels.put(fluid, energy / 20);
+		fuels.put(fluid, energy);
 		return true;
 	}
 
@@ -335,6 +336,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	public static int getFuelEnergy(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid());
+	}
+
+	public static int getFuelEnergy100mB(FluidStack stack) {
+
+		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
 	}
 
 }

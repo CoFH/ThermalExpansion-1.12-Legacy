@@ -135,7 +135,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 				facing = (byte) (i % 6);
 				if (facing != oldFacing) {
 					updateAdjacentHandlers();
-					markDirty();
+					markChunkDirty();
 					sendTilePacket(Side.CLIENT);
 				}
 			}
@@ -256,12 +256,14 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		tracker.markTime(worldObj);
 	}
 
-	protected void processTick() {
+	protected int processTick() {
 
 		int energy = calcEnergy();
 		energyStorage.modifyEnergyStored(energy);
 		fuelRF -= energy;
 		transferEnergy();
+
+		return energy;
 	}
 
 	protected void transferEnergy() {
@@ -454,11 +456,12 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	/* IAccelerable */
 	@Override
-	public void updateAccelerable() {
+	public int updateAccelerable() {
 
-		if (isActive && !canFinish()) {
-			processTick();
+		if (!isActive || canFinish()) {
+			return 0;
 		}
+		return processTick();
 	}
 
 	/* IEnergyProvider */
@@ -550,7 +553,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 					facing = (byte) (i % 6);
 					if (facing != oldFacing) {
 						updateAdjacentHandlers();
-						markDirty();
+						markChunkDirty();
 						sendTilePacket(Side.CLIENT);
 					}
 					return true;
@@ -560,7 +563,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		}
 		facing = (byte) ((facing + 1) % 6);
 		updateAdjacentHandlers();
-		markDirty();
+		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;
 	}
