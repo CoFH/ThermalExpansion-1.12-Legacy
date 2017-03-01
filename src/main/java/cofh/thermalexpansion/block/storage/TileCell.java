@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
+import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.MathHelper;
@@ -14,6 +15,7 @@ import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -64,6 +66,8 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int amountSend;
 
 	public TileCell() {
+
+		super();
 
 		energyStorage = new EnergyStorage(getCapacity(0));
 		setDefaultSides();
@@ -388,6 +392,25 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	public int getNumConfig(int side) {
 
 		return 3;
+	}
+
+	/* ISidedInventory */
+	@Override
+	public int[] getSlotsForFace(EnumFacing side) {
+
+		return CoreProps.EMPTY_INVENTORY;
+	}
+
+	@Override
+	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
+
+		return false;
+	}
+
+	@Override
+	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
+
+		return false;
 	}
 
 	/* ISidedTexture */

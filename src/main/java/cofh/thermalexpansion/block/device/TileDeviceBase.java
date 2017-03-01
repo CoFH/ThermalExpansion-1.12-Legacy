@@ -24,6 +24,7 @@ public abstract class TileDeviceBase extends TilePowered {
 	public TileDeviceBase() {
 
 		sideConfig = SIDE_CONFIGS[this.getType()];
+		slotConfig = SLOT_CONFIGS[this.getType()];
 		setDefaultSides();
 
 		hasRedstoneControl = true;
