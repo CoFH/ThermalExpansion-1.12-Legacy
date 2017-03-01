@@ -192,8 +192,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 		GameProfile profile = new GameProfile(UUID.fromString(uuid), name);
 
 		if (!CoreProps.DEFAULT_OWNER.equals(profile)) {
-			System.out.println("HEY!");
-
 			if (!Strings.isNullOrEmpty(uuid)) {
 				setOwner(profile);
 			} else if (!Strings.isNullOrEmpty(name)) {
