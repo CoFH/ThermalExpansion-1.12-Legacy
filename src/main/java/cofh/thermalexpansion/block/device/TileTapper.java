@@ -34,6 +34,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
+import java.util.Set;
 
 public class TileTapper extends TileDeviceBase implements ITickable {
 
@@ -175,14 +176,14 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 		if (validTree) {
 			if (isTrunk(trunkPos)) {
-				BlockWrapper leaf = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+				Set<BlockWrapper> leafSet = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
 				int leafCount = 0;
 
 				for (int i = 0; i < 3; i++) {
 					IBlockState state = worldObj.getBlockState(leafPos[i]);
 					BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
 
-					if (leaf.isEqual(target)) {
+					if (leafSet.contains(target)) {
 						leafCount++;
 					}
 				}
@@ -208,16 +209,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			cached = true;
 			return;
 		}
-		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-1, 0, -1), pos.add(1, Math.min(256 - pos.getY(), 40), 1));
+		Iterable<BlockPos.MutableBlockPos> area = BlockPos.getAllInBoxMutable(pos.add(-1, 0, -1), pos.add(1, Math.min(256 - pos.getY(), 40), 1));
 
-		BlockWrapper leaf = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
+		Set<BlockWrapper> leafSet = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
 		int leafCount = 0;
 
 		for (BlockPos scan : area) {
 			IBlockState state = worldObj.getBlockState(scan);
 			BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
 
-			if (leaf.isEqual(target)) {
+			if (leafSet.contains(target)) {
 				leafPos[leafCount] = new BlockPos(scan);
 				leafCount++;
 				if (leafCount >= 3) {

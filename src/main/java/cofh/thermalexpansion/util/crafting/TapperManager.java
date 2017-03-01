@@ -4,21 +4,25 @@ import cofh.lib.util.BlockWrapper;
 import cofh.lib.util.ItemWrapper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.HashMultimap;
+import com.google.common.collect.SetMultimap;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
+import scala.collection.mutable.MultiMap;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 public class TapperManager {
 
 	private static Map<BlockWrapper, FluidStack> blockMap = new THashMap<>();
 	private static Map<ItemWrapper, FluidStack> itemMap = new THashMap<>();
-	private static Map<BlockWrapper, BlockWrapper> leafMap = new THashMap<>();
+	private static SetMultimap<BlockWrapper, BlockWrapper> leafMap = HashMultimap.create();
 
 	public static FluidStack getFluid(IBlockState state) {
 
@@ -40,7 +44,7 @@ public class TapperManager {
 		return getFluid(stack) != null;
 	}
 
-	public static BlockWrapper getLeaf(IBlockState state) {
+	public static Set<BlockWrapper> getLeaf(IBlockState state) {
 
 		return leafMap.get(new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state)));
 	}
@@ -94,7 +98,7 @@ public class TapperManager {
 
 		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<>(blockMap.size());
 		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<>(itemMap.size());
-		Map<BlockWrapper, BlockWrapper> tempLeafMap = new THashMap<>(leafMap.size());
+		HashMultimap<BlockWrapper, BlockWrapper> tempLeafMap = HashMultimap.create(leafMap.keySet().size(),leafMap.size() / leafMap.keySet().size());
 
 		for (Entry<BlockWrapper, FluidStack> entry : blockMap.entrySet()) {
 			BlockWrapper tempBlock = new BlockWrapper(entry.getKey().block, entry.getKey().metadata);
@@ -104,7 +108,7 @@ public class TapperManager {
 			ItemWrapper tempItem = new ItemWrapper(entry.getKey().item, entry.getKey().metadata);
 			tempItemMap.put(tempItem, entry.getValue());
 		}
-		for (Entry<BlockWrapper, BlockWrapper> entry : leafMap.entrySet()) {
+		for (Entry<BlockWrapper, BlockWrapper> entry : leafMap.entries()) {
 			BlockWrapper tempLeaf = new BlockWrapper(entry.getKey().block, entry.getKey().metadata);
 			tempLeafMap.put(tempLeaf, entry.getValue());
 		}
