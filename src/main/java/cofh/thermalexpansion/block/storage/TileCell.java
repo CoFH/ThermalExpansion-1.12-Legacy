@@ -141,6 +141,20 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+		boolean isCreative = this.isCreative;
+		boolean installUpgrade = super.installUpgrade(upgrade);
+		if (installUpgrade && !isCreative && this.isCreative) {
+			for (int i = 0; i < 6; i++) {
+				setSide(i, 2);
+			}
+
+			callNeighborTileChange();
+		}
+		return installUpgrade;
+	}
+
+	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setInteger("Recv", amountRecv * 1000 / RECV[level]);
