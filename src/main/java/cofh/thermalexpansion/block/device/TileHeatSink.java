@@ -111,7 +111,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				if (tank.getFluidAmount() >= fluidAmount) {
 					String prevID = renderFluid.getFluid().getName();
 					coolantRF += CoolantManager.getCoolantRF100mB(tank.getFluid());
-					coolantFactor = CoolantManager.getCoolantFactor(tank.getFluid());
+					coolantFactor = Math.max(1, CoolantManager.getCoolantFactor(tank.getFluid()));
 					setUseFactor();
 
 					if (!prevID.equals(renderFluid.getFluid().getName())) {
