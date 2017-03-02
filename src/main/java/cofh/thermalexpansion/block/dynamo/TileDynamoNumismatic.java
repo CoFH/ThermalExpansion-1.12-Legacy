@@ -144,13 +144,6 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	/* HELPERS */
 
-	/* IEnergyInfo */
-	@Override
-	public int getInfoEnergyPerTick() {
-
-		return Math.min(getEnergyValue(inventory[0]), calcEnergy());
-	}
-
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
