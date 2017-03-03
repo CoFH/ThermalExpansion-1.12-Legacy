@@ -37,7 +37,6 @@ gui.thermalexpansion.jei.transposer.modeFill=Fill
 gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
 gui.thermalexpansion.machine.compactor.modePress=Mode: Press
 gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage
-gui.thermalexpansion.machine.compactor.modeWait=Processing
 
 gui.thermalexpansion.machine.insolator.modeLocked=Fertilizer Slot Locked
 gui.thermalexpansion.machine.insolator.modeUnlocked=Fertilizer Slot Unlocked
@@ -47,7 +46,6 @@ gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
 
 gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
 gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
-gui.thermalexpansion.machine.transposer.modeWait=Processing
 
 gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
 gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by
@@ -55,6 +53,8 @@ gui.thermalexpansion.storage.cell.incRecv=Increase RF Input by
 gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
 gui.thermalexpansion.storage.cell.maxRecv=Max Input
 gui.thermalexpansion.storage.cell.maxSend=Max Output
+
+info.thermalexpansion.augment.0=Augment
 
 info.thermalexpansion.augment.dynamoCoilDuct.0=Dynamos: Side Accessibility
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
@@ -222,7 +222,7 @@ info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
 
 info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
 info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
-info.thermalexpansion.upgrade.full.0=Converts a block to a given tier.
+info.thermalexpansion.upgrade.full.0=Fully upgrades a block to a given tier.
 info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
 info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
 info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.

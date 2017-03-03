@@ -61,6 +61,8 @@ public class PulverizerManager {
 			addRecipe(energy, new ItemStack(Blocks.COBBLESTONE), new ItemStack(Blocks.SAND), new ItemStack(Blocks.GRAVEL), 15);
 			addRecipe(energy, new ItemStack(Blocks.GRAVEL), new ItemStack(Items.FLINT), new ItemStack(Blocks.SAND), 15);
 			addRecipe(energy, new ItemStack(Blocks.NETHERRACK), new ItemStack(Blocks.GRAVEL), ItemMaterial.dustSulfur, 15);
+			addRecipe(energy, new ItemStack(Blocks.SANDSTONE), ItemHelper.cloneStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 25);
+			addRecipe(energy, new ItemStack(Blocks.RED_SANDSTONE), new ItemStack(Blocks.SAND, 2, 1), ItemMaterial.dustNiter, 25);
 
 			addRecipe(energy / 4, new ItemStack(Blocks.STONEBRICK), new ItemStack(Blocks.STONEBRICK, 1, 2));
 			addRecipe(energy * 3 / 2, new ItemStack(Blocks.OBSIDIAN), ItemHelper.cloneStack(ItemMaterial.dustObsidian, 4));

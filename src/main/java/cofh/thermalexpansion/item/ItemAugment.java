@@ -46,6 +46,12 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		setCreativeTab(ThermalExpansion.tabItems);
 	}
 
+	@Override
+	public String getItemStackDisplayName(ItemStack stack) {
+
+		return StringHelper.localize("info.thermalexpansion.augment.0") + ": " + super.getItemStackDisplayName(stack);
+	}
+
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 

@@ -3,6 +3,7 @@ package cofh.thermalexpansion.util.crafting;
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalfoundation.block.BlockStorage;
 import cofh.thermalfoundation.block.BlockStorageAlloy;
 import cofh.thermalfoundation.item.ItemCoin;
@@ -166,26 +167,27 @@ public class CompactorManager {
 
 		/* MINT */
 		{
-			addDefaultMintRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron, ItemCoin.coinIron);
-			addDefaultMintRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold, ItemCoin.coinGold);
-			addDefaultMintRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper, ItemCoin.coinCopper);
-			addDefaultMintRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin, ItemCoin.coinTin);
-			addDefaultMintRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver, ItemCoin.coinSilver);
-			addDefaultMintRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead, ItemCoin.coinLead);
-			addDefaultMintRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum, ItemCoin.coinAluminum);
-			addDefaultMintRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel, ItemCoin.coinNickel);
-			addDefaultMintRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum, ItemCoin.coinPlatinum);
-			addDefaultMintRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium, ItemCoin.coinIridium);
-			addDefaultMintRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril, ItemCoin.coinMithril);
+			addDefaultMintRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron, new ItemStack(Blocks.IRON_BLOCK), ItemCoin.coinIron);
+			addDefaultMintRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold, new ItemStack(Blocks.GOLD_BLOCK), ItemCoin.coinGold);
 
-			addDefaultMintRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel, ItemCoin.coinSteel);
-			addDefaultMintRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum, ItemCoin.coinElectrum);
-			addDefaultMintRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar, ItemCoin.coinInvar);
-			addDefaultMintRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze, ItemCoin.coinBronze);
-			addDefaultMintRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan, ItemCoin.coinConstantan);
-			addDefaultMintRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum, ItemCoin.coinSignalum);
-			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, ItemCoin.coinLumium);
-			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, ItemCoin.coinEnderium);
+			addDefaultMintRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper, BlockStorage.blockCopper, ItemCoin.coinCopper);
+			addDefaultMintRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin, BlockStorage.blockTin, ItemCoin.coinTin);
+			addDefaultMintRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver, BlockStorage.blockSilver, ItemCoin.coinSilver);
+			addDefaultMintRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead, BlockStorage.blockLead, ItemCoin.coinLead);
+			addDefaultMintRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum, BlockStorage.blockAluminum, ItemCoin.coinAluminum);
+			addDefaultMintRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel, BlockStorage.blockNickel, ItemCoin.coinNickel);
+			addDefaultMintRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum, BlockStorage.blockPlatinum, ItemCoin.coinPlatinum);
+			addDefaultMintRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium, BlockStorage.blockIridium, ItemCoin.coinIridium);
+			addDefaultMintRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril, BlockStorage.blockMithril, ItemCoin.coinMithril);
+
+			addDefaultMintRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel, BlockStorageAlloy.blockSteel, ItemCoin.coinSteel);
+			addDefaultMintRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum, BlockStorageAlloy.blockElectrum, ItemCoin.coinElectrum);
+			addDefaultMintRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar, BlockStorageAlloy.blockInvar, ItemCoin.coinInvar);
+			addDefaultMintRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze, BlockStorageAlloy.blockBronze, ItemCoin.coinBronze);
+			addDefaultMintRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan, BlockStorageAlloy.blockConstantan, ItemCoin.coinConstantan);
+			addDefaultMintRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum, BlockStorageAlloy.blockSignalum, ItemCoin.coinSignalum);
+			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium, ItemCoin.coinLumium);
+			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium, ItemCoin.coinEnderium);
 		}
 	}
 
@@ -281,10 +283,11 @@ public class CompactorManager {
 		}
 	}
 
-	private static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack output) {
+	private static void addDefaultMintRecipe(ItemStack nugget, ItemStack ingot, ItemStack block, ItemStack output) {
 
 		addRecipe(DEFAULT_ENERGY / 4, ItemHelper.cloneStack(nugget, 3), ItemHelper.cloneStack(output, 1), Mode.MINT);
 		addRecipe(DEFAULT_ENERGY, ItemHelper.cloneStack(ingot, 1), ItemHelper.cloneStack(output, 3), Mode.MINT);
+		addRecipe(DEFAULT_ENERGY * 8, ItemHelper.cloneStack(block, 1), ItemHelper.cloneStack(output, 27), Mode.MINT);
 	}
 
 	/* RECIPE CLASS */
