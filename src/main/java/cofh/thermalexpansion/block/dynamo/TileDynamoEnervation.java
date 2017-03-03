@@ -12,6 +12,7 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalfoundation.init.TFFluids;
 import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -166,7 +167,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static Map<ComparableItemStack, Integer> fuels = new THashMap<>();
+	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
 
