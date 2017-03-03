@@ -18,6 +18,7 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.Fluid;
@@ -358,7 +359,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		}
 		int energy = fuels.get(new ComparableItemStack(stack));
 
-		return energy > 0 ? energy : GameRegistry.getFuelValue(stack) * CoreProps.RF_PER_MJ * 3 / 2;
+		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ * 3 / 2;
 	}
 
 }
