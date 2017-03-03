@@ -4,6 +4,7 @@ import cofh.lib.render.RenderHelper;
 import cofh.thermalexpansion.plugins.jei.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.dynamos.DynamoFuelCategories;
 import cofh.thermalexpansion.plugins.jei.furnace.FurnaceRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.insolator.InsolatorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.pulverizer.PulverizerRecipeCategory;
@@ -45,6 +46,8 @@ public class JEIPluginTE extends BlankModPlugin {
 		RefineryRecipeCategory.initialize(registry);
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
+
+		DynamoFuelCategories.initialize(registry);
 
 		Descriptions.register(registry);
 	}
