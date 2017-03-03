@@ -12,6 +12,7 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,6 +20,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -30,6 +32,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class TileDynamoSteam extends TileDynamoBase {
 
@@ -328,6 +331,10 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
 
 	private static int DEFAULT_RF = 48000;
+
+	public static Set<ComparableItemStack> getOverriddenFuelStacks() {
+		return ImmutableSet.copyOf(fuels.keySet());
+	}
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 

@@ -1,9 +1,12 @@
 package cofh.thermalexpansion.util.fuels;
 
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+
+import java.util.Set;
 
 public class CoolantManager {
 
@@ -22,6 +25,10 @@ public class CoolantManager {
 	public static boolean isValidCoolant(FluidStack stack) {
 
 		return stack != null && coolantMap.containsKey(stack.getFluid());
+	}
+
+	public static Set<Fluid> getCoolantFluids() {
+		return ImmutableSet.copyOf(coolantMap.keySet());
 	}
 
 	/**

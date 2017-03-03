@@ -4,12 +4,14 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
+import cofh.lib.util.ComparableItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,6 +22,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
@@ -162,6 +165,10 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	private static Map<ComparableItemStack, Integer> fuels = new THashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
+
+	public static Set<ComparableItemStack> getFuelStacks(){
+		return ImmutableSet.copyOf(fuels.keySet());
+	}
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 

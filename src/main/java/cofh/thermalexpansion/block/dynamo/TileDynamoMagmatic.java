@@ -9,6 +9,7 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.fuels.CoolantManager;
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -26,6 +27,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
@@ -312,6 +314,10 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	/* FUEL MANAGER */
 	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
+
+	public static Set<Fluid> getMagmaticFuelFluids() {
+		return ImmutableSet.copyOf(fuels.keySet());
+	}
 
 	public static boolean isValidFuel(FluidStack stack) {
 

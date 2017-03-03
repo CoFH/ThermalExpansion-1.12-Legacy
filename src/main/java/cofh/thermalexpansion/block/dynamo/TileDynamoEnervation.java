@@ -11,6 +11,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
 import cofh.thermalfoundation.init.TFFluids;
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -22,6 +23,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Set;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
@@ -170,6 +172,10 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
+
+	public static Set<ComparableItemStack> getSpecialStacks(){
+		return ImmutableSet.copyOf(fuels.keySet());
+	}
 
 	public static boolean addFuel(ItemStack stack, int energy) {
 

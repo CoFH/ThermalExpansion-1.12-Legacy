@@ -10,6 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoReactant;
 import cofh.thermalexpansion.init.TEProps;
+import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -30,6 +31,7 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.Set;
 
 public class TileDynamoReactant extends TileDynamoBase {
 
@@ -324,6 +326,10 @@ public class TileDynamoReactant extends TileDynamoBase {
 		return stack != null && reactants.containsKey(new ComparableItemStack(stack));
 	}
 
+	public static Set<Fluid> getReactantFuelFluids() {
+		return ImmutableSet.copyOf(fuels.keySet());
+	}
+
 	public static boolean addFuel(Fluid fluid, int energy) {
 
 		if (fluid == null || energy < 10000 || energy > 200000000) {
@@ -362,6 +368,10 @@ public class TileDynamoReactant extends TileDynamoBase {
 	public static int getFuelEnergy100mB(FluidStack stack) {
 
 		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
+	}
+
+	public static Set<ComparableItemStack> getReactantsStacks(){
+		return ImmutableSet.copyOf(reactants.keySet());
 	}
 
 	public static int getReactantEnergy(ItemStack stack) {
