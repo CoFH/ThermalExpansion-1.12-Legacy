@@ -42,7 +42,7 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 	protected abstract IDrawable createSlotDrawable(IGuiHelper helper);
 
 	protected IDrawable createBackground(IGuiHelper helper) {
-		return helper.createBlankDrawable(90, 63);
+		return helper.createBlankDrawable(90, Math.max(slotDrawable.getHeight(), 40));
 	}
 
 	public abstract Class<T> getIngredientClass();

@@ -28,6 +28,8 @@ chat.thermalexpansion.augment.install.success=Augment successfully installed!
 chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
+gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reactant Dynamo (Fuel)
+gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Solid Reactant)
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -169,6 +171,8 @@ info.thermalexpansion.augment.noticeMode=Only one Specialization may be installe
 info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
 info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.automaton.collector=Procures items from an area.
+
+info.thermalexpansion.coolant=Coolant
 
 info.thermalexpansion.device.extender=Allows for more connections to a given block.
 info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
