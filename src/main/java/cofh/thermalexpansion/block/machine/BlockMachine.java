@@ -290,6 +290,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
 
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
+
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));

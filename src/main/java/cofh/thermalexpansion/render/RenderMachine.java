@@ -56,7 +56,6 @@ public class RenderMachine implements ILayeredBlockBakery {
 	}
 
 	/* HELPERS */
-
 	/**
 	 * Used to get the overlay texture for the given side.
 	 * This should specifically relate to the level of the machine and not it's state.

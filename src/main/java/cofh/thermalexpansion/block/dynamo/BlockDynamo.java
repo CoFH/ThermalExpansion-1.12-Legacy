@@ -95,6 +95,8 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
+		builder.add(TEProps.CREATIVE);
+		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
 		builder.add(TEProps.ACTIVE_SPRITE_PROPERTY);
@@ -286,16 +288,16 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/dynamo/dynamo_coil_redstone"));
 
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
-			//TODO CCL internal classes for helping with this / phase in hashing instead of string gen.
-			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName().toString());
-			builder.append(",");
-			builder.append(state.getValue(TEProps.FACING));
-			builder.append(",");
-			builder.append(state.getValue(TEProps.ACTIVE));
-			builder.append(",");
-			builder.append(state.getValue(VARIANT));
+
+			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
+			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
+			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",facing=").append(state.getValue(TEProps.FACING));
+			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
 			return builder.toString();
 		});
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */

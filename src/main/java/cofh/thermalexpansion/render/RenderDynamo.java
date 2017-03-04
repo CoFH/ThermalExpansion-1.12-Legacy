@@ -93,6 +93,20 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 	}
 
+	/* HELPERS */
+	/**
+	 * Used to get the overlay texture for the given side.
+	 * This should specifically relate to the level of the machine and not it's state.
+	 *
+	 * @param face  The face.
+	 * @param level The level.
+	 * @return The texture, Null if there is no texture for the face.
+	 */
+	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
+
+		return TETextures.DYNAMO_OVERLAY[level];
+	}
+
 	/* ICustomBlockBakery */
 	@Override
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
