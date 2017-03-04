@@ -35,8 +35,9 @@ public class RenderMachine implements ILayeredBlockBakery {
 	static CCModel model = CCModel.quadModel(48);
 
 	static {
-		model.generateBlock(0, Cuboid6.full).computeNormals();
+		model.generateBlock(0, Cuboid6.full);
 		model.generateBlock(24, Cuboid6.full.copy().expand(.0004F));
+		model.computeNormals();
 	}
 
 	@Override
