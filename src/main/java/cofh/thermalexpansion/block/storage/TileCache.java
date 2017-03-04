@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
+import cofh.api.tileentity.IInventoryRetainer;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.api.tileentity.ISidedTexture;
 import cofh.api.tileentity.ITileInfo;
@@ -23,7 +24,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 import java.util.List;
 
-public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo {
+public class TileCache extends TileInventory implements ISidedInventory, IReconfigurableFacing, ISidedTexture, ITileInfo, IInventoryRetainer {
 
 	public static final int[] CAPACITY = { 1, 4, 9, 16, 25 };
 	public static final int[] SLOTS = { 0, 1 };
@@ -540,4 +541,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return false;
 	}
 
+
+	/* IInventoryRetainer */
+	@Override
+	public boolean retainInventory() {
+		return true;
+	}
 }
