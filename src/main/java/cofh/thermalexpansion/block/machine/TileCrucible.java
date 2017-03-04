@@ -330,15 +330,15 @@ public class TileCrucible extends TileMachineBase {
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM[level];
+				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
-				return TETextures.MACHINE_TOP[level];
+				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? TETextures.MACHINE_SIDE[level] : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
-		return TETextures.MACHINE_SIDE[level];
+		return TETextures.MACHINE_SIDE;
 	}
 
 	/* CAPABILITIES */

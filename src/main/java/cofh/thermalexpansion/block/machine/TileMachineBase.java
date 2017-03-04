@@ -442,15 +442,15 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 		if (pass == 0) {
 			if (side == 0) {
-				return TETextures.MACHINE_BOTTOM[level];
+				return TETextures.MACHINE_BOTTOM;
 			} else if (side == 1) {
-				return TETextures.MACHINE_TOP[level];
+				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? TETextures.MACHINE_SIDE[level] : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? TETextures.MACHINE_ACTIVE[getType()] : TETextures.MACHINE_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
 		}
-		return TETextures.MACHINE_SIDE[level];
+		return TETextures.MACHINE_SIDE;
 	}
 
 	/* ISoundSource */

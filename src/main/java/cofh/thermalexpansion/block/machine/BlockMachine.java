@@ -252,16 +252,13 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 	@SideOnly (Side.CLIENT)
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		// boolean isCreative = ItemBlockMachine.isCreative(stack);
-		int level = itemBlock.getLevel(stack);
-
 		if (side == EnumFacing.DOWN) {
-			return TETextures.MACHINE_BOTTOM[level];
+			return TETextures.MACHINE_BOTTOM;
 		}
 		if (side == EnumFacing.UP) {
-			return TETextures.MACHINE_TOP[level];
+			return TETextures.MACHINE_TOP;
 		}
-		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE[level] : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.MACHINE_SIDE : TETextures.MACHINE_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override // World

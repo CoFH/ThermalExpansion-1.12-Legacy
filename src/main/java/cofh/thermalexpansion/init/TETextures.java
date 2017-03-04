@@ -28,26 +28,16 @@ public class TETextures {
 		CONFIG_OPEN =						register(map, CONFIG_ + "open");
 
 		/* MACHINES */
-		MACHINE_BOTTOM_0 =                    register(map, MACHINE_ + "bottom_0");
-		MACHINE_BOTTOM_1 =                    register(map, MACHINE_ + "bottom_1");
-		MACHINE_BOTTOM_2 =                    register(map, MACHINE_ + "bottom_2");
-		MACHINE_BOTTOM_3 =                    register(map, MACHINE_ + "bottom_3");
-		MACHINE_BOTTOM_4 =                    register(map, MACHINE_ + "bottom_4");
-		MACHINE_BOTTOM_C =                    register(map, MACHINE_ + "bottom_c");
+		MACHINE_BOTTOM =                    register(map, MACHINE_ + "bottom");
+		MACHINE_TOP =                       register(map, MACHINE_ + "top");
+		MACHINE_SIDE =                      register(map, MACHINE_ + "side");
 
-		MACHINE_TOP_0 =                       register(map, MACHINE_ + "top_0");
-		MACHINE_TOP_1 =                       register(map, MACHINE_ + "top_1");
-		MACHINE_TOP_2 =                       register(map, MACHINE_ + "top_2");
-		MACHINE_TOP_3 =                       register(map, MACHINE_ + "top_3");
-		MACHINE_TOP_4 =                       register(map, MACHINE_ + "top_4");
-		MACHINE_TOP_C =                       register(map, MACHINE_ + "top_c");
-
-		MACHINE_SIDE_0 =                      register(map, MACHINE_ + "side_0");
-		MACHINE_SIDE_1 =                      register(map, MACHINE_ + "side_1");
-		MACHINE_SIDE_2 =                      register(map, MACHINE_ + "side_2");
-		MACHINE_SIDE_3 =                      register(map, MACHINE_ + "side_3");
-		MACHINE_SIDE_4 =                      register(map, MACHINE_ + "side_4");
-		MACHINE_SIDE_C =                      register(map, MACHINE_ + "side_c");
+		MACHINE_OVERLAY_0 =                 register(map, MACHINE_ + "overlay_0");
+		MACHINE_OVERLAY_1 =                 register(map, MACHINE_ + "overlay_1");
+		MACHINE_OVERLAY_2 =                 register(map, MACHINE_ + "overlay_2");
+		MACHINE_OVERLAY_3 =                 register(map, MACHINE_ + "overlay_3");
+		MACHINE_OVERLAY_4 =                 register(map, MACHINE_ + "overlay_4");
+		MACHINE_OVERLAY_C =                 register(map, MACHINE_ + "overlay_c");
 
 		MACHINE_FACE_FURNACE =				register(map, MACHINE_FACE_ + "furnace");
 		MACHINE_FACE_PULVERIZER =			register(map, MACHINE_FACE_ + "pulverizer");
@@ -181,12 +171,12 @@ public class TETextures {
 		TANK_BOTTOM_1_4 =                   register(map, TANK_ + "bottom_1_4");
 		TANK_BOTTOM_1_C =                   register(map, TANK_ + "bottom_1_c");
 
-		TANK_TOP_0 =                      register(map, TANK_ + "top_0");
-		TANK_TOP_1 =                      register(map, TANK_ + "top_1");
-		TANK_TOP_2 =                      register(map, TANK_ + "top_2");
-		TANK_TOP_3 =                      register(map, TANK_ + "top_3");
-		TANK_TOP_4 =                      register(map, TANK_ + "top_4");
-		TANK_TOP_C =                      register(map, TANK_ + "top_c");
+		TANK_TOP_0 =                        register(map, TANK_ + "top_0");
+		TANK_TOP_1 =                        register(map, TANK_ + "top_1");
+		TANK_TOP_2 =                        register(map, TANK_ + "top_2");
+		TANK_TOP_3 =                        register(map, TANK_ + "top_3");
+		TANK_TOP_4 =                        register(map, TANK_ + "top_4");
+		TANK_TOP_C =                        register(map, TANK_ + "top_c");
 
 		TANK_SIDE_0_0 =                     register(map, TANK_ + "side_0_0");
 		TANK_SIDE_0_1 =                     register(map, TANK_ + "side_0_1");
@@ -255,31 +245,13 @@ public class TETextures {
 				CONFIG_OPEN
 		};
 
-		MACHINE_BOTTOM = new TextureAtlasSprite[] {
-				MACHINE_BOTTOM_0,
-				MACHINE_BOTTOM_1,
-				MACHINE_BOTTOM_2,
-				MACHINE_BOTTOM_3,
-				MACHINE_BOTTOM_4,
-				MACHINE_BOTTOM_C
-		};
-
-		MACHINE_TOP = new TextureAtlasSprite[] {
-				MACHINE_TOP_0,
-				MACHINE_TOP_1,
-				MACHINE_TOP_2,
-				MACHINE_TOP_3,
-				MACHINE_TOP_4,
-				MACHINE_TOP_C
-		};
-
-		MACHINE_SIDE = new TextureAtlasSprite[] {
-				MACHINE_SIDE_0,
-				MACHINE_SIDE_1,
-				MACHINE_SIDE_2,
-				MACHINE_SIDE_3,
-				MACHINE_SIDE_4,
-				MACHINE_SIDE_C
+		MACHINE_OVERLAY = new TextureAtlasSprite[] {
+				MACHINE_OVERLAY_0,
+				MACHINE_OVERLAY_1,
+				MACHINE_OVERLAY_2,
+				MACHINE_OVERLAY_3,
+				MACHINE_OVERLAY_4,
+				MACHINE_OVERLAY_C
 		};
 
 		MACHINE_FACE = new TextureAtlasSprite[] {
@@ -334,7 +306,6 @@ public class TETextures {
 				DEVICE_FACE_HEAT_SINK,
 				DEVICE_FACE_TAPPER
 
-
 //				DEVICE_FACE_EXTENDER,
 //				DEVICE_FACE_CONCENTRATOR,
 //				DEVICE_FACE_ITEM_BUFFER,
@@ -346,7 +317,6 @@ public class TETextures {
 				DEVICE_ACTIVE_NULLIFIER,
 				DEVICE_ACTIVE_HEAT_SINK,
 				DEVICE_ACTIVE_TAPPER
-
 
 //				DEVICE_ACTIVE_EXTENDER,
 //				DEVICE_ACTIVE_CONCENTRATOR,
@@ -558,29 +528,17 @@ public class TETextures {
 	public static TextureAtlasSprite CONFIG_PURPLE;
 	public static TextureAtlasSprite CONFIG_OPEN;
 
-	public static TextureAtlasSprite[] MACHINE_BOTTOM;
-	public static TextureAtlasSprite MACHINE_BOTTOM_0;
-	public static TextureAtlasSprite MACHINE_BOTTOM_1;
-	public static TextureAtlasSprite MACHINE_BOTTOM_2;
-	public static TextureAtlasSprite MACHINE_BOTTOM_3;
-	public static TextureAtlasSprite MACHINE_BOTTOM_4;
-	public static TextureAtlasSprite MACHINE_BOTTOM_C;
+	public static TextureAtlasSprite MACHINE_BOTTOM;
+	public static TextureAtlasSprite MACHINE_TOP;
+	public static TextureAtlasSprite MACHINE_SIDE;
 
-	public static TextureAtlasSprite[] MACHINE_TOP;
-	public static TextureAtlasSprite MACHINE_TOP_0;
-	public static TextureAtlasSprite MACHINE_TOP_1;
-	public static TextureAtlasSprite MACHINE_TOP_2;
-	public static TextureAtlasSprite MACHINE_TOP_3;
-	public static TextureAtlasSprite MACHINE_TOP_4;
-	public static TextureAtlasSprite MACHINE_TOP_C;
-
-	public static TextureAtlasSprite[] MACHINE_SIDE;
-	public static TextureAtlasSprite MACHINE_SIDE_0;
-	public static TextureAtlasSprite MACHINE_SIDE_1;
-	public static TextureAtlasSprite MACHINE_SIDE_2;
-	public static TextureAtlasSprite MACHINE_SIDE_3;
-	public static TextureAtlasSprite MACHINE_SIDE_4;
-	public static TextureAtlasSprite MACHINE_SIDE_C;
+	public static TextureAtlasSprite[] MACHINE_OVERLAY;
+	public static TextureAtlasSprite MACHINE_OVERLAY_0;
+	public static TextureAtlasSprite MACHINE_OVERLAY_1;
+	public static TextureAtlasSprite MACHINE_OVERLAY_2;
+	public static TextureAtlasSprite MACHINE_OVERLAY_3;
+	public static TextureAtlasSprite MACHINE_OVERLAY_4;
+	public static TextureAtlasSprite MACHINE_OVERLAY_C;
 
 	public static TextureAtlasSprite[] MACHINE_FACE;
 	public static TextureAtlasSprite MACHINE_FACE_FURNACE;
