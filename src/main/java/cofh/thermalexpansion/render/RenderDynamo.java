@@ -44,7 +44,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
-		double d4 = 0.0004;
+		double d4 = 0.0006;
 
 		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
 		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
@@ -52,8 +52,8 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
-		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 + d4, -8 + d4, -8 + d4, 16 + d4, 10 + d4, 16 + d4, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
-		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 + d4, -8 + d4, -8 + d4, 16 + d4, 10 + d4, 16 + d4, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 - d4, -8 - d4, -8 - d4, 16 + 2 * d4, 10 + 2 * d4, 16 + 2 * d4, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 - d4, -8 - d4, -8 - d4, 16 + 2 * d4, 10 + 2 * d4, 16 + 2 * d4, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
 		modelAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 + d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
 		modelAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
@@ -95,9 +95,8 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, int level) {
+	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, TextureAtlasSprite sprite) {
 
-		TextureAtlasSprite sprite = getOverlaySprite(EnumFacing.VALUES[facing], level);
 		if (sprite != null) {
 			if (active) {
 				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
@@ -137,8 +136,12 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	public IExtendedBlockState handleState(IExtendedBlockState state, TileEntity tile) {
 
 		TileDynamoBase dynamo = (TileDynamoBase) tile;
-		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[dynamo.getFacing()]);
+
+		state = state.withProperty(TEProps.CREATIVE, dynamo.isCreative);
+		state = state.withProperty(TEProps.LEVEL, dynamo.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, dynamo.isActive);
+
+		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[dynamo.getFacing()]);
 		state = state.withProperty(TEProps.ACTIVE_SPRITE_PROPERTY, new ResourceLocation(dynamo.getActiveIcon().getIconName()));
 		return state;
 	}
@@ -146,17 +149,21 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-		generateModels();
-
 		if (face == null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
 			CCRenderState ccrs = CCRenderState.instance();
 			ccrs.reset();
 			ccrs.bind(buffer);
+
+			boolean creative = BlockDynamo.itemBlock.isCreative(stack);
+			int level = BlockDynamo.itemBlock.getLevel(stack);
 			renderCoil(ccrs, 1, false);
 			renderBase(ccrs, 1, false, stack.getMetadata());
-			renderBaseOverlay(ccrs, 1, false, BlockDynamo.itemBlock.getLevel(stack));
+
+			if (level > 0) {
+				renderBaseOverlay(ccrs, 1, false, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+			}
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
@@ -168,9 +175,13 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
 		if (face == null) {
-			int facing = state.getValue(TEProps.FACING).ordinal();
+
+			boolean creative = state.getValue(TEProps.CREATIVE);
+			int level = state.getValue(TEProps.LEVEL);
 			boolean active = state.getValue(TEProps.ACTIVE);
+			int facing = state.getValue(TEProps.FACING).ordinal();
 			int type = state.getValue(BlockDynamo.VARIANT).getMetadata();
+
 			TextureAtlasSprite activeSprite = TextureUtils.getTexture(state.getValue(TEProps.ACTIVE_SPRITE_PROPERTY));
 
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
@@ -183,7 +194,10 @@ public class RenderDynamo implements ILayeredBlockBakery {
 				renderAnimation(ccrs, facing, active, type, activeSprite);
 			} else {
 				renderBase(ccrs, facing, active, type);
-				//renderBaseOverlay(ccrs, facing, active, level);
+
+				if (level > 0) {
+					renderBaseOverlay(ccrs, facing, active, creative ? TETextures.DYNAMO_OVERLAY_C : getOverlaySprite(face, level));
+				}
 			}
 			buffer.finishDrawing();
 			return buffer.bake();

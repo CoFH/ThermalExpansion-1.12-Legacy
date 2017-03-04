@@ -56,6 +56,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 	}
 
 	/* HELPERS */
+
 	/**
 	 * Used to get the overlay texture for the given side.
 	 * This should specifically relate to the level of the machine and not it's state.
@@ -66,6 +67,9 @@ public class RenderMachine implements ILayeredBlockBakery {
 	 */
 	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
 
+		if (level == 0) {
+			return null;
+		}
 		return TETextures.MACHINE_OVERLAY[level];
 	}
 
