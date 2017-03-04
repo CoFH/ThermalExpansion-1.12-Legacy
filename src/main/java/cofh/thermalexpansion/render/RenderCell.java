@@ -149,7 +149,6 @@ public class RenderCell implements ILayeredBlockBakery {
 				ccrs.brightness = 165 + light * 5;
 				renderCenter(ccrs);
 			}
-
 			buffer.finishDrawing();
 			return buffer.bake();
 		}

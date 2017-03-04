@@ -28,11 +28,11 @@ public class TETextures {
 		CONFIG_OPEN =						register(map, CONFIG_ + "open");
 
 		/* MACHINES */
-		MACHINE_BOTTOM =                    register(map, MACHINE_ + "bottom");
 		MACHINE_TOP =                       register(map, MACHINE_ + "top");
+		MACHINE_BOTTOM =                    register(map, MACHINE_ + "bottom");
 		MACHINE_SIDE =                      register(map, MACHINE_ + "side");
 
-		MACHINE_OVERLAY_0 =                 register(map, MACHINE_ + "overlay_0");
+		MACHINE_OVERLAY_0 =                 map.getMissingSprite(); // register(map, MACHINE_ + "overlay_0");
 		MACHINE_OVERLAY_1 =                 register(map, MACHINE_ + "overlay_1");
 		MACHINE_OVERLAY_2 =                 register(map, MACHINE_ + "overlay_2");
 		MACHINE_OVERLAY_3 =                 register(map, MACHINE_ + "overlay_3");
@@ -74,8 +74,8 @@ public class TETextures {
 		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
 
 		MACHINE_FRAME_TOP =                 register(map, MACHINE_ + "frame_top");
-		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
 		MACHINE_FRAME_BOTTOM =              register(map, MACHINE_ + "frame_bottom");
+		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
 		MACHINE_FRAME_INNER =               register(map, MACHINE_ + "frame_inner");
 
 		/* AUTOMATA */
@@ -513,7 +513,7 @@ public class TETextures {
 	private static final String DEVICE_ACTIVE_ = DEVICE_ + "active_";
 	private static final String DYNAMO_ = BLOCKS_ + "dynamo/dynamo_";
 	private static final String CELL_ = BLOCKS_ + "storage/cell_";
-	private static final String CELL_CONFIG_ = BLOCKS_ + "storage/cell_config_";
+	private static final String CELL_CONFIG_ = BLOCKS_ + "config/cell_config_";
 	private static final String TANK_ = BLOCKS_ + "storage/tank_";
 	private static final String CACHE_ = BLOCKS_ + "storage/cache_";
 
@@ -528,8 +528,8 @@ public class TETextures {
 	public static TextureAtlasSprite CONFIG_PURPLE;
 	public static TextureAtlasSprite CONFIG_OPEN;
 
-	public static TextureAtlasSprite MACHINE_BOTTOM;
 	public static TextureAtlasSprite MACHINE_TOP;
+	public static TextureAtlasSprite MACHINE_BOTTOM;
 	public static TextureAtlasSprite MACHINE_SIDE;
 
 	public static TextureAtlasSprite[] MACHINE_OVERLAY;

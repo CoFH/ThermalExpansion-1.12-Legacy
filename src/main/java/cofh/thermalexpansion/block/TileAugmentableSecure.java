@@ -556,6 +556,9 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				}
 				return false;
 			case CREATIVE:
+				if (isCreative) {
+					return false;
+				}
 				if (level >= TEProps.LEVEL_MIN) {
 					isCreative = true;
 					setLevel(TEProps.LEVEL_MAX);

@@ -5,6 +5,7 @@ import cofh.api.item.IAugmentItem;
 import cofh.api.tileentity.IAugmentable;
 import cofh.api.tileentity.ISecurable;
 import cofh.core.item.ItemMulti;
+import cofh.core.util.ChatHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -144,9 +145,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 					if (!player.capabilities.isCreativeMode) {
 						stack.stackSize--;
 					}
-					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.augment.install.success"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.success"));
 				} else {
-					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.augment.install.failure"));
 				}
 				return EnumActionResult.SUCCESS;
 			} else { // Client

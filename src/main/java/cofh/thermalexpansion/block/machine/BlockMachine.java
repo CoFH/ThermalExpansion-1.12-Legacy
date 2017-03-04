@@ -76,6 +76,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		// Listed
 		builder.add(VARIANT);
 		// UnListed
+		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FACING);
@@ -288,9 +289,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		}
 		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/machine/machine_top_0"));
 
-		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",level=" + itemBlock.getLevel(stack));
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
+			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
 			builder.append(",active=").append(state.getValue(TEProps.ACTIVE));
@@ -301,6 +302,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			builder.append("}");
 			return builder.toString();
 		});
+
+		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
 
 	/* IInitializer */

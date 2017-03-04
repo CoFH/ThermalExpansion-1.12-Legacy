@@ -5,6 +5,7 @@ import cofh.api.item.IUpgradeItem;
 import cofh.api.tileentity.ISecurable;
 import cofh.api.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
+import cofh.core.util.ChatHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -103,9 +104,9 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 					if (!player.capabilities.isCreativeMode) {
 						stack.stackSize--;
 					}
-					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.upgrade.install.success"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.upgrade.install.success"));
 				} else {
-					player.addChatComponentMessage(new TextComponentTranslation("chat.thermalexpansion.upgrade.install.failure"));
+					ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("chat.thermalexpansion.upgrade.install.failure"));
 				}
 				return EnumActionResult.SUCCESS;
 			} else { // Client
