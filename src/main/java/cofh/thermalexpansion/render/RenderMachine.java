@@ -32,10 +32,11 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 	public static final RenderMachine INSTANCE = new RenderMachine();
 
-	static CCModel model = CCModel.quadModel(24);
+	static CCModel model = CCModel.quadModel(48);
 
 	static {
 		model.generateBlock(0, Cuboid6.full).computeNormals();
+		model.generateBlock(24, Cuboid6.full.copy().expand(.0004F));
 	}
 
 	@Override
@@ -94,7 +95,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 			int level = BlockMachine.itemBlock.getLevel(stack);
 			IItemBlockTextureProvider provider = TEBlocks.blockMachine;
 			renderFace(ccrs, face, provider.getTexture(face, stack));
-			renderFace(ccrs, face, getOverlaySprite(face, level));
+			renderFaceOverlay(ccrs, face, getOverlaySprite(face, level));
 
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());
@@ -108,6 +109,14 @@ public class RenderMachine implements ILayeredBlockBakery {
 		if (sprite != null) {
 			int i = face.ordinal();
 			model.render(ccrs, i * 4, i * 4 + 4, new IconTransformation(sprite));
+		}
+	}
+
+	public void renderFaceOverlay(CCRenderState ccrs, EnumFacing face, TextureAtlasSprite sprite) {
+
+		if (sprite != null) {
+			int i = face.ordinal();
+			model.render(ccrs, i * 4 + 24, i * 4 + 4 + 24, new IconTransformation(sprite));
 		}
 	}
 
