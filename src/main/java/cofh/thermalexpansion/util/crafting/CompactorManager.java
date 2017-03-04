@@ -108,6 +108,7 @@ public class CompactorManager {
 
 			addDefaultPressRecipe(ItemMaterial.ingotSteel, ItemMaterial.plateSteel);
 			addDefaultPressRecipe(ItemMaterial.ingotElectrum, ItemMaterial.plateElectrum);
+			addDefaultPressRecipe(ItemMaterial.ingotInvar, ItemMaterial.plateInvar);
 			addDefaultPressRecipe(ItemMaterial.ingotBronze, ItemMaterial.plateBronze);
 			addDefaultPressRecipe(ItemMaterial.ingotConstantan, ItemMaterial.plateConstantan);
 			addDefaultPressRecipe(ItemMaterial.ingotSignalum, ItemMaterial.plateSignalum);
