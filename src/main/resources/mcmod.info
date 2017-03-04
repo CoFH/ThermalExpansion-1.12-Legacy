@@ -1,6 +1,6 @@
 [
     {
-        "modid": "ThermalExpansion",
+        "modid": "thermalexpansion",
         "name": "Thermal Expansion",
         "description": "Expanding Minecraft Thermally - provides new options for automation and processing!",
         "version": "${version}",
@@ -13,7 +13,7 @@
         "parent": "",
         "screenshots": [],
         "dependencies": [
-            "MinecraftForge,CoFHCore,ThermalFoundation"
+            "Forge,CodeChickenLib,cofhcore,thermalfoundation"
         ]
     }
 ]
