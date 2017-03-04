@@ -123,6 +123,13 @@ public class TETextures {
 		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
 		DYNAMO_NUMISMATIC =					register(map, DYNAMO_ + "numismatic");
 
+		DYNAMO_OVERLAY_0 =                 map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
+		DYNAMO_OVERLAY_1 =                 register(map, DYNAMO_ + "overlay_1");
+		DYNAMO_OVERLAY_2 =                 register(map, DYNAMO_ + "overlay_2");
+		DYNAMO_OVERLAY_3 =                 register(map, DYNAMO_ + "overlay_3");
+		DYNAMO_OVERLAY_4 =                 register(map, DYNAMO_ + "overlay_4");
+		DYNAMO_OVERLAY_C =                 register(map, DYNAMO_ + "overlay_c");
+
 		/* ICONS */
 		ICON_ACCEPT =						map.getMissingSprite();//TODO
 		ICON_ACCEPT_INACTIVE =				map.getMissingSprite();//TODO
@@ -331,6 +338,15 @@ public class TETextures {
 				DYNAMO_REACTANT,
 				DYNAMO_ENERVATION,
 				DYNAMO_NUMISMATIC
+		};
+
+		DYNAMO_OVERLAY = new TextureAtlasSprite[] {
+				DYNAMO_OVERLAY_0,
+				DYNAMO_OVERLAY_1,
+				DYNAMO_OVERLAY_2,
+				DYNAMO_OVERLAY_3,
+				DYNAMO_OVERLAY_4,
+				DYNAMO_OVERLAY_C
 		};
 
 		CELL_CONFIG = new TextureAtlasSprite[] {
@@ -633,6 +649,14 @@ public class TETextures {
 	public static TextureAtlasSprite DYNAMO_REACTANT;
 	public static TextureAtlasSprite DYNAMO_ENERVATION;
 	public static TextureAtlasSprite DYNAMO_NUMISMATIC;
+
+	public static TextureAtlasSprite[] DYNAMO_OVERLAY;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_0;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_1;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_2;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_3;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_4;
+	public static TextureAtlasSprite DYNAMO_OVERLAY_C;
 
 	public static TextureAtlasSprite ICON_ACCEPT;
 	public static TextureAtlasSprite ICON_ACCEPT_INACTIVE;
