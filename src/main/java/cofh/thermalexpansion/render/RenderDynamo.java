@@ -32,6 +32,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 
 	private static CCModel[][] modelCoil = new CCModel[2][6];
 	private static CCModel[][] modelBase = new CCModel[2][6];
+	private static CCModel[][] modelBaseOverlay = new CCModel[2][6];
 	private static CCModel[] modelAnimation = new CCModel[6];
 
 	static {
@@ -43,12 +44,16 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
+		double d4 = 0.0004;
 
 		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
 		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
 
 		modelBase[0][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
 		modelBase[1][1] = CCModel.quadModel(24).generateBox(0, -8, -8, -8, 16, 10, 16, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
+
+		modelBaseOverlay[0][1] = CCModel.quadModel(24).generateBox(0, -8 + d4, -8 + d4, -8 + d4, 16 + d4, 10 + d4, 16 + d4, 0, 0, 64, 64, 16).computeNormals().shrinkUVs(d1);
+		modelBaseOverlay[1][1] = CCModel.quadModel(24).generateBox(0, -8 + d4, -8 + d4, -8 + d4, 16 + d4, 10 + d4, 16 + d4, 0, 32, 64, 64, 16).computeNormals().shrinkUVs(d1);
 
 		modelAnimation[0] = CCModel.quadModel(16).generateBlock(0, d1, d2 + d1, d1, 1 - d1, 1 - d1, 1 - d1, 3).computeNormals();
 		modelAnimation[1] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, 1 - d1, d3 - d1, 1 - d1, 3).computeNormals();
@@ -64,6 +69,10 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 		for (int i = 0; i < modelBase.length; i++) {
 			CCModel.generateSidedModels(modelBase[i], 1, new Vector3());
+		}
+
+		for (int i = 0; i < modelBaseOverlay.length; i++) {
+			CCModel.generateSidedModels(modelBaseOverlay[i], 1, new Vector3());
 		}
 	}
 
@@ -86,6 +95,18 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		}
 	}
 
+	protected void renderBaseOverlay(CCRenderState ccrs, int facing, boolean active, int level) {
+
+		TextureAtlasSprite sprite = getOverlaySprite(EnumFacing.VALUES[facing], level);
+		if (sprite != null) {
+			if (active) {
+				modelBaseOverlay[0][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+			} else {
+				modelBaseOverlay[1][facing].render(ccrs, new Translation(0.5, 0.5, 0.5), new IconTransformation(sprite));
+			}
+		}
+	}
+
 	protected void renderAnimation(CCRenderState ccrs, int facing, boolean active, int type, TextureAtlasSprite icon) {
 
 		if (active) {
@@ -94,6 +115,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	}
 
 	/* HELPERS */
+
 	/**
 	 * Used to get the overlay texture for the given side.
 	 * This should specifically relate to the level of the machine and not it's state.
@@ -104,6 +126,9 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	 */
 	private static TextureAtlasSprite getOverlaySprite(EnumFacing face, int level) {
 
+		if (level == 0) {
+			return null;
+		}
 		return TETextures.DYNAMO_OVERLAY[level];
 	}
 
@@ -121,6 +146,8 @@ public class RenderDynamo implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
+		generateModels();
+
 		if (face == null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
@@ -129,6 +156,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 			ccrs.bind(buffer);
 			renderCoil(ccrs, 1, false);
 			renderBase(ccrs, 1, false, stack.getMetadata());
+			renderBaseOverlay(ccrs, 1, false, BlockDynamo.itemBlock.getLevel(stack));
 			buffer.finishDrawing();
 			return buffer.bake();
 		}
@@ -155,6 +183,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 				renderAnimation(ccrs, facing, active, type, activeSprite);
 			} else {
 				renderBase(ccrs, facing, active, type);
+				//renderBaseOverlay(ccrs, facing, active, level);
 			}
 			buffer.finishDrawing();
 			return buffer.bake();
