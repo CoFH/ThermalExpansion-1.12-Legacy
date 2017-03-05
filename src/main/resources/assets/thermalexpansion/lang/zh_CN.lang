@@ -1,213 +1,210 @@
-#en_US
+#zh_CN
 
-achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
-achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
+achievement.thermalexpansion.blockGlassHardened.desc=在感应炉中将黑曜石和金属熔为一体。
+achievement.thermalexpansion.blockGlassHardened=基本上坚不可摧
 
 achievement.thermalexpansion.florb.desc=它装着流体. 你扔扔看呗.
 achievement.thermalexpansion.florb=我能扔这个吗?!
-achievement.thermalexpansion.florbMagmatic.desc=Definitely not water. You monster.
+achievement.thermalexpansion.florbMagmatic.desc=当然不是水，你疯了吗.
 achievement.thermalexpansion.florbMagmatic=流体球. 是的, 它装着岩浆. 你这怪物.
 
-achievement.thermalexpansion.ingotEnderium.desc=Create an Enderium Ingot.
-achievement.thermalexpansion.ingotEnderium=Smelting Spacetime
-achievement.thermalexpansion.ingotInvar.desc=Create an Invar Ingot.
-achievement.thermalexpansion.ingotInvar=Lowest Coefficient
-achievement.thermalexpansion.ingotSignalum.desc=Create a Signalum Ingot.
-achievement.thermalexpansion.ingotSignalum=Refined Redstone
+achievement.thermalexpansion.ingotEnderium.desc=制造一个末影锭.
+achievement.thermalexpansion.ingotEnderium=冶炼时光
+achievement.thermalexpansion.ingotInvar.desc=制造一个因瓦合金锭.
+achievement.thermalexpansion.ingotInvar=最低级的合金
+achievement.thermalexpansion.ingotSignalum.desc=制造一个信素锭.
+achievement.thermalexpansion.ingotSignalum=红石艺术家
 
-achievement.thermalexpansion.machineInsolator.desc=Definitely not organic.
-achievement.thermalexpansion.machineInsolator=Sun in a Box!
-achievement.thermalexpansion.machineTransposer.desc=Filling buckets by hand is hard work.
-achievement.thermalexpansion.machineTransposer=(Mostly) Free Refills
+achievement.thermalexpansion.machineInsolator.desc=并非有机.
+achievement.thermalexpansion.machineInsolator=一米阳光!
+achievement.thermalexpansion.machineTransposer.desc=手动装桶太累.
+achievement.thermalexpansion.machineTransposer=(大多数情况下) 免费续杯
 
-achievement.thermalexpansion.welcome.desc=Welcome to Thermal Expansion!
-achievement.thermalexpansion.welcome=An Expanded World
+achievement.thermalexpansion.welcome.desc=欢迎游玩热力膨胀!
+achievement.thermalexpansion.welcome=一个扩大的世界
 
-chat.thermalexpansion.augment.install.failure=Unable to install augment.
-chat.thermalexpansion.augment.install.success=Augment successfully installed!
-chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
-chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
+chat.thermalexpansion.augment.install.failure=不能安装升级组件.
+chat.thermalexpansion.augment.install.success=升级组件成功安装!
+chat.thermalexpansion.upgrade.install.failure=不能升级该方块.
+chat.thermalexpansion.upgrade.install.success=方块成功升级!
 
-gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reactant Dynamo (Fuel)
-gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Solid Reactant)
-gui.thermalexpansion.jei.compactor.modeMint=Mint
-gui.thermalexpansion.jei.compactor.modePress=Press
-gui.thermalexpansion.jei.compactor.modeStorage=Storage
-gui.thermalexpansion.jei.transposer.modeEmpty=Empty
-gui.thermalexpansion.jei.transposer.modeFill=Fill
+gui.thermalexpansion.jei.category.dynamo.reactant.fluid=反应能源炉 (燃料)
+gui.thermalexpansion.jei.category.dynamo.reactant.solid=反应能源炉 (固体反应物)
+gui.thermalexpansion.jei.compactor.modeMint=铸币
+gui.thermalexpansion.jei.compactor.modePress=辊压
+gui.thermalexpansion.jei.compactor.modeStorage=压块
+gui.thermalexpansion.jei.transposer.modeEmpty=空
+gui.thermalexpansion.jei.transposer.modeFill=填充
 
-gui.thermalexpansion.machine.compactor.modeMint=Mode: Mint
-gui.thermalexpansion.machine.compactor.modePress=Mode: Press
-gui.thermalexpansion.machine.compactor.modeStorage=Mode: Storage
+gui.thermalexpansion.machine.compactor.modeMint=Mode: 铸币
+gui.thermalexpansion.machine.compactor.modePress=Mode:辊压
+gui.thermalexpansion.machine.compactor.modeStorage=Mode: 压块
+gui.thermalexpansion.machine.insolator.modeLocked=肥料槽已解锁
+gui.thermalexpansion.machine.insolator.modeUnlocked=肥料槽已锁定
+gui.thermalexpansion.machine.smelter.modeLocked=流量槽已锁定
+gui.thermalexpansion.machine.smelter.modeUnlocked=流量槽已解锁
 
-gui.thermalexpansion.machine.insolator.modeLocked=Fertilizer Slot Locked
-gui.thermalexpansion.machine.insolator.modeUnlocked=Fertilizer Slot Unlocked
+gui.thermalexpansion.machine.transposer.modeEmpty=模式：空
+gui.thermalexpansion.machine.transposer.modeFill=模式：填充
 
-gui.thermalexpansion.machine.smelter.modeLocked=Flux Slot Locked
-gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
-
-gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
-gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
-
-gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
-gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by
-gui.thermalexpansion.storage.cell.incRecv=Increase RF Input by
-gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
-gui.thermalexpansion.storage.cell.maxRecv=Max Input
-gui.thermalexpansion.storage.cell.maxSend=Max Output
-
-info.thermalexpansion.augment.0=Augment
+gui.thermalexpansion.storage.cell.decRecv=按一下减少RF输入
+gui.thermalexpansion.storage.cell.decSend=按一下减少RF输出
+gui.thermalexpansion.storage.cell.incRecv=按一下增加RF输入
+gui.thermalexpansion.storage.cell.incSend=按一下增加RF输出
+gui.thermalexpansion.storage.cell.maxRecv=最大输入
+gui.thermalexpansion.storage.cell.maxSend=最大输出
+info.thermalexpansion.augment.0=升级
 
 info.thermalexpansion.augment.dynamoCoilDuct.0=允许通过能源炉的线圈来输入输出物品和流体.
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
 
-info.thermalexpansion.augment.dynamoCompressionCoolant.0=Compression Dynamo: Specialization
-info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=Coolant is no longer consumed for operation.
-info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Some coolant must be present.
+info.thermalexpansion.augment.dynamoCompressionCoolant.0=压缩能源炉：恒久制冷
+info.thermalexpansion.augment.dynamoCompressionCoolant.a.0=燃烧中冷却剂将不被消耗.
+info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=但你还是要提供一些冷却剂.
 
-info.thermalexpansion.augment.dynamoCompressionFuel.0=Compression Dynamo: Specialization
-info.thermalexpansion.augment.dynamoCompressionFuel.a.0=Greatly increases power generation and efficiency.
-info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Only Fuel can be utilized.
+info.thermalexpansion.augment.dynamoCompressionFuel.0=压缩能源炉:97号汽油
+info.thermalexpansion.augment.dynamoCompressionFuel.a.0=很大提升能量产值与功率.
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=只能使用精致燃料.
 
-info.thermalexpansion.augment.dynamoEfficiency.0=Dynamos: Increased Efficiency
-info.thermalexpansion.augment.dynamoEfficiency.a.0=More energy (RF) is produced by fuels.
+info.thermalexpansion.augment.dynamoEfficiency.0=能源炉：深度燃烧
+info.thermalexpansion.augment.dynamoEfficiency.a.0=燃料可以产出更多的RF.
 
-info.thermalexpansion.augment.dynamoMagmaticCoolant.0=Magmatic Dynamo: Specialization
-info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=Greatly increases power generation and efficiency.
-info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=Coolant is required for operation.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.0=热力能源炉: 过载冷却
+info.thermalexpansion.augment.dynamoMagmaticCoolant.a.0=很大提升能量产值与功率.
+info.thermalexpansion.augment.dynamoMagmaticCoolant.b.0=发电需要冷却剂.
 
-info.thermalexpansion.augment.dynamoPower.0=Dynamos: Increased Output
-info.thermalexpansion.augment.dynamoPower.a.0=Increases power generation (RF/t).
-info.thermalexpansion.augment.dynamoPower.b.0=Less energy (RF) is produced by fuels.
+info.thermalexpansion.augment.dynamoPower.0=能源炉：功率透支
+info.thermalexpansion.augment.dynamoPower.a.0=提升输出功率(RF/t).
+info.thermalexpansion.augment.dynamoPower.b.0=燃料产出的总能量会减少.
 
-info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
-info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation and efficiency.
-info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from an external source.
+info.thermalexpansion.augment.dynamoSteamTurbine.0=蒸汽能源炉：外部水冷
+info.thermalexpansion.augment.dynamoSteamTurbine.a.0=很大提升能量产值及功率.
+info.thermalexpansion.augment.dynamoSteamTurbine.b.0=蒸汽必须从外部来源提供.
 
 info.thermalexpansion.augment.dynamoThrottle.0=将能源炉最小输出调整为0 RF/t.
-info.thermalexpansion.augment.dynamoThrottle.a.0=Prevents RF loss due to flux coil saturation.
+info.thermalexpansion.augment.dynamoThrottle.a.0=阻止线圈的无用损耗.
 
-info.thermalexpansion.augment.machineChargerThroughput.0=Energetic Infuser: Specialization
-info.thermalexpansion.augment.machineChargerThroughput.a.0=Allows for rechargeable items to be charged very rapidly.
-info.thermalexpansion.augment.machineChargerThroughput.c.0=Will not exceed charge rate of the item itself.
+info.thermalexpansion.augment.machineChargerThroughput.0=能量灌注器：无记忆效应
+info.thermalexpansion.augment.machineChargerThroughput.a.0=使可再充能的物品大大提升充电速度.
+info.thermalexpansion.augment.machineChargerThroughput.c.0=不会超过物品本身限定的充能速度.
 
-info.thermalexpansion.augment.machineCompactorMint.0=Compactor: Specialization
-info.thermalexpansion.augment.machineCompactorMint.a.0=Allows for the creation of currency.
-info.thermalexpansion.augment.machineCompactorMint.a.1=Currency can be exchanged for goods and services.
-info.thermalexpansion.augment.machineCompactorMint.b.0=Machine can no longer be used as a press.
+info.thermalexpansion.augment.machineCompactorMint.0=压缩机：铸币产权
+info.thermalexpansion.augment.machineCompactorMint.a.0=允许制造货币.
+info.thermalexpansion.augment.machineCompactorMint.a.1=货币可以用来交易物品与服务.
+info.thermalexpansion.augment.machineCompactorMint.b.0=机器从此不能进行辊压.
 
-info.thermalexpansion.augment.machineCrucibleAlloy.0=Magma Crucible: Specialization
+info.thermalexpansion.augment.machineCrucibleAlloy.0=熔岩炉: 特化
 info.thermalexpansion.augment.machineCrucibleAlloy.a.0=Magma Crucible: Specialization
 info.thermalexpansion.augment.machineCrucibleAlloy.b.0=Magma Crucible: Specialization
 
-info.thermalexpansion.augment.machineExtruderAndesite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderAndesite.a.0=Allows for the creation of Andesite.
-info.thermalexpansion.augment.machineExtruderAndesite.c.0=Replaces the Stone option.
+info.thermalexpansion.augment.machineExtruderAndesite.0=造石机: 安山之石
+info.thermalexpansion.augment.machineExtruderAndesite.a.0=允许制作安山岩.
+info.thermalexpansion.augment.machineExtruderAndesite.c.0=取代了石头选项.
 
-info.thermalexpansion.augment.machineExtruderDiorite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderDiorite.a.0=Allows for the creation of Diorite.
-info.thermalexpansion.augment.machineExtruderDiorite.c.0=Replaces the Stone option.
+info.thermalexpansion.augment.machineExtruderDiorite.0=造石机: 黑白斑驳
+info.thermalexpansion.augment.machineExtruderDiorite.a.0=允许制作闪长岩.
+info.thermalexpansion.augment.machineExtruderDiorite.c.0=取代了石头选项.
 
-info.thermalexpansion.augment.machineExtruderGranite.0=Igneous Extruder: Specialization
-info.thermalexpansion.augment.machineExtruderGranite.a.0=Allows for the creation of Granite.
-info.thermalexpansion.augment.machineExtruderGranite.c.0=Replaces the Stone option.
+info.thermalexpansion.augment.machineExtruderGranite.0=造石机: 家居建材
+info.thermalexpansion.augment.machineExtruderGranite.a.0=允许制作花岗岩.
+info.thermalexpansion.augment.machineExtruderGranite.c.0=取代了石头选项.
 
 info.thermalexpansion.augment.machineFurnaceFood.0=提高食物产出.
-info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
-info.thermalexpansion.augment.machineFurnaceFood.b.0=Only food items can be processed.
+info.thermalexpansion.augment.machineFurnaceFood.a.0=可以得到额外的食物.
+info.thermalexpansion.augment.machineFurnaceFood.b.0=从此只能烹煮食物.
 
-info.thermalexpansion.augment.machineFurnaceOre.0=Redstone Furnace: Specialization
-info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain an additional ingot when smelting ores.
-info.thermalexpansion.augment.machineFurnaceOre.b.0=Only ores can be processed.
-info.thermalexpansion.augment.machineFurnaceOre.b.1=Additional energy is required per operation.
+info.thermalexpansion.augment.machineFurnaceOre.0=红石炉：精细燃烧
+info.thermalexpansion.augment.machineFurnaceOre.a.0=炼烧矿石时多出一个锭.
+info.thermalexpansion.augment.machineFurnaceOre.b.0=从此只能炼烧矿物.
+info.thermalexpansion.augment.machineFurnaceOre.b.1=烧炼需要消耗更多的能量.
 
-info.thermalexpansion.augment.machineInsolatorEnd.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorEnd.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorEnd.a.1=Suitable for Ender crops.
+info.thermalexpansion.augment.machineInsolatorEnd.0=有机灌注器：末地空气
+info.thermalexpansion.augment.machineInsolatorEnd.a.0=允许培育非传统作物.
+info.thermalexpansion.augment.machineInsolatorEnd.a.1=对末地作物起效.
 
-info.thermalexpansion.augment.machineInsolatorMycelium.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorMycelium.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorMycelium.a.1=Suitable for Fungi.
+info.thermalexpansion.augment.machineInsolatorMycelium.0=有机灌注器：阴暗潮湿
+info.thermalexpansion.augment.machineInsolatorMycelium.a.0=允许培育非传统作物.
+info.thermalexpansion.augment.machineInsolatorMycelium.a.1=对蘑菇等真菌起效.
 
-info.thermalexpansion.augment.machineInsolatorNether.0=Phytogenic Insolator: Specialization
-info.thermalexpansion.augment.machineInsolatorNether.a.0=Allows for non-standard crops to be grown.
-info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether crops.
+info.thermalexpansion.augment.machineInsolatorNether.0=有机灌注器：炼狱高温
+info.thermalexpansion.augment.machineInsolatorNether.a.0=允许培育非传统作物.
+info.thermalexpansion.augment.machineInsolatorNether.a.1=对下界作物起效.
 
-info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
-info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
-info.thermalexpansion.augment.machinePower.b.0=Additional energy is required per operation.
+info.thermalexpansion.augment.machinePower.0=机器：有备无患
+info.thermalexpansion.augment.machinePower.a.0=提升最大能量储备.
+info.thermalexpansion.augment.machinePower.b.0=每次工作能量增加.
 
-info.thermalexpansion.augment.machinePulverizerGeode.0=Pulverizer: Specialization
+info.thermalexpansion.augment.machinePulverizerGeode.0=磨粉机：晶洞
 info.thermalexpansion.augment.machinePulverizerGeode.a.0=Allows for Geodes to be extracted from certain ores.
 info.thermalexpansion.augment.machinePulverizerGeode.b.0=Additional energy is required per operation.
 
-info.thermalexpansion.augment.machinePulverizerPetrotheum.0=Pulverizer: Specialization
-info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=Increases yield from ores.
-info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=Additional energy is required per operation.
-info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=Fluid Petrotheum must be supplied.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.0=磨粉机：大地之礼
+info.thermalexpansion.augment.machinePulverizerPetrotheum.a.0=进一步增产矿物.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.b.0=每次工作需要耗费更多能量.
+info.thermalexpansion.augment.machinePulverizerPetrotheum.c.0=必须提供构造地岩才能实现增产.
 
-info.thermalexpansion.augment.machineSawmillTapper.0=Sawmill: Specialization
-info.thermalexpansion.augment.machineSawmillTapper.a.0=Allows for fluids to be extracted from logs.
-info.thermalexpansion.augment.machineSawmillTapper.b.0=Additional energy is required per operation.
+info.thermalexpansion.augment.machineSawmillTapper.0=锯木机：分馏精炼
+info.thermalexpansion.augment.machineSawmillTapper.a.0=从木头中可以“锯”出液体.
+info.thermalexpansion.augment.machineSawmillTapper.b.0=每次工作需要消耗更多能量.
 
-info.thermalexpansion.augment.machineSecondary.0=Machines: Secondary Output
-info.thermalexpansion.augment.machineSecondary.a.0=Increases the chances of a secondary product.
-info.thermalexpansion.augment.machineSecondary.b.0=Additional energy is required per operation.
+info.thermalexpansion.augment.machineSecondary.0=机器：充分压榨
+info.thermalexpansion.augment.machineSecondary.a.0=提升副产品的产出率.
+info.thermalexpansion.augment.machineSecondary.b.0=每次工作需要消耗更多能量.
 
-info.thermalexpansion.augment.machineSecondaryNull.0=Machines: Secondary Nullifier
-info.thermalexpansion.augment.machineSecondaryNull.a.0=Destroys excess secondary outputs.
-info.thermalexpansion.augment.machineSecondaryNull.b.0=Really. They just disappear. Gone.
+info.thermalexpansion.augment.machineSecondaryNull.0=机器：纯净强迫
+info.thermalexpansion.augment.machineSecondaryNull.a.0=阻止副产品产出.
+info.thermalexpansion.augment.machineSecondaryNull.b.0=真的，全没了.
 
-info.thermalexpansion.augment.machineSmelterPyrotheum.0=Induction Smelter: Specialization
-info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=Increases yield from ores.
-info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=Additional energy is required per operation.
-info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=Fluid Pyrotheum must be supplied.
+info.thermalexpansion.augment.machineSmelterPyrotheum.0=感应炉：火炼真金
+info.thermalexpansion.augment.machineSmelterPyrotheum.a.0=进一步增产矿物.
+info.thermalexpansion.augment.machineSmelterPyrotheum.b.0=每次工作消耗更多能量.
+info.thermalexpansion.augment.machineSmelterPyrotheum.c.0=需要烈焰炽炎才能实现增产.
 
 info.thermalexpansion.augment.noticeAdvanced=NYI
-info.thermalexpansion.augment.noticeCreative=Requires a Creative block.
-info.thermalexpansion.augment.noticeEnder=Requires a Resonant block.
-info.thermalexpansion.augment.noticeMode=Only one Specialization may be installed.
+info.thermalexpansion.augment.noticeCreative=需要创造方块.
+info.thermalexpansion.augment.noticeEnder=需要谐振级方块.
+info.thermalexpansion.augment.noticeMode=只能安装一个特化类升级.
 
-info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
-info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
-info.thermalexpansion.automaton.collector=Procures items from an area.
+info.thermalexpansion.automaton.activator=比说明书解释的做得更多.
+info.thermalexpansion.automaton.breaker=打破方块，就这么简单.
+info.thermalexpansion.automaton.collector=从某一区域取得物品.
 
-info.thermalexpansion.coolant=Coolant
+info.thermalexpansion.coolant=冷却剂
 
-info.thermalexpansion.device.extender=Allows for more connections to a given block.
-info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
-info.thermalexpansion.device.item_buffer=Stores and transfers items.
+info.thermalexpansion.device.extender=对一个给定方块有更多的连接.
+info.thermalexpansion.device.heat_sink=提升附近机器的工作速度.
+info.thermalexpansion.device.item_buffer=存储并传输物品.
 info.thermalexpansion.device.nullifier=彻底销毁物品.
-info.thermalexpansion.device.tapper=Extracts fluid from a tree.
-info.thermalexpansion.device.water_gen=Pulls water from surroundings.
+info.thermalexpansion.device.tapper=从树木中提取流体.
+info.thermalexpansion.device.water_gen=从环境中获得水.
 
-info.thermalexpansion.dynamo.0=Generates Energy (Redstone Flux).
+info.thermalexpansion.dynamo.0=产生能量 (Redstone Flux).
 info.thermalexpansion.dynamo.compression=需要流体燃料以及冷却剂.
 info.thermalexpansion.dynamo.enervation=从含有RF能量的物体中抽取能量.
 info.thermalexpansion.dynamo.magmatic=需要灼热流体.
-info.thermalexpansion.dynamo.numismatic=Requires...currency?
+info.thermalexpansion.dynamo.numismatic=需要...烧钱?
 info.thermalexpansion.dynamo.reactant=需要流体燃料以及固体反应物.
 info.thermalexpansion.dynamo.steam=需要水以及固态燃料.
 
-info.thermalexpansion.florb.a.0=Holds 1000 mB of most fluids.
-info.thermalexpansion.florb.b.0=Holds 1000 mB of most hot fluids.
-info.thermalexpansion.florb.c.0=Fill with a
-info.thermalexpansion.florb.c.1=Yes, you can throw it.
-info.thermalexpansion.florb.d.0=This fluid is lighter than air.
-info.thermalexpansion.florb.d.1=The Florb will travel further.
+info.thermalexpansion.florb.a.0=容纳1000mB大多数流体.
+info.thermalexpansion.florb.b.0=容纳1000mB大多数热流体.
+info.thermalexpansion.florb.c.0=填充，用一个
+info.thermalexpansion.florb.c.1=是的，你能把它扔出去.
+info.thermalexpansion.florb.d.0=这种流体比空气还轻.
+info.thermalexpansion.florb.d.1=这东西可以跑得更远.
 
-info.thermalexpansion.level.0=Basic
-info.thermalexpansion.level.1=Hardened
-info.thermalexpansion.level.2=Reinforced
-info.thermalexpansion.level.3=Signalum
-info.thermalexpansion.level.4=Resonant
-info.thermalexpansion.level.creative=Creative
+info.thermalexpansion.level.0=基础
+info.thermalexpansion.level.1=硬化
+info.thermalexpansion.level.2=强化
+info.thermalexpansion.level.3=信素
+info.thermalexpansion.level.4=谐振
+info.thermalexpansion.level.creative=创造
 
 info.thermalexpansion.machine.brewer=WIP
 info.thermalexpansion.machine.centrifuge=WIP
 info.thermalexpansion.machine.charger=给物品充能(RF).
-info.thermalexpansion.machine.compactor=Compresses items.
-info.thermalexpansion.machine.crafter=Crafts items.
+info.thermalexpansion.machine.compactor=压缩物品.
+info.thermalexpansion.machine.crafter=自动合成.
 info.thermalexpansion.machine.crucible=将物品熔为流体.
 info.thermalexpansion.machine.enchanter=WIP
 info.thermalexpansion.machine.extruder=混合冷热流体.
@@ -215,110 +212,108 @@ info.thermalexpansion.machine.furnace=熔炼物品.
 info.thermalexpansion.machine.insolator=将'阳光'和红石能量注入植物中.
 info.thermalexpansion.machine.precipitator=将流体冻结为固体.
 info.thermalexpansion.machine.pulverizer=粉碎物品.
-info.thermalexpansion.machine.refinery=Refines fluids into other products.
+info.thermalexpansion.machine.refinery=将流体提炼入其他材料中.
 info.thermalexpansion.machine.sawmill=增产木材.
 info.thermalexpansion.machine.smelter=熔炼合金和材料.两个输入端.
 info.thermalexpansion.machine.transposer=处理流体与流体容器.
 
-info.thermalexpansion.storage.cache=Stores a large amount of an item.
-info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.
-info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
+info.thermalexpansion.storage.cache=存储单种大量物品.
+info.thermalexpansion.storage.cell=存储大量RF.
+info.thermalexpansion.storage.tank=存储大量流体.
 
-info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
-info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
-info.thermalexpansion.upgrade.full.0=Fully upgrades a block to a given tier.
-info.thermalexpansion.upgrade.full.1=May be used on any lower tier.
-info.thermalexpansion.upgrade.incremental.0=Incrementally upgrades a block.
-info.thermalexpansion.upgrade.incremental.1=Requires tier immediately preceding.
+info.thermalexpansion.upgrade.creative.0=把一个方块变成创造级别.
+info.thermalexpansion.upgrade.creative.1=可用在任何级别的方块上.
+info.thermalexpansion.upgrade.full.0=一步升级到一个给定的等级.
+info.thermalexpansion.upgrade.full.1=可能用在任何低级别的方块上.
+info.thermalexpansion.upgrade.incremental.0=逐步升级方块.
+info.thermalexpansion.upgrade.incremental.1=需要前置等级.
 
 item.thermalexpansion.augment.automatonDepth.name=WIP
 item.thermalexpansion.augment.automatonRadius.name=WIP
 
 item.thermalexpansion.augment.dynamoCoilDuct.name=传输线圈管道
-item.thermalexpansion.augment.dynamoCompressionCoolant.name=Closed-Loop Cooling
-item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
-item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
-item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
-item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
-item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
+item.thermalexpansion.augment.dynamoCompressionCoolant.name=闭环冷却系统
+item.thermalexpansion.augment.dynamoCompressionFuel.name=缸内喷射点火
+item.thermalexpansion.augment.dynamoEfficiency.name=燃料催化加速
+item.thermalexpansion.augment.dynamoMagmaticCoolant.name=卡诺循环逼近
+item.thermalexpansion.augment.dynamoPower.name=辅助传动线圈
+item.thermalexpansion.augment.dynamoSteamTurbine.name=涡轮增压装置
 item.thermalexpansion.augment.dynamoThrottle.name=励磁限制装置
 
-item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concentrator
-item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
+item.thermalexpansion.augment.machineChargerThroughput.name=通量链接集中
+item.thermalexpansion.augment.machineCompactorMint.name=钱币压铸
 item.thermalexpansion.augment.machineFurnaceFood.name=混合烹饪仓
-item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
-item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
-item.thermalexpansion.augment.machineExtruderBatchSize.name=Pyroclastic Injection
-item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
-item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
-item.thermalexpansion.augment.machineInsolatorEnd.name=Ender Substrate
-item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
-item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
-item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
-item.thermalexpansion.augment.machinePrecipitatorBatchSize.name=Frigid Recirculator
+item.thermalexpansion.augment.machineFurnaceOre.name=通量阳极电镀
+item.thermalexpansion.augment.machineExtruderAndesite.name=安山板块潜没
+item.thermalexpansion.augment.machineExtruderBatchSize.name=火成触媒装置
+item.thermalexpansion.augment.machineExtruderDiorite.name=闪长板块潜没
+item.thermalexpansion.augment.machineExtruderGranite.name=花岗板块潜没
+item.thermalexpansion.augment.machineInsolatorEnd.name=末影培养基
+item.thermalexpansion.augment.machineInsolatorMycelium.name=菌丝培养基
+item.thermalexpansion.augment.machineInsolatorNether.name=地狱培养基
+item.thermalexpansion.augment.machinePower.name=辅助接受线圈
+item.thermalexpansion.augment.machinePrecipitatorBatchSize.name=冷却再循环器
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
-item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
-item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
-item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
-item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve
-item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber
-
+item.thermalexpansion.augment.machinePulverizerPetrotheum.name=构造地岩引发
+item.thermalexpansion.augment.machineSawmillTapper.name=精细蒸馏提取
+item.thermalexpansion.augment.machineSmelterPyrotheum.name=炽炎高温裂解
+item.thermalexpansion.augment.machineSecondary.name=辅助筛子装置
+item.thermalexpansion.augment.machineSecondaryNull.name=岩浆焚毁舱室
 item.thermalexpansion.florb.florb.name=流体球
 item.thermalexpansion.florb.florbMagmatic.name=熔岩流体球
 
 item.thermalexpansion.frame.frameAutomaton.name=Automaton Frame
-item.thermalexpansion.frame.frameCell.name=Energy Cell Frame
-item.thermalexpansion.frame.frameDevice.name=Device Frame
-item.thermalexpansion.frame.frameLight.name=Illuminator Frame
-item.thermalexpansion.frame.frameMachine.name=Machine Frame
+item.thermalexpansion.frame.frameCell.name=能量单元框架
+item.thermalexpansion.frame.frameDevice.name=设备框架
+item.thermalexpansion.frame.frameLight.name=照明框架
+item.thermalexpansion.frame.frameMachine.name=机器框架
 
-item.thermalexpansion.upgrade.creative.name=Creative Conversion Kit
-item.thermalexpansion.upgrade.full1.name=Hardened Conversion Kit
-item.thermalexpansion.upgrade.full2.name=Reinforced Conversion Kit
-item.thermalexpansion.upgrade.full3.name=Signalum Conversion Kit
-item.thermalexpansion.upgrade.full4.name=Resonant Conversion Kit
-item.thermalexpansion.upgrade.incremental1.name=Hardened Upgrade Kit
-item.thermalexpansion.upgrade.incremental2.name=Reinforced Upgrade Kit
-item.thermalexpansion.upgrade.incremental3.name=Signalum Upgrade Kit
-item.thermalexpansion.upgrade.incremental4.name=Resonant Upgrade Kit
-
+item.thermalexpansion.upgrade.creative.name=创造转换元件
+item.thermalexpansion.upgrade.full1.name=硬化转换元件
+item.thermalexpansion.upgrade.full2.name=强化转换元件
+item.thermalexpansion.upgrade.full3.name=信素转换元件
+item.thermalexpansion.upgrade.full4.name=谐振转换元件
+item.thermalexpansion.upgrade.incremental1.name=硬化升级元件
+item.thermalexpansion.upgrade.incremental2.name=强化升级元件
+item.thermalexpansion.upgrade.incremental3.name=信素升级元件
+item.thermalexpansion.upgrade.incremental4.name=谐振升级元件
 itemGroup.thermalexpansion.creativeTab=热能扩展
 itemGroup.thermalexpansion.creativeTabFlorbs=热能扩展|流体球
 itemGroup.thermalexpansion.creativeTabItems=热能扩展|物品
 
-tab.thermalexpansion.automaton.activator.0=It slices! It dices! It pours things, it throws things!
-tab.thermalexpansion.automaton.activator.1=Maybe it's random, maybe it isn't. Maybe it's sneaky, maybe not.
-tab.thermalexpansion.automaton.activator.2=Deceptively versatile!
-tab.thermalexpansion.automaton.breaker.0=Breaks all the things!
-tab.thermalexpansion.automaton.breaker.1=Keep face away from front.
-tab.thermalexpansion.automaton.collector.0=Picks up items in an area.
-tab.thermalexpansion.automaton.collector.1=Anything not nailed down is fair game!
-tab.thermalexpansion.automaton.collector.2=Probably won't steal from your inventory. Probably.
+tab.thermalexpansion.automaton.activator.0=十八般武艺样样精通。
+tab.thermalexpansion.automaton.activator.1=可能是随机的，也可能不是. 可能鬼鬼祟祟，也可能不是.
+tab.thermalexpansion.automaton.activator.2=多才多艺!
+tab.thermalexpansion.automaton.breaker.0=无坚不摧!
+tab.thermalexpansion.automaton.breaker.1=从它面前远一点.
+tab.thermalexpansion.automaton.collector.0=从某一区域捡起物品.
+tab.thermalexpansion.automaton.collector.1=万物运动，自然及游戏的法则。
+tab.thermalexpansion.automaton.collector.2=可能大概也许不会偷走你的物品.
 
-tab.thermalexpansion.device.extender.0=Point this at something with not enough sides.
-tab.thermalexpansion.device.extender.1=Ta-da! It now has more sides.
-tab.thermalexpansion.device.heat_sink.0=Cools down adjacent blocks, improving their speed.
-tab.thermalexpansion.device.heat_sink.1=Just fill with coolant and watch it work!
-tab.thermalexpansion.device.heat_sink.2=Coolants have varying degrees of effectiveness.
-tab.thermalexpansion.device.item_buffer.0=Stores and transfers items. Can automatically extract.
-tab.thermalexpansion.device.item_buffer.1=Better than a Hopper, really!
-tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quantities.
+tab.thermalexpansion.device.extender.0=指向这个东西的某物没有足够的有效面.
+tab.thermalexpansion.device.extender.1=Ta-da!现在它有更多面了.
+tab.thermalexpansion.device.heat_sink.0=冷却周围机器, 提升速度.
+tab.thermalexpansion.device.heat_sink.1=给它灌满冷却剂看着它工作好了!
+tab.thermalexpansion.device.heat_sink.2=不同的冷却剂有不同的冷却效果.
+tab.thermalexpansion.device.item_buffer.0=存储传输物品. 能自动提取.
+tab.thermalexpansion.device.item_buffer.1=还用什么漏斗!
+tab.thermalexpansion.device.item_buffer.2=按下Shift或者Ctrl以调整/微调。
 tab.thermalexpansion.device.nullifier.0=将所有的物质送入虚空!
 tab.thermalexpansion.device.nullifier.1=这是个恐怖的地方, 即便流体也难逃于此.
-tab.thermalexpansion.device.tapper.0=Extracts fluids from adjacent trees.
-tab.thermalexpansion.device.tapper.1=Not every tree will be productive.
-tab.thermalexpansion.device.tapper.2=Put down the axe.
-tab.thermalexpansion.device.water_gen.0=Extracts water from its surroundings.
-tab.thermalexpansion.device.water_gen.1=Place in a pool of water to speed this up.
-tab.thermalexpansion.device.water_gen.2=Don't drown.
+tab.thermalexpansion.device.tapper.0=从周围的树提取液体.
+tab.thermalexpansion.device.tapper.1=不是每棵树都有产出.
+tab.thermalexpansion.device.tapper.2=请勿乱砍滥伐.
+tab.thermalexpansion.device.water_gen.0=从周围环境中提取水.
+tab.thermalexpansion.device.water_gen.1=放在水池中可以加速.
+tab.thermalexpansion.device.water_gen.2=别淹死了.
 
 tab.thermalexpansion.dynamo.0=能量产生随能量需求而变化.
 tab.thermalexpansion.dynamo.compression.0=使用流体燃料生产RF.
 tab.thermalexpansion.dynamo.enervation.0=直接从天然物质或RF容器中提取RF.
 tab.thermalexpansion.dynamo.magmatic.0=使用高温流体生产RF.
-tab.thermalexpansion.dynamo.numismatic.0=Generates Redstone Flux using economic arbitrage.
-tab.thermalexpansion.dynamo.numismatic.1=Might be a portal to an alternate dimension of pure avarice.
-tab.thermalexpansion.dynamo.numismatic.2=Don't overthink it, just insert coins.
+tab.thermalexpansion.dynamo.numismatic.0=烧钱发RF。
+tab.thermalexpansion.dynamo.numismatic.1=可能是把吝啬鬼送上天堂的门路.
+tab.thermalexpansion.dynamo.numismatic.2=不要多想，烧钱就是了.
 tab.thermalexpansion.dynamo.reactant.0=使用化学反应生产RF.
 tab.thermalexpansion.dynamo.reactant.1=需要提供固体反应物和流体燃料.
 tab.thermalexpansion.dynamo.steam.0=使用蒸汽生产RF.
@@ -333,12 +328,12 @@ tab.thermalexpansion.machine.centrifuge.2=WIP
 tab.thermalexpansion.machine.charger.0=给可储存RF的物品充能.
 tab.thermalexpansion.machine.charger.1=充能速度受物品限制.
 tab.thermalexpansion.machine.charger.2=嗡嗡嗡.
-tab.thermalexpansion.machine.compactor.0=Applies pressure to items, changing their form.
-tab.thermalexpansion.machine.compactor.1=Useful for crafting advanced components.
-tab.thermalexpansion.machine.compactor.2=Click the button to change modes.
-tab.thermalexpansion.machine.crafter.0=Crafts recipes saved in Schematics.
-tab.thermalexpansion.machine.crafter.1=Uses 20 Redstone Flux per item.
-tab.thermalexpansion.machine.crafter.2=No, it won't craft that.
+tab.thermalexpansion.machine.compactor.0=压缩物品改变它们的形态.
+tab.thermalexpansion.machine.compactor.1=合成高级零件很有用.
+tab.thermalexpansion.machine.compactor.2=按下按钮改变模式.
+tab.thermalexpansion.machine.crafter.0=合成配方保存在图纸中.
+tab.thermalexpansion.machine.crafter.1=每个物品20RF.
+tab.thermalexpansion.machine.crafter.2=不，这样不会合成的.
 tab.thermalexpansion.machine.crucible.0=将固体材料变为流体!
 tab.thermalexpansion.machine.crucible.1=组装高级设备时很有用.
 tab.thermalexpansion.machine.crucible.2=远离儿童和宠物.
@@ -361,9 +356,9 @@ tab.thermalexpansion.machine.precipitator.2=打一场雪仗.
 tab.thermalexpansion.machine.pulverizer.0=将原料粉碎为其他东西.
 tab.thermalexpansion.machine.pulverizer.1=处理矿物和转化物品时很有用.
 tab.thermalexpansion.machine.pulverizer.2=通常为不可逆过程.
-tab.thermalexpansion.machine.refinery.0=Refines various fluids.
-tab.thermalexpansion.machine.refinery.1=Some fluids will leave behind a solid component.
-tab.thermalexpansion.machine.refinery.2=Products may or may not be drinkable.
+tab.thermalexpansion.machine.refinery.0=混合不同的流体.
+tab.thermalexpansion.machine.refinery.1=一些流体将会留下固体组成部分.
+tab.thermalexpansion.machine.refinery.2=产物可能根本不能喝.
 tab.thermalexpansion.machine.sawmill.0=将原木锯成木板以及木制品再加工.
 tab.thermalexpansion.machine.sawmill.1=充分利用了树木资源.
 tab.thermalexpansion.machine.sawmill.2=小心你的手.
@@ -375,31 +370,30 @@ tab.thermalexpansion.machine.transposer.0=填充或空置储存流体的物品.
 tab.thermalexpansion.machine.transposer.1=按下按钮切换填充或提取模式.
 tab.thermalexpansion.machine.transposer.2=一般为可逆过程.
 
-tab.thermalexpansion.storage.cell.0=Stores Redstone Flux.
-tab.thermalexpansion.storage.cell.1=Hold Shift and/or Ctrl to fine tune energy control.
-
-tile.thermalexpansion.automaton.breaker.name=Terrain Smasher
-tile.thermalexpansion.automaton.collector.name=Acquisition Apparatus
+tab.thermalexpansion.storage.cell.0=存储RF。
+tab.thermalexpansion.storage.cell.1=按下Shift and/or Ctrl以调整/微调能量控制。
+tile.thermalexpansion.automaton.breaker.name=方块破坏器
+tile.thermalexpansion.automaton.collector.name=物品采集器
 
 tile.thermalexpansion.device.extender.name=Surface Junction
-tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
+tile.thermalexpansion.device.heat_sink.name=空调
 tile.thermalexpansion.device.item_buffer.name=Item Allocator
 tile.thermalexpansion.device.nullifier.name=焚毁炉
-tile.thermalexpansion.device.tapper.name=Arboreal Extractor
-tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
+tile.thermalexpansion.device.tapper.name=树叶提取器
+tile.thermalexpansion.device.water_gen.name=蓄水器
 
 tile.thermalexpansion.dynamo.compression.name=压缩能源炉
 tile.thermalexpansion.dynamo.enervation.name=弱化能源炉
 tile.thermalexpansion.dynamo.magmatic.name=热力能源炉
-tile.thermalexpansion.dynamo.numismatic.name=Numismatic Dynamo
+tile.thermalexpansion.dynamo.numismatic.name=熔金能源炉
 tile.thermalexpansion.dynamo.reactant.name=反应能源炉
 tile.thermalexpansion.dynamo.steam.name=蒸汽能源炉
 
 tile.thermalexpansion.machine.brewer.name=WIP
 tile.thermalexpansion.machine.centrifuge.name=WIP
 tile.thermalexpansion.machine.charger.name=能量灌注机
-tile.thermalexpansion.machine.compactor.name=Compactor
-tile.thermalexpansion.machine.crafter.name=Cyclic Assembler
+tile.thermalexpansion.machine.compactor.name=压缩机
+tile.thermalexpansion.machine.crafter.name=循环装配台
 tile.thermalexpansion.machine.crucible.name=熔岩炉
 tile.thermalexpansion.machine.enchanter.name=WIP
 tile.thermalexpansion.machine.extruder.name=造石机
@@ -407,11 +401,11 @@ tile.thermalexpansion.machine.furnace.name=红石炉
 tile.thermalexpansion.machine.insolator.name=有机灌注器
 tile.thermalexpansion.machine.precipitator.name=冷冻机
 tile.thermalexpansion.machine.pulverizer.name=磨粉机
-tile.thermalexpansion.machine.refinery.name=Fractionating Still
+tile.thermalexpansion.machine.refinery.name=流体混合机
 tile.thermalexpansion.machine.sawmill.name=锯木机
 tile.thermalexpansion.machine.smelter.name=感应炉
 tile.thermalexpansion.machine.transposer.name=流体转置机
 
-tile.thermalexpansion.storage.cache.name=Cache
-tile.thermalexpansion.storage.cell.name=Energy Cell
-tile.thermalexpansion.storage.tank.name=Portable Tank
+tile.thermalexpansion.storage.cache.name=储物箱
+tile.thermalexpansion.storage.cell.name=能量单元
+tile.thermalexpansion.storage.tank.name=便携水槽
