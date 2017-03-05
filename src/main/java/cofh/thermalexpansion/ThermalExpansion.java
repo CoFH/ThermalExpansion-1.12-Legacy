@@ -1,5 +1,6 @@
 package cofh.thermalexpansion;
 
+import codechicken.lib.CodeChickenLib;
 import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
@@ -41,7 +42,7 @@ public class ThermalExpansion {
 	public static final String VERSION_GROUP = "required-after:" + MOD_ID + "@[" + VERSION + "," + VERSION_MAX + ");";
 	public static final String UPDATE_URL = "https://raw.github.com/cofh/version/master/" + MOD_ID + "_update.json";
 
-	public static final String DEPENDENCIES = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib";
+	public static final String DEPENDENCIES = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib@[" + CodeChickenLib.version + ",)";
 	public static final String MOD_GUI_FACTORY = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance (MOD_ID)
