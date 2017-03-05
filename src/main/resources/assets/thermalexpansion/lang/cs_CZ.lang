@@ -1,4 +1,4 @@
-#en_US
+#cs_CZ
 
 achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
 achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
@@ -29,7 +29,7 @@ chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
 gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reactant Dynamo (Fuel)
-gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Solid Reactant)
+gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Reactant)
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -48,6 +48,7 @@ gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
 
 gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
 gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
+gui.thermalexpansion.machine.transposer.modeLocked=Mode Locked (Machine Active)
 
 gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
 gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by

@@ -51,7 +51,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 					}
 				} else if (ItemHelper.itemsEqualWithMetadata(stack, queryStack, true)) {
 					int toExtract = Math.min(stack.getMaxStackSize() - stack.stackSize, Math.min(amount, queryStack.stackSize));
-					ItemStack extracted = inv.extractItem(slot, toExtract, false);
+					ItemStack extracted = inv.extractItem(i, toExtract, false);
 					toExtract = Math.min(toExtract, extracted == null ? 0 : extracted.stackSize);
 					stack.stackSize += toExtract;
 					amount -= toExtract;

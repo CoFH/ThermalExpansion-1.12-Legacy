@@ -104,6 +104,7 @@ public class TileTransposer extends TileMachineBase {
 
 			if (processRem <= 0) {
 				if (processFinishHandler()) {
+					transferHandler();
 					transferOutput();
 					transferInput();
 				}
@@ -116,7 +117,7 @@ public class TileTransposer extends TileMachineBase {
 				}
 			}
 		} else if (redstoneControlOrDisable()) {
-			if (timeCheck() && !canStartHandler()) {
+			if (timeCheck()) {
 				transferOutput();
 				transferInput();
 			}
@@ -197,6 +198,9 @@ public class TileTransposer extends TileMachineBase {
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
+		if (tankProperties == null || tankProperties.length < 1) {
+			return true;
+		}
 		if (filled > 0) {
 			tank.drain(filled, true);
 			if (tankProperties[0].getContents().amount >= tankProperties[0].getCapacity()) {
@@ -215,6 +219,9 @@ public class TileTransposer extends TileMachineBase {
 
 		IFluidTankProperties[] tankProperties = handler.getTankProperties();
 
+		if (tankProperties == null || tankProperties.length < 1) {
+			return true;
+		}
 		if (drained > 0) {
 			tank.fill(drainStack, true);
 			if (tankProperties[0].getContents() == null) {
@@ -433,8 +440,6 @@ public class TileTransposer extends TileMachineBase {
 
 	@Override
 	protected void transferOutput() {
-
-		transferHandler();
 
 		if (!enableAutoOutput) {
 			return;

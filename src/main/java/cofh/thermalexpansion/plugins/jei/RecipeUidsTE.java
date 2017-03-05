@@ -32,11 +32,10 @@ public class RecipeUidsTE {
 	public static final String DYNAMO_STEAM = "thermalexpansion.steam";
 	public static final String DYNAMO_MAGMATIC = "thermalexpansion.magmatic";
 	public static final String DYNAMO_COMPRESSION = "thermalexpansion.compression";
-	public static final String DYNAMO_REACTANT_SOLID = "thermalexpansion.reactant.solid";
 	public static final String DYNAMO_REACTANT_FLUID = "thermalexpansion.reactant.fluid";
+	public static final String DYNAMO_REACTANT_SOLID = "thermalexpansion.reactant.solid";
 	public static final String DYNAMO_ENERVATION = "thermalexpansion.enervation";
 	public static final String DYNAMO_NUMISMATIC = "thermalexpansion.numismatic";
-
 
 	public static final String COOLANT = "thermalexpansion.coolant";
 

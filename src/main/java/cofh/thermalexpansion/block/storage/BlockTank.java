@@ -55,6 +55,8 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 
 		setHardness(15.0F);
 		setResistance(25.0F);
+
+		basicGui = false;
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-#en_US
+#ko_KR
 
 achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
 achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
@@ -29,7 +29,7 @@ chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
 gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reactant Dynamo (Fuel)
-gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Solid Reactant)
+gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Reactant)
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -48,6 +48,7 @@ gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
 
 gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
 gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
+gui.thermalexpansion.machine.transposer.modeLocked=Mode Locked (Machine Active)
 
 gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
 gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by
@@ -359,7 +360,7 @@ tab.thermalexpansion.machine.precipitator.0=다양한 액체를 얼립니다.
 tab.thermalexpansion.machine.precipitator.1=충분한 액체가 탱크에 있다면, 선택한 아이템을 제작합니다.
 tab.thermalexpansion.machine.precipitator.2=눈싸움 한 번 해보세요.
 tab.thermalexpansion.machine.pulverizer.0=물건을 분쇄하여 가공합니다.
-tab.thermalexpansion.machine.pulverizer.1=원석을 가공하고 아이템을 변환하는데 유용합니다. 
+tab.thermalexpansion.machine.pulverizer.1=원석을 가공하고 아이템을 변환하는데 유용합니다.
 tab.thermalexpansion.machine.pulverizer.2=변환된 아이템은 일반적인방법으로 되돌릴 수 없습니다.
 tab.thermalexpansion.machine.refinery.0=Refines various fluids.
 tab.thermalexpansion.machine.refinery.1=Some fluids will leave behind a solid component.

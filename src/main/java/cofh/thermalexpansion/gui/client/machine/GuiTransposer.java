@@ -101,14 +101,19 @@ public class GuiTransposer extends GuiPoweredBase {
 		progressOverlayRev.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0);
 		speed.setQuantity(myTile.getEnergyStored(null) > 0 ? myTile.getScaledSpeed(SPEED) : 0);
 
-		if (myTile.extractFlag) {
+		if (myTile.isActive) {
+			modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeLocked");
+			modeSel.setDisabled();
+		} else if (myTile.extractFlag) {
 			modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeEmpty");
 			modeSel.setSheetX(192);
 			modeSel.setHoverX(192);
+			modeSel.setActive();
 		} else {
 			modeSel.setToolTip("gui.thermalexpansion.machine.transposer.modeFill");
 			modeSel.setSheetX(176);
 			modeSel.setHoverX(176);
+			modeSel.setActive();
 		}
 	}
 

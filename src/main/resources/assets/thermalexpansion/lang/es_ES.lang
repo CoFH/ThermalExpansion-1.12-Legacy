@@ -1,4 +1,4 @@
-#en_US
+#es_ES
 
 achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
 achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
@@ -29,7 +29,7 @@ chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
 gui.thermalexpansion.jei.category.dynamo.reactant.fluid=Reactant Dynamo (Fuel)
-gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Solid Reactant)
+gui.thermalexpansion.jei.category.dynamo.reactant.solid=Reactant Dynamo (Reactant)
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -48,6 +48,7 @@ gui.thermalexpansion.machine.smelter.modeUnlocked=Flux Slot Unlocked
 
 gui.thermalexpansion.machine.transposer.modeEmpty=Mode: Empty
 gui.thermalexpansion.machine.transposer.modeFill=Mode: Fill
+gui.thermalexpansion.machine.transposer.modeLocked=Mode Locked (Machine Active)
 
 gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
 gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by
@@ -352,7 +353,7 @@ tab.thermalexpansion.machine.furnace.0=Funde cosas usando Redstone Flux.
 tab.thermalexpansion.machine.furnace.1=Usa un poco de energia para cocinar comida.
 tab.thermalexpansion.machine.furnace.2=Om nom nom.
 tab.thermalexpansion.machine.insolator.0=Infunde nutrientes y luz en plantas usando Redstone Flux.
-tab.thermalexpansion.machine.insolator.1=No es exactamente 'organico' 
+tab.thermalexpansion.machine.insolator.1=No es exactamente 'organico'
 tab.thermalexpansion.machine.insolator.2=La ranura izquierda puede ser cerrada para que contenga ciertos objetos.
 tab.thermalexpansion.machine.insolator.3=Gloriosamente incandescente!
 tab.thermalexpansion.machine.precipitator.0=Usa Redstone Flux para conjelar fluidos varios!
@@ -388,8 +389,8 @@ tile.thermalexpansion.device.nullifier.name=Nullificador
 tile.thermalexpansion.device.tapper.name=Arboreal Extractor
 tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
 
-tile.thermalexpansion.dynamo.compression.name=Dinamo de Compresion 
-tile.thermalexpansion.dynamo.enervation.name=Dinamo de Enervacion 
+tile.thermalexpansion.dynamo.compression.name=Dinamo de Compresion
+tile.thermalexpansion.dynamo.enervation.name=Dinamo de Enervacion
 tile.thermalexpansion.dynamo.magmatic.name=Dinamo Magmatico
 tile.thermalexpansion.dynamo.numismatic.name=Numismatic Dynamo
 tile.thermalexpansion.dynamo.reactant.name=Dinamo Reactante

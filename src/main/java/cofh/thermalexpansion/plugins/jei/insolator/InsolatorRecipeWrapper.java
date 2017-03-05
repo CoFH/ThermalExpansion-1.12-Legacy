@@ -7,6 +7,7 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.ComparableItemStackInsolator;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.Substrate;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -33,6 +34,8 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 
 	final int energy;
 	final int chance;
+
+	final Substrate substrate;
 
 	/* Animation */
 	final IDrawableAnimated fluid;
@@ -77,6 +80,8 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 
 		energy = recipe.getEnergy();
 		chance = recipe.getSecondaryOutputChance();
+
+		substrate = recipe.getSubstrate();
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(1);

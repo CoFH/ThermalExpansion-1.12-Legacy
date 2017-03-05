@@ -46,6 +46,7 @@ gui.thermalexpansion.machine.smelter.modeUnlocked=流量槽已解锁
 
 gui.thermalexpansion.machine.transposer.modeEmpty=模式：空
 gui.thermalexpansion.machine.transposer.modeFill=模式：填充
+gui.thermalexpansion.machine.transposer.modeLocked=Mode Locked (Machine Active)
 
 gui.thermalexpansion.storage.cell.decRecv=按一下减少RF输入
 gui.thermalexpansion.storage.cell.decSend=按一下减少RF输出
