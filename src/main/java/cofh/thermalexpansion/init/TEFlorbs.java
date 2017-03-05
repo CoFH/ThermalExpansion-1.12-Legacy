@@ -15,8 +15,11 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+import javax.annotation.Nullable;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
 
@@ -58,11 +61,15 @@ public class TEFlorbs {
 
 		for (Fluid fluid : FluidRegistry.getRegisteredFluids().values()) {
 			if (fluid.canBePlacedInWorld()) {
+
+				ItemStack stack;
 				if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 0), fluid));
+					stack = new ItemStack(itemFlorb, 1, 0);
 				} else {
-					florbList.add(ItemFlorb.setTag(new ItemStack(itemFlorb, 1, 1), fluid));
+					stack = new ItemStack(itemFlorb, 1, 1);
 				}
+				addFlorb(stack, fluid);
+
 				if (!enable) {
 					continue;
 				}
@@ -86,8 +93,28 @@ public class TEFlorbs {
 		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", ItemMaterial.crystalSlag, ItemMaterial.globRosin, Items.BLAZE_POWDER));
 	}
 
+	private static void addFlorb(ItemStack florb, Fluid fluid) {
+
+		ItemFlorb.setTag(florb, fluid);
+		florbList.add(florb);
+		florbMap.put(fluid.getName(), florb);
+	}
+
+	/**
+	 * Attempts to get a Florb ItemStack from the given fluid.
+	 *
+	 * @param fluid The fluid a Florb is being requested for.
+	 * @return The ItemStack. Will be null if a florb doesn't exist.
+	 */
+	@Nullable
+	public static ItemStack getFlorb(Fluid fluid) {
+
+		return florbMap.get(fluid.getName());
+	}
+
 	public static boolean enable = true;
 	public static ArrayList<ItemStack> florbList = new ArrayList<>();
+	public static Map<String, ItemStack> florbMap = new HashMap<>();
 
 	public static final ConfigHandler CONFIG_FLORBS = new ConfigHandler(ThermalExpansion.VERSION);
 

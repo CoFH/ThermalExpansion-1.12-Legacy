@@ -51,11 +51,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	public static void dropFlorb(Fluid fluid, World worldObj, BlockPos pos) {
 
 		if (fluid != null) {
-			if (fluid.getTemperature() < TEProps.MAGMATIC_TEMPERATURE) {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 0), fluid), worldObj, pos);
-			} else {
-				CoreUtils.dropItemStackIntoWorldWithVelocity(ItemFlorb.setTag(new ItemStack(TEFlorbs.itemFlorb, 1, 1), fluid), worldObj, pos);
-			}
+			CoreUtils.dropItemStackIntoWorldWithVelocity(TEFlorbs.getFlorb(fluid), worldObj, pos);
 		}
 	}
 
