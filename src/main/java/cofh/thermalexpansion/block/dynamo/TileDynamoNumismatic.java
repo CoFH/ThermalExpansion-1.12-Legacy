@@ -4,7 +4,6 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.ComparableItem;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -190,7 +189,9 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		if (stack == null) {
 			return 0;
 		}
-		return fuels.get(new ComparableItemStack(stack));
+		int energy = fuels.get(new ComparableItemStack(stack));
+
+		return energy > 0 ? energy : 0;
 	}
 
 }
