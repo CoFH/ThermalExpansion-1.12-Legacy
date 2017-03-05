@@ -385,7 +385,7 @@ tile.thermalexpansion.device.water_gen.name=蓄水器
 tile.thermalexpansion.dynamo.compression.name=压缩能源炉
 tile.thermalexpansion.dynamo.enervation.name=弱化能源炉
 tile.thermalexpansion.dynamo.magmatic.name=热力能源炉
-tile.thermalexpansion.dynamo.numismatic.name=烧钱能源炉
+tile.thermalexpansion.dynamo.numismatic.name=熔金能源炉
 tile.thermalexpansion.dynamo.reactant.name=反应能源炉
 tile.thermalexpansion.dynamo.steam.name=蒸汽能源炉
 
