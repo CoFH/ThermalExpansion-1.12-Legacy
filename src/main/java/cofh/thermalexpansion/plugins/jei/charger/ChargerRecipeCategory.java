@@ -24,8 +24,13 @@ import java.util.List;
 
 public class ChargerRecipeCategory extends BlankRecipeCategory<ChargerRecipeWrapper> {
 
+	public static boolean enable = true;
+
 	public static void initialize(IModRegistry registry) {
 
+		if (!enable) {
+			return;
+		}
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 

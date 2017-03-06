@@ -243,8 +243,9 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		IBlockState state = worldObj.getBlockState(checkPos.down());
 
 		Material material = state.getBlock().getMaterial(state);
-		if (material != Material.GROUND && material != Material.GRASS)
+		if (material != Material.GROUND && material != Material.GRASS) {
 			return false;
+		}
 
 		return TapperManager.mappingExists(worldObj.getBlockState(checkPos));
 	}

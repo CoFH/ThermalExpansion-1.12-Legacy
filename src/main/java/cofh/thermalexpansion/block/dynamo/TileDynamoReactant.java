@@ -327,6 +327,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	public static Set<Fluid> getReactantFuelFluids() {
+
 		return ImmutableSet.copyOf(fuels.keySet());
 	}
 
@@ -370,7 +371,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
 	}
 
-	public static Set<ComparableItemStack> getReactantsStacks(){
+	public static Set<ComparableItemStack> getReactantsStacks() {
+
 		return ImmutableSet.copyOf(reactants.keySet());
 	}
 

@@ -15,8 +15,13 @@ import javax.annotation.Nonnull;
 
 public abstract class TransposerRecipeCategory extends BlankRecipeCategory<TransposerRecipeWrapper> {
 
+	public static boolean enable = true;
+
 	public static void initialize(IModRegistry registry) {
 
+		if (!enable) {
+			return;
+		}
 		TransposerRecipeCategoryFill.initialize(registry);
 		TransposerRecipeCategoryExtract.initialize(registry);
 		registry.addRecipeClickArea(GuiTransposer.class, 112, 19, 24, 16, RecipeUidsTE.TRANSPOSER_FILL, RecipeUidsTE.TRANSPOSER_EXTRACT);

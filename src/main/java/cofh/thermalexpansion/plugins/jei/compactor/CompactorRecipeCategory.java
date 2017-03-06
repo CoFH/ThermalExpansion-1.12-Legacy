@@ -20,8 +20,13 @@ import java.util.List;
 
 public abstract class CompactorRecipeCategory extends BlankRecipeCategory<CompactorRecipeWrapper> {
 
+	public static boolean enable = true;
+
 	public static void initialize(IModRegistry registry) {
 
+		if (!enable) {
+			return;
+		}
 		CompactorRecipeCategoryPress.initialize(registry);
 		CompactorRecipeCategoryStorage.initialize(registry);
 		CompactorRecipeCategoryMint.initialize(registry);

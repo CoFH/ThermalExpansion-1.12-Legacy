@@ -113,7 +113,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		boolean playSound = false;
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
-		int extractAmount = !player.isSneaking() ? 1 : 64;
+		int extractAmount = !player.isSneaking() && !player.capabilities.isCreativeMode ? 1 : 64;
 		ItemStack extract = tile.extractItem(null, extractAmount, true);
 		if (extract == null) {
 			return;
@@ -127,14 +127,12 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 				}
 				extractAmount -= extract.stackSize;
 			}
-			playSound = true;
 			tile.extractItem(null, extractAmount, false);
 		} else {
+			player.inventory.addItemStackToInventory(extract);
 			tile.extractItem(null, extractAmount, false);
 		}
-		if (playSound) {
-			world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.4F, 0.8F);
-		}
+		world.playSound(null, pos, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.BLOCKS, 0.4F, 0.8F);
 	}
 
 	@Override

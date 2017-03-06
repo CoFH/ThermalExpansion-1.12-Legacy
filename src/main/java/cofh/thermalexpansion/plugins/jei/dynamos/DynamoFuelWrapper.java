@@ -39,6 +39,11 @@ public final class DynamoFuelWrapper<T> extends BlankRecipeWrapper {
 		this.displayText = displayText;
 	}
 
+	public String getUid() {
+
+		return categoryBase.getUid();
+	}
+
 	@Override
 	public void getIngredients(@Nonnull IIngredients ingredients) {
 

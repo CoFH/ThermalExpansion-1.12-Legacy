@@ -13,7 +13,6 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TEFlorbs;
-import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;

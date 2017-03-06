@@ -324,7 +324,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 	/* FUEL MANAGER */
 	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
 
-	public static Set<Fluid> getCompressionFuelFluids(){
+	public static Set<Fluid> getCompressionFuelFluids() {
+
 		return ImmutableSet.copyOf(fuels.keySet());
 	}
 

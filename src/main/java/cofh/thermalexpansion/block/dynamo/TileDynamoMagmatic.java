@@ -316,6 +316,7 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
 
 	public static Set<Fluid> getMagmaticFuelFluids() {
+
 		return ImmutableSet.copyOf(fuels.keySet());
 	}
 

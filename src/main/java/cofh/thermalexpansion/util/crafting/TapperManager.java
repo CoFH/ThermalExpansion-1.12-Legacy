@@ -61,28 +61,24 @@ public class TapperManager {
 		addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 25));    // rubber
 		addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(resin, 25));
 
-//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.LEAVES, 1, 0));
-//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.LEAVES, 1, 1));
-//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.LEAVES, 1, 2));
-//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.LEAVES, 1, 3));
-//		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.LEAVES2, 1, 0));
-//		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.LEAVES2, 1, 1));
+		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.LEAVES, 1, 0));
+		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.LEAVES, 1, 1));
+		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 2), new ItemStack(Blocks.LEAVES, 1, 2));
+		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 3), new ItemStack(Blocks.LEAVES, 1, 3));
+		//		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 0), new ItemStack(Blocks.LEAVES2, 1, 0));
+		//		addLeafMapping(new ItemStack(Blocks.LOG2, 1, 1), new ItemStack(Blocks.LEAVES2, 1, 1));
 
 		addVanillaLeafMappings(Blocks.LOG, BlockOldLog.VARIANT, Blocks.LEAVES, BlockOldLeaf.VARIANT);
 		addVanillaLeafMappings(Blocks.LOG2, BlockNewLog.VARIANT, Blocks.LEAVES2, BlockNewLeaf.VARIANT);
 	}
 
-	private static void addVanillaLeafMappings(Block logBlock, PropertyEnum<BlockPlanks.EnumType> logVariantProperty, Block leavesBlock,  PropertyEnum<BlockPlanks.EnumType> leafVariantProperty) {
+	private static void addVanillaLeafMappings(Block logBlock, PropertyEnum<BlockPlanks.EnumType> logVariantProperty, Block leavesBlock, PropertyEnum<BlockPlanks.EnumType> leafVariantProperty) {
+
 		for (BlockPlanks.EnumType variant : logVariantProperty.getAllowedValues()) {
-			IBlockState logState = logBlock.getDefaultState()
-					.withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y)
-					.withProperty(logVariantProperty, variant);
+			IBlockState logState = logBlock.getDefaultState().withProperty(BlockLog.LOG_AXIS, BlockLog.EnumAxis.Y).withProperty(logVariantProperty, variant);
 
 			for (Boolean check_decay : BlockLeaves.CHECK_DECAY.getAllowedValues()) {
-				IBlockState leafState = leavesBlock.getDefaultState()
-						.withProperty(leafVariantProperty, variant)
-						.withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE)
-						.withProperty(BlockLeaves.CHECK_DECAY, check_decay);
+				IBlockState leafState = leavesBlock.getDefaultState().withProperty(leafVariantProperty, variant).withProperty(BlockLeaves.DECAYABLE, Boolean.TRUE).withProperty(BlockLeaves.CHECK_DECAY, check_decay);
 
 				leafMap.put(new BlockWrapper(logState), new BlockWrapper(leafState));
 			}
@@ -119,7 +115,7 @@ public class TapperManager {
 
 		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<>(blockMap.size());
 		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<>(itemMap.size());
-		HashMultimap<BlockWrapper, BlockWrapper> tempLeafMap = HashMultimap.create(leafMap.keySet().size(),leafMap.size() / leafMap.keySet().size());
+		HashMultimap<BlockWrapper, BlockWrapper> tempLeafMap = HashMultimap.create(leafMap.keySet().size(), leafMap.size() / leafMap.keySet().size());
 
 		for (Entry<BlockWrapper, FluidStack> entry : blockMap.entrySet()) {
 			BlockWrapper tempBlock = new BlockWrapper(entry.getKey().block, entry.getKey().metadata);

@@ -107,7 +107,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 			renderFace(ccrs, face, provider.getTexture(face, stack));
 
 			if (level > 0) {
-				renderFaceOverlay(ccrs, face, creative? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
+				renderFaceOverlay(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
 			}
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());
@@ -138,7 +138,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 			renderFace(ccrs, face, provider.getTexture(face, state, layer, tile.getWorld(), tile.getPos()));
 
 			if (layer == BlockRenderLayer.CUTOUT && level > 0) {
-				renderFace(ccrs, face, creative? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
+				renderFace(ccrs, face, creative ? TETextures.MACHINE_OVERLAY_C : getOverlaySprite(face, level));
 			}
 			buffer.finishDrawing();
 			quads.addAll(buffer.bake());

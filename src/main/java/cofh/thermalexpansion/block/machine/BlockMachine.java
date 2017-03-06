@@ -14,6 +14,16 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
+import cofh.thermalexpansion.plugins.jei.charger.ChargerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.compactor.CompactorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.furnace.FurnaceRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.insolator.InsolatorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.refinery.RefineryRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.sawmill.SawmillRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.smelter.SmelterRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.render.RenderMachine;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -381,6 +391,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "dustRedstone",
 					'Y', Blocks.BRICK_BLOCK
 			));
+		} else {
+			FurnaceRecipeCategory.enable = false;
 		}
 		if (enable[Type.PULVERIZER.getMetadata()]) {
 			addRecipe(ShapedRecipe(machinePulverizer,
@@ -393,6 +405,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Blocks.PISTON,
 					'Y', Items.FLINT
 			));
+		} else {
+			PulverizerRecipeCategory.enable = false;
 		}
 		if (enable[Type.SAWMILL.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineSawmill,
@@ -405,6 +419,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "gearIron",
 					'Y', "plankWood"
 			));
+		} else {
+			SawmillRecipeCategory.enable = false;
 		}
 		if (enable[Type.SMELTER.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineSmelter,
@@ -417,6 +433,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Items.BUCKET,
 					'Y', "ingotInvar"
 			));
+		}else {
+			SmelterRecipeCategory.enable = false;
 		}
 		if (enable[Type.INSOLATOR.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineInsolator,
@@ -429,6 +447,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "gearLumium",
 					'Y', "dirt"
 			));
+		}else {
+			InsolatorRecipeCategory.enable = false;
 		}
 		if (enable[Type.COMPACTOR.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineCompactor,
@@ -441,6 +461,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Blocks.PISTON,
 					'Y', "ingotBronze"
 			));
+		}else {
+			CompactorRecipeCategory.enable = false;
 		}
 		if (enable[Type.CRUCIBLE.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineCrucible,
@@ -453,6 +475,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', ItemMaterial.powerCoilElectrum,
 					'Y', Blocks.NETHER_BRICK
 			));
+		}else {
+			CrucibleRecipeCategory.enable = false;
 		}
 		if (enable[Type.REFINERY.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineRefinery,
@@ -465,6 +489,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', "gearNickel",
 					'Y', "blockGlass"
 			));
+		} else {
+			RefineryRecipeCategory.enable = false;
 		}
 		if (enable[Type.TRANSPOSER.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineTransposer,
@@ -477,6 +503,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', Items.BUCKET,
 					'Y', "blockGlass"
 			));
+		} else {
+			TransposerRecipeCategory.enable = false;
 		}
 		if (enable[Type.CHARGER.getMetadata()]) {
 			addRecipe(ShapedRecipe(machineCharger,
@@ -489,6 +517,8 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 					'X', ItemMaterial.powerCoilElectrum,
 					'Y', ItemMaterial.powerCoilSilver
 			));
+		} else {
+			ChargerRecipeCategory.enable = false;
 		}
 //		if (enable[Type.CRAFTER.getMetadata()]) {
 //			addRecipe(ShapedRecipe(machineCrafter,

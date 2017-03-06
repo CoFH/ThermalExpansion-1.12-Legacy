@@ -28,6 +28,7 @@ public class CoolantManager {
 	}
 
 	public static Set<Fluid> getCoolantFluids() {
+
 		return ImmutableSet.copyOf(coolantMap.keySet());
 	}
 

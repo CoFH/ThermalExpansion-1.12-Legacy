@@ -165,7 +165,8 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	private static int DEFAULT_ENERGY = 64000;
 
-	public static Set<ComparableItemStack> getFuelStacks(){
+	public static Set<ComparableItemStack> getFuelStacks() {
+
 		return ImmutableSet.copyOf(fuels.keySet());
 	}
 

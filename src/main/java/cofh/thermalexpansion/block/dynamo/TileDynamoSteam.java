@@ -333,6 +333,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private static int DEFAULT_RF = 48000;
 
 	public static Set<ComparableItemStack> getOverriddenFuelStacks() {
+
 		return ImmutableSet.copyOf(fuels.keySet());
 	}
 

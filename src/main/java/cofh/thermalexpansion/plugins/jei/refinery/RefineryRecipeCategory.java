@@ -22,8 +22,13 @@ import java.util.List;
 
 public class RefineryRecipeCategory extends BlankRecipeCategory<RefineryRecipeWrapper> {
 
+	public static boolean enable = true;
+
 	public static void initialize(IModRegistry registry) {
 
+		if (!enable) {
+			return;
+		}
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 

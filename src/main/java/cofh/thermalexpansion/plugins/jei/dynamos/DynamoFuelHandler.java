@@ -16,17 +16,16 @@ public class DynamoFuelHandler implements IRecipeHandler<DynamoFuelWrapper> {
 
 	@Nonnull
 	@Override
-	@Deprecated
 	public String getRecipeCategoryUid() {
 
-		throw new IllegalStateException();
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull DynamoFuelWrapper recipe) {
 
-		return recipe.categoryBase.getUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

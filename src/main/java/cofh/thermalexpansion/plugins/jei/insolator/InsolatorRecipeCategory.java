@@ -22,8 +22,13 @@ import java.util.List;
 
 public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipeWrapper> {
 
+	public static boolean enable = true;
+
 	public static void initialize(IModRegistry registry) {
 
+		if (!enable) {
+			return;
+		}
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 

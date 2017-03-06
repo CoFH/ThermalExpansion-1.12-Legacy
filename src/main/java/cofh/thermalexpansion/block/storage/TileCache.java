@@ -541,10 +541,10 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return false;
 	}
 
-
 	/* IInventoryRetainer */
 	@Override
 	public boolean retainInventory() {
+
 		return true;
 	}
 }
