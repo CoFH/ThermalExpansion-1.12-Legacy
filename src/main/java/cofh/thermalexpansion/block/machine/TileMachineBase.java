@@ -39,8 +39,6 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	static {
 		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_POWER);
-		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_SECONDARY);
-		VALID_AUGMENTS_BASE.add(TEProps.MACHINE_SECONDARY_NULL);
 	}
 
 	public static void config() {

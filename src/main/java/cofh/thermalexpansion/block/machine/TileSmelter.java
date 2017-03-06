@@ -51,6 +51,9 @@ public class TileSmelter extends TileMachineBase {
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SMELTER_PYROTHEUM);
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+
 		LIGHT_VALUES[TYPE] = 15;
 
 		GameRegistry.registerTileEntity(TileSmelter.class, "thermalexpansion:machine_smelter");
@@ -192,11 +195,16 @@ public class TileSmelter extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
+
+					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
-				}
-				if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-					inventory[3].stackSize += secondaryItem.stackSize;
+
+					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				}
 				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
 					inventory[3].stackSize = inventory[3].getMaxStackSize();

@@ -53,6 +53,9 @@ public class TileInsolator extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+
 		LIGHT_VALUES[TYPE] = 14;
 
 		GameRegistry.registerTileEntity(TileInsolator.class, "thermalexpansion:machine_insolator");
@@ -196,11 +199,16 @@ public class TileInsolator extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[3] == null) {
 					inventory[3] = ItemHelper.cloneStack(secondaryItem);
+
+					if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				} else if (inventory[3].isItemEqual(secondaryItem)) {
 					inventory[3].stackSize += secondaryItem.stackSize;
-				}
-				if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-					inventory[3].stackSize += secondaryItem.stackSize;
+
+					if (worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[3].stackSize += secondaryItem.stackSize;
+					}
 				}
 				if (inventory[3].stackSize > inventory[3].getMaxStackSize()) {
 					inventory[3].stackSize = inventory[3].getMaxStackSize();

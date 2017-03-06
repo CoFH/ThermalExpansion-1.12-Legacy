@@ -566,6 +566,7 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 				}
 				return false;
 		}
+		updateAugmentStatus();
 		markChunkDirty();
 		sendTilePacket(Side.CLIENT);
 		return true;

@@ -52,6 +52,9 @@ public class TileSawmill extends TileMachineBase {
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SAWMILL_TAPPER);
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");
 
 		config();
@@ -171,11 +174,16 @@ public class TileSawmill extends TileMachineBase {
 			if (recipeChance >= 100 || worldObj.rand.nextInt(modifiedChance) < recipeChance) {
 				if (inventory[2] == null) {
 					inventory[2] = ItemHelper.cloneStack(secondaryItem);
+
+					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[2].stackSize += secondaryItem.stackSize;
+					}
 				} else if (inventory[2].isItemEqual(secondaryItem)) {
 					inventory[2].stackSize += secondaryItem.stackSize;
-				}
-				if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
-					inventory[2].stackSize += secondaryItem.stackSize;
+
+					if (recipeChance > modifiedChance && worldObj.rand.nextInt(SECONDARY_BASE) < recipeChance - modifiedChance) {
+						inventory[2].stackSize += secondaryItem.stackSize;
+					}
 				}
 				if (inventory[2].stackSize > inventory[2].getMaxStackSize()) {
 					inventory[2].stackSize = inventory[2].getMaxStackSize();
