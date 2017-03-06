@@ -1,7 +1,7 @@
 #ru_RU
 
-achievement.thermalexpansion.blockGlassHardened.desc=Combine Obsidian and Metal in an Induction Smelter.
-achievement.thermalexpansion.blockGlassHardened=Basically Indestructible
+achievement.thermalexpansion.blockGlassHardened.desc=Скомбинируйте Обсидиан и металл в индукционной плавильне.
+achievement.thermalexpansion.blockGlassHardened=Практически не сломать
 
 achievement.thermalexpansion.florb.desc=Содержит жидкость. Вы можете бросить его.
 achievement.thermalexpansion.florb=Я могу бросить его?!
@@ -57,7 +57,7 @@ gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
 gui.thermalexpansion.storage.cell.maxRecv=Max Input
 gui.thermalexpansion.storage.cell.maxSend=Max Output
 
-info.thermalexpansion.augment.0=Augment
+info.thermalexpansion.augment.0=Улучшения
 
 info.thermalexpansion.augment.dynamoCoilDuct.0=Добавляет ввод/вывод катушке генератора.
 info.thermalexpansion.augment.dynamoCoilDuct.a.0=Allows insertion and extraction through the coil.
@@ -173,7 +173,7 @@ info.thermalexpansion.automaton.activator=Does more than a tooltip can explain.
 info.thermalexpansion.automaton.breaker=Breaks blocks. Simple enough.
 info.thermalexpansion.automaton.collector=Procures items from an area.
 
-info.thermalexpansion.coolant=Coolant
+info.thermalexpansion.coolant=Охлаждение
 
 info.thermalexpansion.device.extender=Allows for more connections to a given block.
 info.thermalexpansion.device.heat_sink=Improves operational speed of nearby machines.
@@ -197,18 +197,18 @@ info.thermalexpansion.florb.c.1=Yes, you can throw it.
 info.thermalexpansion.florb.d.0=This fluid is lighter than air.
 info.thermalexpansion.florb.d.1=The Florb will travel further.
 
-info.thermalexpansion.level.0=Basic
-info.thermalexpansion.level.1=Hardened
-info.thermalexpansion.level.2=Reinforced
-info.thermalexpansion.level.3=Signalum
-info.thermalexpansion.level.4=Resonant
-info.thermalexpansion.level.creative=Creative
+info.thermalexpansion.level.0=Основн.
+info.thermalexpansion.level.1=Усилен.
+info.thermalexpansion.level.2=Укреплён.
+info.thermalexpansion.level.3=Сигналов.
+info.thermalexpansion.level.4=Резонирующ.
+info.thermalexpansion.level.creative=Творческ.
 
 info.thermalexpansion.machine.brewer=WIP
 info.thermalexpansion.machine.centrifuge=WIP
 info.thermalexpansion.machine.charger=Заряжает предметы энергией RF.
-info.thermalexpansion.machine.compactor=Compresses items.
-info.thermalexpansion.machine.crafter=Crafts items.
+info.thermalexpansion.machine.compactor=Сжимает предметы.
+info.thermalexpansion.machine.crafter=Создает предметы.
 info.thermalexpansion.machine.crucible=Расплавляет предметы в жидкости.
 info.thermalexpansion.machine.enchanter=WIP
 info.thermalexpansion.machine.extruder=Смешивает горячие и холодные жидкости.
@@ -216,14 +216,14 @@ info.thermalexpansion.machine.furnace=Плавит предметы.
 info.thermalexpansion.machine.insolator=Наполняет растения энергией 'солнца' и RF.
 info.thermalexpansion.machine.precipitator=Замораживает жидкости в твёрдые материалы.
 info.thermalexpansion.machine.pulverizer=Дробит предметы.
-info.thermalexpansion.machine.refinery=Refines fluids into other products.
+info.thermalexpansion.machine.refinery=Перерабатывает жидкости в другие продукты.
 info.thermalexpansion.machine.sawmill=Даёт дополнительную древесину.
 info.thermalexpansion.machine.smelter=Плавит сплавы и металлы. Два входа.
 info.thermalexpansion.machine.transposer=Управляет жидкостями и жидкостными контейнерами.
 
-info.thermalexpansion.storage.cache=Stores a large amount of an item.
-info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.
-info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
+info.thermalexpansion.storage.cache=Хранит большой объем предметов.
+info.thermalexpansion.storage.cell=Хранит большой объем Redstone Flux.
+info.thermalexpansion.storage.tank=Хранит большой объем жидкости.
 
 info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.
 info.thermalexpansion.upgrade.creative.1=May be used on any tier of block.
@@ -386,21 +386,21 @@ tile.thermalexpansion.device.extender.name=Surface Junction
 tile.thermalexpansion.device.heat_sink.name=Thermal Mediator
 tile.thermalexpansion.device.item_buffer.name=Item Allocator
 tile.thermalexpansion.device.nullifier.name=Аннулятор
-tile.thermalexpansion.device.tapper.name=Arboreal Extractor
-tile.thermalexpansion.device.water_gen.name=Aqueous Accumulator
+tile.thermalexpansion.device.tapper.name=Древесный выжиматель
+tile.thermalexpansion.device.water_gen.name=Генератор воды
 
 tile.thermalexpansion.dynamo.compression.name=Компрессионный генератор
 tile.thermalexpansion.dynamo.enervation.name=Ослабленный генератор
 tile.thermalexpansion.dynamo.magmatic.name=Магмовый генератор
-tile.thermalexpansion.dynamo.numismatic.name=Numismatic Dynamo
+tile.thermalexpansion.dynamo.numismatic.name=Нумизматический генератор
 tile.thermalexpansion.dynamo.reactant.name=Реагентный генератор
 tile.thermalexpansion.dynamo.steam.name=Паровой генератор
 
 tile.thermalexpansion.machine.brewer.name=WIP
 tile.thermalexpansion.machine.centrifuge.name=WIP
 tile.thermalexpansion.machine.charger.name=Энергетический зарядник
-tile.thermalexpansion.machine.compactor.name=Compactor
-tile.thermalexpansion.machine.crafter.name=Cyclic Assembler
+tile.thermalexpansion.machine.compactor.name=Компактор
+tile.thermalexpansion.machine.crafter.name=Цикличный сборщик
 tile.thermalexpansion.machine.crucible.name=Магмовый тигель
 tile.thermalexpansion.machine.enchanter.name=WIP
 tile.thermalexpansion.machine.extruder.name=Вулканический пресс
@@ -408,11 +408,11 @@ tile.thermalexpansion.machine.furnace.name=Красная печь
 tile.thermalexpansion.machine.insolator.name=Фитогенный светильник
 tile.thermalexpansion.machine.precipitator.name=Ледниковый осадитель
 tile.thermalexpansion.machine.pulverizer.name=Измельчитель
-tile.thermalexpansion.machine.refinery.name=Fractionating Still
+tile.thermalexpansion.machine.refinery.name=Дистилятор
 tile.thermalexpansion.machine.sawmill.name=Лесопилка
 tile.thermalexpansion.machine.smelter.name=Индукционная плавильня
 tile.thermalexpansion.machine.transposer.name=Распределитель жидкостей
 
-tile.thermalexpansion.storage.cache.name=Cache
-tile.thermalexpansion.storage.cell.name=Energy Cell
-tile.thermalexpansion.storage.tank.name=Portable Tank
+tile.thermalexpansion.storage.cache.name=Тайник
+tile.thermalexpansion.storage.cell.name=Энергетическая ячейка
+tile.thermalexpansion.storage.tank.name=Переносной резервуар
