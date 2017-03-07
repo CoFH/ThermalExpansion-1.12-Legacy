@@ -202,11 +202,13 @@ public class SmelterManager {
 
 		/* ALLOYS */
 		{
+			// Dust = 800, Ingot = 1200
+
 			ItemStack stackSteel = ItemHelper.cloneStack(ItemMaterial.ingotSteel, 1);
-			//			addAlloyRecipe(1600, "dustIron", 1, "dustCoal", 4, stackSteel);
-			//			addAlloyRecipe(2400, "ingotIron", 1, "dustCoal", 4, stackSteel);
-			addAlloyRecipe(1600, "dustIron", 1, "dustCharoal", 4, stackSteel);
-			addAlloyRecipe(2400, "ingotIron", 1, "dustCharoal", 4, stackSteel);
+			addAlloyRecipe(4000, "dustIron", 1, "dustCoal", 4, stackSteel);
+			addAlloyRecipe(4400, "ingotIron", 1, "dustCoal", 4, stackSteel);
+			addAlloyRecipe(4000, "dustIron", 1, "dustCharcoal", 4, stackSteel);
+			addAlloyRecipe(4400, "ingotIron", 1, "dustCharcoal", 4, stackSteel);
 
 			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
 			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
