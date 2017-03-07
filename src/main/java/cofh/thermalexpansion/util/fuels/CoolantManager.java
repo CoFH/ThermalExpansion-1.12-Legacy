@@ -74,9 +74,9 @@ public class CoolantManager {
 
 	public static void addDefaultMappings() {
 
-		addCoolant("water", 500000, 5);
+		addCoolant("water", 500000, 6);
 		addCoolant("cryotheum", 4000000, 2);
-		addCoolant("ice", 2000000, 3);
+		addCoolant("ice", 1500000, 3);
 	}
 
 	public static void loadMappings() {
@@ -107,7 +107,6 @@ public class CoolantManager {
 		}
 		coolantMap.remove(fluid);
 		coolantFactorMap.remove(fluid);
-
 		return true;
 	}
 
@@ -118,7 +117,6 @@ public class CoolantManager {
 		}
 		coolantMap.remove(FluidRegistry.getFluid(fluidName));
 		coolantFactorMap.remove(FluidRegistry.getFluid(fluidName));
-
 		return true;
 	}
 
