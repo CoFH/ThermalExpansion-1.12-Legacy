@@ -113,7 +113,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		if (super.setLevel(level)) {
 			energyConfig.setDefaultParams(getBasePower(this.level));
-			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 2);
+			energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 			return true;
 		}
 		return false;
@@ -410,7 +410,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (augmentThrottle) {
 			energyConfig.minPower = 0;
 		}
-		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 2);
+		energyStorage.setCapacity(energyConfig.maxEnergy).setMaxTransfer(energyConfig.maxPower * 4);
 	}
 
 	@Override

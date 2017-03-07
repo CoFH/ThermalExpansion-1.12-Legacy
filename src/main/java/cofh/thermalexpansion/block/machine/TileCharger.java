@@ -499,7 +499,7 @@ public class TileCharger extends TileMachineBase {
 		super.postAugmentInstall();
 
 		if (augmentThroughput) {
-			energyStorage.setMaxTransfer(getEnergyTransfer(level) * 2);
+			energyStorage.setMaxTransfer(getEnergyTransfer(level) * 4);
 		}
 	}
 
