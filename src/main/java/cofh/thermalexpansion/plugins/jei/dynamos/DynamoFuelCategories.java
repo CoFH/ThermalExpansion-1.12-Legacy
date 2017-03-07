@@ -43,15 +43,16 @@ public class DynamoFuelCategories {
 		initEnervation(registry, guiHelper);
 		initNumismatic(registry, guiHelper);
 
-		initCoolantCategory(registry, guiHelper);
+		initCoolant(registry, guiHelper);
 	}
 
-	protected static void initSteam(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initSteam(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelItem steamCategory = new DynamoFuelCategory.FuelItem(guiHelper, RecipeUidsTE.DYNAMO_STEAM, StringHelper.localize("tile.thermalexpansion.dynamo.steam.name"));
 		registry.addRecipeCategories(steamCategory);
 		Set<ComparableItemStack> overriddenFuelStacks = TileDynamoSteam.getOverriddenFuelStacks();
 		ArrayList<DynamoFuelWrapper<ItemStack>> steamFuels = new ArrayList<>();
+
 		for (ComparableItemStack comparableItemStack : overriddenFuelStacks) {
 			ItemStack itemStack = comparableItemStack.toItemStack();
 			int energyValue = TileDynamoSteam.getEnergyValue(itemStack);
@@ -59,7 +60,6 @@ public class DynamoFuelCategories {
 				steamFuels.add(new DynamoFuelWrapper<>(itemStack, steamCategory, energyValue));
 			}
 		}
-
 		for (ItemStack itemStack : registry.getIngredientRegistry().getFuels()) {
 			if (overriddenFuelStacks.contains(new ComparableItemStack(itemStack))) {
 				continue;
@@ -73,7 +73,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoSteam, RecipeUidsTE.DYNAMO_STEAM);
 	}
 
-	protected static void initMagmatic(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initMagmatic(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelFluid magmaticCategory = new DynamoFuelCategory.FuelFluid(guiHelper, RecipeUidsTE.DYNAMO_MAGMATIC, StringHelper.localize("tile.thermalexpansion.dynamo.magmatic.name"));
 		registry.addRecipeCategories(magmaticCategory);
@@ -81,7 +81,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoMagmatic, RecipeUidsTE.DYNAMO_MAGMATIC);
 	}
 
-	protected static void initCompression(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initCompression(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelFluid compressionCategory = new DynamoFuelCategory.FuelFluid(guiHelper, RecipeUidsTE.DYNAMO_COMPRESSION, StringHelper.localize("tile.thermalexpansion.dynamo.compression.name"));
 		registry.addRecipeCategories(compressionCategory);
@@ -89,7 +89,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoCompression, RecipeUidsTE.DYNAMO_COMPRESSION);
 	}
 
-	protected static void initReactantFluid(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initReactantFluid(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelFluid reactantCategory = new DynamoFuelCategory.FuelFluid(guiHelper, RecipeUidsTE.DYNAMO_REACTANT_FLUID, StringHelper.localize("gui.thermalexpansion.jei.category.dynamo.reactant.fluid"));
 		registry.addRecipeCategories(reactantCategory);
@@ -97,7 +97,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT_FLUID);
 	}
 
-	private static void initReactantSolid(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initReactantSolid(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelItem reactantCategory = new DynamoFuelCategory.FuelItem(guiHelper, RecipeUidsTE.DYNAMO_REACTANT_SOLID, StringHelper.localize("gui.thermalexpansion.jei.category.dynamo.reactant.solid"));
 		registry.addRecipeCategories(reactantCategory);
@@ -105,7 +105,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoReactant, RecipeUidsTE.DYNAMO_REACTANT_SOLID);
 	}
 
-	private static void initEnervation(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initEnervation(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelItem enervationCategory = new DynamoFuelCategory.FuelItem(guiHelper, RecipeUidsTE.DYNAMO_ENERVATION, StringHelper.localize("tile.thermalexpansion.dynamo.enervation.name"));
 		registry.addRecipeCategories(enervationCategory);
@@ -150,7 +150,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoEnervation, RecipeUidsTE.DYNAMO_ENERVATION);
 	}
 
-	protected static void initNumismatic(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initNumismatic(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelItem numismaticCategory = new DynamoFuelCategory.FuelItem(guiHelper, RecipeUidsTE.DYNAMO_NUMISMATIC, StringHelper.localize("tile.thermalexpansion.dynamo.numismatic.name"));
 		registry.addRecipeCategories(numismaticCategory);
@@ -158,7 +158,7 @@ public class DynamoFuelCategories {
 		registry.addRecipeCategoryCraftingItem(BlockDynamo.dynamoNumismatic, RecipeUidsTE.DYNAMO_NUMISMATIC);
 	}
 
-	protected static void initCoolantCategory(IModRegistry registry, IGuiHelper guiHelper) {
+	static void initCoolant(IModRegistry registry, IGuiHelper guiHelper) {
 
 		DynamoFuelCategory.FuelFluid coolantCategory = new DynamoFuelCategory.FuelFluid(guiHelper, RecipeUidsTE.COOLANT, StringHelper.localize("info.thermalexpansion.coolant")) {
 			@Override

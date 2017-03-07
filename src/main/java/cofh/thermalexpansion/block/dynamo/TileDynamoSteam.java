@@ -245,7 +245,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (!augmentTurbine && TEProps.DYNAMO_STEAM_TURBINE.equals(id)) {
 			augmentTurbine = true;
 			hasModeAugment = true;
-			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 2));
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
 			fuelRF = 0;
 			waterRF = 0;
 			return true;

@@ -68,7 +68,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + color + fluid.getFluid().getLocalizedName(fluid) + StringHelper.LIGHT_GRAY);
 
 			if (isCreative(stack)) {
-				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
+				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
 			}
@@ -76,7 +76,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
 
 			if (isCreative(stack)) {
-				tooltip.add(StringHelper.localize("info.cofh.infinite") + " " + StringHelper.localize("info.cofh.source"));
+				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
 				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
 			}

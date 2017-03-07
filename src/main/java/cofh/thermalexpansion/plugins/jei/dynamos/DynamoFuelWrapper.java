@@ -12,7 +12,7 @@ import java.util.List;
 
 public final class DynamoFuelWrapper<T> extends BlankRecipeWrapper {
 
-	public final DynamoFuelCategory<T> categoryBase;
+	final DynamoFuelCategory<T> categoryBase;
 	final List<T> inputs;
 	final String displayText;
 	public int drawX;
