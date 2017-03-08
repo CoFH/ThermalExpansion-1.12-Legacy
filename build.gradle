@@ -2,6 +2,10 @@ buildscript {
 	repositories {
         maven {
             name = "covers1624"
+            url = "http://mavenmirror.covers1624.net/general/"
+        }
+        maven {
+            name = "covers1624"
             url = "http://maven.covers1624.net/"
         }
         maven {
