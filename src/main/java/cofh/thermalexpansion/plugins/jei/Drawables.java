@@ -21,8 +21,6 @@ public class Drawables {
 
 	public static final ResourceLocation JEI_TEXTURE = new ResourceLocation("thermalexpansion:textures/gui/jei_handler.png");
 
-	private final IGuiHelper guiHelper;
-
 	private final IDrawableStatic[] slot = new IDrawableStatic[3];
 
 	private final IDrawableStatic[] tank = new IDrawableStatic[3];
@@ -34,15 +32,13 @@ public class Drawables {
 	private final IDrawableStatic[] progressLeft = new IDrawableStatic[3];
 	private final IDrawableStatic[] progressLeftFill = new IDrawableStatic[3];
 
-	private final IDrawableStatic[] speed = new IDrawableStatic[7];
-	private final IDrawableStatic[] speedFill = new IDrawableStatic[7];
+	private final IDrawableStatic[] speed = new IDrawableStatic[8];
+	private final IDrawableStatic[] speedFill = new IDrawableStatic[8];
 
 	private final IDrawableStatic energyEmpty;
 	private final IDrawableStatic energyFill;
 
 	private Drawables(IGuiHelper guiHelper) {
-
-		this.guiHelper = guiHelper;
 
 		slot[0] = guiHelper.createDrawable(JEI_TEXTURE, 0, 0, 18, 18);
 		slot[1] = guiHelper.createDrawable(JEI_TEXTURE, 32, 0, 26, 26);
@@ -59,11 +55,10 @@ public class Drawables {
 			progressRight[i] = guiHelper.createDrawable(JEI_TEXTURE, 176, 16 + 32 * i, 24, 16);
 			progressRightFill[i] = guiHelper.createDrawable(JEI_TEXTURE, 200, 16 + 32 * i, 24, 16);
 		}
-		for (int i = 0; i < 7; i++) {
+		for (int i = 0; i < 8; i++) {
 			speed[i] = guiHelper.createDrawable(JEI_TEXTURE, 224, i * 16, 16, 16);
 			speedFill[i] = guiHelper.createDrawable(JEI_TEXTURE, 240, i * 16, 16, 16);
 		}
-
 		energyEmpty = guiHelper.createDrawable(JEI_TEXTURE, 192, 192, 14, 42);
 		energyFill = guiHelper.createDrawable(JEI_TEXTURE, 208, 192, 14, 42);
 	}

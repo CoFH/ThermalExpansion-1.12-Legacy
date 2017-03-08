@@ -122,7 +122,7 @@ public class RenderTank implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeItemQuads(EnumFacing face, ItemStack stack) {
 
-		if (face == null) {
+		if (face == null && stack != null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			buffer.begin(7, DefaultVertexFormats.ITEM);
 			CCRenderState ccrs = CCRenderState.instance();
@@ -148,7 +148,7 @@ public class RenderTank implements ILayeredBlockBakery {
 	@Override
 	public List<BakedQuad> bakeLayerFace(EnumFacing face, BlockRenderLayer layer, IExtendedBlockState state) {
 
-		if (face == null) {
+		if (face == null && state != null) {
 			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
 			int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;

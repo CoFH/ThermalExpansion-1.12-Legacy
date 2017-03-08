@@ -94,7 +94,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 		List<BakedQuad> quads = new ArrayList<>();
 
-		if (face != null) {
+		if (face != null && stack != null) {
 			BakingVertexBuffer buffer = BakingVertexBuffer.create();
 			CCRenderState ccrs = CCRenderState.instance();
 			buffer.begin(0x07, DefaultVertexFormats.ITEM);
@@ -121,7 +121,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 		List<BakedQuad> quads = new ArrayList<>();
 
-		if (face != null) {
+		if (face != null && state != null) {
 			Block block = state.getBlock();
 			IWorldBlockTextureProvider provider = ((IWorldBlockTextureProvider) block);
 

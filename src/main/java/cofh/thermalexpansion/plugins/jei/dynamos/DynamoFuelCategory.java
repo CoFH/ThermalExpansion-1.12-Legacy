@@ -1,13 +1,15 @@
 package cofh.thermalexpansion.plugins.jei.dynamos;
 
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoMagmatic;
+import cofh.thermalexpansion.plugins.jei.Drawables;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.*;
+import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.FluidStack;
 
 import javax.annotation.Nonnull;
@@ -16,36 +18,42 @@ import java.util.List;
 
 public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFuelWrapper<T>> {
 
-	final IDrawable background;
-	final IDrawable slotDrawable;
-	final String categoryUID;
-	final String categoryTitle;
-	@Nullable
-	final IDrawable flameDrawable;
+	final IDrawableStatic background;
+	final IDrawableStatic slotDrawable;
 
-	public DynamoFuelCategory(IGuiHelper helper, String categoryUID, String categoryTitle) {
+	final IDrawableStatic animatedBackground;
+	final IDrawableAnimated animatedOverlay;
 
-		slotDrawable = createSlotDrawable(helper);
-		background = createBackground(helper);
-		flameDrawable = createAnimatedFlame(helper);
+	final String uId;
+	final String localizedName;
 
-		this.categoryUID = categoryUID;
-		this.categoryTitle = categoryTitle;
+	public DynamoFuelCategory(IGuiHelper guiHelper, String uIdIn, String nameIn) {
+
+		slotDrawable = createSlotDrawable(guiHelper);
+		background = createBackground(guiHelper);
+
+		animatedBackground = createAnimationBackground(guiHelper);
+		animatedOverlay = createAnimationOverlay(guiHelper);
+
+		uId = uIdIn;
+		localizedName = StringHelper.localize(nameIn);
 	}
 
-	@Nullable
-	protected IDrawable createAnimatedFlame(IGuiHelper guiHelper) {
+	protected IDrawableStatic createAnimationBackground(IGuiHelper guiHelper) {
 
-		ResourceLocation furnaceBackgroundLocation = new ResourceLocation("minecraft", "textures/gui/container/furnace.png");
-		IDrawableStatic flameDrawable = guiHelper.createDrawable(furnaceBackgroundLocation, 176, 0, 14, 14);
-		return guiHelper.createAnimatedDrawable(flameDrawable, 60, IDrawableAnimated.StartDirection.TOP, true);
+		return Drawables.getDrawables(guiHelper).getSpeed(2);
 	}
 
-	protected abstract IDrawable createSlotDrawable(IGuiHelper helper);
+	protected IDrawableAnimated createAnimationOverlay(IGuiHelper guiHelper) {
 
-	protected IDrawable createBackground(IGuiHelper helper) {
+		return guiHelper.createAnimatedDrawable(Drawables.getDrawables(guiHelper).getSpeedFill(2), 200, StartDirection.TOP, true);
+	}
 
-		return helper.createBlankDrawable(90, Math.max(slotDrawable.getHeight(), 40));
+	protected abstract IDrawableStatic createSlotDrawable(IGuiHelper guiHelper);
+
+	protected IDrawableStatic createBackground(IGuiHelper guiHelper) {
+
+		return guiHelper.createBlankDrawable(90, Math.max(slotDrawable.getHeight(), 40));
 	}
 
 	public abstract Class<T> getIngredientClass();
@@ -61,20 +69,20 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 	@Override
 	public String getUid() {
 
-		return categoryUID;
+		return uId;
 	}
 
 	@Nonnull
 	@Override
 	public String getTitle() {
 
-		return categoryTitle;
+		return localizedName;
 	}
 
 	@Override
 	public String toString() {
 
-		return "DynamoFuelCategory{" + "categoryUID='" + categoryUID + '\'' + ", categoryTitle='" + categoryTitle + '\'' + '}';
+		return "DynamoFuelCategory{" + "categoryUID='" + uId + '\'' + ", categoryTitle='" + localizedName + '\'' + '}';
 	}
 
 	@Override
@@ -84,7 +92,7 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 		initSlot(recipeLayout);
 		IGuiIngredientGroup<T> ingredientsGroup = recipeLayout.getIngredientsGroup(getIngredientClass());
 		ingredientsGroup.set(0, inputs.get(0));
-		recipeWrapper.drawX = getSlotX() + slotDrawable.getWidth() + 4 + (flameDrawable != null ? flameDrawable.getWidth() + 4 : 0);
+		recipeWrapper.drawX = getSlotX() + slotDrawable.getWidth() + 4 + (animatedOverlay != null ? animatedOverlay.getWidth() + 4 : 0);
 	}
 
 	protected abstract void initSlot(IRecipeLayout recipeLayout);
@@ -93,9 +101,8 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 	public void drawExtras(Minecraft minecraft) {
 
 		slotDrawable.draw(minecraft, getSlotX(), getSlotY());
-		if (flameDrawable != null) {
-			flameDrawable.draw(minecraft, getSlotX() + 4 + slotDrawable.getWidth(), (background.getHeight() - flameDrawable.getHeight()) / 2);
-		}
+		animatedBackground.draw(minecraft, getSlotX() + 4 + slotDrawable.getWidth(), (background.getHeight() - animatedOverlay.getHeight()) / 2);
+		animatedOverlay.draw(minecraft, getSlotX() + 4 + slotDrawable.getWidth(), (background.getHeight() - animatedOverlay.getHeight()) / 2);
 	}
 
 	protected int getSlotX() {
@@ -116,9 +123,9 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 		}
 
 		@Override
-		protected IDrawable createSlotDrawable(IGuiHelper helper) {
+		protected IDrawableStatic createSlotDrawable(IGuiHelper guiHelper) {
 
-			return helper.createDrawable(GuiDynamoMagmatic.TEXTURE, 176, 0, 18, 62);
+			return guiHelper.createDrawable(GuiDynamoMagmatic.TEXTURE, 176, 0, 18, 62);
 		}
 
 		@Override
@@ -150,9 +157,9 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 		}
 
 		@Override
-		protected IDrawable createSlotDrawable(IGuiHelper helper) {
+		protected IDrawableStatic createSlotDrawable(IGuiHelper guiHelper) {
 
-			return helper.getSlotDrawable();
+			return guiHelper.getSlotDrawable();
 		}
 
 		@Override
@@ -167,4 +174,5 @@ public abstract class DynamoFuelCategory<T> extends BlankRecipeCategory<DynamoFu
 			recipeLayout.getItemStacks().init(0, true, getSlotX(), getSlotY());
 		}
 	}
+
 }
