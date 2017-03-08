@@ -6,7 +6,7 @@ buildscript {
         }
         maven {
             name = "covers1624"
-            url = "http://mavenmirror.covers1624.net/"
+            url = "http://mavenmirror.covers1624.net/forge/"
         }
 	}
 	dependencies {
