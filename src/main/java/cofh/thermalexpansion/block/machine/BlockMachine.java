@@ -586,18 +586,11 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		private static final BlockMachine.Type[] METADATA_LOOKUP = new BlockMachine.Type[values().length];
 		private final int metadata;
 		private final String name;
-		private final int light;
-
-		Type(int metadata, String name, int light) {
-
-			this.metadata = metadata;
-			this.name = name;
-			this.light = light;
-		}
 
 		Type(int metadata, String name) {
 
-			this(metadata, name, 0);
+			this.metadata = metadata;
+			this.name = name;
 		}
 
 		public int getMetadata() {
@@ -609,11 +602,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		public String getName() {
 
 			return this.name;
-		}
-
-		public int getLight() {
-
-			return this.light;
 		}
 
 		public static Type byMetadata(int metadata) {

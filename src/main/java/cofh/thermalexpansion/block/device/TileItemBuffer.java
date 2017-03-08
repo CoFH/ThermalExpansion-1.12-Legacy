@@ -53,6 +53,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		super();
 		inventory = new ItemStack[9];
+		createAllSlots(inventory.length);
 
 		enableAutoInput = true;
 		enableAutoOutput = true;

@@ -81,6 +81,7 @@ public class TileCrafter extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 18];
+		createAllSlots(inventory.length);
 	}
 
 	@Override

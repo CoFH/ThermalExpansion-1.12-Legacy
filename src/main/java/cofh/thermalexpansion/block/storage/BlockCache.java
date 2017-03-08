@@ -60,8 +60,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 
 		setHardness(15.0F);
 		setResistance(25.0F);
-
-		setHarvestLevel("pickaxe", 1);
+		setDefaultState(getBlockState().getBaseState());
 	}
 
 	@Override

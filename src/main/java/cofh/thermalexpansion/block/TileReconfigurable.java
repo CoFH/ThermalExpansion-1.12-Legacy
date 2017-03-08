@@ -22,6 +22,8 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
 
+	public int [] allSlots = new int[] {};
+
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
@@ -65,6 +67,15 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	public void setDefaultSides() {
 
 		sideCache = getDefaultSides();
+	}
+
+	public void createAllSlots(int size) {
+
+		allSlots = new int[size];
+
+		for (int i = 0; i < size; i++) {
+			allSlots[i] = i;
+		}
 	}
 
 	/* GUI METHODS */
@@ -311,18 +322,27 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
+		if (side == null) {
+			return allSlots;
+		}
 		return sideConfig.slotGroups[sideCache[side.ordinal()]];
 	}
 
 	@Override
 	public boolean canInsertItem(int slot, ItemStack stack, EnumFacing side) {
 
+		if (side == null) {
+			return true;
+		}
 		return (sideConfig.allowInsertionSide[sideCache[side.ordinal()]] && slotConfig.allowInsertionSlot[slot]) && isItemValidForSlot(slot, stack);
 	}
 
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
+		if (side == null) {
+			return true;
+		}
 		return sideConfig.allowExtractionSide[sideCache[side.ordinal()]] && slotConfig.allowExtractionSlot[slot];
 	}
 

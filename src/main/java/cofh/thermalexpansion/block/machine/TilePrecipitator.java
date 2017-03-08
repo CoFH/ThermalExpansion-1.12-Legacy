@@ -80,6 +80,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		createAllSlots(inventory.length);
 		tank.setLock(FluidRegistry.WATER);
 	}
 

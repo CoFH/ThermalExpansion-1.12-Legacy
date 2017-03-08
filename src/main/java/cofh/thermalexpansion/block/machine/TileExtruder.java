@@ -105,6 +105,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		super();
 		inventory = new ItemStack[1 + 1];
+		createAllSlots(inventory.length);
 
 		for (int i = 0; i < 3; i++) {
 			outputItems[i] = processItems[i].copy();

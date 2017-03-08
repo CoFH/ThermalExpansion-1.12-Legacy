@@ -90,6 +90,7 @@ public class TileInsolator extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[2 + 1 + 1 + 1];
+		createAllSlots(inventory.length);
 		tank.setLock(FluidRegistry.WATER);
 	}
 

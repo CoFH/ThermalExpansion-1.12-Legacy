@@ -85,6 +85,7 @@ public class TileSawmill extends TileMachineBase {
 
 		super();
 		inventory = new ItemStack[1 + 1 + 1 + 1];
+		createAllSlots(inventory.length);
 	}
 
 	@Override
