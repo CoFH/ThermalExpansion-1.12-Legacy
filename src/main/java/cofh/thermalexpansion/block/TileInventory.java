@@ -38,6 +38,10 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 
 		if (Utils.isAccessibleInput(adjInv, side)) {
 			IItemHandler inv = adjInv.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, side.getOpposite());
+
+			if (inv == null) {
+				return false;
+			}
 			for (int i = 0; i < inv.getSlots() && amount > 0; i++) {
 				ItemStack queryStack = inv.extractItem(i, amount, true);
 				if (queryStack == null) {
