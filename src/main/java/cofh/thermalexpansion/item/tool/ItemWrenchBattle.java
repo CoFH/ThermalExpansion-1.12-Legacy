@@ -17,7 +17,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.IBlockAccess;
@@ -86,13 +85,8 @@ public class ItemWrenchBattle extends ItemSwordCore implements IToolHammer {
 			return EnumActionResult.SUCCESS;
 		}
 		if (BlockHelper.canRotate(block)) {
-			if (player.isSneaking()) {
-				world.setBlockState(pos, BlockHelper.rotateVanillaBlockAlt(world, state, pos), 3);
-				world.playSound(null, pos, block.getSoundType(state, world, pos, player).getBreakSound(), SoundCategory.BLOCKS, 1.0F, 0.6F);
-			} else {
-				world.setBlockState(pos, BlockHelper.rotateVanillaBlock(world, state, pos), 3);
-				world.playSound(null, pos, block.getSoundType(state, world, pos, player).getBreakSound(), SoundCategory.BLOCKS, 1.0F, 0.8F);
-			}
+			world.setBlockState(pos, BlockHelper.rotateVanillaBlock(world, state, pos), 3);
+			player.swingArm(hand);
 			return ServerHelper.isServerWorld(world) ? EnumActionResult.SUCCESS : EnumActionResult.PASS;
 		} else if (!player.isSneaking() && block.rotateBlock(world, pos, side)) {
 			player.swingArm(hand);

@@ -90,6 +90,9 @@ public class RenderCell implements ILayeredBlockBakery {
 
 		TileCell cell = (TileCell) tileEntity;
 
+		if (cell == null) {
+			return null;
+		}
 		state = state.withProperty(TEProps.CREATIVE, cell.isCreative);
 		state = state.withProperty(TEProps.LEVEL, cell.getLevel());
 		state = state.withProperty(TEProps.LIGHT, Math.min(15, cell.getScaledEnergyStored(16)));

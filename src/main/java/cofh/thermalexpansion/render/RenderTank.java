@@ -111,6 +111,9 @@ public class RenderTank implements ILayeredBlockBakery {
 
 		TileTank tank = ((TileTank) tileEntity);
 
+		if (tank == null) {
+			return null;
+		}
 		state = state.withProperty(TEProps.CREATIVE, tank.isCreative);
 		state = state.withProperty(TEProps.LEVEL, tank.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, tank.enableAutoOutput);

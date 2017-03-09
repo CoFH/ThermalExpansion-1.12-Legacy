@@ -141,6 +141,9 @@ public class TileTransposer extends TileMachineBase {
 		if (energyStorage.getEnergyStored() < TransposerManager.DEFAULT_ENERGY) {
 			return false;
 		}
+		if (inventory[2] != null) {
+			return false;
+		}
 		IFluidHandler handler = inventory[1].getCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null);
 
 		if (!extractMode) {

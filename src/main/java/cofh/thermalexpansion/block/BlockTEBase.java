@@ -251,7 +251,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 		return super.canDismantle(world, pos, state, player);
 	}
 
-	public static final float[] HARDNESS = { 5.0F, 10, 0.F, 10.0F, 15.0F, 20.0F };
+	public static final float[] HARDNESS = { 5.0F, 10.0F, 10.0F, 15.0F, 20.0F };
 	public static final int[] RESISTANCE = { 15, 30, 30, 45, 120 };
 
 	public static final float HARDNESS_CREATIVE = -1.0F;

@@ -79,6 +79,9 @@ public class RenderMachine implements ILayeredBlockBakery {
 
 		TileMachineBase machineBase = ((TileMachineBase) tileEntity);
 
+		if (machineBase == null) {
+			return null;
+		}
 		state = state.withProperty(TEProps.CREATIVE, machineBase.isCreative);
 		state = state.withProperty(TEProps.LEVEL, machineBase.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, machineBase.isActive);

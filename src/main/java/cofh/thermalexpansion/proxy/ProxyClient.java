@@ -60,12 +60,6 @@ public class ProxyClient extends Proxy {
 		TETextures.registerIcons(event);
 	}
 
-	@SubscribeEvent
-	public void getIcons(TextureStitchEvent.Post event) {
-
-		TETextures.getIcons(event);
-	}
-
 	/* HELPERS */
 	public boolean addIModelRegister(IModelRegister modelRegister) {
 

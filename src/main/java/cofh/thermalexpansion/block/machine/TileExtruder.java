@@ -85,7 +85,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	private static int[] processLava = { 0, 0, 1000 };
 	private static int[] processWater = { 0, 1000, 1000 };
-	private static int[] processEnergy = { 800, 800, 1600 };
+	private static int[] processEnergy = { 400, 800, 1600 };
 	private static ItemStack[] processItems = new ItemStack[3];
 
 	private int outputTracker;

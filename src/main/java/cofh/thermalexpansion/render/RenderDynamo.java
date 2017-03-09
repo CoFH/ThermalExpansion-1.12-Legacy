@@ -137,6 +137,9 @@ public class RenderDynamo implements ILayeredBlockBakery {
 
 		TileDynamoBase dynamo = (TileDynamoBase) tile;
 
+		if (dynamo == null) {
+			return null;
+		}
 		state = state.withProperty(TEProps.CREATIVE, dynamo.isCreative);
 		state = state.withProperty(TEProps.LEVEL, dynamo.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, dynamo.isActive);

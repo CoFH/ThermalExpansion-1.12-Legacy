@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.init;
 
 import cofh.core.init.CoreProps;
-import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.ResourceLocation;
@@ -163,6 +162,9 @@ public class TETextures {
 		CELL_METER_7 =                      register(map, CELL_ + "meter_7");
 		CELL_METER_8 =                      register(map, CELL_ + "meter_8");
 		CELL_METER_C =                      register(map, CELL_ + "meter_c");
+
+		CELL_CENTER_0 =                     register(map, "blocks/redstone_block");
+		CELL_CENTER_1 =                     register(map, "thermalfoundation:blocks/fluid/redstone_still");
 
 		TANK_BOTTOM_0_0 =                   register(map, TANK_ + "bottom_0_0");
 		TANK_BOTTOM_0_1 =                   register(map, TANK_ + "bottom_0_1");
@@ -373,6 +375,11 @@ public class TETextures {
 				CELL_SIDE_C
 		};
 
+		CELL_CENTER = new TextureAtlasSprite[] {
+				CELL_CENTER_0,
+				CELL_CENTER_1
+		};
+
 		CELL_METER = new TextureAtlasSprite[] {
 				CELL_METER_0,
 				CELL_METER_1,
@@ -480,22 +487,6 @@ public class TETextures {
 				CACHE_METER_7,
 				CACHE_METER_8,
 				CACHE_METER_C
-		};
-		// @formatter:on
-	}
-
-	public static void getIcons(TextureStitchEvent.Post event) {
-
-		TextureMap map = event.getMap();
-
-		// @formatter:off \o/ Formatter!
-		CELL_CENTER_0 = map.getAtlasSprite(TFFluids.fluidRedstone.getStill().toString());
-		CELL_CENTER_1 = map.getAtlasSprite(TFFluids.fluidRedstone.getStill().toString());
-
-		/* ARRAYS */
-		CELL_CENTER = new TextureAtlasSprite[] {
-				CELL_CENTER_0,
-				CELL_CENTER_1
 		};
 		// @formatter:on
 	}
