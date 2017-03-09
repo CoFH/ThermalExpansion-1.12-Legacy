@@ -66,7 +66,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	}
 
 	private static final int TIME_CONSTANT = 40;
-	private static int genRate = 20 * TIME_CONSTANT;
+	private static int genRate = 25 * TIME_CONSTANT;
 	private static int genRatePassive = TIME_CONSTANT;
 	private static boolean passiveGen = false;
 
@@ -166,7 +166,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			return;
 		}
 		int side;
-		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME));
+		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME * 2));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 

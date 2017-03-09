@@ -67,6 +67,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	int compareTracker;
 	boolean cached = false;
 	IEnergyReceiver adjacentReceiver = null;
+	boolean adjacentHandler = false;
 
 	EnergyStorage energyStorage;
 	EnergyConfig energyConfig;
@@ -131,7 +132,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		byte oldFacing = facing;
 		for (int i = facing + 1, e = facing + 6; i < e; i++) {
-			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
+			if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, EnumFacing.VALUES[i % 6]) || EnergyHelper.isAdjacentEnergyHandler(this, EnumFacing.VALUES[i % 6])) {
 				facing = (byte) (i % 6);
 				if (facing != oldFacing) {
 					updateAdjacentHandlers();
@@ -269,6 +270,9 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	protected void transferEnergy() {
 
 		if (adjacentReceiver == null) {
+			if (adjacentHandler) {
+				energyStorage.modifyEnergyStored(-EnergyHelper.insertEnergyIntoAdjacentEnergyReceiver(this, EnumFacing.VALUES[facing], Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
+			}
 			return;
 		}
 		energyStorage.modifyEnergyStored(-adjacentReceiver.receiveEnergy(EnumFacing.VALUES[facing ^ 1], Math.min(energyStorage.getMaxExtract(), energyStorage.getEnergyStored()), false));
@@ -283,8 +287,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 		if (EnergyHelper.isEnergyReceiverFromSide(tile, EnumFacing.VALUES[facing ^ 1])) {
 			adjacentReceiver = (IEnergyReceiver) tile;
+			adjacentHandler = false;
+		} else if (EnergyHelper.isEnergyHandler(tile, EnumFacing.VALUES[facing ^ 1])) {
+			adjacentReceiver = null;
+			adjacentHandler = true;
 		} else {
 			adjacentReceiver = null;
+			adjacentHandler = false;
 		}
 		cached = true;
 	}
@@ -546,10 +555,10 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
 			return false;
 		}
-		if (adjacentReceiver != null) {
+		if (adjacentReceiver != null || adjacentHandler) {
 			byte oldFacing = facing;
 			for (int i = facing + 1, e = facing + 6; i < e; i++) {
-				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, i % 6)) {
+				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, EnumFacing.VALUES[i % 6]) || EnergyHelper.isAdjacentEnergyHandler(this, EnumFacing.VALUES[i % 6])) {
 					facing = (byte) (i % 6);
 					if (facing != oldFacing) {
 						updateAdjacentHandlers();

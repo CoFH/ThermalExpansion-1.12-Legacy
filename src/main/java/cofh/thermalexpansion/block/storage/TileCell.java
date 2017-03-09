@@ -95,7 +95,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public int getLightValue() {
 
-		return Math.min(8, getScaledEnergyStored(9));
+		return MathHelper.clamp(getScaledEnergyStored(9), 0, 8);
 	}
 
 	@Override
