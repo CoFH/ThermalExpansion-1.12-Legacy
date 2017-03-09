@@ -62,7 +62,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	}
 
 	@Override
-	public void getSubItems(Item item, CreativeTabs tab, List list) {
+	public void getSubItems(Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		list.add(new ItemStack(item, 1, 0));
 		list.add(new ItemStack(item, 1, 1));

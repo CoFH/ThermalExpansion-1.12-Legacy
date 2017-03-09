@@ -41,13 +41,13 @@ public class TileRefinery extends TileMachineBase {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 6;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
+		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
+		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
