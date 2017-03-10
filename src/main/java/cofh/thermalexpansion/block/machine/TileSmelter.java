@@ -38,7 +38,7 @@ public class TileSmelter extends TileMachineBase {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 8;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2, 3 }, { 4 }, { 2, 3, 4 }, { 0 }, { 1 }, { 0, 1, 2, 3, 4 } };
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
 		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
 		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
 		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
