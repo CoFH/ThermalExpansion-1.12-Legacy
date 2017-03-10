@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.item.IAugmentItem.AugmentType;
-import cofh.api.tileentity.IAccelerable;
+import cofh.api.core.IAccelerable;
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.core.init.CoreProps;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import cofh.lib.util.helpers.ServerHelper;

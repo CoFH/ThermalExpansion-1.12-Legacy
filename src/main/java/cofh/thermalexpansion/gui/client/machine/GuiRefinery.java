@@ -45,7 +45,7 @@ public class GuiRefinery extends GuiPoweredBase {
 		slotTankOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(1, 3, 1).setVisible(false));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 44, 20, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
+		addElement(new ElementFluidTank(this, 44, 19, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(1)).setGauge(1).setAlwaysShow(true));
 
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 76, 34).setFluid(myTile.getTankFluid(0)).setSize(24, 16));

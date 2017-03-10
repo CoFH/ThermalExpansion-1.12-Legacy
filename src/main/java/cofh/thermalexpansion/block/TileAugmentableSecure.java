@@ -5,11 +5,13 @@ import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IAugmentable;
-import cofh.api.tileentity.ISecurable;
-import cofh.api.tileentity.ITransferControl;
-import cofh.api.tileentity.IUpgradeable;
+import cofh.api.core.ISecurable;
+import cofh.core.util.helpers.SecurityHelper;
+import cofh.core.util.tileentity.ITransferControl;
+import cofh.core.util.tileentity.IUpgradeable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
@@ -48,13 +50,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected byte level = 0;
 	protected boolean hasAutoInput = false;
 	protected boolean hasAutoOutput = false;
+	protected boolean hasRedstoneControl = false;
 
 	public boolean isCreative = false;
 	public boolean enableAutoInput = false;
 	public boolean enableAutoOutput = false;
-
-	protected boolean hasRedstoneControl = false;
-	protected boolean hasAdvRedstoneControl = false;
 
 	protected static final int FLUID_TRANSFER[] = new int[] { 100, 300, 600, 1000, 1500 };
 	protected static final int ITEM_TRANSFER[] = new int[] { 8, 16, 28, 44, 64 };
@@ -77,11 +77,6 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	public final boolean hasRedstoneControl() {
 
 		return hasRedstoneControl;
-	}
-
-	public final boolean hasAdvRedstoneControl() {
-
-		return hasAdvRedstoneControl;
 	}
 
 	protected boolean setLevel(int level) {
@@ -120,21 +115,16 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		hasAutoInput = false;
 		hasAutoOutput = false;
-
 		hasRedstoneControl = false;
-		hasAdvRedstoneControl = false;
 
-		switch (level) {
-			default:            // Creative
-			case 4:             // Resonant
-			case 3:             // Signalum
-				hasAdvRedstoneControl = true;
-			case 2:             // Reinforced
-				hasRedstoneControl = true;
-			case 1:             // Hardened
-				hasAutoInput = true;
-			case 0:             // Basic;
-				hasAutoOutput = true;
+		if (level >= TEProps.levelAutoOutput) {
+			hasAutoOutput = true;
+		}
+		if (level >= TEProps.levelAutoInput) {
+			hasAutoInput = true;
+		}
+		if (level >= TEProps.levelRedstoneControl) {
+			hasRedstoneControl = true;
 		}
 	}
 

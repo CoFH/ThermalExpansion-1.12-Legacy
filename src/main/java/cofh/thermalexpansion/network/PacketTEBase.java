@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.network;
 
-import cofh.api.tileentity.IRedstoneControl;
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
-import cofh.api.tileentity.ISecurable;
-import cofh.api.tileentity.ISecurable.AccessMode;
-import cofh.api.tileentity.ITransferControl;
+import cofh.core.util.tileentity.IRedstoneControl;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
+import cofh.api.core.ISecurable;
+import cofh.api.core.ISecurable.AccessMode;
+import cofh.core.util.tileentity.ITransferControl;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.network.PacketHandler;
 import cofh.lib.gui.container.IAugmentableContainer;

@@ -5,7 +5,7 @@ import cofh.core.block.TileCore;
 import cofh.core.gui.slot.SlotAugment;
 import cofh.lib.gui.container.ContainerBase;
 import cofh.lib.gui.container.IAugmentableContainer;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
 import net.minecraft.entity.player.EntityPlayer;

@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.block.device;
 
 import cofh.core.init.CoreProps;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiNullifier;

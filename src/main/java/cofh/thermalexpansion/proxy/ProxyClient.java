@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.proxy;
 
 import codechicken.lib.texture.TextureUtils;
-import cofh.api.core.IModelRegister;
+import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TETextures;

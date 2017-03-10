@@ -7,7 +7,7 @@ import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
 import cofh.api.energy.IEnergyContainerItem;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.storage.BlockCell;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.init.TEProps;

@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block;
 
-import cofh.api.tileentity.IPortableData;
+import cofh.api.core.IPortableData;
 import cofh.core.block.TileCore;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.ITileInfoPacketHandler;

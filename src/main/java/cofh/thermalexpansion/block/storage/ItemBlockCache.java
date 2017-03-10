@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;

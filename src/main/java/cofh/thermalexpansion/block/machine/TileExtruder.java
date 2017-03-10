@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.core.ICustomInventory;
+import cofh.lib.gui.container.ICustomInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -121,6 +121,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	}
 
 	@Override
+	protected int getMaxInputSlot() {
+
+		// This is a hack to prevent super() logic from working.
+		return -1;
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME || energyStorage.getEnergyStored() <= 0) {
@@ -206,6 +213,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		}
 		tag.setByte("Sel", curSelection);
 		return true;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoInput = false;
+		enableAutoInput = false;
 	}
 
 	/* GUI METHODS */

@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.dynamo;
 
-import cofh.api.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
+import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;

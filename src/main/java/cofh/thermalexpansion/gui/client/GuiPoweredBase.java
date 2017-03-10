@@ -4,7 +4,7 @@ import cofh.core.gui.GuiCore;
 import cofh.core.gui.element.*;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.TabBase;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TilePowered;
 import net.minecraft.entity.player.EntityPlayer;

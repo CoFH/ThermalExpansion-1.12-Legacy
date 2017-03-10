@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.api.core.ICustomInventory;
+import cofh.lib.gui.container.ICustomInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.thermalexpansion.ThermalExpansion;
@@ -91,6 +91,13 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	}
 
 	@Override
+	protected int getMaxInputSlot() {
+
+		// This is a hack to prevent super() logic from working.
+		return -1;
+	}
+
+	@Override
 	protected boolean canStart() {
 
 		if (tank.getFluidAmount() < processWater[curSelection] || energyStorage.getEnergyStored() <= 0) {
@@ -175,6 +182,15 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		}
 		tag.setByte("Sel", curSelection);
 		return true;
+	}
+
+	@Override
+	protected void setLevelFlags() {
+
+		super.setLevelFlags();
+
+		hasAutoInput = false;
+		enableAutoInput = false;
 	}
 
 	/* GUI METHODS */

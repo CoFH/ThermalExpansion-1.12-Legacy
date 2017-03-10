@@ -1,9 +1,8 @@
 package cofh.thermalexpansion.block.machine;
 
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.helpers.AugmentHelper;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
@@ -331,19 +330,6 @@ public class TileCompactor extends TileMachineBase {
 	}
 
 	/* IInventory */
-	@Override
-	public ItemStack decrStackSize(int slot, int amount) {
-
-		ItemStack stack = super.decrStackSize(slot, amount);
-
-		if (ServerHelper.isServerWorld(worldObj) && slot <= getMaxInputSlot()) {
-			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				processOff();
-			}
-		}
-		return stack;
-	}
-
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 

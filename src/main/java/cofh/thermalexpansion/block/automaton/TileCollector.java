@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.automaton;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.util.RegistrySocial;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.automaton.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;

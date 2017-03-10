@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.proxy;
 
-import cofh.api.core.IModelRegister;
+import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TEAchievements;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

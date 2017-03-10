@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.*;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;

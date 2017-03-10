@@ -4,7 +4,7 @@ import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
 import codechicken.lib.model.blockbakery.IBakeryItem;
 import codechicken.lib.model.blockbakery.IItemBakery;
-import cofh.api.core.IInitializer;
+import cofh.core.util.core.IInitializer;
 import cofh.core.item.ItemMulti;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.render.RenderFrame;

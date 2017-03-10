@@ -6,7 +6,7 @@ import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
-import cofh.api.core.IModelRegister;
+import cofh.core.render.IModelRegister;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;

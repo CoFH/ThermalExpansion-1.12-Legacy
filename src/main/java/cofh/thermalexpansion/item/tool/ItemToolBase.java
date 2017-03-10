@@ -2,7 +2,7 @@ package cofh.thermalexpansion.item.tool;
 
 import cofh.api.item.IMultiModeItem;
 import cofh.core.key.KeyBindingItemMultiMode;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;

@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -101,6 +101,13 @@ public class TileRefinery extends TileMachineBase {
 	public int getLightValue() {
 
 		return isActive ? renderFluid.getFluid().getLuminosity(renderFluid) : 0;
+	}
+
+	@Override
+	protected int getMaxInputSlot() {
+
+		// This is a hack to prevent super() logic from working.
+		return -1;
 	}
 
 	@Override
@@ -223,11 +230,13 @@ public class TileRefinery extends TileMachineBase {
 		}
 	}
 
+	@Override
 	protected void setLevelFlags() {
 
 		super.setLevelFlags();
 
 		hasAutoInput = false;
+		enableAutoInput = false;
 	}
 
 	/* GUI METHODS */
@@ -384,6 +393,9 @@ public class TileRefinery extends TileMachineBase {
 				public int fill(FluidStack resource, boolean doFill) {
 
 					if (from != null && sideCache[from.ordinal()] != 1) {
+						return 0;
+					}
+					if (!RefineryManager.recipeExists(resource)) {
 						return 0;
 					}
 					return inputTank.fill(resource, doFill);

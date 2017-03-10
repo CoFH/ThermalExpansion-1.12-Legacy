@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.device;
 
-import cofh.api.tileentity.IAccelerable;
+import cofh.api.core.IAccelerable;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;

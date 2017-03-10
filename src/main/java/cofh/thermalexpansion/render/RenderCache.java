@@ -1,7 +1,7 @@
 package cofh.thermalexpansion.render;
 
 import cofh.core.render.RenderUtils;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.storage.TileCache;
 import cofh.thermalfoundation.item.ItemSecurity;
 import net.minecraft.client.renderer.GlStateManager;

@@ -3,7 +3,7 @@ package cofh.thermalexpansion.gui.element;
 import cofh.core.init.CoreProps;
 import cofh.lib.gui.GuiBase;
 import cofh.lib.gui.element.ElementBase;
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.init.TEProps;
 
 public class ElementSlotOverlay extends ElementBase {

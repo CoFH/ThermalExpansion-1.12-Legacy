@@ -28,6 +28,19 @@ public class TEProps {
 	/* HELPERS */
 	private static void configCommon() {
 
+		String category;
+		String comment;
+
+		category = "Upgrades";
+
+		comment = "This sets the minimum upgradeable block tier for Automatic Input functionality.";
+		levelAutoInput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoInput", category, levelAutoInput, LEVEL_MIN, LEVEL_MAX, comment);
+
+		comment = "This sets the minimum upgradeable block tier for Automatic Output functionality.";
+		levelAutoOutput = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelAutoOutput", category, levelAutoOutput, LEVEL_MIN, LEVEL_MAX, comment);
+
+		comment = "This sets the minimum upgradeable block tier for Redstone Control functionality.";
+		levelRedstoneControl = ThermalExpansion.CONFIG.getConfiguration().getInt("LevelRedstoneControl", category, levelRedstoneControl, LEVEL_MIN, LEVEL_MAX, comment);
 	}
 
 	private static void configClient() {
@@ -86,6 +99,11 @@ public class TEProps {
 	public static boolean creativeTabShowAllLevels = false;
 	public static boolean creativeTabShowCreative = false;
 	public static int creativeTabLevel = 0;
+
+	/* UPGRADE FEATURES */
+	public static int levelAutoInput = 0;
+	public static int levelAutoOutput = 0;
+	public static int levelRedstoneControl = 0;
 
 	/* TEXTURES */
 	public static final String PATH_GFX = "thermalexpansion:textures/";

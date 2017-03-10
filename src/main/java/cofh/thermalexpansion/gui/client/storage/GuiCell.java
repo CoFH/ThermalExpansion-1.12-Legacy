@@ -5,7 +5,7 @@ import cofh.core.gui.element.*;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
 import cofh.lib.gui.element.TabBase;
-import cofh.lib.util.helpers.SecurityHelper;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileCell;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;

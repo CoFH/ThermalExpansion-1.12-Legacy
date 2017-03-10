@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.plugins.jei;
 
-import cofh.lib.render.RenderHelper;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.plugins.jei.charger.ChargerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.compactor.CompactorRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crucible.CrucibleRecipeCategory;

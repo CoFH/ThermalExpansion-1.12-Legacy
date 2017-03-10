@@ -54,61 +54,106 @@ public class SawmillManager {
 	public static void addDefaultRecipes() {
 
 		/*
-		 * For future recipes, we convert sticks to sawdust at a rate of 4 sticks per sawdust,
-		 * so 1 stick is a 12.5% chance for 1 sawdust, and 8 is a 100% chance for 2 sawdust
+		 * Conversion rate as follows:
+		 * Floor(Planks / 2)
+		 * 1 Sawdust / 4 Planks (25% / Plank)
+		 * 1 Sawdust / 4 Sticks (25% / Stick)
 		 */
 
-		addRecipe(2400, new ItemStack(Blocks.CHEST), new ItemStack(Blocks.PLANKS, 8));
-		addRecipe(2400, new ItemStack(Blocks.CRAFTING_TABLE), new ItemStack(Blocks.PLANKS, 4));
-		addRecipe(2400, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS, 2));
+		/* MISC WOOD BLOCKS */
+		{
+			addRecipe(2400, new ItemStack(Blocks.CHEST), new ItemStack(Blocks.PLANKS, 4), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+			addRecipe(2400, new ItemStack(Blocks.CRAFTING_TABLE), new ItemStack(Blocks.PLANKS, 2), ItemMaterial.dustWood);
+			addRecipe(1200, new ItemStack(Blocks.WOODEN_BUTTON, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Blocks.TRAPDOOR), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
+			addRecipe(1200, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Items.SIGN), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 50);
+		}
 
-		addRecipe(2400, new ItemStack(Items.OAK_DOOR), new ItemStack(Blocks.PLANKS, 6, 0));
-		addRecipe(2400, new ItemStack(Items.SPRUCE_DOOR), new ItemStack(Blocks.PLANKS, 6, 1));
-		addRecipe(2400, new ItemStack(Items.BIRCH_BOAT), new ItemStack(Blocks.PLANKS, 6, 2));
-		addRecipe(2400, new ItemStack(Items.JUNGLE_DOOR), new ItemStack(Blocks.PLANKS, 6, 3));
-		addRecipe(2400, new ItemStack(Items.ACACIA_DOOR), new ItemStack(Blocks.PLANKS, 6, 4));
-		addRecipe(2400, new ItemStack(Items.DARK_OAK_DOOR), new ItemStack(Blocks.PLANKS, 6, 5));
+		/* DOORS */
+		{
+			addRecipe(2400, new ItemStack(Items.OAK_DOOR), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Items.SPRUCE_DOOR), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Items.BIRCH_DOOR), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Items.JUNGLE_DOOR), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Items.ACACIA_DOOR), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 50);
+			addRecipe(2400, new ItemStack(Items.DARK_OAK_DOOR), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 50);
+		}
 
-		addRecipe(2400, new ItemStack(Blocks.WOODEN_PRESSURE_PLATE), new ItemStack(Blocks.PLANKS, 2));
-		addRecipe(2400, new ItemStack(Blocks.TRAPDOOR), new ItemStack(Blocks.PLANKS, 3));
+		/* FENCES */
+		{
+			addRecipe(2400, new ItemStack(Blocks.OAK_FENCE), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
+		}
 
-		addRecipe(2400, new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 0), ItemMaterial.dustWood);
-		addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 1), ItemMaterial.dustWood);
-		addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 2), ItemMaterial.dustWood);
-		addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 3), ItemMaterial.dustWood);
-		addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 4), ItemMaterial.dustWood);
-		addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 2, 5), ItemMaterial.dustWood);
+		/* FENCE GATES */
+		{
+			addRecipe(2400, new ItemStack(Blocks.OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 150);
+			addRecipe(2400, new ItemStack(Blocks.SPRUCE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 150);
+			addRecipe(2400, new ItemStack(Blocks.BIRCH_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 150);
+			addRecipe(2400, new ItemStack(Blocks.JUNGLE_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 150);
+			addRecipe(2400, new ItemStack(Blocks.ACACIA_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 150);
+			addRecipe(2400, new ItemStack(Blocks.DARK_OAK_FENCE_GATE), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 150);
+		}
 
-		addRecipe(800, new ItemStack(Blocks.WOODEN_BUTTON), new ItemStack(Blocks.PLANKS, 1));
-		addRecipe(1200, new ItemStack(Items.BOWL, 2), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 12);
-		addRecipe(2400, new ItemStack(Items.BED), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Blocks.WOOL, 3));
-		addRecipe(2400, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 6), new ItemStack(Items.BOOK, 3));
-		addRecipe(2400, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.REDSTONE, 1));
-		addRecipe(2400, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 8), new ItemStack(Items.DIAMOND, 1));
+		/* STAIRS */
+		{
+			addRecipe(2400, new ItemStack(Blocks.OAK_STAIRS), new ItemStack(Blocks.PLANKS, 1, 0), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.SPRUCE_STAIRS), new ItemStack(Blocks.PLANKS, 1, 1), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.BIRCH_STAIRS), new ItemStack(Blocks.PLANKS, 1, 2), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.JUNGLE_STAIRS), new ItemStack(Blocks.PLANKS, 1, 3), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.ACACIA_STAIRS), new ItemStack(Blocks.PLANKS, 1, 4), ItemMaterial.dustWood, 25);
+			addRecipe(2400, new ItemStack(Blocks.DARK_OAK_STAIRS), new ItemStack(Blocks.PLANKS, 1, 5), ItemMaterial.dustWood, 25);
+		}
 
-		addRecipe(2400, new ItemStack(Items.BOAT), new ItemStack(Blocks.PLANKS, 5));
-		addRecipe(1600, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 12);
-		addRecipe(1600, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 2), ItemMaterial.dustWood, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 2), ItemMaterial.dustWood, 25);
-		addRecipe(1600, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 25);
+		/* BOATS */
+		{
+			addRecipe(2400, new ItemStack(Items.BOAT), new ItemStack(Blocks.PLANKS, 2, 0), ItemMaterial.dustWood, 125);
+			addRecipe(2400, new ItemStack(Items.SPRUCE_BOAT), new ItemStack(Blocks.PLANKS, 2, 1), ItemMaterial.dustWood, 125);
+			addRecipe(2400, new ItemStack(Items.BIRCH_BOAT), new ItemStack(Blocks.PLANKS, 2, 2), ItemMaterial.dustWood, 125);
+			addRecipe(2400, new ItemStack(Items.JUNGLE_BOAT), new ItemStack(Blocks.PLANKS, 2, 3), ItemMaterial.dustWood, 125);
+			addRecipe(2400, new ItemStack(Items.ACACIA_BOAT), new ItemStack(Blocks.PLANKS, 2, 4), ItemMaterial.dustWood, 125);
+			addRecipe(2400, new ItemStack(Items.DARK_OAK_BOAT), new ItemStack(Blocks.PLANKS, 2, 5), ItemMaterial.dustWood, 125);
+		}
 
-		addRecipe(3200, new ItemStack(Blocks.OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 0));
-		addRecipe(3200, new ItemStack(Blocks.SPRUCE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 1));
-		addRecipe(3200, new ItemStack(Blocks.BIRCH_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 2));
-		addRecipe(3200, new ItemStack(Blocks.JUNGLE_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 3));
-		addRecipe(3200, new ItemStack(Blocks.ACACIA_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 4));
-		addRecipe(3200, new ItemStack(Blocks.DARK_OAK_STAIRS, 2), new ItemStack(Blocks.PLANKS, 3, 5));
+		/* WOOD EQUIPMENT */
+		{
+			addRecipe(1600, new ItemStack(Items.WOODEN_SWORD), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
+			addRecipe(1600, new ItemStack(Items.WOODEN_SHOVEL), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 75);
+			addRecipe(1600, new ItemStack(Items.WOODEN_PICKAXE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 125);
+			addRecipe(1600, new ItemStack(Items.WOODEN_AXE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood, 125);
+			addRecipe(1600, new ItemStack(Items.WOODEN_HOE), new ItemStack(Blocks.PLANKS, 1), ItemMaterial.dustWood);
+		}
 
-		addRecipe(800, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
-		addRecipe(800, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), ItemMaterial.dustWood, 12); // yeah. well. fun on resource limited maps?
-		addRecipe(800, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), ItemMaterial.dustWood, 12);
-		addRecipe(800, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-		addRecipe(800, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
-		addRecipe(1600, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 10);
-		addRecipe(2400, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 6), new ItemStack(Items.LEATHER, 1), 25);
-		addRecipe(2000, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 5), new ItemStack(Items.LEATHER, 1), 15);
-		addRecipe(1600, new ItemStack(Items.LEATHER_BOOTS), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 5);
+		/* LEATHER EQUIPMENT */
+		{
+			addRecipe(1600, new ItemStack(Items.LEATHER_HELMET), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER, 1), 50);
+			addRecipe(1600, new ItemStack(Items.LEATHER_CHESTPLATE), new ItemStack(Items.LEATHER, 4), new ItemStack(Items.LEATHER, 1), 80);
+			addRecipe(1600, new ItemStack(Items.LEATHER_LEGGINGS), new ItemStack(Items.LEATHER, 3), new ItemStack(Items.LEATHER, 1), 70);
+			addRecipe(1600, new ItemStack(Items.LEATHER_BOOTS), new ItemStack(Items.LEATHER, 2), new ItemStack(Items.LEATHER, 1), 40);
+		}
+
+		/* MIXED OUTPUT - WOOD PRIMARY */
+		{
+			addRecipe(2400, new ItemStack(Items.BED), new ItemStack(Blocks.PLANKS, 1), new ItemStack(Blocks.WOOL, 2));
+			addRecipe(2400, new ItemStack(Blocks.BOOKSHELF), new ItemStack(Blocks.PLANKS, 3), new ItemStack(Items.BOOK, 3), 25);
+			addRecipe(2400, new ItemStack(Blocks.JUKEBOX), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.DIAMOND, 1), 25);
+			addRecipe(2400, new ItemStack(Blocks.NOTEBLOCK), new ItemStack(Blocks.PLANKS, 4), new ItemStack(Items.REDSTONE, 1), 25);
+		}
+
+		/* NON-WOOD PRIMARY */
+		{
+			addRecipe(1200, new ItemStack(Blocks.MELON_BLOCK), new ItemStack(Items.MELON, 9));
+			addRecipe(1200, new ItemStack(Blocks.LEVER), new ItemStack(Blocks.COBBLESTONE, 1), ItemMaterial.dustWood, 25);
+			addRecipe(1200, new ItemStack(Blocks.REDSTONE_TORCH), new ItemStack(Items.REDSTONE, 1), ItemMaterial.dustWood, 25);
+			addRecipe(1200, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+			addRecipe(1200, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
+		}
 	}
 
 	public static void loadRecipes() {

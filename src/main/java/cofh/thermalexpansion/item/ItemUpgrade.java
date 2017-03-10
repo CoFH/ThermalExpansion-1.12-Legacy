@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.item;
 
-import cofh.api.core.IInitializer;
+import cofh.core.util.core.IInitializer;
 import cofh.api.item.IUpgradeItem;
-import cofh.api.tileentity.ISecurable;
-import cofh.api.tileentity.IUpgradeable;
+import cofh.api.core.ISecurable;
+import cofh.core.util.tileentity.IUpgradeable;
 import cofh.core.item.ItemMulti;
-import cofh.core.util.ChatHelper;
+import cofh.core.util.helpers.ChatHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;

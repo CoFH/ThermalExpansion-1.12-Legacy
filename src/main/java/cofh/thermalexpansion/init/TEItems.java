@@ -1,6 +1,6 @@
 package cofh.thermalexpansion.init;
 
-import cofh.api.core.IInitializer;
+import cofh.core.util.core.IInitializer;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.item.ItemFrame;
