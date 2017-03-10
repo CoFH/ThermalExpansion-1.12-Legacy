@@ -44,7 +44,7 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		double d1 = RenderHelper.RENDER_OFFSET;
 		double d2 = 6F / 16F;
 		double d3 = 10F / 16F;
-		double d4 = 0.0006;
+		double d4 = 0.001;
 
 		modelCoil[0][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 0, 32, 32, 16).computeNormals().shrinkUVs(d1);
 		modelCoil[1][1] = CCModel.quadModel(24).generateBox(0, -4, 0, -4, 8, 8, 8, 0, 16, 32, 32, 16).computeNormals().shrinkUVs(d1);
