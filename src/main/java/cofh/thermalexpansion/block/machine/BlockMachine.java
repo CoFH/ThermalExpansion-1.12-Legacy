@@ -301,6 +301,7 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 
 		BlockBakery.registerBlockKeyGenerator(this, state -> {
 
+			TileMachineBase tile = ((TileMachineBase) state.getValue(TEProps.TILE));
 			StringBuilder builder = new StringBuilder(state.getBlock().getRegistryName() + "|" + state.getBlock().getMetaFromState(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
@@ -311,6 +312,9 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 				builder.append(",").append(i);
 			}
 			builder.append("}");
+			if (tile.hasCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, null) && tile.isActive) {
+				builder.append(",front=").append(tile.getTexture(tile.getFacing(), 0).getIconName());
+			}
 			return builder.toString();
 		});
 
