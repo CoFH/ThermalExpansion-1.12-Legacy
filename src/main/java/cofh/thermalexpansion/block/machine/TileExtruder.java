@@ -62,6 +62,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_NO_WATER);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_ANDESITE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_DIORITE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_GRANITE);
@@ -86,7 +87,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private static int[] processLava = { 0, 0, 1000 };
 	private static int[] processWater = { 0, 1000, 1000 };
 	private static int[] processEnergy = { 400, 800, 1600 };
-	private static ItemStack[] processItems = new ItemStack[3];
+	private static ItemStack[] processItems;
 
 	private int outputTracker;
 	private byte curSelection;
@@ -97,6 +98,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	/* AUGMENTS */
+	protected boolean augmentNoWater;
 	protected boolean augmentAndesite;
 	protected boolean augmentDiorite;
 	protected boolean augmentGranite;
@@ -165,7 +167,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
 		hotTank.drain(processLava[prevSelection], true);
-		coldTank.drain(processWater[prevSelection], true);
+
+		if (!augmentNoWater) {
+			coldTank.drain(processWater[prevSelection], true);
+		}
 		prevSelection = curSelection;
 	}
 
@@ -368,6 +373,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
+			augmentNoWater = true;
+			return true;
+		}
 		if (!augmentGranite && TEProps.MACHINE_EXTRUDER_GRANITE.equals(id)) {
 			outputItems[1] = GRANITE.copy();
 			augmentGranite = true;

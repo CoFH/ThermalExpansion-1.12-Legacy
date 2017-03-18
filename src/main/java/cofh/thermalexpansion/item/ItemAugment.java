@@ -205,6 +205,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
+		machinePrecipitatorEfficiency = addAugmentItem(480, TEProps.MACHINE_PRECIPITATOR_EFFICIENCY);
+		machinePrecipitatorPackedIce = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE);
+
+		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER);
 		machineExtruderGranite = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_GRANITE, AugmentType.MODE);
 		machineExtruderDiorite = addAugmentItem(498, TEProps.MACHINE_EXTRUDER_DIORITE, AugmentType.MODE);
 		machineExtruderAndesite = addAugmentItem(499, TEProps.MACHINE_EXTRUDER_ANDESITE, AugmentType.MODE);
@@ -606,10 +610,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 
-	public static ItemStack machinePrecipitatorBatchSize;
+	public static ItemStack machinePrecipitatorEfficiency;
 	public static ItemStack machinePrecipitatorPackedIce;
 
-	public static ItemStack machineExtruderBatchSize;
+	public static ItemStack machineExtruderNoWater;
 	public static ItemStack machineExtruderGranite;
 	public static ItemStack machineExtruderDiorite;
 	public static ItemStack machineExtruderAndesite;

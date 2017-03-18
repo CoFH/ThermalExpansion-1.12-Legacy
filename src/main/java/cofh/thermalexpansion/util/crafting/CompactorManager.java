@@ -90,8 +90,6 @@ public class CompactorManager {
 
 		/* PRESS */
 		{
-			addDefaultPressRecipe(new ItemStack(Blocks.ICE), new ItemStack(Blocks.PACKED_ICE));
-
 			addDefaultPressRecipe(ItemMaterial.ingotIron, ItemMaterial.plateIron);
 			addDefaultPressRecipe(ItemMaterial.ingotGold, ItemMaterial.plateGold);
 

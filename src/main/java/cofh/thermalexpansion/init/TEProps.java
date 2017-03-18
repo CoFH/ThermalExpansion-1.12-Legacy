@@ -180,7 +180,10 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
-	public static final String MACHINE_EXTRUDER_BATCH_SIZE = "machineExtruderBatchSize";
+	public static final String MACHINE_PRECIPITATOR_EFFICIENCY = "machinePrecipitatorEfficiency";
+	public static final String MACHINE_PRECIPITATOR_PACKED_ICE = "machinePrecipitatorPackedIce";
+
+	public static final String MACHINE_EXTRUDER_NO_WATER = "machineExtruderNoWater";
 	public static final String MACHINE_EXTRUDER_GRANITE = "machineExtruderGranite";
 	public static final String MACHINE_EXTRUDER_DIORITE = "machineExtruderDiorite";
 	public static final String MACHINE_EXTRUDER_ANDESITE = "machineExtruderAndesite";

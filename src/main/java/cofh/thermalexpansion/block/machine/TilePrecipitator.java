@@ -2,6 +2,7 @@ package cofh.thermalexpansion.block.machine;
 
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.gui.container.ICustomInventory;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPrecipitator;
@@ -32,11 +33,17 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
 	public static int basePower = 20;
 
+	public static ItemStack PACKED_ICE;
+
 	public static void initialize() {
+
+		processItems = new ItemStack[3];
 
 		processItems[0] = new ItemStack(Items.SNOWBALL, 4, 0);
 		processItems[1] = new ItemStack(Blocks.SNOW);
 		processItems[2] = new ItemStack(Blocks.ICE);
+
+		PACKED_ICE = new ItemStack(Blocks.PACKED_ICE);
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 4;
@@ -51,6 +58,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PRECIPITATOR_PACKED_ICE);
 
 		GameRegistry.registerTileEntity(TilePrecipitator.class, "thermalexpansion:machine_precipitator");
 
@@ -68,19 +76,27 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 	private static int[] processWater = { 500, 500, 1000 };
 	private static int[] processEnergy = { 800, 800, 1600 };
-	private static ItemStack[] processItems = new ItemStack[3];
+	private static ItemStack[] processItems;
 
 	private int outputTracker;
 	private byte curSelection;
 	private byte prevSelection;
 
-	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
+	private ItemStack[] outputItems = new ItemStack[3];
+	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
+
+	/* AUGMENTS */
+	protected boolean augmentPackedIce;
 
 	public TilePrecipitator() {
 
 		super();
 		inventory = new ItemStack[1 + 1];
 		createAllSlots(inventory.length);
+
+		for (int i = 0; i < 3; i++) {
+			outputItems[i] = processItems[i].copy();
+		}
 		tank.setLock(FluidRegistry.WATER);
 	}
 
@@ -106,10 +122,10 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		if (inventory[0] == null) {
 			return true;
 		}
-		if (!inventory[0].isItemEqual(processItems[curSelection])) {
+		if (!inventory[0].isItemEqual(outputItems[curSelection])) {
 			return false;
 		}
-		return inventory[0].stackSize + processItems[curSelection].stackSize <= processItems[prevSelection].getMaxStackSize();
+		return inventory[0].stackSize + outputItems[curSelection].stackSize <= outputItems[prevSelection].getMaxStackSize();
 	}
 
 	@Override
@@ -130,9 +146,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	protected void processFinish() {
 
 		if (inventory[0] == null) {
-			inventory[0] = processItems[prevSelection].copy();
+			inventory[0] = outputItems[prevSelection].copy();
 		} else {
-			inventory[0].stackSize += processItems[prevSelection].stackSize;
+			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
 		tank.drain(processWater[prevSelection], true);
 		prevSelection = curSelection;
@@ -309,11 +325,35 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		tank.getFluid().amount = payload.getInt();
 	}
 
+	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		outputItems[1] = processItems[1].copy();
+
+		augmentPackedIce = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentPackedIce && TEProps.MACHINE_PRECIPITATOR_PACKED_ICE.equals(id)) {
+			outputItems[2] = PACKED_ICE.copy();
+			hasModeAugment = true;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
+
 	/* ICustomInventory */
 	@Override
 	public ItemStack[] getInventorySlots(int inventoryIndex) {
 
-		return processItems;
+		return outputItems;
 	}
 
 	@Override
@@ -376,4 +416,5 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		}
 		return super.getCapability(capability, from);
 	}
+
 }

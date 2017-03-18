@@ -113,6 +113,10 @@ info.thermalexpansion.augment.machineExtruderGranite.0=Igneous Extruder: Special
 info.thermalexpansion.augment.machineExtruderGranite.a.0=Allows for the creation of Granite.
 info.thermalexpansion.augment.machineExtruderGranite.c.0=Replaces the Stone option.
 
+info.thermalexpansion.augment.machineExtruderNoWater.0=Igneous Extruder: Efficiency
+info.thermalexpansion.augment.machineExtruderNoWater.a.0=Water is no longer consumed for operation.
+info.thermalexpansion.augment.machineExtruderNoWater.c.0=Sufficient water must still be present in the machine.
+
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
 info.thermalexpansion.augment.machineFurnaceFood.b.0=Only food items can be processed.
@@ -249,14 +253,15 @@ item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
 item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
-item.thermalexpansion.augment.machineExtruderBatchSize.name=Pyroclastic Injection
 item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction
+item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
 item.thermalexpansion.augment.machineInsolatorEnd.name=Ender Substrate
 item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
 item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
 item.thermalexpansion.augment.machinePrecipitatorBatchSize.name=Frigid Recirculator
+item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
