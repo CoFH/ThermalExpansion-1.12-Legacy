@@ -405,7 +405,7 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && (sideCache[from.ordinal()] != 2 || sideCache[from.ordinal()] != 4)) {
+					if (from != null && (sideCache[from.ordinal()] != 2 && sideCache[from.ordinal()] != 4)) {
 						return null;
 					}
 					if (resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
@@ -418,7 +418,7 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && (sideCache[from.ordinal()] != 2 || sideCache[from.ordinal()] != 4)) {
+					if (from != null && (sideCache[from.ordinal()] != 2 && sideCache[from.ordinal()] != 4)) {
 						return null;
 					}
 					return outputTank.drain(maxDrain, doDrain);
