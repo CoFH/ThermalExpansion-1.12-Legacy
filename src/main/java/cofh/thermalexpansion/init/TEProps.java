@@ -173,6 +173,7 @@ public class TEProps {
 	public static final String MACHINE_INSOLATOR_MYCELIUM = "machineInsolatorMycelium";
 	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
 	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
+	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
 
@@ -180,7 +181,7 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
-	public static final String MACHINE_PRECIPITATOR_EFFICIENCY = "machinePrecipitatorEfficiency";
+	public static final String MACHINE_PRECIPITATOR_SNOW_LAYER = "machinePrecipitatorSnowLayer";
 	public static final String MACHINE_PRECIPITATOR_PACKED_ICE = "machinePrecipitatorPackedIce";
 
 	public static final String MACHINE_EXTRUDER_NO_WATER = "machineExtruderNoWater";

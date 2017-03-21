@@ -111,6 +111,21 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		boolean isCreative = this.isCreative;
+		boolean installUpgrade = super.installUpgrade(upgrade);
+		if (installUpgrade && !isCreative && this.isCreative) {
+			for (int i = 0; i < 6; i++) {
+				sideCache[i] = 2;
+			}
+			sendTilePacket(Side.CLIENT);
+			callNeighborTileChange();
+		}
+		return installUpgrade;
+	}
+
+	@Override
 	protected boolean setLevel(int level) {
 
 		int curLevel = this.level;
@@ -141,27 +156,18 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	public boolean installUpgrade(ItemStack upgrade) {
-
-		boolean isCreative = this.isCreative;
-		boolean installUpgrade = super.installUpgrade(upgrade);
-		if (installUpgrade && !isCreative && this.isCreative) {
-			for (int i = 0; i < 6; i++) {
-				sideCache[i] = 2;
-			}
-			sendTilePacket(Side.CLIENT);
-			callNeighborTileChange();
-		}
-		return installUpgrade;
-	}
-
-	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setInteger("Recv", amountRecv * 1000 / RECV[level]);
 		tag.setInteger("Send", amountSend * 1000 / SEND[level]);
 
 		return super.writePortableTagInternal(player, tag);
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return 0;
 	}
 
 	@Override

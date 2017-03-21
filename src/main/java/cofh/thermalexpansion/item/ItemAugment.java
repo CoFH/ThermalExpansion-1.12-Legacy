@@ -1,8 +1,8 @@
 package cofh.thermalexpansion.item;
 
-import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.item.IAugmentItem;
+import cofh.api.core.IAugmentable;
 import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.core.util.helpers.ChatHelper;
@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.TileExtruder;
+import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -198,6 +199,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineInsolatorMycelium = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_MYCELIUM, AugmentType.MODE);
 		machineInsolatorNether = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_NETHER, AugmentType.MODE);
 		machineInsolatorEnd = addAugmentItem(322, TEProps.MACHINE_INSOLATOR_END, AugmentType.MODE);
+		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
@@ -205,10 +207,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
-		machinePrecipitatorEfficiency = addAugmentItem(480, TEProps.MACHINE_PRECIPITATOR_EFFICIENCY);
-		machinePrecipitatorPackedIce = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE);
+		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
+		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
 
-		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER);
+		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.ADVANCED);
 		machineExtruderGranite = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_GRANITE, AugmentType.MODE);
 		machineExtruderDiorite = addAugmentItem(498, TEProps.MACHINE_EXTRUDER_DIORITE, AugmentType.MODE);
 		machineExtruderAndesite = addAugmentItem(499, TEProps.MACHINE_EXTRUDER_ANDESITE, AugmentType.MODE);
@@ -364,6 +366,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.END_STONE,
 				'Y', "dustCryotheum"
 		));
+		addRecipe(ShapedRecipe(machineInsolatorTree,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSignalum",
+				'I', "plateLumium",
+				'X', Blocks.PISTON,
+				'Y', "dustAerotheum"
+		));
 
 //		addRecipe(ShapedRecipe(machineCrucibleAlloy,
 //				" G ",
@@ -426,6 +438,28 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearCopper",
 				'I', "plateInvar",
 				'X', TileExtruder.ANDESITE,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machinePrecipitatorSnowLayer,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TilePrecipitator.SNOW_LAYER,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machinePrecipitatorPackedIce,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TilePrecipitator.PACKED_ICE,
 				'Y', "dustRedstone"
 		));
 
@@ -546,9 +580,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		switch (type) {
 			case ADVANCED:
+			case MODE:
 				rarity = EnumRarity.UNCOMMON;
 				break;
-			case MODE:
 			case ENDER:
 				rarity = EnumRarity.RARE;
 				break;
@@ -601,6 +635,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineInsolatorMycelium;
 	public static ItemStack machineInsolatorNether;
 	public static ItemStack machineInsolatorEnd;
+	public static ItemStack machineInsolatorTree;
 
 	public static ItemStack machineCompactorMint;
 
@@ -610,7 +645,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 
-	public static ItemStack machinePrecipitatorEfficiency;
+	public static ItemStack machinePrecipitatorSnowLayer;
 	public static ItemStack machinePrecipitatorPackedIce;
 
 	public static ItemStack machineExtruderNoWater;

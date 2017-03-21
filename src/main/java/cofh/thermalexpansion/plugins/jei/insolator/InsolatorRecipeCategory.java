@@ -6,6 +6,7 @@ import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
@@ -37,6 +38,11 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
+
+		InsolatorRecipeCategoryMycelium.initialize(registry);
+		InsolatorRecipeCategoryNether.initialize(registry);
+		InsolatorRecipeCategoryEnd.initialize(registry);
+		InsolatorRecipeCategoryTree.initialize(registry);
 	}
 
 	public static List<InsolatorRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
@@ -44,7 +50,10 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 		List<InsolatorRecipeWrapper> recipes = new ArrayList<>();
 
 		for (InsolatorManager.RecipeInsolator recipe : InsolatorManager.getRecipeList()) {
-			recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe));
+
+			if (recipe.getType() == Type.STANDARD) {
+				recipes.add(new InsolatorRecipeWrapper(guiHelper, recipe));
+			}
 		}
 		return recipes;
 	}

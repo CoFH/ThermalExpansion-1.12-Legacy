@@ -10,7 +10,7 @@ import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.crafting.InsolatorManager;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
-import cofh.thermalexpansion.util.crafting.InsolatorManager.Substrate;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.Type;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -85,6 +85,7 @@ public class TileInsolator extends TileMachineBase {
 	protected boolean augmentMycelium;
 	protected boolean augmentNether;
 	protected boolean augmentEnd;
+	protected boolean augmentTree;
 
 	public TileInsolator() {
 
@@ -117,13 +118,15 @@ public class TileInsolator extends TileMachineBase {
 		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
 		}
-		Substrate substrate = recipe.getSubstrate();
-		if (substrate != Substrate.STANDARD) {
-			if (substrate == Substrate.MYCELIUM && !augmentMycelium) {
+		Type substrate = recipe.getType();
+		if (substrate != Type.STANDARD) {
+			if (substrate == Type.MYCELIUM && !augmentMycelium) {
 				return false;
-			} else if (substrate == Substrate.NETHER && !augmentNether) {
+			} else if (substrate == Type.NETHER && !augmentNether) {
 				return false;
-			} else if (substrate == Substrate.END && !augmentEnd) {
+			} else if (substrate == Type.END && !augmentEnd) {
+				return false;
+			} else if (substrate == Type.TREE && !augmentTree) {
 				return false;
 			}
 		}
@@ -437,6 +440,7 @@ public class TileInsolator extends TileMachineBase {
 		augmentMycelium = false;
 		augmentNether = false;
 		augmentEnd = false;
+		augmentTree = false;
 	}
 
 	@Override
@@ -456,6 +460,11 @@ public class TileInsolator extends TileMachineBase {
 		}
 		if (!augmentEnd && TEProps.MACHINE_INSOLATOR_END.equals(id)) {
 			augmentEnd = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
+			augmentTree = true;
 			hasModeAugment = true;
 			return true;
 		}

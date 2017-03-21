@@ -5,9 +5,10 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
+import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.ComparableItemStackInsolator;
 import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
-import cofh.thermalexpansion.util.crafting.InsolatorManager.Substrate;
+import cofh.thermalexpansion.util.crafting.InsolatorManager.Type;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
@@ -34,8 +35,9 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 
 	final int energy;
 	final int chance;
+	final String uId;
 
-	final Substrate substrate;
+	final Type substrate;
 
 	/* Animation */
 	final IDrawableAnimated fluid;
@@ -44,6 +46,13 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 	final IDrawableAnimated energyMeter;
 
 	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe) {
+
+		this (guiHelper, recipe, RecipeUidsTE.INSOLATOR);
+	}
+
+	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe, String uIdIn) {
+
+		uId = uIdIn;
 
 		List<List<ItemStack>> recipeInputs = new ArrayList<>();
 		List<FluidStack> recipeInputFluids = new ArrayList<>();
@@ -81,7 +90,7 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 		energy = recipe.getEnergy();
 		chance = recipe.getSecondaryOutputChance();
 
-		substrate = recipe.getSubstrate();
+		substrate = recipe.getType();
 
 		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
 		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(1);
@@ -92,6 +101,11 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
+	}
+
+	public String getUid() {
+
+		return uId;
 	}
 
 	@Override

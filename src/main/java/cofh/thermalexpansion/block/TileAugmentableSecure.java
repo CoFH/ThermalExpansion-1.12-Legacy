@@ -40,9 +40,11 @@ import java.util.UUID;
 
 public abstract class TileAugmentableSecure extends TileRSControl implements IAugmentable, ISecurable, ITransferControl, IUpgradeable, IWorldNameable {
 
+	public static final int BASE_AUGMENTS = 0;
+
 	/* AUGMENTS */
-	protected boolean[] augmentStatus = new boolean[0];
-	protected ItemStack[] augments = new ItemStack[0];
+	protected boolean[] augmentStatus = new boolean[getNumAugmentSlots(0)];
+	protected ItemStack[] augments = new ItemStack[getNumAugmentSlots(0)];
 
 	/* SECURITY */
 	protected GameProfile owner = CoreProps.DEFAULT_OWNER;
@@ -96,14 +98,14 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 			for (int i = 0; i < augments.length; i++) {
 				tempAugments[i] = augments[i] == null ? null : augments[i].copy();
 			}
-			augments = new ItemStack[level];
+			augments = new ItemStack[getNumAugmentSlots(level)];
 			for (int i = 0; i < tempAugments.length; i++) {
 				augments[i] = tempAugments[i] == null ? null : tempAugments[i].copy();
 			}
-			augmentStatus = new boolean[level];
+			augmentStatus = new boolean[getNumAugmentSlots(level)];
 		} else {
-			augments = new ItemStack[level];
-			augmentStatus = new boolean[level];
+			augments = new ItemStack[getNumAugmentSlots(level)];
+			augmentStatus = new boolean[getNumAugmentSlots(level)];
 		}
 		setLevelFlags();
 		return true;
@@ -112,6 +114,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 	protected int getFluidTransfer(int level) {
 
 		return FLUID_TRANSFER[MathHelper.clamp(level, 0, 4)];
+	}
+
+	protected int getNumAugmentSlots(int level) {
+
+		return BASE_AUGMENTS + level;
 	}
 
 	protected void setLevelFlags() {

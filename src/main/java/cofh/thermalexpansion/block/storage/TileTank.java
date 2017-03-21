@@ -34,7 +34,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 10000;
+			CAPACITY[i] *= 20000;
 		}
 	}
 
@@ -93,20 +93,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public boolean enableSecurity() {
 
 		return enableSecurity;
-	}
-
-	@Override
-	protected boolean setLevel(int level) {
-
-		if (super.setLevel(level)) {
-			tank.setCapacity(getCapacity(level));
-
-			if (isCreative && getTankFluidAmount() > 0) {
-				tank.getFluid().amount = tank.getCapacity();
-			}
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -181,6 +167,26 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public FluidStack getTankFluid() {
 
 		return tank.getFluid();
+	}
+
+	@Override
+	protected boolean setLevel(int level) {
+
+		if (super.setLevel(level)) {
+			tank.setCapacity(getCapacity(level));
+
+			if (isCreative && getTankFluidAmount() > 0) {
+				tank.getFluid().amount = tank.getCapacity();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return 0;
 	}
 
 	/* COMMON METHODS */

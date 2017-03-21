@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.insolator;
 
-import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import mezz.jei.api.recipe.IRecipeHandler;
 import mezz.jei.api.recipe.IRecipeWrapper;
 
@@ -19,14 +18,14 @@ public class InsolatorRecipeHandler implements IRecipeHandler<InsolatorRecipeWra
 	@Override
 	public String getRecipeCategoryUid() {
 
-		return RecipeUidsTE.INSOLATOR;
+		return null;
 	}
 
 	@Nonnull
 	@Override
 	public String getRecipeCategoryUid(@Nonnull InsolatorRecipeWrapper recipe) {
 
-		return getRecipeCategoryUid();
+		return recipe.getUid();
 	}
 
 	@Nonnull

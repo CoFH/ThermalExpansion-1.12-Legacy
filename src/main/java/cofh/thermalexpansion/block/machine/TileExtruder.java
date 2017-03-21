@@ -103,6 +103,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	protected boolean augmentDiorite;
 	protected boolean augmentGranite;
 
+	protected boolean flagNoWater;
+
 	public TileExtruder() {
 
 		super();
@@ -132,7 +134,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME || energyStorage.getEnergyStored() <= 0) {
+		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (!augmentNoWater && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -268,6 +276,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return coldTank.getFluid();
 	}
 
+	public boolean augmentNoWater() {
+
+		return augmentNoWater && flagNoWater;
+	}
+
 	public void setMode(int selection) {
 
 		byte lastSelection = curSelection;
@@ -341,6 +354,8 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		payload.addInt(hotTank.getFluidAmount());
 		payload.addInt(coldTank.getFluidAmount());
 
+		payload.addBool(augmentNoWater);
+
 		return payload;
 	}
 
@@ -353,6 +368,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		prevSelection = payload.getByte();
 		hotTank.getFluid().amount = payload.getInt();
 		coldTank.getFluid().amount = payload.getInt();
+
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
 	}
 
 	/* HELPERS */
@@ -363,9 +381,20 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		outputItems[1] = processItems[1].copy();
 
+		augmentNoWater = false;
 		augmentGranite = false;
 		augmentDiorite = false;
 		augmentAndesite = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			processOff();
+		}
 	}
 
 	@Override

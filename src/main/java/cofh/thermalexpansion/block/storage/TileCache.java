@@ -109,6 +109,12 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		return false;
 	}
 
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return 0;
+	}
+
 	/* COMMON METHODS */
 	public static int getCapacity(int level) {
 

@@ -17,7 +17,7 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	public ItemBlockCache(Block block) {
 
 		super(block);
-		setMaxStackSize(1);
+		setMaxStackSize(16);
 	}
 
 	@Override

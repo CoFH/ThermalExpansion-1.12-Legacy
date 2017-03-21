@@ -33,6 +33,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	private static final int TYPE = BlockMachine.Type.PRECIPITATOR.getMetadata();
 	public static int basePower = 20;
 
+	public static ItemStack SNOW_LAYER;
 	public static ItemStack PACKED_ICE;
 
 	public static void initialize() {
@@ -43,6 +44,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		processItems[1] = new ItemStack(Blocks.SNOW);
 		processItems[2] = new ItemStack(Blocks.ICE);
 
+		SNOW_LAYER = new ItemStack(Blocks.SNOW_LAYER, 2, 0);
 		PACKED_ICE = new ItemStack(Blocks.PACKED_ICE);
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
@@ -86,6 +88,7 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	/* AUGMENTS */
+	protected boolean augmentSnowLayer;
 	protected boolean augmentPackedIce;
 
 	public TilePrecipitator() {
@@ -332,7 +335,9 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 		super.preAugmentInstall();
 
 		outputItems[1] = processItems[1].copy();
+		outputItems[2] = processItems[2].copy();
 
+		augmentSnowLayer = false;
 		augmentPackedIce = false;
 	}
 
@@ -341,6 +346,11 @@ public class TilePrecipitator extends TileMachineBase implements ICustomInventor
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentSnowLayer && TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER.equals(id)) {
+			outputItems[1] = SNOW_LAYER.copy();
+			hasModeAugment = true;
+			return true;
+		}
 		if (!augmentPackedIce && TEProps.MACHINE_PRECIPITATOR_PACKED_ICE.equals(id)) {
 			outputItems[2] = PACKED_ICE.copy();
 			hasModeAugment = true;

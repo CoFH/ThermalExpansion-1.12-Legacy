@@ -115,7 +115,6 @@ info.thermalexpansion.augment.machineExtruderGranite.c.0=Replaces the Stone opti
 
 info.thermalexpansion.augment.machineExtruderNoWater.0=Igneous Extruder: Efficiency
 info.thermalexpansion.augment.machineExtruderNoWater.a.0=Water is no longer consumed for operation.
-info.thermalexpansion.augment.machineExtruderNoWater.c.0=Sufficient water must still be present in the machine.
 
 info.thermalexpansion.augment.machineFurnaceFood.0=Redstone Furnace: Specialization
 info.thermalexpansion.augment.machineFurnaceFood.a.0=Gain additional food when cooking.
@@ -138,9 +137,21 @@ info.thermalexpansion.augment.machineInsolatorNether.0=Phytogenic Insolator: Spe
 info.thermalexpansion.augment.machineInsolatorNether.a.0=Allows for non-standard crops to be grown.
 info.thermalexpansion.augment.machineInsolatorNether.a.1=Suitable for Nether crops.
 
+info.thermalexpansion.augment.machineInsolatorTree.0=Phytogenic Insolator: Specialization
+info.thermalexpansion.augment.machineInsolatorTree.a.0=Allows for non-standard crops to be grown.
+info.thermalexpansion.augment.machineInsolatorTree.a.1=Suitable for trees.
+
 info.thermalexpansion.augment.machinePower.0=Machines: Processing Speed
 info.thermalexpansion.augment.machinePower.a.0=Increases maximum power usage.
 info.thermalexpansion.augment.machinePower.b.0=Additional energy is required per operation.
+
+info.thermalexpansion.augment.machinePrecipitatorPackedIce.0=Glacial Precipitator: Specialization
+info.thermalexpansion.augment.machinePrecipitatorPackedIce.a.0=Allows for the creation of Packed Ice.
+info.thermalexpansion.augment.machinePrecipitatorPackedIce.c.0=Replaces the Ice option.
+
+info.thermalexpansion.augment.machinePrecipitatorSnowLayer.0=Glacial Precipitator: Specialization
+info.thermalexpansion.augment.machinePrecipitatorSnowLayer.a.0=Allows for the creation of Snow Layers.
+info.thermalexpansion.augment.machinePrecipitatorSnowLayer.c.0=Replaces the Snow option.
 
 info.thermalexpansion.augment.machinePulverizerGeode.0=Pulverizer: Specialization
 info.thermalexpansion.augment.machinePulverizerGeode.a.0=Allows for Geodes to be extracted from certain ores.
@@ -259,9 +270,10 @@ item.thermalexpansion.augment.machineExtruderNoWater.name=Pyroclastic Injection
 item.thermalexpansion.augment.machineInsolatorEnd.name=Ender Substrate
 item.thermalexpansion.augment.machineInsolatorMycelium.name=Mycelium Substrate
 item.thermalexpansion.augment.machineInsolatorNether.name=Nether Substrate
+item.thermalexpansion.augment.machineInsolatorTree.name=Sapling Infuser
 item.thermalexpansion.augment.machinePower.name=Auxiliary Reception Coil
-item.thermalexpansion.augment.machinePrecipitatorBatchSize.name=Frigid Recirculator
 item.thermalexpansion.augment.machinePrecipitatorPackedIce.name=Permafrost Compressor
+item.thermalexpansion.augment.machinePrecipitatorSnowLayer.name=Flurry Injection
 item.thermalexpansion.augment.machinePulverizerGeode.name=Geode Tumbler
 item.thermalexpansion.augment.machinePulverizerPetrotheum.name=Tectonic Initiator
 item.thermalexpansion.augment.machineSawmillTapper.name=Resin Funnel
