@@ -205,7 +205,7 @@ public class BlockCell extends BlockTEBase implements IBakeryBlock, IModelRegist
 			builder.append("}");
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
 			builder.append(",light_level=").append(state.getValue(TEProps.LIGHT));
-			builder.append(",meter_level").append(state.getValue(TEProps.SCALE));
+			builder.append(",meter_level=").append(state.getValue(TEProps.SCALE));
 			return builder.toString();
 		});
 

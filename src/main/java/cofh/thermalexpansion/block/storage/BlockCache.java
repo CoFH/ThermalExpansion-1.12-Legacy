@@ -7,6 +7,7 @@ import codechicken.lib.model.blockbakery.CCBakeryModel;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
+import cofh.core.util.StateMapper;
 import cofh.lib.util.RayTracer;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
@@ -18,8 +19,6 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.block.model.ModelResourceLocation;
-import net.minecraft.client.renderer.block.statemap.StateMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
@@ -322,12 +321,21 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
 
-		StateMap.Builder stateMap = new StateMap.Builder();
-		ModelLoader.setCustomStateMapper(this, stateMap.build());
+		StateMapper mapper = new StateMapper("thermalexpansion", "cache", "cache");
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, mapper.location);
+		ModelLoader.setCustomStateMapper(this, mapper);
+		ModelLoader.setCustomMeshDefinition(itemBlock, mapper);
+		ModelRegistryHelper.register(mapper.location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
 
-		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
-		ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), 0, location);
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/storage/cache_top_0"));
+		BlockBakery.registerBlockKeyGenerator(this, state -> {
+
+			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
+			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
+			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",facing=").append(state.getValue(TEProps.FACING));
+			builder.append(",meter_level=").append(state.getValue(TEProps.SCALE));
+			return builder.toString();
+		});
 
 		BlockBakery.registerItemKeyGenerator(itemBlock, stack -> BlockBakery.defaultItemKeyGenerator.generateKey(stack) + ",creative=" + itemBlock.isCreative(stack) + ",level=" + itemBlock.getLevel(stack));
 	}
