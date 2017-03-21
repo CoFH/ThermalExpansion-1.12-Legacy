@@ -1,18 +1,21 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.util.ServerUtils;
+import cofh.api.core.ISecurable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
-import cofh.api.tileentity.IAugmentable;
-import cofh.api.core.ISecurable;
-import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.tileentity.ITransferControl;
-import cofh.core.util.tileentity.IUpgradeable;
+import cofh.api.core.IAugmentable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
-import cofh.lib.util.helpers.*;
+import cofh.core.util.helpers.SecurityHelper;
+import cofh.core.util.tileentity.ITransferControl;
+import cofh.core.util.tileentity.IUpgradeable;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.MathHelper;
+import cofh.lib.util.helpers.ServerHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEProps;

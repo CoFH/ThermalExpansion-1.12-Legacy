@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.block.automaton;
 
-import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.lib.util.helpers.*;
+import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
+import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;

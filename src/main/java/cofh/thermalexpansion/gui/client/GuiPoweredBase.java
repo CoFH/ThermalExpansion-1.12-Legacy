@@ -2,9 +2,9 @@ package cofh.thermalexpansion.gui.client;
 
 import cofh.core.gui.GuiCore;
 import cofh.core.gui.element.*;
+import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.gui.container.IAugmentableContainer;
 import cofh.lib.gui.element.TabBase;
-import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.TilePowered;
 import net.minecraft.entity.player.EntityPlayer;

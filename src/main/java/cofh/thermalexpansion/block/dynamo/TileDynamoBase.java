@@ -1,19 +1,19 @@
 package cofh.thermalexpansion.block.dynamo;
 
 import codechicken.lib.texture.TextureUtils;
+import cofh.api.core.IAccelerable;
 import cofh.api.energy.EnergyStorage;
 import cofh.api.energy.IEnergyProvider;
 import cofh.api.energy.IEnergyReceiver;
 import cofh.api.energy.IEnergyStorage;
 import cofh.api.item.IAugmentItem.AugmentType;
-import cofh.api.core.IAccelerable;
 import cofh.api.tileentity.IEnergyInfo;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.util.TimeTracker;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.util.TimeTracker;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ServerHelper;

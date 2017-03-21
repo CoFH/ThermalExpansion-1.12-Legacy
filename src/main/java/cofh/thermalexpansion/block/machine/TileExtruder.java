@@ -1,9 +1,9 @@
 package cofh.thermalexpansion.block.machine;
 
-import cofh.lib.gui.container.ICustomInventory;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
+import cofh.lib.gui.container.ICustomInventory;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
