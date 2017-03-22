@@ -448,7 +448,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 		if (side != facing) {
 			return TETextures.CONFIG_NONE;
 		}
-		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[Math.min(8, getScaledEnergyStored(9))];
+		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(getScaledEnergyStored(9), 0, 8)];
 	}
 
 	/* CAPABILITIES */
