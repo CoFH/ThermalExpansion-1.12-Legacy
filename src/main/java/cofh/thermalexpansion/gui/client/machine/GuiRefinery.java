@@ -38,7 +38,7 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 44, 20).setSlotInfo(0, 4, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(0, 4, 2));
 		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));
 		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(2, 1, 1));
 		slotTankOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2).setVisible(false));
