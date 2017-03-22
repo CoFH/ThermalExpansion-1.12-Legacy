@@ -68,6 +68,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	}
 
 	private static final int TIME_CONSTANT = 500;
+	private static final int NUM_LEAVES = 3;
 
 	private FluidStack genFluid = new FluidStack(TFFluids.fluidResin, 25);
 
@@ -78,7 +79,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
 	private BlockPos trunkPos;
-	private BlockPos[] leafPos = new BlockPos[3];
+	private BlockPos[] leafPos = new BlockPos[NUM_LEAVES];
 
 	private int offset;
 
@@ -90,7 +91,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		hasAutoOutput = true;
 
 		trunkPos = new BlockPos(pos);
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < NUM_LEAVES; i++) {
 			leafPos[i] = new BlockPos(pos);
 		}
 	}
@@ -175,11 +176,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			return;
 		}
 		if (validTree) {
-			if (isTrunk(trunkPos)) {
+			if (isTrunkBase(trunkPos)) {
 				Set<BlockWrapper> leafSet = TapperManager.getLeaf(worldObj.getBlockState(trunkPos));
 				int leafCount = 0;
 
-				for (int i = 0; i < 3; i++) {
+				for (int i = 0; i < NUM_LEAVES; i++) {
 					IBlockState state = worldObj.getBlockState(leafPos[i]);
 					BlockWrapper target = new BlockWrapper(state.getBlock(), state.getBlock().getMetaFromState(state));
 
@@ -187,7 +188,18 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 						leafCount++;
 					}
 				}
-				if (leafCount >= 3) {
+				if (leafCount >= NUM_LEAVES) {
+					Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
+
+					for (BlockPos scan : trunk) {
+						IBlockState state = worldObj.getBlockState(scan);
+						Material material = state.getBlock().getMaterial(state);
+
+						if (material == Material.GROUND || material == Material.GRASS) {
+							cached = true;
+							return;
+						}
+					}
 					cached = true;
 					genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
 					return;
@@ -195,16 +207,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			}
 			validTree = false;
 		}
-		if (isTrunk(pos.west())) {
+		if (isTrunkBase(pos.west())) {
 			trunkPos = pos.west();
-		} else if (isTrunk(pos.east())) {
+		} else if (isTrunkBase(pos.east())) {
 			trunkPos = pos.east();
-		} else if (isTrunk(pos.north())) {
+		} else if (isTrunkBase(pos.north())) {
 			trunkPos = pos.north();
-		} else if (isTrunk(pos.south())) {
+		} else if (isTrunkBase(pos.south())) {
 			trunkPos = pos.south();
 		}
-		if (!isTrunk(trunkPos)) {
+		if (!isTrunkBase(trunkPos)) {
 			validTree = false;
 			cached = true;
 			return;
@@ -221,12 +233,23 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			if (leafSet.contains(target)) {
 				leafPos[leafCount] = new BlockPos(scan);
 				leafCount++;
-				if (leafCount >= 3) {
+				if (leafCount >= NUM_LEAVES) {
 					break;
 				}
 			}
 		}
-		if (leafCount >= 3) {
+		if (leafCount >= NUM_LEAVES) {
+			Iterable<BlockPos.MutableBlockPos> trunk = BlockPos.getAllInBoxMutable(trunkPos, trunkPos.add(0, leafPos[0].getY(), 0));
+
+			for (BlockPos scan : trunk) {
+				IBlockState state = worldObj.getBlockState(scan);
+				Material material = state.getBlock().getMaterial(state);
+
+				if (material == Material.GROUND || material == Material.GRASS) {
+					cached = true;
+					return;
+				}
+			}
 			validTree = true;
 			genFluid = TapperManager.getFluid(worldObj.getBlockState(trunkPos));
 		}
@@ -238,7 +261,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		return (worldObj.getTotalWorldTime() + offset) % TIME_CONSTANT == 0;
 	}
 
-	private boolean isTrunk(BlockPos checkPos) {
+	private boolean isTrunkBase(BlockPos checkPos) {
 
 		IBlockState state = worldObj.getBlockState(checkPos.down());
 
@@ -285,7 +308,9 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 
-		for (int i = 0; i < 3; i++) {
+		// validTree &= nbt.hasKey("LeafX" + (NUM_LEAVES - 1));
+
+		for (int i = 0; i < NUM_LEAVES; i++) {
 			leafPos[i] = new BlockPos(nbt.getInteger("LeafX" + i), nbt.getInteger("LeafY" + i), nbt.getInteger("LeafZ" + i));
 		}
 		trunkPos = new BlockPos(nbt.getInteger("TrunkX"), nbt.getInteger("TrunkY"), nbt.getInteger("TrunkZ"));
@@ -300,7 +325,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
 
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < NUM_LEAVES; i++) {
 			nbt.setInteger("LeafX" + i, leafPos[i].getX());
 			nbt.setInteger("LeafY" + i, leafPos[i].getY());
 			nbt.setInteger("LeafZ" + i, leafPos[i].getZ());

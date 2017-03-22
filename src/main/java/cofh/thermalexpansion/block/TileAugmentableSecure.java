@@ -1,11 +1,11 @@
 package cofh.thermalexpansion.block;
 
 import codechicken.lib.util.ServerUtils;
+import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.item.IAugmentItem.AugmentType;
 import cofh.api.item.IUpgradeItem;
 import cofh.api.item.IUpgradeItem.UpgradeType;
-import cofh.api.core.IAugmentable;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;

@@ -22,7 +22,7 @@ public abstract class TileReconfigurable extends TileInventory implements IRecon
 	protected byte facing = 3;
 	public byte[] sideCache = { 0, 0, 0, 0, 0, 0 };
 
-	public int [] allSlots = new int[] {};
+	public int[] allSlots = new int[] {};
 
 	@Override
 	protected boolean readPortableTagInternal(EntityPlayer player, NBTTagCompound tag) {

@@ -2,9 +2,9 @@ package cofh.thermalexpansion.block;
 
 import codechicken.lib.render.particle.CustomParticleHandler;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
+import cofh.api.core.IAugmentable;
 import cofh.api.core.ISecurable;
 import cofh.api.energy.IEnergyHandler;
-import cofh.api.core.IAugmentable;
 import cofh.core.block.BlockCoreTile;
 import cofh.core.block.TileCore;
 import cofh.core.util.CoreUtils;
