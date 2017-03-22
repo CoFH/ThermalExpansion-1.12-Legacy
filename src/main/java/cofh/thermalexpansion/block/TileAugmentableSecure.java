@@ -294,8 +294,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		payload.addByte(level);
 		payload.addBool(isCreative);
+
 		payload.addBool(hasAutoInput);
 		payload.addBool(hasAutoOutput);
+		payload.addBool(hasRedstoneControl);
+
 		payload.addBool(enableAutoInput);
 		payload.addBool(enableAutoOutput);
 
@@ -313,8 +316,11 @@ public abstract class TileAugmentableSecure extends TileRSControl implements IAu
 
 		byte tmpLevel = payload.getByte();
 		isCreative = payload.getBool();
+
 		hasAutoInput = payload.getBool();
 		hasAutoOutput = payload.getBool();
+		hasRedstoneControl = payload.getBool();
+
 		enableAutoInput = payload.getBool();
 		enableAutoOutput = payload.getBool();
 

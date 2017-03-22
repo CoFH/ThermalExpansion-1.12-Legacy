@@ -45,9 +45,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 4 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -390,7 +388,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			}
 			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(genFluid) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}
@@ -424,7 +422,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -434,7 +432,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

@@ -31,9 +31,7 @@ public class TileNullifier extends TileDeviceBase {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {} };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false, false };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, false };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -79,7 +77,7 @@ public class TileNullifier extends TileDeviceBase {
 
 	protected boolean isSideAccessible(EnumFacing side) {
 
-		return sideCache[side.ordinal()] == 1 && redstoneControlOrDisable();
+		return allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
 	}
 
 	/* GUI METHODS */
@@ -166,7 +164,7 @@ public class TileNullifier extends TileDeviceBase {
 			}
 			return side != facing ? TETextures.DEVICE_SIDE : redstoneControlOrDisable() ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : redstoneControlOrDisable() ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}

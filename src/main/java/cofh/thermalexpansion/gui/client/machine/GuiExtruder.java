@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -42,8 +45,8 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
@@ -59,8 +62,8 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSide(1));
-		slotOutput.setVisible(myTile.hasSide(2));
+		slotInput.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		if (myTile.augmentNoWater()) {
 			hotTank.setDefault();

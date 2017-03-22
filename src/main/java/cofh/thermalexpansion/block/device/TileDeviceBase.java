@@ -117,7 +117,7 @@ public abstract class TileDeviceBase extends TilePowered {
 			}
 			return side != facing ? TETextures.DEVICE_SIDE : isActive ? TETextures.DEVICE_ACTIVE[getType()] : TETextures.DEVICE_FACE[getType()];
 		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
+			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.DEVICE_SIDE;
 	}

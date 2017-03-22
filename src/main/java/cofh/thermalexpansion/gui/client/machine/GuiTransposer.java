@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileTransposer;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -46,13 +49,13 @@ public class GuiTransposer extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(0, 0, 2));
-		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
-		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(1, 1, 1));
+		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.RED, SlotType.OUTPUT, SlotRender.BOTTOM));
 
-		slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
-		slotTankRev[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2).setVisible(false));
-		slotTankRev[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(2, 3, 1).setVisible(false));
+		slotTank = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		slotTankRev[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL).setVisible(false));
+		slotTankRev[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.YELLOW, SlotType.TANK, SlotRender.BOTTOM).setVisible(false));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
@@ -72,23 +75,23 @@ public class GuiTransposer extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSide(1));
-		slotOutput[0].setVisible(myTile.hasSide(4));
-		slotOutput[1].setVisible(myTile.hasSide(2));
-		slotTank.setVisible(!myTile.extractFlag && myTile.hasSide(1));
-		slotTankRev[0].setVisible(myTile.extractFlag && myTile.hasSide(4));
-		slotTankRev[1].setVisible(myTile.extractFlag && myTile.hasSide(3));
+		slotInput.setVisible(myTile.hasSideType(INPUT_ALL) || myTile.hasSideType(OMNI));
+		slotOutput[0].setVisible(myTile.hasSideType(OUTPUT_ALL) || myTile.hasSideType(OMNI));
+		slotOutput[1].setVisible(myTile.hasSideType(OUTPUT_PRIMARY));
+		slotTank.setVisible(!myTile.extractFlag && (myTile.hasSideType(INPUT_ALL) || myTile.hasSideType(OMNI)));
+		slotTankRev[0].setVisible(myTile.extractFlag && (myTile.hasSideType(OUTPUT_ALL) || myTile.hasSideType(OMNI)));
+		slotTankRev[1].setVisible(myTile.extractFlag && myTile.hasSideType(OUTPUT_SECONDARY));
 
 		progressBackgroundRev.setVisible(myTile.extractFlag);
 		progressFluid.setFluid(myTile.getTankFluid());
 		progressFluid.setSize(myTile.getEnergyStored(null) > 0 ? myTile.getScaledProgress(PROGRESS) : 0, 16);
 
-		if (!myTile.hasSide(4)) {
-			slotOutput[1].slotRender = 2;
-			slotTankRev[1].slotRender = 2;
+		if (!myTile.hasSideType(OUTPUT_ALL) && !baseTile.hasSideType(OMNI)) {
+			slotOutput[1].setSlotRender(SlotRender.FULL);
+			slotTankRev[1].setSlotRender(SlotRender.FULL);
 		} else {
-			slotOutput[1].slotRender = 1;
-			slotTankRev[1].slotRender = 1;
+			slotOutput[1].setSlotRender(SlotRender.BOTTOM);
+			slotTankRev[1].setSlotRender(SlotRender.BOTTOM);
 		}
 		if (myTile.extractFlag) {
 			progressFluid.setPosition(112, 19);

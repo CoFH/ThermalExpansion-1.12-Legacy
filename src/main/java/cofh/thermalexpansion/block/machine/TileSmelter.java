@@ -37,11 +37,9 @@ public class TileSmelter extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 8;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 9;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -236,7 +234,7 @@ public class TileSmelter extends TileMachineBase {
 		int side;
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 5) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerPrimary = side;
 					break;
@@ -245,7 +243,7 @@ public class TileSmelter extends TileMachineBase {
 		}
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 6) {
+			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerSecondary = side;
 					break;
@@ -264,7 +262,7 @@ public class TileSmelter extends TileMachineBase {
 		if (inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-				if (sideCache[side] == 2 || sideCache[side] == 4) {
+				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
@@ -277,7 +275,7 @@ public class TileSmelter extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
@@ -494,7 +492,7 @@ public class TileSmelter extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] == 0) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);

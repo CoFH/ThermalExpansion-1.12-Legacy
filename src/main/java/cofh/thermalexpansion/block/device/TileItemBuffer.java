@@ -21,11 +21,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 2, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -34,7 +32,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
 
-		// config();
+		config();
 	}
 
 	public static void config() {
@@ -93,7 +91,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				for (int j = 0; j < inventory.length; j++) {
 					if (extractItem(j, amountInput, EnumFacing.VALUES[side])) {
 						inputTracker = side;
@@ -112,7 +110,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				for (int j = inventory.length - 1; j >= 0; j--) {
 					if (transferItem(j, amountOutput, EnumFacing.VALUES[side])) {
 						outputTracker = side;

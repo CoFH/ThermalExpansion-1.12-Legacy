@@ -135,8 +135,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			//				return new TileExtender();
 			//			case CONCENTRATOR:                      // TODO
 			//				return null;
-			//			case ITEM_BUFFER:
-			//				return new TileItemBuffer();
 			//			case FLUID_BUFFER:                      // TODO
 			//				return null;
 			//			case ENERGY_BUFFER:                     // TODO

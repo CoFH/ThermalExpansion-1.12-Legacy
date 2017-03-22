@@ -47,7 +47,7 @@ public class InsolatorRecipeWrapper extends BlankRecipeWrapper {
 
 	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe) {
 
-		this (guiHelper, recipe, RecipeUidsTE.INSOLATOR);
+		this(guiHelper, recipe, RecipeUidsTE.INSOLATOR);
 	}
 
 	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe, String uIdIn) {

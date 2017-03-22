@@ -25,6 +25,7 @@ public class TETextures {
 		CONFIG_GREEN =						registerCB(map, CONFIG_ + "green");
 		CONFIG_PURPLE =						registerCB(map, CONFIG_ + "purple");
 		CONFIG_OPEN =						register(map, CONFIG_ + "open");
+		CONFIG_OMNI =                       register(map, CONFIG_ + "omni");
 
 		/* MACHINES */
 		MACHINE_TOP =                       register(map, MACHINE_ + "top");
@@ -251,7 +252,8 @@ public class TETextures {
 				CONFIG_ORANGE,
 				CONFIG_GREEN,
 				CONFIG_PURPLE,
-				CONFIG_OPEN
+				CONFIG_OPEN,
+				CONFIG_OMNI
 		};
 
 		MACHINE_OVERLAY = new TextureAtlasSprite[] {
@@ -313,11 +315,11 @@ public class TETextures {
 				DEVICE_FACE_WATERGEN,
 				DEVICE_FACE_NULLIFIER,
 				DEVICE_FACE_HEAT_SINK,
-				DEVICE_FACE_TAPPER
+				DEVICE_FACE_TAPPER,
+				DEVICE_FACE_ITEM_BUFFER
 
 //				DEVICE_FACE_EXTENDER,
 //				DEVICE_FACE_CONCENTRATOR,
-//				DEVICE_FACE_ITEM_BUFFER,
 //				DEVICE_FACE_FLUID_BUFFER,
 //				DEVICE_FACE_ENERGY_BUFFER
 		};
@@ -325,11 +327,11 @@ public class TETextures {
 				DEVICE_ACTIVE_WATERGEN,
 				DEVICE_ACTIVE_NULLIFIER,
 				DEVICE_ACTIVE_HEAT_SINK,
-				DEVICE_ACTIVE_TAPPER
+				DEVICE_ACTIVE_TAPPER,
+				DEVICE_ACTIVE_ITEM_BUFFER
 
 //				DEVICE_ACTIVE_EXTENDER,
 //				DEVICE_ACTIVE_CONCENTRATOR,
-//				DEVICE_ACTIVE_ITEM_BUFFER,
 //				DEVICE_ACTIVE_FLUID_BUFFER,
 //				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
@@ -534,6 +536,7 @@ public class TETextures {
 	public static TextureAtlasSprite CONFIG_GREEN;
 	public static TextureAtlasSprite CONFIG_PURPLE;
 	public static TextureAtlasSprite CONFIG_OPEN;
+	public static TextureAtlasSprite CONFIG_OMNI;
 
 	public static TextureAtlasSprite MACHINE_TOP;
 	public static TextureAtlasSprite MACHINE_BOTTOM;

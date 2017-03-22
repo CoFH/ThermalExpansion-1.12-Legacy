@@ -19,14 +19,9 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.FluidTankProperties;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import javax.annotation.Nullable;
 import java.util.ArrayList;
 
 public class TileCrafter extends TileMachineBase {
@@ -38,9 +33,7 @@ public class TileCrafter extends TileMachineBase {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 6;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 1 }, { 3, 4, 5, 6, 7, 8, 9, 10, 11 }, { 12, 13, 14, 15, 16, 17, 18, 19, 20 }, { 0, 1, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true, true, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, false, false, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 5, 6, 7 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -371,56 +364,56 @@ public class TileCrafter extends TileMachineBase {
 		return super.hasCapability(capability, from) || capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY;
 	}
 
-	@Override
-	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
-
-		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
-			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
-				@Override
-				public IFluidTankProperties[] getTankProperties() {
-
-					return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
-				}
-
-				@Override
-				public int fill(FluidStack resource, boolean doFill) {
-
-					if (from != null && !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
-						return 0;
-					}
-					int filled = tank.fill(resource, doFill);
-
-					if (doFill && filled > 0) {
-						needsCraft = true;
-					}
-					return filled;
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(FluidStack resource, boolean doDrain) {
-
-					if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
-						return null;
-					}
-					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
-						return null;
-					}
-					return tank.drain(resource.amount, doDrain);
-				}
-
-				@Nullable
-				@Override
-				public FluidStack drain(int maxDrain, boolean doDrain) {
-
-					if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
-						return null;
-					}
-					return tank.drain(maxDrain, doDrain);
-				}
-			});
-		}
-		return super.getCapability(capability, from);
-	}
+	//	@Override
+	//	public <T> T getCapability(Capability<T> capability, final EnumFacing from) {
+	//
+	//		if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY) {
+	//			return CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY.cast(new IFluidHandler() {
+	//				@Override
+	//				public IFluidTankProperties[] getTankProperties() {
+	//
+	//					return FluidTankProperties.convert(new FluidTankInfo[] { tank.getInfo() });
+	//				}
+	//
+	//				@Override
+	//				public int fill(FluidStack resource, boolean doFill) {
+	//
+	//					if (from != null && !sideConfig.allowInsertionSide[sideCache[from.ordinal()]]) {
+	//						return 0;
+	//					}
+	//					int filled = tank.fill(resource, doFill);
+	//
+	//					if (doFill && filled > 0) {
+	//						needsCraft = true;
+	//					}
+	//					return filled;
+	//				}
+	//
+	//				@Nullable
+	//				@Override
+	//				public FluidStack drain(FluidStack resource, boolean doDrain) {
+	//
+	//					if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+	//						return null;
+	//					}
+	//					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
+	//						return null;
+	//					}
+	//					return tank.drain(resource.amount, doDrain);
+	//				}
+	//
+	//				@Nullable
+	//				@Override
+	//				public FluidStack drain(int maxDrain, boolean doDrain) {
+	//
+	//					if (from != null && !sideConfig.allowExtractionSide[sideCache[from.ordinal()]]) {
+	//						return null;
+	//					}
+	//					return tank.drain(maxDrain, doDrain);
+	//				}
+	//			});
+	//		}
+	//		return super.getCapability(capability, from);
+	//	}
 
 }

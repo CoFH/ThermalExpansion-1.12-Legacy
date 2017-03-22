@@ -285,7 +285,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		if (pass == 0) {
 			return side != facing ? TETextures.AUTOMATON_SIDE : redstoneControlOrDisable() ? TETextures.AUTOMATON_ACTIVE[getType()] : TETextures.AUTOMATON_FACE[getType()];
 		} else if (side < 6) {
-			return TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]];
+			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
 		return TETextures.AUTOMATON_SIDE;
 	}
