@@ -129,59 +129,65 @@ public class FuelManager {
 		{
 			String category = "Fuels.Steam";
 
-			addSteamFuel(new ItemStack(Items.COAL, 1, 0), configFuels.get(category, "coal", 48000));
-			addSteamFuel(new ItemStack(Blocks.COAL_BLOCK), configFuels.get(category, "coal", 48000) * 10);
-			addSteamFuel(new ItemStack(Items.COAL, 1, 1), configFuels.get(category, "charcoal", 32000));
-			addSteamFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), configFuels.get(category, "coke", 64000));
+			addSteamFuel(new ItemStack(Items.COAL, 1, 0), 32000);
+			addSteamFuel(new ItemStack(Blocks.COAL_BLOCK), 32000 * 10);
+			addSteamFuel(new ItemStack(Items.COAL, 1, 1), 24000);
+			addSteamFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 64000);
+
+			//			addSteamFuel(new ItemStack(Items.COAL, 1, 0), configFuels.get(category, "coal", 32000));
+			//			addSteamFuel(new ItemStack(Blocks.COAL_BLOCK), configFuels.get(category, "coal", 32000) * 10);
+			//			addSteamFuel(new ItemStack(Items.COAL, 1, 1), configFuels.get(category, "charcoal", 24000));
+			//			addSteamFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), configFuels.get(category, "coke", 64000));
 		}
 
 		/* MAGMATIC */
 		{
 			String category = "Fuels.Magmatic";
-			configFuels.getCategory(category).setComment("You can add fuels to the Magmatic Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addMagmaticFuel("lava", configFuels.get(category, "lava", CoreProps.LAVA_RF * 9 / 10));
-			addMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
+			addMagmaticFuel("lava", CoreProps.LAVA_RF * 9 / 10);
+			addMagmaticFuel("pyrotheum", 2000000);
 
+			//			addMagmaticFuel("lava", configFuels.get(category, "lava", CoreProps.LAVA_RF * 9 / 10));
+			//			addMagmaticFuel("pyrotheum", configFuels.get(category, "pyrotheum", 2000000));
 		}
 
 		/* COMPRESSION */
 		{
 			String category = "Fuels.Compression";
-			configFuels.getCategory(category).setComment("You can add fuels to the Compression Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addCompressionFuel("coal", configFuels.get(category, "coal", 500000));
+			addCompressionFuel("coal", 500000);
+			addCompressionFuel("tree_oil", 1000000);
+			addCompressionFuel("refined_oil", 1250000);
+			addCompressionFuel("fuel", 2000000);
 
-			addCompressionFuel("tree_oil", configFuels.get(category, "tree_oil", 1000000));
-			addCompressionFuel("refined_oil", configFuels.get(category, "refined_oil", 1250000));
-			addCompressionFuel("fuel", configFuels.get(category, "fuel", 2000000));
+			//			addCompressionFuel("coal", configFuels.get(category, "coal", 500000));
+			//			addCompressionFuel("tree_oil", configFuels.get(category, "tree_oil", 1000000));
+			//			addCompressionFuel("refined_oil", configFuels.get(category, "refined_oil", 1250000));
+			//			addCompressionFuel("fuel", configFuels.get(category, "fuel", 2000000));
 		}
 
 		/* REACTANT */
 		{
 			String category = "Fuels.Reactant";
-			configFuels.getCategory(category).setComment("You can add fuels to the Reactant Dynamo in this section. Fluid names only, as they are registered in Minecraft.");
 
-			addReactantFuel("creosote", configFuels.get(category, "creosote", 250000));
-			addReactantFuel("redstone", configFuels.get(category, "redstone", 500000));
-			addReactantFuel("glowstone", configFuels.get(category, "glowstone", 600000));
-			addReactantFuel("aerotheum", configFuels.get(category, "aerotheum", 1250000));
+			addReactantFuel("redstone", 500000);
+			addReactantFuel("glowstone", 600000);
+			addReactantFuel("aerotheum", 1250000);
 
-			addReactantFuel("mobessence", configFuels.get(category, "mobessence", 500000));
-			addReactantFuel("sewage", configFuels.get(category, "sewage", 24000));
-			addReactantFuel("sludge", configFuels.get(category, "sludge", 24000));
-
-			addReactantFuel("seedoil", configFuels.get(category, "seedoil", 250000));
-			addReactantFuel("biomass", configFuels.get(category, "biomass", 450000));
-
+			//			addReactantFuel("redstone", configFuels.get(category, "redstone", 500000));
+			//			addReactantFuel("glowstone", configFuels.get(category, "glowstone", 600000));
+			//			addReactantFuel("aerotheum", configFuels.get(category, "aerotheum", 1250000));
 		}
 
 		/* ENERVATION */
 		{
 			String category = "Fuels.Enervation";
 
-			addEnervationFuel(new ItemStack(Items.REDSTONE), configFuels.get(category, "redstone", 64000));
-			addEnervationFuel(new ItemStack(Blocks.REDSTONE_BLOCK), configFuels.get(category, "redstone", 64000) * 10);
+			addEnervationFuel(new ItemStack(Items.REDSTONE), 64000);
+			addEnervationFuel(new ItemStack(Blocks.REDSTONE_BLOCK), 64000 * 10);
+
+			//			addEnervationFuel(new ItemStack(Items.REDSTONE), configFuels.get(category, "redstone", 64000));
+			//			addEnervationFuel(new ItemStack(Blocks.REDSTONE_BLOCK), configFuels.get(category, "redstone", 64000) * 10);
 		}
 
 		/* NUMISMATIC */

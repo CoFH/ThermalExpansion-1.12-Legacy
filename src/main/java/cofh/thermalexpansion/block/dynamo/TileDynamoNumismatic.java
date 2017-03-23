@@ -11,7 +11,7 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalfoundation.init.TFFluids;
 import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.THashMap;
+import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,7 +20,6 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Set;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
@@ -161,7 +160,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	}
 
 	/* FUEL MANAGER */
-	private static Map<ComparableItemStack, Integer> fuels = new THashMap<>();
+	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
 
 	private static int DEFAULT_ENERGY = 64000;
 

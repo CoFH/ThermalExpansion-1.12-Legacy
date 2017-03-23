@@ -22,6 +22,7 @@ import java.util.Set;
 public class FurnaceManager {
 
 	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMapPyro = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
 	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
 

@@ -54,12 +54,12 @@ public class TapperManager {
 
 		FluidStack resin = new FluidStack(TFFluids.fluidResin, 25);
 
-		addMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(resin, 25));
-		addMapping(new ItemStack(Blocks.LOG, 1, 1), new FluidStack(resin, 50));
-		addMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 25));     // syrup
-		addMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 25));     // rubber
-		addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 25));    // rubber
-		addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(resin, 25));
+		addMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(resin, 50));
+		addMapping(new ItemStack(Blocks.LOG, 1, 1), new FluidStack(resin, 100));
+		addMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));     // syrup
+		addMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
+		addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
+		addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(resin, 50));
 
 		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 0), new ItemStack(Blocks.LEAVES, 1, 0));
 		//		addLeafMapping(new ItemStack(Blocks.LOG, 1, 1), new ItemStack(Blocks.LEAVES, 1, 1));
