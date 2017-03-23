@@ -36,6 +36,7 @@ import java.util.Set;
 public class TileDynamoReactant extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.REACTANT.getMetadata();
+	public static int basePower = 40;
 	public static int fluidAmount = 100;
 
 	public static void initialize() {
@@ -53,7 +54,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);

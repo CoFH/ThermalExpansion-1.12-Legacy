@@ -4,6 +4,7 @@ import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.dynamo.TileDynamoEnervation;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.util.fuels.EnervationManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +24,7 @@ public class ContainerDynamoEnervation extends ContainerTEBase implements ISlotV
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoEnervation.getEnergyValue(stack) > 0;
+		return EnervationManager.getFuelEnergy(stack) > 0;
 	}
 
 }

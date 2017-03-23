@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoNumismatic extends GuiDynamoBase {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "numismatic.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "numismatic.png");
 
 	private ElementDualScaled duration;
 

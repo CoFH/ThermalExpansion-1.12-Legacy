@@ -1,18 +1,21 @@
 package cofh.thermalexpansion.plugins.jei;
 
 import cofh.lib.util.helpers.RenderHelper;
-import cofh.thermalexpansion.plugins.jei.charger.ChargerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.compactor.CompactorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.insolator.InsolatorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.refinery.RefineryRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.sawmill.SawmillRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.smelter.SmelterRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.transposer.Descriptions;
+import cofh.thermalexpansion.plugins.jei.crafting.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.dynamos.DynamoFuelCategories;
-import cofh.thermalexpansion.plugins.jei.furnace.FurnaceRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.insolator.InsolatorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.pulverizer.PulverizerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.refinery.RefineryRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.sawmill.SawmillRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.smelter.SmelterRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.transposer.Descriptions;
-import cofh.thermalexpansion.plugins.jei.transposer.TransposerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.enervation.EnervationFuelCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.numismatic.NumismaticFuelCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.steam.SteamFuelCategory;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
 import mezz.jei.api.ISubtypeRegistry;
@@ -48,6 +51,11 @@ public class JEIPluginTE extends BlankModPlugin {
 		ChargerRecipeCategory.initialize(registry);
 
 		DynamoFuelCategories.initialize(registry);
+
+		SteamFuelCategory.initialize(registry);
+
+		EnervationFuelCategory.initialize(registry);
+		NumismaticFuelCategory.initialize(registry);
 
 		Descriptions.register(registry);
 	}

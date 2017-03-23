@@ -4,6 +4,7 @@ import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.dynamo.TileDynamoSteam;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.util.fuels.SteamManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +24,7 @@ public class ContainerDynamoSteam extends ContainerTEBase implements ISlotValida
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoSteam.getEnergyValue(stack) > 0;
+		return SteamManager.getFuelEnergy(stack) > 0;
 	}
 
 }

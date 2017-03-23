@@ -13,8 +13,7 @@ import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.crafting.*;
-import cofh.thermalexpansion.util.fuels.CoolantManager;
-import cofh.thermalexpansion.util.fuels.FuelManager;
+import cofh.thermalexpansion.util.fuels.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -164,6 +163,12 @@ public class ThermalExpansion {
 		CoolantManager.addDefaultMappings();
 		TapperManager.addDefaultMappings();
 
+		SteamManager.addDefaultFuels();
+		MagmaticManager.addDefaultFuels();
+		CompressionManager.addDefaultFuels();
+		EnervationManager.addDefaultFuels();
+		NumismaticManager.addDefaultFuels();
+
 		FuelManager.addDefaultFuels();
 	}
 
@@ -183,6 +188,12 @@ public class ThermalExpansion {
 		CoolantManager.loadMappings();
 		TapperManager.loadMappings();
 
+		SteamManager.loadFuels();
+		MagmaticManager.loadFuels();
+		CompressionManager.loadFuels();
+		EnervationManager.loadFuels();
+		NumismaticManager.loadFuels();
+
 		FuelManager.parseFuels();
 	}
 
@@ -198,6 +209,9 @@ public class ThermalExpansion {
 		// Refinery Unnecessary
 		TransposerManager.refreshRecipes();
 		ChargerManager.refreshRecipes();
+
+		MagmaticManager.refreshFuels();
+		CompressionManager.refreshFuels();
 
 		TapperManager.refreshMappings();
 	}

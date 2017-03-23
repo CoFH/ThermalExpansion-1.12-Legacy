@@ -4,15 +4,13 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoEnervation;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoEnervation;
+import cofh.thermalexpansion.util.fuels.EnervationManager;
 import cofh.thermalfoundation.init.TFFluids;
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,11 +19,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class TileDynamoEnervation extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.ENERVATION.getMetadata();
+	public static int basePower = 40;
 
 	public static void initialize() {
 
@@ -42,10 +40,10 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
-	private int currentFuelRF = DEFAULT_ENERGY;
+	private int currentFuelRF = EnervationManager.DEFAULT_ENERGY;
 
 	public TileDynamoEnervation() {
 
@@ -61,7 +59,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return getEnergyValue(inventory[0]) > energyConfig.maxPower;
+		return EnervationManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
 	protected void processStart() {
@@ -71,7 +69,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 			currentFuelRF = container.extractEnergy(inventory[0], container.getEnergyStored(inventory[0]), false);
 			fuelRF += currentFuelRF;
 		} else {
-			currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+			currentFuelRF = EnervationManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 			fuelRF += currentFuelRF;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
@@ -100,7 +98,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = EnervationManager.DEFAULT_ENERGY;
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -116,7 +114,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = EnervationManager.DEFAULT_ENERGY;
 		}
 	}
 
@@ -156,7 +154,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getEnergyValue(stack) > 0;
+		return EnervationManager.getFuelEnergy(stack) > 0;
 	}
 
 	/* ISidedInventory */
@@ -164,48 +162,6 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public int[] getSlotsForFace(EnumFacing side) {
 
 		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
-	}
-
-	/* FUEL MANAGER */
-	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
-
-	private static int DEFAULT_ENERGY = 64000;
-
-	public static Set<ComparableItemStack> getSpecialStacks() {
-
-		return ImmutableSet.copyOf(fuels.keySet());
-	}
-
-	public static boolean addFuel(ItemStack stack, int energy) {
-
-		if (stack == null || energy < 1600 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
-
-	public static boolean removeFuel(ItemStack stack) {
-
-		fuels.remove(new ComparableItemStack(stack));
-		return true;
-	}
-
-	public static int getEnergyValue(ItemStack stack) {
-
-		if (stack == null) {
-			return 0;
-		}
-		int energy = fuels.get(new ComparableItemStack(stack));
-
-		if (energy > 0) {
-			return energy;
-		}
-		if (EnergyHelper.isEnergyContainerItem(stack)) {
-			IEnergyContainerItem container = (IEnergyContainerItem) stack.getItem();
-			return container.extractEnergy(stack, container.getEnergyStored(stack), true);
-		}
-		return 0;
 	}
 
 }

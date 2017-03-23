@@ -124,28 +124,28 @@ public class GuiCell extends GuiCore {
 		}
 		if (baseTile.amountRecv > 0) {
 			decRecv.setActive();
-			decRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decRecv") + " " + change + "/" + change2);
+			decRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decRecv") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			decRecv.setDisabled();
 			decRecv.clearToolTip();
 		}
 		if (baseTile.amountRecv < TileCell.RECV[baseTile.getLevel()]) {
 			incRecv.setActive();
-			incRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incRecv") + " " + change + "/" + change2);
+			incRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incRecv") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			incRecv.setDisabled();
 			incRecv.clearToolTip();
 		}
 		if (baseTile.amountSend > 0) {
 			decSend.setActive();
-			decSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decSend") + " " + change + "/" + change2);
+			decSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decSend") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			decSend.setDisabled();
 			decSend.clearToolTip();
 		}
 		if (baseTile.amountSend < TileCell.SEND[baseTile.getLevel()]) {
 			incSend.setActive();
-			incSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incSend") + " " + change + "/" + change2);
+			incSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incSend") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			incSend.setDisabled();
 			incSend.clearToolTip();
@@ -213,8 +213,8 @@ public class GuiCell extends GuiCore {
 		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv") + ":", getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv"), xSize / 2), 32, 0x404040);
 		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend") + ":", xSize / 2 + getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend"), xSize / 2), 32, 0x404040);
 
-		String recv = String.format("%-8s", "" + baseTile.amountRecv + " RF/t");
-		String send = String.format("%-8s", "" + baseTile.amountSend + " RF/t");
+		String recv = StringHelper.formatNumber(baseTile.amountRecv) + " RF/t";
+		String send = StringHelper.formatNumber(baseTile.amountSend) + " RF/t";
 
 		int xRecv = 20;
 		int xSend = 110;

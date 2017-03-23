@@ -3,15 +3,13 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
+import cofh.thermalexpansion.util.fuels.NumismaticManager;
 import cofh.thermalfoundation.init.TFFluids;
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -20,11 +18,11 @@ import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.NUMISMATIC.getMetadata();
+	public static int basePower = 40;
 
 	public static void initialize() {
 
@@ -41,10 +39,10 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
-	private int currentFuelRF = DEFAULT_ENERGY;
+	private int currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
 
 	public TileDynamoNumismatic() {
 
@@ -60,12 +58,12 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return getEnergyValue(inventory[0]) > energyConfig.maxPower;
+		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
 	protected void processStart() {
 
-		currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+		currentFuelRF = NumismaticManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 		fuelRF += currentFuelRF;
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
 	}
@@ -93,7 +91,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -109,7 +107,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
 		}
 	}
 
@@ -149,7 +147,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getEnergyValue(stack) > 0;
+		return NumismaticManager.getFuelEnergy(stack) > 0;
 	}
 
 	/* ISidedInventory */
@@ -157,41 +155,6 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	public int[] getSlotsForFace(EnumFacing side) {
 
 		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
-	}
-
-	/* FUEL MANAGER */
-	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
-
-	private static int DEFAULT_ENERGY = 64000;
-
-	public static Set<ComparableItemStack> getFuelStacks() {
-
-		return ImmutableSet.copyOf(fuels.keySet());
-	}
-
-	public static boolean addFuel(ItemStack stack, int energy) {
-
-		if (stack == null || energy < 1600 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
-
-	public static boolean removeFuel(ItemStack stack) {
-
-		fuels.remove(new ComparableItemStack(stack));
-		return true;
-	}
-
-	public static int getEnergyValue(ItemStack stack) {
-
-		if (stack == null) {
-			return 0;
-		}
-		int energy = fuels.get(new ComparableItemStack(stack));
-
-		return energy > 0 ? energy : 0;
 	}
 
 }

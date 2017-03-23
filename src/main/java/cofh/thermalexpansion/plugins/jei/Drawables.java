@@ -32,8 +32,8 @@ public class Drawables {
 	private final IDrawableStatic[] progressLeft = new IDrawableStatic[3];
 	private final IDrawableStatic[] progressLeftFill = new IDrawableStatic[3];
 
-	private final IDrawableStatic[] speed = new IDrawableStatic[8];
-	private final IDrawableStatic[] speedFill = new IDrawableStatic[8];
+	private final IDrawableStatic[] speed = new IDrawableStatic[9];
+	private final IDrawableStatic[] speedFill = new IDrawableStatic[9];
 
 	private final IDrawableStatic energyEmpty;
 	private final IDrawableStatic energyFill;
@@ -55,7 +55,7 @@ public class Drawables {
 			progressRight[i] = guiHelper.createDrawable(JEI_TEXTURE, 176, 16 + 32 * i, 24, 16);
 			progressRightFill[i] = guiHelper.createDrawable(JEI_TEXTURE, 200, 16 + 32 * i, 24, 16);
 		}
-		for (int i = 0; i < 8; i++) {
+		for (int i = 0; i < speed.length; i++) {
 			speed[i] = guiHelper.createDrawable(JEI_TEXTURE, 224, i * 16, 16, 16);
 			speedFill[i] = guiHelper.createDrawable(JEI_TEXTURE, 240, i * 16, 16, 16);
 		}

@@ -70,7 +70,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
-				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + StringHelper.formatNumber(TileTank.CAPACITY[getLevel(stack)]) + " mB");
 			}
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
@@ -78,7 +78,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
-				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + StringHelper.formatNumber(TileTank.CAPACITY[getLevel(stack)]) + " mB");
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);

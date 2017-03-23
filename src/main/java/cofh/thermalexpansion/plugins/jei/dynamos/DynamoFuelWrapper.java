@@ -1,12 +1,11 @@
 package cofh.thermalexpansion.plugins.jei.dynamos;
 
+import cofh.lib.util.helpers.StringHelper;
 import mezz.jei.api.ingredients.IIngredients;
 import mezz.jei.api.recipe.BlankRecipeWrapper;
 import net.minecraft.client.Minecraft;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
-import java.text.NumberFormat;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,7 +23,7 @@ public final class DynamoFuelWrapper<T> extends BlankRecipeWrapper {
 
 	public DynamoFuelWrapper(T inputs, DynamoFuelCategory<T> categoryBase, int energy, String rf_suffix) {
 
-		this(Collections.singletonList(inputs), categoryBase, NumberFormat.getInstance().format(energy) + " " + rf_suffix);
+		this(Collections.singletonList(inputs), categoryBase, StringHelper.formatNumber(energy) + " " + rf_suffix);
 	}
 
 	public DynamoFuelWrapper(T inputs, DynamoFuelCategory<T> categoryBase, String displayText) {
@@ -53,7 +52,7 @@ public final class DynamoFuelWrapper<T> extends BlankRecipeWrapper {
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		minecraft.fontRendererObj.drawString(displayText, drawX, (recipeHeight - 9) / 2, Color.gray.getRGB());
+		minecraft.fontRendererObj.drawString(displayText, drawX, (recipeHeight - 9) / 2, 0x404040);
 	}
 
 }

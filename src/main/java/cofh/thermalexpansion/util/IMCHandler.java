@@ -3,7 +3,8 @@ package cofh.thermalexpansion.util;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.util.crafting.*;
 import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
-import cofh.thermalexpansion.util.fuels.FuelManager;
+import cofh.thermalexpansion.util.fuels.CompressionManager;
+import cofh.thermalexpansion.util.fuels.MagmaticManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;
@@ -136,38 +137,11 @@ public class IMCHandler {
 
 					/* FUELS */
 					case ADD_MAGMATIC_FUEL:
-						String fluidName = nbt.getString("fluidName").toLowerCase(Locale.ENGLISH);
-						int energy = nbt.getInteger("energy");
-
-						if (FuelManager.addMagmaticFuel(fluidName, energy)) {
-							FuelManager.configFuels.get("Fuels.Magmatic", fluidName, energy);
-						}
+						MagmaticManager.addFuel(nbt.getString("fluidName").toLowerCase(Locale.ENGLISH), nbt.getInteger("energy"));
 						continue;
 					case ADD_COMPRESSION_FUEL:
-						fluidName = nbt.getString("fluidName").toLowerCase(Locale.ENGLISH);
-						energy = nbt.getInteger("energy");
-
-						if (FuelManager.addCompressionFuel(fluidName, energy)) {
-							FuelManager.configFuels.get("Fuels.Compression", fluidName, energy);
-						}
+						CompressionManager.addFuel(nbt.getString("fluidName").toLowerCase(Locale.ENGLISH), nbt.getInteger("energy"));
 						continue;
-					case ADD_REACTANT_FUEL:
-						fluidName = nbt.getString("fluidName").toLowerCase(Locale.ENGLISH);
-						energy = nbt.getInteger("energy");
-
-						if (FuelManager.addCompressionFuel(fluidName, energy)) {
-							FuelManager.configFuels.get("Fuels.Reactant", fluidName, energy);
-						}
-						continue;
-
-						//					case ADD_COOLANT:
-						//						fluidName = nbt.getString("fluidName").toLowerCase(Locale.ENGLISH);
-						//						energy = nbt.getInteger("energy");
-						//
-						//						if (CoolantManager.addCoolant(fluidName, energy)) {
-						//							FuelManager.configFuels.get("Coolants", fluidName, energy);
-						//						}
-						//						continue;
 				}
 				ThermalExpansion.LOG.warn("Thermal Expansion received an invalid IMC from " + message.getSender() + "! Key was " + message.key);
 			} catch (Exception e) {

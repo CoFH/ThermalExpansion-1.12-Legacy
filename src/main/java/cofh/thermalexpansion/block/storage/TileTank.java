@@ -380,10 +380,17 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 					int amount = tank.fill(resource, doFill);
 
 					if (adjacentTanks[1] && from != EnumFacing.UP) {
+						System.out.println("check 1");
+
 						if (amount != resource.amount) {
+							System.out.println("check 2");
+
 							FluidStack remaining = resource.copy();
 							remaining.amount -= amount;
-							return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(worldObj, pos, EnumFacing.UP, remaining, true);
+
+							System.out.println(remaining.amount);
+
+							return amount + FluidHelper.insertFluidIntoAdjacentFluidHandler(worldObj, pos, EnumFacing.UP, remaining, doFill);
 						}
 					}
 					return amount;

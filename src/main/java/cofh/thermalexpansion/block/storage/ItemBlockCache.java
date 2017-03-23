@@ -52,7 +52,7 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.localize("info.cofh.infinite"));
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + getSizeInventory(stack));
+			tooltip.add(StringHelper.localize("info.cofh.capacity") + ": " + StringHelper.formatNumber(getSizeInventory(stack)));
 		}
 		if (!stack.getTagCompound().hasKey("Item")) {
 			tooltip.add(StringHelper.localize("info.cofh.empty"));
@@ -72,7 +72,7 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 			if (isCreative(stack)) {
 				tooltip.add("    " + StringHelper.ORANGE + StringHelper.getItemName(stored));
 			} else {
-				tooltip.add("    " + StringHelper.ORANGE + stored.stackSize + " " + StringHelper.getItemName(stored));
+				tooltip.add("    " + StringHelper.ORANGE + StringHelper.formatNumber(stored.stackSize) + " " + StringHelper.getItemName(stored));
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);

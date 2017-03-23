@@ -64,7 +64,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(TileCell.CAPACITY[getLevel(stack)]) + " RF");
 		}
-		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + stack.getTagCompound().getInteger("Send") + "/" + stack.getTagCompound().getInteger("Recv") + " RF/t");
+		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(stack.getTagCompound().getInteger("Send")) + "/" + StringHelper.formatNumber(stack.getTagCompound().getInteger("Recv")) + " RF/t");
 
 		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
 	}

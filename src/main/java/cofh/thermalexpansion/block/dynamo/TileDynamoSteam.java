@@ -5,20 +5,17 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
-import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoSteam;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.util.fuels.SteamManager;
 import cofh.thermalfoundation.init.TFFluids;
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.fluids.FluidRegistry;
@@ -32,11 +29,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
-import java.util.Set;
 
 public class TileDynamoSteam extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.STEAM.getMetadata();
+	public static int basePower = 40;
 
 	public static void initialize() {
 
@@ -54,7 +51,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
 		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
 	private static final int STEAM_HIGH = TEProps.MAX_FLUID_SMALL * 3 / 4;
@@ -63,7 +60,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	private int waterRF;
-	private int currentFuelRF = DEFAULT_RF;
+	private int currentFuelRF = SteamManager.DEFAULT_ENERGY;
 
 	/* AUGMENTS */
 	protected boolean augmentTurbine;
@@ -87,7 +84,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		if (augmentTurbine) {
 			return steamTank.getFluidAmount() > STEAM_HIGH;
 		}
-		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || getEnergyValue(inventory[0]) > 0);
+		return steamTank.getFluidAmount() > STEAM_HIGH || (waterRF > 0 || waterTank.getFluidAmount() > 50) && (fuelRF > 0 || SteamManager.getFuelEnergy(inventory[0]) > 0);
 	}
 
 	@Override
@@ -103,7 +100,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 			return;
 		}
 		if (fuelRF <= 0) {
-			currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+			currentFuelRF = SteamManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 			fuelRF += currentFuelRF;
 			inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		}
@@ -161,7 +158,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_RF;
+			currentFuelRF = SteamManager.DEFAULT_ENERGY;
 		}
 		return fuelRF * scale / currentFuelRF;
 	}
@@ -186,7 +183,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		waterTank.readFromNBT(nbt.getCompoundTag("WaterTank"));
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_RF;
+			currentFuelRF = SteamManager.DEFAULT_ENERGY;
 		}
 	}
 
@@ -257,7 +254,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return !augmentTurbine && getEnergyValue(stack) > 0;
+		return !augmentTurbine && SteamManager.getFuelEnergy(stack) > 0;
 	}
 
 	/* ISidedInventory */
@@ -325,44 +322,6 @@ public class TileDynamoSteam extends TileDynamoBase {
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* FUEL MANAGER */
-	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
-
-	private static int DEFAULT_RF = 48000;
-
-	public static Set<ComparableItemStack> getOverriddenFuelStacks() {
-
-		return ImmutableSet.copyOf(fuels.keySet());
-	}
-
-	public static boolean addFuel(ItemStack stack, int energy) {
-
-		if (stack == null || energy < 1600 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
-
-	public static boolean removeFuel(ItemStack stack) {
-
-		fuels.remove(new ComparableItemStack(stack));
-		return true;
-	}
-
-	public static int getEnergyValue(ItemStack stack) {
-
-		if (stack == null) {
-			return 0;
-		}
-		if (stack.getItem().hasContainerItem(stack)) {
-			return 0;
-		}
-		int energy = fuels.get(new ComparableItemStack(stack));
-
-		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
 	}
 
 }
