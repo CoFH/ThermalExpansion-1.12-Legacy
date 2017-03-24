@@ -182,65 +182,6 @@ public class PulverizerManager {
 
 	public static void loadRecipes() {
 
-		if (ItemHelper.oreNameExists("dustDiamond")) {
-			addRecipe(DEFAULT_ENERGY, new ItemStack(Items.DIAMOND, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustDiamond").get(0), 1));
-		}
-		if (ItemHelper.oreNameExists("dustEnderPearl")) {
-			addRecipe(DEFAULT_ENERGY, new ItemStack(Items.ENDER_PEARL), ItemHelper.cloneStack(OreDictionary.getOres("dustEnderPearl").get(0), 1));
-		}
-		if (ItemHelper.oreNameExists("itemSilicon")) {
-			addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.SAND, 1), ItemHelper.cloneStack(OreDictionary.getOres("itemSilicon").get(0), 1));
-		}
-		if (ItemHelper.oreNameExists("oreSaltpeter")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSaltpeter").get(0), ItemHelper.cloneStack(ItemMaterial.dustNiter, 4));
-		}
-		if (ItemHelper.oreNameExists("oreSulfur")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSulfur").get(0), ItemHelper.cloneStack(ItemMaterial.dustSulfur, 6));
-		}
-		/* APATITE */
-		if (ItemHelper.oreNameExists("oreApatite") && ItemHelper.oreNameExists("gemApatite")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreApatite").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite").get(0), 12), ItemMaterial.dustSulfur, 10);
-		}
-		/* AMETHYST */
-		if (ItemHelper.oreNameExists("oreAmethyst") && ItemHelper.oreNameExists("gemAmethyst")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreAmethyst").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemAmethyst").get(0), 2));
-		}
-		if (ItemHelper.oreNameExists("gemAmethyst") && ItemHelper.oreNameExists("dustAmethyst")) {
-			addRecipe(DEFAULT_ENERGY * 3 / 4, OreDictionary.getOres("gemAmethyst").get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustAmethyst").get(0), 1));
-		}
-		/* PERIDOT */
-		if (ItemHelper.oreNameExists("orePeridot") && ItemHelper.oreNameExists("gemPeridot")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("orePeridot").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemPeridot").get(0), 2));
-		}
-		if (ItemHelper.oreNameExists("gemPeridot") && ItemHelper.oreNameExists("dustPeridot")) {
-			addRecipe(DEFAULT_ENERGY * 3 / 4, OreDictionary.getOres("gemPeridot").get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustPeridot").get(0), 1));
-		}
-		/* RUBY */
-		if (ItemHelper.oreNameExists("oreRuby") && ItemHelper.oreNameExists("gemRuby")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreRuby").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemRuby").get(0), 2));
-		}
-		if (ItemHelper.oreNameExists("gemRuby") && ItemHelper.oreNameExists("dustRuby")) {
-			addRecipe(DEFAULT_ENERGY * 3 / 4, OreDictionary.getOres("gemRuby").get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustRuby").get(0), 1));
-		}
-		/* SAPPHIRE */
-		if (ItemHelper.oreNameExists("oreSapphire") && ItemHelper.oreNameExists("gemSapphire")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSapphire").get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemSapphire").get(0), 2));
-		}
-		if (ItemHelper.oreNameExists("gemSapphire") && ItemHelper.oreNameExists("dustSapphire")) {
-			addRecipe(DEFAULT_ENERGY * 3 / 4, OreDictionary.getOres("gemSapphire").get(0), ItemHelper.cloneStack(OreDictionary.getOres("dustSapphire").get(0), 1));
-		}
-		/* APPLIED ENERGISTICS 2 */
-		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreCertusQuartz").get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz").get(0), 2), OreDictionary.getOres("dustCertusQuartz").get(0), 10);
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("dustCertusQuartz").get(0));
-		}
-		if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalFluix").get(0), OreDictionary.getOres("dustFluix").get(0));
-		}
-		if (ItemHelper.oreNameExists("dustNetherQuartz")) {
-			addRecipe(DEFAULT_ENERGY, new ItemStack(Items.QUARTZ, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz").get(0), 1));
-		}
-
 		String[] oreNameList = OreDictionary.getOreNames();
 		String oreName;
 
@@ -314,17 +255,17 @@ public class PulverizerManager {
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String relatedName = null;
 
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
 		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
+		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName, false);
 
 		if (!relatedType.isEmpty()) {
 			relatedName = "dust" + StringHelper.titleCase(relatedType);
-			registeredRelated = OreDictionary.getOres(relatedName);
+			registeredRelated = OreDictionary.getOres(relatedName, false);
 		}
 		if (registeredDust.isEmpty()) {
 			return;
@@ -370,17 +311,17 @@ public class PulverizerManager {
 		String gemName = "gem" + StringHelper.titleCase(oreType);
 		String relatedName = null;
 
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		List<ItemStack> registeredGem = OreDictionary.getOres(gemName);
+		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
+		List<ItemStack> registeredGem = OreDictionary.getOres(gemName, false);
 		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		String clusterName = "cluster" + StringHelper.titleCase(oreType);
-		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName);
+		List<ItemStack> registeredCluster = OreDictionary.getOres(clusterName, false);
 
 		if (!relatedType.isEmpty()) {
 			relatedName = "dust" + StringHelper.titleCase(relatedType);
-			registeredRelated = OreDictionary.getOres(relatedName);
+			registeredRelated = OreDictionary.getOres(relatedName, false);
 		}
 		if (registeredGem.isEmpty()) {
 			return;
@@ -417,9 +358,9 @@ public class PulverizerManager {
 		if (primaryOutput == null || oreName == null) {
 			return;
 		}
-		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
 
-		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
+		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), ItemHelper.cloneStack(primaryOutput, ORE_MULTIPLIER), secondaryOutput, secondaryChance);
 		}
 	}
@@ -429,9 +370,9 @@ public class PulverizerManager {
 		if (dust == null || ingotName == null) {
 			return;
 		}
-		List<ItemStack> registeredOres = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(ingotName, false);
 
-		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName).get(0))) {
+		if (!registeredOres.isEmpty() && !recipeExists(OreDictionary.getOres(ingotName, false).get(0))) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 1), dust, null, 0);
 		}
 	}

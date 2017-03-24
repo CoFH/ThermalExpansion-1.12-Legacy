@@ -210,6 +210,9 @@ public class SmelterManager {
 			addAlloyRecipe(4000, "dustIron", 1, "dustCharcoal", 4, stackSteel);
 			addAlloyRecipe(4400, "ingotIron", 1, "dustCharcoal", 4, stackSteel);
 
+			addAlloyRecipe(2000, "dustIron", 1, "fuelCoke", 1, stackSteel);
+			addAlloyRecipe(2400, "ingotIron", 1, "fuelCoke", 1, stackSteel);
+
 			ItemStack stackElectrum = ItemHelper.cloneStack(ItemMaterial.ingotElectrum, 2);
 			addAlloyRecipe(1600, "dustSilver", 1, "dustGold", 1, stackElectrum);
 			addAlloyRecipe(2000, "dustSilver", 1, "ingotGold", 1, stackElectrum);
@@ -350,14 +353,14 @@ public class SmelterManager {
 		String ingotName = "ingot" + StringHelper.titleCase(oreType);
 		String relatedName = null;
 
-		List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-		List<ItemStack> registeredDust = OreDictionary.getOres(dustName);
-		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+		List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
+		List<ItemStack> registeredDust = OreDictionary.getOres(dustName, false);
+		List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
 		List<ItemStack> registeredRelated = new ArrayList<>();
 
 		if (!relatedType.isEmpty()) {
 			relatedName = "ingot" + StringHelper.titleCase(relatedType);
-			registeredRelated = OreDictionary.getOres(relatedName);
+			registeredRelated = OreDictionary.getOres(relatedName, false);
 		}
 		if (registeredIngot.isEmpty()) {
 			return;
@@ -400,7 +403,7 @@ public class SmelterManager {
 
 	private static void addOreToIngotRecipe(int energy, String oreName, ItemStack ingot2, ItemStack ingot3, ItemStack ingotSecondary, int richSlagChance, int slagOreChance) {
 
-		List<ItemStack> registeredOres = OreDictionary.getOres(oreName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
 
 		if (registeredOres.size() > 0) {
 			ItemStack ore = registeredOres.get(0);
@@ -417,7 +420,7 @@ public class SmelterManager {
 
 	private static void addDustToIngotRecipe(int energy, String dustName, ItemStack ingot2, int slagDustChance) {
 
-		List<ItemStack> registeredOres = OreDictionary.getOres(dustName);
+		List<ItemStack> registeredOres = OreDictionary.getOres(dustName, false);
 
 		if (registeredOres.size() > 0) {
 			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(0), 2), BLOCK_SAND, ingot2, ItemMaterial.crystalSlag, slagDustChance);
@@ -426,8 +429,8 @@ public class SmelterManager {
 
 	private static void addAlloyRecipe(int energy, String primaryOreName, int primaryAmount, String secondaryOreName, int secondaryAmount, ItemStack primaryOutput) {
 
-		List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName);
-		List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName);
+		List<ItemStack> primaryOreList = OreDictionary.getOres(primaryOreName, false);
+		List<ItemStack> secondaryOreList = OreDictionary.getOres(secondaryOreName, false);
 
 		if (primaryOreList.size() > 0 && secondaryOreList.size() > 0) {
 			addAlloyRecipe(energy, ItemHelper.cloneStack(primaryOreList.get(0), primaryAmount), ItemHelper.cloneStack(secondaryOreList.get(0), secondaryAmount), primaryOutput);
@@ -446,7 +449,7 @@ public class SmelterManager {
 
 	private static boolean isStandardOre(String oreName) {
 
-		return ItemHelper.oreNameExists(oreName) && FurnaceManager.recipeExists(OreDictionary.getOres(oreName).get(0));
+		return ItemHelper.oreNameExists(oreName) && FurnaceManager.recipeExists(OreDictionary.getOres(oreName, false).get(0));
 	}
 
 	/* RECIPE CLASS */
@@ -516,16 +519,30 @@ public class SmelterManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackSmelter extends ComparableItemStack {
 
-		public static final String BLOCK = "block";
-		public static final String ORE = "ore";
-		public static final String DUST = "dust";
-		public static final String INGOT = "ingot";
-		public static final String NUGGET = "nugget";
-		public static final String SAND = "sand";
+		public static final Set<String> STARTS_WITH = new THashSet<>();
+		public static final Set<String> EQUALS = new THashSet<>();
+
+		static {
+			STARTS_WITH.add("block");
+			STARTS_WITH.add("ore");
+			STARTS_WITH.add("dust");
+			STARTS_WITH.add("ingot");
+			STARTS_WITH.add("nugget");
+
+			EQUALS.add("sand");
+
+			EQUALS.add("crystalSlag");
+			EQUALS.add("crystalSlagRich");
+			EQUALS.add("crystalCinnabar");
+
+			EQUALS.add("itemSlag");
+			EQUALS.add("itemSlagRich");
+			EQUALS.add("itemCinnabar");
+		}
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(BLOCK) || oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(SAND);
+			return STARTS_WITH.contains(oreName) || EQUALS.contains(oreName);
 		}
 
 		public static int getOreID(ItemStack stack) {

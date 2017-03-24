@@ -95,9 +95,8 @@ public class RenderCell implements ILayeredBlockBakery {
 		}
 		state = state.withProperty(TEProps.CREATIVE, cell.isCreative);
 		state = state.withProperty(TEProps.LEVEL, cell.getLevel());
-		state = state.withProperty(TEProps.LIGHT, Math.min(15, cell.getScaledEnergyStored(16)));
+		state = state.withProperty(TEProps.HOLDING, (int) cell.enchantHolding);
 		state = state.withProperty(TEProps.SCALE, cell.getLightValue());
-
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[cell.getFacing()]);
 		state = state.withProperty(TEProps.SIDE_CONFIG, cell.sideCache.clone());
 		return state;
@@ -115,10 +114,10 @@ public class RenderCell implements ILayeredBlockBakery {
 
 			boolean creative = BlockCell.itemBlock.isCreative(stack);
 			int level = BlockCell.itemBlock.getLevel(stack);
-			int light = Math.min(15, getScaledEnergyStored(stack, 16));
+			int scale = Math.min(8, getScaledEnergyStored(stack, 9));
 
 			renderFrame(ccrs, creative, level, null, 0, null);
-			ccrs.brightness = 165 + light * 5;
+			ccrs.brightness = 160 + scale * 10;
 			renderCenter(ccrs);
 
 			buffer.finishDrawing();
@@ -134,7 +133,7 @@ public class RenderCell implements ILayeredBlockBakery {
 		if (face == null && state != null) {
 			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
-			int light = state.getValue(TEProps.LIGHT);
+			int scale = state.getValue(TEProps.SCALE);
 			TextureAtlasSprite meter = creative ? TETextures.CELL_METER_C : TETextures.CELL_METER[state.getValue(TEProps.SCALE)];
 
 			int facing = state.getValue(TEProps.FACING).ordinal();
@@ -149,7 +148,7 @@ public class RenderCell implements ILayeredBlockBakery {
 			if (layer == BlockRenderLayer.CUTOUT) {
 				renderFrame(ccrs, creative, level, sideCache, facing, meter);
 			} else if (layer == BlockRenderLayer.TRANSLUCENT) {
-				ccrs.brightness = 165 + light * 5;
+				ccrs.brightness = 160 + scale * 10;
 				renderCenter(ccrs);
 			}
 			buffer.finishDrawing();

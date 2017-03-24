@@ -229,7 +229,7 @@ public class SawmillManager {
 		for (int i = 0; i < 9; i++) {
 			tempCrafting.setInventorySlotContents(i, null);
 		}
-		List<ItemStack> registeredOres = OreDictionary.getOres("logWood");
+		List<ItemStack> registeredOres = OreDictionary.getOres("logWood", false);
 		for (int i = 0; i < registeredOres.size(); i++) {
 			ItemStack logEntry = registeredOres.get(i);
 

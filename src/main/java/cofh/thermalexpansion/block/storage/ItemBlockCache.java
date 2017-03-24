@@ -1,18 +1,22 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
+import cofh.core.init.CoreEnchantments;
+import cofh.core.item.IEnchantable;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem {
+public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem, IEnchantable {
 
 	public ItemBlockCache(Block block) {
 
@@ -34,6 +38,18 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	public String getUnlocalizedName(ItemStack stack) {
 
 		return "tile.thermalexpansion.storage.cache.name";
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
 	}
 
 	@Override
@@ -79,9 +95,17 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	}
 
 	/* IInventoryContainerItem */
+	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return TileCache.getCapacity(getLevel(container));
+		return TileCache.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
+	}
+
+	/* IEnchantable */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 }

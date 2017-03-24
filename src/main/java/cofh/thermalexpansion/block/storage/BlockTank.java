@@ -5,6 +5,7 @@ import codechicken.lib.model.blockbakery.BlockBakery;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
 import codechicken.lib.model.blockbakery.IBakeryBlock;
 import codechicken.lib.model.blockbakery.ICustomBlockBakery;
+import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.lib.util.helpers.FluidHelper;
@@ -16,6 +17,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -66,6 +68,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		// UnListed
 		builder.add(TEProps.CREATIVE);
 		builder.add(TEProps.LEVEL);
+		builder.add(TEProps.HOLDING);
 		builder.add(TEProps.ACTIVE);
 		builder.add(TEProps.FLUID);
 
@@ -105,6 +108,7 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			TileTank tile = (TileTank) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
+			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 
 			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
@@ -174,6 +178,9 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		TileTank tile = (TileTank) world.getTileEntity(pos);
 
 		if (tile != null) {
+			if (tile.enchantHolding > 0) {
+				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
+			}
 			FluidStack fluid = tile.getTankFluid();
 			if (fluid != null) {
 				retTag.setTag("Fluid", fluid.writeToNBT(new NBTTagCompound()));
@@ -221,8 +228,10 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
 			builder.append(",output=").append(state.getValue(TEProps.ACTIVE));
 			FluidStack stack = state.getValue(TEProps.FLUID);
+
 			if (stack != null) {
 				builder.append(",fluid=").append(stack.getFluid().getName());
 				builder.append(",amount=").append(stack.amount);

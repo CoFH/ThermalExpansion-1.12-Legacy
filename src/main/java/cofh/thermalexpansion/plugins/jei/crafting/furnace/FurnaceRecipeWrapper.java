@@ -49,7 +49,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
 		if (ComparableItemStackFurnace.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()))) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
 				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
 			}
 		} else {

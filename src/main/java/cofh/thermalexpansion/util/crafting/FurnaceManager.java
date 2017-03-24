@@ -338,11 +338,11 @@ public class FurnaceManager {
 	/* HELPERS */
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
-		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
+		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
 
 			if (oreName.startsWith("ore") && ItemHelper.isIngot(output)) {
-				oreSet.add(new ComparableItemStackFurnace(OreDictionary.getOres(oreName).get(0)));
+				oreSet.add(new ComparableItemStackFurnace(OreDictionary.getOres(oreName, false).get(0)));
 			}
 		}
 	}

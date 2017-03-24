@@ -142,11 +142,10 @@ public class TEProps {
 	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
 
 	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
-	public static final UnlistedIntegerProperty LIGHT = new UnlistedIntegerProperty("light");
-	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale_display");
+	public static final UnlistedIntegerProperty HOLDING = new UnlistedIntegerProperty("enchant_holding");
+	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale");
 
 	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
-	public static final UnlistedIntArrayProperty SIDE_TEX = new UnlistedIntArrayProperty("side_tex");
 
 	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
 	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");

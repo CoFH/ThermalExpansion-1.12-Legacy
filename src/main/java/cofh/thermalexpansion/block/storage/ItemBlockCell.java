@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.init.CoreEnchantments;
+import cofh.core.item.IEnchantable;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
@@ -10,6 +12,8 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -17,7 +21,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem {
+public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantable {
 
 	public ItemBlockCell(Block block) {
 
@@ -47,6 +51,18 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
@@ -62,7 +78,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (isCreative(stack)) {
 			tooltip.add(StringHelper.localize("info.cofh.charge") + ": 1.21G RF");
 		} else {
-			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(TileCell.CAPACITY[getLevel(stack)]) + " RF");
+			tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
 		}
 		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(stack.getTagCompound().getInteger("Send")) + "/" + StringHelper.formatNumber(stack.getTagCompound().getInteger("Recv")) + " RF/t");
 
@@ -75,7 +91,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
-		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) TileCell.CAPACITY[getLevel(stack)]);
+		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxEnergyStored(stack));
 	}
 
 	@Override
@@ -94,7 +110,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		int level = getLevel(container);
 
 		int stored = container.getTagCompound().getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(TileCell.CAPACITY[level] - stored, TileCell.RECV[level]));
+		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, TileCell.RECV[level]));
 
 		if (!simulate) {
 			stored += receive;
@@ -133,7 +149,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	@Override
 	public int getMaxEnergyStored(ItemStack container) {
 
-		return TileCell.getCapacity(getLevel(container));
+		return TileCell.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* CAPABILITIES */
@@ -141,6 +157,13 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 		return new EnergyContainerItemWrapper(stack, this);
+	}
+
+	/* IEnchantable */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 }

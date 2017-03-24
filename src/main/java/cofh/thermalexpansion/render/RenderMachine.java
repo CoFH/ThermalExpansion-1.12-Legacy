@@ -85,7 +85,6 @@ public class RenderMachine implements ILayeredBlockBakery {
 		state = state.withProperty(TEProps.CREATIVE, machineBase.isCreative);
 		state = state.withProperty(TEProps.LEVEL, machineBase.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, machineBase.isActive);
-
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[machineBase.getFacing()]);
 		state = state.withProperty(TEProps.SIDE_CONFIG, machineBase.sideCache);
 		state = state.withProperty(TEProps.TILE, machineBase); // Kinda hacky, but we need this to grab textures from the block.

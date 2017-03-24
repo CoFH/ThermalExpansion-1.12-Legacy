@@ -61,14 +61,17 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	private int meterTracker;
 
 	byte facing = 3;
+
+	public byte enchantHolding;
 	public boolean locked;
+
 	int maxCacheStackSize;
 	public ItemStack storedStack;
 
 	public TileCache() {
 
 		inventory = new ItemStack[2];
-		maxCacheStackSize = getCapacity(0) - 64 * 2;
+		maxCacheStackSize = getCapacity(0, 0) - 64 * 2;
 	}
 
 	@Override
@@ -100,9 +103,9 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 
 		if (super.setLevel(level)) {
 			if (storedStack != null) {
-				maxCacheStackSize = getCapacity(level) - storedStack.getMaxStackSize() * 2;
+				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			} else {
-				maxCacheStackSize = getCapacity(level) - 64 * 2;
+				maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
 			}
 			return true;
 		}
@@ -116,14 +119,14 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level) {
+	public static int getCapacity(int level, int enchant) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)];
+		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	public int getScaledItemsStored(int scale) {
 
-		return MathHelper.round((long) getStoredCount() * scale / getCapacity(level));
+		return MathHelper.round((long) getStoredCount() * scale / getCapacity(level, enchantHolding));
 	}
 
 	public boolean toggleLock() {
@@ -149,7 +152,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		if (isCreative) {
 			if (!simulate && !locked) {
-				setStoredItemType(stack, getCapacity(level));
+				setStoredItemType(stack, getCapacity(level, enchantHolding));
 			}
 			return stack;
 		}
@@ -159,14 +162,14 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			}
 			return null;
 		}
-		if (getStoredCount() == getCapacity(level)) {
+		if (getStoredCount() == getCapacity(level, enchantHolding)) {
 			return stack;
 		}
 		if (ItemHelper.itemsIdentical(stack, storedStack)) {
-			if (getStoredCount() + stack.stackSize > getCapacity(level)) {
-				ItemStack retStack = ItemHelper.cloneStack(stack, getCapacity(level) - getStoredCount());
+			if (getStoredCount() + stack.stackSize > getCapacity(level, enchantHolding)) {
+				ItemStack retStack = ItemHelper.cloneStack(stack, getCapacity(level, enchantHolding) - getStoredCount());
 				if (!simulate) {
-					setStoredItemCount(getCapacity(level));
+					setStoredItemCount(getCapacity(level, enchantHolding));
 				}
 				return retStack;
 			}
@@ -245,13 +248,14 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		super.readFromNBT(nbt);
 
 		facing = nbt.getByte("Facing");
+		enchantHolding = nbt.getByte("EncHolding");
 		locked = nbt.getBoolean("Lock");
 
 		if (nbt.hasKey("Item")) {
 			storedStack = ItemHelper.readItemStackFromNBT(nbt.getCompoundTag("Item"));
-			maxCacheStackSize = getCapacity(level) - storedStack.getMaxStackSize() * 2;
+			maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 		} else {
-			maxCacheStackSize = getCapacity(level) - 64 * 2;
+			maxCacheStackSize = getCapacity(level, enchantHolding) - 64 * 2;
 		}
 	}
 
@@ -261,6 +265,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		super.writeToNBT(nbt);
 
 		nbt.setByte("Facing", facing);
+		nbt.setByte("EncHolding", enchantHolding);
 		nbt.setBoolean("Lock", locked);
 
 		if (storedStack != null) {
@@ -276,6 +281,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		PacketCoFHBase payload = super.getTilePacket();
 
 		payload.addByte(facing);
+		payload.addByte(enchantHolding);
 		payload.addBool(locked);
 		payload.addItemStack(storedStack);
 
@@ -291,6 +297,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		super.handleTilePacket(payload, isServer);
 
 		facing = payload.getByte();
+		enchantHolding = payload.getByte();
 		locked = payload.getBool();
 		storedStack = payload.getItemStack();
 
@@ -336,7 +343,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			clearInventory();
 		} else {
 			storedStack = ItemHelper.cloneStack(stack, Math.min(amount, getMaxStoredCount()));
-			maxCacheStackSize = getCapacity(level) - storedStack.getMaxStackSize() * 2;
+			maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			balanceStacks();
 		}
 		updateTrackers();
@@ -347,7 +354,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	//@Override
 	public int getMaxStoredCount() {
 
-		return getCapacity(level);
+		return getCapacity(level, enchantHolding);
 	}
 
 	/* IReconfigurableFacing */
@@ -431,7 +438,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 			if (storedStack == null) {
 				storedStack = inventory[0].copy();
 				inventory[0] = null;
-				maxCacheStackSize = getCapacity(level) - storedStack.getMaxStackSize() * 2;
+				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			} else {
 				storedStack.stackSize += inventory[0].stackSize + (inventory[1] == null ? 0 : inventory[1].stackSize);
 			}
@@ -443,7 +450,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 				}
 				storedStack = inventory[1].copy();
 				storedStack.stackSize = 0;
-				maxCacheStackSize = getCapacity(level) - storedStack.getMaxStackSize() * 2;
+				maxCacheStackSize = getCapacity(level, enchantHolding) - storedStack.getMaxStackSize() * 2;
 			}
 			storedStack.stackSize += (inventory[0] == null ? 0 : inventory[0].stackSize) + (inventory[1] == null ? 0 : inventory[1].stackSize);
 
@@ -517,7 +524,7 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 		}
 		if (storedStack != null) {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.getItemName(storedStack)));
-			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level)));
+			info.add(new TextComponentString(StringHelper.localize("info.cofh.amount") + ": " + getStoredCount() + " / " + getCapacity(level, enchantHolding)));
 		} else {
 			info.add(new TextComponentString(StringHelper.localize("info.cofh.item") + ": " + StringHelper.localize("info.cofh.empty")));
 		}

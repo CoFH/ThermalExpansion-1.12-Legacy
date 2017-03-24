@@ -85,12 +85,12 @@ public class TEFlorbs {
 		if (!enable) {
 			return;
 		}
-		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", ItemMaterial.crystalSlag, "slimeball"));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", ItemMaterial.crystalSlag, "slimeball", Items.BLAZE_POWDER));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", ItemMaterial.crystalSlag, Items.MAGMA_CREAM));
+		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", "crystalSlag", "slimeball"));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", "slimeball", Items.BLAZE_POWDER));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", Items.MAGMA_CREAM));
 
-		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", ItemMaterial.crystalSlag, ItemMaterial.globRosin));
-		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", ItemMaterial.crystalSlag, ItemMaterial.globRosin, Items.BLAZE_POWDER));
+		GameRegistry.addRecipe(ShapelessRecipe(florbStack, "dustWood", "crystalSlag", ItemMaterial.globRosin));
+		GameRegistry.addRecipe(ShapelessRecipe(florbMagmaticStack, "dustWood", "crystalSlag", ItemMaterial.globRosin, Items.BLAZE_POWDER));
 	}
 
 	private static void addFlorb(ItemStack florb, Fluid fluid) {

@@ -116,8 +116,8 @@ public class TECraftingHandler {
 				String oreName = "ore" + StringHelper.titleCase(oreType);
 				String ingotName = "ingot" + StringHelper.titleCase(oreType);
 
-				List<ItemStack> registeredOre = OreDictionary.getOres(oreName);
-				List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName);
+				List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
+				List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
 
 				if (registeredOre.size() <= 0 || registeredIngot.size() <= 0) {
 					continue;

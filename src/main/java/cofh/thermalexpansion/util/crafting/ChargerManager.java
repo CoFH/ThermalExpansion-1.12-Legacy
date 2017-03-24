@@ -51,7 +51,7 @@ public class ChargerManager {
 
 		/* APPLIED ENERGISTICS 2 */
 		if (ItemHelper.oreNameExists("crystalCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartzCharged")) {
-			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz").get(0), OreDictionary.getOres("crystalCertusQuartzCharged").get(0));
+			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("crystalCertusQuartzCharged", false).get(0));
 		}
 	}
 
@@ -93,8 +93,8 @@ public class ChargerManager {
 
 	private static void addOreDictRecipe(int energy, String oreName, ItemStack output) {
 
-		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName).get(0))) {
-			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName).get(0), 1), output);
+		if (ItemHelper.oreNameExists(oreName) && !recipeExists(OreDictionary.getOres(oreName, false).get(0))) {
+			addRecipe(energy, ItemHelper.cloneStack(OreDictionary.getOres(oreName, false).get(0), 1), output);
 		}
 	}
 

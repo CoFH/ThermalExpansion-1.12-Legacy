@@ -232,8 +232,8 @@ public class InsolatorManager {
 		String seedName = "seed" + StringHelper.titleCase(oreType);
 		String cropName = "crop" + StringHelper.titleCase(oreType);
 
-		List<ItemStack> registeredSeeds = OreDictionary.getOres(seedName);
-		List<ItemStack> registeredCrops = OreDictionary.getOres(cropName);
+		List<ItemStack> registeredSeeds = OreDictionary.getOres(seedName, false);
+		List<ItemStack> registeredCrops = OreDictionary.getOres(cropName, false);
 
 		if (registeredSeeds.isEmpty() || registeredCrops.isEmpty()) {
 			return;

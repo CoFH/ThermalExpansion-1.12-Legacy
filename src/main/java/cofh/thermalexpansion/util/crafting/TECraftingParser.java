@@ -679,7 +679,7 @@ public class TECraftingParser {
 				stackSize = 1;
 			}
 			if (item.has("oreName") && ItemHelper.oreNameExists(item.get("oreName").getAsString())) {
-				ItemStack oreStack = OreDictionary.getOres(item.get("oreName").getAsString()).get(0);
+				ItemStack oreStack = OreDictionary.getOres(item.get("oreName").getAsString(), false).get(0);
 				stack = ItemHelper.cloneStack(oreStack, stackSize);
 			} else {
 				if (!item.has("name")) {

@@ -56,14 +56,14 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeInputsSecondary = new ArrayList<>();
 
 		if (ComparableItemStackInsolator.getOreID(recipe.getPrimaryInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getPrimaryInput()))) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getPrimaryInput()), false)) {
 				recipeInputsPrimary.add(ItemHelper.cloneStack(ore, recipe.getPrimaryInput().stackSize));
 			}
 		} else {
 			recipeInputsPrimary.add(recipe.getPrimaryInput());
 		}
 		if (ComparableItemStackInsolator.getOreID(recipe.getSecondaryInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getSecondaryInput()))) {
+			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getSecondaryInput()), false)) {
 				recipeInputsSecondary.add(ItemHelper.cloneStack(ore, recipe.getSecondaryInput().stackSize));
 			}
 		} else {
