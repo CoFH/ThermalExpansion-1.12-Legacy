@@ -37,11 +37,12 @@ public class FurnaceRecipeCategory extends BlankRecipeCategory<FurnaceRecipeWrap
 		registry.addRecipeCategories(new FurnaceRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new FurnaceRecipeHandler());
 		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE, RecipeUidsTE.FURNACE_FOOD, RecipeUidsTE.FURNACE_ORE);
+		registry.addRecipeClickArea(GuiFurnace.class, 79, 34, 24, 16, RecipeUidsTE.FURNACE, RecipeUidsTE.FURNACE_FOOD, RecipeUidsTE.FURNACE_ORE, RecipeUidsTE.FURNACE_PYROLYSIS);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineFurnace, RecipeUidsTE.FURNACE);
 
 		FurnaceRecipeCategoryFood.initialize(registry);
 		FurnaceRecipeCategoryOre.initialize(registry);
+		FurnaceRecipeCategoryPyrolysis.initialize(registry);
 	}
 
 	public static List<FurnaceRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

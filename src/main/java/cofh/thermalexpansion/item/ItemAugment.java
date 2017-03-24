@@ -188,6 +188,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
 		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
+		machineFurnacePyrolysis = addAugmentItem(258, TEProps.MACHINE_FURNACE_PYROLYSIS, AugmentType.MODE);
 
 		// machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
 		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
@@ -291,6 +292,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', Blocks.PISTON,
 				'Y', "dustPyrotheum"
+		));
+		addRecipe(ShapedRecipe(machineFurnacePyrolysis,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearInvar",
+				'I', "plateCopper",
+				'X', Blocks.NETHER_BRICK,
+				'Y', "dustCharcoal"
 		));
 
 //		addRecipe(ShapedRecipe(machinePulverizerGeode,
@@ -624,6 +635,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineFurnaceFood;
 	public static ItemStack machineFurnaceOre;
+	public static ItemStack machineFurnacePyrolysis;
 
 	public static ItemStack machinePulverizerGeode;
 	public static ItemStack machinePulverizerPetrotheum;

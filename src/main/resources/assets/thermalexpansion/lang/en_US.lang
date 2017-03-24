@@ -125,6 +125,11 @@ info.thermalexpansion.augment.machineFurnaceOre.a.0=Gain an additional ingot whe
 info.thermalexpansion.augment.machineFurnaceOre.b.0=Only ores can be processed.
 info.thermalexpansion.augment.machineFurnaceOre.b.1=Additional energy is required per operation.
 
+info.thermalexpansion.augment.machineFurnacePyrolysis.0=Redstone Furnace: Specialization
+info.thermalexpansion.augment.machineFurnacePyrolysis.a.0=Allows for pyrolysis and Creosote production.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.0=Only certain items can be processed.
+info.thermalexpansion.augment.machineFurnacePyrolysis.b.1=Processing speed is greatly reduced.
+
 info.thermalexpansion.augment.machineInsolatorEnd.0=Phytogenic Insolator: Specialization
 info.thermalexpansion.augment.machineInsolatorEnd.a.0=Allows for non-standard crops to be grown.
 info.thermalexpansion.augment.machineInsolatorEnd.a.1=Suitable for Ender crops.
@@ -263,6 +268,7 @@ item.thermalexpansion.augment.machineChargerThroughput.name=Flux Linkage Concent
 item.thermalexpansion.augment.machineCompactorMint.name=Numismatic Press
 item.thermalexpansion.augment.machineFurnaceFood.name=Trivection Chamber
 item.thermalexpansion.augment.machineFurnaceOre.name=Flux Anodizers
+item.thermalexpansion.augment.machineFurnacePyrolysis.name=Pyrolytic Conversion
 item.thermalexpansion.augment.machineExtruderAndesite.name=Andesitic Subduction
 item.thermalexpansion.augment.machineExtruderDiorite.name=Dioritic Subduction
 item.thermalexpansion.augment.machineExtruderGranite.name=Granitic Subduction

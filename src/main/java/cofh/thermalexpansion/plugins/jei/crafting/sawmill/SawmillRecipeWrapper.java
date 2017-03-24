@@ -2,7 +2,6 @@ package cofh.thermalexpansion.plugins.jei.crafting.sawmill;
 
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
-import cofh.thermalexpansion.block.machine.TilePulverizer;
 import cofh.thermalexpansion.block.machine.TileSawmill;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -86,7 +85,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileSawmill.basePower, StartDirection.LEFT, true);
-		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TilePulverizer.basePower, StartDirection.LEFT, false);
+		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileSawmill.basePower, StartDirection.LEFT, false);
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.TOP, true);
 	}

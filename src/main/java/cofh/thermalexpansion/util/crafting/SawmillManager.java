@@ -321,11 +321,9 @@ public class SawmillManager {
 		public static final String INGOT = "ingot";
 		public static final String NUGGET = "nugget";
 
-		public static final String RUBBER = "woodRubber";
-
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.equals(RUBBER);
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
 		}
 
 		public static int getOreID(ItemStack stack) {

@@ -22,7 +22,7 @@ import java.util.Set;
 public class FurnaceManager {
 
 	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMap = new THashMap<>();
-	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMapPyro = new THashMap<>();
+	private static Map<ComparableItemStackFurnace, RecipeFurnace> recipeMapPyrolysis = new THashMap<>();
 	private static Set<ComparableItemStackFurnace> foodSet = new THashSet<>();
 	private static Set<ComparableItemStackFurnace> oreSet = new THashSet<>();
 
@@ -44,14 +44,40 @@ public class FurnaceManager {
 		return recipe;
 	}
 
+	public static RecipeFurnace getRecipePyrolysis(ItemStack input) {
+
+		if (input == null) {
+			return null;
+		}
+		ComparableItemStackFurnace query = new ComparableItemStackFurnace(input);
+
+		RecipeFurnace recipe = recipeMapPyrolysis.get(query);
+
+		if (recipe == null) {
+			query.metadata = OreDictionary.WILDCARD_VALUE;
+			recipe = recipeMap.get(query);
+		}
+		return recipe;
+	}
+
 	public static boolean recipeExists(ItemStack input) {
 
 		return getRecipe(input) != null;
 	}
 
+	public static boolean recipeExistsPyrolysis(ItemStack input) {
+
+		return getRecipePyrolysis(input) != null;
+	}
+
 	public static RecipeFurnace[] getRecipeList() {
 
 		return recipeMap.values().toArray(new RecipeFurnace[recipeMap.size()]);
+	}
+
+	public static RecipeFurnace[] getRecipeListPyrolysis() {
+
+		return recipeMapPyrolysis.values().toArray(new RecipeFurnace[recipeMapPyrolysis.size()]);
 	}
 
 	public static boolean isFood(ItemStack input) {
@@ -87,8 +113,7 @@ public class FurnaceManager {
 		/* SPECIAL */
 		{
 			addRecipe(DEFAULT_ENERGY / 2, new ItemStack(Blocks.CACTUS), new ItemStack(Items.DYE, 1, 2));
-			addRecipe(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), new ItemStack(Items.COAL, 1, 1));
-			// addRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.ROTTEN_FLESH, 2, 0), new ItemStack(Items.LEATHER));
+			addRecipe(DEFAULT_ENERGY * 2, new ItemStack(Items.ROTTEN_FLESH, 3, 0), new ItemStack(Items.LEATHER));
 		}
 
 		/* FOOD */
@@ -188,6 +213,16 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
 			// addOreDictRecipe(energy, "oreberryEnderium", ItemMaterial.nuggetEnderium);
 		}
+
+		/* PYROLYSIS */
+		{
+			ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
+
+			addRecipePyrolysis(DEFAULT_ENERGY / 4, ItemMaterial.dustWoodCompressed, charcoal);
+			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Blocks.LOG), charcoal);
+			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), charcoal);
+			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.gemCoke);
+		}
 	}
 
 	public static void loadRecipes() {
@@ -279,10 +314,25 @@ public class FurnaceManager {
 		return true;
 	}
 
+	public static boolean addRecipePyrolysis(int energy, ItemStack input, ItemStack output) {
+
+		if (input == null || output == null || energy <= 0 || recipeExistsPyrolysis(input)) {
+			return false;
+		}
+		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
+		recipeMapPyrolysis.put(new ComparableItemStackFurnace(input), recipe);
+		return true;
+	}
+
 	/* REMOVE RECIPES */
 	public static boolean removeRecipe(ItemStack input) {
 
 		return recipeMap.remove(new ComparableItemStackFurnace(input)) != null;
+	}
+
+	public static boolean removeRecipePyrolysis(ItemStack input) {
+
+		return recipeMapPyrolysis.remove(new ComparableItemStackFurnace(input)) != null;
 	}
 
 	/* HELPERS */
@@ -339,10 +389,11 @@ public class FurnaceManager {
 
 		public static final String ORE = "ore";
 		public static final String DUST = "dust";
+		public static final String LOG = "log";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(ORE) || oreName.startsWith(DUST);
+			return oreName.startsWith(ORE) || oreName.startsWith(DUST) || oreName.startsWith(LOG);
 		}
 
 		public static int getOreID(ItemStack stack) {
