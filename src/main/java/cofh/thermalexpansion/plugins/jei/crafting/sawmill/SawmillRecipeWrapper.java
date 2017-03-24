@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.crafting.sawmill;
 
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TilePulverizer;
 import cofh.thermalexpansion.block.machine.TileSawmill;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -37,7 +38,6 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public SawmillRecipeWrapper(IGuiHelper guiHelper, RecipeSawmill recipe) {
 
@@ -65,7 +65,10 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 			recipeOutputs.add(recipe.getSecondaryOutput());
 		}
 		if (uId.equals(RecipeUidsTE.SAWMILL_TAPPER)) {
-			recipeOutputFluids.add(TapperManager.getFluid(recipe.getInput()));
+			FluidStack treeFluid = TapperManager.getFluid(recipe.getInput()).copy();
+			treeFluid.amount /= TileSawmill.fluidFactor;
+
+			recipeOutputFluids.add(treeFluid);
 			outputFluids = recipeOutputFluids;
 			energy = recipe.getEnergy() * 3 / 2;
 		} else {
@@ -77,9 +80,9 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 
 		chance = recipe.getSecondaryOutputChance();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SAWMILL_TAPPER) ? 1 : 0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(3);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SAWMILL_TAPPER) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SAW);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileSawmill.basePower, StartDirection.LEFT, true);
@@ -106,6 +109,11 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
+
+		if (chance > 0) {
+			String dispChance = StringHelper.formatNumber(chance) + "%";
+			minecraft.fontRendererObj.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+		}
 	}
 
 }

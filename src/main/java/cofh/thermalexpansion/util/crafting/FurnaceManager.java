@@ -51,7 +51,7 @@ public class FurnaceManager {
 
 	public static RecipeFurnace[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeFurnace[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipeFurnace[recipeMap.size()]);
 	}
 
 	public static boolean isFood(ItemStack input) {

@@ -40,7 +40,7 @@ public class SawmillRecipeCategory extends BlankRecipeCategory<SawmillRecipeWrap
 		registry.addRecipeClickArea(GuiSawmill.class, 79, 34, 24, 16, RecipeUidsTE.SAWMILL, RecipeUidsTE.SAWMILL_TAPPER);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL);
 
-		SawmillCategoryTapper.initialize(registry);
+		SawmillRecipeCategoryTapper.initialize(registry);
 	}
 
 	public static List<SawmillRecipeWrapper> getRecipes(IGuiHelper guiHelper) {

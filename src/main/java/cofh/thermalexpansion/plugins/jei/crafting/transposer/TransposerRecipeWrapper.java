@@ -35,7 +35,6 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public TransposerRecipeWrapper(IGuiHelper guiHelper, RecipeTransposer recipe, String uIdIn) {
 
@@ -69,21 +68,21 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 		energy = recipe.getEnergy();
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
-			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(2);
-			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(2);
+			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
+			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressLeftFill(Drawables.PROGRESS_DROP);
 
-			drop = Drawables.getDrawables(guiHelper).getProgressLeft(2);
+			drop = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);
 			fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileTransposer.basePower, StartDirection.RIGHT, true);
 			progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileTransposer.basePower, StartDirection.RIGHT, false);
 		} else {
-			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(2);
-			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(2);
+			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+			IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
 
-			drop = Drawables.getDrawables(guiHelper).getProgress(2);
+			drop = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
 			fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileTransposer.basePower, StartDirection.LEFT, true);
 			progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileTransposer.basePower, StartDirection.LEFT, false);
 		}
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(0);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_BUBBLE);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		speed = guiHelper.createAnimatedDrawable(speedDrawable, 1000, StartDirection.TOP, true);

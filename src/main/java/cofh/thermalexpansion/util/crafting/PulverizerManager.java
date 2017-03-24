@@ -48,7 +48,7 @@ public class PulverizerManager {
 
 	public static RecipePulverizer[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipePulverizer[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipePulverizer[recipeMap.size()]);
 	}
 
 	public static void addDefaultRecipes() {

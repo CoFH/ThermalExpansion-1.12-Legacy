@@ -28,7 +28,6 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public CrucibleRecipeWrapper(IGuiHelper guiHelper, RecipeCrucible recipe) {
 
@@ -43,9 +42,9 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(2);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(2);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_DROP);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_DROP);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileCrucible.basePower, StartDirection.LEFT, true);

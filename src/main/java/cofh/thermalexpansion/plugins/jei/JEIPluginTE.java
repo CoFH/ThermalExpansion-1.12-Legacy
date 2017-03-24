@@ -10,11 +10,13 @@ import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCat
 import cofh.thermalexpansion.plugins.jei.crafting.refinery.RefineryRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.sawmill.SawmillRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.smelter.SmelterRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.crafting.transposer.Descriptions;
 import cofh.thermalexpansion.plugins.jei.crafting.transposer.TransposerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.dynamos.DynamoFuelCategories;
+import cofh.thermalexpansion.plugins.jei.fuels.compression.CompressionFuelCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.coolant.CoolantCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.enervation.EnervationFuelCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.magmatic.MagmaticFuelCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.numismatic.NumismaticFuelCategory;
+import cofh.thermalexpansion.plugins.jei.fuels.reactant.ReactantFuelCategory;
 import cofh.thermalexpansion.plugins.jei.fuels.steam.SteamFuelCategory;
 import mezz.jei.api.BlankModPlugin;
 import mezz.jei.api.IModRegistry;
@@ -50,12 +52,14 @@ public class JEIPluginTE extends BlankModPlugin {
 		TransposerRecipeCategory.initialize(registry);
 		ChargerRecipeCategory.initialize(registry);
 
-		DynamoFuelCategories.initialize(registry);
-
 		SteamFuelCategory.initialize(registry);
-
+		MagmaticFuelCategory.initialize(registry);
+		CompressionFuelCategory.initialize(registry);
+		ReactantFuelCategory.initialize(registry);
 		EnervationFuelCategory.initialize(registry);
 		NumismaticFuelCategory.initialize(registry);
+
+		CoolantCategory.initialize(registry);
 
 		Descriptions.register(registry);
 	}
@@ -67,8 +71,8 @@ public class JEIPluginTE extends BlankModPlugin {
 			return;
 		}
 		RenderHelper.setBlockTextureSheet();
-		int colour = fluid.getFluid().getColor(fluid);
-		GlStateManager.color((colour >> 16) & 0xFF, (colour >> 8) & 0xFF, colour & 0xFF, (colour >> 24) & 0xFF);
+		int color = fluid.getFluid().getColor(fluid);
+		RenderHelper.setGLColorFromInt(color);
 		drawTiledTexture(x, y, RenderHelper.getTexture(fluid.getFluid().getStill(fluid)), width, height);
 	}
 
@@ -87,7 +91,7 @@ public class JEIPluginTE extends BlankModPlugin {
 				drawScaledTexturedModelRectFromIcon(x + i, y + j, icon, drawWidth, drawHeight);
 			}
 		}
-		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 	}
 
 	public static void drawScaledTexturedModelRectFromIcon(int x, int y, TextureAtlasSprite icon, int width, int height) {

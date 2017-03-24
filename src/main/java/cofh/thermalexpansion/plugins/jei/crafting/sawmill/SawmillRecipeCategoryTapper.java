@@ -21,14 +21,14 @@ import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SawmillCategoryTapper extends SawmillRecipeCategory {
+public class SawmillRecipeCategoryTapper extends SawmillRecipeCategory {
 
 	public static void initialize(IModRegistry registry) {
 
 		IJeiHelpers jeiHelpers = registry.getJeiHelpers();
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
-		registry.addRecipeCategories(new SawmillCategoryTapper(guiHelper));
+		registry.addRecipeCategories(new SawmillRecipeCategoryTapper(guiHelper));
 		registry.addRecipes(getRecipes(guiHelper));
 		registry.addRecipeCategoryCraftingItem(ItemAugment.machineSawmillTapper, RecipeUidsTE.SAWMILL_TAPPER);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineSawmill, RecipeUidsTE.SAWMILL_TAPPER);
@@ -49,12 +49,12 @@ public class SawmillCategoryTapper extends SawmillRecipeCategory {
 	IDrawableStatic tank;
 	IDrawableStatic tankOverlay;
 
-	public SawmillCategoryTapper(IGuiHelper guiHelper) {
+	public SawmillRecipeCategoryTapper(IGuiHelper guiHelper) {
 
 		super(guiHelper);
 
-		tank = Drawables.getDrawables(guiHelper).getTank(0);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 
 		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineSawmillTapper.name");
 	}

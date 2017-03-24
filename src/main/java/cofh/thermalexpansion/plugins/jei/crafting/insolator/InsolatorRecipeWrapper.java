@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.crafting.insolator;
 
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -39,7 +40,6 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public InsolatorRecipeWrapper(IGuiHelper guiHelper, RecipeInsolator recipe) {
 
@@ -88,9 +88,9 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 
 		substrate = recipe.getType();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(1);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(6);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW_FLUID);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_SUN);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileInsolator.basePower, StartDirection.LEFT, true);
@@ -116,6 +116,11 @@ public class InsolatorRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 34);
 		energyMeter.draw(minecraft, 2, 8);
+
+		if (chance > 0) {
+			String dispChance = StringHelper.formatNumber(chance) + "%";
+			minecraft.fontRendererObj.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+		}
 	}
 
 }

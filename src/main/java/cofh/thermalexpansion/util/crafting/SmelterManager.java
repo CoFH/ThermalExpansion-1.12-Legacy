@@ -68,7 +68,7 @@ public class SmelterManager {
 
 	public static RecipeSmelter[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSmelter[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipeSmelter[recipeMap.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

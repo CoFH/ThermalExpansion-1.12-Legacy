@@ -60,7 +60,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	private FluidTankCore waterTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	private int waterRF;
-	private int currentFuelRF = SteamManager.DEFAULT_ENERGY;
+	private int currentFuelRF = 0;
 
 	/* AUGMENTS */
 	protected boolean augmentTurbine;
@@ -158,7 +158,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = SteamManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
 		return fuelRF * scale / currentFuelRF;
 	}
@@ -183,7 +183,7 @@ public class TileDynamoSteam extends TileDynamoBase {
 		waterTank.readFromNBT(nbt.getCompoundTag("WaterTank"));
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = SteamManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, SteamManager.DEFAULT_ENERGY);
 		}
 	}
 

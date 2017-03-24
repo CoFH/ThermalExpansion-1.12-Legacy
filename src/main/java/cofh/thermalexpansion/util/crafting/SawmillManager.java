@@ -48,7 +48,7 @@ public class SawmillManager {
 
 	public static RecipeSawmill[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeSawmill[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipeSawmill[recipeMap.size()]);
 	}
 
 	public static void addDefaultRecipes() {

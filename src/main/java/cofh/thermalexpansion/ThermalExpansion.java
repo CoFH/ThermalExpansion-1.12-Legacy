@@ -166,10 +166,9 @@ public class ThermalExpansion {
 		SteamManager.addDefaultFuels();
 		MagmaticManager.addDefaultFuels();
 		CompressionManager.addDefaultFuels();
+		ReactantManager.addDefaultReactions();
 		EnervationManager.addDefaultFuels();
 		NumismaticManager.addDefaultFuels();
-
-		FuelManager.addDefaultFuels();
 	}
 
 	private void managerParse() {
@@ -191,10 +190,9 @@ public class ThermalExpansion {
 		SteamManager.loadFuels();
 		MagmaticManager.loadFuels();
 		CompressionManager.loadFuels();
+		ReactantManager.loadReactions();
 		EnervationManager.loadFuels();
 		NumismaticManager.loadFuels();
-
-		FuelManager.parseFuels();
 	}
 
 	private synchronized void managerRefresh() {
@@ -210,8 +208,7 @@ public class ThermalExpansion {
 		TransposerManager.refreshRecipes();
 		ChargerManager.refreshRecipes();
 
-		MagmaticManager.refreshFuels();
-		CompressionManager.refreshFuels();
+		ReactantManager.refreshReactions();
 
 		TapperManager.refreshMappings();
 	}

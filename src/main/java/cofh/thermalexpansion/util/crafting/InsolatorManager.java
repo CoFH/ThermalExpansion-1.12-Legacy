@@ -65,7 +65,7 @@ public class InsolatorManager {
 
 	public static RecipeInsolator[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeInsolator[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipeInsolator[recipeMap.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

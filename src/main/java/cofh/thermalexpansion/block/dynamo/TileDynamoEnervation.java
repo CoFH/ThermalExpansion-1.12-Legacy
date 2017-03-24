@@ -43,7 +43,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
-	private int currentFuelRF = EnervationManager.DEFAULT_ENERGY;
+	private int currentFuelRF = 0;
 
 	public TileDynamoEnervation() {
 
@@ -98,7 +98,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = EnervationManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -114,7 +114,7 @@ public class TileDynamoEnervation extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = EnervationManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, EnervationManager.DEFAULT_ENERGY);
 		}
 	}
 

@@ -36,6 +36,7 @@ public class CompressionManager {
 
 	public static void addDefaultFuels() {
 
+		addFuel("creosote", 100000);
 		addFuel("coal", 500000);
 		addFuel("tree_oil", 1000000);
 		addFuel("refined_oil", 1250000);
@@ -43,10 +44,6 @@ public class CompressionManager {
 	}
 
 	public static void loadFuels() {
-
-	}
-
-	public static void refreshFuels() {
 
 	}
 

@@ -22,7 +22,7 @@ public class TransposerManager {
 	private static Map<ComparableItemStackTransposer, RecipeTransposer> recipeMapExtract = new THashMap<>();
 	private static Set<ComparableItemStackTransposer> validationSet = new THashSet<>();
 
-	public static final int DEFAULT_ENERGY = 800;
+	public static final int DEFAULT_ENERGY = 400;
 
 	public static RecipeTransposer getFillRecipe(ItemStack input, FluidStack fluid) {
 
@@ -46,12 +46,12 @@ public class TransposerManager {
 
 	public static RecipeTransposer[] getFillRecipeList() {
 
-		return recipeMapFill.values().toArray(new RecipeTransposer[recipeMapFill.values().size()]);
+		return recipeMapFill.values().toArray(new RecipeTransposer[recipeMapFill.size()]);
 	}
 
 	public static RecipeTransposer[] getExtractRecipeList() {
 
-		return recipeMapExtract.values().toArray(new RecipeTransposer[recipeMapExtract.values().size()]);
+		return recipeMapExtract.values().toArray(new RecipeTransposer[recipeMapExtract.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {
@@ -177,7 +177,7 @@ public class TransposerManager {
 		final int energy;
 		final int chance;
 
-		RecipeTransposer(ItemStack input, ItemStack output, FluidStack fluid, int energy, int chance) {
+		public RecipeTransposer(ItemStack input, ItemStack output, FluidStack fluid, int energy, int chance) {
 
 			this.input = input;
 			this.output = output;
@@ -211,11 +211,6 @@ public class TransposerManager {
 			return chance;
 		}
 
-	}
-
-	/* MODE ENUM */
-	public enum Mode {
-		FILL, EXTRACT
 	}
 
 	/* ITEMSTACK CLASS */

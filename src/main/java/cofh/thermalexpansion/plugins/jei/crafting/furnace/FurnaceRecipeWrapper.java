@@ -29,7 +29,6 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 	/* Animation */
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public FurnaceRecipeWrapper(IGuiHelper guiHelper, RecipeFurnace recipe) {
 
@@ -64,8 +63,8 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 		inputs = Collections.singletonList(recipeInputs);
 		outputs = recipeOutputs;
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileFurnace.basePower, StartDirection.LEFT, false);

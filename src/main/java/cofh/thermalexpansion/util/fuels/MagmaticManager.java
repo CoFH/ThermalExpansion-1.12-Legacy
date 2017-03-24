@@ -45,10 +45,6 @@ public class MagmaticManager {
 
 	}
 
-	public static void refreshFuels() {
-
-	}
-
 	/* ADD FUELS */
 	public static boolean addFuel(Fluid fluid, int energy) {
 

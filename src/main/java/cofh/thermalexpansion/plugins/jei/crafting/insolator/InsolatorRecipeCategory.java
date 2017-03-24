@@ -67,8 +67,8 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 	public InsolatorRecipeCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiInsolator.TEXTURE, 26, 11, 124, 62, 0, 0, 16, 24);
-		tank = Drawables.getDrawables(guiHelper).getTank(0);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.insolator.name");
 	}

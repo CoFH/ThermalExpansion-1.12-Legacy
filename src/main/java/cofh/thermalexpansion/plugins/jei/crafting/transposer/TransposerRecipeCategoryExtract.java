@@ -41,22 +41,6 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		return recipes;
 	}
 
-	//	public static List<TransposerRecipeWrapper> getRecipes(IIngredientRegistry ingredientRegistry) {
-	//		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
-	//		for (ItemStack stack : ingredientRegistry.getIngredients(ItemStack.class)) {
-	//
-	//			if (FluidHelper.isFluidHandler(stack)) {
-	//
-	//			}
-	//
-	//			TransposerRecipeWrapper containerRecipe = SqueezerRecipeManager.findMatchingContainerRecipe(stack);
-	//			if (containerRecipe != null) {
-	//				recipes.add(new TransposerRecipeWrapper(containerRecipe, stack));
-	//			}
-	//		}
-	//		return recipes;
-	//	}
-
 	public TransposerRecipeCategoryExtract(IGuiHelper guiHelper) {
 
 		super(guiHelper);

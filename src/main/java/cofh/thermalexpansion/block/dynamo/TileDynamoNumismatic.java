@@ -42,7 +42,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
 	}
 
-	private int currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
+	private int currentFuelRF = 0;
 
 	public TileDynamoNumismatic() {
 
@@ -91,7 +91,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -107,7 +107,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = NumismaticManager.DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 	}
 

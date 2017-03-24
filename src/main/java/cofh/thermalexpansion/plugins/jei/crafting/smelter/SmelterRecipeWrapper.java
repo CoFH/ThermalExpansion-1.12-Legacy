@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.crafting.smelter;
 
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileSmelter;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -36,7 +37,6 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public SmelterRecipeWrapper(IGuiHelper guiHelper, RecipeSmelter recipe) {
 
@@ -89,9 +89,9 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 
 		chance = recipe.getSecondaryOutputChance();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM) ? 1 : 0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.SMELTER_PYROTHEUM) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TileSmelter.basePower, StartDirection.LEFT, true);
@@ -118,6 +118,11 @@ public class SmelterRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 34, 33);
 		energyMeter.draw(minecraft, 2, 8);
+
+		if (chance > 0) {
+			String dispChance = StringHelper.formatNumber(chance) + "%";
+			minecraft.fontRendererObj.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+		}
 	}
 
 }

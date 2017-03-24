@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.plugins.jei.crafting.pulverizer;
 
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TilePulverizer;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
@@ -36,7 +37,6 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 	final IDrawableAnimated fluid;
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public PulverizerRecipeWrapper(IGuiHelper guiHelper, RecipePulverizer recipe) {
 
@@ -76,9 +76,9 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 
 		chance = recipe.getSecondaryOutputChance();
 
-		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(1);
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM) ? 1 : 0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(1);
+		IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgress(Drawables.PROGRESS_ARROW_FLUID);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(uId.equals(RecipeUidsTE.PULVERIZER_PETROTHEUM) ? Drawables.PROGRESS_ARROW_FLUID : Drawables.PROGRESS_ARROW);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_CRUSH);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		fluid = guiHelper.createAnimatedDrawable(fluidDrawable, energy / TilePulverizer.basePower, StartDirection.LEFT, true);
@@ -105,6 +105,11 @@ public class PulverizerRecipeWrapper extends BaseRecipeWrapper {
 		progress.draw(minecraft, 69, 23);
 		speed.draw(minecraft, 43, 33);
 		energyMeter.draw(minecraft, 2, 8);
+
+		if (chance > 0) {
+			String dispChance = StringHelper.formatNumber(chance) + "%";
+			minecraft.fontRendererObj.drawString(dispChance, 102 - 6 * dispChance.length(), 48, 0x808080);
+		}
 	}
 
 }

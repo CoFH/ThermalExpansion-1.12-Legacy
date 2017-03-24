@@ -74,11 +74,11 @@ public class CompactorManager {
 
 		switch (mode) {
 			case PRESS:
-				return recipeMapPress.values().toArray(new RecipeCompactor[recipeMapPress.values().size()]);
+				return recipeMapPress.values().toArray(new RecipeCompactor[recipeMapPress.size()]);
 			case STORAGE:
-				return recipeMapStorage.values().toArray(new RecipeCompactor[recipeMapStorage.values().size()]);
+				return recipeMapStorage.values().toArray(new RecipeCompactor[recipeMapStorage.size()]);
 		}
-		return recipeMapMint.values().toArray(new RecipeCompactor[recipeMapMint.values().size()]);
+		return recipeMapMint.values().toArray(new RecipeCompactor[recipeMapMint.size()]);
 	}
 
 	public static boolean isItemValid(ItemStack input) {

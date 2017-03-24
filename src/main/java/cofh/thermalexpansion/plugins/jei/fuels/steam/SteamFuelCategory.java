@@ -5,17 +5,14 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.fuels.SteamManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
@@ -23,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-public class SteamFuelCategory extends BlankRecipeCategory<SteamFuelWrapper> {
+public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 
 	public static boolean enable = true;
 
@@ -63,16 +60,11 @@ public class SteamFuelCategory extends BlankRecipeCategory<SteamFuelWrapper> {
 		return recipes;
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
-	IDrawableStatic burnEmpty;
-	String localizedName;
-
 	public SteamFuelCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiDynamoSteam.TEXTURE, 26, 11, 70, 62, 0, 0, 16, 78);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
-		burnEmpty = Drawables.getDrawables(guiHelper).getSpeed(2);
+		durationEmpty = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_FLAME);
 		localizedName = StringHelper.localize("tile.thermalexpansion.dynamo.steam.name");
 	}
 
@@ -83,31 +75,11 @@ public class SteamFuelCategory extends BlankRecipeCategory<SteamFuelWrapper> {
 		return RecipeUidsTE.DYNAMO_STEAM;
 	}
 
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
-	}
-
-	@Override
-	public void drawExtras(@Nonnull Minecraft minecraft) {
-
-		energyMeter.draw(minecraft, 71, 7);
-		burnEmpty.draw(minecraft, 34, 43);
-	}
-
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, SteamFuelWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
 		guiItemStacks.init(0, true, 33, 23);

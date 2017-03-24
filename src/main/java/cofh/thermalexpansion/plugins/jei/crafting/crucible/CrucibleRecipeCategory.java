@@ -61,8 +61,8 @@ public class CrucibleRecipeCategory extends BlankRecipeCategory<CrucibleRecipeWr
 		background = guiHelper.createDrawable(GuiCrucible.TEXTURE, 26, 11, 72, 62, 0, 0, 16, 76);
 
 		drop = Drawables.getDrawables(guiHelper).getProgress(2);
-		tank = Drawables.getDrawables(guiHelper).getTank(0);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
 		localizedName = StringHelper.localize("tile.thermalexpansion.machine.crucible.name");
 	}

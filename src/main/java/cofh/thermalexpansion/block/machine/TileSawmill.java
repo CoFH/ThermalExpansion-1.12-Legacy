@@ -34,6 +34,7 @@ public class TileSawmill extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
 	public static int basePower = 20;
+	public static int fluidFactor = 5;
 
 	public static void initialize() {
 
@@ -191,7 +192,7 @@ public class TileSawmill extends TileMachineBase {
 		}
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
 			FluidStack treeFluid = TapperManager.getFluid(inventory[0]).copy();
-			treeFluid.amount /= 5;
+			treeFluid.amount /= fluidFactor;
 			tank.fill(treeFluid, true);
 		}
 		inventory[0].stackSize -= recipe.getInput().stackSize;

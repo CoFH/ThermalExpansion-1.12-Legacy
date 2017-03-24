@@ -13,13 +13,13 @@ public abstract class BaseFuelWrapper extends BlankRecipeWrapper {
 
 	protected int energy;
 
-	protected IDrawableAnimated burnFill;
+	protected IDrawableAnimated durationFill;
 	protected IDrawableAnimated energyMeter;
 
 	@Override
 	public void drawInfo(Minecraft minecraft, int recipeWidth, int recipeHeight, int mouseX, int mouseY) {
 
-		burnFill.draw(minecraft, 34, 43);
+		durationFill.draw(minecraft, 34, 43);
 		energyMeter.draw(minecraft, 71, 7);
 
 		minecraft.fontRendererObj.drawString(StringHelper.formatNumber(energy) + " RF", 96, (recipeHeight - 9) / 2, 0x808080);

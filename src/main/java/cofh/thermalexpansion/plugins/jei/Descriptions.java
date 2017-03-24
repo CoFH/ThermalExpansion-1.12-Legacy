@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.plugins.jei.crafting.transposer;
+package cofh.thermalexpansion.plugins.jei;
 
 import cofh.lib.util.helpers.StringHelper;
 import gnu.trove.map.hash.THashMap;

@@ -5,24 +5,21 @@ import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
+import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
 import cofh.thermalexpansion.util.fuels.NumismaticManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;
-import mezz.jei.api.gui.IDrawable;
-import mezz.jei.api.gui.IDrawableStatic;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
 import mezz.jei.api.ingredients.IIngredients;
-import mezz.jei.api.recipe.BlankRecipeCategory;
-import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 
 import javax.annotation.Nonnull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NumismaticFuelCategory extends BlankRecipeCategory<NumismaticFuelWrapper> {
+public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapper> {
 
 	public static boolean enable = true;
 
@@ -51,16 +48,11 @@ public class NumismaticFuelCategory extends BlankRecipeCategory<NumismaticFuelWr
 		return recipes;
 	}
 
-	IDrawableStatic background;
-	IDrawableStatic energyMeter;
-	IDrawableStatic burnEmpty;
-	String localizedName;
-
 	public NumismaticFuelCategory(IGuiHelper guiHelper) {
 
 		background = guiHelper.createDrawable(GuiDynamoNumismatic.TEXTURE, 26, 11, 70, 62, 0, 0, 16, 78);
 		energyMeter = Drawables.getDrawables(guiHelper).getEnergyEmpty();
-		burnEmpty = Drawables.getDrawables(guiHelper).getSpeed(8);
+		durationEmpty = Drawables.getDrawables(guiHelper).getScale(Drawables.SCALE_ALCHEMY);
 		localizedName = StringHelper.localize("tile.thermalexpansion.dynamo.numismatic.name");
 	}
 
@@ -71,31 +63,11 @@ public class NumismaticFuelCategory extends BlankRecipeCategory<NumismaticFuelWr
 		return RecipeUidsTE.DYNAMO_NUMISMATIC;
 	}
 
-	@Nonnull
-	@Override
-	public String getTitle() {
-
-		return localizedName;
-	}
-
-	@Nonnull
-	@Override
-	public IDrawable getBackground() {
-
-		return background;
-	}
-
-	@Override
-	public void drawExtras(@Nonnull Minecraft minecraft) {
-
-		energyMeter.draw(minecraft, 71, 7);
-		burnEmpty.draw(minecraft, 34, 43);
-	}
-
 	@Override
 	public void setRecipe(IRecipeLayout recipeLayout, NumismaticFuelWrapper recipeWrapper, IIngredients ingredients) {
 
 		List<List<ItemStack>> inputs = ingredients.getInputs(ItemStack.class);
+
 		IGuiItemStackGroup guiItemStacks = recipeLayout.getItemStacks();
 
 		guiItemStacks.init(0, true, 33, 23);

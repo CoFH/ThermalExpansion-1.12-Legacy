@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoReactant extends GuiDynamoBase {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "reactant.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "reactant.png");
 
 	private ElementDualScaled duration;
 
@@ -29,7 +29,7 @@ public class GuiDynamoReactant extends GuiDynamoBase {
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank(0)));
-		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_ALCHEMY, 32, 16));
+		duration = (ElementDualScaled) addElement(new ElementDualScaled(this, 115, 35).setSize(16, 16).setTexture(TEX_FLAME_GREEN, 32, 16));
 	}
 
 	@Override

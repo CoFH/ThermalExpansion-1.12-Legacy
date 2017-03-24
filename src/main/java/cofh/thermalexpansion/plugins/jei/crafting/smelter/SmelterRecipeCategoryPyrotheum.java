@@ -53,8 +53,8 @@ public class SmelterRecipeCategoryPyrotheum extends SmelterRecipeCategory {
 
 		super(guiHelper);
 
-		tank = Drawables.getDrawables(guiHelper).getTank(0);
-		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(0);
+		tank = Drawables.getDrawables(guiHelper).getTank(Drawables.TANK);
+		tankOverlay = Drawables.getDrawables(guiHelper).getTankSmallOverlay(Drawables.TANK);
 
 		localizedName = StringHelper.localize("item.thermalexpansion.augment.machineSmelterPyrotheum.name");
 	}

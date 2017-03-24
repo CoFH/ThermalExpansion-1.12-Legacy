@@ -4,10 +4,13 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.gui.container.ICustomInventory;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -442,6 +445,23 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	public void onSlotUpdate() {
 
 		markChunkDirty();
+	}
+
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.MACHINE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.MACHINE_TOP;
+			}
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
+		}
+		return TETextures.MACHINE_SIDE;
 	}
 
 	/* CAPABILITIES */

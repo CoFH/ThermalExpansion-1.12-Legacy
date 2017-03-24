@@ -34,10 +34,10 @@ public class EnervationFuelWrapper extends BaseFuelWrapper {
 		this.energy = energy;
 		this.maxEnergy = maxEnergy;
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(5);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLUX);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		burnFill = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileDynamoEnervation.basePower, StartDirection.TOP, true);
+		durationFill = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileDynamoEnervation.basePower, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.BOTTOM, false);
 	}
 

@@ -635,6 +635,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FRAME_INNER;
 
 	public static TextureAtlasSprite DYNAMO_COIL_REDSTONE;
+	public static TextureAtlasSprite DYNAMO_COIL_ENDER;
 
 	public static TextureAtlasSprite[] DYNAMO;
 	public static TextureAtlasSprite DYNAMO_STEAM;

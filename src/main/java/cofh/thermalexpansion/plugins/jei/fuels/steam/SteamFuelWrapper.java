@@ -25,10 +25,10 @@ public class SteamFuelWrapper extends BaseFuelWrapper {
 		this.inputs = Collections.singletonList(recipeInputs);
 		this.energy = energy;
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(2);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_FLAME);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
-		burnFill = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileDynamoSteam.basePower, StartDirection.TOP, true);
+		durationFill = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileDynamoSteam.basePower, StartDirection.TOP, true);
 		energyMeter = guiHelper.createAnimatedDrawable(energyDrawable, 1000, StartDirection.BOTTOM, false);
 	}
 

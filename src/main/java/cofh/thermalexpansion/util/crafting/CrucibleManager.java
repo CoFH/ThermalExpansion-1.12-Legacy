@@ -36,7 +36,7 @@ public class CrucibleManager {
 
 	public static RecipeCrucible[] getRecipeList() {
 
-		return recipeMap.values().toArray(new RecipeCrucible[recipeMap.values().size()]);
+		return recipeMap.values().toArray(new RecipeCrucible[recipeMap.size()]);
 	}
 
 	public static void addDefaultRecipes() {

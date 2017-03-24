@@ -11,6 +11,7 @@ import mezz.jei.api.IModRegistry;
 import mezz.jei.api.gui.IGuiFluidStackGroup;
 import mezz.jei.api.gui.IGuiItemStackGroup;
 import mezz.jei.api.gui.IRecipeLayout;
+import mezz.jei.api.ingredients.IIngredientRegistry;
 import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
@@ -27,11 +28,11 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		IGuiHelper guiHelper = jeiHelpers.getGuiHelper();
 
 		registry.addRecipeCategories(new TransposerRecipeCategoryFill(guiHelper));
-		registry.addRecipes(getRecipes(guiHelper));
+		registry.addRecipes(getRecipes(guiHelper, registry.getIngredientRegistry()));
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineTransposer, RecipeUidsTE.TRANSPOSER_FILL);
 	}
 
-	public static List<TransposerRecipeWrapper> getRecipes(IGuiHelper guiHelper) {
+	public static List<TransposerRecipeWrapper> getRecipes(IGuiHelper guiHelper, IIngredientRegistry ingredientRegistry) {
 
 		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
 
@@ -40,22 +41,6 @@ public class TransposerRecipeCategoryFill extends TransposerRecipeCategory {
 		}
 		return recipes;
 	}
-
-	//	public static List<TransposerRecipeWrapper> getRecipes(IIngredientRegistry ingredientRegistry) {
-	//		List<TransposerRecipeWrapper> recipes = new ArrayList<>();
-	//		for (ItemStack stack : ingredientRegistry.getIngredients(ItemStack.class)) {
-	//
-	//			if (FluidHelper.isFluidHandler(stack)) {
-	//
-	//			}
-	//
-	//			TransposerRecipeWrapper containerRecipe = SqueezerRecipeManager.findMatchingContainerRecipe(stack);
-	//			if (containerRecipe != null) {
-	//				recipes.add(new TransposerRecipeWrapper(containerRecipe, stack));
-	//			}
-	//		}
-	//		return recipes;
-	//	}
 
 	public TransposerRecipeCategoryFill(IGuiHelper guiHelper) {
 

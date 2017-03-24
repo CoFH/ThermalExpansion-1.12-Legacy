@@ -28,7 +28,6 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 	/* Animation */
 	final IDrawableAnimated progress;
 	final IDrawableAnimated speed;
-	final IDrawableAnimated energyMeter;
 
 	public CompactorRecipeWrapper(IGuiHelper guiHelper, RecipeCompactor recipe, String uIdIn) {
 
@@ -51,8 +50,8 @@ public class CompactorRecipeWrapper extends BaseRecipeWrapper {
 
 		energy = recipe.getEnergy();
 
-		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(0);
-		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getSpeedFill(4);
+		IDrawableStatic progressDrawable = Drawables.getDrawables(guiHelper).getProgressFill(Drawables.PROGRESS_ARROW);
+		IDrawableStatic speedDrawable = Drawables.getDrawables(guiHelper).getScaleFill(Drawables.SCALE_COMPACT);
 		IDrawableStatic energyDrawable = Drawables.getDrawables(guiHelper).getEnergyFill();
 
 		progress = guiHelper.createAnimatedDrawable(progressDrawable, energy / TileCompactor.basePower, StartDirection.LEFT, false);
