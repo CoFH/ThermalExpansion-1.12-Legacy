@@ -440,7 +440,7 @@ public class PulverizerManager {
 		public static final String ORE = "ore";
 		public static final String INGOT = "ingot";
 		public static final String NUGGET = "nugget";
-		public static final String LOG = "LOG";
+		public static final String LOG = "log";
 		public static final String SAND = "sand";
 
 		public static boolean safeOreType(String oreName) {
