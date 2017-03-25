@@ -164,6 +164,11 @@
 					"layer0": "thermalexpansion:items/augment/dynamo_compression_fuel"
 				}
 			},
+			"dynamoreactantelemental": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/placeholder"
+				}
+			},
 			"automatondepth": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"

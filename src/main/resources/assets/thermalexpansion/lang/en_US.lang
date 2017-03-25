@@ -81,6 +81,10 @@ info.thermalexpansion.augment.dynamoPower.0=Dynamos: Increased Output
 info.thermalexpansion.augment.dynamoPower.a.0=Increases power generation (RF/t).
 info.thermalexpansion.augment.dynamoPower.b.0=Less energy (RF) is produced by fuels.
 
+info.thermalexpansion.augment.dynamoReactantElemental.0=Reactant Dynamo: Specialization
+info.thermalexpansion.augment.dynamoReactantElemental.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactions can be performed.
+
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
 info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation and efficiency.
 info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from an external source.
@@ -261,6 +265,7 @@ item.thermalexpansion.augment.dynamoCompressionFuel.name=Ignition Plugs
 item.thermalexpansion.augment.dynamoEfficiency.name=Fuel Catalyzer
 item.thermalexpansion.augment.dynamoMagmaticCoolant.name=Isentropic Reservoir
 item.thermalexpansion.augment.dynamoPower.name=Auxiliary Transmission Coil
+item.thermalexpansion.augment.dynamoReactantElemental.name=Elemental Catalyzer
 item.thermalexpansion.augment.dynamoSteamTurbine.name=Turbine Conversion
 item.thermalexpansion.augment.dynamoThrottle.name=Excitation Field Limiter
 

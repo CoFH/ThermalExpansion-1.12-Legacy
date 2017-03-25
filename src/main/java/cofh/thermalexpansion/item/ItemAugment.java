@@ -229,6 +229,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCompressionCoolant = addAugmentItem(672, TEProps.DYNAMO_COMPRESSION_COOLANT, AugmentType.MODE);
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
 
+		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
+
 		/* AUTOMATA */
 		//		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
 		//		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
@@ -677,6 +679,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack dynamoCompressionCoolant;
 	public static ItemStack dynamoCompressionFuel;
+
+	public static ItemStack dynamoReactantElemental;
 
 	/* Automaton */
 	public static ItemStack automatonDepth;

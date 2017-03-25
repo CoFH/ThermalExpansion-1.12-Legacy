@@ -2,6 +2,7 @@ package cofh.thermalexpansion.util.fuels;
 
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.thermalfoundation.init.TFFluids;
+import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Items;
@@ -20,6 +21,9 @@ public class ReactantManager {
 	private static Map<List<Integer>, Reaction> reactionMap = new THashMap<>();
 	private static Set<ComparableItemStack> validReactants = new THashSet<>();
 	private static Set<Fluid> validFluids = new THashSet<>();
+
+	private static Set<ComparableItemStack> validReactantsElemental = new THashSet<>();
+	private static Set<Fluid> validFluidsElemental = new THashSet<>();
 
 	static final ItemStack SUGAR = new ItemStack(Items.SUGAR);
 	static final ItemStack NETHER_WART = new ItemStack(Items.NETHER_WART);
@@ -64,9 +68,19 @@ public class ReactantManager {
 		return fluid != null && validFluids.contains(fluid.getFluid());
 	}
 
-	public static boolean validFluid(Fluid fluid) {
+	public static boolean isElementalReaction(ItemStack reactant, FluidStack fluid) {
 
-		return fluid != null && validFluids.contains(fluid);
+		return validReactantElemental(reactant) && validFluidElemental(fluid);
+	}
+
+	public static boolean validReactantElemental(ItemStack reactant) {
+
+		return reactant != null && validReactantsElemental.contains(new ComparableItemStack(reactant));
+	}
+
+	public static boolean validFluidElemental(FluidStack fluid) {
+
+		return fluid != null && validFluidsElemental.contains(fluid.getFluid());
 	}
 
 	public static void addDefaultReactions() {
@@ -82,6 +96,11 @@ public class ReactantManager {
 		addReaction(GUNPOWDER, TFFluids.fluidGlowstone, 125000);
 		addReaction(BLAZE_POWDER, TFFluids.fluidGlowstone, 200000);
 		addReaction(GHAST_TEAR, TFFluids.fluidGlowstone, 200000);
+
+		addElementalReaction(ItemMaterial.dustPyrotheum, TFFluids.fluidCryotheum, 400000);
+		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
+		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
+		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
 	}
 
 	public static void loadReactions() {
@@ -121,6 +140,16 @@ public class ReactantManager {
 		validReactants.add(new ComparableItemStack(reactant));
 		validFluids.add(fluid);
 		return true;
+	}
+
+	public static boolean addElementalReaction(ItemStack reactant, Fluid fluid, int energy) {
+
+		if (addReaction(reactant, fluid, energy)) {
+			validReactantsElemental.add(new ComparableItemStack(reactant));
+			validFluidsElemental.add(fluid);
+			return true;
+		}
+		return false;
 	}
 
 	/* REMOVE REACTIONS */

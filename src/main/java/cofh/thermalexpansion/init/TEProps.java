@@ -202,6 +202,8 @@ public class TEProps {
 	public static final String DYNAMO_COMPRESSION_COOLANT = "dynamoCompressionCoolant";
 	public static final String DYNAMO_COMPRESSION_FUEL = "dynamoCompressionFuel";
 
+	public static final String DYNAMO_REACTANT_ELEMENTAL = "dynamoReactantElemental";
+
 	/* AUTOMATA */
 	public static final String AUTOMATON_DEPTH = "automatonDepth";
 	public static final String AUTOMATON_RADIUS = "automatonRadius";

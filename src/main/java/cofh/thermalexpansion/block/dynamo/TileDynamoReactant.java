@@ -4,6 +4,7 @@ import codechicken.lib.texture.TextureUtils;
 import cofh.core.fluid.FluidTankCore;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoReactant;
@@ -39,6 +40,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	public static void initialize() {
 
 		validAugments[TYPE] = new ArrayList<>();
+		validAugments[TYPE].add(TEProps.DYNAMO_REACTANT_ELEMENTAL);
 
 		GameRegistry.registerTileEntity(TileDynamoReactant.class, "thermalexpansion.dynamo_reactant");
 
@@ -59,6 +61,9 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 	private int currentFuelRF = 0;
 
+	/* AUGMENTS */
+	public  boolean augmentElemental;
+
 	public TileDynamoReactant() {
 
 		super();
@@ -74,7 +79,18 @@ public class TileDynamoReactant extends TileDynamoBase {
 	@Override
 	protected boolean canStart() {
 
-		return fuelRF > 0 || tank.getFluidAmount() >= fluidAmount && inventory[0] != null && ReactantManager.reactionExists(inventory[0], tank.getFluid());
+		if (fuelRF > 0) {
+			return true;
+		}
+		if (inventory[0] == null || tank.getFluidAmount() < fluidAmount) {
+			return false;
+		}
+		if (augmentElemental) {
+			if (!ReactantManager.validReactantElemental(inventory[0]) || !ReactantManager.validFluidElemental(tank.getFluid())) {
+				return false;
+			}
+		}
+		return ReactantManager.reactionExists(inventory[0], tank.getFluid());
 	}
 
 	@Override
@@ -82,7 +98,8 @@ public class TileDynamoReactant extends TileDynamoBase {
 
 		Reaction reaction = ReactantManager.getReaction(inventory[0], tank.getFluid());
 
-		fuelRF += reaction.getEnergy();
+		currentFuelRF = reaction.getEnergy() * energyMod / ENERGY_BASE;
+		fuelRF += currentFuelRF;
 
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
 		tank.drain(fluidAmount, true);
@@ -197,12 +214,34 @@ public class TileDynamoReactant extends TileDynamoBase {
 	}
 
 	/* HELPERS */
+	@Override
+	protected void preAugmentInstall() {
+
+		super.preAugmentInstall();
+
+		augmentElemental = false;
+	}
+
+	@Override
+	protected boolean installAugmentToSlot(int slot) {
+
+		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
+
+		if (!augmentElemental && TEProps.DYNAMO_REACTANT_ELEMENTAL.equals(id)) {
+			augmentElemental = true;
+			hasModeAugment = true;
+			energyConfig.setDefaultParams(energyConfig.maxPower + getBasePower(this.level * 3));
+			energyMod += 25;
+			return true;
+		}
+		return super.installAugmentToSlot(slot);
+	}
 
 	/* IInventory */
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return ReactantManager.validReactant(stack);
+		return augmentElemental ? ReactantManager.validReactantElemental(stack) : ReactantManager.validReactant(stack);
 	}
 
 	/* ISidedInventory */
@@ -234,6 +273,12 @@ public class TileDynamoReactant extends TileDynamoBase {
 				public int fill(FluidStack resource, boolean doFill) {
 
 					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
+						return 0;
+					}
+					if (augmentElemental) {
+						if (ReactantManager.validFluidElemental(resource)) {
+							return tank.fill(resource, doFill);
+						}
 						return 0;
 					}
 					if (ReactantManager.validFluid(resource)) {

@@ -10,6 +10,7 @@ import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -111,10 +112,11 @@ public class PulverizerManager {
 			for (int i = 0; i < ColorHelper.WOOL_COLOR_CONFIG.length; i++) {
 				dyeChance[i] = 5;
 			}
-			dyeChance[0] = 0;
-			dyeChance[12] = 0;
-			dyeChance[13] = 0;
-			dyeChance[15] = 0;
+			dyeChance[EnumDyeColor.WHITE.getMetadata()] = 0;
+			dyeChance[EnumDyeColor.BROWN.getMetadata()] = 0;
+			dyeChance[EnumDyeColor.BLUE.getMetadata()] = 0;
+			dyeChance[EnumDyeColor.GREEN.getMetadata()] = 0;
+			dyeChance[EnumDyeColor.BLACK.getMetadata()] = 0;
 
 			ItemStack stringStack = ItemHelper.cloneStack(Items.STRING, 4);
 
