@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.energy.IEnergyContainerItem;
 import cofh.core.init.CoreEnchantments;
-import cofh.core.item.IEnchantable;
+import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
@@ -21,7 +21,7 @@ import net.minecraftforge.common.capabilities.ICapabilityProvider;
 
 import java.util.List;
 
-public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantable {
+public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerItem, IEnchantableItem {
 
 	public ItemBlockCell(Block block) {
 
@@ -159,7 +159,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 		return new EnergyContainerItemWrapper(stack, this);
 	}
 
-	/* IEnchantable */
+	/* IEnchantableItem */
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 

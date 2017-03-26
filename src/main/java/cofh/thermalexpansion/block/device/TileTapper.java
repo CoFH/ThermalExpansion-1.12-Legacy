@@ -191,7 +191,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 					for (BlockPos scan : trunk) {
 						IBlockState state = worldObj.getBlockState(scan);
-						Material material = state.getBlock().getMaterial(state);
+						Material material = state.getMaterial();
 
 						if (material == Material.GROUND || material == Material.GRASS) {
 							cached = true;
@@ -241,7 +241,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 			for (BlockPos scan : trunk) {
 				IBlockState state = worldObj.getBlockState(scan);
-				Material material = state.getBlock().getMaterial(state);
+				Material material = state.getMaterial();
 
 				if (material == Material.GROUND || material == Material.GRASS) {
 					cached = true;
@@ -263,7 +263,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		IBlockState state = worldObj.getBlockState(checkPos.down());
 
-		Material material = state.getBlock().getMaterial(state);
+		Material material = state.getMaterial();
 		if (material != Material.GROUND && material != Material.GRASS) {
 			return false;
 		}

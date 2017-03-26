@@ -292,11 +292,19 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		String tinPart = "gearTin";
 
@@ -362,8 +370,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */

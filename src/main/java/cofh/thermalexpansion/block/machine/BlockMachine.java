@@ -374,11 +374,19 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		String copperPart = "gearCopper";
 		String invarPart = "gearInvar";
@@ -561,8 +569,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */

@@ -241,12 +241,6 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	@Override
 	public boolean initialize() {
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
 		// @formatter:off
 
 		/* MACHINE */
@@ -553,6 +547,12 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		/* AUTOMATON */
 
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}

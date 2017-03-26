@@ -75,13 +75,8 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 	@Override
 	public boolean initialize() {
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
 		// @formatter:off
+
 		addRecipe(ShapedRecipe(frameMachine,
 				"IGI",
 				"GCG",
@@ -122,7 +117,14 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 //				'I', "ingotSignalum",
 //				'Q', "gemQuartz"
 //		));
+
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}

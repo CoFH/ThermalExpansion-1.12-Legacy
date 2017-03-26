@@ -29,7 +29,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 
 import java.util.List;
 
-import static cofh.lib.util.helpers.ItemHelper.*;
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem {
 
@@ -160,13 +162,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	@Override
 	public boolean initialize() {
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
 		// @formatter:off
+
 		addRecipe(ShapedRecipe(upgradeIncremental[0],
 				" I ",
 				"IGI",
@@ -230,7 +227,14 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 				upgradeIncremental[2],
 				upgradeIncremental[3]
 		));
+
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}

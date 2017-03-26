@@ -62,7 +62,7 @@ public class TileDynamoReactant extends TileDynamoBase {
 	private int currentFuelRF = 0;
 
 	/* AUGMENTS */
-	public  boolean augmentElemental;
+	public boolean augmentElemental;
 
 	public TileDynamoReactant() {
 

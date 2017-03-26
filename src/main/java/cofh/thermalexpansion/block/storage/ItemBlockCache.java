@@ -2,7 +2,7 @@ package cofh.thermalexpansion.block.storage;
 
 import cofh.api.item.IInventoryContainerItem;
 import cofh.core.init.CoreEnchantments;
-import cofh.core.item.IEnchantable;
+import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -16,7 +16,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem, IEnchantable {
+public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContainerItem, IEnchantableItem {
 
 	public ItemBlockCache(Block block) {
 
@@ -101,7 +101,7 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 		return TileCache.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
-	/* IEnchantable */
+	/* IEnchantableItem */
 	@Override
 	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
 

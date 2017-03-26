@@ -333,11 +333,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		dynamoEnervation = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
 		dynamoNumismatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		// @formatter:off
 		if (enable[Type.STEAM.getMetadata()]) {
@@ -407,8 +415,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */

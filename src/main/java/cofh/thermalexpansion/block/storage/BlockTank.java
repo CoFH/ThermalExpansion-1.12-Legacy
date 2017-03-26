@@ -277,11 +277,19 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 		for (int i = 0; i < 5; i++) {
 			tank[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		// @formatter:off
 		if (enable) {
@@ -295,8 +303,6 @@ public class BlockTank extends BlockTEBase implements IBakeryBlock, IModelRegist
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	public static boolean enable;
