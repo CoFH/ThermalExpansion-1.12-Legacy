@@ -10,6 +10,7 @@ import cofh.lib.util.capabilities.EnergyContainerItemWrapper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
+import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
@@ -51,18 +52,6 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
-	public int getItemEnchantability() {
-
-		return 10;
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
@@ -86,18 +75,30 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	}
 
 	@Override
+	public boolean isDamaged(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	@Override
 	public double getDurabilityForDisplay(ItemStack stack) {
 
 		if (stack.getTagCompound() == null) {
 			setDefaultTag(stack);
 		}
 		return 1D - ((double) stack.getTagCompound().getInteger("Energy") / (double) getMaxEnergyStored(stack));
-	}
-
-	@Override
-	public boolean isDamaged(ItemStack stack) {
-
-		return true;
 	}
 
 	/* IEnergyContainerItem */
@@ -123,7 +124,7 @@ public class ItemBlockCell extends ItemBlockTEBase implements IEnergyContainerIt
 	public int extractEnergy(ItemStack container, int maxExtract, boolean simulate) {
 
 		if (isCreative(container)) {
-			return maxExtract;
+			return Math.min(maxExtract, TileCell.SEND[TEProps.LEVEL_MAX]);
 		}
 		int level = getLevel(container);
 

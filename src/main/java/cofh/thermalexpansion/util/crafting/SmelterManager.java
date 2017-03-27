@@ -177,6 +177,7 @@ public class SmelterManager {
 		{
 			addDefaultOreDictionaryRecipe("oreIron", "dustIron", ItemMaterial.ingotIron, ItemMaterial.ingotNickel);
 			addDefaultOreDictionaryRecipe("oreGold", "dustGold", ItemMaterial.ingotGold, null, 20, 75, 25);
+
 			addDefaultOreDictionaryRecipe("oreCopper", "dustCopper", ItemMaterial.ingotCopper, ItemMaterial.ingotGold);
 			addDefaultOreDictionaryRecipe("oreTin", "dustTin", ItemMaterial.ingotTin, ItemMaterial.ingotIron);
 			addDefaultOreDictionaryRecipe("oreSilver", "dustSilver", ItemMaterial.ingotSilver, ItemMaterial.ingotLead);
@@ -241,21 +242,22 @@ public class SmelterManager {
 
 	public static void loadRecipes() {
 
-		String[] oreNameList = OreDictionary.getOreNames();
-		String oreName;
+		/* GENERAL SCAN */
+		{
+			String[] oreNames = OreDictionary.getOreNames();
+			String oreType;
 
-		for (int i = 0; i < oreNameList.length; i++) {
-			if (oreNameList[i].startsWith("ore")) {
-				oreName = oreNameList[i].substring(3, oreNameList[i].length());
-
-				if (isStandardOre(oreNameList[i])) {
-					addDefaultOreDictionaryRecipe(oreName);
-				}
-			} else if (oreNameList[i].startsWith("dust")) {
-				oreName = oreNameList[i].substring(4, oreNameList[i].length());
-
-				if (isStandardOre(oreNameList[i])) {
-					addDefaultOreDictionaryRecipe(oreName);
+			for (String oreName : oreNames) {
+				if (oreName.startsWith("ore")) {
+					oreType = oreName.substring(3, oreName.length());
+					if (isStandardOre(oreName)) {
+						addDefaultOreDictionaryRecipe(oreType);
+					}
+				} else if (oreName.startsWith("dust")) {
+					oreType = oreName.substring(4, oreName.length());
+					if (isStandardOre(oreName)) {
+						addDefaultOreDictionaryRecipe(oreType);
+					}
 				}
 			}
 		}

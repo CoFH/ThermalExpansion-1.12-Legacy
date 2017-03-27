@@ -41,18 +41,6 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 	}
 
 	@Override
-	public int getItemEnchantability() {
-
-		return 10;
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
@@ -92,6 +80,18 @@ public class ItemBlockCache extends ItemBlockTEBase implements IInventoryContain
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
 	}
 
 	/* IInventoryContainerItem */

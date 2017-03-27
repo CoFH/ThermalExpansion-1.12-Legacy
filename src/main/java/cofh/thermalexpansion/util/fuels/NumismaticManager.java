@@ -1,11 +1,9 @@
 package cofh.thermalexpansion.util.fuels;
 
-import cofh.core.init.CoreProps;
 import cofh.thermalfoundation.item.ItemCoin;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Set;
 
@@ -25,12 +23,7 @@ public class NumismaticManager {
 		if (stack == null) {
 			return 0;
 		}
-		if (stack.getItem().hasContainerItem(stack)) {
-			return 0;
-		}
-		int energy = fuelMap.get(stack);
-
-		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
+		return fuelMap.get(stack);
 	}
 
 	public static void addDefaultFuels() {

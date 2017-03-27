@@ -26,8 +26,8 @@ public class ProxyClient extends Proxy {
 
 		super.preInit(event);
 
-		for (int i = 0; i < modelList.size(); i++) {
-			modelList.get(i).registerModels();
+		for (IModelRegister register : modelList) {
+			register.registerModels();
 		}
 		registerRenderInformation();
 	}

@@ -230,9 +230,8 @@ public class SawmillManager {
 			tempCrafting.setInventorySlotContents(i, null);
 		}
 		List<ItemStack> registeredOres = OreDictionary.getOres("logWood", false);
-		for (int i = 0; i < registeredOres.size(); i++) {
-			ItemStack logEntry = registeredOres.get(i);
 
+		for (ItemStack logEntry : registeredOres) {
 			if (ItemHelper.getItemDamage(logEntry) == OreDictionary.WILDCARD_VALUE) {
 				for (int j = 0; j < 16; j++) {
 					ItemStack log = ItemHelper.cloneStack(logEntry, 1);

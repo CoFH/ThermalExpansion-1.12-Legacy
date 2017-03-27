@@ -14,7 +14,6 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -163,31 +162,12 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 	public void readFromNBT(NBTTagCompound nbt) {
 
 		super.readFromNBT(nbt);
-
-		NBTTagList list = nbt.getTagList("StuffedInv", 10);
-		stuffedItems.clear();
-		for (int i = 0; i < list.tagCount(); i++) {
-			NBTTagCompound compound = list.getCompoundTagAt(i);
-			stuffedItems.add(ItemStack.loadItemStackFromNBT(compound));
-		}
 	}
 
 	@Override
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
-		super.writeToNBT(nbt);
-
-		NBTTagList list = new NBTTagList();
-		list = new NBTTagList();
-		for (int i = 0; i < stuffedItems.size(); i++) {
-			if (stuffedItems.get(i) != null) {
-				NBTTagCompound compound = new NBTTagCompound();
-				stuffedItems.get(i).writeToNBT(compound);
-				list.appendTag(compound);
-			}
-		}
-		nbt.setTag("StuffedInv", list);
-		return nbt;
+		return super.writeToNBT(nbt);
 	}
 
 	/* IInventoryConnection */

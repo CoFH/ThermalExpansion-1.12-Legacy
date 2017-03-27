@@ -292,6 +292,12 @@ item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
 item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber
 
+item.thermalexpansion.capacitor.standard0.name=Flux Capacitor (Basic)
+item.thermalexpansion.capacitor.standard1.name=Flux Capacitor (Hardened)
+item.thermalexpansion.capacitor.standard2.name=Flux Capacitor (Reinforced)
+item.thermalexpansion.capacitor.standard3.name=Flux Capacitor (Signalum)
+item.thermalexpansion.capacitor.standard4.name=Flux Capacitor (Reinforced)
+
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatic Florb
 

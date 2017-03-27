@@ -1,7 +1,5 @@
 package cofh.thermalexpansion.util.crafting;
 
-import cofh.lib.util.helpers.ItemHelper;
-import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.init.TEAchievements;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -9,12 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.oredict.OreDictionary;
-
-import java.util.List;
-
-import static cofh.lib.util.helpers.ItemHelper.ShapelessRecipe;
 
 public class TECraftingHandler {
 
@@ -99,33 +91,6 @@ public class TECraftingHandler {
 		//		} else if (stack.isItemEqual(BlockStrongbox.strongboxResonant)) {
 		//			player.addStat(TEAchievements.resonantStrongbox, 1);
 		//		}
-	}
-
-	public static void loadRecipes() {
-
-		String[] oreNameList = OreDictionary.getOreNames();
-		String oreType = "";
-
-		for (int i = 0; i < oreNameList.length; i++) {
-			if (oreNameList[i].startsWith("ore")) {
-				oreType = oreNameList[i].substring(3, oreNameList[i].length());
-
-				if (oreType.isEmpty()) {
-					continue;
-				}
-				String oreName = "ore" + StringHelper.titleCase(oreType);
-				String ingotName = "ingot" + StringHelper.titleCase(oreType);
-
-				List<ItemStack> registeredOre = OreDictionary.getOres(oreName, false);
-				List<ItemStack> registeredIngot = OreDictionary.getOres(ingotName, false);
-
-				if (registeredOre.size() <= 0 || registeredIngot.size() <= 0) {
-					continue;
-				}
-				ItemStack ingot = ItemHelper.cloneStack(registeredIngot.get(0), 1);
-				GameRegistry.addRecipe(ShapelessRecipe(ingot, oreName, "dustPyrotheum"));
-			}
-		}
 	}
 
 }

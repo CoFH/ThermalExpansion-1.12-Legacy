@@ -64,15 +64,14 @@ public class RenderDynamo implements ILayeredBlockBakery {
 		modelAnimation[4] = CCModel.quadModel(16).generateBlock(0, d2 + d1, d1, d1, 1 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 		modelAnimation[5] = CCModel.quadModel(16).generateBlock(0, d1, d1, d1, d3 - d1, 1 - d1, 1 - d1, 48).computeNormals();
 
-		for (int i = 0; i < modelCoil.length; i++) {
-			CCModel.generateSidedModels(modelCoil[i], 1, new Vector3());
+		for (CCModel[] model : modelCoil) {
+			CCModel.generateSidedModels(model, 1, new Vector3());
 		}
-		for (int i = 0; i < modelBase.length; i++) {
-			CCModel.generateSidedModels(modelBase[i], 1, new Vector3());
+		for (CCModel[] model : modelBase) {
+			CCModel.generateSidedModels(model, 1, new Vector3());
 		}
-
-		for (int i = 0; i < modelBaseOverlay.length; i++) {
-			CCModel.generateSidedModels(modelBaseOverlay[i], 1, new Vector3());
+		for (CCModel[] model : modelBaseOverlay) {
+			CCModel.generateSidedModels(model, 1, new Vector3());
 		}
 	}
 

@@ -184,19 +184,56 @@ public class PulverizerManager {
 
 	public static void loadRecipes() {
 
-		String[] oreNameList = OreDictionary.getOreNames();
-		String oreName;
+		/* APPLIED ENERGISTICS 2 */
+		{
+			if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("dustCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartz")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreCertusQuartz", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("crystalCertusQuartz", false).get(0), 2), OreDictionary.getOres("dustCertusQuartz", false).get(0), 10);
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("dustCertusQuartz", false).get(0));
+			}
+			if (ItemHelper.oreNameExists("dustFluix") && ItemHelper.oreNameExists("crystalFluix")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalFluix", false).get(0), OreDictionary.getOres("dustFluix", false).get(0));
+			}
+			if (ItemHelper.oreNameExists("dustNetherQuartz")) {
+				addRecipe(DEFAULT_ENERGY, new ItemStack(Items.QUARTZ, 1), ItemHelper.cloneStack(OreDictionary.getOres("dustNetherQuartz", false).get(0), 1));
+			}
+		}
 
-		for (int i = 0; i < oreNameList.length; i++) {
-			if (oreNameList[i].startsWith("ore")) {
-				oreName = oreNameList[i].substring(3, oreNameList[i].length());
-				addDefaultOreDictionaryRecipe(oreName);
-			} else if (oreNameList[i].startsWith("dust")) {
-				oreName = oreNameList[i].substring(4, oreNameList[i].length());
-				addDefaultOreDictionaryRecipe(oreName);
-			} else if (oreNameList[i].startsWith("gem")) {
-				oreName = oreNameList[i].substring(3, oreNameList[i].length());
-				addDefaultOreDictionaryRecipeGem(oreName);
+		/* FORESTRY */
+		{
+			if (ItemHelper.oreNameExists("oreApatite") && ItemHelper.oreNameExists("gemApatite")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreApatite", false).get(0), ItemHelper.cloneStack(OreDictionary.getOres("gemApatite", false).get(0), 12), ItemMaterial.dustSulfur, 10);
+			}
+		}
+
+		/* SPECIFIC INTERACTIONS */
+		{
+			if (ItemHelper.oreNameExists("oreNiter")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreNiter", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustNiter, 4));
+			}
+			if (ItemHelper.oreNameExists("oreSaltpeter")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSaltpeter", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustNiter, 4));
+			}
+			if (ItemHelper.oreNameExists("oreSulfur")) {
+				addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreSulfur", false).get(0), ItemHelper.cloneStack(ItemMaterial.dustSulfur, 6));
+			}
+		}
+
+		/* GENERAL SCAN */
+		{
+			String[] oreNames = OreDictionary.getOreNames();
+			String oreType;
+
+			for (String oreName : oreNames) {
+				if (oreName.startsWith("ore")) {
+					oreType = oreName.substring(3, oreName.length());
+					addDefaultOreDictionaryRecipe(oreType);
+				} else if (oreName.startsWith("dust")) {
+					oreType = oreName.substring(4, oreName.length());
+					addDefaultOreDictionaryRecipe(oreType);
+				} else if (oreName.startsWith("gem")) {
+					oreType = oreName.substring(3, oreName.length());
+					addDefaultOreDictionaryRecipeGem(oreType);
+				}
 			}
 		}
 	}

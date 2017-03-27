@@ -117,8 +117,8 @@ public class CrucibleManager {
 
 		List<ItemStack> registeredOres = OreDictionary.getOres(oreName, false);
 
-		for (int i = 0; i < registeredOres.size(); i++) {
-			addRecipe(energy, ItemHelper.cloneStack(registeredOres.get(i), stackSize), output);
+		for (ItemStack ore : registeredOres) {
+			addRecipe(energy, ItemHelper.cloneStack(ore, stackSize), output);
 		}
 	}
 

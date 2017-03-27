@@ -180,10 +180,10 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		super.writeToNBT(nbt);
 
 		NBTTagList list = new NBTTagList();
-		for (int i = 0; i < stuffedItems.size(); i++) {
-			if (stuffedItems.get(i) != null) {
+		for (ItemStack item : stuffedItems) {
+			if (item != null) {
 				NBTTagCompound compound = new NBTTagCompound();
-				stuffedItems.get(i).writeToNBT(compound);
+				item.writeToNBT(compound);
 				list.appendTag(compound);
 			}
 		}

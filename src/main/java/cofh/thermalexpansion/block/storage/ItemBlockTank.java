@@ -45,18 +45,6 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	}
 
 	@Override
-	public int getItemEnchantability() {
-
-		return 10;
-	}
-
-	@Override
-	public boolean isItemTool(ItemStack stack) {
-
-		return true;
-	}
-
-	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
 		SecurityHelper.addOwnerInformation(stack, tooltip);
@@ -98,6 +86,18 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
 	}
 
 	/* IFluidContainerItem */
