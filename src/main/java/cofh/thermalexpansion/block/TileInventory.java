@@ -264,7 +264,7 @@ public abstract class TileInventory extends TileAugmentableSecure implements IIn
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, from) || capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY;
+		return capability == CapabilityItemHandler.ITEM_HANDLER_CAPABILITY || super.hasCapability(capability, from);
 	}
 
 	@Override

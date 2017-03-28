@@ -113,7 +113,7 @@ public class TEProps {
 	public static final String PATH_RENDER = PATH_GFX + "blocks/";
 	public static final String PATH_ELEMENTS = PATH_GUI + "elements/";
 
-	public static final String PATH_GUI_AUTOMATON = PATH_GUI + "automaton/";
+	public static final String PATH_GUI_APPARATUS = PATH_GUI + "apparatus/";
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
@@ -205,7 +205,7 @@ public class TEProps {
 	public static final String DYNAMO_REACTANT_ELEMENTAL = "dynamoReactantElemental";
 
 	/* AUTOMATA */
-	public static final String AUTOMATON_DEPTH = "automatonDepth";
-	public static final String AUTOMATON_RADIUS = "automatonRadius";
+	public static final String APPARATUS_DEPTH = "apparatusDepth";
+	public static final String APPARATUS_RADIUS = "apparatusRadius";
 
 }

@@ -1,33 +1,32 @@
-package cofh.thermalexpansion.block.automaton;
+package cofh.thermalexpansion.block.storage;
 
-import cofh.core.util.helpers.RedstoneControlHelper;
+import cofh.api.item.IInventoryContainerItem;
+import cofh.core.init.CoreEnchantments;
+import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.SecurityHelper;
-import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
-import cofh.lib.util.helpers.EnergyHelper;
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.ReconfigurableHelper;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
 import java.util.List;
 
-public class ItemBlockAutomaton extends ItemBlockTEBase {
+public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryContainerItem, IEnchantableItem {
 
-	public ItemBlockAutomaton(Block block) {
+	public ItemBlockStrongbox(Block block) {
 
 		super(block);
+		setMaxStackSize(16);
 	}
 
 	@Override
 	public ItemStack setDefaultTag(ItemStack stack, int level) {
 
 		ReconfigurableHelper.setFacing(stack, 3);
-		ReconfigurableHelper.setSideCache(stack, TileAutomatonBase.SIDE_CONFIGS[ItemHelper.getItemDamage(stack)].defaultSides);
-		RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
-		EnergyHelper.setDefaultEnergyTag(stack, 0);
+		// RedstoneControlHelper.setControl(stack, ControlMode.DISABLED);
 		stack.getTagCompound().setByte("Level", (byte) level);
 
 		return stack;
@@ -36,7 +35,7 @@ public class ItemBlockAutomaton extends ItemBlockTEBase {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return "tile.thermalexpansion.automaton." + BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName() + ".name";
+		return "tile.thermalexpansion.storage.strongbox.name";
 	}
 
 	@Override
@@ -50,11 +49,32 @@ public class ItemBlockAutomaton extends ItemBlockTEBase {
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
+	}
 
-		String name = BlockAutomaton.Type.byMetadata(ItemHelper.getItemDamage(stack)).getName();
-		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.automaton." + name));
+	@Override
+	public boolean isItemTool(ItemStack stack) {
 
-		RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
+	}
+
+	/* IInventoryContainerItem */
+	@Override
+	public int getSizeInventory(ItemStack container) {
+
+		return 0;
+	}
+
+	/* IEnchantableItem */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 }

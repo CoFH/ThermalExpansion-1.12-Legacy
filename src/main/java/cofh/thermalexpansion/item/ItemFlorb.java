@@ -94,7 +94,7 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 			} else {
 				list.add(StringHelper.localize("info.thermalexpansion.florb.b.0"));
 			}
-			list.add(StringHelper.localize("info.thermalexpansion.florb.c.0") + " " + StringHelper.YELLOW + StringHelper.ITALIC + StringHelper.localize("tile.thermalexpansion.machine.transposer.name") + StringHelper.END + StringHelper.LIGHT_GRAY + ".");
+			list.add(StringHelper.localize("info.thermalexpansion.florb.c.0"));
 			list.add(StringHelper.localize("info.thermalexpansion.florb.c.1"));
 		} else {
 			list.add(StringHelper.localize("info.thermalexpansion.florb.d.0"));

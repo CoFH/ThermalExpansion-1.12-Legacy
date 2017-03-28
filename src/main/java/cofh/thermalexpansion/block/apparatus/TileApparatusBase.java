@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.automaton;
+package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.core.IAccelerable;
 import cofh.api.item.IAugmentItem.AugmentType;
@@ -27,27 +27,27 @@ import net.minecraftforge.fml.relauncher.Side;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
-public abstract class TileAutomatonBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
+public abstract class TileApparatusBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
 
-	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockAutomaton.Type.values().length];
-	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockAutomaton.Type.values().length];
-	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockAutomaton.Type.values().length];
-	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockAutomaton.Type.values().length];
-	public static final int[] LIGHT_VALUES = new int[BlockAutomaton.Type.values().length];
+	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockApparatus.Type.values().length];
+	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockApparatus.Type.values().length];
+	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockApparatus.Type.values().length];
+	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockApparatus.Type.values().length];
+	public static final int[] LIGHT_VALUES = new int[BlockApparatus.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
 	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
 
 	static {
-		VALID_AUGMENTS_BASE.add(TEProps.AUTOMATON_DEPTH);
-		VALID_AUGMENTS_BASE.add(TEProps.AUTOMATON_RADIUS);
+		VALID_AUGMENTS_BASE.add(TEProps.APPARATUS_DEPTH);
+		VALID_AUGMENTS_BASE.add(TEProps.APPARATUS_RADIUS);
 	}
 
 	public static void config() {
 
-		String comment = "Enable this to allow for Automata to be securable.";
-		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Automaton.Securable", true, comment);
+		String comment = "Enable this to allow for Apparatus to be securable.";
+		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Apparatus.Securable", true, comment);
 	}
 
 	int processMax;
@@ -73,9 +73,10 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 		}
 	}
 
-	public TileAutomatonBase() {
+	public TileApparatusBase() {
 
 		sideConfig = SIDE_CONFIGS[this.getType()];
+		slotConfig = SLOT_CONFIGS[this.getType()];
 		enableAutoOutput = true;
 		setDefaultSides();
 	}
@@ -83,7 +84,7 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 	@Override
 	public String getTileName() {
 
-		return "tile.thermalexpansion.automaton." + BlockAutomaton.Type.byMetadata(getType()).getName() + ".name";
+		return "tile.thermalexpansion.apparatus." + BlockApparatus.Type.byMetadata(getType()).getName() + ".name";
 	}
 
 	@Override
@@ -222,11 +223,11 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
-		if (TEProps.AUTOMATON_DEPTH.equals(id)) {
+		if (TEProps.APPARATUS_DEPTH.equals(id)) {
 			depth++;
 			return true;
 		}
-		if (TEProps.AUTOMATON_RADIUS.equals(id)) {
+		if (TEProps.APPARATUS_RADIUS.equals(id)) {
 			radius++;
 			return true;
 		}
@@ -283,11 +284,11 @@ public abstract class TileAutomatonBase extends TilePowered implements IAccelera
 	public TextureAtlasSprite getTexture(int side, int pass) {
 
 		if (pass == 0) {
-			return side != facing ? TETextures.AUTOMATON_SIDE : redstoneControlOrDisable() ? TETextures.AUTOMATON_ACTIVE[getType()] : TETextures.AUTOMATON_FACE[getType()];
+			return side != facing ? TETextures.APPARATUS_SIDE : redstoneControlOrDisable() ? TETextures.APPARATUS_ACTIVE[getType()] : TETextures.APPARATUS_FACE[getType()];
 		} else if (side < 6) {
 			return TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]];
 		}
-		return TETextures.AUTOMATON_SIDE;
+		return TETextures.APPARATUS_SIDE;
 	}
 
 }

@@ -197,8 +197,10 @@ public class TileCompactor extends TileMachineBase {
 
 		switch (VALUES[mode]) {
 			case PRESS:
-			case MINT:
 				setMode(1);
+				break;
+			case MINT:
+				setMode(0);
 				break;
 			case STORAGE:
 				setMode(augmentMint ? 2 : 0);
@@ -302,11 +304,7 @@ public class TileCompactor extends TileMachineBase {
 
 		super.postAugmentInstall();
 
-		if (augmentMint && VALUES[mode] == Mode.PRESS) {
-			mode = 2;
-			modeFlag = 2;
-			processOff();
-		} else if (!augmentMint && VALUES[mode] == Mode.MINT) {
+		if (!augmentMint && VALUES[mode] == Mode.MINT) {
 			mode = 0;
 			modeFlag = 0;
 			processOff();

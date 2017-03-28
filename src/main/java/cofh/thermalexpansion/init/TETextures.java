@@ -73,19 +73,21 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(map, MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
 
+		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(map, MACHINE_ACTIVE_ + "extruder_underlay");
+
 		MACHINE_FRAME_TOP =                 register(map, MACHINE_ + "frame_top");
 		MACHINE_FRAME_BOTTOM =              register(map, MACHINE_ + "frame_bottom");
 		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
 		MACHINE_FRAME_INNER =               register(map, MACHINE_ + "frame_inner");
 
 		/* AUTOMATA */
-		AUTOMATON_SIDE =					register(map, BLOCKS_ + "automaton/automaton_side");
+		APPARATUS_SIDE =					register(map, BLOCKS_ + "apparatus/apparatus_side");
 
-		AUTOMATON_FACE_BREAKER =			register(map, AUTOMATON_FACE_ + "breaker");
-		AUTOMATON_FACE_COLLECTOR =			register(map, AUTOMATON_FACE_ + "collector");
+		APPARATUS_FACE_BREAKER =			register(map, APPARATUS_FACE_ + "breaker");
+		APPARATUS_FACE_COLLECTOR =			register(map, APPARATUS_FACE_ + "collector");
 
-		AUTOMATON_ACTIVE_BREAKER =			register(map, AUTOMATON_ACTIVE_ + "breaker");
-		AUTOMATON_ACTIVE_COLLECTOR =		register(map, AUTOMATON_ACTIVE_ + "collector");
+		APPARATUS_ACTIVE_BREAKER =			register(map, APPARATUS_ACTIVE_ + "breaker");
+		APPARATUS_ACTIVE_COLLECTOR =		register(map, APPARATUS_ACTIVE_ + "collector");
 
 		/* DEVICES */
 		DEVICE_TOP =                        register(map, BLOCKS_ + "device/device_top");
@@ -301,16 +303,18 @@ public class TETextures {
 				MACHINE_ACTIVE_ENCHANTER,
 				MACHINE_ACTIVE_PRECIPITATOR,
 				MACHINE_ACTIVE_EXTRUDER
+		};
 
+		APPARATUS_FACE = new TextureAtlasSprite[] {
+				APPARATUS_FACE_BREAKER,
+				APPARATUS_FACE_COLLECTOR
 		};
-		AUTOMATON_FACE = new TextureAtlasSprite[] {
-				AUTOMATON_FACE_BREAKER,
-				AUTOMATON_FACE_COLLECTOR
+
+		APPARATUS_ACTIVE = new TextureAtlasSprite[] {
+				APPARATUS_ACTIVE_BREAKER,
+				APPARATUS_ACTIVE_COLLECTOR
 		};
-		AUTOMATON_ACTIVE = new TextureAtlasSprite[] {
-				AUTOMATON_ACTIVE_BREAKER,
-				AUTOMATON_ACTIVE_COLLECTOR
-		};
+
 		DEVICE_FACE = new TextureAtlasSprite[] {
 				DEVICE_FACE_WATERGEN,
 				DEVICE_FACE_NULLIFIER,
@@ -323,6 +327,7 @@ public class TETextures {
 //				DEVICE_FACE_FLUID_BUFFER,
 //				DEVICE_FACE_ENERGY_BUFFER
 		};
+
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
 				DEVICE_ACTIVE_WATERGEN,
 				DEVICE_ACTIVE_NULLIFIER,
@@ -515,8 +520,8 @@ public class TETextures {
 	private static final String MACHINE_ = BLOCKS_ + "machine/machine_";
 	private static final String MACHINE_FACE_ = MACHINE_ + "face_";
 	private static final String MACHINE_ACTIVE_ = MACHINE_ + "active_";
-	private static final String AUTOMATON_FACE_ = BLOCKS_ + "automaton/automaton_face_";
-	private static final String AUTOMATON_ACTIVE_ = BLOCKS_ + "automaton/automaton_active_";
+	private static final String APPARATUS_FACE_ = BLOCKS_ + "apparatus/apparatus_face_";
+	private static final String APPARATUS_ACTIVE_ = BLOCKS_ + "apparatus/apparatus_active_";
 	private static final String DEVICE_ = BLOCKS_ + "device/device_";
 	private static final String DEVICE_FACE_ = DEVICE_ + "face_";
 	private static final String DEVICE_ACTIVE_ = DEVICE_ + "active_";
@@ -586,20 +591,22 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
+	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER_UNDERLAY;
+
 	public static TextureAtlasSprite MACHINE_FRAME_TOP;
 	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
 	public static TextureAtlasSprite MACHINE_FRAME_BOTTOM;
 	public static TextureAtlasSprite MACHINE_FRAME_INNER;
 
-	public static TextureAtlasSprite AUTOMATON_SIDE;
+	public static TextureAtlasSprite APPARATUS_SIDE;
 
-	public static TextureAtlasSprite[] AUTOMATON_FACE;
-	public static TextureAtlasSprite AUTOMATON_FACE_BREAKER;
-	public static TextureAtlasSprite AUTOMATON_FACE_COLLECTOR;
+	public static TextureAtlasSprite[] APPARATUS_FACE;
+	public static TextureAtlasSprite APPARATUS_FACE_BREAKER;
+	public static TextureAtlasSprite APPARATUS_FACE_COLLECTOR;
 
-	public static TextureAtlasSprite[] AUTOMATON_ACTIVE;
-	public static TextureAtlasSprite AUTOMATON_ACTIVE_BREAKER;
-	public static TextureAtlasSprite AUTOMATON_ACTIVE_COLLECTOR;
+	public static TextureAtlasSprite[] APPARATUS_ACTIVE;
+	public static TextureAtlasSprite APPARATUS_ACTIVE_BREAKER;
+	public static TextureAtlasSprite APPARATUS_ACTIVE_COLLECTOR;
 
 	public static TextureAtlasSprite DEVICE_TOP;
 	public static TextureAtlasSprite DEVICE_BOTTOM;

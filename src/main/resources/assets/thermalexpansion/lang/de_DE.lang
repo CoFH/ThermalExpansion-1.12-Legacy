@@ -128,7 +128,7 @@ item.thermalexpansion.augment.machineSecondaryNull.name=Nullifikationskammer
 item.thermalexpansion.florb.florb.name=Florb
 item.thermalexpansion.florb.florbMagmatic.name=Magmatischer Florb
 
-item.thermalexpansion.frame.frameAutomaton.name=Automatonrahmen
+item.thermalexpansion.frame.frameApparatus.name=Apparatusrahmen
 item.thermalexpansion.frame.frameCell.name=Energiezellenrahmen
 item.thermalexpansion.frame.frameDevice.name=Geräterahmen
 item.thermalexpansion.frame.frameLight.name=Illuminatorrahmen
@@ -153,8 +153,8 @@ itemGroup.thermalexpansion.creativeTabItems=Thermal Expansion: Items
 
 
 
-tile.thermalexpansion.automaton.breaker.name=Terrainzermalmer
-tile.thermalexpansion.automaton.collector.name=Akquisitionsapparat
+tile.thermalexpansion.apparatus.breaker.name=Terrainzermalmer
+tile.thermalexpansion.apparatus.collector.name=Akquisitionsapparat
 
 tile.thermalexpansion.device.extender.name=Oberflächenkreuzung
 tile.thermalexpansion.device.heat_sink.name=Thermalmediator

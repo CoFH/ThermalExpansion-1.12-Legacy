@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.gui.client.automaton;
+package cofh.thermalexpansion.gui.client.apparatus;
 
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
@@ -7,16 +7,16 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
-public class GuiBreaker extends GuiPoweredBase {
+public class GuiCollector extends GuiPoweredBase {
 
-	public static final String TEX_PATH = TEProps.PATH_GUI_AUTOMATON + "breaker.png";
+	public static final String TEX_PATH = TEProps.PATH_GUI_APPARATUS + "breaker.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	public GuiBreaker(InventoryPlayer inventory, TileEntity tile) {
+	public GuiCollector(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerTEBase(inventory, tile), tile, inventory.player, TEXTURE);
 
-		generateInfo("tab.thermalexpansion.automaton.breaker");
+		generateInfo("tab.thermalexpansion.apparatus.collector");
 	}
 
 }

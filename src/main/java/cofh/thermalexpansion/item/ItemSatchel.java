@@ -7,9 +7,17 @@ import cofh.core.item.ItemMulti;
 import cofh.core.util.core.IInitializer;
 import cofh.lib.util.helpers.ItemHelper;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.client.model.ModelLoader;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
+
+import java.util.Map;
 
 public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryContainerItem, IEnchantableItem {
 
@@ -29,6 +37,31 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 	public int getItemEnchantability() {
 
 		return 10;
+	}
+
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, new SatchelMeshDefinition());
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+
+			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
+			textureMap.put(entry.getKey(), texture);
+			ModelBakery.registerItemVariants(this, texture);
+		}
+	}
+
+	/* ITEM MESH DEFINITION */
+	@SideOnly (Side.CLIENT)
+	public class SatchelMeshDefinition implements ItemMeshDefinition {
+
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+
+			return textureMap.get(ItemHelper.getItemDamage(stack));
+		}
 	}
 
 	/* IInventoryContainerItem */
@@ -104,6 +137,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 	}
 
 	private TIntObjectHashMap<SatchelEntry> satchelMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
 	/* REFERENCES */
 	public static ItemStack satchelBasic;
@@ -111,5 +145,7 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 	public static ItemStack satchelReinforced;
 	public static ItemStack satchelSignalum;
 	public static ItemStack satchelResonant;
+
+	public static ItemStack satchelCreative;
 
 }

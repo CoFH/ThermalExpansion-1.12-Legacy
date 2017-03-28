@@ -50,6 +50,8 @@ public class TileRefinery extends TileMachineBase {
 
 		VALID_AUGMENTS[TYPE] = new ArrayList<>();
 
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+
 		GameRegistry.registerTileEntity(TileRefinery.class, "thermalexpansion:machine_refinery");
 
 		config();

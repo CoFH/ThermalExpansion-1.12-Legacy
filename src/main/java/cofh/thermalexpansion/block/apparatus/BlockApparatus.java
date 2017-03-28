@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.block.automaton;
+package cofh.thermalexpansion.block.apparatus;
 
 import codechicken.lib.model.ModelRegistryHelper;
 import codechicken.lib.model.blockbakery.BlockBakery;
@@ -45,15 +45,15 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
+public class BlockApparatus extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
-	public static final PropertyEnum<BlockAutomaton.Type> VARIANT = PropertyEnum.create("type", Type.class);
+	public static final PropertyEnum<BlockApparatus.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
-	public BlockAutomaton() {
+	public BlockApparatus() {
 
 		super(Material.IRON);
 
-		setUnlocalizedName("automaton");
+		setUnlocalizedName("apparatus");
 
 		setHardness(15.0F);
 		setResistance(25.0F);
@@ -127,7 +127,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
 
 		if (stack.getTagCompound() != null) {
-			TileAutomatonBase tile = (TileAutomatonBase) world.getTileEntity(pos);
+			TileApparatusBase tile = (TileApparatusBase) world.getTileEntity(pos);
 
 			tile.readAugmentsFromNBT(stack.getTagCompound());
 			tile.updateAugmentStatus();
@@ -183,15 +183,15 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	@Override
 	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
 
-		return side != EnumFacing.NORTH ? TETextures.AUTOMATON_SIDE : TETextures.AUTOMATON_FACE[stack.getMetadata() % Type.values().length];
+		return side != EnumFacing.NORTH ? TETextures.APPARATUS_SIDE : TETextures.APPARATUS_FACE[stack.getMetadata() % Type.values().length];
 	}
 
 	@Override
 	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
 
 		TileEntity tileEntity = world.getTileEntity(pos);
-		if (tileEntity instanceof TileAutomatonBase) {
-			TileAutomatonBase tile = ((TileAutomatonBase) tileEntity);
+		if (tileEntity instanceof TileApparatusBase) {
+			TileApparatusBase tile = ((TileApparatusBase) tileEntity);
 			return tile.getTexture(side.ordinal(), layer == BlockRenderLayer.SOLID ? 0 : 1);
 		}
 		return TextureUtils.getMissingSprite();
@@ -210,17 +210,17 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		for (Type type : Type.values()) {
 			ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(this), type.getMetadata(), location);
 		}
-		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/automaton/automaton_side"));
+		ModelRegistryHelper.register(location, new CCBakeryModel("thermalexpansion:blocks/apparatus/apparatus_side"));
 	}
 
 	/* IInitializer */
 	@Override
 	public boolean preInit() {
 
-		this.setRegistryName("automaton");
+		this.setRegistryName("apparatus");
 		GameRegistry.register(this);
 
-		itemBlock = new ItemBlockAutomaton(this);
+		itemBlock = new ItemBlockApparatus(this);
 		itemBlock.setRegistryName(this.getRegistryName());
 		GameRegistry.register(itemBlock);
 
@@ -229,13 +229,13 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 
 	public boolean initialize() {
 
-		TileAutomatonBase.config();
+		TileApparatusBase.config();
 
 		TileBreaker.initialize();
 		TileCollector.initialize();
 
-		automatonBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
-		automatonCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
+		apparatusBreaker = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.BREAKER.getMetadata()));
+		apparatusCollector = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.COLLECTOR.getMetadata()));
 
 		return true;
 	}
@@ -247,10 +247,10 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		String tinPart = "thermalexpansion:machineTin";
 
 		if (enable[Type.BREAKER.getMetadata()]) {
-			addRecipe(ShapedRecipe(automatonBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron"));
+			addRecipe(ShapedRecipe(apparatusBreaker, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Items.IRON_PICKAXE, 'Y', "ingotIron"));
 		}
 		if (enable[Type.COLLECTOR.getMetadata()]) {
-			addRecipe(ShapedRecipe(automatonCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron"));
+			addRecipe(ShapedRecipe(apparatusCollector, " X ", "YCY", "IPI", 'C', machineFrame, 'I', tinPart, 'P', ItemMaterial.powerCoilGold, 'X', Blocks.HOPPER, 'Y', "ingotIron"));
 		}
 		return true;
 	}
@@ -263,7 +263,7 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 		COLLECTOR(1, "collector");
 		// @formatter:on
 
-		private static final BlockAutomaton.Type[] METADATA_LOOKUP = new BlockAutomaton.Type[values().length];
+		private static final BlockApparatus.Type[] METADATA_LOOKUP = new BlockApparatus.Type[values().length];
 		private final int metadata;
 		private final String name;
 		private final int light;
@@ -314,8 +314,8 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	public static boolean[] enable = new boolean[Type.values().length];
 
 	/* REFERENCES */
-	public static ItemStack automatonBreaker;
-	public static ItemStack automatonCollector;
+	public static ItemStack apparatusBreaker;
+	public static ItemStack apparatusCollector;
 	// Forcefield
 	// Charger
 	// Trap
@@ -323,6 +323,6 @@ public class BlockAutomaton extends BlockTEBase implements IModelRegister, IWorl
 	// Harvester
 	// Planter
 
-	public static ItemBlockAutomaton itemBlock;
+	public static ItemBlockApparatus itemBlock;
 
 }

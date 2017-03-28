@@ -77,7 +77,7 @@ public class TileNullifier extends TileDeviceBase {
 
 	protected boolean isSideAccessible(EnumFacing side) {
 
-		return allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
+		return side == null || allowInsertion(sideConfig.sideTypes[sideCache[side.ordinal()]]) && redstoneControlOrDisable();
 	}
 
 	/* GUI METHODS */

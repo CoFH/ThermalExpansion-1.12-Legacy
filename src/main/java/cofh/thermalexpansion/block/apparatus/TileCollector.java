@@ -1,10 +1,10 @@
-package cofh.thermalexpansion.block.automaton;
+package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.util.RegistrySocial;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.client.automaton.GuiCollector;
+import cofh.thermalexpansion.gui.client.apparatus.GuiCollector;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
@@ -22,9 +22,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import java.util.List;
 import java.util.UUID;
 
-public class TileCollector extends TileAutomatonBase implements IInventoryConnection, ITickable {
+public class TileCollector extends TileApparatusBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockAutomaton.Type.COLLECTOR.getMetadata();
+	private static final int TYPE = BlockApparatus.Type.COLLECTOR.getMetadata();
 	public static final float[] DEFAULT_DROP_CHANCES = new float[] { 1.0F, 1.0F, 1.0F, 1.0F, 1.0F, 1.0F };
 
 	public static void initialize() {
@@ -39,15 +39,15 @@ public class TileCollector extends TileAutomatonBase implements IInventoryConnec
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
-		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:automaton_collector");
+		GameRegistry.registerTileEntity(TileCollector.class, "thermalexpansion:apparatus_collector");
 
 		// config();
 	}
 
 	public static void config() {
 
-		String category = "Automaton.Collector";
-		BlockAutomaton.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		String category = "Apparatus.Collector";
+		BlockApparatus.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	private boolean ignoreTeam = true;

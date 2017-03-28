@@ -1,11 +1,11 @@
-package cofh.thermalexpansion.block.automaton;
+package cofh.thermalexpansion.block.apparatus;
 
 import cofh.api.tileentity.IInventoryConnection;
 import cofh.core.entity.CoFHFakePlayer;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.gui.client.automaton.GuiBreaker;
+import cofh.thermalexpansion.gui.client.apparatus.GuiBreaker;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -19,9 +19,9 @@ import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import net.minecraftforge.fluids.capability.templates.EmptyFluidHandler;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class TileBreaker extends TileAutomatonBase implements IInventoryConnection, ITickable {
+public class TileBreaker extends TileApparatusBase implements IInventoryConnection, ITickable {
 
-	private static final int TYPE = BlockAutomaton.Type.BREAKER.getMetadata();
+	private static final int TYPE = BlockApparatus.Type.BREAKER.getMetadata();
 
 	public static void initialize() {
 
@@ -35,15 +35,15 @@ public class TileBreaker extends TileAutomatonBase implements IInventoryConnecti
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
 
-		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:automaton_breaker");
+		GameRegistry.registerTileEntity(TileBreaker.class, "thermalexpansion:apparatus_breaker");
 
 		// config();
 	}
 
 	public static void config() {
 
-		String category = "Automaton.Breaker";
-		BlockAutomaton.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
+		String category = "Apparatus.Breaker";
+		BlockApparatus.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
 	/* AUGMENTS */

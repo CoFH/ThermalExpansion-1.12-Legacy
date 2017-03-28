@@ -21,19 +21,19 @@ public class TEItems {
 		itemUpgrade = new ItemUpgrade();
 		itemAugment = new ItemAugment();
 
-		// itemCapacitor = new ItemCapacitor();
+		itemCapacitor = new ItemCapacitor();
 
 		initList.add(itemFrame);
 		initList.add(itemUpgrade);
 		initList.add(itemAugment);
 
-		// initList.add(itemCapacitor);
+		initList.add(itemCapacitor);
 
 		ThermalExpansion.proxy.addIModelRegister(itemFrame);
 		ThermalExpansion.proxy.addIModelRegister(itemUpgrade);
 		ThermalExpansion.proxy.addIModelRegister(itemAugment);
 
-		// ThermalExpansion.proxy.addIModelRegister(itemCapacitor);
+		ThermalExpansion.proxy.addIModelRegister(itemCapacitor);
 
 		for (IInitializer init : initList) {
 			init.preInit();

@@ -54,6 +54,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return StringHelper.localize("info.thermalexpansion.augment.0") + ": " + super.getItemStackDisplayName(stack);
 	}
 
+	@Override
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
@@ -232,8 +233,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
 
 		/* AUTOMATA */
-		//		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
-		//		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
+		//		apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
+		//		apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
 		return true;
 	}
@@ -544,7 +545,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustPyrotheum"
 		));
 
-		/* AUTOMATON */
+		/* APPARATUS */
 
 		// @formatter:on
 
@@ -682,11 +683,11 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack dynamoReactantElemental;
 
-	/* Automaton */
-	public static ItemStack automatonDepth;
-	public static ItemStack automatonRadius;
+	/* Apparatus */
+	public static ItemStack apparatusDepth;
+	public static ItemStack apparatusRadius;
 
-	public static ItemStack automatonBreakerFluid;
-	public static ItemStack automatonCollectorEntity;
+	public static ItemStack apparatusBreakerFluid;
+	public static ItemStack apparatusCollectorEntity;
 
 }

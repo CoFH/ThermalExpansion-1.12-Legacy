@@ -4,6 +4,7 @@ import codechicken.lib.CodeChickenLib;
 import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
+import cofh.thermalexpansion.block.apparatus.BlockApparatus;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEFlorbs;
@@ -24,7 +25,9 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -210,6 +213,21 @@ public class ThermalExpansion {
 		ReactantManager.refreshReactions();
 
 		TapperManager.refreshMappings();
+	}
+
+	@EventHandler
+	public void remap(FMLMissingMappingsEvent event) {
+
+		for (MissingMapping mapping : event.get()) {
+			if (mapping.name.equals(MOD_ID + ":automaton")) {
+				if (mapping.type == GameRegistry.Type.BLOCK) {
+					mapping.remap(TEBlocks.blockApparatus);
+				}
+				if (mapping.type == GameRegistry.Type.ITEM) {
+					mapping.remap(BlockApparatus.itemBlock);
+				}
+			}
+		}
 	}
 
 }

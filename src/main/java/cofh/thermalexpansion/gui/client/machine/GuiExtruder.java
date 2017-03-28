@@ -66,9 +66,9 @@ public class GuiExtruder extends GuiPoweredBase {
 		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		if (myTile.augmentNoWater()) {
-			hotTank.setDefault();
+			hotTank.setDefault().drawTank(true);
 		} else {
-			hotTank.setThin();
+			hotTank.setThin().drawTank(false);
 		}
 		coldTank.setVisible(!myTile.augmentNoWater());
 

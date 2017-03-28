@@ -5,6 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.gui.container.ICustomInventory;
 import cofh.lib.util.helpers.RenderHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
@@ -27,6 +28,7 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -346,6 +348,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* SERVER -> CLIENT */
 	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addBool(augmentNoWater);
+		return payload;
+	}
+
+	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
@@ -358,6 +369,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		payload.addBool(augmentNoWater);
 
 		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
 	}
 
 	@Override
@@ -382,6 +402,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		outputItems[1] = processItems[1].copy();
 
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
+			flagNoWater = augmentNoWater;
+		}
 		augmentNoWater = false;
 		augmentGranite = false;
 		augmentDiorite = false;
@@ -395,6 +418,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
 			processOff();
+		}
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj) && flagNoWater != augmentNoWater) {
+			sendTilePacket(Side.CLIENT);
 		}
 	}
 
@@ -457,7 +483,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			} else if (side == 1) {
 				return TETextures.MACHINE_TOP;
 			}
-			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? augmentNoWater ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_ACTIVE_EXTRUDER_UNDERLAY : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}

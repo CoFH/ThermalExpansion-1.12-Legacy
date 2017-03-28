@@ -169,12 +169,12 @@
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
-			"automatondepth": {
+			"apparatusdepth": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
-			"automatonradius": {
+			"apparatusradius": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}

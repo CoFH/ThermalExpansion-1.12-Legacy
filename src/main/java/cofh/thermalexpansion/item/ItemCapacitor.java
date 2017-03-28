@@ -5,13 +5,18 @@ import cofh.api.item.IMultiModeItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.item.ItemMulti;
+import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.storage.TileCell;
 import gnu.trove.map.hash.TIntObjectHashMap;
+import net.minecraft.client.renderer.ItemMeshDefinition;
+import net.minecraft.client.renderer.block.model.ModelBakery;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnchantmentHelper;
@@ -25,11 +30,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
 import java.util.List;
+import java.util.Map;
 
 public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
 
@@ -40,6 +47,9 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		setMaxStackSize(1);
 		setUnlocalizedName("capacitor");
 		setCreativeTab(ThermalExpansion.tabItems);
+
+		addPropertyOverride(new ResourceLocation("active"), (stack, world, entity) -> ItemCapacitor.this.getEnergyStored(stack) > 0 && ItemCapacitor.this.isActive(stack) ? 1F : 0F);
+		addPropertyOverride(new ResourceLocation("mode"), (stack, world, entity) -> ItemCapacitor.this.getMode(stack));
 	}
 
 	public int getSend(ItemStack stack) {
@@ -79,6 +89,30 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	@Override
 	@SideOnly (Side.CLIENT)
+	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
+
+		if (StringHelper.displayShiftForDetail && !StringHelper.isShiftKeyDown()) {
+			tooltip.add(StringHelper.shiftForDetails());
+		}
+		if (!StringHelper.isShiftKeyDown()) {
+			return;
+		}
+		if (isActive(stack)) {
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.a." + getMode(stack)));
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.0"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
+		} else {
+			tooltip.add(StringHelper.localizeFormat("info.thermalexpansion.capacitor.b.0", StringHelper.getKeyName(KeyBindingItemMultiMode.instance.getKey())));
+			tooltip.add(StringHelper.getInfoText("info.thermalexpansion.capacitor.c.1"));
+			tooltip.add(StringHelper.getNoticeText("info.thermalexpansion.capacitor.d.0"));
+		}
+		tooltip.add(StringHelper.localize("info.cofh.charge") + ": " + StringHelper.getScaledNumber(getEnergyStored(stack)) + " / " + StringHelper.getScaledNumber(getMaxEnergyStored(stack)) + " RF");
+		tooltip.add(StringHelper.localize("info.cofh.send") + "/" + StringHelper.localize("info.cofh.receive") + ": " + StringHelper.formatNumber(getSend(stack)) + "/" + StringHelper.formatNumber(getRecv(stack)) + " RF/t");
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
 	public void getSubItems(@Nonnull Item item, CreativeTabs tab, List<ItemStack> list) {
 
 		for (int metadata : itemList) {
@@ -93,7 +127,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		if (CoreUtils.isFakePlayer(entity)) {
 			return;
 		}
-		if (slot > 8 || !isActive(stack) || isCurrentItem) {
+		if (slot > 8 || !isActive(stack)) {
 			return;
 		}
 		EntityPlayer player = (EntityPlayer) entity;
@@ -130,6 +164,18 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	@Override
 	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public boolean shouldCauseReequipAnimation(ItemStack oldStack, ItemStack newStack, boolean slotChanged) {
+
+		return super.shouldCauseReequipAnimation(oldStack, newStack, slotChanged) && (slotChanged || !ItemHelper.areItemStacksEqualIgnoreTags(oldStack, newStack, "Energy"));
+	}
+
+	@Override
+	public boolean showDurabilityBar(ItemStack stack) {
 
 		return true;
 	}
@@ -248,11 +294,34 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 	}
 
+	/* IModelRegister */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+
+		ModelLoader.setCustomMeshDefinition(this, new CapacitorMeshDefinition());
+
+		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
+
+			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
+			textureMap.put(entry.getKey(), texture);
+			ModelBakery.registerItemVariants(this, texture);
+		}
+	}
+
+	/* ITEM MESH DEFINITION */
+	@SideOnly (Side.CLIENT)
+	public class CapacitorMeshDefinition implements ItemMeshDefinition {
+
+		public ModelResourceLocation getModelLocation(ItemStack stack) {
+
+			return textureMap.get(ItemHelper.getItemDamage(stack));
+		}
+	}
+
 	/* IEnergyContainerItem */
 	@Override
 	public int receiveEnergy(ItemStack container, int maxReceive, boolean simulate) {
-
-		int metadata = ItemHelper.getItemDamage(container);
 
 		if (container.getTagCompound() == null) {
 			EnergyHelper.setDefaultEnergyTag(container, 0);
@@ -313,10 +382,10 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	public boolean preInit() {
 
 		capacitorBasic = addCapacitorItem(0, "standard0", TileCell.SEND[0] / 2, TileCell.RECV[0], TileCell.CAPACITY[0] / 2, EnumRarity.COMMON);
-		capacitorHardened = addCapacitorItem(1, "standard1", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
-		capacitorReinforced = addCapacitorItem(2, "standard2", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
-		capacitorSignalum = addCapacitorItem(3, "standard3", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
-		capacitorResonant = addCapacitorItem(4, "standard4", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
+		//		capacitorHardened = addCapacitorItem(1, "standard1", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
+		//		capacitorReinforced = addCapacitorItem(2, "standard2", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
+		//		capacitorSignalum = addCapacitorItem(3, "standard3", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
+		//		capacitorResonant = addCapacitorItem(4, "standard4", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
 
 		return true;
 	}
@@ -370,6 +439,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	}
 
 	private TIntObjectHashMap<CapacitorEntry> capacitorMap = new TIntObjectHashMap<>();
+	private TIntObjectHashMap<ModelResourceLocation> textureMap = new TIntObjectHashMap<>();
 
 	/* REFERENCES */
 	public static ItemStack capacitorBasic;
