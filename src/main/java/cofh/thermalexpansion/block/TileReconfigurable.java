@@ -5,7 +5,7 @@ import cofh.core.network.PacketCoFHBase;
 import cofh.core.render.ISidedTexture;
 import cofh.core.util.tileentity.IReconfigurableSides;
 import cofh.lib.util.helpers.BlockHelper;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;

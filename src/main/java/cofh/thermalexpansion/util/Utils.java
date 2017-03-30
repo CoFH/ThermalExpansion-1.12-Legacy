@@ -1,15 +1,12 @@
 package cofh.thermalexpansion.util;
 
 import codechicken.lib.inventory.InventoryUtils;
-import codechicken.lib.util.ItemUtils;
 import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
 import cofh.api.tileentity.IItemDuct;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -91,16 +88,6 @@ public class Utils {
 			return InventoryUtils.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
 		}
 		return tile instanceof IItemDuct;
-	}
-
-	public static boolean isHoldingBlock(EntityPlayer player) {
-
-		ItemStack held = ItemUtils.getHeldStack(player);
-		if (held == null) {
-			return false;
-		}
-		Item equipped = held.getItem();
-		return equipped instanceof ItemBlock;
 	}
 
 	public static boolean isHoldingUsableWrench(EntityPlayer player, RayTraceResult traceResult) {

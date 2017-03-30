@@ -1,10 +1,10 @@
 package cofh.thermalexpansion.util;
 
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.crafting.*;
-import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
-import cofh.thermalexpansion.util.fuels.CompressionManager;
-import cofh.thermalexpansion.util.fuels.MagmaticManager;
+import cofh.thermalexpansion.util.managers.machine.*;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
+import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
+import cofh.thermalexpansion.util.managers.dynamo.MagmaticManager;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.fluids.FluidStack;

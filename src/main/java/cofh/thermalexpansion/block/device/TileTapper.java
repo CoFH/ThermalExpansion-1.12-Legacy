@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.client.device.GuiTapper;
 import cofh.thermalexpansion.gui.container.device.ContainerTapper;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.crafting.TapperManager;
+import cofh.thermalexpansion.util.managers.TapperManager;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;

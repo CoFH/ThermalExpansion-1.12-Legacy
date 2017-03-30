@@ -3,7 +3,7 @@ package cofh.thermalexpansion.plugins.jei.crafting.charger;
 import cofh.thermalexpansion.block.machine.TileCharger;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager.RecipeCharger;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;

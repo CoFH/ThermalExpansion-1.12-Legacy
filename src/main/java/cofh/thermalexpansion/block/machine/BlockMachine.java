@@ -25,7 +25,7 @@ import cofh.thermalexpansion.plugins.jei.crafting.sawmill.SawmillRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.smelter.SmelterRecipeCategory;
 import cofh.thermalexpansion.plugins.jei.crafting.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.render.RenderMachine;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;

@@ -6,7 +6,7 @@ import cofh.lib.gui.slot.SlotRemoveOnly;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileSmelter;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cofh.thermalexpansion.util.crafting.SmelterManager;
+import cofh.thermalexpansion.util.managers.machine.SmelterManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

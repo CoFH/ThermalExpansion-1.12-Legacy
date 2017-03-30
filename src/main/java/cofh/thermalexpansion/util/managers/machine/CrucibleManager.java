@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.crafting;
+package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.init.CoreProps;
 import cofh.lib.inventory.ComparableItemStackSafe;

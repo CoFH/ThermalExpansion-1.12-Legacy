@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util;
+package cofh.thermalexpansion.util.helpers;
 
 import cofh.thermalexpansion.block.TileReconfigurable;
 import net.minecraft.item.ItemStack;

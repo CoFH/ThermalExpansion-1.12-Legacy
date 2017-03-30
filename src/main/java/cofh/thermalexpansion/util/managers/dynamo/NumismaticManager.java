@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.fuels;
+package cofh.thermalexpansion.util.managers.dynamo;
 
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.thermalfoundation.item.ItemCoin;

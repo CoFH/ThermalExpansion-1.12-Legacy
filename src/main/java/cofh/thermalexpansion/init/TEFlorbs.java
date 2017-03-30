@@ -5,7 +5,7 @@ import cofh.core.util.ConfigHandler;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemFlorb;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

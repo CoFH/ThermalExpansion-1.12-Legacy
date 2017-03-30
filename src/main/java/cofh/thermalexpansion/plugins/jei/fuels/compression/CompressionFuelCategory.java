@@ -6,7 +6,7 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
-import cofh.thermalexpansion.util.fuels.CompressionManager;
+import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;

@@ -36,7 +36,7 @@
 			},
 			"machinefurnacepyrolysis": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_furnace_pyrolysis"
 				}
 			},
 			"machinepulverizergeode": {

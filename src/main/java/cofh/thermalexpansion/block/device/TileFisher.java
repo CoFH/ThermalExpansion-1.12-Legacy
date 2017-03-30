@@ -42,7 +42,7 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 2400;
+	private static final int TIME_CONSTANT = 4800;
 	private static final int BOOST_TIME = 16;
 
 	private boolean cached;

@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.crafting;
+package cofh.thermalexpansion.util.managers;
 
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.BlockWrapper;

@@ -4,7 +4,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;

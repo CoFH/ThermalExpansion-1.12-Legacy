@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.fuels;
+package cofh.thermalexpansion.util.managers;
 
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;

@@ -62,10 +62,10 @@ public class GuiFurnace extends GuiPoweredBase {
 		progressFluid = (ElementFluid) addElement(new ElementFluid(this, 79, 34).setFluid(myTile.getTankFluid()).setSize(24, 16));
 		progressOverlay = (ElementDualScaled) addElement(new ElementDualScaled(this, 79, 34).setBackground(false).setMode(1).setSize(24, 16).setTexture(TEX_ARROW_FLUID_RIGHT, 64, 16));
 
-		tankBackground.setVisible(myTile.augmentPyrolysis());
-		tank.setVisible(myTile.augmentPyrolysis());
-		progressFluid.setVisible(myTile.fluidArrow());
-		progressOverlay.setVisible(myTile.fluidArrow());
+		tankBackground.setVisible(myTile.augmentPyrolysisClient());
+		tank.setVisible(myTile.augmentPyrolysisClient());
+		progressFluid.setVisible(myTile.augmentPyrolysisClient());
+		progressOverlay.setVisible(myTile.augmentPyrolysisClient());
 	}
 
 	@Override
@@ -76,7 +76,7 @@ public class GuiFurnace extends GuiPoweredBase {
 		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		slotTank.setVisible(myTile.augmentPyrolysis() && (baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI)));
+		slotTank.setVisible(myTile.augmentPyrolysisClient() && (baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI)));
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));
@@ -84,12 +84,12 @@ public class GuiFurnace extends GuiPoweredBase {
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);
 		progressOverlay.setQuantity(baseTile.getScaledProgress(PROGRESS));
 
-		progress.setVisible(!myTile.fluidArrow());
+		progress.setVisible(!myTile.augmentPyrolysisClient());
 
-		tankBackground.setVisible(myTile.augmentPyrolysis());
-		tank.setVisible(myTile.augmentPyrolysis());
-		progressFluid.setVisible(myTile.fluidArrow());
-		progressOverlay.setVisible(myTile.fluidArrow());
+		tankBackground.setVisible(myTile.augmentPyrolysisClient());
+		tank.setVisible(myTile.augmentPyrolysisClient());
+		progressFluid.setVisible(myTile.augmentPyrolysisClient());
+		progressOverlay.setVisible(myTile.augmentPyrolysisClient());
 	}
 
 }

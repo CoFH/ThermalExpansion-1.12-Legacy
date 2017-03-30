@@ -4,7 +4,7 @@ import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.TileDynamoReactant;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelWrapper;
-import cofh.thermalexpansion.util.fuels.ReactantManager.Reaction;
+import cofh.thermalexpansion.util.managers.dynamo.ReactantManager.Reaction;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated.StartDirection;
 import mezz.jei.api.gui.IDrawableStatic;

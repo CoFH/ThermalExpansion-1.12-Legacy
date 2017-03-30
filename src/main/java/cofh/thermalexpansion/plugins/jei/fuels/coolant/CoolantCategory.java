@@ -7,7 +7,7 @@ import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.fuels.BaseFuelCategory;
-import cofh.thermalexpansion.util.fuels.CoolantManager;
+import cofh.thermalexpansion.util.managers.CoolantManager;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.IJeiHelpers;
 import mezz.jei.api.IModRegistry;

@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.crafting;
+package cofh.thermalexpansion.util.managers.machine;
 
 import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
@@ -206,11 +206,11 @@ public class FurnaceManager {
 			addOreDictRecipe(energy, "oreberryMithril", ItemMaterial.nuggetMithril);
 
 			// addOreDictRecipe(energy, "oreberrySteel", ItemMaterial.nuggetSteel);
-			addOreDictRecipe(energy, "oreberryElectrum", ItemMaterial.nuggetElectrum);
-			addOreDictRecipe(energy, "oreberryInvar", ItemMaterial.nuggetInvar);
-			addOreDictRecipe(energy, "oreberryBronze", ItemMaterial.nuggetBronze);
-			addOreDictRecipe(energy, "oreberrySignalum", ItemMaterial.nuggetSignalum);
-			addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
+			// addOreDictRecipe(energy, "oreberryElectrum", ItemMaterial.nuggetElectrum);
+			// addOreDictRecipe(energy, "oreberryInvar", ItemMaterial.nuggetInvar);
+			// addOreDictRecipe(energy, "oreberryBronze", ItemMaterial.nuggetBronze);
+			// addOreDictRecipe(energy, "oreberrySignalum", ItemMaterial.nuggetSignalum);
+			// addOreDictRecipe(energy, "oreberryLumium", ItemMaterial.nuggetLumium);
 			// addOreDictRecipe(energy, "oreberryEnderium", ItemMaterial.nuggetEnderium);
 		}
 
@@ -218,10 +218,12 @@ public class FurnaceManager {
 		{
 			ItemStack charcoal = new ItemStack(Items.COAL, 1, 1);
 
-			addRecipePyrolysis(DEFAULT_ENERGY / 4, ItemMaterial.dustWoodCompressed, charcoal);
-			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Blocks.LOG), charcoal);
-			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), charcoal);
-			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.gemCoke);
+			addRecipePyrolysis(DEFAULT_ENERGY / 2, ItemMaterial.dustWoodCompressed, charcoal, 50);
+			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Blocks.LOG), charcoal, 100);
+			addRecipePyrolysis(DEFAULT_ENERGY / 2, new ItemStack(Items.REEDS, 8), charcoal, 50);
+			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.HAY_BLOCK), charcoal, 100);
+			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.CACTUS, 4), charcoal, 50);
+			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.gemCoke, 250);
 		}
 	}
 
@@ -279,6 +281,7 @@ public class FurnaceManager {
 	public static void refreshRecipes() {
 
 		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStackFurnace, RecipeFurnace> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());
 		Set<ComparableItemStackFurnace> tempFood = new THashSet<>();
 		Set<ComparableItemStackFurnace> tempOre = new THashSet<>();
 		RecipeFurnace tempRecipe;
@@ -286,6 +289,10 @@ public class FurnaceManager {
 		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
 			tempMap.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
+		}
+		for (Entry<ComparableItemStackFurnace, RecipeFurnace> entry : recipeMapPyrolysis.entrySet()) {
+			tempRecipe = entry.getValue();
+			tempMapPyrolysis.put(new ComparableItemStackFurnace(tempRecipe.input), tempRecipe);
 		}
 		for (ComparableItemStackFurnace entry : foodSet) {
 			ComparableItemStackFurnace food = new ComparableItemStackFurnace(new ItemStack(entry.item, entry.stackSize, entry.metadata));
@@ -297,8 +304,13 @@ public class FurnaceManager {
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
+
+		recipeMapPyrolysis.clear();
+		recipeMapPyrolysis = tempMapPyrolysis;
+
 		foodSet.clear();
 		foodSet = tempFood;
+
 		oreSet.clear();
 		oreSet = tempOre;
 	}
@@ -314,12 +326,12 @@ public class FurnaceManager {
 		return true;
 	}
 
-	public static boolean addRecipePyrolysis(int energy, ItemStack input, ItemStack output) {
+	public static boolean addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
 
 		if (input == null || output == null || energy <= 0 || recipeExistsPyrolysis(input)) {
 			return false;
 		}
-		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
+		RecipeFurnace recipe = new RecipeFurnace(input, output, energy, creosote);
 		recipeMapPyrolysis.put(new ComparableItemStackFurnace(input), recipe);
 		return true;
 	}
@@ -353,12 +365,19 @@ public class FurnaceManager {
 		final ItemStack input;
 		final ItemStack output;
 		final int energy;
+		final int creosote;
 
 		RecipeFurnace(ItemStack input, ItemStack output, int energy) {
+
+			this(input, output, energy, 0);
+		}
+
+		RecipeFurnace(ItemStack input, ItemStack output, int energy, int creosote) {
 
 			this.input = input;
 			this.output = output;
 			this.energy = energy;
+			this.creosote = creosote;
 
 			if (input.stackSize <= 0) {
 				input.stackSize = 1;
@@ -381,6 +400,11 @@ public class FurnaceManager {
 		public int getEnergy() {
 
 			return energy;
+		}
+
+		public int getCreosote() {
+
+			return creosote;
 		}
 	}
 

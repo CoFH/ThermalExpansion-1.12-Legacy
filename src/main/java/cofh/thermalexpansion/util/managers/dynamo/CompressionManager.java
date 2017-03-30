@@ -1,6 +1,5 @@
-package cofh.thermalexpansion.util.fuels;
+package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.core.init.CoreProps;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraftforge.fluids.Fluid;
@@ -9,7 +8,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import java.util.Set;
 
-public class MagmaticManager {
+public class CompressionManager {
 
 	private static TObjectIntHashMap<Fluid> fuelMap = new TObjectIntHashMap<>();
 
@@ -37,8 +36,11 @@ public class MagmaticManager {
 
 	public static void addDefaultFuels() {
 
-		addFuel("lava", CoreProps.LAVA_RF * 9 / 10);
-		addFuel("pyrotheum", 2000000);
+		addFuel("creosote", 100000);
+		addFuel("coal", 500000);
+		addFuel("tree_oil", 1000000);
+		addFuel("refined_oil", 1250000);
+		addFuel("fuel", 2000000);
 	}
 
 	public static void loadFuels() {

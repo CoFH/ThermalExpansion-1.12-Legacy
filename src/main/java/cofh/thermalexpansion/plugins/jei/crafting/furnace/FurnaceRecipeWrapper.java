@@ -6,8 +6,8 @@ import cofh.thermalexpansion.plugins.jei.Drawables;
 import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
-import cofh.thermalexpansion.util.crafting.FurnaceManager.ComparableItemStackFurnace;
-import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.ComparableItemStackFurnace;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.RecipeFurnace;
 import cofh.thermalfoundation.init.TFFluids;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -64,7 +64,7 @@ public class FurnaceRecipeWrapper extends BaseRecipeWrapper {
 				break;
 			case RecipeUidsTE.FURNACE_PYROLYSIS:
 				recipeOutputs.add(recipe.getOutput());
-				recipeOutputFluids.add(new FluidStack(TFFluids.fluidCreosote, recipe.getEnergy() / TileFurnace.fluidFactor));
+				recipeOutputFluids.add(new FluidStack(TFFluids.fluidCreosote, recipe.getCreosote()));
 				outputFluids = recipeOutputFluids;
 				energy = recipe.getEnergy() * 3 / 2;
 				break;

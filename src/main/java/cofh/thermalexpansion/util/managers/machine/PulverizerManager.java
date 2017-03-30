@@ -1,4 +1,4 @@
-package cofh.thermalexpansion.util.crafting;
+package cofh.thermalexpansion.util.managers.machine;
 
 import codechicken.lib.item.ItemStackRegistry;
 import cofh.core.util.oredict.OreDictionaryArbiter;

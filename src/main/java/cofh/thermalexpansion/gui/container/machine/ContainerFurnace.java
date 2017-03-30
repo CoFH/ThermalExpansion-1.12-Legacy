@@ -5,7 +5,7 @@ import cofh.lib.gui.slot.SlotEnergy;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.machine.TileFurnace;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cofh.thermalexpansion.util.crafting.FurnaceManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.SlotFurnaceOutput;
 import net.minecraft.item.ItemStack;
@@ -33,6 +33,9 @@ public class ContainerFurnace extends ContainerTEBase implements ISlotValidator 
 		}
 		if (myTile.augmentOre() && !FurnaceManager.isOre(stack)) {
 			return false;
+		}
+		if (myTile.augmentPyrolysis()) {
+			return FurnaceManager.recipeExistsPyrolysis(stack);
 		}
 		return FurnaceManager.recipeExists(stack);
 	}

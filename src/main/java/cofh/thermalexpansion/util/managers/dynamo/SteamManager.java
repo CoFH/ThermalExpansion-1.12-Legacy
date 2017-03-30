@@ -1,18 +1,20 @@
-package cofh.thermalexpansion.util.fuels;
+package cofh.thermalexpansion.util.managers.dynamo;
 
-import cofh.api.energy.IEnergyContainerItem;
+import cofh.core.init.CoreProps;
 import cofh.lib.inventory.ComparableItemStack;
-import cofh.lib.util.helpers.EnergyHelper;
+import cofh.lib.util.helpers.ItemHelper;
+import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntityFurnace;
 
 import java.util.Set;
 
-public class EnervationManager {
+public class SteamManager {
 
 	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
@@ -28,22 +30,20 @@ public class EnervationManager {
 		if (stack == null) {
 			return 0;
 		}
+		if (stack.getItem().hasContainerItem(stack)) {
+			return 0;
+		}
 		int energy = fuelMap.get(new ComparableItemStack(stack));
 
-		if (energy > 0) {
-			return energy;
-		}
-		if (EnergyHelper.isEnergyContainerItem(stack)) {
-			IEnergyContainerItem container = (IEnergyContainerItem) stack.getItem();
-			return container.extractEnergy(stack, container.getEnergyStored(stack), true);
-		}
-		return 0;
+		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
 	}
 
 	public static void addDefaultFuels() {
 
-		addFuel(new ItemStack(Items.REDSTONE), 64000);
-		addFuel(new ItemStack(Blocks.REDSTONE_BLOCK), 64000 * 10);
+		addFuel(new ItemStack(Items.COAL, 1, 0), 32000);
+		addFuel(new ItemStack(Blocks.COAL_BLOCK), 32000 * 10);
+		addFuel(new ItemStack(Items.COAL, 1, 1), 24000);
+		addFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 64000);
 	}
 
 	public static void loadFuels() {

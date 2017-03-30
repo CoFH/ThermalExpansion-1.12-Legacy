@@ -10,9 +10,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.FurnaceManager;
-import cofh.thermalexpansion.util.crafting.FurnaceManager.RecipeFurnace;
-import cofh.thermalexpansion.util.crafting.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
+import cofh.thermalexpansion.util.managers.machine.FurnaceManager.RecipeFurnace;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -34,7 +33,6 @@ public class TileFurnace extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.FURNACE.getMetadata();
 	public static int basePower = 20;
-	public static int fluidFactor = 10;
 
 	public static void initialize() {
 
@@ -141,10 +139,15 @@ public class TileFurnace extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeFurnace recipe = FurnaceManager.getRecipe(inventory[0]);
+		RecipeFurnace recipe;
 
-		if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
-			return false;
+		if (augmentPyrolysis) {
+			recipe = FurnaceManager.getRecipePyrolysis(inventory[0]);
+		} else {
+			recipe = FurnaceManager.getRecipe(inventory[0]);
+			if (augmentFood && !FurnaceManager.isFood(inventory[0]) || augmentOre && !FurnaceManager.isOre(inventory[0])) {
+				return false;
+			}
 		}
 		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
@@ -172,7 +175,7 @@ public class TileFurnace extends TileMachineBase {
 			inventory[1].stackSize += output.stackSize;
 		}
 		if (augmentPyrolysis) {
-			tank.fill(new FluidStack(TFFluids.fluidCreosote, recipe.getEnergy() / fluidFactor), true);
+			tank.fill(new FluidStack(TFFluids.fluidCreosote, recipe.getCreosote()), true);
 		} else {
 			if ((augmentFood && FurnaceManager.isFood(inventory[0]) || augmentOre && FurnaceManager.isOre(inventory[0])) && inventory[1].stackSize < inventory[1].getMaxStackSize()) {
 				inventory[1].stackSize += output.stackSize;
@@ -281,12 +284,12 @@ public class TileFurnace extends TileMachineBase {
 
 	public boolean augmentPyrolysis() {
 
-		return augmentPyrolysis && flagPyrolysis;
+		return augmentPyrolysis;
 	}
 
-	public boolean fluidArrow() {
+	public boolean augmentPyrolysisClient() {
 
-		return augmentPyrolysis && TapperManager.mappingExists(inventory[0]);
+		return augmentPyrolysis && flagPyrolysis;
 	}
 
 	/* NBT METHODS */
