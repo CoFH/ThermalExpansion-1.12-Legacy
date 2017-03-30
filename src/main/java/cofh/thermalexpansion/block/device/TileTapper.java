@@ -9,7 +9,7 @@ import cofh.lib.util.helpers.RenderHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiTapper;
-import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.gui.container.device.ContainerTapper;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.crafting.TapperManager;
@@ -18,6 +18,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
@@ -43,14 +44,14 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 2;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 4 };
-		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
+		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
-		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
-		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true };
+		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true };
 
 		LIGHT_VALUES[TYPE] = 3;
 
@@ -65,14 +66,20 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 500;
+	private static final int TIME_CONSTANT = 600;
+	private static final int BOOST_TIME = 16;
 	private static final int NUM_LEAVES = 3;
 
-	private FluidStack genFluid = new FluidStack(TFFluids.fluidResin, 25);
+	private FluidStack genFluid = new FluidStack(TFFluids.fluidResin, 50);
 
 	private boolean cached;
+
+	private int inputTracker;
 	private int outputTrackerFluid;
 	private boolean validTree;
+
+	private int boostMult;
+	private int boostTime;
 
 	private FluidTankCore tank = new FluidTankCore(TEProps.MAX_FLUID_MEDIUM);
 
@@ -84,9 +91,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public TileTapper() {
 
 		super();
+		inventory = new ItemStack[1];
+		createAllSlots(inventory.length);
+
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 
+		hasAutoInput = true;
 		hasAutoOutput = true;
+
+		enableAutoInput = true;
+		enableAutoOutput = true;
 
 		trunkPos = new BlockPos(pos);
 		for (int i = 0; i < NUM_LEAVES; i++) {
@@ -126,12 +140,29 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			return;
 		}
 		transferOutputFluid();
+		transferInput();
 
 		boolean curActive = isActive;
 
 		if (isActive) {
 			if (validTree) {
-				tank.fill(genFluid, true);
+				if (boostTime > 0) {
+					tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
+					boostTime--;
+				} else {
+					boostMult = TapperManager.getFertilizerMultiplier(inventory[0]);
+					if (boostMult > 0) {
+						tank.fill(new FluidStack(genFluid, genFluid.amount * boostMult), true);
+						boostTime = BOOST_TIME - 1;
+
+						inventory[0].stackSize--;
+						if (inventory[0].stackSize <= 0) {
+							inventory[0] = null;
+						}
+					} else {
+						tank.fill(genFluid, true);
+					}
+				}
 				updateAdjacentHandlers();
 			}
 			if (!redstoneControlOrDisable()) {
@@ -146,19 +177,34 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		updateIfChanged(curActive);
 	}
 
+	protected void transferInput() {
+
+		if (!enableAutoInput) {
+			return;
+		}
+		int side;
+		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+			side = i % 6;
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+					inputTracker = side;
+					break;
+				}
+			}
+		}
+	}
+
 	protected void transferOutputFluid() {
 
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 1) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -262,12 +308,11 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	private boolean isTrunkBase(BlockPos checkPos) {
 
 		IBlockState state = worldObj.getBlockState(checkPos.down());
-
 		Material material = state.getMaterial();
+
 		if (material != Material.GROUND && material != Material.GRASS) {
 			return false;
 		}
-
 		return TapperManager.mappingExists(worldObj.getBlockState(checkPos));
 	}
 
@@ -281,7 +326,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return new ContainerTEBase(inventory, this);
+		return new ContainerTapper(inventory, this);
+	}
+
+	@Override
+	public int getScaledSpeed(int scale) {
+
+		if (!isActive) {
+			return 0;
+		}
+		return MathHelper.round(scale * boostTime / BOOST_TIME);
 	}
 
 	@Override
@@ -302,11 +356,21 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
+		// TODO: Temporary - remove in 5.2.
+		if (!nbt.hasKey("TE5.1")) {
+			for (int i = 0; i < 6; i++) {
+				if (sideCache[i] == 1) {
+					sideCache[i] = 2;
+				}
+			}
+		}
 		validTree = nbt.getBoolean("Tree");
+		inputTracker = nbt.getInteger("TrackIn");
 		outputTrackerFluid = nbt.getInteger("TrackOut");
 		tank.readFromNBT(nbt);
 
-		// validTree &= nbt.hasKey("LeafX" + (NUM_LEAVES - 1));
+		boostMult = nbt.getInteger("BoostMult");
+		boostTime = nbt.getInteger("BoostTime");
 
 		for (int i = 0; i < NUM_LEAVES; i++) {
 			leafPos[i] = new BlockPos(nbt.getInteger("LeafX" + i), nbt.getInteger("LeafY" + i), nbt.getInteger("LeafZ" + i));
@@ -319,9 +383,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.writeToNBT(nbt);
 
+		// TODO: Temporary - remove in 5.2
+		nbt.setBoolean("TE5.1", true);
+
 		nbt.setBoolean("Tree", validTree);
+		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTrackerFluid);
 		tank.writeToNBT(nbt);
+
+		nbt.setInteger("BoostMult", boostMult);
+		nbt.setInteger("BoostTime", boostTime);
 
 		for (int i = 0; i < NUM_LEAVES; i++) {
 			nbt.setInteger("LeafX" + i, leafPos[i].getX());
@@ -343,6 +414,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		PacketCoFHBase payload = super.getGuiPacket();
 
+		payload.addInt(boostTime);
+		payload.addInt(boostMult);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -364,6 +437,8 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 
 		super.handleGuiPacket(payload);
 
+		boostTime = payload.getInt();
+		boostMult = payload.getInt();
 		tank.setFluid(payload.getFluidStack());
 	}
 
@@ -391,6 +466,13 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
+	}
+
+	/* IInventory */
+	@Override
+	public boolean isItemValidForSlot(int slot, ItemStack stack) {
+
+		return TapperManager.getFertilizerMultiplier(stack) > 0;
 	}
 
 	/* CAPABILITIES */

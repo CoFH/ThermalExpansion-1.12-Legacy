@@ -26,7 +26,6 @@ public abstract class TileDeviceBase extends TilePowered {
 		sideConfig = SIDE_CONFIGS[this.getType()];
 		slotConfig = SLOT_CONFIGS[this.getType()];
 		setDefaultSides();
-
 		hasRedstoneControl = true;
 	}
 
@@ -70,8 +69,6 @@ public abstract class TileDeviceBase extends TilePowered {
 	protected void setLevelFlags() {
 
 		level = 0;
-		hasAutoInput = true;
-		hasAutoOutput = true;
 		hasRedstoneControl = true;
 	}
 

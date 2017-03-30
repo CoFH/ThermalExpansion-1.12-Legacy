@@ -210,9 +210,6 @@ public class GuiCell extends GuiCore {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv") + ":", getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv"), xSize / 2), 32, 0x404040);
-		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend") + ":", xSize / 2 + getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend"), xSize / 2), 32, 0x404040);
-
 		String recv = StringHelper.formatNumber(baseTile.amountRecv) + " RF/t";
 		String send = StringHelper.formatNumber(baseTile.amountSend) + " RF/t";
 

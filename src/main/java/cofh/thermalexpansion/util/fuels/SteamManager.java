@@ -1,9 +1,11 @@
 package cofh.thermalexpansion.util.fuels;
 
 import cofh.core.init.CoreProps;
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
@@ -14,11 +16,11 @@ import java.util.Set;
 
 public class SteamManager {
 
-	private static TObjectIntHashMap<ItemStack> fuelMap = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
 	public static int DEFAULT_ENERGY = 32000;
 
-	public static Set<ItemStack> getFuels() {
+	public static Set<ComparableItemStack> getFuels() {
 
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
@@ -31,7 +33,7 @@ public class SteamManager {
 		if (stack.getItem().hasContainerItem(stack)) {
 			return 0;
 		}
-		int energy = fuelMap.get(stack);
+		int energy = fuelMap.get(new ComparableItemStack(stack));
 
 		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
 	}
@@ -48,20 +50,32 @@ public class SteamManager {
 
 	}
 
+	public static void refreshFuels() {
+
+		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
+
+		for (TObjectIntIterator<ComparableItemStack> it = fuelMap.iterator(); it.hasNext(); ) {
+			it.advance();
+			tempMap.put(new ComparableItemStack(it.key().toItemStack()), it.value());
+		}
+		fuelMap.clear();
+		fuelMap = tempMap;
+	}
+
 	/* ADD FUELS */
 	public static boolean addFuel(ItemStack stack, int energy) {
 
 		if (stack == null || energy < 1000 || energy > 200000000) {
 			return false;
 		}
-		fuelMap.put(stack, energy);
+		fuelMap.put(new ComparableItemStack(stack), energy);
 		return true;
 	}
 
 	/* REMOVE FUELS */
 	public static boolean removeFuel(ItemStack stack) {
 
-		fuelMap.remove(stack);
+		fuelMap.remove(new ComparableItemStack(stack));
 		return true;
 	}
 

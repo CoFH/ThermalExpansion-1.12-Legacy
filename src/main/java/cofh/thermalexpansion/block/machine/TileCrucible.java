@@ -178,10 +178,7 @@ public class TileCrucible extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
@@ -190,7 +187,6 @@ public class TileCrucible extends TileMachineBase {
 			side = i % 6;
 			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;

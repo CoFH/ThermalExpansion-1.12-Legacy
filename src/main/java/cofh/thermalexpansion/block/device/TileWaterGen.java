@@ -83,6 +83,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		tank.setLock(FluidRegistry.WATER);
 
 		hasAutoOutput = true;
+
+		enableAutoOutput = true;
 	}
 
 	@Override
@@ -160,17 +162,15 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 
 	protected void transferOutputFluid() {
 
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME * 2));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 1) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;

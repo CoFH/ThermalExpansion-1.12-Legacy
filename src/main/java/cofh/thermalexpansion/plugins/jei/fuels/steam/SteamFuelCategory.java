@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.fuels.steam;
 
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoSteam;
@@ -43,13 +44,14 @@ public class SteamFuelCategory extends BaseFuelCategory<SteamFuelWrapper> {
 
 		List<SteamFuelWrapper> recipes = new ArrayList<>();
 
-		for (ItemStack fuel : SteamManager.getFuels()) {
-			recipes.add(new SteamFuelWrapper(guiHelper, fuel, SteamManager.getFuelEnergy(fuel)));
+		for (ComparableItemStack fuel : SteamManager.getFuels()) {
+			ItemStack fuelStack = fuel.toItemStack();
+			recipes.add(new SteamFuelWrapper(guiHelper, fuelStack, SteamManager.getFuelEnergy(fuelStack)));
 		}
 		Set specificFuels = SteamManager.getFuels();
 
 		for (ItemStack fuel : registry.getIngredientRegistry().getFuels()) {
-			if (specificFuels.contains(fuel)) {
+			if (specificFuels.contains(new ComparableItemStack(fuel))) {
 				continue;
 			}
 			int energy = SteamManager.getFuelEnergy(fuel);

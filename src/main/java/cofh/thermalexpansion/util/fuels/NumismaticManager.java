@@ -1,7 +1,9 @@
 package cofh.thermalexpansion.util.fuels;
 
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.thermalfoundation.item.ItemCoin;
 import com.google.common.collect.ImmutableSet;
+import gnu.trove.iterator.TObjectIntIterator;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.item.ItemStack;
 
@@ -9,11 +11,11 @@ import java.util.Set;
 
 public class NumismaticManager {
 
-	private static TObjectIntHashMap<ItemStack> fuelMap = new TObjectIntHashMap<>();
+	private static TObjectIntHashMap<ComparableItemStack> fuelMap = new TObjectIntHashMap<>();
 
 	public static int DEFAULT_ENERGY = 32000;
 
-	public static Set<ItemStack> getFuels() {
+	public static Set<ComparableItemStack> getFuels() {
 
 		return ImmutableSet.copyOf(fuelMap.keySet());
 	}
@@ -23,7 +25,7 @@ public class NumismaticManager {
 		if (stack == null) {
 			return 0;
 		}
-		return fuelMap.get(stack);
+		return fuelMap.get(new ComparableItemStack(stack));
 	}
 
 	public static void addDefaultFuels() {
@@ -55,20 +57,32 @@ public class NumismaticManager {
 
 	}
 
+	public static void refreshFuels() {
+
+		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
+
+		for (TObjectIntIterator<ComparableItemStack> it = fuelMap.iterator(); it.hasNext(); ) {
+			it.advance();
+			tempMap.put(new ComparableItemStack(it.key().toItemStack()), it.value());
+		}
+		fuelMap.clear();
+		fuelMap = tempMap;
+	}
+
 	/* ADD FUELS */
 	public static boolean addFuel(ItemStack stack, int energy) {
 
 		if (stack == null || energy < 1000 || energy > 200000000) {
 			return false;
 		}
-		fuelMap.put(stack, energy);
+		fuelMap.put(new ComparableItemStack(stack), energy);
 		return true;
 	}
 
 	/* REMOVE FUELS */
 	public static boolean removeFuel(ItemStack stack) {
 
-		fuelMap.remove(stack);
+		fuelMap.remove(new ComparableItemStack(stack));
 		return true;
 	}
 

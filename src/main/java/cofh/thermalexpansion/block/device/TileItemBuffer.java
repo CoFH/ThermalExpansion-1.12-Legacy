@@ -53,6 +53,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		inventory = new ItemStack[9];
 		createAllSlots(inventory.length);
 
+		hasAutoInput = true;
+		hasAutoOutput = true;
+
 		enableAutoInput = true;
 		enableAutoOutput = true;
 	}
@@ -64,23 +67,27 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public void setDefaultSides() {
-
-		sideCache = getDefaultSides();
-		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 2;
-	}
-
-	@Override
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
+			return;
+		}
+		boolean curActive = isActive;
+
+		if (isActive) {
 			transferOutput();
 			transferInput();
+
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
+			}
+		} else if (redstoneControlOrDisable()) {
+			isActive = true;
 		}
+		updateIfChanged(curActive);
 	}
 
 	protected void transferInput() {
@@ -143,8 +150,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		amountInput = MathHelper.clamp(nbt.getInteger("Input"), 0, 64);
-		amountOutput = MathHelper.clamp(nbt.getInteger("Output"), 0, 64);
+		amountInput = MathHelper.clamp(nbt.getInteger("AmountIn"), 0, 64);
+		amountOutput = MathHelper.clamp(nbt.getInteger("AmountOut"), 0, 64);
 	}
 
 	@Override
@@ -154,8 +161,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setInteger("Input", amountInput);
-		nbt.setInteger("Output", amountOutput);
+
+		nbt.setInteger("AmountIn", amountInput);
+		nbt.setInteger("AmountOut", amountOutput);
 		return nbt;
 	}
 

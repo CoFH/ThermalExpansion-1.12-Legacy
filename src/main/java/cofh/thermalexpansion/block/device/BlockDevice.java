@@ -129,6 +129,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileHeatSink();
 			case TAPPER:
 				return new TileTapper();
+			case FISHER:
+				return new TileFisher();
 			case ITEM_BUFFER:
 				return new TileItemBuffer();
 			//			case EXTENDER:
@@ -380,7 +382,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		NULLIFIER(1, "nullifier"),
 		HEAT_SINK(2, "heat_sink"),
 		TAPPER(3, "tapper"),
-		ITEM_BUFFER(4, "item_buffer");
+		FISHER(4, "fisher"),
+		ITEM_BUFFER(5, "item_buffer");
 
 		// LEXICON
 		// CHUNK_LOADER

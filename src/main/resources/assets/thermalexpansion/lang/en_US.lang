@@ -28,6 +28,11 @@ chat.thermalexpansion.augment.install.success=Augment successfully installed!
 chat.thermalexpansion.upgrade.install.failure=Unable to upgrade block.
 chat.thermalexpansion.upgrade.install.success=Block successfully upgraded!
 
+gui.thermalexpansion.device.item_buffer.decInput=Decrease Input by
+gui.thermalexpansion.device.item_buffer.decOutput=Decrease Output by
+gui.thermalexpansion.device.item_buffer.incInput=Increase Input by
+gui.thermalexpansion.device.item_buffer.incOutput=Increase Output by
+
 gui.thermalexpansion.jei.compactor.modeMint=Mint
 gui.thermalexpansion.jei.compactor.modePress=Press
 gui.thermalexpansion.jei.compactor.modeStorage=Storage
@@ -52,8 +57,6 @@ gui.thermalexpansion.storage.cell.decRecv=Decrease RF Input by
 gui.thermalexpansion.storage.cell.decSend=Decrease RF Output by
 gui.thermalexpansion.storage.cell.incRecv=Increase RF Input by
 gui.thermalexpansion.storage.cell.incSend=Increase RF Output by
-gui.thermalexpansion.storage.cell.maxRecv=Max Input
-gui.thermalexpansion.storage.cell.maxSend=Max Output
 
 info.thermalexpansion.augment.0=Augment
 

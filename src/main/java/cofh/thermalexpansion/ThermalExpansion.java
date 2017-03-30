@@ -210,7 +210,12 @@ public class ThermalExpansion {
 		TransposerManager.refreshRecipes();
 		ChargerManager.refreshRecipes();
 
+		SteamManager.refreshFuels();
+		// Magmatic Unnecessary
+		// Compression Unnecessary
 		ReactantManager.refreshReactions();
+		EnervationManager.refreshFuels();
+		NumismaticManager.refreshFuels();
 
 		TapperManager.refreshMappings();
 	}

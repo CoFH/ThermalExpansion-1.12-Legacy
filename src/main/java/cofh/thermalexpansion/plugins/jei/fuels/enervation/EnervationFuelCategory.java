@@ -47,8 +47,9 @@ public class EnervationFuelCategory extends BaseFuelCategory<EnervationFuelWrapp
 
 		List<EnervationFuelWrapper> recipes = new ArrayList<>();
 
-		for (ItemStack fuel : EnervationManager.getFuels()) {
-			recipes.add(new EnervationFuelWrapper(guiHelper, fuel, EnervationManager.getFuelEnergy(fuel)));
+		for (ComparableItemStack fuel : EnervationManager.getFuels()) {
+			ItemStack fuelStack = fuel.toItemStack();
+			recipes.add(new EnervationFuelWrapper(guiHelper, fuelStack, EnervationManager.getFuelEnergy(fuelStack)));
 		}
 		for (Item item : Item.REGISTRY) {
 			if (item instanceof IEnergyContainerItem) {

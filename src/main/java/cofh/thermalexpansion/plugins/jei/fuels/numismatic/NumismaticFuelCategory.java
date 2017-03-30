@@ -1,5 +1,6 @@
 package cofh.thermalexpansion.plugins.jei.fuels.numismatic;
 
+import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.dynamo.BlockDynamo;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
@@ -42,8 +43,9 @@ public class NumismaticFuelCategory extends BaseFuelCategory<NumismaticFuelWrapp
 
 		List<NumismaticFuelWrapper> recipes = new ArrayList<>();
 
-		for (ItemStack fuel : NumismaticManager.getFuels()) {
-			recipes.add(new NumismaticFuelWrapper(guiHelper, fuel, NumismaticManager.getFuelEnergy(fuel)));
+		for (ComparableItemStack fuel : NumismaticManager.getFuels()) {
+			ItemStack fuelStack = fuel.toItemStack();
+			recipes.add(new NumismaticFuelWrapper(guiHelper, fuelStack, NumismaticManager.getFuelEnergy(fuelStack)));
 		}
 		return recipes;
 	}
