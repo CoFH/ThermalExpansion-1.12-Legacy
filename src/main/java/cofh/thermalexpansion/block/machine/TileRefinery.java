@@ -386,7 +386,7 @@ public class TileRefinery extends TileMachineBase {
 
 					FluidTankInfo inputInfo = inputTank.getInfo();
 					FluidTankInfo outputInfo = outputTank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(inputInfo.fluid, inputInfo.capacity, true, false), new FluidTankProperties(outputInfo.fluid, outputInfo.capacity, true, false) };
+					return new IFluidTankProperties[] { new FluidTankProperties(inputInfo.fluid, inputInfo.capacity, true, false), new FluidTankProperties(outputInfo.fluid, outputInfo.capacity, false, true) };
 				}
 
 				@Override

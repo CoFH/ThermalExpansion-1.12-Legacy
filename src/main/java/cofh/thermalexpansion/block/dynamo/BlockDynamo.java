@@ -56,7 +56,7 @@ import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
-	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", Type.class);
+	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
 
@@ -71,7 +71,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		bb = new Cuboid6(.25, .5, .25, .75, 1, .75);
 		boundingBox[1 + 6] = bb.aabb();
-		boundingBox[0 + 6] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
+		boundingBox[6] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
 		for (int i = 2; i < 6; ++i) {
 			boundingBox[i + 6] = bb.copy().apply(Rotation.sideRotations[i].at(p)).aabb();
 		}

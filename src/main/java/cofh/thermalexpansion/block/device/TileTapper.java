@@ -127,7 +127,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		updateAdjacentHandlers();
+		updateValidity();
 	}
 
 	@Override
@@ -163,7 +163,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 						tank.fill(genFluid, true);
 					}
 				}
-				updateAdjacentHandlers();
+				updateValidity();
 			}
 			if (!redstoneControlOrDisable()) {
 				isActive = false;
@@ -172,7 +172,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		if (!cached) {
-			updateAdjacentHandlers();
+			updateValidity();
 		}
 		updateIfChanged(curActive);
 	}
@@ -214,7 +214,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected void updateAdjacentHandlers() {
+	protected void updateValidity() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
@@ -491,7 +491,7 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, from != null && sideCache[from.ordinal()] > 0) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
 				}
 
 				@Override

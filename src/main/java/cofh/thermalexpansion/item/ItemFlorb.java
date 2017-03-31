@@ -57,7 +57,6 @@ public class ItemFlorb extends ItemMulti implements IBakeryItem {
 	public ItemFlorb() {
 
 		super("thermalexpansion");
-		setMaxStackSize(16);
 		setCreativeTab(ThermalExpansion.tabFlorbs);
 	}
 

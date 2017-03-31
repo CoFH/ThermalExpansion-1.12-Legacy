@@ -34,13 +34,15 @@ public class CompressionManager {
 		return stack == null ? 0 : fuelMap.get(stack.getFluid()) / 10;
 	}
 
-	public static void addDefaultFuels() {
+	public static void initialize() {
 
 		addFuel("creosote", 100000);
 		addFuel("coal", 500000);
 		addFuel("tree_oil", 1000000);
 		addFuel("refined_oil", 1250000);
 		addFuel("fuel", 2000000);
+
+		loadFuels();
 	}
 
 	public static void loadFuels() {

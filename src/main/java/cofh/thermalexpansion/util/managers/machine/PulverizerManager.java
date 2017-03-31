@@ -52,7 +52,7 @@ public class PulverizerManager {
 		return recipeMap.values().toArray(new RecipePulverizer[recipeMap.size()]);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* SPECIAL */
 		{
@@ -158,7 +158,7 @@ public class PulverizerManager {
 
 		/* DUSTS */
 		{
-			int energy = DEFAULT_ENERGY * 1 / 2;
+			int energy = DEFAULT_ENERGY / 2;
 
 			addIngotToDustRecipe(energy, "ingotIron", ItemMaterial.dustIron);
 			addIngotToDustRecipe(energy, "ingotGold", ItemMaterial.dustGold);
@@ -180,6 +180,8 @@ public class PulverizerManager {
 			addIngotToDustRecipe(energy, "ingotLumium", ItemMaterial.dustLumium);
 			addIngotToDustRecipe(energy, "ingotEnderium", ItemMaterial.dustEnderium);
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -238,7 +240,7 @@ public class PulverizerManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackPulverizer, RecipePulverizer> tempMap = new THashMap<>(recipeMap.size());
 		RecipePulverizer tempRecipe;

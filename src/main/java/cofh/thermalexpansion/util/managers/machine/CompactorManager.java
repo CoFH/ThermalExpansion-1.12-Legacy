@@ -92,7 +92,7 @@ public class CompactorManager {
 		return input != null && validationSet.contains(new ComparableItemStackCompactor(input));
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* PRESS */
 		{
@@ -188,6 +188,8 @@ public class CompactorManager {
 			addDefaultMintRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium, ItemCoin.coinLumium);
 			addDefaultMintRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium, ItemCoin.coinEnderium);
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -288,7 +290,7 @@ public class CompactorManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackCompactor, RecipeCompactor> tempPress = new THashMap<>(recipeMapPress.size());
 		Map<ComparableItemStackCompactor, RecipeCompactor> tempStorage = new THashMap<>(recipeMapStorage.size());

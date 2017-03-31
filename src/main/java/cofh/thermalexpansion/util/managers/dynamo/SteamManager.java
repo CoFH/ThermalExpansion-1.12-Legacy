@@ -38,19 +38,21 @@ public class SteamManager {
 		return energy > 0 ? energy : TileEntityFurnace.getItemBurnTime(stack) * CoreProps.RF_PER_MJ;
 	}
 
-	public static void addDefaultFuels() {
+	public static void initialize() {
 
 		addFuel(new ItemStack(Items.COAL, 1, 0), 32000);
 		addFuel(new ItemStack(Blocks.COAL_BLOCK), 32000 * 10);
 		addFuel(new ItemStack(Items.COAL, 1, 1), 24000);
 		addFuel(ItemHelper.cloneStack(ItemMaterial.gemCoke, 1), 64000);
+
+		loadFuels();
 	}
 
 	public static void loadFuels() {
 
 	}
 
-	public static void refreshFuels() {
+	public static void refresh() {
 
 		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
 

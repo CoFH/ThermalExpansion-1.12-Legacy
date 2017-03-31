@@ -202,7 +202,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		public int minPower = 8;
 		public int maxPower = 80;
 		public int maxEnergy = 20000;
-		public int minPowerLevel = 1 * maxEnergy / 10;
+		public int minPowerLevel = maxEnergy / 10;
 		public int maxPowerLevel = 9 * maxEnergy / 10;
 		public int energyRamp = maxPowerLevel / maxPower;
 

@@ -63,7 +63,7 @@ public class TapperManager {
 		return fertilizerMap.get(new ComparableItemStack(stack));
 	}
 
-	public static void addDefaultMappings() {
+	public static void initialize() {
 
 		FluidStack resin = new FluidStack(TFFluids.fluidResin, 25);
 
@@ -89,6 +89,8 @@ public class TapperManager {
 			addVanillaLeafMappings(Blocks.LOG, BlockOldLog.VARIANT, Blocks.LEAVES, BlockOldLeaf.VARIANT);
 			addVanillaLeafMappings(Blocks.LOG2, BlockNewLog.VARIANT, Blocks.LEAVES2, BlockNewLeaf.VARIANT);
 		}
+		/* LOAD MAPPINGS */
+		loadMappings();
 	}
 
 	public static void loadMappings() {
@@ -117,7 +119,7 @@ public class TapperManager {
 		return true;
 	}
 
-	public static void refreshMappings() {
+	public static void refresh() {
 
 		Map<BlockWrapper, FluidStack> tempBlockMap = new THashMap<>(blockMap.size());
 		Map<ItemWrapper, FluidStack> tempItemMap = new THashMap<>(itemMap.size());

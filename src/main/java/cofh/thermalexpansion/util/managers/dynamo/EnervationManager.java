@@ -40,17 +40,19 @@ public class EnervationManager {
 		return 0;
 	}
 
-	public static void addDefaultFuels() {
+	public static void initialize() {
 
 		addFuel(new ItemStack(Items.REDSTONE), 64000);
 		addFuel(new ItemStack(Blocks.REDSTONE_BLOCK), 64000 * 10);
+
+		loadFuels();
 	}
 
 	public static void loadFuels() {
 
 	}
 
-	public static void refreshFuels() {
+	public static void refresh() {
 
 		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
 

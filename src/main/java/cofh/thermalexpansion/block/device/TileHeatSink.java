@@ -316,7 +316,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, from != null && sideCache[from.ordinal()] > 0) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
 				}
 
 				@Override

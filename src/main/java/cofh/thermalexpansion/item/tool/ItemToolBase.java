@@ -75,7 +75,7 @@ public abstract class ItemToolBase extends Item implements IMultiModeItem {
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
 
-		return new StringBuilder().append(getUnlocalizedName()).append('.').append(itemName).toString();
+		return getUnlocalizedName() + '.' + itemName;
 	}
 
 	@Override

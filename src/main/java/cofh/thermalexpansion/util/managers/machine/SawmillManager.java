@@ -51,7 +51,7 @@ public class SawmillManager {
 		return recipeMap.values().toArray(new RecipeSawmill[recipeMap.size()]);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/*
 		 * Conversion rate as follows:
@@ -154,6 +154,8 @@ public class SawmillManager {
 			addRecipe(1200, new ItemStack(Items.PAINTING), new ItemStack(Blocks.WOOL, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 			addRecipe(1200, new ItemStack(Items.ITEM_FRAME), new ItemStack(Items.LEATHER, 1), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -172,7 +174,7 @@ public class SawmillManager {
 		//		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<>(recipeMap.size());
 		RecipeSawmill tempRecipe;

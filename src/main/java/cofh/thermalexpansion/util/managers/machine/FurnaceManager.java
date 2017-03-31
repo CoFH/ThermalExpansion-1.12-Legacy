@@ -108,7 +108,7 @@ public class FurnaceManager {
 		return oreSet.contains(query);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* SPECIAL */
 		{
@@ -225,6 +225,8 @@ public class FurnaceManager {
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Blocks.CACTUS, 4), charcoal, 50);
 			addRecipePyrolysis(DEFAULT_ENERGY, new ItemStack(Items.COAL), ItemMaterial.gemCoke, 250);
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -278,7 +280,7 @@ public class FurnaceManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackFurnace, RecipeFurnace> tempMap = new THashMap<>(recipeMap.size());
 		Map<ComparableItemStackFurnace, RecipeFurnace> tempMapPyrolysis = new THashMap<>(recipeMapPyrolysis.size());

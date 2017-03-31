@@ -42,9 +42,12 @@ public class ChargerManager {
 		return recipeMap.values().toArray(new RecipeCharger[recipeMap.size()]);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		addRecipe(DEFAULT_ENERGY, ItemFertilizer.fertilizerRich, ItemFertilizer.fertilizerFlux);
+
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -55,7 +58,7 @@ public class ChargerManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackSafe, RecipeCharger> tempMap = new THashMap<>(recipeMap.size());
 		RecipeCharger tempRecipe;

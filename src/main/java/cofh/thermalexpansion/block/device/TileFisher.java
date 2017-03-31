@@ -6,12 +6,17 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiFisher;
 import cofh.thermalexpansion.gui.container.device.ContainerFisher;
+import net.minecraft.block.BlockLiquid;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ITickable;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class TileFisher extends TileDeviceBase implements ITickable {
 
@@ -42,10 +47,10 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		BlockDevice.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 	}
 
-	private static final int TIME_CONSTANT = 4800;
+	private static final int TIME_CONSTANT = 3600;
 	private static final int BOOST_TIME = 16;
 
-	private boolean cached;
+	private int targetWater = -1;
 
 	private int inputTracker;
 	private int outputTracker;
@@ -79,17 +84,17 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	@Override
 	public void blockPlaced() {
 
-		//		if (validTree && redstoneControlOrDisable()) {
-		//			isActive = true;
-		//			sendTilePacket(Side.CLIENT);
-		//		}
+		if (redstoneControlOrDisable() && targetWater >= 8) {
+			isActive = true;
+			sendTilePacket(Side.CLIENT);
+		}
 	}
 
 	@Override
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		updateAdjacentHandlers();
+		updateValidity();
 	}
 
 	@Override
@@ -101,7 +106,39 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		if (!timeCheckOffset()) {
 			return;
 		}
+		transferOutput();
+		transferInput();
 
+		boolean curActive = isActive;
+
+		if (isActive) {
+			if (targetWater > 8) {
+
+			}
+			if (!redstoneControlOrDisable() || targetWater < 8) {
+				isActive = false;
+			}
+		} else if (redstoneControlOrDisable() && targetWater >= 8) {
+			isActive = true;
+		}
+		updateValidity();
+		updateIfChanged(curActive);
+	}
+
+	protected void updateValidity() {
+
+		if (ServerHelper.isClientWorld(worldObj)) {
+			return;
+		}
+		targetWater = 0;
+
+		Iterable<BlockPos> area = BlockPos.getAllInBox(pos.add(-2, -1, -2), pos.add(2, -1, 2));
+
+		for (BlockPos query : area) {
+			if (isWater(worldObj.getBlockState(query))) {
+				targetWater++;
+			}
+		}
 	}
 
 	protected void transferInput() {
@@ -121,11 +158,26 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	protected void updateAdjacentHandlers() {
+	protected void transferOutput() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
+		if (!enableAutoOutput) {
 			return;
 		}
+		//		int side;
+		//		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+		//			side = i % 6;
+		//			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
+		//				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+		//					inputTracker = side;
+		//					break;
+		//				}
+		//			}
+		//		}
+	}
+
+	protected static boolean isWater(IBlockState state) {
+
+		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
 	}
 
 	protected boolean timeCheckOffset() {
@@ -161,6 +213,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 
 		super.readFromNBT(nbt);
 
+		targetWater = nbt.getInteger("Water");
+
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
@@ -172,6 +226,8 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	public NBTTagCompound writeToNBT(NBTTagCompound nbt) {
 
 		super.writeToNBT(nbt);
+
+		nbt.setInteger("Water", targetWater);
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
@@ -197,30 +253,12 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public PacketCoFHBase getTilePacket() {
-
-		PacketCoFHBase payload = super.getTilePacket();
-
-		// payload.addBool(validTree);
-
-		return payload;
-	}
-
-	@Override
 	protected void handleGuiPacket(PacketCoFHBase payload) {
 
 		super.handleGuiPacket(payload);
 
 		boostTime = payload.getInt();
 		boostMult = payload.getInt();
-	}
-
-	@Override
-	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
-
-		super.handleTilePacket(payload, isServer);
-
-		// validTree = payload.getBool();
 	}
 
 	/* IInventory */

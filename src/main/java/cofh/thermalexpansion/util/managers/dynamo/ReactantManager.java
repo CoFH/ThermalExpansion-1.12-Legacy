@@ -83,7 +83,7 @@ public class ReactantManager {
 		return fluid != null && validFluidsElemental.contains(fluid.getFluid());
 	}
 
-	public static void addDefaultReactions() {
+	public static void initialize() {
 
 		addReaction(SUGAR, TFFluids.fluidRedstone, 80000);
 		addReaction(NETHER_WART, TFFluids.fluidRedstone, 100000);
@@ -101,13 +101,15 @@ public class ReactantManager {
 		addElementalReaction(ItemMaterial.dustCryotheum, TFFluids.fluidPyrotheum, 400000);
 		addElementalReaction(ItemMaterial.dustAerotheum, TFFluids.fluidPetrotheum, 400000);
 		addElementalReaction(ItemMaterial.dustPetrotheum, TFFluids.fluidAerotheum, 400000);
+
+		loadReactions();
 	}
 
 	public static void loadReactions() {
 
 	}
 
-	public static void refreshReactions() {
+	public static void refresh() {
 
 		Map<List<Integer>, Reaction> tempReactionMap = new THashMap<>(reactionMap.size());
 		Set<ComparableItemStack> tempSet = new THashSet<>();

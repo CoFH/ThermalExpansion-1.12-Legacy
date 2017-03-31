@@ -15,8 +15,8 @@ import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
 import cofh.thermalexpansion.util.managers.CoolantManager;
 import cofh.thermalexpansion.util.managers.TapperManager;
-import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalexpansion.util.managers.dynamo.*;
+import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -82,6 +82,9 @@ public class ThermalExpansion {
 		TEFlorbs.preInit();
 		//TEAchievements.preInit();
 
+		/* Register Handlers */
+		registerHandlers();
+
 		proxy.preInit(event);
 	}
 
@@ -92,9 +95,6 @@ public class ThermalExpansion {
 		TEItems.initialize();
 		TEFlorbs.initialize();
 		//TEAchievements.initialize();
-
-		/* Register Handlers */
-		registerHandlers();
 
 		proxy.initialize(event);
 	}
@@ -107,8 +107,7 @@ public class ThermalExpansion {
 		TEFlorbs.postInit();
 		//TEAchievements.postInit();
 
-		managerDefault();
-		managerParse();
+		managerInitialize();
 
 		proxy.postInit(event);
 	}
@@ -126,12 +125,7 @@ public class ThermalExpansion {
 	}
 
 	@EventHandler
-	public void serverStart(FMLServerAboutToStartEvent event) {
-
-	}
-
-	@EventHandler
-	public void serverStarting(FMLServerStartedEvent event) {
+	public void handleIdMappingEvent(FMLModIdMappingEvent event) {
 
 		managerRefresh();
 	}
@@ -142,88 +136,8 @@ public class ThermalExpansion {
 		IMCHandler.instance.handleIMC(event.getMessages());
 	}
 
-	/* HELPERS */
-	private void registerHandlers() {
-
-		NetworkRegistry.INSTANCE.registerGuiHandler(instance, GUI_HANDLER);
-		MinecraftForge.EVENT_BUS.register(proxy);
-
-		PacketTEBase.initialize();
-	}
-
-	private void managerDefault() {
-
-		FurnaceManager.addDefaultRecipes();
-		PulverizerManager.addDefaultRecipes();
-		SawmillManager.addDefaultRecipes();
-		SmelterManager.addDefaultRecipes();
-		InsolatorManager.addDefaultRecipes();
-		CompactorManager.addDefaultRecipes();
-		CrucibleManager.addDefaultRecipes();
-		RefineryManager.addDefaultRecipes();
-		TransposerManager.addDefaultRecipes();
-		ChargerManager.addDefaultRecipes();
-
-		CoolantManager.addDefaultMappings();
-		TapperManager.addDefaultMappings();
-
-		SteamManager.addDefaultFuels();
-		MagmaticManager.addDefaultFuels();
-		CompressionManager.addDefaultFuels();
-		ReactantManager.addDefaultReactions();
-		EnervationManager.addDefaultFuels();
-		NumismaticManager.addDefaultFuels();
-	}
-
-	private void managerParse() {
-
-		FurnaceManager.loadRecipes();
-		PulverizerManager.loadRecipes();
-		SawmillManager.loadRecipes();
-		SmelterManager.loadRecipes();
-		InsolatorManager.loadRecipes();
-		CompactorManager.loadRecipes();
-		CrucibleManager.loadRecipes();
-		RefineryManager.loadRecipes();
-		TransposerManager.loadRecipes();
-		ChargerManager.loadRecipes();
-
-		CoolantManager.loadMappings();
-		TapperManager.loadMappings();
-
-		SteamManager.loadFuels();
-		MagmaticManager.loadFuels();
-		CompressionManager.loadFuels();
-		ReactantManager.loadReactions();
-		EnervationManager.loadFuels();
-		NumismaticManager.loadFuels();
-	}
-
-	private synchronized void managerRefresh() {
-
-		FurnaceManager.refreshRecipes();
-		PulverizerManager.refreshRecipes();
-		SawmillManager.refreshRecipes();
-		SmelterManager.refreshRecipes();
-		InsolatorManager.refreshRecipes();
-		CompactorManager.refreshRecipes();
-		CrucibleManager.refreshRecipes();
-		// Refinery Unnecessary
-		TransposerManager.refreshRecipes();
-		ChargerManager.refreshRecipes();
-
-		SteamManager.refreshFuels();
-		// Magmatic Unnecessary
-		// Compression Unnecessary
-		ReactantManager.refreshReactions();
-		EnervationManager.refreshFuels();
-		NumismaticManager.refreshFuels();
-
-		TapperManager.refreshMappings();
-	}
-
 	@EventHandler
-	public void remap(FMLMissingMappingsEvent event) {
+	public void handleMissingMappingsEvent(FMLMissingMappingsEvent event) {
 
 		for (MissingMapping mapping : event.get()) {
 			if (mapping.name.equals(MOD_ID + ":automaton")) {
@@ -235,6 +149,62 @@ public class ThermalExpansion {
 				}
 			}
 		}
+	}
+
+	/* HELPERS */
+	private void registerHandlers() {
+
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, GUI_HANDLER);
+		MinecraftForge.EVENT_BUS.register(proxy);
+
+		PacketTEBase.initialize();
+	}
+
+	private void managerInitialize() {
+
+		FurnaceManager.initialize();
+		PulverizerManager.initialize();
+		SawmillManager.initialize();
+		SmelterManager.initialize();
+		InsolatorManager.initialize();
+		CompactorManager.initialize();
+		CrucibleManager.initialize();
+		RefineryManager.initialize();
+		TransposerManager.initialize();
+		ChargerManager.initialize();
+
+		CoolantManager.initialize();
+		TapperManager.initialize();
+
+		SteamManager.initialize();
+		MagmaticManager.initialize();
+		CompressionManager.initialize();
+		ReactantManager.initialize();
+		EnervationManager.initialize();
+		NumismaticManager.initialize();
+	}
+
+	private synchronized void managerRefresh() {
+
+		FurnaceManager.refresh();
+		PulverizerManager.refresh();
+		SawmillManager.refresh();
+		SmelterManager.refresh();
+		InsolatorManager.refresh();
+		CompactorManager.refresh();
+		CrucibleManager.refresh();
+		RefineryManager.refresh();
+		TransposerManager.refresh();
+		ChargerManager.refresh();
+
+		TapperManager.refresh();
+
+		SteamManager.refresh();
+		// Magmatic Unnecessary
+		// Compression Unnecessary
+		ReactantManager.refresh();
+		EnervationManager.refresh();
+		NumismaticManager.refresh();
 	}
 
 }

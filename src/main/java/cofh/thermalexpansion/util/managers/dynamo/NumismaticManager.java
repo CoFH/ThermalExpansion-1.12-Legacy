@@ -28,7 +28,7 @@ public class NumismaticManager {
 		return fuelMap.get(new ComparableItemStack(stack));
 	}
 
-	public static void addDefaultFuels() {
+	public static void initialize() {
 
 		addFuel(ItemCoin.coinIron, 16000);
 		addFuel(ItemCoin.coinGold, 24000);
@@ -51,13 +51,15 @@ public class NumismaticManager {
 		addFuel(ItemCoin.coinSignalum, 48000);
 		addFuel(ItemCoin.coinLumium, 48000);
 		addFuel(ItemCoin.coinEnderium, 64000);
+
+		loadFuels();
 	}
 
 	public static void loadFuels() {
 
 	}
 
-	public static void refreshFuels() {
+	public static void refresh() {
 
 		TObjectIntHashMap<ComparableItemStack> tempMap = new TObjectIntHashMap<>(fuelMap.size());
 

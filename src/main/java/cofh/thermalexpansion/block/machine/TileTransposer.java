@@ -736,7 +736,7 @@ public class TileTransposer extends TileMachineBase {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !extractMode && sideCache[from.ordinal()] == 1, from != null && extractMode && sideCache[from.ordinal()] == 3) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
 				}
 
 				@Override

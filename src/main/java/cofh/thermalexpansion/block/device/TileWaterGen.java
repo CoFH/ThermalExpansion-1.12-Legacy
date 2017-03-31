@@ -97,7 +97,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		updateAdjacentSources();
+		updateValidity();
 	}
 
 	@Override
@@ -130,33 +130,33 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		if (adjacentSources < 0) {
-			updateAdjacentSources();
+			updateValidity();
 		}
 		updateIfChanged(curActive);
 	}
 
-	protected void updateAdjacentSources() {
+	protected void updateValidity() {
 
 		inHell = worldObj.getBiome(getPos()) == Biomes.HELL;
 		adjacentSources = 0;
 
 		if (isWater(worldObj.getBlockState(getPos().down()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().up()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().west()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().east()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().north()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().south()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 	}
 
@@ -180,12 +180,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	private static boolean isWater(IBlockState state) {
+	protected static boolean isWater(IBlockState state) {
 
-		if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) {
-			return state.getValue(BlockLiquid.LEVEL) == 0;
-		}
-		return false;
+		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
 	}
 
 	protected boolean timeCheckOffset() {
@@ -291,7 +288,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, from != null && sideCache[from.ordinal()] > 0) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
 				}
 
 				@Override

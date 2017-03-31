@@ -72,11 +72,13 @@ public class CoolantManager {
 		return getCoolantFactor(stack.getFluid());
 	}
 
-	public static void addDefaultMappings() {
+	public static void initialize() {
 
 		addCoolant("water", 500000, 6);
 		addCoolant("cryotheum", 4000000, 2);
 		addCoolant("ice", 1500000, 3);
+
+		loadMappings();
 	}
 
 	public static void loadMappings() {

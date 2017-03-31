@@ -59,7 +59,7 @@ public class TransposerManager {
 		return input != null && validationSet.contains(new ComparableItemStackTransposer(input));
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* BLOCKS */
 		{
@@ -80,6 +80,9 @@ public class TransposerManager {
 		addFillRecipe(4000, new ItemStack(Blocks.SPONGE, 1, 0), new ItemStack(Blocks.SPONGE, 1, 1), new FluidStack(FluidRegistry.WATER, 1000), true);
 
 		// addFillRecipe(2000, ItemHelper.cloneStack(ItemFertilizer.fertilizerBasic), ItemHelper.cloneStack(ItemFertilizer.fertilizerRich), new FluidStack(TFFluids.fluidSap, 50), false);
+
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -87,7 +90,7 @@ public class TransposerManager {
 		addFillRecipe(2000, ItemHelper.getOre("oreCinnabar"), ItemHelper.cloneStack(ItemMaterial.crystalCinnabar, 1), new FluidStack(TFFluids.fluidCryotheum, 200), false);
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<List<Integer>, RecipeTransposer> tempFill = new THashMap<>(recipeMapFill.size());
 		Map<ComparableItemStackTransposer, RecipeTransposer> tempExtract = new THashMap<>(recipeMapExtract.size());

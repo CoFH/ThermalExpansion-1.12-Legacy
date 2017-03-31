@@ -81,7 +81,7 @@ public class SmelterManager {
 		return input != null && lockSet.contains(new ComparableItemStackSmelter(input));
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* FLUXES */
 		{
@@ -238,6 +238,8 @@ public class SmelterManager {
 			addAlloyRecipe(2000, "ingotCopper", 1, "dustNickel", 1, stackConstantan);
 			addAlloyRecipe(2400, "ingotCopper", 1, "ingotNickel", 1, stackConstantan);
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -263,7 +265,7 @@ public class SmelterManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<List<ComparableItemStackSmelter>, RecipeSmelter> tempMap = new THashMap<>(recipeMap.size());
 		Set<ComparableItemStackSmelter> tempSet = new THashSet<>();

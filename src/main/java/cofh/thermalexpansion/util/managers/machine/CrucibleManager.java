@@ -39,7 +39,7 @@ public class CrucibleManager {
 		return recipeMap.values().toArray(new RecipeCrucible[recipeMap.size()]);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* LAVA */
 		{
@@ -76,13 +76,15 @@ public class CrucibleManager {
 			addRecipe(8000, ItemMaterial.dustAerotheum, new FluidStack(TFFluids.fluidAerotheum, 250));
 			addRecipe(8000, ItemMaterial.dustPetrotheum, new FluidStack(TFFluids.fluidPetrotheum, 250));
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
 
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<ComparableItemStackSafe, RecipeCrucible> tempMap = new THashMap<>(recipeMap.size());
 		RecipeCrucible tempRecipe;

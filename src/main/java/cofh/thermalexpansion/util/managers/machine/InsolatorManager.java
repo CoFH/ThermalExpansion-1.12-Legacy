@@ -78,7 +78,7 @@ public class InsolatorManager {
 		return input != null && lockSet.contains(new ComparableItemStackInsolator(input));
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		/* FERTILIZER */
 		{
@@ -140,6 +140,8 @@ public class InsolatorManager {
 			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 4), new ItemStack(Blocks.LOG2, 5, 0), new ItemStack(Blocks.SAPLING, 1, 4), 100, false, Type.TREE);
 			addDefaultTreeRecipe(new ItemStack(Blocks.SAPLING, 1, 5), new ItemStack(Blocks.LOG2, 5, 1), new ItemStack(Blocks.SAPLING, 1, 5), 100, false, Type.TREE);
 		}
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
@@ -155,7 +157,7 @@ public class InsolatorManager {
 		}
 	}
 
-	public static void refreshRecipes() {
+	public static void refresh() {
 
 		Map<List<ComparableItemStackInsolator>, RecipeInsolator> tempMap = new THashMap<>(recipeMap.size());
 		Set<ComparableItemStackInsolator> tempSet = new THashSet<>();

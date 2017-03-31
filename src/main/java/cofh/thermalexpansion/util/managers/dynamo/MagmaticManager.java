@@ -35,10 +35,12 @@ public class MagmaticManager {
 		return stack == null ? 0 : fuelMap.get(stack.getFluid()) / 10;
 	}
 
-	public static void addDefaultFuels() {
+	public static void initialize() {
 
 		addFuel("lava", CoreProps.LAVA_RF * 9 / 10);
 		addFuel("pyrotheum", 2000000);
+
+		loadFuels();
 	}
 
 	public static void loadFuels() {

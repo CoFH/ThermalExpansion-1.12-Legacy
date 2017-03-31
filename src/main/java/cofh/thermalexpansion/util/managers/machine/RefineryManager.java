@@ -27,7 +27,7 @@ public class RefineryManager {
 		return recipeMap.values(new RecipeRefinery[recipeMap.size()]);
 	}
 
-	public static void addDefaultRecipes() {
+	public static void initialize() {
 
 		int energy = DEFAULT_ENERGY;
 		addRecipe(energy, new FluidStack(TFFluids.fluidCoal, 100), new FluidStack(TFFluids.fluidRefinedOil, 50), ItemMaterial.globTar);
@@ -36,9 +36,16 @@ public class RefineryManager {
 
 		energy = DEFAULT_ENERGY / 2;
 		addRecipe(energy, new FluidStack(TFFluids.fluidResin, 100), new FluidStack(TFFluids.fluidTreeOil, 50), ItemMaterial.globRosin);
+
+		/* LOAD RECIPES */
+		loadRecipes();
 	}
 
 	public static void loadRecipes() {
+
+	}
+
+	public static void refresh() {
 
 	}
 
