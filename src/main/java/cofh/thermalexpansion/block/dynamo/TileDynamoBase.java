@@ -449,7 +449,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		}
 		if (TEProps.DYNAMO_EFFICIENCY.equals(id)) {
 			// Efficiency Gain
-			energyMod += 10;
+			energyMod += 15;
 			return true;
 		}
 		if (!augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {

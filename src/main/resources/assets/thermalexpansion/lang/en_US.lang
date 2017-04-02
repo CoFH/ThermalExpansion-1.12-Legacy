@@ -87,7 +87,7 @@ info.thermalexpansion.augment.dynamoReactantElemental.a.0=Greatly increases powe
 info.thermalexpansion.augment.dynamoReactantElemental.b.0=Only Elemental Reactions can be performed.
 
 info.thermalexpansion.augment.dynamoSteamTurbine.0=Steam Dynamo: Specialization
-info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation and efficiency.
+info.thermalexpansion.augment.dynamoSteamTurbine.a.0=Greatly increases power generation.
 info.thermalexpansion.augment.dynamoSteamTurbine.b.0=Steam must be provided from an external source.
 
 info.thermalexpansion.augment.dynamoThrottle.0=Dynamos: Advanced Throttle
