@@ -56,6 +56,9 @@ public class ChargerManager {
 		if (ItemHelper.oreNameExists("crystalCertusQuartz") && ItemHelper.oreNameExists("crystalCertusQuartzCharged")) {
 			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("crystalCertusQuartz", false).get(0), OreDictionary.getOres("crystalCertusQuartzCharged", false).get(0));
 		}
+		if (ItemHelper.oreNameExists("oreCertusQuartz") && ItemHelper.oreNameExists("oreCertusQuartzCharged")) {
+			addRecipe(DEFAULT_ENERGY, OreDictionary.getOres("oreCertusQuartz", false).get(0), OreDictionary.getOres("oreCertusQuartzCharged", false).get(0));
+		}
 	}
 
 	public static void refresh() {
