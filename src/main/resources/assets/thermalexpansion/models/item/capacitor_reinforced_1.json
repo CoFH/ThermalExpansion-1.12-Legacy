@@ -1,0 +1,6 @@
+{
+	"parent": "thermalexpansion:item/capacitor_reinforced",
+	"textures": {
+		"layer0": "thermalexpansion:items/capacitor/capacitor_reinforced_1"
+	}
+}

@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "thermalexpansion:items/capacitor/capacitor_standard0"
+		"layer0": "thermalexpansion:items/capacitor/capacitor_signalum"
 	},
 	"overrides": [
 		{
@@ -9,21 +9,21 @@
 				"active": 1.0,
 				"mode": 0.0
 			},
-			"model": "thermalexpansion:item/capacitor_standard0_0"
+			"model": "thermalexpansion:item/capacitor_signalum_0"
 		},
 		{
 			"predicate": {
 				"active": 1.0,
 				"mode": 1.0
 			},
-			"model": "thermalexpansion:item/capacitor_standard0_1"
+			"model": "thermalexpansion:item/capacitor_signalum_1"
 		},
 		{
 			"predicate": {
 				"active": 1.0,
 				"mode": 2.0
 			},
-			"model": "thermalexpansion:item/capacitor_standard0_2"
+			"model": "thermalexpansion:item/capacitor_signalum_2"
 		}
 	]
 }

@@ -1,0 +1,29 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "thermalexpansion:items/capacitor/capacitor_basic"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 0.0
+			},
+			"model": "thermalexpansion:item/capacitor_basic_0"
+		},
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 1.0
+			},
+			"model": "thermalexpansion:item/capacitor_basic_1"
+		},
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 2.0
+			},
+			"model": "thermalexpansion:item/capacitor_basic_2"
+		}
+	]
+}

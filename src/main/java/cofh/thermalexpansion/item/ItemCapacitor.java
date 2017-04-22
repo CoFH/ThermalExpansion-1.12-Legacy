@@ -327,7 +327,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 			EnergyHelper.setDefaultEnergyTag(container, 0);
 		}
 		int stored = container.getTagCompound().getInteger("Energy");
-		int receive = Math.min(maxReceive, Math.min(getSend(container) - stored, getRecv(container)));
+		int receive = Math.min(maxReceive, Math.min(getMaxEnergyStored(container) - stored, getRecv(container)));
 
 		if (!simulate) {
 			stored += receive;
@@ -381,11 +381,11 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean preInit() {
 
-		capacitorBasic = addCapacitorItem(0, "standard0", TileCell.SEND[0] / 2, TileCell.RECV[0], TileCell.CAPACITY[0] / 2, EnumRarity.COMMON);
-		//		capacitorHardened = addCapacitorItem(1, "standard1", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
-		//		capacitorReinforced = addCapacitorItem(2, "standard2", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
-		//		capacitorSignalum = addCapacitorItem(3, "standard3", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
-		//		capacitorResonant = addCapacitorItem(4, "standard4", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
+		capacitorBasic = addCapacitorItem(0, "basic", TileCell.SEND[0] / 2, TileCell.RECV[0], TileCell.CAPACITY[0] / 2, EnumRarity.COMMON);
+		capacitorHardened = addCapacitorItem(1, "hardened", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
+		capacitorReinforced = addCapacitorItem(2, "reinforced", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
+		capacitorSignalum = addCapacitorItem(3, "signalum", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
+		capacitorResonant = addCapacitorItem(4, "resonant", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
 
 		return true;
 	}

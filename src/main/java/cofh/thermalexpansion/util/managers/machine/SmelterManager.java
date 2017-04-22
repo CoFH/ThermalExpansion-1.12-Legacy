@@ -263,6 +263,30 @@ public class SmelterManager {
 				}
 			}
 		}
+
+		/* ENDER IO */
+		{
+			if (ItemHelper.oreNameExists("ingotConductiveIron")) {
+				ItemStack output = OreDictionary.getOres("ingotConductiveIron", false).get(0);
+				addAlloyRecipe(1600, "dustIron", 1, "dustRedstone", 1, output);
+				addAlloyRecipe(2000, "ingotIron", 1, "dustRedstone", 1, output);
+			}
+			if (ItemHelper.oreNameExists("ingotPulsatingIron")) {
+				ItemStack output = OreDictionary.getOres("ingotPulsatingIron", false).get(0);
+				addAlloyRecipe(2000, "dustIron", 1, "enderpearl", 1, output);
+				addAlloyRecipe(2400, "ingotIron", 1, "enderpearl", 1, output);
+			}
+			if (ItemHelper.oreNameExists("ingotVibrantAlloy")) {
+				ItemStack output = OreDictionary.getOres("ingotVibrantAlloy", false).get(0);
+				addAlloyRecipe(2000, "dustEnergeticAlloy", 1, "enderpearl", 1, output);
+				addAlloyRecipe(2400, "ingotEnergeticAlloy", 1, "enderpearl", 1, output);
+			}
+			if (ItemHelper.oreNameExists("ingotSoularium")) {
+				ItemStack output = OreDictionary.getOres("ingotSoularium", false).get(0);
+				addAlloyRecipe(2000, ItemMaterial.dustGold, BLOCK_SOUL_SAND, output);
+				addAlloyRecipe(2400, ItemMaterial.ingotGold, BLOCK_SOUL_SAND, output);
+			}
+		}
 	}
 
 	public static void refresh() {

@@ -14,11 +14,11 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 
-	public static final RenderCache instance = new RenderCache();
+	public static final RenderCache INSTANCE = new RenderCache();
 	private static ItemStack lock = new ItemStack(Items.DIAMOND);
 
 	static {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, instance);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, INSTANCE);
 	}
 
 	public static void initialize() {
