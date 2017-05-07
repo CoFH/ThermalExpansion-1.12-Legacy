@@ -248,9 +248,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
 
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
-		if (tileEntity != null) {
-			int facing = ((TileDynamoBase) tileEntity).facing;
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile != null) {
+			int facing = ((TileDynamoBase) tile).facing;
 			//Due to CCL Black magic, passing a CuboidRayTraceResult down this method will cause CCL to render its contained BB.
 			return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing + 6]);
 		}

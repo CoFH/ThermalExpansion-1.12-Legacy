@@ -50,7 +50,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 
 	protected boolean basicGui = true;
 
-	public BlockTEBase(Material material) {
+	protected BlockTEBase(Material material) {
 
 		super(material);
 		setSoundType(SoundType.STONE);

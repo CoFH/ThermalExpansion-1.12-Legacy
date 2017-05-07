@@ -94,7 +94,7 @@ public class ThermalExpansion {
 		TEBlocks.initialize();
 		TEItems.initialize();
 		TEFlorbs.initialize();
-		//TEAchievements.initialize();
+		// TEAchievements.initialize();
 
 		proxy.initialize(event);
 	}
@@ -105,7 +105,7 @@ public class ThermalExpansion {
 		TEBlocks.postInit();
 		TEItems.postInit();
 		TEFlorbs.postInit();
-		//TEAchievements.postInit();
+		// TEAchievements.postInit();
 
 		managerInitialize();
 
