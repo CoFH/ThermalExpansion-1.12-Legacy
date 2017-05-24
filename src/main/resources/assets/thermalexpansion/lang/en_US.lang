@@ -69,7 +69,7 @@ info.thermalexpansion.augment.dynamoCompressionCoolant.b.0=Some coolant must be 
 
 info.thermalexpansion.augment.dynamoCompressionFuel.0=Compression Dynamo: Specialization
 info.thermalexpansion.augment.dynamoCompressionFuel.a.0=Greatly increases power generation and efficiency.
-info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Only §o§eRefined Fuel§r can be utilized.
+info.thermalexpansion.augment.dynamoCompressionFuel.b.0=Only §e§oRefined Fuel§r§4 can be utilized.
 
 info.thermalexpansion.augment.dynamoEfficiency.0=Dynamos: Increased Efficiency
 info.thermalexpansion.augment.dynamoEfficiency.a.0=More energy (RF) is produced by fuels.
@@ -201,9 +201,9 @@ info.thermalexpansion.apparatus.collector=Procures items from an area.
 info.thermalexpansion.capacitor.a.0=Charging Held Items
 info.thermalexpansion.capacitor.a.1=Charging Armor
 info.thermalexpansion.capacitor.a.2=Charging Armor and Held Items
-info.thermalexpansion.capacitor.b.0=§e§oPress (%s) to change Charge mode.§r
-info.thermalexpansion.capacitor.c.0=§e§oUse while sneaking to deactivate.§r
-info.thermalexpansion.capacitor.c.1=§b§oUse while sneaking to activate.§r
+info.thermalexpansion.capacitor.b.0=§ePress (%s) to change Charge mode.§r
+info.thermalexpansion.capacitor.c.0=§eUse while sneaking to deactivate.§r
+info.thermalexpansion.capacitor.c.1=§bUse while sneaking to activate.§r
 info.thermalexpansion.capacitor.d.0=Must remain in hotbar.
 
 info.thermalexpansion.coolant=Coolant
@@ -225,7 +225,7 @@ info.thermalexpansion.dynamo.steam=Requires water and solid fuel.
 
 info.thermalexpansion.florb.a.0=Holds 1000 mB of most fluids.
 info.thermalexpansion.florb.b.0=Holds 1000 mB of most hot fluids.
-info.thermalexpansion.florb.c.0=Fill with a §o§eFluid Transposer§r§7.
+info.thermalexpansion.florb.c.0=Fill with a §e§oFluid Transposer§r§7.
 info.thermalexpansion.florb.c.1=Yes, you can throw it.
 info.thermalexpansion.florb.d.0=This fluid is lighter than air.
 info.thermalexpansion.florb.d.1=The Florb will travel further.

@@ -8,6 +8,8 @@ import cofh.core.item.ItemMulti;
 import cofh.core.key.KeyBindingItemMultiMode;
 import cofh.core.util.CoreUtils;
 import cofh.core.util.core.IInitializer;
+import cofh.core.util.crafting.RecipeUpgrade;
+import cofh.core.util.helpers.ChatHelper;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
@@ -29,6 +31,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fml.relauncher.Side;
@@ -37,6 +40,9 @@ import net.minecraftforge.fml.relauncher.SideOnly;
 import javax.annotation.Nonnull;
 import java.util.List;
 import java.util.Map;
+
+import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
+import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiModeItem, IEnergyContainerItem, IEnchantableItem {
 
@@ -292,6 +298,7 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public void onModeChange(EntityPlayer player, ItemStack stack) {
 
+		ChatHelper.sendIndexedChatMessageToPlayer(player, new TextComponentTranslation("info.thermalexpansion.capacitor.a." + getMode(stack)));
 	}
 
 	/* IModelRegister */
@@ -381,17 +388,67 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 	@Override
 	public boolean preInit() {
 
-		capacitorBasic = addCapacitorItem(0, "basic", TileCell.SEND[0] / 2, TileCell.RECV[0], TileCell.CAPACITY[0] / 2, EnumRarity.COMMON);
-		capacitorHardened = addCapacitorItem(1, "hardened", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
-		capacitorReinforced = addCapacitorItem(2, "reinforced", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
-		capacitorSignalum = addCapacitorItem(3, "signalum", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
-		capacitorResonant = addCapacitorItem(4, "resonant", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
+		capacitorBasic = addCapacitorItem(0, "standard0", TileCell.SEND[0] / 2, TileCell.RECV[0], TileCell.CAPACITY[0] / 2, EnumRarity.COMMON);
+		capacitorHardened = addCapacitorItem(1, "standard1", TileCell.SEND[1] / 2, TileCell.RECV[1], TileCell.CAPACITY[1] / 2, EnumRarity.COMMON);
+		capacitorReinforced = addCapacitorItem(2, "standard2", TileCell.SEND[2] / 2, TileCell.RECV[2], TileCell.CAPACITY[2] / 2, EnumRarity.UNCOMMON);
+		capacitorSignalum = addCapacitorItem(3, "standard3", TileCell.SEND[3] / 2, TileCell.RECV[3], TileCell.CAPACITY[3] / 2, EnumRarity.UNCOMMON);
+		capacitorResonant = addCapacitorItem(4, "standard4", TileCell.SEND[4] / 2, TileCell.RECV[4], TileCell.CAPACITY[4] / 2, EnumRarity.RARE);
 
 		return true;
 	}
 
 	@Override
 	public boolean initialize() {
+
+		// @formatter:off
+
+		addRecipe(ShapedRecipe(capacitorBasic,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotLead",
+				'R', "dustRedstone",
+				'X', "ingotCopper",
+				'Y', "dustSulfur"
+		));
+		addRecipe(new RecipeUpgrade(capacitorHardened,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotInvar",
+				'R', "dustRedstone",
+				'X', capacitorBasic,
+				'Y', "ingotTin"
+		));
+		addRecipe(new RecipeUpgrade(capacitorReinforced,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotElectrum",
+				'R', "dustRedstone",
+				'X', capacitorHardened,
+				'Y', "blockGlassHardened"
+		));
+		addRecipe(new RecipeUpgrade(capacitorSignalum,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotSignalum",
+				'R', "dustRedstone",
+				'X', capacitorReinforced,
+				'Y', "dustCryotheum"
+		));
+		addRecipe(new RecipeUpgrade(capacitorResonant,
+				" R ",
+				"IXI",
+				"RYR",
+				'I', "ingotEnderium",
+				'R', "dustRedstone",
+				'X', capacitorSignalum,
+				'Y', "dustPyrotheum"
+		));
+
+		// @formatter:on
 
 		return true;
 	}

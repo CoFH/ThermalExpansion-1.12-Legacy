@@ -98,7 +98,7 @@ public class TETextures {
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
 		DEVICE_FACE_HEAT_SINK =             register(map, DEVICE_FACE_ + "heat_sink");
 		DEVICE_FACE_TAPPER =                register(map, DEVICE_FACE_ + "tapper");
-		DEVICE_FACE_FISHER =              register(map, DEVICE_FACE_ + "fisher");
+		DEVICE_FACE_FISHER =                register(map, DEVICE_FACE_ + "fisher");
 
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
@@ -127,12 +127,12 @@ public class TETextures {
 		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
 		DYNAMO_NUMISMATIC =					register(map, DYNAMO_ + "numismatic");
 
-		DYNAMO_OVERLAY_0 =                 map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
-		DYNAMO_OVERLAY_1 =                 register(map, DYNAMO_ + "overlay_1");
-		DYNAMO_OVERLAY_2 =                 register(map, DYNAMO_ + "overlay_2");
-		DYNAMO_OVERLAY_3 =                 register(map, DYNAMO_ + "overlay_3");
-		DYNAMO_OVERLAY_4 =                 register(map, DYNAMO_ + "overlay_4");
-		DYNAMO_OVERLAY_C =                 register(map, DYNAMO_ + "overlay_c");
+		DYNAMO_OVERLAY_0 =                  map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
+		DYNAMO_OVERLAY_1 =                  register(map, DYNAMO_ + "overlay_1");
+		DYNAMO_OVERLAY_2 =                  register(map, DYNAMO_ + "overlay_2");
+		DYNAMO_OVERLAY_3 =                  register(map, DYNAMO_ + "overlay_3");
+		DYNAMO_OVERLAY_4 =                  register(map, DYNAMO_ + "overlay_4");
+		DYNAMO_OVERLAY_C =                  register(map, DYNAMO_ + "overlay_c");
 
 		/* ICONS */
 		ICON_ACCEPT =						map.getMissingSprite();//TODO

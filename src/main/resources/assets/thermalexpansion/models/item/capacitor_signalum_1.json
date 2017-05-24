@@ -1,6 +1,0 @@
-{
-	"parent": "thermalexpansion:item/capacitor_signalum",
-	"textures": {
-		"layer0": "thermalexpansion:items/capacitor/capacitor_signalum_1"
-	}
-}

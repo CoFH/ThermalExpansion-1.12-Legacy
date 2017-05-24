@@ -123,8 +123,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
-		rotateBlock();
-		return true;
+		return rotateBlock();
 	}
 
 	@Override
@@ -549,28 +548,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean rotateBlock() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return false;
-		}
 		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
 			return false;
 		}
-		if (adjacentReceiver != null || adjacentHandler) {
-			byte oldFacing = facing;
-			for (int i = facing + 1, e = facing + 6; i < e; i++) {
-				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, EnumFacing.VALUES[i % 6]) || EnergyHelper.isAdjacentEnergyHandler(this, EnumFacing.VALUES[i % 6])) {
-					facing = (byte) (i % 6);
-					if (facing != oldFacing) {
-						updateAdjacentHandlers();
-						markChunkDirty();
-						sendTilePacket(Side.CLIENT);
-					}
-					return true;
-				}
-			}
-			return false;
-		}
-		facing = (byte) ((facing + 1) % 6);
+		facing++;
+		facing %= 6;
 		updateAdjacentHandlers();
 		markChunkDirty();
 		sendTilePacket(Side.CLIENT);

@@ -1,0 +1,44 @@
+{
+	"parent": "item/generated",
+	"textures": {
+		"layer0": "thermalexpansion:items/capacitor/capacitor_standard1",
+		"layer1": "thermalexpansion:items/capacitor/mode_0_0"
+	},
+	"overrides": [
+		{
+			"predicate": {
+				"active": 0.0,
+				"mode": 1.0
+			},
+			"model": "thermalexpansion:item/capacitor_standard1_0_1"
+		},
+		{
+			"predicate": {
+				"active": 0.0,
+				"mode": 2.0
+			},
+			"model": "thermalexpansion:item/capacitor_standard1_0_2"
+		},
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 0.0
+			},
+			"model": "thermalexpansion:item/capacitor_standard1_1_0"
+		},
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 1.0
+			},
+			"model": "thermalexpansion:item/capacitor_standard1_1_1"
+		},
+		{
+			"predicate": {
+				"active": 1.0,
+				"mode": 2.0
+			},
+			"model": "thermalexpansion:item/capacitor_standard1_1_2"
+		}
+	]
+}

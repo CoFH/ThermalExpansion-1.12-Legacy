@@ -34,8 +34,6 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false, false, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, true, true, true, true, true, true };
 
-		LIGHT_VALUES[TYPE] = 3;
-
 		GameRegistry.registerTileEntity(TileFisher.class, "thermalexpansion:device_fisher");
 
 		config();
@@ -164,11 +162,11 @@ public class TileFisher extends TileDeviceBase implements ITickable {
 			return;
 		}
 		//		int side;
-		//		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
+		//		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 		//			side = i % 6;
-		//			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
-		//				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
-		//					inputTracker = side;
+		//			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
+		//				if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
+		//					outputTracker = side;
 		//					break;
 		//				}
 		//			}
