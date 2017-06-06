@@ -36,7 +36,7 @@ public class InsolatorRecipeCategory extends BlankRecipeCategory<InsolatorRecipe
 		registry.addRecipeCategories(new InsolatorRecipeCategory(guiHelper));
 		registry.addRecipeHandlers(new InsolatorRecipeHandler());
 		registry.addRecipes(getRecipes(guiHelper));
-		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR);
+		registry.addRecipeClickArea(GuiInsolator.class, 79, 34, 24, 16, RecipeUidsTE.INSOLATOR, RecipeUidsTE.INSOLATOR_MYCELIUM, RecipeUidsTE.INSOLATOR_NETHER, RecipeUidsTE.INSOLATOR_END, RecipeUidsTE.INSOLATOR_TREE);
 		registry.addRecipeCategoryCraftingItem(BlockMachine.machineInsolator, RecipeUidsTE.INSOLATOR);
 
 		InsolatorRecipeCategoryMycelium.initialize(registry);

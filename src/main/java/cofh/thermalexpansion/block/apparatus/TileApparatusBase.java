@@ -24,7 +24,7 @@ import net.minecraft.util.ITickable;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public abstract class TileApparatusBase extends TilePowered implements IAccelerable, IInventoryConnection, ITickable {
@@ -32,12 +32,12 @@ public abstract class TileApparatusBase extends TilePowered implements IAccelera
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockApparatus.Type.values().length];
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockApparatus.Type.values().length];
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockApparatus.Type.values().length];
-	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockApparatus.Type.values().length];
+	public static final HashSet[] VALID_AUGMENTS = new HashSet[BlockApparatus.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockApparatus.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
+	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 
 	static {
 		VALID_AUGMENTS_BASE.add(TEProps.APPARATUS_DEPTH);

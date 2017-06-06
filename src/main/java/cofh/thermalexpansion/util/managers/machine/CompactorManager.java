@@ -121,47 +121,47 @@ public class CompactorManager {
 
 		/* STORAGE */
 		{
-			addDefaultStorageRecipe(ItemMaterial.ingotCopper, BlockStorage.blockCopper, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotTin, BlockStorage.blockTin, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotSilver, BlockStorage.blockSilver, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotLead, BlockStorage.blockLead, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotAluminum, BlockStorage.blockAluminum, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotNickel, BlockStorage.blockNickel, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotPlatinum, BlockStorage.blockPlatinum, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotIridium, BlockStorage.blockIridium, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotMithril, BlockStorage.blockMithril, 9);
+			addDefaultStorageRecipe(ItemMaterial.ingotCopper, BlockStorage.blockCopper);
+			addDefaultStorageRecipe(ItemMaterial.ingotTin, BlockStorage.blockTin);
+			addDefaultStorageRecipe(ItemMaterial.ingotSilver, BlockStorage.blockSilver);
+			addDefaultStorageRecipe(ItemMaterial.ingotLead, BlockStorage.blockLead);
+			addDefaultStorageRecipe(ItemMaterial.ingotAluminum, BlockStorage.blockAluminum);
+			addDefaultStorageRecipe(ItemMaterial.ingotNickel, BlockStorage.blockNickel);
+			addDefaultStorageRecipe(ItemMaterial.ingotPlatinum, BlockStorage.blockPlatinum);
+			addDefaultStorageRecipe(ItemMaterial.ingotIridium, BlockStorage.blockIridium);
+			addDefaultStorageRecipe(ItemMaterial.ingotMithril, BlockStorage.blockMithril);
 
-			addDefaultStorageRecipe(ItemMaterial.ingotSteel, BlockStorageAlloy.blockSteel, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotElectrum, BlockStorageAlloy.blockElectrum, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotInvar, BlockStorageAlloy.blockInvar, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotBronze, BlockStorageAlloy.blockBronze, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotConstantan, BlockStorageAlloy.blockConstantan, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotSignalum, BlockStorageAlloy.blockSignalum, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium, 9);
-			addDefaultStorageRecipe(ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium, 9);
+			addDefaultStorageRecipe(ItemMaterial.ingotSteel, BlockStorageAlloy.blockSteel);
+			addDefaultStorageRecipe(ItemMaterial.ingotElectrum, BlockStorageAlloy.blockElectrum);
+			addDefaultStorageRecipe(ItemMaterial.ingotInvar, BlockStorageAlloy.blockInvar);
+			addDefaultStorageRecipe(ItemMaterial.ingotBronze, BlockStorageAlloy.blockBronze);
+			addDefaultStorageRecipe(ItemMaterial.ingotConstantan, BlockStorageAlloy.blockConstantan);
+			addDefaultStorageRecipe(ItemMaterial.ingotSignalum, BlockStorageAlloy.blockSignalum);
+			addDefaultStorageRecipe(ItemMaterial.ingotLumium, BlockStorageAlloy.blockLumium);
+			addDefaultStorageRecipe(ItemMaterial.ingotEnderium, BlockStorageAlloy.blockEnderium);
 
-			addDefaultStorageRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetDiamond, ItemMaterial.gemDiamond, 9);
+			addDefaultStorageRecipe(ItemMaterial.nuggetIron, ItemMaterial.ingotIron);
+			addDefaultStorageRecipe(ItemMaterial.nuggetGold, ItemMaterial.ingotGold);
+			addDefaultStorageRecipe(ItemMaterial.nuggetDiamond, ItemMaterial.gemDiamond);
 
-			addDefaultStorageRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril, 9);
+			addDefaultStorageRecipe(ItemMaterial.nuggetCopper, ItemMaterial.ingotCopper);
+			addDefaultStorageRecipe(ItemMaterial.nuggetTin, ItemMaterial.ingotTin);
+			addDefaultStorageRecipe(ItemMaterial.nuggetSilver, ItemMaterial.ingotSilver);
+			addDefaultStorageRecipe(ItemMaterial.nuggetLead, ItemMaterial.ingotLead);
+			addDefaultStorageRecipe(ItemMaterial.nuggetAluminum, ItemMaterial.ingotAluminum);
+			addDefaultStorageRecipe(ItemMaterial.nuggetNickel, ItemMaterial.ingotNickel);
+			addDefaultStorageRecipe(ItemMaterial.nuggetPlatinum, ItemMaterial.ingotPlatinum);
+			addDefaultStorageRecipe(ItemMaterial.nuggetIridium, ItemMaterial.ingotIridium);
+			addDefaultStorageRecipe(ItemMaterial.nuggetMithril, ItemMaterial.ingotMithril);
 
-			addDefaultStorageRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium, 9);
-			addDefaultStorageRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium, 9);
+			addDefaultStorageRecipe(ItemMaterial.nuggetSteel, ItemMaterial.ingotSteel);
+			addDefaultStorageRecipe(ItemMaterial.nuggetElectrum, ItemMaterial.ingotElectrum);
+			addDefaultStorageRecipe(ItemMaterial.nuggetInvar, ItemMaterial.ingotInvar);
+			addDefaultStorageRecipe(ItemMaterial.nuggetBronze, ItemMaterial.ingotBronze);
+			addDefaultStorageRecipe(ItemMaterial.nuggetConstantan, ItemMaterial.ingotConstantan);
+			addDefaultStorageRecipe(ItemMaterial.nuggetSignalum, ItemMaterial.ingotSignalum);
+			addDefaultStorageRecipe(ItemMaterial.nuggetLumium, ItemMaterial.ingotLumium);
+			addDefaultStorageRecipe(ItemMaterial.nuggetEnderium, ItemMaterial.ingotEnderium);
 		}
 
 		/* MINT */
@@ -369,6 +369,15 @@ public class CompactorManager {
 		addRecipe(DEFAULT_ENERGY, input, output, Mode.PRESS);
 	}
 
+	private static void addDefaultStorageRecipe(ItemStack input, ItemStack output) {
+
+		ItemStack inputStack = ItemHelper.cloneStack(input, 9);
+
+		if (!recipeExists(inputStack, Mode.STORAGE)) {
+			addRecipe(DEFAULT_ENERGY_STORAGE, inputStack, output, Mode.STORAGE);
+		}
+	}
+
 	private static void addDefaultStorageRecipe(ItemStack input, ItemStack output, int count) {
 
 		ItemStack inputStack = ItemHelper.cloneStack(input, count);
@@ -433,10 +442,11 @@ public class CompactorManager {
 		public static final String NUGGET = "nugget";
 		public static final String INGOT = "ingot";
 		public static final String BLOCK = "block";
+		public static final String DUST = "dust";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(NUGGET) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK);
+			return oreName.startsWith(NUGGET) || oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(DUST);
 		}
 
 		public static int getOreID(ItemStack stack) {

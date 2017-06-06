@@ -10,6 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
@@ -30,7 +31,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileTransposer extends TileMachineBase {
 
@@ -49,7 +50,9 @@ public class TileTransposer extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+
+		SOUNDS[TYPE] = TESounds.MACHINE_TRANSPOSER;
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
@@ -227,6 +230,9 @@ public class TileTransposer extends TileMachineBase {
 		if (drained > 0) {
 			tank.fill(drainStack, true);
 			if (tankProperties[0].getContents() == null) {
+				if (inventory[1].stackSize <= 0) {
+					inventory[1] = null;
+				}
 				return true;
 			}
 			return false;
@@ -239,14 +245,17 @@ public class TileTransposer extends TileMachineBase {
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			if (inventory[1] == null) {
-				processRem = 0;
-				hasFluidHandler = false;
-			} else if (FluidHelper.isFluidHandler(inventory[1])) {
-				hasFluidHandler = true;
-			}
 			return;
 		}
+		//		if (ServerHelper.isClientWorld(worldObj)) {
+		//			if (inventory[1] == null) {
+		//				processRem = 0;
+		//				hasFluidHandler = false;
+		//			} else if (FluidHelper.isFluidHandler(inventory[1])) {
+		//				hasFluidHandler = true;
+		//			}
+		//			return;
+		//		}
 		if (extractMode) {
 			transferOutputFluid();
 		}
@@ -674,6 +683,7 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
 				processOff();
+				hasFluidHandler = false;
 			}
 		}
 		return stack;

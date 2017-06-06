@@ -35,15 +35,15 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
-	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
-	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockDynamo.Type.values().length];
+	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[BlockDynamo.Type.values().length];
+	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockDynamo.Type.values().length];
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
+	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
 
 	static {
@@ -81,7 +81,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public TileDynamoBase() {
 
-		energyConfig = defaultEnergyConfig[this.getType()].copy();
+		energyConfig = DEFAULT_ENERGY_CONFIG[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
 	}
 
@@ -213,7 +213,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* COMMON METHODS */
 	int getBasePower(int level) {
 
-		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
+		return DEFAULT_ENERGY_CONFIG[getType()].maxPower + level * DEFAULT_ENERGY_CONFIG[getType()].maxPower / 2;
 	}
 
 	int calcEnergy() {
@@ -430,7 +430,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
+		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override

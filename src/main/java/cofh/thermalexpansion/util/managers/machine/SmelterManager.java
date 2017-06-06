@@ -7,10 +7,14 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalfoundation.block.BlockGlass;
 import cofh.thermalfoundation.block.BlockGlassAlloy;
+import cofh.thermalfoundation.init.TFEquipment.ArmorSet;
+import cofh.thermalfoundation.init.TFEquipment.ToolSet;
+import cofh.thermalfoundation.init.TFEquipment.ToolSetVanilla;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import gnu.trove.set.hash.THashSet;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
@@ -90,6 +94,7 @@ public class SmelterManager {
 			addFlux(ItemMaterial.crystalSlagRich);
 			addFlux(ItemMaterial.crystalCinnabar);
 		}
+
 		/* SPECIAL */
 		{
 			int energy = DEFAULT_ENERGY;
@@ -99,6 +104,7 @@ public class SmelterManager {
 			addRecipe(energy, new ItemStack(Blocks.NETHERRACK, 2), BLOCK_SOUL_SAND, new ItemStack(Blocks.NETHER_BRICK, 2), ItemMaterial.dustSulfur, 25);
 			addRecipe(energy, new ItemStack(Blocks.QUARTZ_ORE), BLOCK_SOUL_SAND, new ItemStack(Blocks.QUARTZ_BLOCK), ItemMaterial.crystalSlagRich, 25);
 		}
+
 		/* GLASS */
 		{
 			ItemStack blockGlass;
@@ -238,6 +244,92 @@ public class SmelterManager {
 			addAlloyRecipe(2000, "ingotCopper", 1, "dustNickel", 1, stackConstantan);
 			addAlloyRecipe(2400, "ingotCopper", 1, "ingotNickel", 1, stackConstantan);
 		}
+
+		/* RECYCLING */
+		{
+			int energy = DEFAULT_ENERGY * 3 / 2;
+
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.COMPASS), new ItemStack(Items.IRON_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.FLINT_AND_STEEL), new ItemStack(Items.IRON_INGOT, 1), ItemMaterial.crystalSlag, 90); // make a use for flint: slag!
+
+			ItemStack ingot = new ItemStack(Items.IRON_INGOT, 1);
+			// no minecart, rails. Railcraft causes resource duplication there
+			addRecycleRecipe(energy, new ItemStack(Items.BUCKET), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_DOOR), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.CAULDRON), ingot, 7);
+			addRecycleRecipe(energy, new ItemStack(Blocks.HOPPER), ingot, 5);
+			addRecycleRecipe(energy, new ItemStack(Blocks.IRON_BARS, 8), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Blocks.HEAVY_WEIGHTED_PRESSURE_PLATE), ingot, 2);
+
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_SWORD), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_PICKAXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_AXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_SHOVEL), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HOE), ingot, 2);
+
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HELMET), ingot, 5);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_CHESTPLATE), ingot, 8);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_LEGGINGS), ingot, 7);
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_BOOTS), ingot, 4);
+
+			addRecycleRecipe(energy, new ItemStack(Items.IRON_HORSE_ARMOR), ingot, 10);
+
+			for (int i = 0; i < 3; ++i) {
+				addRecycleRecipe(4800 + 1200 * (3 - i), new ItemStack(Blocks.ANVIL, 1, i), ingot, 4 + 9 * (3 - i));
+			}
+			ingot = new ItemStack(Items.GOLD_INGOT);
+
+			addRecipe(energy, BLOCK_SAND, new ItemStack(Items.CLOCK), new ItemStack(Items.GOLD_INGOT, 4), ItemMaterial.crystalSlagRich, 10); // consumes redstone
+			addRecycleRecipe(energy, new ItemStack(Blocks.LIGHT_WEIGHTED_PRESSURE_PLATE), ingot, 2);
+
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SWORD), ingot, 2);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_PICKAXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_AXE), ingot, 3);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_SHOVEL), ingot, 1);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HOE), ingot, 2);
+
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HELMET), ingot, 5);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_CHESTPLATE), ingot, 8);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_LEGGINGS), ingot, 7);
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_BOOTS), ingot, 4);
+
+			addRecycleRecipe(energy, new ItemStack(Items.GOLDEN_HORSE_ARMOR), ingot, 10);
+
+			for (ToolSetVanilla tool : new ToolSetVanilla[] { ToolSetVanilla.IRON, ToolSetVanilla.GOLD }) {
+				ingot = OreDictionary.getOres(tool.ingot, false).get(0);
+
+				addRecycleRecipe(energy, tool.toolBow, ingot, 2);
+				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 2);
+				addRecycleRecipe(energy, tool.toolShears, ingot, 2);
+				addRecycleRecipe(energy, tool.toolSickle, ingot, 3);
+				addRecycleRecipe(energy, tool.toolHammer, ingot, 5);
+				addRecycleRecipe(energy, tool.toolShield, ingot, 6);
+			}
+			for (ToolSet tool : ToolSet.values()) {
+				ingot = OreDictionary.getOres(tool.ingot, false).get(0);
+
+				addRecycleRecipe(energy, tool.toolSword, ingot, 2);
+				addRecycleRecipe(energy, tool.toolPickaxe, ingot, 3);
+				addRecycleRecipe(energy, tool.toolAxe, ingot, 3);
+				addRecycleRecipe(energy, tool.toolShovel, ingot, 1);
+				addRecycleRecipe(energy, tool.toolHoe, ingot, 2);
+				addRecycleRecipe(energy, tool.toolBow, ingot, 2);
+				addRecycleRecipe(energy, tool.toolFishingRod, ingot, 2);
+				addRecycleRecipe(energy, tool.toolShears, ingot, 2);
+				addRecycleRecipe(energy, tool.toolSickle, ingot, 3);
+				addRecycleRecipe(energy, tool.toolHammer, ingot, 5);
+				addRecycleRecipe(energy, tool.toolShield, ingot, 6);
+			}
+			for (ArmorSet armor : ArmorSet.values()) {
+				ingot = OreDictionary.getOres(armor.ingot, false).get(0);
+
+				addRecycleRecipe(energy, armor.armorHelmet, ingot, 5);
+				addRecycleRecipe(energy, armor.armorChestplate, ingot, 8);
+				addRecycleRecipe(energy, armor.armorLegs, ingot, 7);
+				addRecycleRecipe(energy, armor.armorBoots, ingot, 4);
+			}
+		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -472,7 +564,7 @@ public class SmelterManager {
 
 	private static boolean addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
-		return addRecipe(energy, BLOCK_SAND, input, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
+		return addRecipe(energy, input, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
 	}
 
 	private static boolean isStandardOre(String oreName) {

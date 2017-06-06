@@ -3,6 +3,7 @@ package cofh.thermalexpansion.init;
 import cofh.thermalexpansion.ThermalExpansion;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class TESounds {
 
@@ -23,7 +24,10 @@ public class TESounds {
 
 	private static SoundEvent getRegisteredSoundEvent(String id) {
 
-		return new SoundEvent(new ResourceLocation(ThermalExpansion.MOD_ID + ":" + id));
+		SoundEvent sound = new SoundEvent(new ResourceLocation(ThermalExpansion.MOD_ID + ":" + id));
+		sound.setRegistryName(id);
+		GameRegistry.register(sound);
+		return sound;
 	}
 
 	public static final SoundEvent MACHINE_FURNACE;

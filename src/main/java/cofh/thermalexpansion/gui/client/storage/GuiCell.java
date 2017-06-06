@@ -5,6 +5,7 @@ import cofh.core.gui.element.*;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
+import cofh.lib.gui.element.ElementSimple;
 import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileCell;
@@ -74,6 +75,12 @@ public class GuiCell extends GuiCore {
 		addTab(new TabTutorial(this, myTutorial));
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
+
+		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
+		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 123, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
+
+		addElement(infoInput);
+		addElement(infoOutput);
 
 		decRecv = new ElementButton(this, 28, 56, "DecRecv", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incRecv = new ElementButton(this, 44, 56, "IncRecv", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -247,8 +254,8 @@ public class GuiCell extends GuiCore {
 		if (baseTile.amountSend >= 100000) {
 			xSend -= 3;
 		}
-		fontRendererObj.drawString(recv, xRecv, 44, 0x404040);
-		fontRendererObj.drawString(send, xSend, 44, 0x404040);
+		fontRendererObj.drawString(recv, xRecv, 42, 0x404040);
+		fontRendererObj.drawString(send, xSend, 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

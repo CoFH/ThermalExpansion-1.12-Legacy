@@ -11,10 +11,9 @@ import cofh.lib.audio.SoundTile;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.SoundHelper;
 import cofh.thermalexpansion.network.PacketTEBase;
-import net.minecraft.client.audio.ISound;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -127,7 +126,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		isActive = payload.getBool();
 
 		if (isActive && !prevActive) {
-			if (getSoundLocation() != null) {
+			if (getSoundEvent() != null) {
 				SoundHelper.playSound(getSound());
 			}
 		}
@@ -169,9 +168,9 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 	/* ISoundSource */
 	@Override
 	@SideOnly (Side.CLIENT)
-	public ISound getSound() {
+	public Object getSound() {
 
-		return new SoundTile(this, getSoundLocation(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
+		return new SoundTile(this, getSoundEvent(), 1.0F, 1.0F, true, 0, Vector3.fromTileCenter(this).vec3());
 	}
 
 	@Override
@@ -180,7 +179,7 @@ public abstract class TileRSControl extends TileTEBase implements IRedstoneContr
 		return !tileEntityInvalid && isActive;
 	}
 
-	public ResourceLocation getSoundLocation() {
+	public SoundEvent getSoundEvent() {
 
 		return null;
 	}

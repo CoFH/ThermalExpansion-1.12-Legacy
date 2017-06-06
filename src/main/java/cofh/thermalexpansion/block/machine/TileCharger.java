@@ -21,7 +21,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileCharger extends TileMachineBase {
 
@@ -41,7 +41,7 @@ public class TileCharger extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_THROUGHPUT);
 
 		LIGHT_VALUES[TYPE] = 7;
@@ -210,21 +210,24 @@ public class TileCharger extends TileMachineBase {
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			if (inventory[1] == null) {
-				processRem = 0;
-				containerItem = null;
-				hasContainerItem = false;
-				handler = null;
-				hasEnergyHandler = false;
-			} else if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
-				containerItem = (IEnergyContainerItem) inventory[1].getItem();
-				hasContainerItem = true;
-			} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
-				handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
-				hasEnergyHandler = true;
-			}
 			return;
 		}
+		//		if (ServerHelper.isClientWorld(worldObj)) {
+		//			if (inventory[1] == null) {
+		//				processRem = 0;
+		//				containerItem = null;
+		//				hasContainerItem = false;
+		//				handler = null;
+		//				hasEnergyHandler = false;
+		//			} else if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
+		//				containerItem = (IEnergyContainerItem) inventory[1].getItem();
+		//				hasContainerItem = true;
+		//			} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
+		//				handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
+		//				hasEnergyHandler = true;
+		//			}
+		//			return;
+		//		}
 		if (hasContainerItem) {
 			updateContainerItem();
 		} else if (hasEnergyHandler) {
@@ -525,13 +528,13 @@ public class TileCharger extends TileMachineBase {
 		if (!isActive) {
 			return 0;
 		}
-		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : calcEnergy();
+		return (EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput ? getEnergyTransfer(level) : calcEnergy();
 	}
 
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : energyConfig.maxPower;
+		return (EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput ? getEnergyTransfer(level) : energyConfig.maxPower;
 	}
 
 	/* IAccelerable */
@@ -555,11 +558,10 @@ public class TileCharger extends TileMachineBase {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				containerItem = null;
+				hasContainerItem = false;
+				hasEnergyHandler = false;
 			}
 		}
 		return stack;
@@ -578,6 +580,8 @@ public class TileCharger extends TileMachineBase {
 				}
 			}
 			containerItem = null;
+			hasContainerItem = false;
+			hasEnergyHandler = false;
 		}
 		inventory[slot] = stack;
 

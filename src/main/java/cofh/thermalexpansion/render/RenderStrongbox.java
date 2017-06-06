@@ -19,7 +19,6 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> {
 
 		model.boxLid.rotateAngleX = (float) tile.getRadianLidAngle(f);
 
-
 	}
 
 }

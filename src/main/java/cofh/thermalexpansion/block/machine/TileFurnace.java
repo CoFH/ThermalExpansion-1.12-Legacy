@@ -10,6 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiFurnace;
 import cofh.thermalexpansion.gui.container.machine.ContainerFurnace;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager;
 import cofh.thermalexpansion.util.managers.machine.FurnaceManager.RecipeFurnace;
 import cofh.thermalfoundation.init.TFFluids;
@@ -27,7 +28,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileFurnace extends TileMachineBase {
 
@@ -46,12 +47,14 @@ public class TileFurnace extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_FURNACE_FOOD);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_FURNACE_ORE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_FURNACE_PYROLYSIS);
 
 		LIGHT_VALUES[TYPE] = 14;
+
+		SOUNDS[TYPE] = TESounds.MACHINE_FURNACE;
 
 		GameRegistry.registerTileEntity(TileFurnace.class, "thermalexpansion:machine_furnace");
 

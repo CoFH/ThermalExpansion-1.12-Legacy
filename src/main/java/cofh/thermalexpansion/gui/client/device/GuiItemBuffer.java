@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
+import cofh.lib.gui.element.ElementSimple;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
@@ -35,6 +36,12 @@ public class GuiItemBuffer extends GuiDeviceBase {
 	public void initGui() {
 
 		super.initGui();
+
+		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 24, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
+		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 132, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
+
+		addElement(infoInput);
+		addElement(infoOutput);
 
 		decInput = new ElementButton(this, 19, 56, "DecInput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incInput = new ElementButton(this, 35, 56, "IncInput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);

@@ -6,6 +6,7 @@ import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ColorHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
+import cofh.thermalfoundation.init.TFEquipment;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.THashMap;
 import net.minecraft.init.Blocks;
@@ -84,6 +85,7 @@ public class PulverizerManager {
 			int energy = DEFAULT_ENERGY / 2;
 
 			addRecipe(energy, new ItemStack(Blocks.LOG), ItemHelper.cloneStack(ItemMaterial.dustWood, 8));
+			addRecipe(energy / 4, new ItemStack(Blocks.PLANKS), ItemHelper.cloneStack(ItemMaterial.dustWood, 2));
 
 			addRecipe(energy, new ItemStack(Blocks.YELLOW_FLOWER), new ItemStack(Items.DYE, 4, 11));
 			addRecipe(energy, new ItemStack(Blocks.RED_FLOWER, 1, 0), new ItemStack(Items.DYE, 4, 1));
@@ -180,6 +182,62 @@ public class PulverizerManager {
 			addIngotToDustRecipe(energy, "ingotLumium", ItemMaterial.dustLumium);
 			addIngotToDustRecipe(energy, "ingotEnderium", ItemMaterial.dustEnderium);
 		}
+
+		/* RECYCLING */
+		{
+			int energy = DEFAULT_ENERGY * 3 / 4;
+
+			addRecipe(energy, new ItemStack(Blocks.GLASS), new ItemStack(Blocks.SAND));
+
+			for (int i = 0; i < 15; i++) {
+				addRecipe(energy, new ItemStack(Blocks.STAINED_GLASS, 1, i), new ItemStack(Blocks.SAND));
+			}
+			addRecipe(energy, new ItemStack(Blocks.REDSTONE_LAMP), new ItemStack(Items.GLOWSTONE_DUST, 4), new ItemStack(Items.REDSTONE, 4));
+			addRecipe(energy, new ItemStack(Blocks.BRICK_BLOCK), new ItemStack(Items.BRICK, 4));
+			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK), new ItemStack(Items.NETHERBRICK, 4));
+
+			for (int i = 0; i < 3; i++) {
+				addRecipe(energy, new ItemStack(Blocks.QUARTZ_BLOCK, 1, i), new ItemStack(Items.QUARTZ, 4));
+			}
+			addRecipe(energy, new ItemStack(Blocks.BRICK_STAIRS), new ItemStack(Items.BRICK, 6));
+			addRecipe(energy, new ItemStack(Blocks.NETHER_BRICK_STAIRS), new ItemStack(Items.NETHERBRICK, 6));
+			addRecipe(energy, new ItemStack(Blocks.QUARTZ_STAIRS), new ItemStack(Items.QUARTZ, 6));
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 4), new ItemStack(Items.BRICK, 2));
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 6), new ItemStack(Items.NETHERBRICK, 2));
+			addRecipe(energy / 2, new ItemStack(Blocks.STONE_SLAB, 1, 7), new ItemStack(Items.QUARTZ, 2));
+
+			for (int i = 0; i < 3; i++) {
+				addRecipe(energy, new ItemStack(Blocks.SANDSTONE, 1, i), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 50);
+			}
+			addRecipe(energy, new ItemStack(Blocks.SANDSTONE_STAIRS), new ItemStack(Blocks.SAND, 2), ItemMaterial.dustNiter, 75);
+			addRecipe(energy, new ItemStack(Blocks.STONE_SLAB, 1, 1), new ItemStack(Blocks.SAND, 1), ItemMaterial.dustNiter, 25);
+
+			addRecipe(energy / 2, new ItemStack(Items.FLOWER_POT), new ItemStack(Items.BRICK, 3));
+			addRecipe(energy / 2, new ItemStack(Items.GLASS_BOTTLE), new ItemStack(Blocks.SAND, 1));
+
+			energy = DEFAULT_ENERGY * 3 / 2;
+
+			addRecipe(energy, new ItemStack(Items.DIAMOND_SWORD), new ItemStack(Items.DIAMOND, 2));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_PICKAXE), new ItemStack(Items.DIAMOND, 3));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_AXE), new ItemStack(Items.DIAMOND, 3));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_SHOVEL), new ItemStack(Items.DIAMOND, 1));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_HOE), new ItemStack(Items.DIAMOND, 2));
+
+			addRecipe(energy, new ItemStack(Items.DIAMOND_HELMET), new ItemStack(Items.DIAMOND, 5));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_CHESTPLATE), new ItemStack(Items.DIAMOND, 8));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_LEGGINGS), new ItemStack(Items.DIAMOND, 7));
+			addRecipe(energy, new ItemStack(Items.DIAMOND_BOOTS), new ItemStack(Items.DIAMOND, 4));
+
+			addRecipe(energy, new ItemStack(Items.DIAMOND_HORSE_ARMOR), new ItemStack(Items.DIAMOND, 10));
+
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolBow, new ItemStack(Items.DIAMOND, 2));
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolFishingRod, new ItemStack(Items.DIAMOND, 2));
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShears, new ItemStack(Items.DIAMOND, 2));
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolSickle, new ItemStack(Items.DIAMOND, 3));
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolHammer, new ItemStack(Items.DIAMOND, 5));
+			addRecipe(energy, TFEquipment.ToolSetVanilla.DIAMOND.toolShield, new ItemStack(Items.DIAMOND, 6));
+		}
+
 		/* LOAD RECIPES */
 		loadRecipes();
 	}
@@ -479,12 +537,13 @@ public class PulverizerManager {
 		public static final String ORE = "ore";
 		public static final String INGOT = "ingot";
 		public static final String NUGGET = "nugget";
+		public static final String PLANK = "plank";
 		public static final String LOG = "log";
 		public static final String SAND = "sand";
 
 		public static boolean safeOreType(String oreName) {
 
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(LOG) || oreName.equals(SAND);
+			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET) || oreName.startsWith(PLANK) || oreName.startsWith(LOG) || oreName.equals(SAND);
 		}
 
 		public static int getOreID(ItemStack stack) {

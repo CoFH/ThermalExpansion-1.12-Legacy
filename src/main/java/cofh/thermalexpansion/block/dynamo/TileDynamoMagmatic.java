@@ -25,7 +25,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileDynamoMagmatic extends TileDynamoBase {
 
@@ -35,8 +35,8 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<>();
-		validAugments[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_MAGMATIC_COOLANT);
 
 		GameRegistry.registerTileEntity(TileDynamoMagmatic.class, "thermalexpansion.dynamo_magmatic");
 
@@ -48,8 +48,8 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 		String category = "Dynamo.Magmatic";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(basePower);
+		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -207,9 +207,11 @@ public class TileDynamoMagmatic extends TileDynamoBase {
 
 		super.handleTilePacket(payload, isServer);
 
-		renderFluid = payload.getFluidStack();
-		if (renderFluid == null) {
+		FluidStack tempRender = payload.getFluidStack();
+		if (tempRender == null) {
 			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+		} else {
+			renderFluid = tempRender;
 		}
 	}
 

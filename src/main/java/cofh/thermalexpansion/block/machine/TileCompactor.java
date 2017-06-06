@@ -16,7 +16,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileCompactor extends TileMachineBase {
 
@@ -36,7 +36,7 @@ public class TileCompactor extends TileMachineBase {
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
 
 		VALUES[0] = Mode.PRESS;
@@ -102,7 +102,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], Mode.values()[mode]);
+		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
@@ -186,11 +186,6 @@ public class TileCompactor extends TileMachineBase {
 	public Object getGuiServer(InventoryPlayer inventory) {
 
 		return new ContainerCompactor(inventory, this);
-	}
-
-	public boolean augmentMint() {
-
-		return augmentMint && flagMint;
 	}
 
 	public void toggleMode() {

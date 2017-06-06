@@ -16,24 +16,24 @@ import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ITickable;
-import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class TileMachineBase extends TilePowered implements IAccelerable, ITickable {
 
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockMachine.Type.values().length];
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockMachine.Type.values().length];
 	public static final EnergyConfig[] ENERGY_CONFIGS = new EnergyConfig[BlockMachine.Type.values().length];
-	public static final ArrayList<String>[] VALID_AUGMENTS = new ArrayList[BlockMachine.Type.values().length];
+	public static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockMachine.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockMachine.Type.values().length];
 
-	public static final ResourceLocation[] SOUNDS = new ResourceLocation[BlockMachine.Type.values().length];
+	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
+	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
 	protected static final int SECONDARY_BASE = 100;
 
@@ -453,7 +453,7 @@ public abstract class TileMachineBase extends TilePowered implements IAccelerabl
 
 	/* ISoundSource */
 	@Override
-	public ResourceLocation getSoundLocation() {
+	public SoundEvent getSoundEvent() {
 
 		return SOUNDS[getType()];
 	}

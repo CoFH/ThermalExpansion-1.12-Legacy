@@ -2,9 +2,11 @@ package cofh.thermalexpansion.block.device;
 
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TilePowered;
+import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 public abstract class TileDeviceBase extends TilePowered {
@@ -12,6 +14,8 @@ public abstract class TileDeviceBase extends TilePowered {
 	public static final SideConfig[] SIDE_CONFIGS = new SideConfig[BlockDevice.Type.values().length];
 	public static final SlotConfig[] SLOT_CONFIGS = new SlotConfig[BlockDevice.Type.values().length];
 	public static final int[] LIGHT_VALUES = new int[BlockDevice.Type.values().length];
+
+	public static final SoundEvent[] SOUNDS = new SoundEvent[BlockMachine.Type.values().length];
 
 	private static boolean enableSecurity = true;
 
@@ -130,6 +134,13 @@ public abstract class TileDeviceBase extends TilePowered {
 	public boolean installUpgrade(ItemStack upgrade) {
 
 		return false;
+	}
+
+	/* ISoundSource */
+	@Override
+	public SoundEvent getSoundEvent() {
+
+		return SOUNDS[getType()];
 	}
 
 }
