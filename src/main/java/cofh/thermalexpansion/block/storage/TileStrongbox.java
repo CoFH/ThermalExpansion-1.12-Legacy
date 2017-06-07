@@ -62,6 +62,8 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 	public TileStrongbox() {
 
+		inventory = new ItemStack[1];
+
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 	}
 
@@ -81,6 +83,26 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public boolean enableSecurity() {
 
 		return enableSecurity;
+	}
+
+	@Override
+	protected boolean setLevel(int level) {
+
+		if (super.setLevel(level)) {
+			// Keep Inventory
+			if (inventory.length != CoreProps.STORAGE_SIZE[getStorageIndex()]) {
+				ItemStack[] tempInv = new ItemStack[inventory.length];
+				for (int i = 0; i < inventory.length; i++) {
+					tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
+				}
+				inventory = new ItemStack[CoreProps.STORAGE_SIZE[getStorageIndex()]];
+				for (int i = 0; i < tempInv.length; i++) {
+					inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
+				}
+			}
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -123,6 +145,7 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		}
 	}
 
+	/* COMMON METHODS */
 	public double getRadianLidAngle(float f) {
 
 		float angle = MathHelper.interpolate(prevLidAngle, lidAngle, f);
