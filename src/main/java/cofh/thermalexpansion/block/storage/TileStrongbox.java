@@ -1,14 +1,19 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.api.item.IUpgradeItem;
+import cofh.api.item.IUpgradeItem.UpgradeType;
 import cofh.api.tileentity.IReconfigurableFacing;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
+import cofh.core.util.helpers.AugmentHelper;
 import cofh.core.util.tileentity.IInventoryRetainer;
 import cofh.lib.util.helpers.BlockHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
+import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,9 +30,12 @@ import net.minecraftforge.fml.relauncher.Side;
 
 public class TileStrongbox extends TileInventory implements ITickable, ISidedInventory, IReconfigurableFacing, IInventoryRetainer {
 
+	private static boolean enableSecurity = true;
+
 	public static void initialize() {
 
-		GameRegistry.registerTileEntity(TileStrongbox.class, "thermalexpansion.Strongbox");
+		GameRegistry.registerTileEntity(TileStrongbox.class, "thermalexpansion:storage_strongbox");
+
 		config();
 	}
 
@@ -35,9 +43,10 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 		String comment = "Enable this to allow for Strongboxes to be securable.";
 		enableSecurity = ThermalExpansion.CONFIG.get("Security", "Strongbox.Securable", enableSecurity, comment);
-	}
 
-	public static boolean enableSecurity = true;
+		String category = "Storage.Strongbox";
+		BlockStrongbox.enable = ThermalExpansion.CONFIG.get(category, "Enable", true);
+	}
 
 	private static final int TIME_CONSTANT = 200;
 
@@ -87,10 +96,10 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	@Override
-	public boolean receiveClientEvent(int i, int j) {
+	public boolean receiveClientEvent(int id, int type) {
 
-		if (i == 1) {
-			numUsingPlayers = j;
+		if (id == 1) {
+			numUsingPlayers = type;
 			return true;
 		}
 		return false;
@@ -124,8 +133,10 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 	public int getStorageIndex() {
 
-		return 0;
-		//return type > 0 ? Math.min(2 * type + enchant, CoreProps.STORAGE_SIZE.length - 1) : 0;
+		if (isCreative) {
+			return 0;
+		}
+		return Math.min(2 * (1 + level) + enchantHolding, CoreProps.STORAGE_SIZE.length - 1);
 	}
 
 	public void getNumPlayers() {
@@ -152,15 +163,13 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {
 
-		return null;
-		//return new GuiStrongbox(inventory, this);
+		return new GuiStrongbox(inventory, this);
 	}
 
 	@Override
 	public Object getGuiServer(InventoryPlayer inventory) {
 
-		return null;
-		//return new ContainerStrongbox(inventory, this);
+		return new ContainerStrongbox(inventory, this);
 	}
 
 	/* NBT METHODS */
@@ -212,6 +221,38 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	/* IInventory */
+	@Override
+	public ItemStack decrStackSize(int slot, int amount) {
+
+		if (isCreative) {
+			return ItemHelper.cloneStack(inventory[slot], amount);
+		}
+		return super.decrStackSize(slot, amount);
+	}
+
+	@Override
+	public ItemStack getStackInSlot(int slot) {
+
+		if (isCreative) {
+			return ItemHelper.cloneStack(inventory[slot]);
+		}
+		return super.getStackInSlot(slot);
+	}
+
+	@Override
+	public void setInventorySlotContents(int slot, ItemStack stack) {
+
+		if (isCreative) {
+			if (stack == null) {
+				return;
+			}
+			inventory[slot] = stack;
+			inventory[slot].stackSize = stack.getMaxStackSize();
+			return;
+		}
+		super.setInventorySlotContents(slot, stack);
+	}
+
 	@Override
 	public void openInventory(EntityPlayer player) {
 
@@ -289,6 +330,33 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	public boolean canExtractItem(int slot, ItemStack stack, EnumFacing side) {
 
 		return access.isPublic();
+	}
+
+	/* IUpgradeable */
+	@Override
+	public boolean canUpgrade(ItemStack upgrade) {
+
+		if (!AugmentHelper.isUpgradeItem(upgrade)) {
+			return false;
+		}
+		UpgradeType uType = ((IUpgradeItem) upgrade.getItem()).getUpgradeType(upgrade);
+		int uLevel = ((IUpgradeItem) upgrade.getItem()).getUpgradeLevel(upgrade);
+
+		switch (uType) {
+			case INCREMENTAL:
+				if (uLevel == level + 1) {
+					return true;
+				}
+				break;
+			case FULL:
+				if (uLevel > level) {
+					return true;
+				}
+				break;
+			case CREATIVE:
+				return !isCreative;
+		}
+		return false;
 	}
 
 	/* IInventoryRetainer */

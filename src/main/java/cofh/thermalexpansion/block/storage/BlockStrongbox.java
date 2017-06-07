@@ -1,18 +1,29 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.core.init.CoreEnchantments;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.block.material.Material;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nonnull;
+import java.util.ArrayList;
 import java.util.List;
 
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
@@ -53,8 +64,80 @@ public class BlockStrongbox extends BlockTEBase {
 	@Override
 	public TileEntity createNewTileEntity(World world, int metadata) {
 
-		// return new TileStrongbox();
-		return null;
+		return new TileStrongbox();
+	}
+
+	/* BLOCK METHODS */
+	@Override
+	public void onBlockPlacedBy(World world, BlockPos pos, IBlockState state, EntityLivingBase living, ItemStack stack) {
+
+		if (stack.getTagCompound() != null) {
+			TileTank tile = (TileTank) world.getTileEntity(pos);
+
+			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
+			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
+			tile.setLevel(stack.getTagCompound().getByte("Level"));
+
+			FluidStack fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
+
+			if (fluid != null) {
+				tile.getTank().setFluid(fluid);
+			}
+		}
+		super.onBlockPlacedBy(world, pos, state, living, stack);
+	}
+
+	@Override
+	public boolean isFullCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isNormalCube(IBlockState state, IBlockAccess world, BlockPos pos) {
+
+		return false;
+	}
+
+	@Override
+	public boolean isOpaqueCube(IBlockState state) {
+
+		return false;
+	}
+
+	@Override
+	public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+
+		return new AxisAlignedBB(0.0625F, 0.0F, 0.0625F, 0.9375F, 0.875F, 0.9375F);
+	}
+
+	/* HELPERS */
+	@Override
+	public NBTTagCompound getItemStackTag(IBlockAccess world, BlockPos pos) {
+
+		NBTTagCompound retTag = super.getItemStackTag(world, pos);
+		TileStrongbox tile = (TileStrongbox) world.getTileEntity(pos);
+
+		if (tile != null) {
+			if (tile.enchantHolding > 0) {
+				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
+			}
+			tile.writeInventoryToNBT(retTag);
+		}
+		return retTag;
+	}
+
+	/* IDismantleable */
+	@Override
+	public ArrayList<ItemStack> dismantleBlock(World world, BlockPos pos, IBlockState state, EntityPlayer player, boolean returnDrops) {
+
+		NBTTagCompound retTag = getItemStackTag(world, pos);
+
+		TileEntity tile = world.getTileEntity(pos);
+		if (tile instanceof TileStrongbox) {
+			((TileStrongbox) tile).inventory = new ItemStack[((TileStrongbox) tile).inventory.length];
+		}
+		return dismantleDelegate(retTag, world, pos, player, returnDrops, false);
 	}
 
 	/* IInitializer */

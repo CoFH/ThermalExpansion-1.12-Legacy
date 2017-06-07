@@ -10,6 +10,7 @@ import cofh.lib.util.helpers.MathHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
 
@@ -33,8 +34,8 @@ public class GuiStrongbox extends GuiCore {
 		texture = CoreProps.TEXTURE_STORAGE[storageIndex];
 		name = myTile.getName();
 
-		xSize = 14 + 18 * MathHelper.clamp(storageIndex + 1, 9, 13);
-		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 8);
+		xSize = 14 + 18 * MathHelper.clamp(storageIndex, 9, 14);
+		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 9);
 
 		myInfo = StringHelper.localize("tab.thermalexpansion.storage.strongbox.0");
 
@@ -52,6 +53,27 @@ public class GuiStrongbox extends GuiCore {
 		if (myTile.enableSecurity() && myTile.isSecured()) {
 			addTab(new TabSecurity(this, myTile, playerName));
 		}
+	}
+
+	@Override
+	protected void drawGuiContainerBackgroundLayer(float partialTick, int x, int y) {
+
+		GlStateManager.color(1, 1, 1, 1);
+		bindTexture(texture);
+
+		if (xSize > 256 || ySize > 256) {
+			drawSizedTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize, 512, 512);
+		} else {
+			drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
+		}
+		mouseX = x - guiLeft;
+		mouseY = y - guiTop;
+
+		GlStateManager.pushMatrix();
+		GlStateManager.translate(guiLeft, guiTop, 0.0F);
+		drawElements(partialTick, false);
+		drawTabs(partialTick, false);
+		GlStateManager.popMatrix();
 	}
 
 	@Override

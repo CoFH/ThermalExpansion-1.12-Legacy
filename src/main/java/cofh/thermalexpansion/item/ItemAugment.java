@@ -418,6 +418,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustRedstone"
 		));
 
+		addRecipe(ShapedRecipe(machineExtruderNoWater,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', Blocks.PISTON,
+				'Y', "dustCryotheum"
+		));
 		addRecipe(ShapedRecipe(machineExtruderGranite,
 				" G ",
 				"ICI",
@@ -543,6 +553,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateCopper",
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
+		));
+		addRecipe(ShapedRecipe(dynamoReactantElemental,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateLead",
+				'X', "blockGlassHardened",
+				'Y', "dustAerotheum"
 		));
 
 		/* APPARATUS */

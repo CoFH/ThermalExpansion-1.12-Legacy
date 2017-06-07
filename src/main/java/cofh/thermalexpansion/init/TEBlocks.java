@@ -29,7 +29,7 @@ public class TEBlocks {
 		blockCell = new BlockCell();
 		blockTank = new BlockTank();
 		blockCache = new BlockCache();
-		// blockStrongbox = new BlockStrongbox();
+		blockStrongbox = new BlockStrongbox();
 
 		initList.add(blockMachine);
 		initList.add(blockApparatus);
@@ -39,7 +39,7 @@ public class TEBlocks {
 		initList.add(blockCell);
 		initList.add(blockTank);
 		initList.add(blockCache);
-		// initList.add(blockStrongbox);
+		initList.add(blockStrongbox);
 
 		ThermalExpansion.proxy.addIModelRegister(blockMachine);
 		ThermalExpansion.proxy.addIModelRegister(blockApparatus);

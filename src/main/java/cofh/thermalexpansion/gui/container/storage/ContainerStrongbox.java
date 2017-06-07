@@ -35,9 +35,9 @@ public class ContainerStrongbox extends ContainerTEBase implements ISlotValidato
 		myTile.openInventory(inventory.player);
 
 		storageIndex = myTile.getStorageIndex();
-		rowSize = MathHelper.clamp(storageIndex + 1, 9, 13);
+		rowSize = MathHelper.clamp(storageIndex, 9, 14);
 
-		int rows = MathHelper.clamp(storageIndex, 2, 8);
+		int rows = MathHelper.clamp(storageIndex, 2, 9);
 		int slots = rowSize * rows;
 
 		addPlayerSlotsToContainer(inventory, 8 + 9 * (rowSize - 9), rows);
