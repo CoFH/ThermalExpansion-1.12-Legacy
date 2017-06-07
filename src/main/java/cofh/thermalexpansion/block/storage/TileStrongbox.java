@@ -15,6 +15,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.TileInventory;
 import cofh.thermalexpansion.gui.client.storage.GuiStrongbox;
 import cofh.thermalexpansion.gui.container.storage.ContainerStrongbox;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.SoundEvents;
@@ -153,22 +155,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		return CoreProps.STORAGE_SIZE[Math.min(2 * (1 + level) + enchant, CoreProps.STORAGE_SIZE.length - 1)];
 	}
 
-	public int getStorageIndex() {
-
-		if (isCreative) {
-			return 0;
-		}
-		return Math.min(2 * (1 + level) + enchantHolding, CoreProps.STORAGE_SIZE.length - 1);
-	}
-
-	public double getRadianLidAngle(float f) {
-
-		float angle = MathHelper.interpolate(prevLidAngle, lidAngle, f);
-		angle = 1.0F - angle;
-		angle = 1.0F - angle * angle * angle;
-		return angle * Math.PI * -0.5;
-	}
-
 	public void createInventory() {
 
 		inventory = new ItemStack[CoreProps.STORAGE_SIZE[getStorageIndex()]];
@@ -192,6 +178,30 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 				}
 			}
 		}
+	}
+
+	public int getStorageIndex() {
+
+		if (isCreative) {
+			return 0;
+		}
+		return Math.min(2 * (1 + level) + enchantHolding, CoreProps.STORAGE_SIZE.length - 1);
+	}
+
+	public double getRadianLidAngle(float f) {
+
+		float angle = MathHelper.interpolate(prevLidAngle, lidAngle, f);
+		angle = 1.0F - angle;
+		angle = 1.0F - angle * angle * angle;
+		return angle * Math.PI * -0.5;
+	}
+
+	public TextureAtlasSprite getBreakTexture() {
+
+		if (isCreative) {
+			return TETextures.STRONGBOX_TOP_C;
+		}
+		return TETextures.STRONGBOX_TOP[level];
 	}
 
 	/* GUI METHODS */

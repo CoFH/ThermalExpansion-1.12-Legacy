@@ -245,6 +245,13 @@ public class TETextures {
 		CACHE_METER_8 =                     register(map, CACHE_ + "meter_8");
 		CACHE_METER_C =                     register(map, CACHE_ + "meter_c");
 
+		STRONGBOX_TOP_0 =                   register(map, STRONGBOX_ + "top_0");
+		STRONGBOX_TOP_1 =                   register(map, STRONGBOX_ + "top_1");
+		STRONGBOX_TOP_2 =                   register(map, STRONGBOX_ + "top_2");
+		STRONGBOX_TOP_3 =                   register(map, STRONGBOX_ + "top_3");
+		STRONGBOX_TOP_4 =                   register(map, STRONGBOX_ + "top_4");
+		STRONGBOX_TOP_C =                   register(map, STRONGBOX_ + "top_c");
+
 		ILLUMINATOR_FRAME =                 register(map, BLOCKS_ + "light/illuminator_frame");
 
 		/* ARRAYS */
@@ -499,6 +506,15 @@ public class TETextures {
 				CACHE_METER_8,
 				CACHE_METER_C
 		};
+
+		STRONGBOX_TOP = new TextureAtlasSprite[] {
+				STRONGBOX_TOP_0,
+				STRONGBOX_TOP_1,
+				STRONGBOX_TOP_2,
+				STRONGBOX_TOP_3,
+				STRONGBOX_TOP_4,
+				STRONGBOX_TOP_C
+		};
 		// @formatter:on
 	}
 
@@ -534,6 +550,7 @@ public class TETextures {
 	private static final String CELL_CONFIG_ = BLOCKS_ + "config/cell_config_";
 	private static final String TANK_ = BLOCKS_ + "storage/tank_";
 	private static final String CACHE_ = BLOCKS_ + "storage/cache_";
+	private static final String STRONGBOX_ = BLOCKS_ + "storage/strongbox_";
 
 	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
@@ -785,6 +802,14 @@ public class TETextures {
 	public static TextureAtlasSprite CACHE_METER_7;
 	public static TextureAtlasSprite CACHE_METER_8;
 	public static TextureAtlasSprite CACHE_METER_C;
+
+	public static TextureAtlasSprite[] STRONGBOX_TOP;
+	public static TextureAtlasSprite STRONGBOX_TOP_0;
+	public static TextureAtlasSprite STRONGBOX_TOP_1;
+	public static TextureAtlasSprite STRONGBOX_TOP_2;
+	public static TextureAtlasSprite STRONGBOX_TOP_3;
+	public static TextureAtlasSprite STRONGBOX_TOP_4;
+	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
 

@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.block.storage;
 
 import codechicken.lib.model.ModelRegistryHelper;
+import codechicken.lib.texture.IWorldBlockTextureProvider;
+import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.BlockTEBase;
@@ -9,6 +11,7 @@ import cofh.thermalexpansion.render.RenderStrongbox;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.block.model.ModelResourceLocation;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -17,7 +20,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.EnumBlockRenderType;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
@@ -34,7 +39,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockStrongbox extends BlockTEBase implements IModelRegister {
+public class BlockStrongbox extends BlockTEBase implements IModelRegister, IWorldBlockTextureProvider {
 
 	public BlockStrongbox() {
 
@@ -143,7 +148,7 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 		return dismantleDelegate(retTag, world, pos, player, returnDrops, false);
 	}
 
-	/* RENDER STUFFS */
+	/* RENDERING METHODS */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public EnumBlockRenderType getRenderType(IBlockState state) {
@@ -151,6 +156,26 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 		return EnumBlockRenderType.INVISIBLE;
 	}
 
+	@Override // Inventory
+	@SideOnly (Side.CLIENT)
+	public TextureAtlasSprite getTexture(EnumFacing side, ItemStack stack) {
+
+		return TextureUtils.getMissingSprite();
+	}
+
+	@Override // World
+	@SideOnly (Side.CLIENT)
+	public TextureAtlasSprite getTexture(EnumFacing side, IBlockState state, BlockRenderLayer layer, IBlockAccess world, BlockPos pos) {
+
+		TileEntity tileEntity = world.getTileEntity(pos);
+		if (tileEntity instanceof TileStrongbox) {
+			TileStrongbox tile = ((TileStrongbox) tileEntity);
+			return tile.getBreakTexture();
+		}
+		return TextureUtils.getMissingSprite();
+	}
+
+	/* IModelRegister */
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {

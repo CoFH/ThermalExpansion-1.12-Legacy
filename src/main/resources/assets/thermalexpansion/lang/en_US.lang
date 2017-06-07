@@ -256,6 +256,7 @@ info.thermalexpansion.machine.transposer=Manipulates fluids and fluid containers
 
 info.thermalexpansion.storage.cache=Stores a large amount of an item.
 info.thermalexpansion.storage.cell=Stores a large amount of Redstone Flux.
+info.thermalexpansion.storage.strongbox=Stores items. Can be secured.
 info.thermalexpansion.storage.tank=Stores a large amount of a fluid.
 
 info.thermalexpansion.upgrade.creative.0=Converts a block to a Creative version.

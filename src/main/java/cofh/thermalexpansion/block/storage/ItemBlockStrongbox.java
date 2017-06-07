@@ -51,6 +51,13 @@ public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryCon
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
+		tooltip.add(StringHelper.getInfoText("info.thermalexpansion.storage.strongbox"));
+
+		//		if (isCreative(stack)) {
+		//
+		//		} else {
+		//
+		//		}
 		ItemHelper.addInventoryInformation(stack, tooltip);
 	}
 
