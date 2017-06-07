@@ -82,6 +82,10 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
 			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
+
+			if (stack.getTagCompound().hasKey("Inventory")) {
+				tile.readInventoryFromNBT(stack.getTagCompound());
+			}
 		}
 		super.onBlockPlacedBy(world, pos, state, living, stack);
 	}
@@ -143,12 +147,14 @@ public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 	@Override
 	@SideOnly (Side.CLIENT)
 	public EnumBlockRenderType getRenderType(IBlockState state) {
+
 		return EnumBlockRenderType.INVISIBLE;
 	}
 
 	@Override
 	@SideOnly (Side.CLIENT)
 	public void registerModels() {
+
 		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
 		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location);//Suppresses model loading errors for #inventory.
 		ModelLoader.setCustomMeshDefinition(itemBlock, (stack) -> location);

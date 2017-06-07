@@ -288,9 +288,10 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
-		enchantHolding = nbt.getByte("EncHolding");
 		tank.readFromNBT(nbt);
 	}
 

@@ -309,7 +309,6 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 		ModelLoader.setCustomMeshDefinition(this, new CapacitorMeshDefinition());
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-
 			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
 			textureMap.put(entry.getKey(), texture);
 			ModelBakery.registerItemVariants(this, texture);

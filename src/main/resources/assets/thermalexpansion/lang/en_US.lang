@@ -462,4 +462,5 @@ tile.thermalexpansion.machine.transposer.name=Fluid Transposer
 
 tile.thermalexpansion.storage.cache.name=Cache
 tile.thermalexpansion.storage.cell.name=Energy Cell
+tile.thermalexpansion.storage.strongbox.name=Strongbox
 tile.thermalexpansion.storage.tank.name=Portable Tank

@@ -245,10 +245,11 @@ public class TileCache extends TileInventory implements ISidedInventory, IReconf
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
 		facing = nbt.getByte("Facing");
-		enchantHolding = nbt.getByte("EncHolding");
 		locked = nbt.getBoolean("Lock");
 
 		if (nbt.hasKey("Item")) {

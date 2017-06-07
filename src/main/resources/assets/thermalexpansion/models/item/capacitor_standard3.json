@@ -1,7 +1,7 @@
 {
 	"parent": "item/generated",
 	"textures": {
-		"layer0": "thermalexpansion:items/capacitor/capacitor_standard3",
+		"layer0": "thermalexpansion:items/capacitor/capacitor_3",
 		"layer1": "thermalexpansion:items/capacitor/mode_0_0"
 	},
 	"overrides": [

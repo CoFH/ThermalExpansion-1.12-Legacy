@@ -62,8 +62,6 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 
 	public TileStrongbox() {
 
-		inventory = new ItemStack[1];
-
 		offset = MathHelper.RANDOM.nextInt(TIME_CONSTANT);
 	}
 
@@ -91,13 +89,17 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		if (super.setLevel(level)) {
 			// Keep Inventory
 			if (inventory.length != CoreProps.STORAGE_SIZE[getStorageIndex()]) {
-				ItemStack[] tempInv = new ItemStack[inventory.length];
-				for (int i = 0; i < inventory.length; i++) {
-					tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
-				}
-				inventory = new ItemStack[CoreProps.STORAGE_SIZE[getStorageIndex()]];
-				for (int i = 0; i < tempInv.length; i++) {
-					inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
+				if (isCreative) {
+					createInventory();
+				} else {
+					ItemStack[] tempInv = new ItemStack[inventory.length];
+					for (int i = 0; i < inventory.length; i++) {
+						tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
+					}
+					createInventory();
+					for (int i = 0; i < tempInv.length; i++) {
+						inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
+					}
 				}
 			}
 			return true;
@@ -146,12 +148,9 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	}
 
 	/* COMMON METHODS */
-	public double getRadianLidAngle(float f) {
+	public static int getCapacity(int level, int enchant) {
 
-		float angle = MathHelper.interpolate(prevLidAngle, lidAngle, f);
-		angle = 1.0F - angle;
-		angle = 1.0F - angle * angle * angle;
-		return angle * Math.PI * -0.5;
+		return CoreProps.STORAGE_SIZE[Math.min(2 * (1 + level) + enchant, CoreProps.STORAGE_SIZE.length - 1)];
 	}
 
 	public int getStorageIndex() {
@@ -160,6 +159,19 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 			return 0;
 		}
 		return Math.min(2 * (1 + level) + enchantHolding, CoreProps.STORAGE_SIZE.length - 1);
+	}
+
+	public double getRadianLidAngle(float f) {
+
+		float angle = MathHelper.interpolate(prevLidAngle, lidAngle, f);
+		angle = 1.0F - angle;
+		angle = 1.0F - angle * angle * angle;
+		return angle * Math.PI * -0.5;
+	}
+
+	public void createInventory() {
+
+		inventory = new ItemStack[CoreProps.STORAGE_SIZE[getStorageIndex()]];
 	}
 
 	public void getNumPlayers() {
@@ -199,10 +211,11 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
 		facing = nbt.getByte("Facing");
-		enchantHolding = nbt.getByte("EncHolding");
 	}
 
 	@Override
@@ -240,7 +253,13 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		super.handleTilePacket(payload, isServer);
 
 		facing = payload.getByte();
+
+		byte tempEnchant = enchantHolding;
 		enchantHolding = payload.getByte();
+
+		if (inventory.length <= 0 || enchantHolding != tempEnchant) {
+			createInventory();
+		}
 	}
 
 	/* IInventory */

@@ -90,42 +90,51 @@ public class RenderStrongbox extends TileEntitySpecialRenderer<TileStrongbox> im
 
 	@Override
 	public Pair<? extends IBakedModel, Matrix4f> handlePerspective(TransformType cameraTransformType) {
+
 		return MapWrapper.handlePerspective(this, TransformUtils.DEFAULT_BLOCK, cameraTransformType);
 	}
 
 	/* IBakedModel */
 	@Override
 	public List<BakedQuad> getQuads(@Nullable IBlockState state, @Nullable EnumFacing side, long rand) {
+
 		return new ArrayList<>();
 	}
 
 	@Override
 	public boolean isAmbientOcclusion() {
+
 		return true;
 	}
 
 	@Override
 	public boolean isGui3d() {
+
 		return true;
 	}
 
 	@Override
 	public boolean isBuiltInRenderer() {
+
 		return true;
 	}
 
 	@Override
 	public TextureAtlasSprite getParticleTexture() {
+
 		return TextureUtils.getMissingSprite();
 	}
 
 	@Override
 	public ItemCameraTransforms getItemCameraTransforms() {
+
 		return ItemCameraTransforms.DEFAULT;
 	}
 
 	@Override
 	public ItemOverrideList getOverrides() {
+
 		return ItemOverrideList.NONE;
 	}
+
 }

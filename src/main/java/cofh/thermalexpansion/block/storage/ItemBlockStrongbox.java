@@ -4,11 +4,13 @@ import cofh.api.item.IInventoryContainerItem;
 import cofh.core.init.CoreEnchantments;
 import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.SecurityHelper;
+import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.Block;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 
@@ -49,6 +51,7 @@ public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryCon
 			return;
 		}
 		SecurityHelper.addAccessInformation(stack, tooltip);
+		ItemHelper.addInventoryInformation(stack, tooltip);
 	}
 
 	@Override
@@ -67,7 +70,7 @@ public class ItemBlockStrongbox extends ItemBlockTEBase implements IInventoryCon
 	@Override
 	public int getSizeInventory(ItemStack container) {
 
-		return 0;
+		return TileStrongbox.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	/* IEnchantableItem */

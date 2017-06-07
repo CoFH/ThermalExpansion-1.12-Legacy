@@ -253,9 +253,10 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
-		enchantHolding = nbt.getByte("EncHolding");
 		outputTracker = nbt.getByte("Tracker");
 		amountRecv = nbt.getInteger("Recv");
 		amountSend = nbt.getInteger("Send");
