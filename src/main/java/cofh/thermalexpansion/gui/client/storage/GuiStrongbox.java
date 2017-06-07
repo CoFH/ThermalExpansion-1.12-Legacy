@@ -18,7 +18,7 @@ import java.util.UUID;
 
 public class GuiStrongbox extends GuiCore {
 
-	protected TileStrongbox myTile;
+	protected TileStrongbox baseTile;
 	protected UUID playerName;
 	protected int storageIndex;
 
@@ -28,18 +28,18 @@ public class GuiStrongbox extends GuiCore {
 
 		super(new ContainerStrongbox(inventory, tile));
 
-		myTile = (TileStrongbox) tile;
+		baseTile = (TileStrongbox) tile;
 		playerName = SecurityHelper.getID(inventory.player);
-		storageIndex = myTile.getStorageIndex();
+		storageIndex = baseTile.getStorageIndex();
 		texture = CoreProps.TEXTURE_STORAGE[storageIndex];
-		name = myTile.getName();
+		name = baseTile.getName();
 
 		xSize = 14 + 18 * MathHelper.clamp(storageIndex, 9, 14);
 		ySize = 112 + 18 * MathHelper.clamp(storageIndex, 2, 9);
 
-		myInfo = StringHelper.localize("tab.thermalexpansion.storage.strongbox.0");
+		generateInfo("tab.thermalexpansion.storage.strongbox");
 
-		if (myTile.enchantHolding <= 0) {
+		if (baseTile.enchantHolding <= 0) {
 			myInfo += "\n\n" + StringHelper.localize("tab.thermalexpansion.storage.enchant");
 		}
 	}
@@ -49,9 +49,12 @@ public class GuiStrongbox extends GuiCore {
 
 		super.initGui();
 
-		addTab(new TabInfo(this, myInfo));
-		if (myTile.enableSecurity() && myTile.isSecured()) {
-			addTab(new TabSecurity(this, myTile, playerName));
+		// Left Side
+		securityTab = addTab(new TabSecurity(this, baseTile, playerName));
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
+
+		if (!myInfo.isEmpty()) {
+			addTab(new TabInfo(this, myInfo));
 		}
 	}
 
@@ -81,10 +84,10 @@ public class GuiStrongbox extends GuiCore {
 
 		super.updateScreen();
 
-		if (!myTile.canAccess()) {
+		if (!baseTile.canAccess()) {
 			this.mc.thePlayer.closeScreen();
 		}
-		securityTab.setVisible(myTile.enableSecurity() && myTile.isSecured());
+		securityTab.setVisible(baseTile.enableSecurity() && baseTile.isSecured());
 	}
 
 }
