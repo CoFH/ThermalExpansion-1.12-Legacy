@@ -9,17 +9,12 @@ import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import org.lwjgl.opengl.GL11;
 
 public class RenderCache extends TileEntitySpecialRenderer<TileCache> {
 
 	public static final RenderCache INSTANCE = new RenderCache();
 	private static ItemStack lock = new ItemStack(Items.DIAMOND);
-
-	static {
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, INSTANCE);
-	}
 
 	public static void initialize() {
 

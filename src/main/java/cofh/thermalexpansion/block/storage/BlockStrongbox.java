@@ -1,10 +1,14 @@
 package cofh.thermalexpansion.block.storage;
 
+import codechicken.lib.model.ModelRegistryHelper;
 import cofh.core.init.CoreEnchantments;
+import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.render.RenderStrongbox;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.client.renderer.block.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,10 +17,12 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumBlockRenderType;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.model.ModelLoader;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
@@ -29,7 +35,7 @@ import java.util.List;
 import static cofh.lib.util.helpers.ItemHelper.ShapedRecipe;
 import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
-public class BlockStrongbox extends BlockTEBase {
+public class BlockStrongbox extends BlockTEBase implements IModelRegister {
 
 	public BlockStrongbox() {
 
@@ -138,6 +144,22 @@ public class BlockStrongbox extends BlockTEBase {
 			((TileStrongbox) tile).inventory = new ItemStack[((TileStrongbox) tile).inventory.length];
 		}
 		return dismantleDelegate(retTag, world, pos, player, returnDrops, false);
+	}
+
+	/* RENDER STUFFS */
+	@Override
+	@SideOnly (Side.CLIENT)
+	public EnumBlockRenderType getRenderType(IBlockState state) {
+		return EnumBlockRenderType.INVISIBLE;
+	}
+
+	@Override
+	@SideOnly (Side.CLIENT)
+	public void registerModels() {
+		ModelResourceLocation location = new ModelResourceLocation(getRegistryName(), "normal");
+		ModelLoader.setCustomModelResourceLocation(itemBlock, 0, location);//Suppresses model loading errors for #inventory.
+		ModelLoader.setCustomMeshDefinition(itemBlock, (stack) -> location);
+		ModelRegistryHelper.register(location, RenderStrongbox.INSTANCE);
 	}
 
 	/* IInitializer */

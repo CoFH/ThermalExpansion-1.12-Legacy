@@ -49,6 +49,7 @@ public class TEBlocks {
 		ThermalExpansion.proxy.addIModelRegister(blockCell);
 		ThermalExpansion.proxy.addIModelRegister(blockTank);
 		ThermalExpansion.proxy.addIModelRegister(blockCache);
+		ThermalExpansion.proxy.addIModelRegister(blockStrongbox);
 
 		for (IInitializer init : initList) {
 			init.preInit();
