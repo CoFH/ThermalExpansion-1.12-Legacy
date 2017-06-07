@@ -39,11 +39,11 @@ public class ModelStrongbox extends ModelBase {
 		friendsKnob.rotationPointY = 7F;
 		friendsKnob.rotationPointZ = 15F;
 
-		friendsKnob = new ModelRenderer(this, 6, 5).setTextureSize(64, 64);
-		friendsKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
-		friendsKnob.rotationPointX = 8F;
-		friendsKnob.rotationPointY = 7F;
-		friendsKnob.rotationPointZ = 15F;
+		teamKnob = new ModelRenderer(this, 6, 5).setTextureSize(64, 64);
+		teamKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
+		teamKnob.rotationPointX = 8F;
+		teamKnob.rotationPointY = 7F;
+		teamKnob.rotationPointZ = 15F;
 
 		privateKnob = new ModelRenderer(this, 0, 5).setTextureSize(64, 64);
 		privateKnob.addBox(-1F, -2F, -15F, 2, 4, 1, 0.0F);
@@ -64,6 +64,9 @@ public class ModelStrongbox extends ModelBase {
 			friendsKnob.rotateAngleX = boxLid.rotateAngleX;
 			friendsKnob.render(0.0625F);
 		} else if (access == 2) {
+			teamKnob.rotateAngleX = boxLid.rotateAngleX;
+			teamKnob.render(0.0625F);
+		}else if (access == 3) {
 			privateKnob.rotateAngleX = boxLid.rotateAngleX;
 			privateKnob.render(0.0625F);
 		}
