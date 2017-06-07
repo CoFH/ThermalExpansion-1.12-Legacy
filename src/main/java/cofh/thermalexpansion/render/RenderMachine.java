@@ -8,6 +8,7 @@ import codechicken.lib.texture.IItemBlockTextureProvider;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.init.TEBlocks;
@@ -36,6 +37,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 		model.generateBlock(0, Cuboid6.full);
 		model.generateBlock(24, Cuboid6.full.copy().expand(.0004F));
 		model.computeNormals();
+		model.shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
 	/* RENDER */
