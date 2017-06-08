@@ -16,7 +16,7 @@ public class GuiHeatSink extends GuiDeviceBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DEVICE + "heat_sink.png");
 
-	ElementBase tankOverlay;
+	private ElementBase tankOverlay;
 
 	public GuiHeatSink(InventoryPlayer inventory, TileEntity tile) {
 

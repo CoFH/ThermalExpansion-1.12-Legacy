@@ -91,17 +91,13 @@ public class TileStrongbox extends TileInventory implements ITickable, ISidedInv
 		if (super.setLevel(level)) {
 			// Keep Inventory
 			if (inventory.length != CoreProps.STORAGE_SIZE[getStorageIndex()]) {
-				if (isCreative) {
-					createInventory();
-				} else {
-					ItemStack[] tempInv = new ItemStack[inventory.length];
-					for (int i = 0; i < inventory.length; i++) {
-						tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
-					}
-					createInventory();
-					for (int i = 0; i < tempInv.length; i++) {
-						inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
-					}
+				ItemStack[] tempInv = new ItemStack[inventory.length];
+				for (int i = 0; i < tempInv.length && i < inventory.length; i++) {
+					tempInv[i] = inventory[i] == null ? null : inventory[i].copy();
+				}
+				createInventory();
+				for (int i = 0; i < tempInv.length && i < inventory.length; i++) {
+					inventory[i] = tempInv[i] == null ? null : tempInv[i].copy();
 				}
 			}
 			return true;

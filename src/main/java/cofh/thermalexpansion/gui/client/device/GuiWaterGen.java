@@ -16,7 +16,7 @@ public class GuiWaterGen extends GuiDeviceBase {
 
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DEVICE + "water_gen.png");
 
-	ElementBase tankOverlay;
+	private ElementBase tankOverlay;
 
 	public GuiWaterGen(InventoryPlayer inventory, TileEntity tile) {
 

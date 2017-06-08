@@ -106,7 +106,7 @@
 			},
 			"machineextrudernowater": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/machine_extruder_no_water"
 				}
 			},
 			"machineextrudergranite": {
@@ -166,7 +166,7 @@
 			},
 			"dynamoreactantelemental": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/placeholder"
+					"layer0": "thermalexpansion:items/augment/dynamo_reactant_elemental"
 				}
 			},
 			"apparatusdepth": {

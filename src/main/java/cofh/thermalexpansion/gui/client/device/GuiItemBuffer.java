@@ -16,7 +16,7 @@ public class GuiItemBuffer extends GuiDeviceBase {
 	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "item_buffer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	protected TileItemBuffer myTile;
+	private TileItemBuffer myTile;
 
 	private ElementButton decInput;
 	private ElementButton incInput;

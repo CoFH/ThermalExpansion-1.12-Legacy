@@ -66,7 +66,7 @@ public class ModelStrongbox extends ModelBase {
 		} else if (access == 2) {
 			teamKnob.rotateAngleX = boxLid.rotateAngleX;
 			teamKnob.render(0.0625F);
-		}else if (access == 3) {
+		} else if (access == 3) {
 			privateKnob.rotateAngleX = boxLid.rotateAngleX;
 			privateKnob.render(0.0625F);
 		}

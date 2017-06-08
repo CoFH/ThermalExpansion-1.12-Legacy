@@ -316,6 +316,16 @@ public class TileTapper extends TileDeviceBase implements ITickable {
 		return TapperManager.mappingExists(worldObj.getBlockState(checkPos));
 	}
 
+	public int getBoostMult() {
+
+		return boostMult;
+	}
+
+	public int getBoostTime() {
+
+		return boostTime;
+	}
+
 	/* GUI METHODS */
 	@Override
 	public Object getGuiClient(InventoryPlayer inventory) {

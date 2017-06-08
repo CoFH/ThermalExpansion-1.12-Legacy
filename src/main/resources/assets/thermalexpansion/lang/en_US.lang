@@ -302,6 +302,7 @@ item.thermalexpansion.augment.machineSmelterPyrotheum.name=Pyro-Concentrator
 item.thermalexpansion.augment.machineSecondary.name=Auxiliary Sieve
 item.thermalexpansion.augment.machineSecondaryNull.name=Nullification Chamber
 
+item.thermalexpansion.capacitor.creative.name=Flux Capacitor (Creative)
 item.thermalexpansion.capacitor.standard0.name=Flux Capacitor (Basic)
 item.thermalexpansion.capacitor.standard1.name=Flux Capacitor (Hardened)
 item.thermalexpansion.capacitor.standard2.name=Flux Capacitor (Reinforced)
@@ -350,7 +351,7 @@ tab.thermalexpansion.device.item_buffer.1=Better than a Hopper, really!
 tab.thermalexpansion.device.item_buffer.2=Hold Shift or Ctrl to fine tune quantities.
 tab.thermalexpansion.device.nullifier.0=Sends all the things to /dev/null!
 tab.thermalexpansion.device.nullifier.1=It is a horrible place; even fluids cannot escape.
-tab.thermalexpansion.device.tapper.0=Extracts fluids from adjacent trees.
+tab.thermalexpansion.device.tapper.0=Extracts fluids from adjacent trees. Use fertilizer to boost production.
 tab.thermalexpansion.device.tapper.1=Not every tree will be productive.
 tab.thermalexpansion.device.tapper.2=Put down the axe.
 tab.thermalexpansion.device.water_gen.0=Extracts water from its surroundings.

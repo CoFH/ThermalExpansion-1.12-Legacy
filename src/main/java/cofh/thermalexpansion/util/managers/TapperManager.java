@@ -65,6 +65,7 @@ public class TapperManager {
 
 	public static void initialize() {
 
+		FluidStack sap = new FluidStack(TFFluids.fluidSap, 25);
 		FluidStack resin = new FluidStack(TFFluids.fluidResin, 25);
 
 		/* FERTILIZER */
@@ -76,12 +77,12 @@ public class TapperManager {
 
 		/* FLUIDS */
 		{
-			addMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(resin, 50));     // syrup
+			addMapping(new ItemStack(Blocks.LOG, 1, 0), new FluidStack(sap, 50));
 			addMapping(new ItemStack(Blocks.LOG, 1, 1), new FluidStack(resin, 100));
 			addMapping(new ItemStack(Blocks.LOG, 1, 2), new FluidStack(resin, 50));
 			addMapping(new ItemStack(Blocks.LOG, 1, 3), new FluidStack(resin, 50));     // rubber
 			addMapping(new ItemStack(Blocks.LOG2, 1, 0), new FluidStack(resin, 50));    // rubber
-			addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(resin, 50));    // syrup
+			addMapping(new ItemStack(Blocks.LOG2, 1, 1), new FluidStack(sap, 50));
 		}
 
 		/* LEAVES */
@@ -89,6 +90,7 @@ public class TapperManager {
 			addVanillaLeafMappings(Blocks.LOG, BlockOldLog.VARIANT, Blocks.LEAVES, BlockOldLeaf.VARIANT);
 			addVanillaLeafMappings(Blocks.LOG2, BlockNewLog.VARIANT, Blocks.LEAVES2, BlockNewLeaf.VARIANT);
 		}
+
 		/* LOAD MAPPINGS */
 		loadMappings();
 	}

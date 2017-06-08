@@ -47,7 +47,6 @@ public class ItemSatchel extends ItemMulti implements IInitializer, IInventoryCo
 		ModelLoader.setCustomMeshDefinition(this, new SatchelMeshDefinition());
 
 		for (Map.Entry<Integer, ItemEntry> entry : itemMap.entrySet()) {
-
 			ModelResourceLocation texture = new ModelResourceLocation(modName + ":" + name + "_" + entry.getValue().name, "inventory");
 			textureMap.put(entry.getKey(), texture);
 			ModelBakery.registerItemVariants(this, texture);
