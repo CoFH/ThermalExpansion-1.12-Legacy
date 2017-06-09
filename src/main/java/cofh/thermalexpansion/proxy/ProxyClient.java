@@ -3,9 +3,11 @@ package cofh.thermalexpansion.proxy;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.render.IModelRegister;
 import cofh.thermalexpansion.block.storage.TileCache;
+import cofh.thermalexpansion.block.storage.TileStrongbox;
 import cofh.thermalexpansion.entity.projectile.EntityFlorb;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.render.RenderCache;
+import cofh.thermalexpansion.render.RenderStrongbox;
 import cofh.thermalexpansion.render.entity.RenderEntityFlorb;
 import cofh.thermalexpansion.render.item.ModelFlorb;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -26,8 +28,8 @@ public class ProxyClient extends Proxy {
 
 		super.preInit(event);
 
-		for (int i = 0; i < modelList.size(); i++) {
-			modelList.get(i).registerModels();
+		for (IModelRegister register : modelList) {
+			register.registerModels();
 		}
 		registerRenderInformation();
 	}
@@ -37,6 +39,7 @@ public class ProxyClient extends Proxy {
 
 		super.initialize(event);
 		RenderCache.initialize();
+		RenderStrongbox.initialize();
 	}
 
 	@Override
@@ -50,7 +53,8 @@ public class ProxyClient extends Proxy {
 
 		TextureUtils.addIconRegister(ModelFlorb.INSTANCE);
 		RenderingRegistry.registerEntityRenderingHandler(EntityFlorb.class, RenderEntityFlorb::new);
-		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, new RenderCache());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileCache.class, RenderCache.INSTANCE);
+		ClientRegistry.bindTileEntitySpecialRenderer(TileStrongbox.class, RenderStrongbox.INSTANCE);
 	}
 
 	/* EVENT HANDLERS */

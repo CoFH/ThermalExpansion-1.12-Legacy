@@ -69,6 +69,12 @@ public class TEProps {
 		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
 		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
 
+		category = "Sounds";
+
+		comment = "If TRUE, various Thermal Expansion Blocks will play ambient sounds when active.";
+		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
+
+
 		/* CREATIVE TABS */
 		ThermalExpansion.tabCommon = new CreativeTabTE();
 
@@ -100,6 +106,8 @@ public class TEProps {
 	public static boolean creativeTabShowCreative = false;
 	public static int creativeTabLevel = 0;
 
+	public static boolean enableSounds = true;
+
 	/* UPGRADE FEATURES */
 	public static int levelAutoInput = 0;
 	public static int levelAutoOutput = 0;
@@ -113,7 +121,7 @@ public class TEProps {
 	public static final String PATH_RENDER = PATH_GFX + "blocks/";
 	public static final String PATH_ELEMENTS = PATH_GUI + "elements/";
 
-	public static final String PATH_GUI_AUTOMATON = PATH_GUI + "automaton/";
+	public static final String PATH_GUI_APPARATUS = PATH_GUI + "apparatus/";
 	public static final String PATH_GUI_DEVICE = PATH_GUI + "device/";
 	public static final String PATH_GUI_DYNAMO = PATH_GUI + "dynamo/";
 	public static final String PATH_GUI_MACHINE = PATH_GUI + "machine/";
@@ -142,11 +150,10 @@ public class TEProps {
 	public static final UnlistedEnumFacingProperty FACING = new UnlistedEnumFacingProperty("facing");
 
 	public static final UnlistedIntegerProperty LEVEL = new UnlistedIntegerProperty("level");
-	public static final UnlistedIntegerProperty LIGHT = new UnlistedIntegerProperty("light");
-	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale_display");
+	public static final UnlistedIntegerProperty HOLDING = new UnlistedIntegerProperty("enchant_holding");
+	public static final UnlistedIntegerProperty SCALE = new UnlistedIntegerProperty("scale");
 
 	public static final UnlistedByteArrayProperty SIDE_CONFIG = new UnlistedByteArrayProperty("side_config");
-	public static final UnlistedIntArrayProperty SIDE_TEX = new UnlistedIntArrayProperty("side_tex");
 
 	public static final UnlistedFluidStackProperty FLUID = new UnlistedFluidStackProperty("fluid_stack");
 	public static final UnlistedResourceLocationProperty ACTIVE_SPRITE_PROPERTY = new UnlistedResourceLocationProperty("active_texture");
@@ -162,6 +169,7 @@ public class TEProps {
 
 	public static final String MACHINE_FURNACE_FOOD = "machineFurnaceFood";
 	public static final String MACHINE_FURNACE_ORE = "machineFurnaceOre";
+	public static final String MACHINE_FURNACE_PYROLYSIS = "machineFurnacePyrolysis";
 
 	public static final String MACHINE_PULVERIZER_GEODE = "machinePulverizerGeode";
 	public static final String MACHINE_PULVERIZER_PETROTHEUM = "machinePulverizerPetrotheum";
@@ -173,6 +181,7 @@ public class TEProps {
 	public static final String MACHINE_INSOLATOR_MYCELIUM = "machineInsolatorMycelium";
 	public static final String MACHINE_INSOLATOR_NETHER = "machineInsolatorNether";
 	public static final String MACHINE_INSOLATOR_END = "machineInsolatorEnd";
+	public static final String MACHINE_INSOLATOR_TREE = "machineInsolatorTree";
 
 	public static final String MACHINE_COMPACTOR_MINT = "machineCompactorMint";
 
@@ -180,7 +189,10 @@ public class TEProps {
 
 	public static final String MACHINE_CHARGER_THROUGHPUT = "machineChargerThroughput";
 
-	public static final String MACHINE_EXTRUDER_BATCH_SIZE = "machineExtruderBatchSize";
+	public static final String MACHINE_PRECIPITATOR_SNOW_LAYER = "machinePrecipitatorSnowLayer";
+	public static final String MACHINE_PRECIPITATOR_PACKED_ICE = "machinePrecipitatorPackedIce";
+
+	public static final String MACHINE_EXTRUDER_NO_WATER = "machineExtruderNoWater";
 	public static final String MACHINE_EXTRUDER_GRANITE = "machineExtruderGranite";
 	public static final String MACHINE_EXTRUDER_DIORITE = "machineExtruderDiorite";
 	public static final String MACHINE_EXTRUDER_ANDESITE = "machineExtruderAndesite";
@@ -198,8 +210,10 @@ public class TEProps {
 	public static final String DYNAMO_COMPRESSION_COOLANT = "dynamoCompressionCoolant";
 	public static final String DYNAMO_COMPRESSION_FUEL = "dynamoCompressionFuel";
 
+	public static final String DYNAMO_REACTANT_ELEMENTAL = "dynamoReactantElemental";
+
 	/* AUTOMATA */
-	public static final String AUTOMATON_DEPTH = "automatonDepth";
-	public static final String AUTOMATON_RADIUS = "automatonRadius";
+	public static final String APPARATUS_DEPTH = "apparatusDepth";
+	public static final String APPARATUS_RADIUS = "apparatusRadius";
 
 }

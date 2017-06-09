@@ -10,6 +10,7 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.device.GuiWaterGen;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.block.state.IBlockState;
@@ -42,14 +43,14 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 4 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 4 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] {};
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] {};
+
+		SOUNDS[TYPE] = TESounds.DEVICE_WATER_GEN;
 
 		GameRegistry.registerTileEntity(TileWaterGen.class, "thermalexpansion:device_water_gen");
 
@@ -85,6 +86,8 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		tank.setLock(FluidRegistry.WATER);
 
 		hasAutoOutput = true;
+
+		enableAutoOutput = true;
 	}
 
 	@Override
@@ -97,7 +100,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 	public void onNeighborBlockChange() {
 
 		super.onNeighborBlockChange();
-		updateAdjacentSources();
+		updateValidity();
 	}
 
 	@Override
@@ -130,49 +133,47 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			isActive = true;
 		}
 		if (adjacentSources < 0) {
-			updateAdjacentSources();
+			updateValidity();
 		}
 		updateIfChanged(curActive);
 	}
 
-	protected void updateAdjacentSources() {
+	protected void updateValidity() {
 
 		inHell = worldObj.getBiome(getPos()) == Biomes.HELL;
 		adjacentSources = 0;
 
 		if (isWater(worldObj.getBlockState(getPos().down()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().up()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().west()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().east()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().north()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 		if (isWater(worldObj.getBlockState(getPos().south()))) {
-			++adjacentSources;
+			adjacentSources++;
 		}
 	}
 
 	protected void transferOutputFluid() {
 
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), Fluid.BUCKET_VOLUME * 2));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
 			if (sideCache[side] == 1) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -182,12 +183,9 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 		}
 	}
 
-	private static boolean isWater(IBlockState state) {
+	protected static boolean isWater(IBlockState state) {
 
-		if (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) {
-			return state.getValue(BlockLiquid.LEVEL) == 0;
-		}
-		return false;
+		return (state.getBlock() == Blocks.WATER || state.getBlock() == Blocks.FLOWING_WATER) && state.getValue(BlockLiquid.LEVEL) == 0;
 	}
 
 	protected boolean timeCheckOffset() {
@@ -272,7 +270,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 			}
 			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(FluidRegistry.WATER) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}
@@ -293,7 +291,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, from != null && sideCache[from.ordinal()] > 0) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, true) };
 				}
 
 				@Override
@@ -306,7 +304,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -316,7 +314,7 @@ public class TileWaterGen extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

@@ -21,11 +21,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 }, { 0, 1, 2, 3, 4, 5, 6, 7, 8 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 2, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -34,7 +32,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		GameRegistry.registerTileEntity(TileItemBuffer.class, "thermalexpansion:device_item_buffer");
 
-		// config();
+		config();
 	}
 
 	public static void config() {
@@ -55,6 +53,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		inventory = new ItemStack[9];
 		createAllSlots(inventory.length);
 
+		hasAutoInput = true;
+		hasAutoOutput = true;
+
 		enableAutoInput = true;
 		enableAutoOutput = true;
 	}
@@ -66,23 +67,27 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 	}
 
 	@Override
-	public void setDefaultSides() {
-
-		sideCache = getDefaultSides();
-		sideCache[facing] = 0;
-		sideCache[facing ^ 1] = 2;
-	}
-
-	@Override
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
 			return;
 		}
-		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF == 0 && redstoneControlOrDisable()) {
+		if (worldObj.getTotalWorldTime() % CoreProps.TIME_CONSTANT_HALF != 0) {
+			return;
+		}
+		boolean curActive = isActive;
+
+		if (isActive) {
 			transferOutput();
 			transferInput();
+
+			if (!redstoneControlOrDisable()) {
+				isActive = false;
+			}
+		} else if (redstoneControlOrDisable()) {
+			isActive = true;
 		}
+		updateIfChanged(curActive);
 	}
 
 	protected void transferInput() {
@@ -93,7 +98,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				for (int j = 0; j < inventory.length; j++) {
 					if (extractItem(j, amountInput, EnumFacing.VALUES[side])) {
 						inputTracker = side;
@@ -112,7 +117,7 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				for (int j = inventory.length - 1; j >= 0; j--) {
 					if (transferItem(j, amountOutput, EnumFacing.VALUES[side])) {
 						outputTracker = side;
@@ -145,8 +150,8 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 		inputTracker = nbt.getInteger("TrackIn");
 		outputTracker = nbt.getInteger("TrackOut");
 
-		amountInput = MathHelper.clamp(nbt.getInteger("Input"), 0, 64);
-		amountOutput = MathHelper.clamp(nbt.getInteger("Output"), 0, 64);
+		amountInput = MathHelper.clamp(nbt.getInteger("AmountIn"), 0, 64);
+		amountOutput = MathHelper.clamp(nbt.getInteger("AmountOut"), 0, 64);
 	}
 
 	@Override
@@ -156,8 +161,9 @@ public class TileItemBuffer extends TileDeviceBase implements ITickable {
 
 		nbt.setInteger("TrackIn", inputTracker);
 		nbt.setInteger("TrackOut", outputTracker);
-		nbt.setInteger("Input", amountInput);
-		nbt.setInteger("Output", amountOutput);
+
+		nbt.setInteger("AmountIn", amountInput);
+		nbt.setInteger("AmountOut", amountOutput);
 		return nbt;
 	}
 

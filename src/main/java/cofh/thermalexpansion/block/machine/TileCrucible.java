@@ -9,9 +9,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCrucible;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.crafting.CrucibleManager;
-import cofh.thermalexpansion.util.crafting.CrucibleManager.RecipeCrucible;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager;
+import cofh.thermalexpansion.util.managers.machine.CrucibleManager.RecipeCrucible;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,7 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileCrucible extends TileMachineBase {
 
@@ -38,20 +39,20 @@ public class TileCrucible extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, {}, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
 		LIGHT_VALUES[TYPE] = 14;
+
+		SOUNDS[TYPE] = TESounds.MACHINE_CRUCIBLE;
 
 		GameRegistry.registerTileEntity(TileCrucible.class, "thermalexpansion:machine_crucible");
 
@@ -169,7 +170,7 @@ public class TileCrucible extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -180,20 +181,15 @@ public class TileCrucible extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -337,7 +333,7 @@ public class TileCrucible extends TileMachineBase {
 			}
 			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
 		return TETextures.MACHINE_SIDE;
 	}
@@ -371,7 +367,7 @@ public class TileCrucible extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 2) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					if (resource == null || !resource.isFluidEqual(tank.getFluid())) {
@@ -384,7 +380,7 @@ public class TileCrucible extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 2) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

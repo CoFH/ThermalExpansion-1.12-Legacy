@@ -6,6 +6,7 @@ import codechicken.lib.render.CCRenderState;
 import codechicken.lib.render.buffer.BakingVertexBuffer;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
+import cofh.core.init.CoreEnchantments;
 import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.storage.BlockTank;
 import cofh.thermalexpansion.block.storage.TileTank;
@@ -14,6 +15,7 @@ import cofh.thermalexpansion.init.TETextures;
 import net.minecraft.client.renderer.block.model.BakedQuad;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.BlockRenderLayer;
@@ -86,7 +88,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		}
 	}
 
-	protected void renderFluid(CCRenderState ccrs, boolean creative, int level, FluidStack stack) {
+	protected void renderFluid(CCRenderState ccrs, boolean creative, int level, int holding, FluidStack stack) {
 
 		if (stack == null || stack.amount <= 0) {
 			return;
@@ -100,7 +102,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		if (fluid.isGaseous(stack)) {
 			ccrs.alphaOverride = creative ? 224 : 32 + 192 * stack.amount / TileTank.CAPACITY[level];
 		} else if (!creative) {
-			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.CAPACITY[level]);
+			fluidLevel = (int) Math.min(RENDER_LEVELS - 1, (long) stack.amount * RENDER_LEVELS / TileTank.getCapacity(level, holding));
 		}
 		modelFluid[fluidLevel].render(ccrs, new IconTransformation(fluidTex));
 	}
@@ -116,6 +118,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		}
 		state = state.withProperty(TEProps.CREATIVE, tank.isCreative);
 		state = state.withProperty(TEProps.LEVEL, tank.getLevel());
+		state = state.withProperty(TEProps.HOLDING, (int) tank.enchantHolding);
 		state = state.withProperty(TEProps.ACTIVE, tank.enableAutoOutput);
 		state = state.withProperty(TEProps.FLUID, tank.getTankFluid());
 
@@ -134,12 +137,13 @@ public class RenderTank implements ILayeredBlockBakery {
 
 			boolean creative = BlockTank.itemBlock.isCreative(stack);
 			int level = BlockTank.itemBlock.getLevel(stack);
+			int holding = EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			FluidStack fluid = null;
 			if (stack.getTagCompound() != null) {
 				fluid = FluidStack.loadFluidStackFromNBT(stack.getTagCompound().getCompoundTag("Fluid"));
 			}
 			renderFrame(ccrs, creative, level, 0);
-			renderFluid(ccrs, creative, level, fluid);
+			renderFluid(ccrs, creative, level, holding, fluid);
 
 			buffer.finishDrawing();
 			return buffer.bake();
@@ -154,6 +158,7 @@ public class RenderTank implements ILayeredBlockBakery {
 		if (face == null && state != null) {
 			boolean creative = state.getValue(TEProps.CREATIVE);
 			int level = state.getValue(TEProps.LEVEL);
+			int holding = state.getValue(TEProps.HOLDING);
 			int mode = state.getValue(TEProps.ACTIVE) ? 1 : 0;
 			FluidStack fluidStack = state.getValue(TEProps.FLUID);
 
@@ -166,7 +171,7 @@ public class RenderTank implements ILayeredBlockBakery {
 			if (layer == BlockRenderLayer.CUTOUT) {
 				renderFrame(ccrs, creative, level, mode);
 			} else {
-				renderFluid(ccrs, creative, level, fluidStack);
+				renderFluid(ccrs, creative, level, holding, fluidStack);
 			}
 			buffer.finishDrawing();
 			return buffer.bake();

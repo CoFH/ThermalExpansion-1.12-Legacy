@@ -25,6 +25,7 @@ public class TETextures {
 		CONFIG_GREEN =						registerCB(map, CONFIG_ + "green");
 		CONFIG_PURPLE =						registerCB(map, CONFIG_ + "purple");
 		CONFIG_OPEN =						register(map, CONFIG_ + "open");
+		CONFIG_OMNI =                       register(map, CONFIG_ + "omni");
 
 		/* MACHINES */
 		MACHINE_TOP =                       register(map, MACHINE_ + "top");
@@ -72,19 +73,21 @@ public class TETextures {
 		MACHINE_ACTIVE_PRECIPITATOR =		register(map, MACHINE_ACTIVE_ + "precipitator");
 		MACHINE_ACTIVE_EXTRUDER =			register(map, MACHINE_ACTIVE_ + "extruder");
 
+		MACHINE_ACTIVE_EXTRUDER_UNDERLAY =	register(map, MACHINE_ACTIVE_ + "extruder_underlay");
+
 		MACHINE_FRAME_TOP =                 register(map, MACHINE_ + "frame_top");
 		MACHINE_FRAME_BOTTOM =              register(map, MACHINE_ + "frame_bottom");
 		MACHINE_FRAME_SIDE =                register(map, MACHINE_ + "frame_side");
 		MACHINE_FRAME_INNER =               register(map, MACHINE_ + "frame_inner");
 
 		/* AUTOMATA */
-		AUTOMATON_SIDE =					register(map, BLOCKS_ + "automaton/automaton_side");
+		APPARATUS_SIDE =					register(map, BLOCKS_ + "apparatus/apparatus_side");
 
-		AUTOMATON_FACE_BREAKER =			register(map, AUTOMATON_FACE_ + "breaker");
-		AUTOMATON_FACE_COLLECTOR =			register(map, AUTOMATON_FACE_ + "collector");
+		APPARATUS_FACE_BREAKER =			register(map, APPARATUS_FACE_ + "breaker");
+		APPARATUS_FACE_COLLECTOR =			register(map, APPARATUS_FACE_ + "collector");
 
-		AUTOMATON_ACTIVE_BREAKER =			register(map, AUTOMATON_ACTIVE_ + "breaker");
-		AUTOMATON_ACTIVE_COLLECTOR =		register(map, AUTOMATON_ACTIVE_ + "collector");
+		APPARATUS_ACTIVE_BREAKER =			register(map, APPARATUS_ACTIVE_ + "breaker");
+		APPARATUS_ACTIVE_COLLECTOR =		register(map, APPARATUS_ACTIVE_ + "collector");
 
 		/* DEVICES */
 		DEVICE_TOP =                        register(map, BLOCKS_ + "device/device_top");
@@ -95,6 +98,7 @@ public class TETextures {
 		DEVICE_FACE_NULLIFIER =				register(map, DEVICE_FACE_ + "nullifier");
 		DEVICE_FACE_HEAT_SINK =             register(map, DEVICE_FACE_ + "heat_sink");
 		DEVICE_FACE_TAPPER =                register(map, DEVICE_FACE_ + "tapper");
+		DEVICE_FACE_FISHER =                register(map, DEVICE_FACE_ + "fisher");
 
 		DEVICE_FACE_ITEM_BUFFER =			register(map, DEVICE_FACE_ + "item_buffer");
 		DEVICE_FACE_EXTENDER =				map.getMissingSprite();//TODO register(map, DEVICE_FACE_ + "extender");
@@ -103,6 +107,7 @@ public class TETextures {
 		DEVICE_ACTIVE_NULLIFIER =			register(map, DEVICE_ACTIVE_ + "nullifier");
 		DEVICE_ACTIVE_HEAT_SINK =           register(map, DEVICE_ACTIVE_ + "heat_sink");
 		DEVICE_ACTIVE_TAPPER =              register(map, DEVICE_ACTIVE_ + "tapper");
+		DEVICE_ACTIVE_FISHER =              register(map, DEVICE_ACTIVE_ + "fisher");
 
 		DEVICE_ACTIVE_ITEM_BUFFER =			register(map, DEVICE_ACTIVE_ + "item_buffer");
 		DEVICE_ACTIVE_EXTENDER =			map.getMissingSprite();//TODO register(map, DEVICE_ACTIVE_ + "extender");
@@ -122,12 +127,12 @@ public class TETextures {
 		DYNAMO_ENERVATION =					register(map, DYNAMO_ + "enervation");
 		DYNAMO_NUMISMATIC =					register(map, DYNAMO_ + "numismatic");
 
-		DYNAMO_OVERLAY_0 =                 map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
-		DYNAMO_OVERLAY_1 =                 register(map, DYNAMO_ + "overlay_1");
-		DYNAMO_OVERLAY_2 =                 register(map, DYNAMO_ + "overlay_2");
-		DYNAMO_OVERLAY_3 =                 register(map, DYNAMO_ + "overlay_3");
-		DYNAMO_OVERLAY_4 =                 register(map, DYNAMO_ + "overlay_4");
-		DYNAMO_OVERLAY_C =                 register(map, DYNAMO_ + "overlay_c");
+		DYNAMO_OVERLAY_0 =                  map.getMissingSprite(); // register(map, DYNAMO_ + "overlay_0");
+		DYNAMO_OVERLAY_1 =                  register(map, DYNAMO_ + "overlay_1");
+		DYNAMO_OVERLAY_2 =                  register(map, DYNAMO_ + "overlay_2");
+		DYNAMO_OVERLAY_3 =                  register(map, DYNAMO_ + "overlay_3");
+		DYNAMO_OVERLAY_4 =                  register(map, DYNAMO_ + "overlay_4");
+		DYNAMO_OVERLAY_C =                  register(map, DYNAMO_ + "overlay_c");
 
 		/* ICONS */
 		ICON_ACCEPT =						map.getMissingSprite();//TODO
@@ -240,6 +245,13 @@ public class TETextures {
 		CACHE_METER_8 =                     register(map, CACHE_ + "meter_8");
 		CACHE_METER_C =                     register(map, CACHE_ + "meter_c");
 
+		STRONGBOX_TOP_0 =                   register(map, STRONGBOX_ + "top_0");
+		STRONGBOX_TOP_1 =                   register(map, STRONGBOX_ + "top_1");
+		STRONGBOX_TOP_2 =                   register(map, STRONGBOX_ + "top_2");
+		STRONGBOX_TOP_3 =                   register(map, STRONGBOX_ + "top_3");
+		STRONGBOX_TOP_4 =                   register(map, STRONGBOX_ + "top_4");
+		STRONGBOX_TOP_C =                   register(map, STRONGBOX_ + "top_c");
+
 		ILLUMINATOR_FRAME =                 register(map, BLOCKS_ + "light/illuminator_frame");
 
 		/* ARRAYS */
@@ -251,7 +263,8 @@ public class TETextures {
 				CONFIG_ORANGE,
 				CONFIG_GREEN,
 				CONFIG_PURPLE,
-				CONFIG_OPEN
+				CONFIG_OPEN,
+				CONFIG_OMNI
 		};
 
 		MACHINE_OVERLAY = new TextureAtlasSprite[] {
@@ -299,37 +312,42 @@ public class TETextures {
 				MACHINE_ACTIVE_ENCHANTER,
 				MACHINE_ACTIVE_PRECIPITATOR,
 				MACHINE_ACTIVE_EXTRUDER
+		};
 
+		APPARATUS_FACE = new TextureAtlasSprite[] {
+				APPARATUS_FACE_BREAKER,
+				APPARATUS_FACE_COLLECTOR
 		};
-		AUTOMATON_FACE = new TextureAtlasSprite[] {
-				AUTOMATON_FACE_BREAKER,
-				AUTOMATON_FACE_COLLECTOR
+
+		APPARATUS_ACTIVE = new TextureAtlasSprite[] {
+				APPARATUS_ACTIVE_BREAKER,
+				APPARATUS_ACTIVE_COLLECTOR
 		};
-		AUTOMATON_ACTIVE = new TextureAtlasSprite[] {
-				AUTOMATON_ACTIVE_BREAKER,
-				AUTOMATON_ACTIVE_COLLECTOR
-		};
+
 		DEVICE_FACE = new TextureAtlasSprite[] {
 				DEVICE_FACE_WATERGEN,
 				DEVICE_FACE_NULLIFIER,
 				DEVICE_FACE_HEAT_SINK,
-				DEVICE_FACE_TAPPER
+				DEVICE_FACE_TAPPER,
+				DEVICE_FACE_FISHER,
+				DEVICE_FACE_ITEM_BUFFER
 
 //				DEVICE_FACE_EXTENDER,
 //				DEVICE_FACE_CONCENTRATOR,
-//				DEVICE_FACE_ITEM_BUFFER,
 //				DEVICE_FACE_FLUID_BUFFER,
 //				DEVICE_FACE_ENERGY_BUFFER
 		};
+
 		DEVICE_ACTIVE = new TextureAtlasSprite[] {
 				DEVICE_ACTIVE_WATERGEN,
 				DEVICE_ACTIVE_NULLIFIER,
 				DEVICE_ACTIVE_HEAT_SINK,
-				DEVICE_ACTIVE_TAPPER
+				DEVICE_ACTIVE_TAPPER,
+				DEVICE_ACTIVE_FISHER,
+				DEVICE_ACTIVE_ITEM_BUFFER
 
 //				DEVICE_ACTIVE_EXTENDER,
 //				DEVICE_ACTIVE_CONCENTRATOR,
-//				DEVICE_ACTIVE_ITEM_BUFFER,
 //				DEVICE_ACTIVE_FLUID_BUFFER,
 //				DEVICE_ACTIVE_ENERGY_BUFFER
 		};
@@ -488,6 +506,15 @@ public class TETextures {
 				CACHE_METER_8,
 				CACHE_METER_C
 		};
+
+		STRONGBOX_TOP = new TextureAtlasSprite[] {
+				STRONGBOX_TOP_0,
+				STRONGBOX_TOP_1,
+				STRONGBOX_TOP_2,
+				STRONGBOX_TOP_3,
+				STRONGBOX_TOP_4,
+				STRONGBOX_TOP_C
+		};
 		// @formatter:on
 	}
 
@@ -513,8 +540,8 @@ public class TETextures {
 	private static final String MACHINE_ = BLOCKS_ + "machine/machine_";
 	private static final String MACHINE_FACE_ = MACHINE_ + "face_";
 	private static final String MACHINE_ACTIVE_ = MACHINE_ + "active_";
-	private static final String AUTOMATON_FACE_ = BLOCKS_ + "automaton/automaton_face_";
-	private static final String AUTOMATON_ACTIVE_ = BLOCKS_ + "automaton/automaton_active_";
+	private static final String APPARATUS_FACE_ = BLOCKS_ + "apparatus/apparatus_face_";
+	private static final String APPARATUS_ACTIVE_ = BLOCKS_ + "apparatus/apparatus_active_";
 	private static final String DEVICE_ = BLOCKS_ + "device/device_";
 	private static final String DEVICE_FACE_ = DEVICE_ + "face_";
 	private static final String DEVICE_ACTIVE_ = DEVICE_ + "active_";
@@ -523,6 +550,7 @@ public class TETextures {
 	private static final String CELL_CONFIG_ = BLOCKS_ + "config/cell_config_";
 	private static final String TANK_ = BLOCKS_ + "storage/tank_";
 	private static final String CACHE_ = BLOCKS_ + "storage/cache_";
+	private static final String STRONGBOX_ = BLOCKS_ + "storage/strongbox_";
 
 	/* REFERENCES */
 	public static TextureAtlasSprite[] CONFIG;
@@ -534,6 +562,7 @@ public class TETextures {
 	public static TextureAtlasSprite CONFIG_GREEN;
 	public static TextureAtlasSprite CONFIG_PURPLE;
 	public static TextureAtlasSprite CONFIG_OPEN;
+	public static TextureAtlasSprite CONFIG_OMNI;
 
 	public static TextureAtlasSprite MACHINE_TOP;
 	public static TextureAtlasSprite MACHINE_BOTTOM;
@@ -583,20 +612,22 @@ public class TETextures {
 	public static TextureAtlasSprite MACHINE_ACTIVE_PRECIPITATOR;
 	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER;
 
+	public static TextureAtlasSprite MACHINE_ACTIVE_EXTRUDER_UNDERLAY;
+
 	public static TextureAtlasSprite MACHINE_FRAME_TOP;
 	public static TextureAtlasSprite MACHINE_FRAME_SIDE;
 	public static TextureAtlasSprite MACHINE_FRAME_BOTTOM;
 	public static TextureAtlasSprite MACHINE_FRAME_INNER;
 
-	public static TextureAtlasSprite AUTOMATON_SIDE;
+	public static TextureAtlasSprite APPARATUS_SIDE;
 
-	public static TextureAtlasSprite[] AUTOMATON_FACE;
-	public static TextureAtlasSprite AUTOMATON_FACE_BREAKER;
-	public static TextureAtlasSprite AUTOMATON_FACE_COLLECTOR;
+	public static TextureAtlasSprite[] APPARATUS_FACE;
+	public static TextureAtlasSprite APPARATUS_FACE_BREAKER;
+	public static TextureAtlasSprite APPARATUS_FACE_COLLECTOR;
 
-	public static TextureAtlasSprite[] AUTOMATON_ACTIVE;
-	public static TextureAtlasSprite AUTOMATON_ACTIVE_BREAKER;
-	public static TextureAtlasSprite AUTOMATON_ACTIVE_COLLECTOR;
+	public static TextureAtlasSprite[] APPARATUS_ACTIVE;
+	public static TextureAtlasSprite APPARATUS_ACTIVE_BREAKER;
+	public static TextureAtlasSprite APPARATUS_ACTIVE_COLLECTOR;
 
 	public static TextureAtlasSprite DEVICE_TOP;
 	public static TextureAtlasSprite DEVICE_BOTTOM;
@@ -607,6 +638,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FACE_NULLIFIER;
 	public static TextureAtlasSprite DEVICE_FACE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_FACE_TAPPER;
+	public static TextureAtlasSprite DEVICE_FACE_FISHER;
 
 	public static TextureAtlasSprite DEVICE_FACE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_FACE_CONCENTRATOR;
@@ -619,6 +651,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_ACTIVE_NULLIFIER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_HEAT_SINK;
 	public static TextureAtlasSprite DEVICE_ACTIVE_TAPPER;
+	public static TextureAtlasSprite DEVICE_ACTIVE_FISHER;
 
 	public static TextureAtlasSprite DEVICE_ACTIVE_EXTENDER;
 	public static TextureAtlasSprite DEVICE_ACTIVE_CONCENTRATOR;
@@ -632,6 +665,7 @@ public class TETextures {
 	public static TextureAtlasSprite DEVICE_FRAME_INNER;
 
 	public static TextureAtlasSprite DYNAMO_COIL_REDSTONE;
+	public static TextureAtlasSprite DYNAMO_COIL_ENDER;
 
 	public static TextureAtlasSprite[] DYNAMO;
 	public static TextureAtlasSprite DYNAMO_STEAM;
@@ -768,6 +802,14 @@ public class TETextures {
 	public static TextureAtlasSprite CACHE_METER_7;
 	public static TextureAtlasSprite CACHE_METER_8;
 	public static TextureAtlasSprite CACHE_METER_C;
+
+	public static TextureAtlasSprite[] STRONGBOX_TOP;
+	public static TextureAtlasSprite STRONGBOX_TOP_0;
+	public static TextureAtlasSprite STRONGBOX_TOP_1;
+	public static TextureAtlasSprite STRONGBOX_TOP_2;
+	public static TextureAtlasSprite STRONGBOX_TOP_3;
+	public static TextureAtlasSprite STRONGBOX_TOP_4;
+	public static TextureAtlasSprite STRONGBOX_TOP_C;
 
 	public static TextureAtlasSprite ILLUMINATOR_FRAME;
 

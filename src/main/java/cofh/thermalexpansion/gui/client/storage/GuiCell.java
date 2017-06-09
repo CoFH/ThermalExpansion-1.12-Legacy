@@ -5,6 +5,7 @@ import cofh.core.gui.element.*;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.lib.gui.element.ElementButton;
 import cofh.lib.gui.element.ElementEnergyStored;
+import cofh.lib.gui.element.ElementSimple;
 import cofh.lib.gui.element.TabBase;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.storage.TileCell;
@@ -75,6 +76,12 @@ public class GuiCell extends GuiCore {
 
 		addElement(new ElementEnergyStored(this, 80, 18, baseTile.getEnergyStorage()));
 
+		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 33, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
+		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 123, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
+
+		addElement(infoInput);
+		addElement(infoOutput);
+
 		decRecv = new ElementButton(this, 28, 56, "DecRecv", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incRecv = new ElementButton(this, 44, 56, "IncRecv", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		decSend = new ElementButton(this, 118, 56, "DecSend", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
@@ -124,28 +131,28 @@ public class GuiCell extends GuiCore {
 		}
 		if (baseTile.amountRecv > 0) {
 			decRecv.setActive();
-			decRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decRecv") + " " + change + "/" + change2);
+			decRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decRecv") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			decRecv.setDisabled();
 			decRecv.clearToolTip();
 		}
 		if (baseTile.amountRecv < TileCell.RECV[baseTile.getLevel()]) {
 			incRecv.setActive();
-			incRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incRecv") + " " + change + "/" + change2);
+			incRecv.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incRecv") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			incRecv.setDisabled();
 			incRecv.clearToolTip();
 		}
 		if (baseTile.amountSend > 0) {
 			decSend.setActive();
-			decSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decSend") + " " + change + "/" + change2);
+			decSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.decSend") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			decSend.setDisabled();
 			decSend.clearToolTip();
 		}
 		if (baseTile.amountSend < TileCell.SEND[baseTile.getLevel()]) {
 			incSend.setActive();
-			incSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incSend") + " " + change + "/" + change2);
+			incSend.setToolTip(StringHelper.localize("gui.thermalexpansion.storage.cell.incSend") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
 		} else {
 			incSend.setDisabled();
 			incSend.clearToolTip();
@@ -210,11 +217,8 @@ public class GuiCell extends GuiCore {
 	@Override
 	protected void drawGuiContainerForegroundLayer(int x, int y) {
 
-		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv") + ":", getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxRecv"), xSize / 2), 32, 0x404040);
-		fontRendererObj.drawString(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend") + ":", xSize / 2 + getCenteredOffset(StringHelper.localize("gui.thermalexpansion.storage.cell.maxSend"), xSize / 2), 32, 0x404040);
-
-		String recv = String.format("%-8s", "" + baseTile.amountRecv + " RF/t");
-		String send = String.format("%-8s", "" + baseTile.amountSend + " RF/t");
+		String recv = StringHelper.formatNumber(baseTile.amountRecv) + " RF/t";
+		String send = StringHelper.formatNumber(baseTile.amountSend) + " RF/t";
 
 		int xRecv = 20;
 		int xSend = 110;
@@ -250,8 +254,8 @@ public class GuiCell extends GuiCore {
 		if (baseTile.amountSend >= 100000) {
 			xSend -= 3;
 		}
-		fontRendererObj.drawString(recv, xRecv, 44, 0x404040);
-		fontRendererObj.drawString(send, xSend, 44, 0x404040);
+		fontRendererObj.drawString(recv, xRecv, 42, 0x404040);
+		fontRendererObj.drawString(send, xSend, 42, 0x404040);
 
 		super.drawGuiContainerForegroundLayer(x, y);
 	}

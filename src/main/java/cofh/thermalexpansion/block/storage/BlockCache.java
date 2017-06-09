@@ -6,6 +6,7 @@ import codechicken.lib.model.blockbakery.BlockBakeryProperties;
 import codechicken.lib.model.blockbakery.CCBakeryModel;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.texture.TextureUtils;
+import cofh.core.init.CoreEnchantments;
 import cofh.core.render.IModelRegister;
 import cofh.core.util.StateMapper;
 import cofh.lib.util.RayTracer;
@@ -21,6 +22,7 @@ import net.minecraft.block.state.BlockStateContainer;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -70,8 +72,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		builder.add(TEProps.CREATIVE);
 		builder.add(BlockBakeryProperties.LAYER_FACE_SPRITE_MAP);
 		builder.add(TEProps.LEVEL);
-		builder.add(TEProps.SCALE);
+		builder.add(TEProps.HOLDING);
 		builder.add(TEProps.FACING);
+		builder.add(TEProps.SCALE);
 
 		return builder.build();
 	}
@@ -140,6 +143,7 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			TileCache tile = (TileCache) world.getTileEntity(pos);
 
 			tile.isCreative = (stack.getTagCompound().getBoolean("Creative"));
+			tile.enchantHolding = (byte) EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, stack);
 			tile.setLevel(stack.getTagCompound().getByte("Level"));
 			tile.locked = stack.getTagCompound().getBoolean("Lock");
 
@@ -266,9 +270,14 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		NBTTagCompound retTag = super.getItemStackTag(world, pos);
 		TileCache tile = (TileCache) world.getTileEntity(pos);
 
-		if (tile != null && tile.storedStack != null) {
-			retTag.setBoolean("Lock", tile.locked);
-			retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+		if (tile != null) {
+			if (tile.enchantHolding > 0) {
+				CoreEnchantments.addEnchantment(retTag, CoreEnchantments.holding, tile.enchantHolding);
+			}
+			if (tile.storedStack != null) {
+				retTag.setBoolean("Lock", tile.locked);
+				retTag.setTag("Item", ItemHelper.writeItemStackToNBT(tile.storedStack, tile.getStoredCount(), new NBTTagCompound()));
+			}
 		}
 		return retTag;
 	}
@@ -332,8 +341,9 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			StringBuilder builder = new StringBuilder(BlockBakery.defaultBlockKeyGenerator.generateKey(state));
 			builder.append(",creative=").append(state.getValue(TEProps.CREATIVE));
 			builder.append(",level=").append(state.getValue(TEProps.LEVEL));
+			builder.append(",holding=").append(state.getValue(TEProps.HOLDING));
 			builder.append(",facing=").append(state.getValue(TEProps.FACING));
-			builder.append(",meter_level=").append(state.getValue(TEProps.SCALE));
+			builder.append(",scale=").append(state.getValue(TEProps.SCALE));
 			return builder.toString();
 		});
 
@@ -364,11 +374,19 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 		for (int i = 0; i < 5; i++) {
 			cache[i] = itemBlock.setDefaultTag(new ItemStack(this), i);
 		}
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		// @formatter:off
 		if (enable) {
@@ -382,8 +400,6 @@ public class BlockCache extends BlockTEBase implements IModelRegister, IWorldBlo
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	public static boolean enable;

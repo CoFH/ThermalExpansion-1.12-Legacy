@@ -23,6 +23,7 @@ import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.items.CapabilityItemHandler;
 
 public class TileCell extends TilePowered implements ITickable, IEnergyProvider {
 
@@ -62,6 +63,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	private int meterTracker;
 	private int outputTracker;
 
+	public byte enchantHolding;
 	public int amountRecv;
 	public int amountSend;
 
@@ -69,7 +71,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super();
 
-		energyStorage = new EnergyStorage(getCapacity(0));
+		energyStorage = new EnergyStorage(getCapacity(0, 0));
 		setDefaultSides();
 		enableAutoOutput = true;
 	}
@@ -111,12 +113,27 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
+	public boolean installUpgrade(ItemStack upgrade) {
+
+		boolean isCreative = this.isCreative;
+		boolean installUpgrade = super.installUpgrade(upgrade);
+		if (installUpgrade && !isCreative && this.isCreative) {
+			for (int i = 0; i < 6; i++) {
+				sideCache[i] = 2;
+			}
+			sendTilePacket(Side.CLIENT);
+			callNeighborTileChange();
+		}
+		return installUpgrade;
+	}
+
+	@Override
 	protected boolean setLevel(int level) {
 
 		int curLevel = this.level;
 
 		if (super.setLevel(level)) {
-			energyStorage.setCapacity(getCapacity(level));
+			energyStorage.setCapacity(getCapacity(level, enchantHolding));
 			amountRecv = amountRecv * RECV[level] / RECV[curLevel];
 			amountSend = amountSend * SEND[level] / SEND[curLevel];
 
@@ -141,27 +158,18 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	@Override
-	public boolean installUpgrade(ItemStack upgrade) {
-
-		boolean isCreative = this.isCreative;
-		boolean installUpgrade = super.installUpgrade(upgrade);
-		if (installUpgrade && !isCreative && this.isCreative) {
-			for (int i = 0; i < 6; i++) {
-				sideCache[i] = 2;
-			}
-			sendTilePacket(Side.CLIENT);
-			callNeighborTileChange();
-		}
-		return installUpgrade;
-	}
-
-	@Override
 	protected boolean writePortableTagInternal(EntityPlayer player, NBTTagCompound tag) {
 
 		tag.setInteger("Recv", amountRecv * 1000 / RECV[level]);
 		tag.setInteger("Send", amountSend * 1000 / SEND[level]);
 
 		return super.writePortableTagInternal(player, tag);
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return 0;
 	}
 
 	@Override
@@ -179,9 +187,9 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	}
 
 	/* COMMON METHODS */
-	public static int getCapacity(int level) {
+	public static int getCapacity(int level, int enchant) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)];
+		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	public int getScaledEnergyStored(int scale) {
@@ -245,13 +253,15 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
 		outputTracker = nbt.getByte("Tracker");
 		amountRecv = nbt.getInteger("Recv");
 		amountSend = nbt.getInteger("Send");
 
-		energyStorage = new EnergyStorage(getCapacity(level));
+		energyStorage = new EnergyStorage(getCapacity(level, enchantHolding));
 		energyStorage.readFromNBT(nbt);
 	}
 
@@ -260,6 +270,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super.writeToNBT(nbt);
 
+		nbt.setByte("EncHolding", enchantHolding);
 		nbt.setInteger("TrackOut", outputTracker);
 		nbt.setInteger("Recv", amountRecv);
 		nbt.setInteger("Send", amountSend);
@@ -306,6 +317,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		PacketCoFHBase payload = super.getTilePacket();
 
+		payload.addByte(enchantHolding);
 		payload.addInt(amountRecv);
 		payload.addInt(amountSend);
 
@@ -326,6 +338,7 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 
 		super.handleTilePacket(payload, isServer);
 
+		enchantHolding = payload.getByte();
 		amountRecv = payload.getInt();
 		amountSend = payload.getInt();
 	}
@@ -449,6 +462,13 @@ public class TileCell extends TilePowered implements ITickable, IEnergyProvider 
 			return TETextures.CONFIG_NONE;
 		}
 		return isCreative ? TETextures.CELL_METER_C : TETextures.CELL_METER[MathHelper.clamp(getScaledEnergyStored(9), 0, 8)];
+	}
+
+	/* CAPABILITIES */
+	@Override
+	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
+
+		return capability != CapabilityItemHandler.ITEM_HANDLER_CAPABILITY && (capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, from));
 	}
 
 	/* CAPABILITIES */

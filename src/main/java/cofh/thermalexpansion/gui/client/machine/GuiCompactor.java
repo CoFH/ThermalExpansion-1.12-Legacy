@@ -8,6 +8,9 @@ import cofh.thermalexpansion.block.machine.TileCompactor;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -49,8 +52,8 @@ public class GuiCompactor extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(0, 0, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 
@@ -64,8 +67,8 @@ public class GuiCompactor extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(baseTile.hasSide(1));
-		slotOutput.setVisible(baseTile.hasSide(2));
+		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));

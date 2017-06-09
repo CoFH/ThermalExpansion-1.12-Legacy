@@ -19,7 +19,7 @@ public abstract class GuiPoweredBase extends GuiCore {
 	protected TilePowered baseTile;
 	protected UUID playerName;
 
-	public String myTutorial = "";
+	protected String myTutorial = "";
 
 	protected TabBase augmentTab;
 	protected TabBase redstoneTab;
@@ -34,9 +34,8 @@ public abstract class GuiPoweredBase extends GuiCore {
 		name = baseTile.getName();
 		playerName = SecurityHelper.getID(player);
 
-		if (baseTile.isAugmentable()) {
-			myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
-		}
+		myTutorial = StringHelper.tutorialTabAugment() + "\n\n";
+
 		if (baseTile.enableSecurity() && baseTile.isSecured()) {
 			myTutorial += StringHelper.tutorialTabSecurity() + "\n\n";
 		}
@@ -56,9 +55,8 @@ public abstract class GuiPoweredBase extends GuiCore {
 		super.initGui();
 
 		// Right Side
-		if (baseTile.isAugmentable()) {
-			augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
-		}
+		augmentTab = addTab(new TabAugment(this, (IAugmentableContainer) inventorySlots));
+
 		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
 		redstoneTab.setVisible(baseTile.hasRedstoneControl());
 

@@ -178,7 +178,7 @@ public abstract class TilePowered extends TileReconfigurable implements IEnergyI
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
 
-		return super.hasCapability(capability, from) || capability == CapabilityEnergy.ENERGY;
+		return capability == CapabilityEnergy.ENERGY || super.hasCapability(capability, from);
 	}
 
 	@Override

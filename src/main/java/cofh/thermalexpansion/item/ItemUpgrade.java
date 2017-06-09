@@ -160,13 +160,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 	@Override
 	public boolean initialize() {
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
 		// @formatter:off
+
 		addRecipe(ShapedRecipe(upgradeIncremental[0],
 				" I ",
 				"IGI",
@@ -230,7 +225,14 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 				upgradeIncremental[2],
 				upgradeIncremental[3]
 		));
+
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}

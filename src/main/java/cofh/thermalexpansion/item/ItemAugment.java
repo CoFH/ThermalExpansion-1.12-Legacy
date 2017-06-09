@@ -11,6 +11,7 @@ import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.block.machine.TileExtruder;
+import cofh.thermalexpansion.block.machine.TilePrecipitator;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalfoundation.item.ItemMaterial;
 import gnu.trove.map.hash.TIntObjectHashMap;
@@ -53,6 +54,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		return StringHelper.localize("info.thermalexpansion.augment.0") + ": " + super.getItemStackDisplayName(stack);
 	}
 
+	@Override
 	@SideOnly (Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List<String> tooltip, boolean advanced) {
 
@@ -187,6 +189,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineFurnaceFood = addAugmentItem(256, TEProps.MACHINE_FURNACE_FOOD, AugmentType.MODE);
 		machineFurnaceOre = addAugmentItem(257, TEProps.MACHINE_FURNACE_ORE, AugmentType.MODE);
+		machineFurnacePyrolysis = addAugmentItem(258, TEProps.MACHINE_FURNACE_PYROLYSIS, AugmentType.MODE);
 
 		// machinePulverizerGeode = addAugmentItem(272, TEProps.MACHINE_PULVERIZER_GEODE, AugmentType.MODE);
 		machinePulverizerPetrotheum = addAugmentItem(273, TEProps.MACHINE_PULVERIZER_PETROTHEUM, AugmentType.MODE);
@@ -198,6 +201,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		machineInsolatorMycelium = addAugmentItem(320, TEProps.MACHINE_INSOLATOR_MYCELIUM, AugmentType.MODE);
 		machineInsolatorNether = addAugmentItem(321, TEProps.MACHINE_INSOLATOR_NETHER, AugmentType.MODE);
 		machineInsolatorEnd = addAugmentItem(322, TEProps.MACHINE_INSOLATOR_END, AugmentType.MODE);
+		machineInsolatorTree = addAugmentItem(323, TEProps.MACHINE_INSOLATOR_TREE, AugmentType.MODE);
 
 		machineCompactorMint = addAugmentItem(336, TEProps.MACHINE_COMPACTOR_MINT, AugmentType.MODE);
 
@@ -205,6 +209,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		machineChargerThroughput = addAugmentItem(400, TEProps.MACHINE_CHARGER_THROUGHPUT, AugmentType.MODE);
 
+		machinePrecipitatorSnowLayer = addAugmentItem(481, TEProps.MACHINE_PRECIPITATOR_SNOW_LAYER, AugmentType.MODE);
+		machinePrecipitatorPackedIce = addAugmentItem(482, TEProps.MACHINE_PRECIPITATOR_PACKED_ICE, AugmentType.MODE);
+
+		machineExtruderNoWater = addAugmentItem(496, TEProps.MACHINE_EXTRUDER_NO_WATER, AugmentType.ADVANCED);
 		machineExtruderGranite = addAugmentItem(497, TEProps.MACHINE_EXTRUDER_GRANITE, AugmentType.MODE);
 		machineExtruderDiorite = addAugmentItem(498, TEProps.MACHINE_EXTRUDER_DIORITE, AugmentType.MODE);
 		machineExtruderAndesite = addAugmentItem(499, TEProps.MACHINE_EXTRUDER_ANDESITE, AugmentType.MODE);
@@ -222,21 +230,17 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		dynamoCompressionCoolant = addAugmentItem(672, TEProps.DYNAMO_COMPRESSION_COOLANT, AugmentType.MODE);
 		dynamoCompressionFuel = addAugmentItem(673, TEProps.DYNAMO_COMPRESSION_FUEL, AugmentType.MODE);
 
+		dynamoReactantElemental = addAugmentItem(688, TEProps.DYNAMO_REACTANT_ELEMENTAL, AugmentType.MODE);
+
 		/* AUTOMATA */
-		//		automatonDepth = addAugmentItem(896, TEProps.AUTOMATON_DEPTH);
-		//		automatonRadius = addAugmentItem(897, TEProps.AUTOMATON_RADIUS);
+		//		apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
+		//		apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
 		return true;
 	}
 
 	@Override
 	public boolean initialize() {
-
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
 
 		// @formatter:off
 
@@ -285,6 +289,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'I', "plateInvar",
 				'X', Blocks.PISTON,
 				'Y', "dustPyrotheum"
+		));
+		addRecipe(ShapedRecipe(machineFurnacePyrolysis,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearInvar",
+				'I', "plateCopper",
+				'X', Blocks.NETHER_BRICK,
+				'Y', "dustCharcoal"
 		));
 
 //		addRecipe(ShapedRecipe(machinePulverizerGeode,
@@ -360,6 +374,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', Blocks.END_STONE,
 				'Y', "dustCryotheum"
 		));
+		addRecipe(ShapedRecipe(machineInsolatorTree,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearSignalum",
+				'I', "plateLumium",
+				'X', Blocks.PISTON,
+				'Y', "dustAerotheum"
+		));
 
 //		addRecipe(ShapedRecipe(machineCrucibleAlloy,
 //				" G ",
@@ -394,6 +418,16 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'Y', "dustRedstone"
 		));
 
+		addRecipe(ShapedRecipe(machineExtruderNoWater,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', Blocks.PISTON,
+				'Y', "dustCryotheum"
+		));
 		addRecipe(ShapedRecipe(machineExtruderGranite,
 				" G ",
 				"ICI",
@@ -422,6 +456,28 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'G', "gearCopper",
 				'I', "plateInvar",
 				'X', TileExtruder.ANDESITE,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machinePrecipitatorSnowLayer,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TilePrecipitator.SNOW_LAYER,
+				'Y', "dustRedstone"
+		));
+
+		addRecipe(ShapedRecipe(machinePrecipitatorPackedIce,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.redstoneServo,
+				'G', "gearCopper",
+				'I', "plateInvar",
+				'X', TilePrecipitator.PACKED_ICE,
 				'Y', "dustRedstone"
 		));
 
@@ -498,10 +554,26 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 				'X', "blockGlassHardened",
 				'Y', "dustPyrotheum"
 		));
+		addRecipe(ShapedRecipe(dynamoReactantElemental,
+				" G ",
+				"ICI",
+				"YXY",
+				'C', ItemMaterial.powerCoilElectrum,
+				'G', "gearSignalum",
+				'I', "plateLead",
+				'X', "blockGlassHardened",
+				'Y', "dustAerotheum"
+		));
 
-		/* AUTOMATON */
+		/* APPARATUS */
 
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}
@@ -542,9 +614,9 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 		switch (type) {
 			case ADVANCED:
+			case MODE:
 				rarity = EnumRarity.UNCOMMON;
 				break;
-			case MODE:
 			case ENDER:
 				rarity = EnumRarity.RARE;
 				break;
@@ -586,6 +658,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineFurnaceFood;
 	public static ItemStack machineFurnaceOre;
+	public static ItemStack machineFurnacePyrolysis;
 
 	public static ItemStack machinePulverizerGeode;
 	public static ItemStack machinePulverizerPetrotheum;
@@ -597,6 +670,7 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack machineInsolatorMycelium;
 	public static ItemStack machineInsolatorNether;
 	public static ItemStack machineInsolatorEnd;
+	public static ItemStack machineInsolatorTree;
 
 	public static ItemStack machineCompactorMint;
 
@@ -606,10 +680,10 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 
 	public static ItemStack machineCentrifugeMobs;              // Enstabulation Chamber
 
-	public static ItemStack machinePrecipitatorBatchSize;
+	public static ItemStack machinePrecipitatorSnowLayer;
 	public static ItemStack machinePrecipitatorPackedIce;
 
-	public static ItemStack machineExtruderBatchSize;
+	public static ItemStack machineExtruderNoWater;
 	public static ItemStack machineExtruderGranite;
 	public static ItemStack machineExtruderDiorite;
 	public static ItemStack machineExtruderAndesite;
@@ -627,11 +701,13 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 	public static ItemStack dynamoCompressionCoolant;
 	public static ItemStack dynamoCompressionFuel;
 
-	/* Automaton */
-	public static ItemStack automatonDepth;
-	public static ItemStack automatonRadius;
+	public static ItemStack dynamoReactantElemental;
 
-	public static ItemStack automatonBreakerFluid;
-	public static ItemStack automatonCollectorEntity;
+	/* Apparatus */
+	public static ItemStack apparatusDepth;
+	public static ItemStack apparatusRadius;
+
+	public static ItemStack apparatusBreakerFluid;
+	public static ItemStack apparatusCollectorEntity;
 
 }

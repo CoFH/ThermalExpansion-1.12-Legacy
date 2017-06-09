@@ -4,6 +4,7 @@ import cofh.lib.gui.slot.ISlotValidator;
 import cofh.lib.gui.slot.SlotValidated;
 import cofh.thermalexpansion.block.dynamo.TileDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
+import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -23,7 +24,7 @@ public class ContainerDynamoNumismatic extends ContainerTEBase implements ISlotV
 	@Override
 	public boolean isItemValid(ItemStack stack) {
 
-		return TileDynamoNumismatic.getEnergyValue(stack) > 0;
+		return NumismaticManager.getFuelEnergy(stack) > 0;
 	}
 
 }

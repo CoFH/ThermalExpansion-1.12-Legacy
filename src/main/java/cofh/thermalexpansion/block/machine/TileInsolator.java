@@ -8,9 +8,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiInsolator;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.InsolatorManager;
-import cofh.thermalexpansion.util.crafting.InsolatorManager.RecipeInsolator;
-import cofh.thermalexpansion.util.crafting.InsolatorManager.Substrate;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.RecipeInsolator;
+import cofh.thermalexpansion.util.managers.machine.InsolatorManager.Type;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -27,7 +27,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileInsolator extends TileMachineBase {
 
@@ -37,21 +37,20 @@ public class TileInsolator extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 8;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true, true, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, false, false, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 5, 6, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 9;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0, 1 }, { 2 }, { 3 }, { 2, 3 }, { 0 }, { 1 }, { 0, 1, 2, 3 }, { 0, 1, 2, 3 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_MYCELIUM);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_NETHER);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_END);
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_INSOLATOR_TREE);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
@@ -85,6 +84,7 @@ public class TileInsolator extends TileMachineBase {
 	protected boolean augmentMycelium;
 	protected boolean augmentNether;
 	protected boolean augmentEnd;
+	protected boolean augmentTree;
 
 	public TileInsolator() {
 
@@ -117,13 +117,15 @@ public class TileInsolator extends TileMachineBase {
 		if (recipe == null || tank.getFluidAmount() < recipe.getEnergy() / 10) {
 			return false;
 		}
-		Substrate substrate = recipe.getSubstrate();
-		if (substrate != Substrate.STANDARD) {
-			if (substrate == Substrate.MYCELIUM && !augmentMycelium) {
+		Type substrate = recipe.getType();
+		if (substrate != Type.STANDARD) {
+			if (substrate == Type.MYCELIUM && !augmentMycelium) {
 				return false;
-			} else if (substrate == Substrate.NETHER && !augmentNether) {
+			} else if (substrate == Type.NETHER && !augmentNether) {
 				return false;
-			} else if (substrate == Substrate.END && !augmentEnd) {
+			} else if (substrate == Type.END && !augmentEnd) {
+				return false;
+			} else if (substrate == Type.TREE && !augmentTree) {
 				return false;
 			}
 		}
@@ -251,7 +253,7 @@ public class TileInsolator extends TileMachineBase {
 		int side;
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 5) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerPrimary = side;
 					break;
@@ -260,7 +262,7 @@ public class TileInsolator extends TileMachineBase {
 		}
 		for (int i = inputTrackerPrimary + 1; i <= inputTrackerPrimary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1 || sideCache[side] == 6) {
+			if (isSecondaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTrackerSecondary = side;
 					break;
@@ -279,8 +281,7 @@ public class TileInsolator extends TileMachineBase {
 		if (inventory[2] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-
-				if (sideCache[side] == 2 || sideCache[side] == 4) {
+				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
@@ -293,8 +294,7 @@ public class TileInsolator extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(3, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
@@ -437,6 +437,7 @@ public class TileInsolator extends TileMachineBase {
 		augmentMycelium = false;
 		augmentNether = false;
 		augmentEnd = false;
+		augmentTree = false;
 	}
 
 	@Override
@@ -456,6 +457,11 @@ public class TileInsolator extends TileMachineBase {
 		}
 		if (!augmentEnd && TEProps.MACHINE_INSOLATOR_END.equals(id)) {
 			augmentEnd = true;
+			hasModeAugment = true;
+			return true;
+		}
+		if (!augmentTree && TEProps.MACHINE_INSOLATOR_TREE.equals(id)) {
+			augmentTree = true;
 			hasModeAugment = true;
 			return true;
 		}
@@ -499,7 +505,7 @@ public class TileInsolator extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] == 0) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);

@@ -8,6 +8,7 @@ import codechicken.lib.texture.IItemBlockTextureProvider;
 import codechicken.lib.texture.IWorldBlockTextureProvider;
 import codechicken.lib.vec.Cuboid6;
 import codechicken.lib.vec.uv.IconTransformation;
+import cofh.lib.util.helpers.RenderHelper;
 import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.block.machine.TileMachineBase;
 import cofh.thermalexpansion.init.TEBlocks;
@@ -36,6 +37,7 @@ public class RenderMachine implements ILayeredBlockBakery {
 		model.generateBlock(0, Cuboid6.full);
 		model.generateBlock(24, Cuboid6.full.copy().expand(.0004F));
 		model.computeNormals();
+		model.shrinkUVs(RenderHelper.RENDER_OFFSET);
 	}
 
 	/* RENDER */
@@ -85,7 +87,6 @@ public class RenderMachine implements ILayeredBlockBakery {
 		state = state.withProperty(TEProps.CREATIVE, machineBase.isCreative);
 		state = state.withProperty(TEProps.LEVEL, machineBase.getLevel());
 		state = state.withProperty(TEProps.ACTIVE, machineBase.isActive);
-
 		state = state.withProperty(TEProps.FACING, EnumFacing.VALUES[machineBase.getFacing()]);
 		state = state.withProperty(TEProps.SIDE_CONFIG, machineBase.sideCache);
 		state = state.withProperty(TEProps.TILE, machineBase); // Kinda hacky, but we need this to grab textures from the block.

@@ -8,10 +8,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoCompression;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.fuels.CoolantManager;
+import cofh.thermalexpansion.util.managers.CoolantManager;
+import cofh.thermalexpansion.util.managers.dynamo.CompressionManager;
 import cofh.thermalfoundation.init.TFFluids;
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,19 +27,19 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.HashSet;
 
 public class TileDynamoCompression extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.COMPRESSION.getMetadata();
+	public static int basePower = 40;
 	public static int fluidAmount = 100;
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<>();
-		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
-		validAugments[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_COOLANT);
+		VALID_AUGMENTS[TYPE].add(TEProps.DYNAMO_COMPRESSION_FUEL);
 
 		GameRegistry.registerTileEntity(TileDynamoCompression.class, "thermalexpansion:dynamo_compression");
 
@@ -52,8 +51,8 @@ public class TileDynamoCompression extends TileDynamoBase {
 		String category = "Dynamo.Compression";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
 	}
 
 	private FluidTankCore fuelTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
@@ -88,7 +87,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 	protected void processStart() {
 
 		if (fuelRF <= 0) {
-			fuelRF += getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
+			fuelRF += CompressionManager.getFuelEnergy100mB(fuelTank.getFluid()) * energyMod / ENERGY_BASE;
 			fuelTank.drain(fluidAmount, true);
 		}
 		if (coolantRF <= 0) {
@@ -147,7 +146,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 		fuelTank.readFromNBT(nbt.getCompoundTag("FuelTank"));
 		coolantTank.readFromNBT(nbt.getCompoundTag("CoolantTank"));
 
-		if (!isValidFuel(fuelTank.getFluid())) {
+		if (!CompressionManager.isValidFuel(fuelTank.getFluid())) {
 			fuelTank.setFluid(null);
 		}
 		if (!CoolantManager.isValidCoolant(coolantTank.getFluid())) {
@@ -207,9 +206,11 @@ public class TileDynamoCompression extends TileDynamoBase {
 
 		super.handleTilePacket(payload, isServer);
 
-		renderFluid = payload.getFluidStack();
-		if (renderFluid == null) {
+		FluidStack tempRender = payload.getFluidStack();
+		if (tempRender == null) {
 			renderFluid = new FluidStack(FluidRegistry.LAVA, Fluid.BUCKET_VOLUME);
+		} else {
+			renderFluid = tempRender;
 		}
 	}
 
@@ -279,7 +280,7 @@ public class TileDynamoCompression extends TileDynamoBase {
 					if (resource == null || (from != null && from.ordinal() == facing && !augmentCoilDuct)) {
 						return 0;
 					}
-					if (isValidFuel(resource)) {
+					if (CompressionManager.isValidFuel(resource)) {
 						return fuelTank.fill(resource, doFill);
 					}
 					if (CoolantManager.isValidCoolant(resource)) {
@@ -319,44 +320,6 @@ public class TileDynamoCompression extends TileDynamoBase {
 			});
 		}
 		return super.getCapability(capability, from);
-	}
-
-	/* FUEL MANAGER */
-	private static TObjectIntHashMap<Fluid> fuels = new TObjectIntHashMap<>();
-
-	public static Set<Fluid> getCompressionFuelFluids() {
-
-		return ImmutableSet.copyOf(fuels.keySet());
-	}
-
-	public static boolean isValidFuel(FluidStack stack) {
-
-		return stack != null && fuels.containsKey(stack.getFluid());
-	}
-
-	public static boolean addFuel(Fluid fluid, int energy) {
-
-		if (fluid == null || energy < 10000 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(fluid, energy);
-		return true;
-	}
-
-	public static boolean removeFuel(Fluid fluid) {
-
-		fuels.remove(fluid);
-		return true;
-	}
-
-	public static int getFuelEnergy(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid());
-	}
-
-	public static int getFuelEnergy100mB(FluidStack stack) {
-
-		return stack == null ? 0 : fuels.get(stack.getFluid()) / 10;
 	}
 
 }

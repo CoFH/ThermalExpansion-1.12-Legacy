@@ -35,15 +35,15 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fml.relauncher.Side;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
-public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
+public abstract class TileDynamoBase extends TileInventory implements ITickable, IAccelerable, IEnergyProvider, IEnergyReceiver, IEnergyInfo, IReconfigurableFacing, ISidedInventory {
 
-	protected static final EnergyConfig[] defaultEnergyConfig = new EnergyConfig[BlockDynamo.Type.values().length];
-	protected static final ArrayList<String>[] validAugments = new ArrayList[BlockDynamo.Type.values().length];
+	protected static final EnergyConfig[] DEFAULT_ENERGY_CONFIG = new EnergyConfig[BlockDynamo.Type.values().length];
+	protected static final HashSet<String>[] VALID_AUGMENTS = new HashSet[BlockDynamo.Type.values().length];
 	private static boolean enableSecurity = true;
 
-	protected static final ArrayList<String> VALID_AUGMENTS_BASE = new ArrayList<>();
+	protected static final HashSet<String> VALID_AUGMENTS_BASE = new HashSet<>();
 	protected static final int ENERGY_BASE = 100;
 
 	static {
@@ -81,7 +81,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 
 	public TileDynamoBase() {
 
-		energyConfig = defaultEnergyConfig[this.getType()].copy();
+		energyConfig = DEFAULT_ENERGY_CONFIG[this.getType()].copy();
 		energyStorage = new EnergyStorage(energyConfig.maxEnergy, energyConfig.maxPower * 2);
 	}
 
@@ -123,8 +123,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean onWrench(EntityPlayer player, EnumFacing side) {
 
-		rotateBlock();
-		return true;
+		return rotateBlock();
 	}
 
 	@Override
@@ -214,7 +213,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	/* COMMON METHODS */
 	int getBasePower(int level) {
 
-		return defaultEnergyConfig[getType()].maxPower + level * defaultEnergyConfig[getType()].maxPower / 2;
+		return DEFAULT_ENERGY_CONFIG[getType()].maxPower + level * DEFAULT_ENERGY_CONFIG[getType()].maxPower / 2;
 	}
 
 	int calcEnergy() {
@@ -431,7 +430,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		if (type == AugmentType.MODE && hasModeAugment) {
 			return false;
 		}
-		return VALID_AUGMENTS_BASE.contains(id) || validAugments[getType()].contains(id) || super.isValidAugment(type, id);
+		return VALID_AUGMENTS_BASE.contains(id) || VALID_AUGMENTS[getType()].contains(id) || super.isValidAugment(type, id);
 	}
 
 	@Override
@@ -449,7 +448,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		}
 		if (TEProps.DYNAMO_EFFICIENCY.equals(id)) {
 			// Efficiency Gain
-			energyMod += 10;
+			energyMod += 15;
 			return true;
 		}
 		if (!augmentCoilDuct && TEProps.DYNAMO_COIL_DUCT.equals(id)) {
@@ -480,6 +479,13 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 		return from.ordinal() != facing ? 0 : energyStorage.extractEnergy(Math.min(energyConfig.maxPower * 2, maxExtract), simulate);
 	}
 
+	/* IEnergyReceiver */
+	@Override
+	public int receiveEnergy(EnumFacing from, int maxReceive, boolean simulate) {
+
+		return 0;
+	}
+
 	@Override
 	public int getEnergyStored(EnumFacing from) {
 
@@ -495,7 +501,7 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean canConnectEnergy(EnumFacing from) {
 
-		return from.ordinal() == facing;
+		return true;
 	}
 
 	/* IEnergyInfo */
@@ -549,28 +555,11 @@ public abstract class TileDynamoBase extends TileInventory implements ITickable,
 	@Override
 	public boolean rotateBlock() {
 
-		if (ServerHelper.isClientWorld(worldObj)) {
-			return false;
-		}
 		if (worldObj.getEntitiesWithinAABB(Entity.class, getBlockType().getBoundingBox(worldObj.getBlockState(pos), worldObj, pos)).size() != 0) {
 			return false;
 		}
-		if (adjacentReceiver != null || adjacentHandler) {
-			byte oldFacing = facing;
-			for (int i = facing + 1, e = facing + 6; i < e; i++) {
-				if (EnergyHelper.isAdjacentEnergyReceiverFromSide(this, EnumFacing.VALUES[i % 6]) || EnergyHelper.isAdjacentEnergyHandler(this, EnumFacing.VALUES[i % 6])) {
-					facing = (byte) (i % 6);
-					if (facing != oldFacing) {
-						updateAdjacentHandlers();
-						markChunkDirty();
-						sendTilePacket(Side.CLIENT);
-					}
-					return true;
-				}
-			}
-			return false;
-		}
-		facing = (byte) ((facing + 1) % 6);
+		facing++;
+		facing %= 6;
 		updateAdjacentHandlers();
 		markChunkDirty();
 		sendTilePacket(Side.CLIENT);

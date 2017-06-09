@@ -8,8 +8,9 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiPulverizer;
 import cofh.thermalexpansion.gui.container.machine.ContainerPulverizer;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.PulverizerManager;
-import cofh.thermalexpansion.util.crafting.PulverizerManager.RecipePulverizer;
+import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager;
+import cofh.thermalexpansion.util.managers.machine.PulverizerManager.RecipePulverizer;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -25,7 +26,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TilePulverizer extends TileMachineBase {
 
@@ -36,18 +37,16 @@ public class TilePulverizer extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 6;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2, }, { 0, 1, 2 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2, }, { 0, 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PULVERIZER_GEODE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_PULVERIZER_PETROTHEUM);
 
@@ -55,6 +54,8 @@ public class TilePulverizer extends TileMachineBase {
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
 		LIGHT_VALUES[TYPE] = 4;
+
+		SOUNDS[TYPE] = TESounds.MACHINE_PULVERIZER;
 
 		GameRegistry.registerTileEntity(TilePulverizer.class, "thermalexpansion:machine_pulverizer");
 
@@ -208,7 +209,7 @@ public class TilePulverizer extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -227,7 +228,7 @@ public class TilePulverizer extends TileMachineBase {
 		if (inventory[1] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-				if (sideCache[side] == 2 || sideCache[side] == 4) {
+				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
@@ -240,7 +241,7 @@ public class TilePulverizer extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
@@ -398,7 +399,7 @@ public class TilePulverizer extends TileMachineBase {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] == 0) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);

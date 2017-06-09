@@ -56,7 +56,7 @@ import static cofh.lib.util.helpers.ItemHelper.addRecipe;
 
 public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegister {
 
-	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.<BlockDynamo.Type>create("type", Type.class);
+	public static final PropertyEnum<BlockDynamo.Type> VARIANT = PropertyEnum.create("type", Type.class);
 
 	static AxisAlignedBB[] boundingBox = new AxisAlignedBB[12];
 
@@ -71,7 +71,7 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 
 		bb = new Cuboid6(.25, .5, .25, .75, 1, .75);
 		boundingBox[1 + 6] = bb.aabb();
-		boundingBox[0 + 6] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
+		boundingBox[6] = bb.apply(Rotation.sideRotations[1].at(p)).aabb();
 		for (int i = 2; i < 6; ++i) {
 			boundingBox[i + 6] = bb.copy().apply(Rotation.sideRotations[i].at(p)).aabb();
 		}
@@ -248,9 +248,9 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 	@Override
 	public RayTraceResult collisionRayTrace(IBlockState blockState, World worldIn, BlockPos pos, Vec3d start, Vec3d end) {
 
-		TileEntity tileEntity = worldIn.getTileEntity(pos);
-		if (tileEntity != null) {
-			int facing = ((TileDynamoBase) tileEntity).facing;
+		TileEntity tile = worldIn.getTileEntity(pos);
+		if (tile != null) {
+			int facing = ((TileDynamoBase) tile).facing;
 			//Due to CCL Black magic, passing a CuboidRayTraceResult down this method will cause CCL to render its contained BB.
 			return RayTracer.rayTraceCuboidsClosest(start, end, pos, boundingBox[facing], boundingBox[facing + 6]);
 		}
@@ -333,11 +333,19 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 		dynamoEnervation = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ENERVATION.getMetadata()));
 		dynamoNumismatic = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.NUMISMATIC.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		// @formatter:off
 		if (enable[Type.STEAM.getMetadata()]) {
@@ -407,8 +415,6 @@ public class BlockDynamo extends BlockTEBase implements IBakeryBlock, IModelRegi
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */

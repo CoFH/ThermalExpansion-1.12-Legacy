@@ -14,7 +14,7 @@ import cofh.thermalexpansion.block.machine.BlockMachine;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -129,14 +129,14 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 				return new TileHeatSink();
 			case TAPPER:
 				return new TileTapper();
+			case FISHER:
+				return new TileFisher();
 			case ITEM_BUFFER:
 				return new TileItemBuffer();
 			//			case EXTENDER:
 			//				return new TileExtender();
 			//			case CONCENTRATOR:                      // TODO
 			//				return null;
-			//			case ITEM_BUFFER:
-			//				return new TileItemBuffer();
 			//			case FLUID_BUFFER:                      // TODO
 			//				return null;
 			//			case ENERGY_BUFFER:                     // TODO
@@ -294,11 +294,19 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 
 		deviceItemBuffer = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.ITEM_BUFFER.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		String tinPart = "gearTin";
 
@@ -364,8 +372,6 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */
@@ -376,7 +382,8 @@ public class BlockDevice extends BlockTEBase implements IModelRegister, IWorldBl
 		NULLIFIER(1, "nullifier"),
 		HEAT_SINK(2, "heat_sink"),
 		TAPPER(3, "tapper"),
-		ITEM_BUFFER(4, "item_buffer");
+		FISHER(4, "fisher"),
+		ITEM_BUFFER(5, "item_buffer");
 
 		// LEXICON
 		// CHUNK_LOADER

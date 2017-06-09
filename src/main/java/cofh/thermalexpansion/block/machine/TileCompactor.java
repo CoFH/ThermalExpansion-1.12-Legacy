@@ -7,16 +7,16 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCompactor;
 import cofh.thermalexpansion.gui.container.machine.ContainerCompactor;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.CompactorManager;
-import cofh.thermalexpansion.util.crafting.CompactorManager.Mode;
-import cofh.thermalexpansion.util.crafting.CompactorManager.RecipeCompactor;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.Mode;
+import cofh.thermalexpansion.util.managers.machine.CompactorManager.RecipeCompactor;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileCompactor extends TileMachineBase {
 
@@ -27,18 +27,16 @@ public class TileCompactor extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 0, 1 }, { 0, 1 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_COMPACTOR_MINT);
 
 		VALUES[0] = Mode.PRESS;
@@ -104,7 +102,7 @@ public class TileCompactor extends TileMachineBase {
 	@Override
 	protected boolean hasValidInput() {
 
-		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], Mode.values()[mode]);
+		RecipeCompactor recipe = CompactorManager.getRecipe(inventory[0], VALUES[mode]);
 
 		return recipe != null && recipe.getInput().stackSize <= inventory[0].stackSize;
 	}
@@ -147,7 +145,7 @@ public class TileCompactor extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -168,7 +166,7 @@ public class TileCompactor extends TileMachineBase {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
@@ -190,17 +188,14 @@ public class TileCompactor extends TileMachineBase {
 		return new ContainerCompactor(inventory, this);
 	}
 
-	public boolean augmentMint() {
-
-		return augmentMint && flagMint;
-	}
-
 	public void toggleMode() {
 
 		switch (VALUES[mode]) {
 			case PRESS:
-			case MINT:
 				setMode(1);
+				break;
+			case MINT:
+				setMode(0);
 				break;
 			case STORAGE:
 				setMode(augmentMint ? 2 : 0);
@@ -304,11 +299,7 @@ public class TileCompactor extends TileMachineBase {
 
 		super.postAugmentInstall();
 
-		if (augmentMint && VALUES[mode] == Mode.PRESS) {
-			mode = 2;
-			modeFlag = 2;
-			processOff();
-		} else if (!augmentMint && VALUES[mode] == Mode.MINT) {
+		if (!augmentMint && VALUES[mode] == Mode.MINT) {
 			mode = 0;
 			modeFlag = 0;
 			processOff();

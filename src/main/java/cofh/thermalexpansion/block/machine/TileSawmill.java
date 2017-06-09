@@ -10,9 +10,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiSawmill;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.SawmillManager;
-import cofh.thermalexpansion.util.crafting.SawmillManager.RecipeSawmill;
-import cofh.thermalexpansion.util.crafting.TapperManager;
+import cofh.thermalexpansion.init.TESounds;
+import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager;
+import cofh.thermalexpansion.util.managers.machine.SawmillManager.RecipeSawmill;
 import cofh.thermalfoundation.init.TFFluids;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -28,32 +29,33 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileSawmill extends TileMachineBase {
 
 	private static final int TYPE = BlockMachine.Type.SAWMILL.getMetadata();
 	public static int basePower = 20;
+	public static int fluidFactor = 5;
 
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 6;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2 }, { 0, 1, 2 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 1 }, { 2 }, { 1, 2, }, { 0, 1, 2 }, { 0, 1, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, true, true, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SAWMILL_TAPPER);
 
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
+
+		SOUNDS[TYPE] = TESounds.MACHINE_SAWMILL;
 
 		GameRegistry.registerTileEntity(TileSawmill.class, "thermalexpansion:machine_sawmill");
 
@@ -192,7 +194,9 @@ public class TileSawmill extends TileMachineBase {
 			}
 		}
 		if (augmentTapper && TapperManager.mappingExists(inventory[0])) {
-			tank.fill(TapperManager.getFluid(inventory[0]).copy(), true);
+			FluidStack treeFluid = TapperManager.getFluid(inventory[0]).copy();
+			treeFluid.amount /= fluidFactor;
+			tank.fill(treeFluid, true);
 		}
 		inventory[0].stackSize -= recipe.getInput().stackSize;
 
@@ -210,7 +214,7 @@ public class TileSawmill extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -229,7 +233,7 @@ public class TileSawmill extends TileMachineBase {
 		if (inventory[1] != null) {
 			for (int i = outputTrackerPrimary + 1; i <= outputTrackerPrimary + 6; i++) {
 				side = i % 6;
-				if (sideCache[side] == 2 || sideCache[side] == 4) {
+				if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(1, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTrackerPrimary = side;
 						break;
@@ -242,7 +246,7 @@ public class TileSawmill extends TileMachineBase {
 		}
 		for (int i = outputTrackerSecondary + 1; i <= outputTrackerSecondary + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTrackerSecondary = side;
 					break;
@@ -253,20 +257,15 @@ public class TileSawmill extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack output = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;

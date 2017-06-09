@@ -1,5 +1,7 @@
 package cofh.thermalexpansion.block.storage;
 
+import cofh.core.init.CoreEnchantments;
+import cofh.core.item.IEnchantableItem;
 import cofh.core.util.helpers.RedstoneControlHelper;
 import cofh.core.util.helpers.SecurityHelper;
 import cofh.core.util.tileentity.IRedstoneControl.ControlMode;
@@ -7,6 +9,8 @@ import cofh.lib.util.capabilities.FluidContainerItemWrapper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.ItemBlockTEBase;
 import net.minecraft.block.Block;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
@@ -17,12 +21,12 @@ import net.minecraftforge.fluids.IFluidContainerItem;
 
 import java.util.List;
 
-public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerItem {
+public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerItem, IEnchantableItem {
 
 	public ItemBlockTank(Block block) {
 
 		super(block);
-		setMaxStackSize(1);
+		setMaxStackSize(16);
 	}
 
 	@Override
@@ -70,7 +74,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
-				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + fluid.amount + " / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": " + StringHelper.formatNumber(fluid.amount) + " / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
 			}
 		} else {
 			tooltip.add(StringHelper.localize("info.cofh.fluid") + ": " + StringHelper.localize("info.cofh.empty"));
@@ -78,10 +82,22 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 			if (isCreative(stack)) {
 				tooltip.add(StringHelper.localize("info.cofh.infiniteSource"));
 			} else {
-				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + TileTank.CAPACITY[getLevel(stack)] + " mB");
+				tooltip.add(StringHelper.localize("info.cofh.level") + ": 0 / " + StringHelper.formatNumber(getCapacity(stack)) + " mB");
 			}
 		}
 		// RedstoneControlHelper.addRSControlInformation(stack, tooltip);
+	}
+
+	@Override
+	public boolean isItemTool(ItemStack stack) {
+
+		return true;
+	}
+
+	@Override
+	public int getItemEnchantability() {
+
+		return 10;
 	}
 
 	/* IFluidContainerItem */
@@ -97,7 +113,7 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	@Override
 	public int getCapacity(ItemStack container) {
 
-		return TileTank.getCapacity(getLevel(container));
+		return TileTank.getCapacity(getLevel(container), EnchantmentHelper.getEnchantmentLevel(CoreEnchantments.holding, container));
 	}
 
 	@Override
@@ -183,6 +199,13 @@ public class ItemBlockTank extends ItemBlockTEBase implements IFluidContainerIte
 	public ICapabilityProvider initCapabilities(ItemStack stack, NBTTagCompound nbt) {
 
 		return new FluidContainerItemWrapper(stack, this);
+	}
+
+	/* IEnchantableItem */
+	@Override
+	public boolean canEnchant(ItemStack stack, Enchantment enchantment) {
+
+		return enchantment == CoreEnchantments.holding;
 	}
 
 }

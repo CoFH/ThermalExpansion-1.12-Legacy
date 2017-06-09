@@ -34,7 +34,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 	static {
 		for (int i = 0; i < CAPACITY.length; i++) {
-			CAPACITY[i] *= 10000;
+			CAPACITY[i] *= 20000;
 		}
 	}
 
@@ -59,11 +59,13 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	private int compareTracker;
 	private int lastDisplayLevel;
 
+	public byte enchantHolding;
+
 	boolean renderFlag = true;
 	boolean cached = false;
 	boolean adjacentTanks[] = new boolean[2];
 
-	private FluidTankCore tank = new FluidTankCore(getCapacity(0));
+	private FluidTankCore tank = new FluidTankCore(getCapacity(0, 0));
 
 	@Override
 	public String getTileName() {
@@ -93,20 +95,6 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	public boolean enableSecurity() {
 
 		return enableSecurity;
-	}
-
-	@Override
-	protected boolean setLevel(int level) {
-
-		if (super.setLevel(level)) {
-			tank.setCapacity(getCapacity(level));
-
-			if (isCreative && getTankFluidAmount() > 0) {
-				tank.getFluid().amount = tank.getCapacity();
-			}
-			return true;
-		}
-		return false;
 	}
 
 	@Override
@@ -183,10 +171,30 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		return tank.getFluid();
 	}
 
-	/* COMMON METHODS */
-	public static int getCapacity(int level) {
+	@Override
+	protected boolean setLevel(int level) {
 
-		return CAPACITY[MathHelper.clamp(level, 0, 4)];
+		if (super.setLevel(level)) {
+			tank.setCapacity(getCapacity(level, enchantHolding));
+
+			if (isCreative && getTankFluidAmount() > 0) {
+				tank.getFluid().amount = tank.getCapacity();
+			}
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	protected int getNumAugmentSlots(int level) {
+
+		return 0;
+	}
+
+	/* COMMON METHODS */
+	public static int getCapacity(int level, int enchant) {
+
+		return CAPACITY[MathHelper.clamp(level, 0, 4)] + (CAPACITY[MathHelper.clamp(level, 0, 4)] * enchant) / 2;
 	}
 
 	public int getScaledFluidStored(int scale) {
@@ -244,7 +252,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 		int curLight = getLightValue();
 
 		if (tank.getFluidAmount() > 0) {
-			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level) * (RENDER_LEVELS - 1));
+			curDisplayLevel = (int) (tank.getFluidAmount() / (float) getCapacity(level, enchantHolding) * (RENDER_LEVELS - 1));
 			if (curDisplayLevel == 0) {
 				curDisplayLevel = 1;
 			}
@@ -280,6 +288,8 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 
+		enchantHolding = nbt.getByte("EncHolding");
+
 		super.readFromNBT(nbt);
 
 		tank.readFromNBT(nbt);
@@ -290,6 +300,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.writeToNBT(nbt);
 
+		nbt.setByte("EncHolding", enchantHolding);
 		tank.writeToNBT(nbt);
 		return nbt;
 	}
@@ -302,6 +313,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		PacketCoFHBase payload = super.getTilePacket();
 
+		payload.addByte(enchantHolding);
 		payload.addFluidStack(tank.getFluid());
 
 		return payload;
@@ -312,6 +324,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 
 		super.handleTilePacket(payload, isServer);
 
+		enchantHolding = payload.getByte();
 		tank.setFluid(payload.getFluidStack());
 
 		callBlockUpdate();
@@ -362,7 +375,7 @@ public class TileTank extends TileAugmentableSecure implements ITickable, ITileI
 						if (resource.isFluidEqual(tank.getFluid())) {
 							return 0;
 						}
-						tank.setFluid(new FluidStack(resource.getFluid(), getCapacity(level)));
+						tank.setFluid(new FluidStack(resource.getFluid(), getCapacity(level, enchantHolding)));
 						sendTilePacket(Side.CLIENT);
 						updateRender();
 						return 0;

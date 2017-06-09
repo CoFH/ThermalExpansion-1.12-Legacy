@@ -103,8 +103,8 @@ public class ContainerTEBase extends ContainerBase implements IAugmentableContai
 		if (baseTile == null) {
 			return;
 		}
-		for (int i = 0; i < listeners.size(); i++) {
-			baseTile.sendGuiNetworkData(this, (IContainerListener) listeners.get(i));
+		for (IContainerListener listener : listeners) {
+			baseTile.sendGuiNetworkData(this, listener);
 		}
 	}
 

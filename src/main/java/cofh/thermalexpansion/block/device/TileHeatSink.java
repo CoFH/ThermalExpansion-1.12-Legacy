@@ -12,7 +12,7 @@ import cofh.thermalexpansion.gui.client.device.GuiHeatSink;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.fuels.CoolantManager;
+import cofh.thermalexpansion.util.managers.CoolantManager;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -41,9 +41,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 		SIDE_CONFIGS[TYPE] = new SideConfig();
 		SIDE_CONFIGS[TYPE].numConfig = 2;
 		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {} };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1 };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 0, 1, 1, 1, 1, 1 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
@@ -297,7 +295,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 			}
 			return side != facing ? TETextures.DEVICE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.DEVICE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.DEVICE_ACTIVE[TYPE] : TETextures.DEVICE_FACE[TYPE];
 		}
 		return TETextures.DEVICE_SIDE;
 	}
@@ -318,13 +316,13 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, false, from != null && sideCache[from.ordinal()] > 0) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
 				}
 
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] < 1 || !CoolantManager.isValidCoolant(resource)) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]]) || !CoolantManager.isValidCoolant(resource)) {
 						return 0;
 					}
 					return tank.fill(resource, doFill);
@@ -334,7 +332,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(resource, doDrain);
@@ -344,7 +342,7 @@ public class TileHeatSink extends TileDeviceBase implements ITickable {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && sideCache[from.ordinal()] < 1) {
+					if (from != null && !allowExtraction(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return tank.drain(maxDrain, doDrain);

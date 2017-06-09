@@ -10,9 +10,10 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiTransposer;
 import cofh.thermalexpansion.gui.container.machine.ContainerTransposer;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TESounds;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
-import cofh.thermalexpansion.util.crafting.TransposerManager.RecipeTransposer;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager.RecipeTransposer;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -30,7 +31,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileTransposer extends TileMachineBase {
 
@@ -40,18 +41,18 @@ public class TileTransposer extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 6;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, false, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, {}, { 2 }, { 0, 2 }, { 0, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 3, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+
+		SOUNDS[TYPE] = TESounds.MACHINE_TRANSPOSER;
 
 		GameRegistry.registerTileEntity(TileTransposer.class, "thermalexpansion:machine_transposer");
 
@@ -229,6 +230,9 @@ public class TileTransposer extends TileMachineBase {
 		if (drained > 0) {
 			tank.fill(drainStack, true);
 			if (tankProperties[0].getContents() == null) {
+				if (inventory[1].stackSize <= 0) {
+					inventory[1] = null;
+				}
 				return true;
 			}
 			return false;
@@ -241,14 +245,17 @@ public class TileTransposer extends TileMachineBase {
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			if (inventory[1] == null) {
-				processRem = 0;
-				hasFluidHandler = false;
-			} else if (FluidHelper.isFluidHandler(inventory[1])) {
-				hasFluidHandler = true;
-			}
 			return;
 		}
+		//		if (ServerHelper.isClientWorld(worldObj)) {
+		//			if (inventory[1] == null) {
+		//				processRem = 0;
+		//				hasFluidHandler = false;
+		//			} else if (FluidHelper.isFluidHandler(inventory[1])) {
+		//				hasFluidHandler = true;
+		//			}
+		//			return;
+		//		}
 		if (extractMode) {
 			transferOutputFluid();
 		}
@@ -433,7 +440,7 @@ public class TileTransposer extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -451,8 +458,7 @@ public class TileTransposer extends TileMachineBase {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2 || sideCache[side] == 4) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
@@ -463,20 +469,15 @@ public class TileTransposer extends TileMachineBase {
 
 	private void transferOutputFluid() {
 
-		if (!enableAutoOutput) {
-			return;
-		}
-		if (tank.getFluidAmount() <= 0) {
+		if (!enableAutoOutput || tank.getFluidAmount() <= 0) {
 			return;
 		}
 		int side;
 		FluidStack outputBuffer = new FluidStack(tank.getFluid(), Math.min(tank.getFluidAmount(), FLUID_TRANSFER[level]));
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 3 || sideCache[side] == 4) {
+			if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], outputBuffer, true);
-
 				if (toDrain > 0) {
 					tank.drain(toDrain, true);
 					outputTrackerFluid = side;
@@ -682,6 +683,7 @@ public class TileTransposer extends TileMachineBase {
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
 				processOff();
+				hasFluidHandler = false;
 			}
 		}
 		return stack;
@@ -723,7 +725,7 @@ public class TileTransposer extends TileMachineBase {
 			}
 			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
 		return TETextures.MACHINE_SIDE;
 	}
@@ -744,7 +746,7 @@ public class TileTransposer extends TileMachineBase {
 				public IFluidTankProperties[] getTankProperties() {
 
 					FluidTankInfo info = tank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, from != null && !extractMode && sideCache[from.ordinal()] == 1, from != null && extractMode && sideCache[from.ordinal()] == 3) };
+					return new IFluidTankProperties[] { new FluidTankProperties(info.fluid, info.capacity, true, true) };
 				}
 
 				@Override

@@ -4,6 +4,9 @@ import cofh.lib.gui.element.*;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrucible;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -31,8 +34,8 @@ public class GuiCrucible extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(0, 0, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
@@ -46,8 +49,8 @@ public class GuiCrucible extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(baseTile.hasSide(1));
-		slotOutput.setVisible(baseTile.hasSide(2));
+		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
 		progressFluid.setFluid(baseTile.getTankFluid());
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);

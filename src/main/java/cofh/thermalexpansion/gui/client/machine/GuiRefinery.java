@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileRefinery;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerRefinery;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -38,11 +41,11 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(0, 4, 2));
-		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));
-		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(2, 1, 1));
-		slotTankOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2).setVisible(false));
-		slotTankOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(1, 3, 1).setVisible(false));
+		slotInput = addElement(new ElementSlotOverlay(this, 44, 19).setSlotInfo(SlotColor.BLUE, SlotType.TANK_SHORT, SlotRender.FULL));
+		slotOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(SlotColor.YELLOW, SlotType.OUTPUT, SlotRender.BOTTOM));
+		slotTankOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL).setVisible(false));
+		slotTankOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.RED, SlotType.TANK, SlotRender.BOTTOM).setVisible(false));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 44, 19, myTile.getTank(0)).setGauge(0).setAlwaysShow(true).setShort());
@@ -58,19 +61,19 @@ public class GuiRefinery extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(baseTile.hasSide(1));
-		slotOutput[0].setVisible(baseTile.hasSide(4));
-		slotOutput[1].setVisible(baseTile.hasSide(3));
+		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput[0].setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput[1].setVisible(baseTile.hasSideType(OUTPUT_SECONDARY));
 
-		slotTankOutput[0].setVisible(baseTile.hasSide(4));
-		slotTankOutput[1].setVisible(baseTile.hasSide(2));
+		slotTankOutput[0].setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotTankOutput[1].setVisible(baseTile.hasSideType(OUTPUT_PRIMARY));
 
-		if (!baseTile.hasSide(4)) {
-			slotOutput[1].slotRender = 2;
-			slotTankOutput[1].slotRender = 2;
+		if (!baseTile.hasSideType(OUTPUT_ALL) && !baseTile.hasSideType(OMNI)) {
+			slotOutput[1].setSlotRender(SlotRender.FULL);
+			slotTankOutput[1].setSlotRender(SlotRender.FULL);
 		} else {
-			slotOutput[1].slotRender = 1;
-			slotTankOutput[1].slotRender = 1;
+			slotOutput[1].setSlotRender(SlotRender.BOTTOM);
+			slotTankOutput[1].setSlotRender(SlotRender.BOTTOM);
 		}
 		progressFluid.setFluid(myTile.getTankFluid(0));
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);

@@ -1,6 +1,8 @@
 package cofh.thermalexpansion.gui.client.device;
 
 import cofh.lib.gui.element.ElementButton;
+import cofh.lib.gui.element.ElementSimple;
+import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.device.TileItemBuffer;
 import cofh.thermalexpansion.gui.container.device.ContainerItemBuffer;
 import cofh.thermalexpansion.init.TEProps;
@@ -14,15 +16,12 @@ public class GuiItemBuffer extends GuiDeviceBase {
 	public static final String TEX_PATH = TEProps.PATH_GUI_DEVICE + "item_buffer.png";
 	public static final ResourceLocation TEXTURE = new ResourceLocation(TEX_PATH);
 
-	protected TileItemBuffer myTile;
+	private TileItemBuffer myTile;
 
 	private ElementButton decInput;
 	private ElementButton incInput;
 	private ElementButton decOutput;
 	private ElementButton incOutput;
-
-	private ElementButton enableInput;
-	private ElementButton enableOutput;
 
 	public GuiItemBuffer(InventoryPlayer inventory, TileEntity tile) {
 
@@ -38,21 +37,21 @@ public class GuiItemBuffer extends GuiDeviceBase {
 
 		super.initGui();
 
+		ElementSimple infoInput = (ElementSimple) new ElementSimple(this, 24, 16).setSize(20, 20).setTexture(TEX_INFO_INPUT, 20, 20);
+		ElementSimple infoOutput = (ElementSimple) new ElementSimple(this, 132, 16).setSize(20, 20).setTexture(TEX_INFO_OUTPUT, 20, 20);
+
+		addElement(infoInput);
+		addElement(infoOutput);
+
 		decInput = new ElementButton(this, 19, 56, "DecInput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incInput = new ElementButton(this, 35, 56, "IncInput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		decOutput = new ElementButton(this, 127, 56, "DecOutput", 176, 0, 176, 14, 176, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 		incOutput = new ElementButton(this, 143, 56, "IncOutput", 190, 0, 190, 14, 190, 28, 14, 14, TEX_PATH).setToolTipLocalized(true);
 
-		enableInput = new ElementButton(this, 26, 17, "EnInput", 176, 42, 176, 58, 176, 74, 16, 16, TEX_PATH);
-		enableOutput = new ElementButton(this, 134, 17, "EnOutput", 208, 42, 208, 58, 208, 74, 16, 16, TEX_PATH);
-
 		addElement(decInput);
 		addElement(incInput);
 		addElement(decOutput);
 		addElement(incOutput);
-
-		addElement(enableInput);
-		addElement(enableOutput);
 	}
 
 	@Override
@@ -60,88 +59,97 @@ public class GuiItemBuffer extends GuiDeviceBase {
 
 		super.updateElementInformation();
 
-		if (myTile.enableAutoInput) {
-			enableInput.setToolTip("info.thermalexpansion.buffer.disableInput");
-			enableInput.setSheetX(176);
-			enableInput.setHoverX(176);
-		} else {
-			enableInput.setToolTip("info.thermalexpansion.buffer.enableInput");
-			enableInput.setSheetX(192);
-			enableInput.setHoverX(192);
-		}
+		int change;
+		int change2;
 
-		if (myTile.enableAutoOutput) {
-			enableOutput.setToolTip("info.thermalexpansion.buffer.disableOutput");
-			enableOutput.setSheetX(208);
-			enableOutput.setHoverX(208);
+		if (GuiScreen.isShiftKeyDown()) {
+			change = 64;
+			change2 = 32;
+		} else if (GuiScreen.isCtrlKeyDown()) {
+			change = 4;
+			change2 = 1;
 		} else {
-			enableOutput.setToolTip("info.thermalexpansion.buffer.enableOutput");
-			enableOutput.setSheetX(224);
-			enableOutput.setHoverX(224);
+			change = 16;
+			change2 = 8;
+		}
+		if (myTile.amountInput > 0) {
+			decInput.setActive();
+			decInput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.decInput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
+		} else {
+			decInput.setDisabled();
+			decInput.clearToolTip();
+		}
+		if (myTile.amountInput < 64) {
+			incInput.setActive();
+			incInput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.incInput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
+		} else {
+			incInput.setDisabled();
+			incInput.clearToolTip();
+		}
+		if (myTile.amountOutput > 0) {
+			decOutput.setActive();
+			decOutput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.decOutput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
+		} else {
+			decOutput.setDisabled();
+			decOutput.clearToolTip();
+		}
+		if (myTile.amountOutput < 64) {
+			incOutput.setActive();
+			incOutput.setToolTip(StringHelper.localize("gui.thermalexpansion.device.item_buffer.incOutput") + " " + StringHelper.formatNumber(change) + "/" + StringHelper.formatNumber(change2));
+		} else {
+			incOutput.setDisabled();
+			incOutput.clearToolTip();
 		}
 	}
 
 	@Override
 	public void handleElementButtonClick(String buttonName, int mouseButton) {
 
-		boolean enInput = myTile.enableAutoInput;
-		boolean enOutput = myTile.enableAutoOutput;
+		int change;
+		float pitch;
+
+		if (GuiScreen.isShiftKeyDown()) {
+			change = 64;
+			pitch = 0.9F;
+			if (mouseButton == 1) {
+				change = 32;
+				pitch = 0.8F;
+			}
+		} else if (GuiScreen.isCtrlKeyDown()) {
+			change = 4;
+			pitch = 0.5F;
+			if (mouseButton == 1) {
+				change = 1;
+				pitch = 0.4F;
+			}
+		} else {
+			change = 16;
+			pitch = 0.7F;
+			if (mouseButton == 1) {
+				change = 8;
+				pitch = 0.6F;
+			}
+		}
 		int curInput = myTile.amountInput;
 		int curOutput = myTile.amountOutput;
 
-		boolean modeToggle = false;
-		int change;
-		float pitch = 1.0F;
-
-		if (buttonName.equals("EnInput")) {
-			myTile.enableAutoInput = !myTile.enableAutoInput;
-			modeToggle = true;
-			pitch = myTile.enableAutoInput ? 1.0F : 0.8F;
-		}
-		if (buttonName.equals("EnOutput")) {
-			myTile.enableAutoOutput = !myTile.enableAutoOutput;
-			modeToggle = true;
-			pitch = myTile.enableAutoOutput ? 1.0F : 0.8F;
-		}
-		if (!modeToggle) {
-			if (GuiScreen.isShiftKeyDown()) {
-				change = 32;
-				pitch = 0.9F;
-				if (mouseButton == 1) {
-					change = 16;
-					pitch = 0.8F;
-				}
-			} else if (GuiScreen.isCtrlKeyDown()) {
-				change = 8;
-				pitch = 0.7F;
-				if (mouseButton == 1) {
-					change = 4;
-					pitch = 0.6F;
-				}
-			} else {
-				change = 1;
-				pitch = 0.5F;
-			}
-			if (buttonName.equalsIgnoreCase("DecInput")) {
-				myTile.amountInput -= change;
-				pitch -= 0.1F;
-			} else if (buttonName.equalsIgnoreCase("IncInput")) {
-				myTile.amountInput += change;
-				pitch += 0.1F;
-			} else if (buttonName.equalsIgnoreCase("DecOutput")) {
-				myTile.amountOutput -= change;
-				pitch -= 0.1F;
-			} else if (buttonName.equalsIgnoreCase("IncOutput")) {
-				myTile.amountOutput += change;
-				pitch += 0.1F;
-			}
+		if (buttonName.equalsIgnoreCase("DecInput")) {
+			myTile.amountInput -= change;
+			pitch -= 0.1F;
+		} else if (buttonName.equalsIgnoreCase("IncInput")) {
+			myTile.amountInput += change;
+			pitch += 0.1F;
+		} else if (buttonName.equalsIgnoreCase("DecOutput")) {
+			myTile.amountOutput -= change;
+			pitch -= 0.1F;
+		} else if (buttonName.equalsIgnoreCase("IncOutput")) {
+			myTile.amountOutput += change;
+			pitch += 0.1F;
 		}
 		playClickSound(1.0F, pitch);
 
 		myTile.sendModePacket();
 
-		myTile.enableAutoInput = enInput;
-		myTile.enableAutoOutput = enOutput;
 		myTile.amountInput = curInput;
 		myTile.amountOutput = curOutput;
 	}

@@ -11,8 +11,8 @@ import cofh.thermalexpansion.gui.client.machine.GuiRefinery;
 import cofh.thermalexpansion.gui.container.machine.ContainerRefinery;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
-import cofh.thermalexpansion.util.crafting.RefineryManager;
-import cofh.thermalexpansion.util.crafting.RefineryManager.RecipeRefinery;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager;
+import cofh.thermalexpansion.util.managers.machine.RefineryManager.RecipeRefinery;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -29,7 +29,7 @@ import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileRefinery extends TileMachineBase {
 
@@ -39,18 +39,18 @@ public class TileRefinery extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 6;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, false, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 2, 3, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 7;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, {}, { 0 }, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 2, 3, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 2, 3, 3, 3, 3 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_SECONDARY_NULL);
 
 		GameRegistry.registerTileEntity(TileRefinery.class, "thermalexpansion:machine_refinery");
 
@@ -195,7 +195,7 @@ public class TileRefinery extends TileMachineBase {
 		if (inventory[0] != null) {
 			for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 				side = i % 6;
-				if (sideCache[side] == 3 || sideCache[side] == 4) {
+				if (isSecondaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 					if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 						outputTracker = side;
 						break;
@@ -218,7 +218,7 @@ public class TileRefinery extends TileMachineBase {
 		for (int i = outputTrackerFluid + 1; i <= outputTrackerFluid + 6; i++) {
 			side = i % 6;
 
-			if (sideCache[side] == 2 || sideCache[side] == 4) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				int toDrain = FluidHelper.insertFluidIntoAdjacentFluidHandler(this, EnumFacing.VALUES[side], output, true);
 
 				if (toDrain > 0) {
@@ -364,7 +364,7 @@ public class TileRefinery extends TileMachineBase {
 			}
 			return side != facing ? TETextures.MACHINE_SIDE : isActive ? RenderHelper.getFluidTexture(renderFluid) : TETextures.MACHINE_FACE[TYPE];
 		} else if (side < 6) {
-			return side != facing ? TETextures.CONFIG[sideConfig.sideTex[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
 		}
 		return TETextures.MACHINE_SIDE;
 	}
@@ -386,13 +386,13 @@ public class TileRefinery extends TileMachineBase {
 
 					FluidTankInfo inputInfo = inputTank.getInfo();
 					FluidTankInfo outputInfo = outputTank.getInfo();
-					return new IFluidTankProperties[] { new FluidTankProperties(inputInfo.fluid, inputInfo.capacity, true, false), new FluidTankProperties(outputInfo.fluid, outputInfo.capacity, true, false) };
+					return new IFluidTankProperties[] { new FluidTankProperties(inputInfo.fluid, inputInfo.capacity, true, false), new FluidTankProperties(outputInfo.fluid, outputInfo.capacity, false, true) };
 				}
 
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] != 1) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
 					if (!RefineryManager.recipeExists(resource)) {
@@ -405,7 +405,7 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(FluidStack resource, boolean doDrain) {
 
-					if (from != null && (sideCache[from.ordinal()] != 2 && sideCache[from.ordinal()] != 4)) {
+					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					if (resource == null || !resource.isFluidEqual(outputTank.getFluid())) {
@@ -418,7 +418,7 @@ public class TileRefinery extends TileMachineBase {
 				@Override
 				public FluidStack drain(int maxDrain, boolean doDrain) {
 
-					if (from != null && (sideCache[from.ordinal()] != 2 && sideCache[from.ordinal()] != 4)) {
+					if (from != null && isPrimaryOutput(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return null;
 					}
 					return outputTank.drain(maxDrain, doDrain);

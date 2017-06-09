@@ -11,8 +11,8 @@ import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiCharger;
 import cofh.thermalexpansion.gui.container.machine.ContainerCharger;
 import cofh.thermalexpansion.init.TEProps;
-import cofh.thermalexpansion.util.crafting.ChargerManager;
-import cofh.thermalexpansion.util.crafting.ChargerManager.RecipeCharger;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager;
+import cofh.thermalexpansion.util.managers.machine.ChargerManager.RecipeCharger;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -21,7 +21,7 @@ import net.minecraftforge.energy.CapabilityEnergy;
 import net.minecraftforge.energy.IEnergyStorage;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileCharger extends TileMachineBase {
 
@@ -32,18 +32,16 @@ public class TileCharger extends TileMachineBase {
 	public static void initialize() {
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, { 0, 2 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, true, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, { 0 }, { 2 }, { 0, 2 }, { 0, 2 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { true, false, false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false, true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_CHARGER_THROUGHPUT);
 
 		LIGHT_VALUES[TYPE] = 7;
@@ -212,21 +210,24 @@ public class TileCharger extends TileMachineBase {
 	public void update() {
 
 		if (ServerHelper.isClientWorld(worldObj)) {
-			if (inventory[1] == null) {
-				processRem = 0;
-				containerItem = null;
-				hasContainerItem = false;
-				handler = null;
-				hasEnergyHandler = false;
-			} else if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
-				containerItem = (IEnergyContainerItem) inventory[1].getItem();
-				hasContainerItem = true;
-			} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
-				handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
-				hasEnergyHandler = true;
-			}
 			return;
 		}
+		//		if (ServerHelper.isClientWorld(worldObj)) {
+		//			if (inventory[1] == null) {
+		//				processRem = 0;
+		//				containerItem = null;
+		//				hasContainerItem = false;
+		//				handler = null;
+		//				hasEnergyHandler = false;
+		//			} else if (EnergyHelper.isEnergyContainerItem(inventory[1])) {
+		//				containerItem = (IEnergyContainerItem) inventory[1].getItem();
+		//				hasContainerItem = true;
+		//			} else if (EnergyHelper.isEnergyHandler(inventory[1])) {
+		//				handler = inventory[1].getCapability(CapabilityEnergy.ENERGY, null);
+		//				hasEnergyHandler = true;
+		//			}
+		//			return;
+		//		}
 		if (hasContainerItem) {
 			updateContainerItem();
 		} else if (hasEnergyHandler) {
@@ -336,7 +337,7 @@ public class TileCharger extends TileMachineBase {
 		int side;
 		for (int i = inputTracker + 1; i <= inputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 1) {
+			if (isPrimaryInput(sideConfig.sideTypes[sideCache[side]])) {
 				if (extractItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					inputTracker = side;
 					break;
@@ -357,8 +358,7 @@ public class TileCharger extends TileMachineBase {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(2, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
@@ -528,13 +528,13 @@ public class TileCharger extends TileMachineBase {
 		if (!isActive) {
 			return 0;
 		}
-		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : calcEnergy();
+		return (EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput ? getEnergyTransfer(level) : calcEnergy();
 	}
 
 	@Override
 	public int getInfoMaxEnergyPerTick() {
 
-		return (hasContainerItem || hasEnergyHandler) && augmentThroughput ? getEnergyTransfer(level) : energyConfig.maxPower;
+		return (EnergyHelper.isEnergyContainerItem(inventory[1]) || EnergyHelper.isEnergyHandler(inventory[1])) && augmentThroughput ? getEnergyTransfer(level) : energyConfig.maxPower;
 	}
 
 	/* IAccelerable */
@@ -558,11 +558,10 @@ public class TileCharger extends TileMachineBase {
 
 		if (ServerHelper.isServerWorld(worldObj) && slot == 1) {
 			if (isActive && (inventory[slot] == null || !hasValidInput())) {
-				isActive = false;
-				wasActive = true;
-				tracker.markTime(worldObj);
-				processRem = 0;
+				processOff();
 				containerItem = null;
+				hasContainerItem = false;
+				hasEnergyHandler = false;
 			}
 		}
 		return stack;
@@ -581,6 +580,8 @@ public class TileCharger extends TileMachineBase {
 				}
 			}
 			containerItem = null;
+			hasContainerItem = false;
+			hasEnergyHandler = false;
 		}
 		inventory[slot] = stack;
 

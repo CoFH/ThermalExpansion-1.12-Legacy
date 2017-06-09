@@ -1,15 +1,9 @@
 package cofh.thermalexpansion.util;
 
-import codechicken.lib.inventory.InventoryUtils;
-import codechicken.lib.util.ItemUtils;
-import cofh.api.item.IAugmentItem;
 import cofh.api.item.IToolHammer;
-import cofh.api.tileentity.IItemDuct;
 import cofh.lib.util.helpers.BlockHelper;
 import cofh.lib.util.helpers.InventoryHelper;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
@@ -20,29 +14,7 @@ import net.minecraft.world.World;
 
 public class Utils {
 
-	/* ITEM FUNCTIONS */
-	public static boolean isAugmentItem(ItemStack container) {
-
-		return container != null && container.getItem() instanceof IAugmentItem;
-	}
-
 	/* TILE FUNCTIONS - INSERTION */
-	public static int addToAdjacentInsertion(TileEntity tile, EnumFacing from, ItemStack stack) {
-
-		return addToAdjacentInsertion(tile.getPos(), tile.getWorld(), from, stack);
-	}
-
-	public static int addToAdjacentInsertion(BlockPos pos, World worldObj, EnumFacing from, ItemStack stack) {
-
-		TileEntity theTile = BlockHelper.getAdjacentTileEntity(worldObj, pos, from);
-
-		if (!InventoryHelper.isInsertion(theTile)) {
-			return stack.stackSize;
-		}
-		stack = InventoryHelper.addToInsertion(theTile, from, stack);
-		return stack == null ? 0 : stack.stackSize;
-	}
-
 	public static int addToInsertion(TileEntity theTile, EnumFacing from, ItemStack stack) {
 
 		stack = InventoryHelper.addToInsertion(theTile, from, stack);
@@ -76,31 +48,17 @@ public class Utils {
 	public static boolean isAdjacentOutput(BlockPos pos, World worldObj, EnumFacing side) {
 
 		TileEntity tile = BlockHelper.getAdjacentTileEntity(worldObj, pos, side);
-
 		return isAccessibleOutput(tile, side);
 	}
 
 	public static boolean isAccessibleInput(TileEntity tile, EnumFacing side) {
 
-		return InventoryUtils.hasItemHandlerCap(tile, side.getOpposite()) && InventoryUtils.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
+		return InventoryHelper.hasItemHandlerCap(tile, side.getOpposite()) && InventoryHelper.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
 	}
 
 	public static boolean isAccessibleOutput(TileEntity tile, EnumFacing side) {
 
-		if (InventoryUtils.hasItemHandlerCap(tile, side.getOpposite())) {
-			return InventoryUtils.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
-		}
-		return tile instanceof IItemDuct;
-	}
-
-	public static boolean isHoldingBlock(EntityPlayer player) {
-
-		ItemStack held = ItemUtils.getHeldStack(player);
-		if (held == null) {
-			return false;
-		}
-		Item equipped = held.getItem();
-		return equipped instanceof ItemBlock;
+		return InventoryHelper.hasItemHandlerCap(tile, side.getOpposite()) && InventoryHelper.getItemHandlerCap(tile, side.getOpposite()).getSlots() > 0;
 	}
 
 	public static boolean isHoldingUsableWrench(EntityPlayer player, RayTraceResult traceResult) {

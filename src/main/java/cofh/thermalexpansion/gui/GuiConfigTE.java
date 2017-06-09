@@ -14,18 +14,18 @@ public class GuiConfigTE extends GuiConfig {
 
 	public GuiConfigTE(GuiScreen parentScreen) {
 
-		super(parentScreen, getConfigElements(parentScreen), ThermalExpansion.MOD_ID, false, false, ThermalExpansion.MOD_NAME);
+		super(parentScreen, getConfigElements(parentScreen), ThermalExpansion.MOD_ID, false, true, ThermalExpansion.MOD_NAME);
 	}
 
-	public static final String[] CATEGORIES_CLIENT = { "Machine" };
-	public static final String[] CATEGORIES_COMMON = { "Machine" };
+	public static final String[] CATEGORIES_CLIENT = {};
+	public static final String[] CATEGORIES_COMMON = {};
 
 	private static List<IConfigElement> getConfigElements(GuiScreen parent) {
 
 		List<IConfigElement> list = new ArrayList<>();
 
-		list.add(new DummyCategoryElement("Client", "config.Client", getClientConfigElements()));
-		list.add(new DummyCategoryElement("Common", "config.Common", getCommonConfigElements()));
+		list.add(new DummyCategoryElement("Client", "config.client", getClientConfigElements()));
+		list.add(new DummyCategoryElement("Common", "config.common", getCommonConfigElements()));
 
 		return list;
 	}
@@ -34,8 +34,8 @@ public class GuiConfigTE extends GuiConfig {
 
 		List<IConfigElement> list = new ArrayList<>();
 
-		for (int i = 0; i < CATEGORIES_CLIENT.length; i++) {
-			list.add(new ConfigElement(ThermalExpansion.CONFIG_CLIENT.getCategory(CATEGORIES_CLIENT[i])));
+		for (String category : CATEGORIES_CLIENT) {
+			list.add(new ConfigElement(ThermalExpansion.CONFIG_CLIENT.getCategory(category)));
 		}
 		return list;
 	}
@@ -44,8 +44,8 @@ public class GuiConfigTE extends GuiConfig {
 
 		List<IConfigElement> list = new ArrayList<>();
 
-		for (int i = 0; i < CATEGORIES_COMMON.length; i++) {
-			list.add(new ConfigElement(ThermalExpansion.CONFIG.getCategory(CATEGORIES_COMMON[i])));
+		for (String category : CATEGORIES_COMMON) {
+			list.add(new ConfigElement(ThermalExpansion.CONFIG.getCategory(category)));
 		}
 		return list;
 	}

@@ -34,6 +34,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_furnace_ore"
 				}
 			},
+			"machinefurnacepyrolysis": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_furnace_pyrolysis"
+				}
+			},
 			"machinepulverizergeode": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_pulverizer_geode"
@@ -69,6 +74,11 @@
 					"layer0": "thermalexpansion:items/augment/machine_insolator_end"
 				}
 			},
+			"machineinsolatortree": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_insolator_tree"
+				}
+			},
 			"machinecompactormint": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/machine_compactor_mint"
@@ -84,14 +94,19 @@
 					"layer0": "thermalexpansion:items/augment/machine_charger_throughput"
 				}
 			},
-			"machineprecipitatorbatchsize": {
+			"machineprecipitatorsnowlayer": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_precipitator_batch_size"
+					"layer0": "thermalexpansion:items/augment/machine_precipitator_snow_layer"
 				}
 			},
-			"machineextruderbatchsize": {
+			"machineprecipitatorpackedice": {
 				"textures": {
-					"layer0": "thermalexpansion:items/augment/machine_extruder_batch_size"
+					"layer0": "thermalexpansion:items/augment/machine_precipitator_packed_ice"
+				}
+			},
+			"machineextrudernowater": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/machine_extruder_no_water"
 				}
 			},
 			"machineextrudergranite": {
@@ -149,12 +164,17 @@
 					"layer0": "thermalexpansion:items/augment/dynamo_compression_fuel"
 				}
 			},
-			"automatondepth": {
+			"dynamoreactantelemental": {
+				"textures": {
+					"layer0": "thermalexpansion:items/augment/dynamo_reactant_elemental"
+				}
+			},
+			"apparatusdepth": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}
 			},
-			"automatonradius": {
+			"apparatusradius": {
 				"textures": {
 					"layer0": "thermalexpansion:items/augment/placeholder"
 				}

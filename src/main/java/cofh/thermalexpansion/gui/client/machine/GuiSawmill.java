@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileSawmill;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerSawmill;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -46,14 +49,14 @@ public class GuiSawmill extends GuiPoweredBase {
 
 		tankBackground = (ElementSimple) addElement(new ElementSimple(this, 151, 8).setTextureOffsets(176, 104).setSize(18, 62).setTexture(TEX_PATH, 256, 256));
 
-		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(0, 0, 2));
-		slotPrimaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(3, 1, 2));
-		slotPrimaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(1, 1, 1));
-		slotSecondaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(3, 0, 2));
-		slotSecondaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(2, 0, 1));
+		slotInput = addElement(new ElementSlotOverlay(this, 53, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotPrimaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotPrimaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.RED, SlotType.OUTPUT, SlotRender.BOTTOM));
+		slotSecondaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(SlotColor.ORANGE, SlotType.STANDARD, SlotRender.FULL));
+		slotSecondaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(SlotColor.YELLOW, SlotType.STANDARD, SlotRender.BOTTOM));
 
-		slotTank[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(3, 3, 2).setVisible(false));
-		slotTank[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(2, 3, 1).setVisible(false));
+		slotTank[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.ORANGE, SlotType.TANK, SlotRender.FULL).setVisible(false));
+		slotTank[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.YELLOW, SlotType.TANK, SlotRender.BOTTOM).setVisible(false));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 
@@ -79,24 +82,24 @@ public class GuiSawmill extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(baseTile.hasSide(1));
+		slotInput.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		slotPrimaryOutput[0].setVisible(baseTile.hasSide(4));
-		slotPrimaryOutput[1].setVisible(baseTile.hasSide(2));
-		slotSecondaryOutput[0].setVisible(baseTile.hasSide(4));
-		slotSecondaryOutput[1].setVisible(baseTile.hasSide(3));
+		slotPrimaryOutput[0].setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotPrimaryOutput[1].setVisible(baseTile.hasSideType(OUTPUT_PRIMARY));
+		slotSecondaryOutput[0].setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotSecondaryOutput[1].setVisible(baseTile.hasSideType(OUTPUT_SECONDARY));
 
-		slotTank[0].setVisible(myTile.augmentTapper() && baseTile.hasSide(4));
-		slotTank[1].setVisible(myTile.augmentTapper() && baseTile.hasSide(3));
+		slotTank[0].setVisible(myTile.augmentTapper() && (baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI)));
+		slotTank[1].setVisible(myTile.augmentTapper() && baseTile.hasSideType(OUTPUT_SECONDARY));
 
-		if (!baseTile.hasSide(4)) {
-			slotPrimaryOutput[1].slotRender = 2;
-			slotSecondaryOutput[1].slotRender = 2;
-			slotTank[1].slotRender = 2;
+		if (!baseTile.hasSideType(OUTPUT_ALL) && !baseTile.hasSideType(OMNI)) {
+			slotPrimaryOutput[1].setSlotRender(SlotRender.FULL);
+			slotSecondaryOutput[1].setSlotRender(SlotRender.FULL);
+			slotTank[1].setSlotRender(SlotRender.FULL);
 		} else {
-			slotPrimaryOutput[1].slotRender = 1;
-			slotSecondaryOutput[1].slotRender = 1;
-			slotTank[1].slotRender = 1;
+			slotPrimaryOutput[1].setSlotRender(SlotRender.BOTTOM);
+			slotSecondaryOutput[1].setSlotRender(SlotRender.BOTTOM);
+			slotTank[1].setSlotRender(SlotRender.BOTTOM);
 		}
 		progress.setQuantity(baseTile.getScaledProgress(PROGRESS));
 		speed.setQuantity(baseTile.getScaledSpeed(SPEED));

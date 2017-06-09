@@ -4,6 +4,7 @@ import codechicken.lib.CodeChickenLib;
 import cofh.CoFHCore;
 import cofh.core.init.CoreProps;
 import cofh.core.util.ConfigHandler;
+import cofh.thermalexpansion.block.apparatus.BlockApparatus;
 import cofh.thermalexpansion.gui.GuiHandler;
 import cofh.thermalexpansion.init.TEBlocks;
 import cofh.thermalexpansion.init.TEFlorbs;
@@ -12,9 +13,10 @@ import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.network.PacketTEBase;
 import cofh.thermalexpansion.proxy.Proxy;
 import cofh.thermalexpansion.util.IMCHandler;
-import cofh.thermalexpansion.util.crafting.*;
-import cofh.thermalexpansion.util.fuels.CoolantManager;
-import cofh.thermalexpansion.util.fuels.FuelManager;
+import cofh.thermalexpansion.util.managers.CoolantManager;
+import cofh.thermalexpansion.util.managers.TapperManager;
+import cofh.thermalexpansion.util.managers.dynamo.*;
+import cofh.thermalexpansion.util.managers.machine.*;
 import cofh.thermalfoundation.ThermalFoundation;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraftforge.common.MinecraftForge;
@@ -25,7 +27,9 @@ import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.*;
 import net.minecraftforge.fml.common.event.FMLInterModComms.IMCEvent;
+import net.minecraftforge.fml.common.event.FMLMissingMappingsEvent.MissingMapping;
 import net.minecraftforge.fml.common.network.NetworkRegistry;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,12 +41,12 @@ public class ThermalExpansion {
 	public static final String MOD_ID = "thermalexpansion";
 	public static final String MOD_NAME = "Thermal Expansion";
 
-	public static final String VERSION = "5.0.4";
-	public static final String VERSION_MAX = "5.1.0";
+	public static final String VERSION = "5.1.0";
+	public static final String VERSION_MAX = "5.2.0";
 	public static final String VERSION_GROUP = "required-after:" + MOD_ID + "@[" + VERSION + "," + VERSION_MAX + ");";
 	public static final String UPDATE_URL = "https://raw.github.com/cofh/version/master/" + MOD_ID + "_update.json";
 
-	public static final String DEPENDENCIES = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib@[" + CodeChickenLib.version + ",)";
+	public static final String DEPENDENCIES = CoFHCore.VERSION_GROUP + ThermalFoundation.VERSION_GROUP + "required-after:CodeChickenLib@[" + CodeChickenLib.version + ",);";
 	public static final String MOD_GUI_FACTORY = "cofh.thermalexpansion.gui.GuiConfigTEFactory";
 
 	@Instance (MOD_ID)
@@ -78,6 +82,9 @@ public class ThermalExpansion {
 		TEFlorbs.preInit();
 		//TEAchievements.preInit();
 
+		/* Register Handlers */
+		registerHandlers();
+
 		proxy.preInit(event);
 	}
 
@@ -87,10 +94,7 @@ public class ThermalExpansion {
 		TEBlocks.initialize();
 		TEItems.initialize();
 		TEFlorbs.initialize();
-		//TEAchievements.initialize();
-
-		/* Register Handlers */
-		registerHandlers();
+		// TEAchievements.initialize();
 
 		proxy.initialize(event);
 	}
@@ -101,9 +105,9 @@ public class ThermalExpansion {
 		TEBlocks.postInit();
 		TEItems.postInit();
 		TEFlorbs.postInit();
-		//TEAchievements.postInit();
+		// TEAchievements.postInit();
 
-		managerDefault();
+		managerInitialize();
 
 		proxy.postInit(event);
 	}
@@ -113,8 +117,6 @@ public class ThermalExpansion {
 
 		IMCHandler.instance.handleIMC(FMLInterModComms.fetchRuntimeMessages(this));
 
-		managerParse();
-
 		TEProps.loadComplete();
 		CONFIG.cleanUp(false, true);
 		CONFIG_CLIENT.cleanUp(false, true);
@@ -123,12 +125,7 @@ public class ThermalExpansion {
 	}
 
 	@EventHandler
-	public void serverStart(FMLServerAboutToStartEvent event) {
-
-	}
-
-	@EventHandler
-	public void serverStarting(FMLServerStartedEvent event) {
+	public void handleIdMappingEvent(FMLModIdMappingEvent event) {
 
 		managerRefresh();
 	}
@@ -137,6 +134,21 @@ public class ThermalExpansion {
 	public void handleIMC(IMCEvent event) {
 
 		IMCHandler.instance.handleIMC(event.getMessages());
+	}
+
+	@EventHandler
+	public void handleMissingMappingsEvent(FMLMissingMappingsEvent event) {
+
+		for (MissingMapping mapping : event.get()) {
+			if (mapping.name.equals(MOD_ID + ":automaton")) {
+				if (mapping.type == GameRegistry.Type.BLOCK) {
+					mapping.remap(TEBlocks.blockApparatus);
+				}
+				if (mapping.type == GameRegistry.Type.ITEM) {
+					mapping.remap(BlockApparatus.itemBlock);
+				}
+			}
+		}
 	}
 
 	/* HELPERS */
@@ -148,58 +160,51 @@ public class ThermalExpansion {
 		PacketTEBase.initialize();
 	}
 
-	private void managerDefault() {
+	private void managerInitialize() {
 
-		FurnaceManager.addDefaultRecipes();
-		PulverizerManager.addDefaultRecipes();
-		SawmillManager.addDefaultRecipes();
-		SmelterManager.addDefaultRecipes();
-		InsolatorManager.addDefaultRecipes();
-		CompactorManager.addDefaultRecipes();
-		CrucibleManager.addDefaultRecipes();
-		RefineryManager.addDefaultRecipes();
-		TransposerManager.addDefaultRecipes();
-		ChargerManager.addDefaultRecipes();
+		FurnaceManager.initialize();
+		PulverizerManager.initialize();
+		SawmillManager.initialize();
+		SmelterManager.initialize();
+		InsolatorManager.initialize();
+		CompactorManager.initialize();
+		CrucibleManager.initialize();
+		RefineryManager.initialize();
+		TransposerManager.initialize();
+		ChargerManager.initialize();
 
-		CoolantManager.addDefaultMappings();
-		TapperManager.addDefaultMappings();
+		CoolantManager.initialize();
+		TapperManager.initialize();
 
-		FuelManager.addDefaultFuels();
-	}
-
-	private void managerParse() {
-
-		FurnaceManager.loadRecipes();
-		PulverizerManager.loadRecipes();
-		SawmillManager.loadRecipes();
-		SmelterManager.loadRecipes();
-		InsolatorManager.loadRecipes();
-		CompactorManager.loadRecipes();
-		CrucibleManager.loadRecipes();
-		RefineryManager.loadRecipes();
-		TransposerManager.loadRecipes();
-		ChargerManager.loadRecipes();
-
-		CoolantManager.loadMappings();
-		TapperManager.loadMappings();
-
-		FuelManager.parseFuels();
+		SteamManager.initialize();
+		MagmaticManager.initialize();
+		CompressionManager.initialize();
+		ReactantManager.initialize();
+		EnervationManager.initialize();
+		NumismaticManager.initialize();
 	}
 
 	private synchronized void managerRefresh() {
 
-		FurnaceManager.refreshRecipes();
-		PulverizerManager.refreshRecipes();
-		SawmillManager.refreshRecipes();
-		SmelterManager.refreshRecipes();
-		InsolatorManager.refreshRecipes();
-		CompactorManager.refreshRecipes();
-		CrucibleManager.refreshRecipes();
-		// Refinery Unnecessary
-		TransposerManager.refreshRecipes();
-		ChargerManager.refreshRecipes();
+		FurnaceManager.refresh();
+		PulverizerManager.refresh();
+		SawmillManager.refresh();
+		SmelterManager.refresh();
+		InsolatorManager.refresh();
+		CompactorManager.refresh();
+		CrucibleManager.refresh();
+		RefineryManager.refresh();
+		TransposerManager.refresh();
+		ChargerManager.refresh();
 
-		TapperManager.refreshMappings();
+		TapperManager.refresh();
+
+		SteamManager.refresh();
+		// Magmatic Unnecessary
+		// Compression Unnecessary
+		ReactantManager.refresh();
+		EnervationManager.refresh();
+		NumismaticManager.refresh();
 	}
 
 }

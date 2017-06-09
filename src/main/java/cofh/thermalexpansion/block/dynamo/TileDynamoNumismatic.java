@@ -3,13 +3,15 @@ package cofh.thermalexpansion.block.dynamo;
 import codechicken.lib.texture.TextureUtils;
 import cofh.core.init.CoreProps;
 import cofh.core.network.PacketCoFHBase;
-import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.EnergyHelper;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
+import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
 import cofh.thermalfoundation.init.TFFluids;
+
+=======
 import com.google.common.collect.ImmutableSet;
 import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
@@ -19,16 +21,20 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
+
+import java.util.HashSet;
+=======
 import java.util.ArrayList;
 import java.util.Set;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
 	private static final int TYPE = BlockDynamo.Type.NUMISMATIC.getMetadata();
+	public static int basePower = 40;
 
 	public static void initialize() {
 
-		validAugments[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
 
 		GameRegistry.registerTileEntity(TileDynamoNumismatic.class, "thermalexpansion.dynamo_numismatic");
 
@@ -40,11 +46,11 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		String category = "Dynamo.Numismatic";
 		BlockDynamo.enable[TYPE] = ThermalExpansion.CONFIG.get(category, "Enable", true);
 
-		defaultEnergyConfig[TYPE] = new EnergyConfig();
-		defaultEnergyConfig[TYPE].setDefaultParams(40);
+		DEFAULT_ENERGY_CONFIG[TYPE] = new EnergyConfig();
+		DEFAULT_ENERGY_CONFIG[TYPE].setDefaultParams(basePower);
 	}
 
-	private int currentFuelRF = DEFAULT_ENERGY;
+	private int currentFuelRF = 0;
 
 	public TileDynamoNumismatic() {
 
@@ -60,12 +66,12 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 
 	protected boolean canStart() {
 
-		return getEnergyValue(inventory[0]) > energyConfig.maxPower;
+		return NumismaticManager.getFuelEnergy(inventory[0]) > energyConfig.maxPower;
 	}
 
 	protected void processStart() {
 
-		currentFuelRF = getEnergyValue(inventory[0]) * energyMod / ENERGY_BASE;
+		currentFuelRF = NumismaticManager.getFuelEnergy(inventory[0]) * energyMod / ENERGY_BASE;
 		fuelRF += currentFuelRF;
 		inventory[0] = ItemHelper.consumeItem(inventory[0]);
 	}
@@ -93,7 +99,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	public int getScaledDuration(int scale) {
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		} else if (EnergyHelper.isEnergyContainerItem(inventory[0])) {
 			return scale;
 		}
@@ -109,7 +115,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 		currentFuelRF = nbt.getInteger("FuelMax");
 
 		if (currentFuelRF <= 0) {
-			currentFuelRF = DEFAULT_ENERGY;
+			currentFuelRF = Math.max(fuelRF, NumismaticManager.DEFAULT_ENERGY);
 		}
 	}
 
@@ -149,13 +155,16 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@Override
 	public boolean isItemValidForSlot(int slot, ItemStack stack) {
 
-		return getEnergyValue(stack) > 0;
+		return NumismaticManager.getFuelEnergy(stack) > 0;
 	}
 
 	/* ISidedInventory */
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
+
+		return side == null || side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
+=======
 		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
 	}
 

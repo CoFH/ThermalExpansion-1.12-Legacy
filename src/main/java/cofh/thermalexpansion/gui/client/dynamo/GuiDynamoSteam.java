@@ -11,7 +11,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class GuiDynamoSteam extends GuiDynamoBase {
 
-	private static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "steam.png");
+	public static final ResourceLocation TEXTURE = new ResourceLocation(TEProps.PATH_GUI_DYNAMO + "steam.png");
 
 	private ElementDualScaled duration;
 

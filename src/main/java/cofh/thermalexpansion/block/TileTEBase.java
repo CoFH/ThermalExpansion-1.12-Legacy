@@ -202,7 +202,7 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		public int minPower = 8;
 		public int maxPower = 80;
 		public int maxEnergy = 20000;
-		public int minPowerLevel = 1 * maxEnergy / 10;
+		public int minPowerLevel = maxEnergy / 10;
 		public int maxPowerLevel = 9 * maxEnergy / 10;
 		public int energyRamp = maxPowerLevel / maxPower;
 
@@ -245,21 +245,54 @@ public abstract class TileTEBase extends TileCore implements ITileInfoPacketHand
 		/* Number of Side Configs */
 		public int numConfig;
 
+		/* Side Types - Determines Texture & Behavior */
+		public int[] sideTypes;
+
 		/* Slot Groups accessibble per Config */
 		public int[][] slotGroups;
-
-		/* Whether or not the SIDE allows insertion */
-		public boolean[] allowInsertionSide;
-
-		/* Whether or not the SIDE allows extraction */
-		public boolean[] allowExtractionSide;
-
-		/* Config Textures to use on Sides */
-		public int[] sideTex;
 
 		/* Default Side configuration for freshly placed block */
 		public byte[] defaultSides;
 	}
+
+	public boolean allowInsertion(int type) {
+
+		return SIDE_INSERTION[type];
+	}
+
+	public boolean allowExtraction(int type) {
+
+		return SIDE_EXTRACTION[type];
+	}
+
+	public boolean isPrimaryInput(int type) {
+
+		return SIDE_INPUT_PRIMARY[type];
+	}
+
+	public boolean isSecondaryInput(int type) {
+
+		return SIDE_INPUT_SECONDARY[type];
+	}
+
+	public boolean isPrimaryOutput(int type) {
+
+		return SIDE_OUTPUT_PRIMARY[type];
+	}
+
+	public boolean isSecondaryOutput(int type) {
+
+		return SIDE_OUTPUT_SECONDARY[type];
+	}
+
+	/* SIDE CONFIG HELPERS */
+	public static boolean[] SIDE_INSERTION = { false, true, false, false, false, true, true, true, true };
+	public static boolean[] SIDE_EXTRACTION = { false, true, true, true, true, true, true, true, true };
+
+	public static boolean[] SIDE_INPUT_PRIMARY = { false, true, false, false, false, true, false, false, true };
+	public static boolean[] SIDE_INPUT_SECONDARY = { false, true, false, false, false, false, true, false, true };
+	public static boolean[] SIDE_OUTPUT_PRIMARY = { false, false, true, false, true, false, false, false, true };
+	public static boolean[] SIDE_OUTPUT_SECONDARY = { false, false, false, true, true, false, false, false, true };
 
 	/* SLOT CONFIG */
 	public static class SlotConfig {

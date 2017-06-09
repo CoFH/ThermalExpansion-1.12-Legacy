@@ -6,6 +6,9 @@ import cofh.lib.gui.element.ElementFluidTank;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerCrafter;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlayCrafter;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -38,8 +41,8 @@ public class GuiCrafter extends GuiPoweredBase {
 		slotInput[1] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(4, 0));
 		slotInput[2] = (ElementSlotOverlayCrafter) addElement(new ElementSlotOverlayCrafter(this, 8, 74).setSlotInfo(5, 1));
 
-		slotInputFluid = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(3, 1, 2));
+		slotInputFluid = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 112, 31).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, baseTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, baseTile.getTank()).setGauge(1).setAlwaysShow(true));
@@ -50,14 +53,14 @@ public class GuiCrafter extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput[0].setVisible(baseTile.hasSide(1));
-		slotInput[1].setVisible(baseTile.hasSide(3));
-		slotInput[2].setVisible(baseTile.hasSide(4));
-		slotInputFluid.setVisible(baseTile.hasSide(1) || baseTile.hasSide(3) || baseTile.hasSide(4));
+		slotInput[0].setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotInput[1].setVisible(baseTile.hasSideType(INPUT_PRIMARY));
+		slotInput[2].setVisible(baseTile.hasSideType(INPUT_SECONDARY));
+		slotInputFluid.setVisible(baseTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(INPUT_PRIMARY) || baseTile.hasSideType(INPUT_SECONDARY));
 
-		slotOutput.setVisible(baseTile.hasSide(2));
+		slotOutput.setVisible(baseTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
 
-		if (!baseTile.hasSide(1)) {
+		if (!baseTile.hasSideType(INPUT_ALL) && !baseTile.hasSideType(OMNI)) {
 			slotInput[1].slotRender = 0;
 			slotInput[2].slotRender = 1;
 		} else {

@@ -54,7 +54,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 	public boolean preInit() {
 
 		frameMachine = addItem(0, "frameMachine");
-		// frameAutomaton = addItem(32, "frameAutomaton");
+		// frameApparatus = addItem(32, "frameApparatus");
 		frameDevice = addItem(64, "frameDevice");
 		frameCell = addItem(128, "frameCell");
 		// frameLight = addItem(160, "frameLight");
@@ -75,13 +75,8 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 	@Override
 	public boolean initialize() {
 
-		return true;
-	}
-
-	@Override
-	public boolean postInit() {
-
 		// @formatter:off
+
 		addRecipe(ShapedRecipe(frameMachine,
 				"IGI",
 				"GCG",
@@ -90,7 +85,7 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 				'G', "blockGlass",
 				'I', "ingotIron"
 		));
-//		addRecipe(ShapedRecipe(frameAutomaton,
+//		addRecipe(ShapedRecipe(frameApparatus,
 //				"IGI",
 //				"GCG",
 //				"IGI",
@@ -122,14 +117,21 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 //				'I', "ingotSignalum",
 //				'Q', "gemQuartz"
 //		));
+
 		// @formatter:on
+
+		return true;
+	}
+
+	@Override
+	public boolean postInit() {
 
 		return true;
 	}
 
 	/* REFERENCES */
 	public static ItemStack frameMachine;
-	public static ItemStack frameAutomaton;
+	public static ItemStack frameApparatus;
 	public static ItemStack frameDevice;
 	public static ItemStack frameCell;
 	public static ItemStack frameLight;

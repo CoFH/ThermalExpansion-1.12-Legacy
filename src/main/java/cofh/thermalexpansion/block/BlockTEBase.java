@@ -17,7 +17,7 @@ import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.ServerHelper;
 import cofh.lib.util.helpers.WrenchHelper;
 import cofh.thermalexpansion.ThermalExpansion;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -50,7 +50,7 @@ public abstract class BlockTEBase extends BlockCoreTile {
 
 	protected boolean basicGui = true;
 
-	public BlockTEBase(Material material) {
+	protected BlockTEBase(Material material) {
 
 		super(material);
 		setSoundType(SoundType.STONE);

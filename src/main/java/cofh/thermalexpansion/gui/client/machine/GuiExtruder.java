@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileExtruder;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +28,9 @@ public class GuiExtruder extends GuiPoweredBase {
 	private ElementFluid progressWater;
 	private ElementDualScaled progressOverlay;
 
+	private ElementFluidTank hotTank;
+	private ElementFluidTank coldTank;
+
 	public GuiExtruder(InventoryPlayer inventory, TileEntity tile) {
 
 		super(new ContainerExtruder(inventory, tile), tile, inventory.player, TEXTURE);
@@ -39,12 +45,12 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(0, 3, 2));
-		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(3, 1, 2));
+		slotInput = addElement(new ElementSlotOverlay(this, 152, 9).setSlotInfo(SlotColor.BLUE, SlotType.TANK, SlotRender.FULL));
+		slotOutput = addElement(new ElementSlotOverlay(this, 76, 45).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
-		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin());
-		addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
+		coldTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 161, 9, myTile.getTank(1)).setAlwaysShow(true).setThin());
+		hotTank = (ElementFluidTank) addElement(new ElementFluidTank(this, 152, 9, myTile.getTank(0)).setAlwaysShow(true).setThin());
 
 		progressLava = (ElementFluid) addElement(new ElementFluid(this, 112, 49).setFluid(FluidRegistry.LAVA).setSize(24, 8));
 		progressWater = (ElementFluid) addElement(new ElementFluid(this, 112, 57).setFluid(FluidRegistry.WATER).setSize(24, 8));
@@ -56,13 +62,20 @@ public class GuiExtruder extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotInput.setVisible(myTile.hasSide(1));
-		slotOutput.setVisible(myTile.hasSide(2));
+		slotInput.setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotOutput.setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+
+		if (myTile.augmentNoWater()) {
+			hotTank.setDefault().drawTank(true);
+		} else {
+			hotTank.setThin().drawTank(false);
+		}
+		coldTank.setVisible(!myTile.augmentNoWater());
 
 		progressLava.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 49);
-		progressLava.setSize(myTile.getScaledProgress(PROGRESS), 8);
+		progressLava.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 16 : 8);
 		progressWater.setPosition(112 + PROGRESS - myTile.getScaledProgress(PROGRESS), 57);
-		progressWater.setSize(myTile.getScaledProgress(PROGRESS), 8);
+		progressWater.setSize(myTile.getScaledProgress(PROGRESS), myTile.augmentNoWater() ? 0 : 8);
 		progressOverlay.setQuantity(myTile.getScaledProgress(PROGRESS));
 	}
 
@@ -76,7 +89,9 @@ public class GuiExtruder extends GuiPoweredBase {
 		drawPrevSelection();
 
 		// Correction for mini-tanks.
-		drawTexturedModalRect(guiLeft + 159, guiTop + 9, 159, 9, 2, 60);
+		if (!myTile.augmentNoWater()) {
+			drawTexturedModalRect(guiLeft + 159, guiTop + 9, 159, 9, 2, 60);
+		}
 	}
 
 	@Override

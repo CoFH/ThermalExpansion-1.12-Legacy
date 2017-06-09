@@ -5,6 +5,9 @@ import cofh.thermalexpansion.block.machine.TileInsolator;
 import cofh.thermalexpansion.gui.client.GuiPoweredBase;
 import cofh.thermalexpansion.gui.container.machine.ContainerInsolator;
 import cofh.thermalexpansion.gui.element.ElementSlotOverlay;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotColor;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotRender;
+import cofh.thermalexpansion.gui.element.ElementSlotOverlay.SlotType;
 import cofh.thermalexpansion.init.TEProps;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -44,14 +47,14 @@ public class GuiInsolator extends GuiPoweredBase {
 
 		super.initGui();
 
-		slotPrimaryInput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 32, 26).setSlotInfo(0, 0, 2));
-		slotPrimaryInput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 32, 26).setSlotInfo(4, 0, 1));
-		slotSecondaryInput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 56, 26).setSlotInfo(0, 0, 2));
-		slotSecondaryInput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 56, 26).setSlotInfo(5, 0, 1));
-		slotPrimaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(3, 1, 2));
-		slotPrimaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(1, 1, 1));
-		slotSecondaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(3, 0, 2));
-		slotSecondaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(2, 0, 1));
+		slotPrimaryInput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 32, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotPrimaryInput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 32, 26).setSlotInfo(SlotColor.GREEN, SlotType.STANDARD, SlotRender.BOTTOM));
+		slotSecondaryInput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 56, 26).setSlotInfo(SlotColor.BLUE, SlotType.STANDARD, SlotRender.FULL));
+		slotSecondaryInput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 56, 26).setSlotInfo(SlotColor.PURPLE, SlotType.STANDARD, SlotRender.BOTTOM));
+		slotPrimaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.ORANGE, SlotType.OUTPUT, SlotRender.FULL));
+		slotPrimaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 112, 22).setSlotInfo(SlotColor.RED, SlotType.OUTPUT, SlotRender.BOTTOM));
+		slotSecondaryOutput[0] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(SlotColor.ORANGE, SlotType.STANDARD, SlotRender.FULL));
+		slotSecondaryOutput[1] = (ElementSlotOverlay) addElement(new ElementSlotOverlay(this, 116, 53).setSlotInfo(SlotColor.YELLOW, SlotType.STANDARD, SlotRender.BOTTOM));
 
 		addElement(new ElementEnergyStored(this, 8, 8, myTile.getEnergyStorage()));
 		addElement(new ElementFluidTank(this, 152, 9, myTile.getTank()).setGauge(1).setAlwaysShow(true));
@@ -68,29 +71,29 @@ public class GuiInsolator extends GuiPoweredBase {
 
 		super.updateElementInformation();
 
-		slotPrimaryInput[0].setVisible(myTile.hasSide(1));
-		slotPrimaryInput[1].setVisible(myTile.hasSide(5));
-		slotSecondaryInput[0].setVisible(myTile.hasSide(1));
-		slotSecondaryInput[1].setVisible(myTile.hasSide(6));
+		slotPrimaryInput[0].setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotPrimaryInput[1].setVisible(myTile.hasSideType(INPUT_PRIMARY));
+		slotSecondaryInput[0].setVisible(myTile.hasSideType(INPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotSecondaryInput[1].setVisible(myTile.hasSideType(INPUT_SECONDARY));
 
-		slotPrimaryOutput[0].setVisible(myTile.hasSide(4));
-		slotPrimaryOutput[1].setVisible(myTile.hasSide(2));
-		slotSecondaryOutput[0].setVisible(myTile.hasSide(4));
-		slotSecondaryOutput[1].setVisible(myTile.hasSide(3));
+		slotPrimaryOutput[0].setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotPrimaryOutput[1].setVisible(myTile.hasSideType(OUTPUT_PRIMARY));
+		slotSecondaryOutput[0].setVisible(myTile.hasSideType(OUTPUT_ALL) || baseTile.hasSideType(OMNI));
+		slotSecondaryOutput[1].setVisible(myTile.hasSideType(OUTPUT_SECONDARY));
 
-		if (!myTile.hasSide(1)) {
-			slotPrimaryInput[1].slotRender = 2;
-			slotSecondaryInput[1].slotRender = 2;
+		if (!baseTile.hasSideType(INPUT_ALL) && !baseTile.hasSideType(OMNI)) {
+			slotPrimaryInput[1].setSlotRender(SlotRender.FULL);
+			slotSecondaryInput[1].setSlotRender(SlotRender.FULL);
 		} else {
-			slotPrimaryInput[1].slotRender = 1;
-			slotSecondaryInput[1].slotRender = 1;
+			slotPrimaryInput[1].setSlotRender(SlotRender.BOTTOM);
+			slotSecondaryInput[1].setSlotRender(SlotRender.BOTTOM);
 		}
-		if (!myTile.hasSide(4)) {
-			slotPrimaryOutput[1].slotRender = 2;
-			slotSecondaryOutput[1].slotRender = 2;
+		if (!baseTile.hasSideType(OUTPUT_ALL) && !baseTile.hasSideType(OMNI)) {
+			slotPrimaryOutput[1].setSlotRender(SlotRender.FULL);
+			slotSecondaryOutput[1].setSlotRender(SlotRender.FULL);
 		} else {
-			slotPrimaryOutput[1].slotRender = 1;
-			slotSecondaryOutput[1].slotRender = 1;
+			slotPrimaryOutput[1].setSlotRender(SlotRender.BOTTOM);
+			slotSecondaryOutput[1].setSlotRender(SlotRender.BOTTOM);
 		}
 		progressFluid.setSize(baseTile.getScaledProgress(PROGRESS), 16);
 		progressOverlay.setQuantity(baseTile.getScaledProgress(PROGRESS));

@@ -46,7 +46,12 @@ public class GuiDeviceBase extends GuiCore {
 
 		// Right Side
 		redstoneTab = addTab(new TabRedstoneControl(this, baseTile));
-		configTab = addTab(new TabConfiguration(this, baseTile));
+
+		if (baseTile.hasTransferIn() || baseTile.hasTransferOut()) {
+			configTab = addTab(new TabConfigurationTransfer(this, baseTile));
+		} else {
+			configTab = addTab(new TabConfiguration(this, baseTile));
+		}
 
 		// Left Side
 		securityTab = addTab(new TabSecurity(this, baseTile, playerName));

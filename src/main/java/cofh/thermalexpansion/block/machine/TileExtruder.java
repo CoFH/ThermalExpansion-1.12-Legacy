@@ -4,10 +4,14 @@ import cofh.core.fluid.FluidTankCore;
 import cofh.core.network.PacketCoFHBase;
 import cofh.core.util.helpers.AugmentHelper;
 import cofh.lib.gui.container.ICustomInventory;
+import cofh.lib.util.helpers.RenderHelper;
+import cofh.lib.util.helpers.ServerHelper;
 import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.gui.client.machine.GuiExtruder;
 import cofh.thermalexpansion.gui.container.machine.ContainerExtruder;
 import cofh.thermalexpansion.init.TEProps;
+import cofh.thermalexpansion.init.TETextures;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
@@ -24,9 +28,10 @@ import net.minecraftforge.fluids.capability.FluidTankProperties;
 import net.minecraftforge.fluids.capability.IFluidHandler;
 import net.minecraftforge.fluids.capability.IFluidTankProperties;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.relauncher.Side;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
@@ -50,18 +55,17 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		ANDESITE = new ItemStack(Blocks.STONE, 1, 5);
 
 		SIDE_CONFIGS[TYPE] = new SideConfig();
-		SIDE_CONFIGS[TYPE].numConfig = 4;
-		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 } };
-		SIDE_CONFIGS[TYPE].allowInsertionSide = new boolean[] { false, true, false, true };
-		SIDE_CONFIGS[TYPE].allowExtractionSide = new boolean[] { false, false, true, true };
-		SIDE_CONFIGS[TYPE].sideTex = new int[] { 0, 1, 4, 7 };
+		SIDE_CONFIGS[TYPE].numConfig = 5;
+		SIDE_CONFIGS[TYPE].slotGroups = new int[][] { {}, {}, { 0 }, { 0 }, { 0 } };
+		SIDE_CONFIGS[TYPE].sideTypes = new int[] { 0, 1, 4, 7, 8 };
 		SIDE_CONFIGS[TYPE].defaultSides = new byte[] { 1, 1, 2, 2, 2, 2 };
 
 		SLOT_CONFIGS[TYPE] = new SlotConfig();
 		SLOT_CONFIGS[TYPE].allowInsertionSlot = new boolean[] { false, false };
 		SLOT_CONFIGS[TYPE].allowExtractionSlot = new boolean[] { true, false };
 
-		VALID_AUGMENTS[TYPE] = new ArrayList<>();
+		VALID_AUGMENTS[TYPE] = new HashSet<>();
+		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_NO_WATER);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_ANDESITE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_DIORITE);
 		VALID_AUGMENTS[TYPE].add(TEProps.MACHINE_EXTRUDER_GRANITE);
@@ -86,7 +90,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private static int[] processLava = { 0, 0, 1000 };
 	private static int[] processWater = { 0, 1000, 1000 };
 	private static int[] processEnergy = { 400, 800, 1600 };
-	private static ItemStack[] processItems = new ItemStack[3];
+	private static ItemStack[] processItems;
 
 	private int outputTracker;
 	private byte curSelection;
@@ -97,9 +101,12 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	private FluidTankCore coldTank = new FluidTankCore(TEProps.MAX_FLUID_SMALL);
 
 	/* AUGMENTS */
+	protected boolean augmentNoWater;
 	protected boolean augmentAndesite;
 	protected boolean augmentDiorite;
 	protected boolean augmentGranite;
+
+	protected boolean flagNoWater;
 
 	public TileExtruder() {
 
@@ -130,7 +137,13 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 	@Override
 	protected boolean canStart() {
 
-		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME || coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME || energyStorage.getEnergyStored() <= 0) {
+		if (hotTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (!augmentNoWater && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			return false;
+		}
+		if (energyStorage.getEnergyStored() <= 0) {
 			return false;
 		}
 		if (inventory[0] == null) {
@@ -165,7 +178,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 			inventory[0].stackSize += outputItems[prevSelection].stackSize;
 		}
 		hotTank.drain(processLava[prevSelection], true);
-		coldTank.drain(processWater[prevSelection], true);
+
+		if (!augmentNoWater) {
+			coldTank.drain(processWater[prevSelection], true);
+		}
 		prevSelection = curSelection;
 	}
 
@@ -181,7 +197,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		int side;
 		for (int i = outputTracker + 1; i <= outputTracker + 6; i++) {
 			side = i % 6;
-			if (sideCache[side] == 2) {
+			if (isPrimaryOutput(sideConfig.sideTypes[sideCache[side]])) {
 				if (transferItem(0, ITEM_TRANSFER[level], EnumFacing.VALUES[side])) {
 					outputTracker = side;
 					break;
@@ -263,6 +279,11 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		return coldTank.getFluid();
 	}
 
+	public boolean augmentNoWater() {
+
+		return augmentNoWater && flagNoWater;
+	}
+
 	public void setMode(int selection) {
 
 		byte lastSelection = curSelection;
@@ -327,6 +348,15 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 	/* SERVER -> CLIENT */
 	@Override
+	public PacketCoFHBase getTilePacket() {
+
+		PacketCoFHBase payload = super.getTilePacket();
+
+		payload.addBool(augmentNoWater);
+		return payload;
+	}
+
+	@Override
 	public PacketCoFHBase getGuiPacket() {
 
 		PacketCoFHBase payload = super.getGuiPacket();
@@ -336,7 +366,18 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		payload.addInt(hotTank.getFluidAmount());
 		payload.addInt(coldTank.getFluidAmount());
 
+		payload.addBool(augmentNoWater);
+
 		return payload;
+	}
+
+	@Override
+	public void handleTilePacket(PacketCoFHBase payload, boolean isServer) {
+
+		super.handleTilePacket(payload, isServer);
+
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
 	}
 
 	@Override
@@ -348,6 +389,9 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		prevSelection = payload.getByte();
 		hotTank.getFluid().amount = payload.getInt();
 		coldTank.getFluid().amount = payload.getInt();
+
+		augmentNoWater = payload.getBool();
+		flagNoWater = augmentNoWater;
 	}
 
 	/* HELPERS */
@@ -358,9 +402,26 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		outputItems[1] = processItems[1].copy();
 
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj)) {
+			flagNoWater = augmentNoWater;
+		}
+		augmentNoWater = false;
 		augmentGranite = false;
 		augmentDiorite = false;
 		augmentAndesite = false;
+	}
+
+	@Override
+	protected void postAugmentInstall() {
+
+		super.postAugmentInstall();
+
+		if (!augmentNoWater && isActive && coldTank.getFluidAmount() < Fluid.BUCKET_VOLUME) {
+			processOff();
+		}
+		if (worldObj != null && ServerHelper.isServerWorld(worldObj) && flagNoWater != augmentNoWater) {
+			sendTilePacket(Side.CLIENT);
+		}
 	}
 
 	@Override
@@ -368,6 +429,10 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 
 		String id = AugmentHelper.getAugmentIdentifier(augments[slot]);
 
+		if (!augmentNoWater && TEProps.MACHINE_EXTRUDER_NO_WATER.equals(id)) {
+			augmentNoWater = true;
+			return true;
+		}
 		if (!augmentGranite && TEProps.MACHINE_EXTRUDER_GRANITE.equals(id)) {
 			outputItems[1] = GRANITE.copy();
 			augmentGranite = true;
@@ -408,6 +473,23 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 		markChunkDirty();
 	}
 
+	/* ISidedTexture */
+	@Override
+	public TextureAtlasSprite getTexture(int side, int pass) {
+
+		if (pass == 0) {
+			if (side == 0) {
+				return TETextures.MACHINE_BOTTOM;
+			} else if (side == 1) {
+				return TETextures.MACHINE_TOP;
+			}
+			return side != facing ? TETextures.MACHINE_SIDE : isActive ? augmentNoWater ? RenderHelper.getFluidTexture(FluidRegistry.LAVA) : TETextures.MACHINE_ACTIVE_EXTRUDER_UNDERLAY : TETextures.MACHINE_FACE[TYPE];
+		} else if (side < 6) {
+			return side != facing ? TETextures.CONFIG[sideConfig.sideTypes[sideCache[side]]] : isActive ? TETextures.MACHINE_ACTIVE[TYPE] : TETextures.MACHINE_FACE[TYPE];
+		}
+		return TETextures.MACHINE_SIDE;
+	}
+
 	/* CAPABILITIES */
 	@Override
 	public boolean hasCapability(Capability<?> capability, EnumFacing from) {
@@ -431,7 +513,7 @@ public class TileExtruder extends TileMachineBase implements ICustomInventory {
 				@Override
 				public int fill(FluidStack resource, boolean doFill) {
 
-					if (from != null && sideCache[from.ordinal()] != 1) {
+					if (from != null && !allowInsertion(sideConfig.sideTypes[sideCache[from.ordinal()]])) {
 						return 0;
 					}
 					if (resource.getFluid() == FluidRegistry.LAVA) {

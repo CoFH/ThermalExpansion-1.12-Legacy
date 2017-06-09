@@ -7,7 +7,7 @@ import cofh.lib.gui.slot.SlotValidated;
 import cofh.lib.util.helpers.FluidHelper;
 import cofh.thermalexpansion.block.machine.TileTransposer;
 import cofh.thermalexpansion.gui.container.ContainerTEBase;
-import cofh.thermalexpansion.util.crafting.TransposerManager;
+import cofh.thermalexpansion.util.managers.machine.TransposerManager;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;

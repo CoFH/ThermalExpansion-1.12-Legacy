@@ -14,18 +14,18 @@ import cofh.thermalexpansion.block.BlockTEBase;
 import cofh.thermalexpansion.init.TEProps;
 import cofh.thermalexpansion.init.TETextures;
 import cofh.thermalexpansion.item.ItemFrame;
-import cofh.thermalexpansion.plugins.jei.charger.ChargerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.compactor.CompactorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.crucible.CrucibleRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.furnace.FurnaceRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.insolator.InsolatorRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.pulverizer.PulverizerRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.refinery.RefineryRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.sawmill.SawmillRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.smelter.SmelterRecipeCategory;
-import cofh.thermalexpansion.plugins.jei.transposer.TransposerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.charger.ChargerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.compactor.CompactorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.crucible.CrucibleRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.furnace.FurnaceRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.insolator.InsolatorRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.pulverizer.PulverizerRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.refinery.RefineryRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.sawmill.SawmillRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.smelter.SmelterRecipeCategory;
+import cofh.thermalexpansion.plugins.jei.crafting.transposer.TransposerRecipeCategory;
 import cofh.thermalexpansion.render.RenderMachine;
-import cofh.thermalexpansion.util.ReconfigurableHelper;
+import cofh.thermalexpansion.util.helpers.ReconfigurableHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyEnum;
@@ -374,11 +374,19 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 		machinePrecipitator = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.PRECIPITATOR.getMetadata()));
 		machineExtruder = itemBlock.setDefaultTag(new ItemStack(this, 1, Type.EXTRUDER.getMetadata()));
 
+		addRecipes();
+
 		return true;
 	}
 
 	@Override
 	public boolean postInit() {
+
+		return true;
+	}
+
+	/* HELPERS */
+	private void addRecipes() {
 
 		String copperPart = "gearCopper";
 		String invarPart = "gearInvar";
@@ -561,8 +569,6 @@ public class BlockMachine extends BlockTEBase implements IModelRegister, IBakery
 			));
 		}
 		// @formatter:on
-
-		return true;
 	}
 
 	/* TYPE */
