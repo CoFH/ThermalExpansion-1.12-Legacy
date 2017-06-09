@@ -10,10 +10,6 @@ import cofh.thermalexpansion.gui.client.dynamo.GuiDynamoNumismatic;
 import cofh.thermalexpansion.gui.container.dynamo.ContainerDynamoNumismatic;
 import cofh.thermalexpansion.util.managers.dynamo.NumismaticManager;
 import cofh.thermalfoundation.init.TFFluids;
-
-=======
-import com.google.common.collect.ImmutableSet;
-import gnu.trove.map.hash.TObjectIntHashMap;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,11 +17,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.EnumFacing;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-
 import java.util.HashSet;
-=======
-import java.util.ArrayList;
-import java.util.Set;
 
 public class TileDynamoNumismatic extends TileDynamoBase {
 
@@ -162,45 +154,7 @@ public class TileDynamoNumismatic extends TileDynamoBase {
 	@Override
 	public int[] getSlotsForFace(EnumFacing side) {
 
-
 		return side == null || side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
-=======
-		return side.ordinal() != facing || augmentCoilDuct ? CoreProps.SINGLE_INVENTORY : CoreProps.EMPTY_INVENTORY;
-	}
-
-	/* FUEL MANAGER */
-	private static TObjectIntHashMap<ComparableItemStack> fuels = new TObjectIntHashMap<>();
-
-	private static int DEFAULT_ENERGY = 64000;
-
-	public static Set<ComparableItemStack> getFuelStacks() {
-
-		return ImmutableSet.copyOf(fuels.keySet());
-	}
-
-	public static boolean addFuel(ItemStack stack, int energy) {
-
-		if (stack == null || energy < 1600 || energy > 200000000) {
-			return false;
-		}
-		fuels.put(new ComparableItemStack(stack), energy);
-		return true;
-	}
-
-	public static boolean removeFuel(ItemStack stack) {
-
-		fuels.remove(new ComparableItemStack(stack));
-		return true;
-	}
-
-	public static int getEnergyValue(ItemStack stack) {
-
-		if (stack == null) {
-			return 0;
-		}
-		int energy = fuels.get(new ComparableItemStack(stack));
-
-		return energy > 0 ? energy : 0;
 	}
 
 }
