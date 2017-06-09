@@ -69,6 +69,12 @@ public class TEProps {
 		comment = "If TRUE, Creative version of Blocks will show in the Creative Tab.";
 		creativeTabShowCreative = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("ShowCreativeBlocks", category, creativeTabShowCreative, comment);
 
+		category = "Sounds";
+
+		comment = "If TRUE, various Thermal Expansion Blocks will play ambient sounds when active.";
+		enableSounds = ThermalExpansion.CONFIG_CLIENT.getConfiguration().getBoolean("EnableSounds", category, enableSounds, comment);
+
+
 		/* CREATIVE TABS */
 		ThermalExpansion.tabCommon = new CreativeTabTE();
 
@@ -99,6 +105,8 @@ public class TEProps {
 	public static boolean creativeTabShowAllLevels = false;
 	public static boolean creativeTabShowCreative = false;
 	public static int creativeTabLevel = 0;
+
+	public static boolean enableSounds = true;
 
 	/* UPGRADE FEATURES */
 	public static int levelAutoInput = 0;
