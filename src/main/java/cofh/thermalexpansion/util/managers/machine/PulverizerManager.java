@@ -312,30 +312,30 @@ public class PulverizerManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
-			return false;
+			return null;
 		}
 		RecipePulverizer recipe = new RecipePulverizer(input, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackPulverizer(input), recipe);
-		return true;
+		return recipe;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+	public static RecipePulverizer addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, null, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack input) {
+	public static RecipePulverizer removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackPulverizer(input)) != null;
+		return recipeMap.remove(new ComparableItemStackPulverizer(input));
 	}
 
 	/* HELPERS */

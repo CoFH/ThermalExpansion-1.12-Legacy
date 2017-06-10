@@ -75,20 +75,20 @@ public class ChargerManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack output) {
+	public static RecipeCharger addRecipe(int energy, ItemStack input, ItemStack output) {
 
 		if (input == null || output == null || energy <= 0 || recipeExists(input)) {
-			return false;
+			return null;
 		}
 		RecipeCharger recipe = new RecipeCharger(input, output, energy);
 		recipeMap.put(new ComparableItemStackSafe(input), recipe);
-		return true;
+		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack input) {
+	public static RecipeCharger removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSafe(input)) != null;
+		return recipeMap.remove(new ComparableItemStackSafe(input));
 	}
 
 	/* HELPERS */

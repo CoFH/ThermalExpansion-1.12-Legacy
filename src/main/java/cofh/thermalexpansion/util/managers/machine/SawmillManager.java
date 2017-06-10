@@ -208,30 +208,30 @@ public class SawmillManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (input == null || primaryOutput == null || energy <= 0 || recipeExists(input)) {
-			return false;
+			return null;
 		}
 		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
-		return true;
+		return recipe;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
+	public static RecipeSawmill addRecipe(int energy, ItemStack input, ItemStack primaryOutput) {
 
 		return addRecipe(energy, input, primaryOutput, null, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack input) {
+	public static RecipeSawmill removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSawmill(input)) != null;
+		return recipeMap.remove(new ComparableItemStackSawmill(input));
 	}
 
 	/* HELPERS */

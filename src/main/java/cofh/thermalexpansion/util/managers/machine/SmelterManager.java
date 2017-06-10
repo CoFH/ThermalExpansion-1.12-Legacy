@@ -411,32 +411,32 @@ public class SmelterManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
+	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput, int secondaryChance) {
 
 		if (primaryInput == null || secondaryInput == null || energy <= 0 || recipeExists(primaryInput, secondaryInput)) {
-			return false;
+			return null;
 		}
 		RecipeSmelter recipe = new RecipeSmelter(primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance, energy);
 		recipeMap.put(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)), recipe);
 		validationSet.add(new ComparableItemStackSmelter(primaryInput));
 		validationSet.add(new ComparableItemStackSmelter(secondaryInput));
-		return true;
+		return recipe;
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
+	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput, ItemStack secondaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, 100);
 	}
 
-	public static boolean addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
+	public static RecipeSmelter addRecipe(int energy, ItemStack primaryInput, ItemStack secondaryInput, ItemStack primaryOutput) {
 
 		return addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
+	public static RecipeSmelter removeRecipe(ItemStack primaryInput, ItemStack secondaryInput) {
 
-		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput))) != null;
+		return recipeMap.remove(Arrays.asList(new ComparableItemStackSmelter(primaryInput), new ComparableItemStackSmelter(secondaryInput)));
 	}
 
 	/* HELPERS */
@@ -562,7 +562,7 @@ public class SmelterManager {
 		addRecipe(energy, primaryInput, secondaryInput, primaryOutput, null, 0);
 	}
 
-	private static boolean addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
+	private static RecipeSmelter addRecycleRecipe(int energy, ItemStack input, ItemStack output, int outputSize) {
 
 		return addRecipe(energy, input, BLOCK_SAND, ItemHelper.cloneStack(output, outputSize), ItemMaterial.crystalSlag, outputSize * 5 + 5);
 	}

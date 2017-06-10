@@ -50,23 +50,23 @@ public class RefineryManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
+	public static RecipeRefinery addRecipe(int energy, FluidStack input, FluidStack outputFluid, ItemStack outputItem) {
 
 		if (input == null || outputFluid == null || energy <= 0 || recipeExists(input)) {
-			return false;
+			return null;
 		}
 		RecipeRefinery recipe = new RecipeRefinery(input, outputFluid, outputItem, energy);
 		recipeMap.put(input.getFluid().hashCode(), recipe);
-		return true;
+		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(FluidStack input) {
+	public static RecipeRefinery removeRecipe(FluidStack input) {
 
 		if (input == null) {
-			return false;
+			return null;
 		}
-		return recipeMap.remove(input.getFluid().hashCode()) != null;
+		return recipeMap.remove(input.getFluid().hashCode());
 	}
 
 	/* HELPERS */

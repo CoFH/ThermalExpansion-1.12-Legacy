@@ -329,10 +329,10 @@ public class CompactorManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack output, Mode mode) {
+	public static RecipeCompactor addRecipe(int energy, ItemStack input, ItemStack output, Mode mode) {
 
 		if (input == null || output == null || energy <= 0 || recipeExists(input, mode)) {
-			return false;
+			return null;
 		}
 		RecipeCompactor recipe = new RecipeCompactor(input, output, energy);
 
@@ -348,19 +348,19 @@ public class CompactorManager {
 				break;
 		}
 		validationSet.add(new ComparableItemStackCompactor(input));
-		return true;
+		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack input, Mode mode) {
+	public static RecipeCompactor removeRecipe(ItemStack input, Mode mode) {
 
 		switch (mode) {
 			case PRESS:
-				return recipeMapPress.remove(new ComparableItemStackCompactor(input)) != null;
+				return recipeMapPress.remove(new ComparableItemStackCompactor(input));
 			case STORAGE:
-				return recipeMapStorage.remove(new ComparableItemStackCompactor(input)) != null;
+				return recipeMapStorage.remove(new ComparableItemStackCompactor(input));
 		}
-		return recipeMapMint.remove(new ComparableItemStackCompactor(input)) != null;
+		return recipeMapMint.remove(new ComparableItemStackCompactor(input));
 	}
 
 	/* HELPERS */

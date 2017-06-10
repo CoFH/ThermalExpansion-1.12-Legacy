@@ -122,13 +122,13 @@ public class TransposerManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
+	public static RecipeTransposer addFillRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, boolean reversible) {
 
 		if (input == null || output == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
-			return false;
+			return null;
 		}
 		if (fillRecipeExists(input, fluid)) {
-			return false;
+			return null;
 		}
 		RecipeTransposer recipeFill = new RecipeTransposer(input, output, fluid, energy, 100);
 		recipeMapFill.put(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()), recipeFill);
@@ -137,19 +137,19 @@ public class TransposerManager {
 		if (reversible) {
 			addExtractRecipe(energy, output, input, fluid, 100, false);
 		}
-		return true;
+		return recipeFill;
 	}
 
-	public static boolean addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
+	public static RecipeTransposer addExtractRecipe(int energy, ItemStack input, ItemStack output, FluidStack fluid, int chance, boolean reversible) {
 
 		if (input == null || fluid == null || fluid.amount <= 0 || energy <= 0) {
-			return false;
+			return null;
 		}
 		if (extractRecipeExists(input, fluid)) {
-			return false;
+			return null;
 		}
 		if (output == null && reversible || output == null && chance != 0) {
-			return false;
+			return null;
 		}
 		RecipeTransposer recipeExtraction = new RecipeTransposer(input, output, fluid, energy, chance);
 		recipeMapExtract.put(new ComparableItemStackTransposer(input), recipeExtraction);
@@ -158,18 +158,18 @@ public class TransposerManager {
 		if (reversible) {
 			addFillRecipe(energy, output, input, fluid, false);
 		}
-		return true;
+		return recipeExtraction;
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeFillRecipe(ItemStack input, FluidStack fluid) {
+	public static RecipeTransposer removeFillRecipe(ItemStack input, FluidStack fluid) {
 
-		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode())) != null;
+		return recipeMapFill.remove(Arrays.asList(new ComparableItemStackTransposer(input).hashCode(), fluid.getFluid().hashCode()));
 	}
 
-	public static boolean removeExtractRecipe(ItemStack input) {
+	public static RecipeTransposer removeExtractRecipe(ItemStack input) {
 
-		return recipeMapExtract.remove(new ComparableItemStackTransposer(input)) != null;
+		return recipeMapExtract.remove(new ComparableItemStackTransposer(input));
 	}
 
 	/* RECIPE CLASS */

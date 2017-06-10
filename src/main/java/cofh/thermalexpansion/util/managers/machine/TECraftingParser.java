@@ -164,7 +164,7 @@ public class TECraftingParser {
 		if (energy <= 0) {
 			energy = FurnaceManager.DEFAULT_ENERGY;
 		}
-		return FurnaceManager.addRecipe(energy, input, output);
+		return FurnaceManager.addRecipe(energy, input, output) != null;
 	}
 
 	private static boolean addPulverizerRecipe(String name, JsonObject templateObject) {
@@ -220,7 +220,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
+		return PulverizerManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance) != null;
 	}
 
 	private static boolean addSawmillRecipe(String name, JsonObject templateObject) {
@@ -276,7 +276,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance);
+		return SawmillManager.addRecipe(energy, input, primaryOutput, secondaryOutput, secondaryChance) != null;
 	}
 
 	private static boolean addSmelterRecipe(String name, JsonObject templateObject) {
@@ -354,7 +354,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
+		return SmelterManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance) != null;
 	}
 
 	private static boolean addInsolatorRecipe(String name, JsonObject templateObject) {
@@ -431,7 +431,7 @@ public class TECraftingParser {
 		if (secondaryChance <= 0) {
 			secondaryChance = 100;
 		}
-		return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance);
+		return InsolatorManager.addRecipe(energy, primaryInput, secondaryInput, primaryOutput, secondaryOutput, secondaryChance) != null;
 	}
 
 	private static boolean addChargerRecipe(String name, JsonObject templateObject) {
@@ -450,7 +450,7 @@ public class TECraftingParser {
 		if (energy <= 0) {
 			energy = ChargerManager.DEFAULT_ENERGY;
 		}
-		return ChargerManager.addRecipe(energy, input, output);
+		return ChargerManager.addRecipe(energy, input, output) != null;
 	}
 
 	private static boolean addCrucibleRecipe(String name, JsonObject templateObject) {
@@ -469,7 +469,7 @@ public class TECraftingParser {
 		if (energy <= 0) {
 			energy = CrucibleManager.DEFAULT_ENERGY;
 		}
-		return CrucibleManager.addRecipe(energy, input, output);
+		return CrucibleManager.addRecipe(energy, input, output) != null;
 	}
 
 	private static boolean addTransposerRecipe(String name, JsonObject templateObject) {
@@ -516,9 +516,9 @@ public class TECraftingParser {
 			chance = 100;
 		}
 		if (extractRecipe) {
-			return TransposerManager.addExtractRecipe(energy, input, output, fluid, chance, reversible);
+			return TransposerManager.addExtractRecipe(energy, input, output, fluid, chance, reversible) != null;
 		}
-		return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible);
+		return TransposerManager.addFillRecipe(energy, input, output, fluid, reversible) != null;
 	}
 
 	/* REMOVE RECIPES */
@@ -528,7 +528,7 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		return FurnaceManager.removeRecipe(input);
+		return FurnaceManager.removeRecipe(input) != null;
 	}
 
 	private static boolean removePulverizerRecipe(String name, JsonObject templateObject) {
@@ -537,7 +537,7 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		return PulverizerManager.removeRecipe(input);
+		return PulverizerManager.removeRecipe(input) != null;
 	}
 
 	private static boolean removeSawmillRecipe(String name, JsonObject templateObject) {
@@ -546,7 +546,7 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		return SawmillManager.removeRecipe(input);
+		return SawmillManager.removeRecipe(input) != null;
 	}
 
 	private static boolean removeSmelterRecipe(String name, JsonObject templateObject) {
@@ -578,7 +578,7 @@ public class TECraftingParser {
 				secondaryInput = parseItemStack(templateObject.get("secondaryInput"));
 			}
 		}
-		return SmelterManager.removeRecipe(primaryInput, secondaryInput);
+		return SmelterManager.removeRecipe(primaryInput, secondaryInput) != null;
 	}
 
 	private static boolean removeInsolatorRecipe(String name, JsonObject templateObject) {
@@ -610,7 +610,7 @@ public class TECraftingParser {
 				secondaryInput = parseItemStack(templateObject.get("secondaryInput"));
 			}
 		}
-		return InsolatorManager.removeRecipe(primaryInput, secondaryInput);
+		return InsolatorManager.removeRecipe(primaryInput, secondaryInput) != null;
 	}
 
 	private static boolean removeChargerRecipe(String name, JsonObject templateObject) {
@@ -619,7 +619,7 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		return ChargerManager.removeRecipe(input);
+		return ChargerManager.removeRecipe(input) != null;
 	}
 
 	private static boolean removeCrucibleRecipe(String name, JsonObject templateObject) {
@@ -628,7 +628,7 @@ public class TECraftingParser {
 			return false;
 		}
 		ItemStack input = parseItemStack(templateObject.get("input"));
-		return CrucibleManager.removeRecipe(input);
+		return CrucibleManager.removeRecipe(input) != null;
 	}
 
 	private static boolean removeTransposerRecipe(String name, JsonObject templateObject) {
@@ -645,9 +645,9 @@ public class TECraftingParser {
 			extractRecipe = false;
 		}
 		if (extractRecipe) {
-			return TransposerManager.removeExtractRecipe(input);
+			return TransposerManager.removeExtractRecipe(input) != null;
 		}
-		return TransposerManager.removeFillRecipe(input, fluid);
+		return TransposerManager.removeFillRecipe(input, fluid) != null;
 	}
 
 	/* HELPERS */

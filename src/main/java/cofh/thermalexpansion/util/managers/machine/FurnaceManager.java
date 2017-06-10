@@ -318,35 +318,35 @@ public class FurnaceManager {
 	}
 
 	/* ADD RECIPES */
-	public static boolean addRecipe(int energy, ItemStack input, ItemStack output) {
+	public static RecipeFurnace addRecipe(int energy, ItemStack input, ItemStack output) {
 
 		if (input == null || output == null || energy <= 0 || recipeExists(input)) {
-			return false;
+			return null;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy);
 		recipeMap.put(new ComparableItemStackFurnace(input), recipe);
-		return true;
+		return recipe;
 	}
 
-	public static boolean addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
+	public static RecipeFurnace addRecipePyrolysis(int energy, ItemStack input, ItemStack output, int creosote) {
 
 		if (input == null || output == null || energy <= 0 || recipeExistsPyrolysis(input)) {
-			return false;
+			return null;
 		}
 		RecipeFurnace recipe = new RecipeFurnace(input, output, energy, creosote);
 		recipeMapPyrolysis.put(new ComparableItemStackFurnace(input), recipe);
-		return true;
+		return recipe;
 	}
 
 	/* REMOVE RECIPES */
-	public static boolean removeRecipe(ItemStack input) {
+	public static RecipeFurnace removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackFurnace(input)) != null;
+		return recipeMap.remove(new ComparableItemStackFurnace(input));
 	}
 
-	public static boolean removeRecipePyrolysis(ItemStack input) {
+	public static RecipeFurnace removeRecipePyrolysis(ItemStack input) {
 
-		return recipeMapPyrolysis.remove(new ComparableItemStackFurnace(input)) != null;
+		return recipeMapPyrolysis.remove(new ComparableItemStackFurnace(input));
 	}
 
 	/* HELPERS */
