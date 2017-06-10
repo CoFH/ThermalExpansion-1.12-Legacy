@@ -30,6 +30,8 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 	final List<ItemStack> outputs;
 	final List<FluidStack> outputFluids;
 
+	final int chance;
+
 	/* Animation */
 	final IDrawableStatic drop;
 	final IDrawableAnimated fluid;
@@ -66,6 +68,7 @@ public class TransposerRecipeWrapper extends BaseRecipeWrapper {
 			outputFluids = recipeFluids;
 		}
 		energy = recipe.getEnergy();
+		chance = recipe.getChance();
 
 		if (uId.equals(RecipeUidsTE.TRANSPOSER_FILL)) {
 			IDrawableStatic fluidDrawable = Drawables.getDrawables(guiHelper).getProgressLeft(Drawables.PROGRESS_DROP);

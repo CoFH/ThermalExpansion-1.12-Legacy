@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.plugins.jei.crafting.sawmill;
 
-import cofh.lib.util.helpers.ItemHelper;
 import cofh.lib.util.helpers.StringHelper;
 import cofh.thermalexpansion.block.machine.TileSawmill;
 import cofh.thermalexpansion.plugins.jei.Drawables;
@@ -8,7 +7,6 @@ import cofh.thermalexpansion.plugins.jei.JEIPluginTE;
 import cofh.thermalexpansion.plugins.jei.RecipeUidsTE;
 import cofh.thermalexpansion.plugins.jei.crafting.BaseRecipeWrapper;
 import cofh.thermalexpansion.util.managers.TapperManager;
-import cofh.thermalexpansion.util.managers.machine.SawmillManager.ComparableItemStackSawmill;
 import cofh.thermalexpansion.util.managers.machine.SawmillManager.RecipeSawmill;
 import mezz.jei.api.IGuiHelper;
 import mezz.jei.api.gui.IDrawableAnimated;
@@ -18,7 +16,6 @@ import mezz.jei.api.ingredients.IIngredients;
 import net.minecraft.client.Minecraft;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,13 +48,7 @@ public class SawmillRecipeWrapper extends BaseRecipeWrapper {
 		List<ItemStack> recipeOutputs = new ArrayList<>();
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
 
-		if (ComparableItemStackSawmill.getOreID(recipe.getInput()) != -1) {
-			for (ItemStack ore : OreDictionary.getOres(ItemHelper.getOreName(recipe.getInput()), false)) {
-				recipeInputs.add(ItemHelper.cloneStack(ore, recipe.getInput().stackSize));
-			}
-		} else {
-			recipeInputs.add(recipe.getInput());
-		}
+		recipeInputs.add(recipe.getInput());
 		recipeOutputs.add(recipe.getPrimaryOutput());
 
 		if (recipe.getSecondaryOutput() != null) {

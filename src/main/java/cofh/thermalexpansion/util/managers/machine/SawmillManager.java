@@ -1,6 +1,5 @@
 package cofh.thermalexpansion.util.managers.machine;
 
-import cofh.core.util.oredict.OreDictionaryArbiter;
 import cofh.lib.inventory.ComparableItemStack;
 import cofh.lib.util.helpers.ItemHelper;
 import cofh.thermalfoundation.item.ItemMaterial;
@@ -13,14 +12,13 @@ import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 public class SawmillManager {
 
-	private static Map<ComparableItemStackSawmill, RecipeSawmill> recipeMap = new THashMap<>();
+	private static Map<ComparableItemStack, RecipeSawmill> recipeMap = new THashMap<>();
 
 	static final float LOG_MULTIPLIER = 1.5F;
 	static final int DEFAULT_ENERGY = 1600;
@@ -30,7 +28,7 @@ public class SawmillManager {
 		if (input == null) {
 			return null;
 		}
-		ComparableItemStackSawmill query = new ComparableItemStackSawmill(input);
+		ComparableItemStack query = new ComparableItemStack(input);
 
 		RecipeSawmill recipe = recipeMap.get(query);
 
@@ -196,12 +194,12 @@ public class SawmillManager {
 
 	public static void refresh() {
 
-		Map<ComparableItemStackSawmill, RecipeSawmill> tempMap = new THashMap<>(recipeMap.size());
+		Map<ComparableItemStack, RecipeSawmill> tempMap = new THashMap<>(recipeMap.size());
 		RecipeSawmill tempRecipe;
 
-		for (Entry<ComparableItemStackSawmill, RecipeSawmill> entry : recipeMap.entrySet()) {
+		for (Entry<ComparableItemStack, RecipeSawmill> entry : recipeMap.entrySet()) {
 			tempRecipe = entry.getValue();
-			tempMap.put(new ComparableItemStackSawmill(tempRecipe.input), tempRecipe);
+			tempMap.put(new ComparableItemStack(tempRecipe.input), tempRecipe);
 		}
 		recipeMap.clear();
 		recipeMap = tempMap;
@@ -214,7 +212,7 @@ public class SawmillManager {
 			return null;
 		}
 		RecipeSawmill recipe = new RecipeSawmill(input, primaryOutput, secondaryOutput, secondaryChance, energy);
-		recipeMap.put(new ComparableItemStackSawmill(input), recipe);
+		recipeMap.put(new ComparableItemStack(input), recipe);
 		return recipe;
 	}
 
@@ -231,7 +229,7 @@ public class SawmillManager {
 	/* REMOVE RECIPES */
 	public static RecipeSawmill removeRecipe(ItemStack input) {
 
-		return recipeMap.remove(new ComparableItemStackSawmill(input));
+		return recipeMap.remove(new ComparableItemStack(input));
 	}
 
 	/* HELPERS */
@@ -332,49 +330,6 @@ public class SawmillManager {
 		public int getEnergy() {
 
 			return energy;
-		}
-	}
-
-	/* ITEMSTACK CLASS */
-	public static class ComparableItemStackSawmill extends ComparableItemStack {
-
-		public static final String ORE = "ore";
-		public static final String INGOT = "ingot";
-		public static final String NUGGET = "nugget";
-
-		public static boolean safeOreType(String oreName) {
-
-			return oreName.startsWith(ORE) || oreName.startsWith(INGOT) || oreName.startsWith(NUGGET);
-		}
-
-		public static int getOreID(ItemStack stack) {
-
-			ArrayList<Integer> ids = OreDictionaryArbiter.getAllOreIDs(stack);
-
-			if (ids != null) {
-				for (int i = 0, e = ids.size(); i < e; ) {
-					int id = ids.get(i++);
-					if (id != -1 && safeOreType(ItemHelper.oreProxy.getOreName(id))) {
-						return id;
-					}
-				}
-			}
-			return -1;
-		}
-
-		public ComparableItemStackSawmill(ItemStack stack) {
-
-			super(stack);
-			oreID = getOreID(stack);
-		}
-
-		@Override
-		public ComparableItemStackSawmill set(ItemStack stack) {
-
-			super.set(stack);
-			oreID = getOreID(stack);
-
-			return this;
 		}
 	}
 

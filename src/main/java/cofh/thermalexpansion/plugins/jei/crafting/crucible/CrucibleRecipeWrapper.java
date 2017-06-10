@@ -32,9 +32,9 @@ public class CrucibleRecipeWrapper extends BaseRecipeWrapper {
 	public CrucibleRecipeWrapper(IGuiHelper guiHelper, RecipeCrucible recipe) {
 
 		List<ItemStack> recipeInputs = new ArrayList<>();
-		recipeInputs.add(recipe.getInput());
-
 		List<FluidStack> recipeOutputFluids = new ArrayList<>();
+
+		recipeInputs.add(recipe.getInput());
 		recipeOutputFluids.add(recipe.getOutput());
 
 		inputs = Collections.singletonList(recipeInputs);

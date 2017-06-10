@@ -72,8 +72,15 @@ public class TransposerRecipeCategoryExtract extends TransposerRecipeCategory {
 		guiFluidStacks.init(0, false, 103, 1, 16, 60, 1000, false, tankOverlay);
 
 		guiItemStacks.set(0, inputs.get(0));
-		guiItemStacks.set(1, outputs.get(0));
+		guiItemStacks.set(1, outputs.isEmpty() ? null : outputs.get(0));
 		guiFluidStacks.set(0, fluids.get(0));
+
+		guiItemStacks.addTooltipCallback((slotIndex, input, ingredient, tooltip) -> {
+
+			if (slotIndex == 1 && recipeWrapper.chance < 100) {
+				tooltip.add(StringHelper.localize("info.cofh.chance") + ": " + recipeWrapper.chance + "%");
+			}
+		});
 	}
 
 }

@@ -639,16 +639,15 @@ public class SmelterManager {
 	/* ITEMSTACK CLASS */
 	public static class ComparableItemStackSmelter extends ComparableItemStack {
 
-		public static final Set<String> STARTS_WITH = new THashSet<>();
+		public static final String ORE = "ore";
+		public static final String DUST = "dust";
+		public static final String INGOT = "ingot";
+		public static final String BLOCK = "block";
+		public static final String NUGGET = "nugget";
+
 		public static final Set<String> EQUALS = new THashSet<>();
 
 		static {
-			STARTS_WITH.add("block");
-			STARTS_WITH.add("ore");
-			STARTS_WITH.add("dust");
-			STARTS_WITH.add("ingot");
-			STARTS_WITH.add("nugget");
-
 			EQUALS.add("sand");
 
 			EQUALS.add("crystalSlag");
@@ -662,7 +661,7 @@ public class SmelterManager {
 
 		public static boolean safeOreType(String oreName) {
 
-			return STARTS_WITH.contains(oreName) || EQUALS.contains(oreName);
+			return EQUALS.contains(oreName) || oreName.startsWith(ORE) || oreName.startsWith(DUST)|| oreName.startsWith(INGOT) || oreName.startsWith(BLOCK) || oreName.startsWith(NUGGET);
 		}
 
 		public static int getOreID(ItemStack stack) {
