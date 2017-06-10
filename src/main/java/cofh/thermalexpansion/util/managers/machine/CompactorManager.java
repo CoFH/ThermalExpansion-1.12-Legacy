@@ -222,10 +222,10 @@ public class CompactorManager {
 				ShapedOreRecipe target = (ShapedOreRecipe) recipe;
 				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
 					boolean match = true;
-					if (target.getInput()[0] instanceof List) {
+					if (target.getInput()[0] instanceof List && !((List) target.getInput()[0]).isEmpty()) {
 						ItemStack input = ((List<ItemStack>) target.getInput()[0]).get(0);
 						for (int i = 1; i < target.getRecipeSize(); i++) {
-							if (target.getInput()[i] instanceof List) {
+							if (target.getInput()[i] instanceof List && !((List) target.getInput()[i]).isEmpty()) {
 								ItemStack compare = ((List<ItemStack>) target.getInput()[i]).get(0);
 								match &= ItemHelper.itemsIdentical(input, compare);
 							} else {
@@ -256,10 +256,10 @@ public class CompactorManager {
 				ShapelessOreRecipe target = (ShapelessOreRecipe) recipe;
 				if (target.getRecipeSize() == 4 || target.getRecipeSize() == 9) {
 					boolean match = true;
-					if (target.getInput().get(0) instanceof List) {
+					if (target.getInput().get(0) instanceof List && !((List) target.getInput().get(0)).isEmpty()) {
 						ItemStack input = ((List<ItemStack>) target.getInput().get(0)).get(0);
 						for (int i = 1; i < target.getRecipeSize(); i++) {
-							if (target.getInput().get(i) instanceof List) {
+							if (target.getInput().get(i) instanceof List && !((List) target.getInput().get(i)).isEmpty()) {
 								ItemStack compare = ((List<ItemStack>) target.getInput().get(i)).get(0);
 								match &= ItemHelper.itemsIdentical(input, compare);
 							} else {
