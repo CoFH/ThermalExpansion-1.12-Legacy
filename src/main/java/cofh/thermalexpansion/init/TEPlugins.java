@@ -1,6 +1,7 @@
 package cofh.thermalexpansion.init;
 
 import cofh.thermalexpansion.plugins.forestry.ForestryPlugin;
+import cofh.thermalexpansion.plugins.natura.NaturaPlugin;
 
 public class TEPlugins {
 
@@ -19,6 +20,7 @@ public class TEPlugins {
 	public static void postInit() {
 
 		ForestryPlugin.initialize();
+		NaturaPlugin.initialize();
 	}
 
 }

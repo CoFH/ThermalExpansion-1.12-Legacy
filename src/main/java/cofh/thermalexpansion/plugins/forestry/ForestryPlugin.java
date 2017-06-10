@@ -14,17 +14,27 @@ import net.minecraftforge.fml.common.registry.ForgeRegistries;
 
 public class ForestryPlugin {
 
-	public static final String MOD_NAME = "forestry";
+	private ForestryPlugin() {
+
+	}
+
+	public static final String MOD_ID = "forestry";
+	public static final String MOD_NAME = "Forestry";
 
 	public static void initialize() {
 
-		if (!Loader.isModLoaded(MOD_NAME)) {
+		String category = "Plugins";
+		String comment = "If TRUE, support for " + MOD_NAME + " is enabled.";
+
+		boolean enable = ThermalExpansion.CONFIG.getConfiguration().getBoolean(MOD_NAME, category, true, comment);
+
+		if (!enable || !Loader.isModLoaded(MOD_ID)) {
 			return;
 		}
-		ItemStack honeydew = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_NAME + ":honeydew")), 1);
-		ItemStack honeyDrop = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_NAME + ":honeyDrop")), 1);
-		ItemStack propolis = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_NAME + ":propolis")), 1);
-		ItemStack mulch = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_NAME + ":mulch")), 1);
+		ItemStack honeydew = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":honeydew")), 1);
+		ItemStack honeyDrop = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":honeyDrop")), 1);
+		ItemStack propolis = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":propolis")), 1);
+		ItemStack mulch = ItemHelper.cloneStack(ForgeRegistries.ITEMS.getValue(new ResourceLocation(MOD_ID + ":mulch")), 1);
 
 		Fluid honey = FluidRegistry.getFluid("for.honey");
 		Fluid juice = FluidRegistry.getFluid("juice");
@@ -52,7 +62,7 @@ public class ForestryPlugin {
 			TransposerManager.addExtractRecipe(2400, ItemHelper.cloneStack(ItemHelper.getOre("cropWalnut"), 1), mulch, new FluidStack(seed_oil, 180), 5, false);
 		}
 
-		ThermalExpansion.LOG.info("Thermal Expansion: Forestry Plugin Enabled.");
+		ThermalExpansion.LOG.info("Thermal Expansion: " + MOD_NAME + " Plugin Enabled.");
 	}
 
 }
