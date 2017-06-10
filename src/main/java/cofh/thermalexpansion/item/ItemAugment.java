@@ -236,6 +236,8 @@ public class ItemAugment extends ItemMulti implements IInitializer, IAugmentItem
 		//		apparatusDepth = addAugmentItem(896, TEProps.APPARATUS_DEPTH);
 		//		apparatusRadius = addAugmentItem(897, TEProps.APPARATUS_RADIUS);
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
 		return true;
 	}
 

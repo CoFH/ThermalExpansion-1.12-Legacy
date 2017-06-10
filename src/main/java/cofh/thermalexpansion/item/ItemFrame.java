@@ -59,6 +59,8 @@ public class ItemFrame extends ItemMulti implements IInitializer, IBakeryItem {
 		frameCell = addItem(128, "frameCell");
 		// frameLight = addItem(160, "frameLight");
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
 		return true;
 	}
 

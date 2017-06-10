@@ -1,7 +1,6 @@
 package cofh.thermalexpansion.init;
 
 import cofh.core.util.core.IInitializer;
-import cofh.thermalexpansion.ThermalExpansion;
 import cofh.thermalexpansion.item.ItemAugment;
 import cofh.thermalexpansion.item.ItemCapacitor;
 import cofh.thermalexpansion.item.ItemFrame;
@@ -28,12 +27,6 @@ public class TEItems {
 		initList.add(itemAugment);
 
 		initList.add(itemCapacitor);
-
-		ThermalExpansion.proxy.addIModelRegister(itemFrame);
-		ThermalExpansion.proxy.addIModelRegister(itemUpgrade);
-		ThermalExpansion.proxy.addIModelRegister(itemAugment);
-
-		ThermalExpansion.proxy.addIModelRegister(itemCapacitor);
 
 		for (IInitializer init : initList) {
 			init.preInit();

@@ -154,6 +154,8 @@ public class ItemUpgrade extends ItemMulti implements IInitializer, IUpgradeItem
 		upgradeCreative = addItem(256, "creative", EnumRarity.EPIC);
 		addUpgradeEntry(256, UpgradeType.CREATIVE, Byte.MAX_VALUE);
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
 		return true;
 	}
 

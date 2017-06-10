@@ -403,6 +403,8 @@ public class ItemCapacitor extends ItemMulti implements IInitializer, IMultiMode
 
 		capacitorCreative = addCapacitorItem(CREATIVE, "creative", SEND[4], 0, CAPACITY[4], EnumRarity.EPIC);
 
+		ThermalExpansion.proxy.addIModelRegister(this);
+
 		return true;
 	}
 
